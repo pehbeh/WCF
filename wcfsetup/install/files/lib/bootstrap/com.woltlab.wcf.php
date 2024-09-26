@@ -148,6 +148,7 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\CloseReport());
             $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\DeleteContent());
             $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\EnableContent());
+            $event->register(new \wcf\system\endpoint\controller\core\users\ranks\DeleteUserRank);
         }
     );
 
