@@ -22,7 +22,7 @@ async function handleDelete(row: HTMLTableRowElement, objectName: string, endpoi
 export function setup(table: HTMLTableElement): void {
   table.addEventListener("action", (event: CustomEvent) => {
     if (event.detail.action === "delete") {
-      void handleDelete(event.target as HTMLTableRowElement, event.detail.objectName!, event.detail.endpoint!);
+      void handleDelete(event.target as HTMLTableRowElement, event.detail.objectName, event.detail.endpoint);
     }
   });
 }
