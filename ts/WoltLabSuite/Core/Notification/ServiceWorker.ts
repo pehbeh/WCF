@@ -95,6 +95,13 @@ class ServiceWorker {
     }
     return outputArray;
   }
+
+  public updateLastNotificationTime(timestamp: number): void {
+    window.navigator.serviceWorker.controller?.postMessage({
+      type: "SAVE_LAST_NOTIFICATION_TIMESTAMP",
+      timestamp: timestamp,
+    });
+  }
 }
 
 export function serviceWorkerSupported(): boolean {
@@ -120,16 +127,26 @@ export function serviceWorkerSupported(): boolean {
   return true;
 }
 
-export function setup(publicKey: string, serviceWorkerJsUrl: string, registerUrl: string): void {
+export function setup(
+  publicKey: string,
+  serviceWorkerJsUrl: string,
+  registerUrl: string,
+  lastReadNotification: number,
+): void {
   if (!serviceWorkerSupported()) {
     return;
   }
   _serviceWorker = new ServiceWorker(publicKey, serviceWorkerJsUrl, registerUrl);
   if (Notification.permission === "granted") {
     registerServiceWorker();
+    _serviceWorker.updateLastNotificationTime(lastReadNotification);
   }
 }
 
 export function registerServiceWorker(): void {
   void _serviceWorker?.register();
+}
+
+export function updateLastNotificationTime(timestamp: number): void {
+  _serviceWorker?.updateLastNotificationTime(timestamp);
 }
