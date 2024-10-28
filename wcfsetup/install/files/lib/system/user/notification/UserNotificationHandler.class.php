@@ -1099,4 +1099,19 @@ class UserNotificationHandler extends SingletonFactory
 
         return \array_intersect($userIDs, $filterUserIDs);
     }
+
+    /**
+     * Returns the timestamp of the last read notification for the active user
+     * or `0` if no notification has been read yet.
+     */
+    public function getTimeOfLastReadNotification(): int
+    {
+        $sql = "SELECT MAX(confirmTime)
+                FROM   wcf1_user_notification
+                WHERE  userID = ?";
+        $statement = WCF::getDB()->prepare($sql);
+        $statement->execute([WCF::getUser()->userID]);
+
+        return $statement->fetchSingleColumn() ?: 0;
+    }
 }
