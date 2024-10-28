@@ -1,3 +1,11 @@
+/**
+ * The `<woltlab-core-emoji-picker>` element creates an emoji picker.
+ *
+ * @author Olaf Braun
+ * @copyright 2001-2024 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
+ */
 define(["require", "exports", "emoji-picker-element", "WoltLabSuite/Core/Component/EmojiPicker/Localization", "emoji-picker-element"], function (require, exports, emoji_picker_element_1, Localization_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
