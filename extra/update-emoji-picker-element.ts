@@ -55,7 +55,16 @@ const languages: LanguageItem[] = [
 ];
 
 (async () => {
-  let localisationContent = `import { I18n } from "emoji-picker-element/shared";
+  let localisationContent = `/**
+ * This file is auto-generated, DO NOT MODIFY IT MANUALLY!
+ *
+ * To update the file, run in the extra directory:
+ * > \`npx tsx ./update-emoji-picker-element.ts ../wcfsetup/install/files/emoji ../ts/WoltLabSuite/Core/Component/EmojiPicker/Localization.ts\`
+ *
+ * @woltlabExcludeBundle all
+ */
+
+import { I18n } from "emoji-picker-element/shared";
 
 // prettier-ignore
 const locales = [
