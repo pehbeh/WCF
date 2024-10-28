@@ -13,7 +13,7 @@ import { EventUpdateCounter, UserMenuButton, UserMenuData, UserMenuFooter, UserM
 import { registerProvider } from "../Manager";
 import * as Language from "../../../../Language";
 import { enableNotifications } from "../../../../Notification/Handler";
-import { registerServiceWorker } from "../../../../Notification/ServiceWorker";
+import { registerServiceWorker, updateLastNotificationTime } from "../../../../Notification/ServiceWorker";
 
 let originalFavicon = "";
 function setFaviconCounter(counter: number): void {
@@ -280,12 +280,14 @@ class UserMenuDataNotification implements DesktopNotifications, UserMenuProvider
     const response = (await dboAction("markAsConfirmed", "wcf\\data\\user\\notification\\UserNotificationAction")
       .objectIds([objectId])
       .dispatch()) as ResponseMarkAsRead;
+    updateLastNotificationTime();
 
     this.updateCounter(response.totalCount);
   }
 
   async markAllAsRead(): Promise<void> {
     await dboAction("markAllAsConfirmed", "wcf\\data\\user\\notification\\UserNotificationAction").dispatch();
+    updateLastNotificationTime();
 
     this.updateCounter(0);
   }

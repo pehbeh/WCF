@@ -209,10 +209,12 @@ define(["require", "exports", "tslib", "../../../../Ajax", "../View", "../Manage
             const response = (await (0, Ajax_1.dboAction)("markAsConfirmed", "wcf\\data\\user\\notification\\UserNotificationAction")
                 .objectIds([objectId])
                 .dispatch());
+            (0, ServiceWorker_1.updateLastNotificationTime)();
             this.updateCounter(response.totalCount);
         }
         async markAllAsRead() {
             await (0, Ajax_1.dboAction)("markAllAsConfirmed", "wcf\\data\\user\\notification\\UserNotificationAction").dispatch();
+            (0, ServiceWorker_1.updateLastNotificationTime)();
             this.updateCounter(0);
         }
         updateCounter(count) {

@@ -125,7 +125,7 @@ function saveLastNotificationTimestamp(timestamp) {
       const storedTimestamp = getRequest.result;
 
       // Check if the new timestamp is greater than the stored timestamp
-      if (storedTimestamp === undefined || newTimestamp > storedTimestamp) {
+      if (storedTimestamp === undefined || timestamp > storedTimestamp) {
         store.put(timestamp, 'lastNotification');
       }
     };

@@ -147,6 +147,6 @@ export function registerServiceWorker(): void {
   void _serviceWorker?.register();
 }
 
-export function updateLastNotificationTime(timestamp: number): void {
-  _serviceWorker?.updateLastNotificationTime(timestamp);
+export function updateLastNotificationTime(timestamp?: number): void {
+  _serviceWorker?.updateLastNotificationTime(timestamp ?? Math.round(Date.now() / 1000));
 }

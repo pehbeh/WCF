@@ -128,6 +128,6 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend"], function (requi
         void _serviceWorker?.register();
     }
     function updateLastNotificationTime(timestamp) {
-        _serviceWorker?.updateLastNotificationTime(timestamp);
+        _serviceWorker?.updateLastNotificationTime(timestamp ?? Math.round(Date.now() / 1000));
     }
 });
