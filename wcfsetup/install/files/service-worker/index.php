@@ -20,7 +20,7 @@ self.addEventListener("push", (event) => {
 	const payload = event.data.json();
 
 	getLastNotificationTimestamp().then((lastNotificationTimestamp) => {
-		if (!lastNotificationTimestamp || payload.time < lastNotificationTimestamp) {
+		if (lastNotificationTimestamp && payload.time < lastNotificationTimestamp) {
 			return;
 		}
 
