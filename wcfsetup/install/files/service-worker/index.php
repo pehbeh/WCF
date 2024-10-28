@@ -135,7 +135,7 @@ function saveLastNotificationTimestamp(timestamp) {
     };
 
     tx.onerror = () => {
-      console.error('Transaktionsfehler', tx.error);
+      console.error('Transaction error', tx.error);
     };
   }).catch(err => console.error('Failed to open database', err));
 }
