@@ -78,7 +78,7 @@ define(["require", "exports", "tslib", "./BackgroundQueue", "./Bootstrap", "./Ui
         if (User_1.default.userId) {
             UiFeedDialog.setup();
             if (options.serviceWorker) {
-                (0, ServiceWorker_1.setup)(options.serviceWorker.publicKey, options.serviceWorker.serviceWorkerJsUrl, options.serviceWorker.registerUrl, options.serviceWorker.lastReadNotification);
+                (0, ServiceWorker_1.setup)(options.serviceWorker.publicKey, options.serviceWorker.serviceWorkerJsUrl, options.serviceWorker.registerUrl, options.serviceWorker.notificationLastReadTime);
             }
         }
         (0, LazyLoader_1.whenFirstSeen)("woltlab-core-reaction-summary", () => {

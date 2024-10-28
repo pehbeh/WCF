@@ -82,7 +82,7 @@ window.addEventListener('pageshow', function(event) {
 				publicKey: '{@SERVICE_WORKER_PUBLIC_KEY|encodeJS}',
 				serviceWorkerJsUrl: '{$__wcf->getPath('wcf')}service-worker/',
 				registerUrl: '{link controller="RegisterServiceWorker"}{/link}',
-				lastReadNotification: {$__wcf->getUserNotificationHandler()->getLastReadNotificationTime()}
+				notificationLastReadTime: {$__wcf->getUserNotificationHandler()->getTimeOfLastReadNotification()}
 			},
 			{/if}
 			dynamicColorScheme: {if $__wcf->getStyleHandler()->getColorScheme() === 'system'}true{else}false{/if},

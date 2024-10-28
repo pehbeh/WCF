@@ -1101,12 +1101,10 @@ class UserNotificationHandler extends SingletonFactory
     }
 
     /**
-     * Returns the timestamp of the last read notification for the active user.
-     * Or `0` if no notification has been read yet.
-     *
-     * @return  int
+     * Returns the timestamp of the last read notification for the active user
+     * or `0` if no notification has been read yet.
      */
-    public function getLastReadNotificationTime(): int
+    public function getTimeOfLastReadNotification(): int
     {
         $sql = "SELECT MAX(confirmTime)
                 FROM   wcf1_user_notification

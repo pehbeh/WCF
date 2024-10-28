@@ -11,7 +11,7 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend"], function (requi
     exports.serviceWorkerSupported = serviceWorkerSupported;
     exports.setup = setup;
     exports.registerServiceWorker = registerServiceWorker;
-    exports.updateLastNotificationTime = updateLastNotificationTime;
+    exports.updateNotificationLastReadTime = updateNotificationLastReadTime;
     let _serviceWorker = null;
     class ServiceWorker {
         #publicKey;
@@ -88,10 +88,10 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend"], function (requi
             }
             return outputArray;
         }
-        updateLastNotificationTime(timestamp) {
+        updateNotificationLastReadTime(timestamp) {
             window.navigator.serviceWorker.controller?.postMessage({
-                type: "SAVE_LAST_NOTIFICATION_TIMESTAMP",
-                timestamp: timestamp,
+                type: "UPDATE_NOTIFICATION_LAST_READ_TIME",
+                timestamp,
             });
         }
     }
@@ -114,20 +114,20 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend"], function (requi
         }
         return true;
     }
-    function setup(publicKey, serviceWorkerJsUrl, registerUrl, lastReadNotification) {
+    function setup(publicKey, serviceWorkerJsUrl, registerUrl, notificationLastReadTime) {
         if (!serviceWorkerSupported()) {
             return;
         }
         _serviceWorker = new ServiceWorker(publicKey, serviceWorkerJsUrl, registerUrl);
         if (Notification.permission === "granted") {
             registerServiceWorker();
-            _serviceWorker.updateLastNotificationTime(lastReadNotification);
+            _serviceWorker.updateNotificationLastReadTime(notificationLastReadTime);
         }
     }
     function registerServiceWorker() {
         void _serviceWorker?.register();
     }
-    function updateLastNotificationTime(timestamp) {
-        _serviceWorker?.updateLastNotificationTime(timestamp ?? Math.round(Date.now() / 1000));
+    function updateNotificationLastReadTime(timestamp) {
+        _serviceWorker?.updateNotificationLastReadTime(timestamp ?? Math.round(Date.now() / 1000));
     }
 });

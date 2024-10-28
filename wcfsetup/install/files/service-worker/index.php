@@ -2,11 +2,11 @@
 
 @\header('Service-Worker-Allowed: /');
 @\header('Content-Type: text/javascript; charset=utf-8');
-?>
-/**
+?>/**
  * @author      Olaf Braun
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since		6.1
  */
 
 self.addEventListener("push", (event) => {
@@ -19,8 +19,8 @@ self.addEventListener("push", (event) => {
 
 	const payload = event.data.json();
 
-	getLastNotificationTimestamp().then((lastNotificationTimestamp) => {
-		if (lastNotificationTimestamp && payload.time < lastNotificationTimestamp) {
+	getTimeOfLastReadNotification().then((notificationLastReadTime) => {
+		if (notificationLastReadTime && payload.time < notificationLastReadTime) {
 			return;
 		}
 
@@ -52,8 +52,8 @@ self.addEventListener("notificationclick", (event) => {
 });
 
 self.addEventListener("message", (event) => {
-	if (event.data && event.data.type === "SAVE_LAST_NOTIFICATION_TIMESTAMP") {
-		saveLastNotificationTimestamp(event.data.timestamp);
+	if (event.data && event.data.type === "UPDATE_NOTIFICATION_LAST_READ_TIME") {
+		updateNotificationLastReadTime(event.data.timestamp);
 	}
 });
 
@@ -105,12 +105,12 @@ function openDatabase() {
 		};
 
 		request.onerror = (event) => {
-			reject("Database error: %s", event.target.errorCode);
+			reject(new Error(`Database error: ${event.target.errorCode}`));
 		};
 	});
 }
 
-function saveLastNotificationTimestamp(timestamp) {
+function updateNotificationLastReadTime(timestamp) {
 	if (!timestamp || timestamp <= 0) {
 		return;
 	}
@@ -141,7 +141,7 @@ function saveLastNotificationTimestamp(timestamp) {
 		.catch((err) => console.error("Failed to open database: %s", err));
 }
 
-function getLastNotificationTimestamp() {
+function getTimeOfLastReadNotification() {
 	return openDatabase().then((db) => {
 		return new Promise((resolve, reject) => {
 			const tx = db.transaction("notifications", "readonly");
@@ -152,7 +152,7 @@ function getLastNotificationTimestamp() {
 				resolve(request.result);
 			};
 			request.onerror = () => {
-				reject("Failed to retrieve timestamp");
+				reject(new Error("Failed to retrieve timestamp"));
 			};
 		});
 	});

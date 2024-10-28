@@ -96,10 +96,10 @@ class ServiceWorker {
     return outputArray;
   }
 
-  public updateLastNotificationTime(timestamp: number): void {
+  public updateNotificationLastReadTime(timestamp: number): void {
     window.navigator.serviceWorker.controller?.postMessage({
-      type: "SAVE_LAST_NOTIFICATION_TIMESTAMP",
-      timestamp: timestamp,
+      type: "UPDATE_NOTIFICATION_LAST_READ_TIME",
+      timestamp,
     });
   }
 }
@@ -131,7 +131,7 @@ export function setup(
   publicKey: string,
   serviceWorkerJsUrl: string,
   registerUrl: string,
-  lastReadNotification: number,
+  notificationLastReadTime: number,
 ): void {
   if (!serviceWorkerSupported()) {
     return;
@@ -139,7 +139,7 @@ export function setup(
   _serviceWorker = new ServiceWorker(publicKey, serviceWorkerJsUrl, registerUrl);
   if (Notification.permission === "granted") {
     registerServiceWorker();
-    _serviceWorker.updateLastNotificationTime(lastReadNotification);
+    _serviceWorker.updateNotificationLastReadTime(notificationLastReadTime);
   }
 }
 
@@ -147,6 +147,6 @@ export function registerServiceWorker(): void {
   void _serviceWorker?.register();
 }
 
-export function updateLastNotificationTime(timestamp?: number): void {
-  _serviceWorker?.updateLastNotificationTime(timestamp ?? Math.round(Date.now() / 1000));
+export function updateNotificationLastReadTime(timestamp?: number): void {
+  _serviceWorker?.updateNotificationLastReadTime(timestamp ?? Math.round(Date.now() / 1000));
 }
