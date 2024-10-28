@@ -108,7 +108,7 @@ function openDatabase() {
 		};
 
 		request.onerror = (event) => {
-			reject("Database error: " + event.target.errorCode);
+			reject("Database error: %s", event.target.errorCode);
 		};
 	});
 }
@@ -134,14 +134,14 @@ function saveLastNotificationTimestamp(timestamp) {
 			};
 
 			getRequest.onerror = () => {
-				console.error("Failed to retrieve timestamp", getRequest.error);
+				console.error("Failed to retrieve timestamp: %s", getRequest.error);
 			};
 
 			tx.onerror = () => {
-				console.error("Transaction error", tx.error);
+				console.error("Transaction error: %s", tx.error);
 			};
 		})
-		.catch((err) => console.error("Failed to open database", err));
+		.catch((err) => console.error("Failed to open database: %s", err));
 }
 
 function getLastNotificationTimestamp() {
