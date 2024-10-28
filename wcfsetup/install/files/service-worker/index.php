@@ -94,6 +94,7 @@ function openDatabase() {
 
 		request.onupgradeneeded = (event) => {
 			const db = event.target.result;
+
 			if (!db.objectStoreNames.contains("notifications")) {
 				db.createObjectStore("notifications");
 			}
@@ -101,10 +102,6 @@ function openDatabase() {
 
 		request.onsuccess = (event) => {
 			resolve(event.target.result);
-
-			if (!db.objectStoreNames.contains("notifications")) {
-				db.createObjectStore("notifications");
-			}
 		};
 
 		request.onerror = (event) => {
