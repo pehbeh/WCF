@@ -47,10 +47,12 @@ class PasswordFormField extends AbstractFormField implements
     protected $templateName = 'shared_passwordFormField';
 
     protected bool $strengthMeter = true;
+
     /**
      * @var IFormField[]
      */
     protected array $relatedFields = [];
+
     /**
      * @var string[]
      */
