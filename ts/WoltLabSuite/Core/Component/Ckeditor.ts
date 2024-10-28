@@ -310,9 +310,6 @@ export async function setupCkeditor(
   }
 
   const { DATABASE_FOR_AUTO_COMPLETE } = await import("./EmojiPicker/woltlab-core-emoji-picker");
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  // TODO remove eslint-disable
   configuration.woltlabEmojis = {
     database: DATABASE_FOR_AUTO_COMPLETE,
   };

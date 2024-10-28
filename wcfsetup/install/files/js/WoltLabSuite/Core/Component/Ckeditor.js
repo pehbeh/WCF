@@ -222,9 +222,6 @@ define(["require", "exports", "tslib", "./Ckeditor/Attachment", "./Ckeditor/Medi
             configuration.licenseKey = licenseKey;
         }
         const { DATABASE_FOR_AUTO_COMPLETE } = await new Promise((resolve_2, reject_2) => { require(["./EmojiPicker/woltlab-core-emoji-picker"], resolve_2, reject_2); }).then(tslib_1.__importStar);
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
-        // TODO remove eslint-disable
         configuration.woltlabEmojis = {
             database: DATABASE_FOR_AUTO_COMPLETE,
         };
