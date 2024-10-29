@@ -177,6 +177,8 @@ final class DateUtil
      * @param Language $language
      * @param User $user
      * @return  string
+     *
+     * @deprecated 6.2 use `\IntlDateFormatter` instead
      */
     public static function format(
         null|\DateTime|\DateTimeImmutable $time = null,
