@@ -1,5 +1,4 @@
-{include file='header' pageTitle='wcf.acp.license'}
-
+{capture append='headContent'}
 <style>
 	.licensed_packages__package__title {
 		font-size: var(--wcfFontSizeHeadline);
@@ -30,6 +29,9 @@
 		color: var(--wcfContentDimmedText);
 	}
 </style>
+{/capture}
+
+{include file='header' pageTitle='wcf.acp.license'}
 
 <header class="contentHeader">
 	<div class="contentHeaderTitle">
