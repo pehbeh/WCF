@@ -33,7 +33,7 @@
 
 <header class="contentHeader">
 	<div class="contentHeaderTitle">
-		<h1 class="contentTitle">{lang}wcf.acp.license{/lang}</span></h1>
+		<h1 class="contentTitle">{lang}wcf.acp.license{/lang}</h1>
 		{if $licenseData->getLicenseNumber()}
 			<p class="contentDescription">{lang licenseNumber=$licenseData->getLicenseNumber()}wcf.acp.license.licenseNo{/lang}</p>
 		{/if}
