@@ -309,6 +309,11 @@ export async function setupCkeditor(
     configuration.licenseKey = licenseKey;
   }
 
+  const { DATABASE_FOR_AUTO_COMPLETE } = await import("./EmojiPicker/woltlab-core-emoji-picker");
+  configuration.woltlabEmojis = {
+    database: DATABASE_FOR_AUTO_COMPLETE,
+  };
+
   normalizeLegacyMessage(element);
 
   const cke = await createEditor(element, configuration);
