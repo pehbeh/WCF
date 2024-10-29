@@ -60,7 +60,7 @@
 </header>
 
 {if $licenseData->getLicenseType() === 'developer'}
-	<woltlab-core-notice type="warning">{lang}wcf.acp.license.developerLicense{/lang}</woltlab-core-notice>
+	<woltlab-core-notice type="info">{lang}wcf.acp.license.developerLicense{/lang}</woltlab-core-notice>
 {/if}
 
 {hascontent}
