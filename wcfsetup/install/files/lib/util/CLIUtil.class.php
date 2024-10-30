@@ -83,36 +83,6 @@ final class CLIUtil
     }
 
     /**
-     * Formats time.
-     *
-     * @param int $timestamp
-     * @return  string
-     */
-    public static function formatTime($timestamp)
-    {
-        $dateTimeObject = DateUtil::getDateTimeByTimestamp($timestamp);
-        $date = DateUtil::format($dateTimeObject, DateUtil::DATE_FORMAT);
-        $time = DateUtil::format($dateTimeObject, DateUtil::TIME_FORMAT);
-
-        return \str_replace(
-            '%time%',
-            $time,
-            \str_replace('%date%', $date, CLIWCF::getLanguage()->get('wcf.date.dateTimeFormat'))
-        );
-    }
-
-    /**
-     * Formats dates.
-     *
-     * @param int $timestamp
-     * @return  string
-     */
-    public static function formatDate($timestamp)
-    {
-        return DateUtil::format(DateUtil::getDateTimeByTimestamp($timestamp), DateUtil::DATE_FORMAT);
-    }
-
-    /**
      * Forbid creation of CLIUtil objects.
      */
     private function __construct()
