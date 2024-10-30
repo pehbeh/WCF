@@ -457,6 +457,12 @@ class DateFormField extends AbstractFormField implements
         );
     }
 
+    /**
+     * Returns an instance of `\IntlDateFormatter' for formatting `\DateTime` objects.
+     * The formatter displays the date and time (if supported) in the user's locale and timezone.
+     *
+     * @since 6.2
+     */
     protected function getDateTimeFormatter(): \IntlDateFormatter
     {
         $timeFormat = \IntlDateFormatter::NONE;
