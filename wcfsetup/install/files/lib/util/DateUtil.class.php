@@ -630,7 +630,11 @@ final class DateUtil
             $currentDateTimeObject->setTime(0, 0, 0);
 
             $days = $dtoNoTime->diff($currentDateTimeObject)->days;
-            $day = self::format($dateTimeObject, 'l');
+            $day = \IntlDateFormatter::formatObject(
+                $dateTimeObject,
+                'EEEE',
+                WCF::getLanguage()->getLocale(),
+            );
 
             return WCF::getLanguage()->getDynamicVariable('wcf.date.relative.pastDays', [
                 'days' => $days,

@@ -385,22 +385,10 @@ class DateFormField extends AbstractFormField implements
                 );
 
                 if ($dateTime < $earliestDateTime) {
-                    $format = DateUtil::DATE_FORMAT;
-                    if ($this->supportsTime()) {
-                        $format = \str_replace(
-                            ['%date%', '%time%'],
-                            [
-                                WCF::getLanguage()->get(DateUtil::DATE_FORMAT),
-                                WCF::getLanguage()->get(DateUtil::TIME_FORMAT),
-                            ],
-                            WCF::getLanguage()->get('wcf.date.dateTimeFormat')
-                        );
-                    }
-
                     $this->addValidationError(new FormFieldValidationError(
                         'minimum',
                         'wcf.form.field.date.error.earliestDate',
-                        ['earliestDate' => DateUtil::format($earliestDateTime, $format)]
+                        ['earliestDate' => $this->getDateTimeFormatter()->format($earliestDateTime)]
                     ));
 
                     return;
@@ -415,22 +403,10 @@ class DateFormField extends AbstractFormField implements
                 );
 
                 if ($dateTime > $latestDateTime) {
-                    $format = DateUtil::DATE_FORMAT;
-                    if ($this->supportsTime()) {
-                        $format = \str_replace(
-                            ['%date%', '%time%'],
-                            [
-                                WCF::getLanguage()->get(DateUtil::DATE_FORMAT),
-                                WCF::getLanguage()->get(DateUtil::TIME_FORMAT),
-                            ],
-                            WCF::getLanguage()->get('wcf.date.dateTimeFormat')
-                        );
-                    }
-
                     $this->addValidationError(new FormFieldValidationError(
                         'minimum',
                         'wcf.form.field.date.error.latestDate',
-                        ['latestDate' => DateUtil::format($latestDateTime, $format)]
+                        ['latestDate' => $this->getDateTimeFormatter()->format($latestDateTime)]
                     ));
 
                     return;
@@ -478,6 +454,21 @@ class DateFormField extends AbstractFormField implements
                 'max',
                 'min',
             ]
+        );
+    }
+
+    protected function getDateTimeFormatter(): \IntlDateFormatter
+    {
+        $timeFormat = \IntlDateFormatter::NONE;
+        if ($this->supportsTime()) {
+            $timeFormat = \IntlDateFormatter::SHORT;
+        }
+
+        return new \IntlDateFormatter(
+            WCF::getLanguage()->getLocale(),
+            \IntlDateFormatter::LONG,
+            $timeFormat,
+            WCF::getUser()->getTimeZone()
         );
     }
 }
