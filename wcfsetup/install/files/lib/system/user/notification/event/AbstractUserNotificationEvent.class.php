@@ -222,10 +222,15 @@ abstract class AbstractUserNotificationEvent extends DatabaseObjectDecorator imp
             $date->modify('-1 day');
             self::$periods[$date->getTimestamp()] = WCF::getLanguage()->get('wcf.date.period.yesterday');
 
+            $formatter = \IntlDateFormatter::create(
+                WCF::getLanguage()->getLocale(),
+                timezone: WCF::getUser()->getTimeZone(),
+                pattern: 'EEEE'
+            );
             // 2-6 days back
             for ($i = 0; $i < 6; $i++) {
                 $date->modify('-1 day');
-                self::$periods[$date->getTimestamp()] = DateUtil::format($date, 'l');
+                self::$periods[$date->getTimestamp()] = $formatter->format($date);
             }
         }
 

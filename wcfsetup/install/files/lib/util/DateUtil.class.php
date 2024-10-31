@@ -177,6 +177,8 @@ final class DateUtil
      * @param Language $language
      * @param User $user
      * @return  string
+     *
+     * @deprecated 6.2 use `\IntlDateFormatter` or `\DateTime::format()` instead
      */
     public static function format(
         null|\DateTime|\DateTimeImmutable $time = null,
@@ -454,10 +456,12 @@ final class DateUtil
 
         // calc
         if ($year) {
-            $age = self::format(null, 'Y') - $year;
-            if (self::format(null, 'n') < $month) {
+            $now = new \DateTimeImmutable("now", WCF::getUser()->getTimeZone());
+
+            $age = $now->format('Y') - $year;
+            if ($now->format('n') < $month) {
                 $age--;
-            } elseif (self::format(null, 'n') == $month && self::format(null, 'j') < $day) {
+            } elseif ($now->format('n') == $month && $now->format('j') < $day) {
                 $age--;
             }
 
@@ -626,7 +630,11 @@ final class DateUtil
             $currentDateTimeObject->setTime(0, 0, 0);
 
             $days = $dtoNoTime->diff($currentDateTimeObject)->days;
-            $day = self::format($dateTimeObject, 'l');
+            $day = \IntlDateFormatter::formatObject(
+                $dateTimeObject,
+                'EEEE',
+                WCF::getLanguage()->getLocale(),
+            );
 
             return WCF::getLanguage()->getDynamicVariable('wcf.date.relative.pastDays', [
                 'days' => $days,
