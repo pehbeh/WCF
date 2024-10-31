@@ -319,24 +319,26 @@ class UploadFormField extends AbstractFormField
             });
 
             foreach ($this->getValue() as $file) {
-                if (!\in_array($file->getFilenameExtension(), $allowedFileExtensions)) {
-                    foreach ($specialFileExtensions as $extension) {
-                        if (\str_ends_with(".{$file->getFilename()}", $extension)) {
-                            continue 2;
-                        }
-                    }
-
-                    $this->addValidationError(
-                        new FormFieldValidationError(
-                            'acceptableFileExtensions',
-                            'wcf.form.field.upload.error.fileExtension',
-                            [
-                                'allowedFileExtensions' => $this->allowedFileExtensions,
-                                'file' => $file,
-                            ]
-                        )
-                    );
+                if (\in_array($file->getFilenameExtension(), $allowedFileExtensions)) {
+                    continue;
                 }
+
+                foreach ($specialFileExtensions as $extension) {
+                    if (\str_ends_with($file->getFilename(), ".{$extension}")) {
+                        continue 2;
+                    }
+                }
+
+                $this->addValidationError(
+                    new FormFieldValidationError(
+                        'acceptableFileExtensions',
+                        'wcf.form.field.upload.error.fileExtension',
+                        [
+                            'allowedFileExtensions' => $this->allowedFileExtensions,
+                            'filename' => $file->getFilename(),
+                        ]
+                    )
+                );
             }
         }
     }
