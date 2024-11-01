@@ -211,8 +211,6 @@ class WCF
         try {
             $bootstrappers = require(self::BOOTSTRAP_LOADER);
         } catch (\Exception $e) {
-            \wcf\functions\exception\logThrowable($e);
-
             $command = new RebuildBootstrapper();
             $command();
 
