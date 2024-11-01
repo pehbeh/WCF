@@ -126,7 +126,7 @@ class CommentList {
     } catch (error) {
       await handleValidationErrors(error, () => {
         // The comment id is invalid or there is a mismatch, silently ignore it.
-        permaLinkComment!.remove();
+        permaLinkComment.remove();
 
         return true;
       });
@@ -195,7 +195,7 @@ class CommentList {
     } catch (error) {
       await handleValidationErrors(error, () => {
         // The response id is invalid or there is a mismatch, silently ignore it.
-        permalinkResponse!.remove();
+        permalinkResponse.remove();
 
         return true;
       });

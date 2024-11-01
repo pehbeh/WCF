@@ -27,7 +27,7 @@ function click(event: MouseEvent): void {
         parameters.set(key, data[key]);
       });
     }
-  } catch (e) {
+  } catch {
     // Ignore JSON parsing failure.
   }
 
