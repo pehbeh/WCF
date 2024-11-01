@@ -4,8 +4,8 @@
     "bundle-web-components": "npx esbuild ts/WoltLabSuite/WebComponent/index.ts --minify --bundle --watch --outfile=wcfsetup/install/files/js/WoltLabSuite/WebComponent.min.js"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.5.0",
-    "@typescript-eslint/parser": "^6.5.0",
+    "@typescript-eslint/eslint-plugin": "^8.12.2",
+    "@typescript-eslint/parser": "^8.12.2",
     "esbuild": "^0.24.0",
     "eslint": "^9.13.0",
     "eslint-config-prettier": "^9.1.0",
