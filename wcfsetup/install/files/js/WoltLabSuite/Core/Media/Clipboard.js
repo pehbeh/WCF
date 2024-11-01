@@ -9,7 +9,8 @@
 define(["require", "exports", "tslib", "../Controller/Clipboard", "../Ui/Notification", "../Event/Handler", "../Language", "../Ajax", "WoltLabSuite/Core/Component/Dialog"], function (require, exports, tslib_1, Clipboard, UiNotification, EventHandler, Language_1, Ajax, Dialog_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.setMediaManager = exports.init = void 0;
+    exports.init = init;
+    exports.setMediaManager = setMediaManager;
     Clipboard = tslib_1.__importStar(Clipboard);
     UiNotification = tslib_1.__importStar(UiNotification);
     EventHandler = tslib_1.__importStar(EventHandler);
@@ -93,9 +94,7 @@ define(["require", "exports", "tslib", "../Controller/Clipboard", "../Ui/Notific
         }
         _mediaManager = mediaManager;
     }
-    exports.init = init;
     function setMediaManager(mediaManager) {
         _mediaManager = mediaManager;
     }
-    exports.setMediaManager = setMediaManager;
 });

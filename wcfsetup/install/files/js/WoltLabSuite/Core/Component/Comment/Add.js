@@ -9,7 +9,8 @@
 define(["require", "exports", "tslib", "../../Ajax", "../../Ui/Scroll", "../../Ui/Notification", "../../Language", "../../Event/Handler", "../../Dom/Util", "./GuestDialog", "../../Core", "../Ckeditor", "../Ckeditor/Event"], function (require, exports, tslib_1, Ajax_1, UiScroll, UiNotification, Language_1, EventHandler, Util_1, GuestDialog_1, Core, Ckeditor_1, Event_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.setCommentEditorFeatures = exports.CommentAdd = void 0;
+    exports.CommentAdd = void 0;
+    exports.setCommentEditorFeatures = setCommentEditorFeatures;
     UiScroll = tslib_1.__importStar(UiScroll);
     UiNotification = tslib_1.__importStar(UiNotification);
     EventHandler = tslib_1.__importStar(EventHandler);
@@ -197,5 +198,4 @@ define(["require", "exports", "tslib", "../../Ajax", "../../Ui/Scroll", "../../U
             features.table = false;
         });
     }
-    exports.setCommentEditorFeatures = setCommentEditorFeatures;
 });

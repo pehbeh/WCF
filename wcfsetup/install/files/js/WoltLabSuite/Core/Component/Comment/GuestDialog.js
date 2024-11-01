@@ -9,7 +9,7 @@
 define(["require", "exports", "tslib", "../../Controller/Captcha", "../../Language", "../Dialog"], function (require, exports, tslib_1, Captcha_1, Language_1, Dialog_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.showGuestDialog = void 0;
+    exports.showGuestDialog = showGuestDialog;
     Captcha_1 = tslib_1.__importDefault(Captcha_1);
     function showGuestDialog(template) {
         const captchaId = "commentAdd";
@@ -45,5 +45,4 @@ define(["require", "exports", "tslib", "../../Controller/Captcha", "../../Langua
             });
         });
     }
-    exports.showGuestDialog = showGuestDialog;
 });

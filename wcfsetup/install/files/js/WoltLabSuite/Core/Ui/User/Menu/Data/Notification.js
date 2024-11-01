@@ -9,7 +9,7 @@
 define(["require", "exports", "tslib", "../../../../Ajax", "../View", "../Manager", "../../../../Language", "../../../../Notification/Handler"], function (require, exports, tslib_1, Ajax_1, View_1, Manager_1, Language, Handler_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.setup = void 0;
+    exports.setup = setup;
     View_1 = tslib_1.__importDefault(View_1);
     Language = tslib_1.__importStar(Language);
     let originalFavicon = "";
@@ -244,5 +244,4 @@ define(["require", "exports", "tslib", "../../../../Ajax", "../View", "../Manage
             isInitialized = true;
         }
     }
-    exports.setup = setup;
 });

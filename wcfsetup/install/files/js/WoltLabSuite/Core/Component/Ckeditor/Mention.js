@@ -10,7 +10,7 @@
 define(["require", "exports", "../../Ajax/Backend", "../../Dom/Util", "./Event"], function (require, exports, Backend_1, Util_1, Event_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.setup = void 0;
+    exports.setup = setup;
     async function getPossibleMentions(query) {
         // Prevent excessive attempts to resolve mentions.
         if (query.length > 24) {
@@ -69,5 +69,4 @@ define(["require", "exports", "../../Ajax/Backend", "../../Dom/Util", "./Event"]
             configuration.mention = getMentionConfiguration();
         });
     }
-    exports.setup = setup;
 });
