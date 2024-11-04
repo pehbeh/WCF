@@ -10,7 +10,6 @@ use wcf\data\user\rank\UserRank;
 use wcf\system\view\grid\action\DeleteAction;
 use wcf\system\view\grid\action\EditAction;
 use wcf\system\view\grid\renderer\DefaultColumnRenderer;
-use wcf\system\view\grid\renderer\LinkColumnRenderer;
 use wcf\system\view\grid\renderer\NumberColumnRenderer;
 use wcf\system\view\grid\renderer\TitleColumnRenderer;
 use wcf\system\WCF;
@@ -40,8 +39,7 @@ final class UserRankGridView extends DatabaseObjectListGridView
                                 . StringUtil::encodeHTML($context->getTitle())
                                 . '<span>';
                         }
-                    },
-                    new LinkColumnRenderer(UserRankEditForm::class, [], 'wcf.acp.user.rank.edit'),
+                    }
                 ]),
             GridViewColumn::for('rankImage')
                 ->label('wcf.acp.user.rank.image')
@@ -96,7 +94,7 @@ final class UserRankGridView extends DatabaseObjectListGridView
             new EditAction(UserRankEditForm::class),
             new DeleteAction('core/users/ranks/%s'),
         ]);
-
+        $this->addRowLink(new GridViewRowLink(UserRankEditForm::class));
         $this->setSortField('rankTitle');
     }
 

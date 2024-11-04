@@ -20,6 +20,7 @@ abstract class AbstractGridView
      */
     private array $actions = [];
 
+    private GridViewRowLink $rowLink;
     private int $rowsPerPage = 20;
     private string $baseUrl = '';
     private string $sortField = '';
@@ -108,7 +109,13 @@ abstract class AbstractGridView
 
     public function renderColumn(GridViewColumn $column, mixed $row): string
     {
-        return $column->render($this->getData($row, $column->getID()), $row);
+        $value = $column->render($this->getData($row, $column->getID()), $row);
+
+        if (isset($this->rowLink)) {
+            $value = $this->rowLink->render($value, $row, $column->isTitleColumn());
+        }
+
+        return $value;
     }
 
     public function renderAction(IGridViewAction $action, mixed $row): string
@@ -271,5 +278,20 @@ abstract class AbstractGridView
         }
 
         return $column->getLabel() . ': ' . $column->getFilter()->renderValue($this->activeFilters[$id]);
+    }
+
+    public function getParameters(): array
+    {
+        return [];
+    }
+
+    public function addRowLink(GridViewRowLink $rowLink): void
+    {
+        $this->rowLink = $rowLink;
+    }
+
+    public function getObjectID(mixed $row): mixed
+    {
+        return '';
     }
 }
