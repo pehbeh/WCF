@@ -2566,12 +2566,6 @@
                 "url": "https://github.com/WoltLab/jwt-library.git",
                 "reference": "18b89d806835d351ebebab3eeb8103a45cfd10b5"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/WoltLab/jwt-library/zipball/18b89d806835d351ebebab3eeb8103a45cfd10b5",
-                "reference": "18b89d806835d351ebebab3eeb8103a45cfd10b5",
-                "shasum": ""
-            },
             "require": {
                 "brick/math": "^0.9|^0.10|^0.11|^0.12",
                 "ext-json": "*",
@@ -2639,19 +2633,6 @@
                 "RFC7519",
                 "RFC7520",
                 "Symfony"
-            ],
-            "support": {
-                "source": "https://github.com/WoltLab/jwt-library/tree/3.3.50"
-            },
-            "funding": [
-                {
-                    "type": "github",
-                    "url": "https://github.com/Spomky"
-                },
-                {
-                    "type": "patreon",
-                    "url": "https://www.patreon.com/FlorentMorselli"
-                }
             ],
             "install-path": "../web-token/jwt-library"
         },
@@ -2776,6 +2757,6 @@
             "install-path": "../willdurand/negotiation"
         }
     ],
-    "dev": false,
+    "dev": true,
     "dev-package-names": []
 }
