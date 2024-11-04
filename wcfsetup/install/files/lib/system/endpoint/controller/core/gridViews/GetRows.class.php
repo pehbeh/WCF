@@ -24,7 +24,7 @@ final class GetRows implements IController
             throw new UserInputException('gridView', 'invalid');
         }
 
-        $view = new $parameters->gridView();
+        $view = new $parameters->gridView(...$parameters->gridViewParameters);
         \assert($view instanceof AbstractGridView);
 
         if (!$view->isAccessible()) {
@@ -66,6 +66,8 @@ final class GetRowsParameters
         public readonly string $sortField,
         public readonly string $sortOrder,
         /** @var string[] */
-        public readonly array $filters
+        public readonly array $filters,
+        /** @var string[] */
+        public readonly array $gridViewParameters,
     ) {}
 }

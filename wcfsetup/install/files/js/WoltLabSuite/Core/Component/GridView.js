@@ -18,7 +18,8 @@ define(["require", "exports", "tslib", "../Api/GridViews/GetRows", "../Dom/Util"
         #defaultSortField;
         #defaultSortOrder;
         #filters;
-        constructor(gridId, gridClassName, pageNo, baseUrl = "", sortField = "", sortOrder = "ASC") {
+        #gridViewParameters;
+        constructor(gridId, gridClassName, pageNo, baseUrl = "", sortField = "", sortOrder = "ASC", gridViewParameters) {
             this.#gridClassName = gridClassName;
             this.#table = document.getElementById(`${gridId}_table`);
             this.#topPagination = document.getElementById(`${gridId}_topPagination`);
@@ -31,6 +32,7 @@ define(["require", "exports", "tslib", "../Api/GridViews/GetRows", "../Dom/Util"
             this.#defaultSortField = sortField;
             this.#sortOrder = sortOrder;
             this.#defaultSortOrder = sortOrder;
+            this.#gridViewParameters = gridViewParameters;
             this.#initPagination();
             this.#initSorting();
             this.#initActions();
@@ -86,7 +88,7 @@ define(["require", "exports", "tslib", "../Api/GridViews/GetRows", "../Dom/Util"
             void this.#loadRows(updateQueryString);
         }
         async #loadRows(updateQueryString = true) {
-            const response = (await (0, GetRows_1.getRows)(this.#gridClassName, this.#pageNo, this.#sortField, this.#sortOrder, this.#filters)).unwrap();
+            const response = (await (0, GetRows_1.getRows)(this.#gridClassName, this.#pageNo, this.#sortField, this.#sortOrder, this.#filters, this.#gridViewParameters)).unwrap();
             Util_1.default.setInnerHtml(this.#table.querySelector("tbody"), response.template);
             this.#topPagination.count = response.pages;
             this.#bottomPagination.count = response.pages;
@@ -109,9 +111,11 @@ define(["require", "exports", "tslib", "../Api/GridViews/GetRows", "../Dom/Util"
                 parameters.push(["sortField", this.#sortField]);
                 parameters.push(["sortOrder", this.#sortOrder]);
             }
-            this.#filters.forEach((value, key) => {
-                parameters.push([`filters[${key}]`, value]);
-            });
+            if (this.#filters) {
+                this.#filters.forEach((value, key) => {
+                    parameters.push([`filters[${key}]`, value]);
+                });
+            }
             if (parameters.length > 0) {
                 url.search += url.search !== "" ? "&" : "?";
                 url.search += new URLSearchParams(parameters).toString();
@@ -167,6 +171,9 @@ define(["require", "exports", "tslib", "../Api/GridViews/GetRows", "../Dom/Util"
             }
         }
         #renderFilters(labels) {
+            if (!this.#filterPills) {
+                return;
+            }
             this.#filterPills.innerHTML = "";
             if (!this.#filters) {
                 return;

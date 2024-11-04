@@ -18,6 +18,7 @@ export class GridView {
   #defaultSortField: string;
   #defaultSortOrder: string;
   #filters: Map<string, string>;
+  #gridViewParameters?: Map<string, string>;
 
   constructor(
     gridId: string,
@@ -26,6 +27,7 @@ export class GridView {
     baseUrl: string = "",
     sortField = "",
     sortOrder = "ASC",
+    gridViewParameters?: Map<string, string>,
   ) {
     this.#gridClassName = gridClassName;
     this.#table = document.getElementById(`${gridId}_table`) as HTMLTableElement;
@@ -39,6 +41,7 @@ export class GridView {
     this.#defaultSortField = sortField;
     this.#sortOrder = sortOrder;
     this.#defaultSortOrder = sortOrder;
+    this.#gridViewParameters = gridViewParameters;
 
     this.#initPagination();
     this.#initSorting();
@@ -107,7 +110,14 @@ export class GridView {
 
   async #loadRows(updateQueryString: boolean = true): Promise<void> {
     const response = (
-      await getRows(this.#gridClassName, this.#pageNo, this.#sortField, this.#sortOrder, this.#filters)
+      await getRows(
+        this.#gridClassName,
+        this.#pageNo,
+        this.#sortField,
+        this.#sortOrder,
+        this.#filters,
+        this.#gridViewParameters,
+      )
     ).unwrap();
     DomUtil.setInnerHtml(this.#table.querySelector("tbody")!, response.template);
 
@@ -137,9 +147,11 @@ export class GridView {
       parameters.push(["sortField", this.#sortField]);
       parameters.push(["sortOrder", this.#sortOrder]);
     }
-    this.#filters.forEach((value, key) => {
-      parameters.push([`filters[${key}]`, value]);
-    });
+    if (this.#filters) {
+      this.#filters.forEach((value, key) => {
+        parameters.push([`filters[${key}]`, value]);
+      });
+    }
 
     if (parameters.length > 0) {
       url.search += url.search !== "" ? "&" : "?";
@@ -212,6 +224,9 @@ export class GridView {
   }
 
   #renderFilters(labels: ArrayLike<string>): void {
+    if (!this.#filterPills) {
+      return;
+    }
     this.#filterPills.innerHTML = "";
     if (!this.#filters) {
       return;

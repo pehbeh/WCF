@@ -48,7 +48,12 @@
 				{$view->getPageNo()},
 				'{unsafe:$view->getBaseUrl()|encodeJS}',
 				'{unsafe:$view->getSortField()|encodeJS}',
-				'{unsafe:$view->getSortOrder()|encodeJS}'
+				'{unsafe:$view->getSortOrder()|encodeJS}',
+				new Map([
+					{foreach from=$view->getParameters() key='name' item='value'}
+						['{unsafe:$name|encodeJs}', '{unsafe:$value|encodeJs}'],
+					{/foreach}
+				])
 			);
 		});
 	</script>

@@ -2,6 +2,7 @@
 
 namespace wcf\acp\page;
 
+use wcf\page\AbstractGridViewPage;
 use wcf\page\AbstractPage;
 use wcf\page\MultipleLinkPage;
 use wcf\system\event\EventHandler;
@@ -9,6 +10,8 @@ use wcf\system\exception\IllegalLinkException;
 use wcf\system\Regex;
 use wcf\system\registry\RegistryHandler;
 use wcf\system\request\LinkHandler;
+use wcf\system\view\grid\AbstractGridView;
+use wcf\system\view\grid\ExceptionLogGridView;
 use wcf\system\WCF;
 use wcf\util\DirectoryUtil;
 use wcf\util\ExceptionLogUtil;
@@ -21,7 +24,7 @@ use wcf\util\StringUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
-class ExceptionLogViewPage extends MultipleLinkPage
+class ExceptionLogViewPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -36,40 +39,18 @@ class ExceptionLogViewPage extends MultipleLinkPage
     /**
      * @inheritDoc
      */
-    public $itemsPerPage = 10;
-
-    /**
-     * given exceptionID
-     * @var string
-     */
-    public $exceptionID = '';
-
-    /**
-     * @inheritDoc
-     */
     public $forceCanonicalURL = true;
 
-    /**
-     * active logfile
-     * @var string
-     */
-    public $logFile = '';
+    public string $exceptionID = '';
+    public string $logFile = '';
 
     /**
      * available logfiles
      * @var string[]
      */
-    public $logFiles = [];
+    public array $logFiles = [];
 
-    /**
-     * exceptions shown
-     * @var array
-     */
-    public $exceptions = [];
-
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function readParameters()
     {
         parent::readParameters();
@@ -91,22 +72,91 @@ class ExceptionLogViewPage extends MultipleLinkPage
         $this->canonicalURL = LinkHandler::getInstance()->getControllerLink(self::class, $parameters);
     }
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function readData()
     {
-        AbstractPage::readData();
+        $this->markNotificationsAsRead();
+        $this->readLogFiles();
+        $this->validateParameters();
 
-        // mark notifications as read
+        parent::readData();
+    }
+
+    private function markNotificationsAsRead(): void
+    {
         RegistryHandler::getInstance()->set('com.woltlab.wcf', 'exceptionMailerTimestamp', TIME_NOW);
+    }
 
+    private function readLogFiles(): void
+    {
         $fileNameRegex = new Regex('(?:^|/)\d{4}-\d{2}-\d{2}\.txt$');
         $logFiles = DirectoryUtil::getInstance(WCF_DIR . 'log/', false)->getFiles(\SORT_DESC, $fileNameRegex);
         foreach ($logFiles as $logFile) {
             $pathname = WCF_DIR . 'log/' . $logFile;
             $this->logFiles[$pathname] = $pathname;
         }
+    }
+
+    private function validateParameters(): void
+    {
+        $fileNameRegex = new Regex('(?:^|/)\d{4}-\d{2}-\d{2}\.txt$');
+        if ($this->exceptionID) {
+            // search the appropriate file
+            foreach ($this->logFiles as $logFile) {
+                $contents = \file_get_contents($logFile);
+
+                if (\str_contains($contents, '<<<<<<<<' . $this->exceptionID . '<<<<')) {
+                    $fileNameRegex->match($logFile);
+                    $matches = $fileNameRegex->getMatches();
+                    $this->logFile = $matches[0];
+                    break;
+                }
+
+                unset($contents);
+            }
+
+            if (!isset($contents)) {
+                $this->logFile = '';
+
+                return;
+            }
+        } elseif ($this->logFile) {
+            if (!$fileNameRegex->match(\basename($this->logFile))) {
+                throw new IllegalLinkException();
+            }
+            if (!\file_exists(WCF_DIR . 'log/' . $this->logFile)) {
+                throw new IllegalLinkException();
+            }
+        }
+    }
+
+    #[\Override]
+    protected function createGridViewController(): AbstractGridView
+    {
+        return new ExceptionLogGridView($this->logFile, $this->exceptionID);
+    }
+
+    #[\Override]
+    protected function initGridView(): void
+    {
+        parent::initGridView();
+
+        $parameters = [];
+        if ($this->exceptionID !== '') {
+            $parameters['exceptionID'] = $this->exceptionID;
+        } elseif ($this->logFile !== '') {
+            $parameters['logFile'] = $this->logFile;
+        }
+
+        $this->gridView->setBaseUrl(LinkHandler::getInstance()->getControllerLink(static::class, $parameters));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    /*public function readData()
+    {
+        AbstractPage::readData();
 
         if ($this->exceptionID) {
             // search the appropriate file
@@ -176,25 +226,25 @@ class ExceptionLogViewPage extends MultipleLinkPage
                 unset($this->exceptions[$key]);
             }
         }
-    }
+    }*/
 
     /**
      * @inheritDoc
      */
-    public function countItems()
+    /*public function countItems()
     {
         // call countItems event
         EventHandler::getInstance()->fireAction($this, 'countItems');
 
         return \count($this->exceptions);
-    }
+    }*/
 
     /**
      * Switches to the page containing the exception with the given ID.
      *
      * @param string $exceptionID
      */
-    public function searchPage($exceptionID)
+    /*public function searchPage($exceptionID)
     {
         $i = 1;
 
@@ -206,11 +256,9 @@ class ExceptionLogViewPage extends MultipleLinkPage
         }
 
         $this->pageNo = \ceil($i / $this->itemsPerPage);
-    }
+    }*/
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function assignVariables()
     {
         parent::assignVariables();
@@ -219,7 +267,6 @@ class ExceptionLogViewPage extends MultipleLinkPage
             'exceptionID' => $this->exceptionID,
             'logFiles' => \array_flip(\array_map('basename', $this->logFiles)),
             'logFile' => $this->logFile,
-            'exceptions' => $this->exceptions,
         ]);
     }
 }

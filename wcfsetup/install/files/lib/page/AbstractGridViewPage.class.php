@@ -64,7 +64,9 @@ abstract class AbstractGridViewPage extends AbstractPage
         if ($this->filters !== []) {
             $this->gridView->setActiveFilters($this->filters);
         }
-        $this->gridView->setPageNo($this->pageNo);
+        if ($this->pageNo != 1) {
+            $this->gridView->setPageNo($this->pageNo);
+        }
         $this->gridView->setBaseUrl(LinkHandler::getInstance()->getControllerLink(static::class));
     }
 

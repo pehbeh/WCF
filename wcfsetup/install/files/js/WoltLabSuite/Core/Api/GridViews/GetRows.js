@@ -2,7 +2,7 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "../Result"], fu
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.getRows = getRows;
-    async function getRows(gridViewClass, pageNo, sortField = "", sortOrder = "ASC", filters) {
+    async function getRows(gridViewClass, pageNo, sortField = "", sortOrder = "ASC", filters, gridViewParameters) {
         const url = new URL(`${window.WSC_RPC_API_URL}core/gridViews/rows`);
         url.searchParams.set("gridView", gridViewClass);
         url.searchParams.set("pageNo", pageNo.toString());
@@ -11,6 +11,11 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "../Result"], fu
         if (filters) {
             filters.forEach((value, key) => {
                 url.searchParams.set(`filters[${key}]`, value);
+            });
+        }
+        if (gridViewParameters) {
+            gridViewParameters.forEach((value, key) => {
+                url.searchParams.set(`gridViewParameters[${key}]`, value);
             });
         }
         let response;

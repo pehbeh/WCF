@@ -71,5 +71,13 @@ abstract class DatabaseObjectListGridView extends AbstractGridView
         }
     }
 
+    #[\Override]
+    public function getObjectID(mixed $row): mixed
+    {
+        \assert($row instanceof DatabaseObject);
+
+        return $row->getObjectID();
+    }
+
     protected abstract function createObjectList(): DatabaseObjectList;
 }

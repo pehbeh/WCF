@@ -6,6 +6,7 @@ use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\view\grid\filter\IGridViewFilter;
 use wcf\system\view\grid\renderer\DefaultColumnRenderer;
 use wcf\system\view\grid\renderer\IColumnRenderer;
+use wcf\system\view\grid\renderer\TitleColumnRenderer;
 use wcf\system\WCF;
 
 final class GridViewColumn
@@ -145,5 +146,16 @@ final class GridViewColumn
         }
 
         return self::$defaultRenderer;
+    }
+
+    public function isTitleColumn(): bool
+    {
+        foreach ($this->getRenderers() as $renderer) {
+            if ($renderer instanceof TitleColumnRenderer) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

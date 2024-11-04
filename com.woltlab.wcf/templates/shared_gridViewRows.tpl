@@ -1,6 +1,6 @@
 
 {foreach from=$view->getRows() item='row'}
-	<tr>
+	<tr data-object-id="{$view->getObjectID($row)}">
 		{foreach from=$view->getColumns() item='column'}
 			<td class="{$column->getClasses()}">
 				{unsafe:$view->renderColumn($column, $row)}
