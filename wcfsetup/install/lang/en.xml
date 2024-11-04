@@ -2985,8 +2985,8 @@ If you have <strong>already bought the licenses for the listed apps</strong>, th
 		<item name="wcf.acp.template.source"><![CDATA[Template Source Code]]></item>
 		<item name="wcf.acp.template.name.error.notUnique"><![CDATA[This name is already taken by a different template.]]></item>
 		<item name="wcf.acp.template.name.error.invalid"><![CDATA[This name is invalid.]]></item>
-		<item name="wcf.acp.template.group.error.shared"><![CDATA[The template must be in the „Shared templates“ template group.]]></item>
-		<item name="wcf.acp.template.group.error.notShared"><![CDATA[The template must not be in the „Shared templates“ template group.]]></item>
+		<item name="wcf.acp.template.group.error.shared"><![CDATA[The template must be in the “Shared templates” template group.]]></item>
+		<item name="wcf.acp.template.group.error.notShared"><![CDATA[The template must not be in the “Shared templates” template group.]]></item>
 	</category>
 	<category name="wcf.acp.user">
 		<item name="wcf.acp.user.add"><![CDATA[Add User]]></item>
@@ -5567,7 +5567,7 @@ your notifications on <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phras
 		<item name="wcf.upload.error.fileExtensionNotPermitted"><![CDATA[The file type of “{$filename}” is not permitted.]]></item>
 		<item name="wcf.upload.error.fileSizeTooLarge"><![CDATA[The file is too large.]]></item>
 		<item name="wcf.upload.error.maximumCountReached"><![CDATA[{plural value=$maximumCount 1='Only one file' other='Only up to # files'} may be uploaded.]]></item>
-		<item name="wcf.upload.error.adopt"><![CDATA[The file „{$filename}“ cannot be assigned.]]></item>
+		<item name="wcf.upload.error.adopt"><![CDATA[The file “{$filename}” cannot be assigned.]]></item>
 	</category>
 </import>
 <delete>
