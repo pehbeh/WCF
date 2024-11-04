@@ -13,6 +13,6 @@ class DefaultColumnRenderer extends AbstractColumnRenderer
 
     public function getClasses(): string
     {
-        return 'columnText';
+        return 'gridView__column--text';
     }
 }

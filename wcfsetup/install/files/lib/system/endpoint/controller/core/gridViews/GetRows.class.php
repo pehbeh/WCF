@@ -51,6 +51,7 @@ final class GetRows implements IController
         return new JsonResponse([
             'template' => $view->renderRows(),
             'pages' => $view->countPages(),
+            'totalRows' => $view->countRows(),
             'filterLabels' => $filterLabels,
         ]);
     }

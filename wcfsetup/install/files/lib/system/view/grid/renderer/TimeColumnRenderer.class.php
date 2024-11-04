@@ -38,6 +38,6 @@ class TimeColumnRenderer extends AbstractColumnRenderer
 
     public function getClasses(): string
     {
-        return 'columnDate';
+        return 'gridView__column--date';
     }
 }

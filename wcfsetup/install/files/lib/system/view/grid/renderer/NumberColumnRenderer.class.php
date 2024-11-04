@@ -13,6 +13,6 @@ class NumberColumnRenderer extends AbstractColumnRenderer
 
     public function getClasses(): string
     {
-        return 'columnDigits';
+        return 'gridView__column--digits';
     }
 }

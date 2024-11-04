@@ -7,11 +7,11 @@ import { dialogFactory } from "./Dialog";
 export class GridView {
   readonly #gridClassName: string;
   readonly #table: HTMLTableElement;
-  readonly #topPagination: WoltlabCorePaginationElement;
-  readonly #bottomPagination: WoltlabCorePaginationElement;
+  readonly #pagination: WoltlabCorePaginationElement;
   readonly #baseUrl: string;
   readonly #filterButton: HTMLButtonElement;
   readonly #filterPills: HTMLElement;
+  readonly #noItemsNotice: HTMLElement;
   #pageNo: number;
   #sortField: string;
   #sortOrder: string;
@@ -31,10 +31,10 @@ export class GridView {
   ) {
     this.#gridClassName = gridClassName;
     this.#table = document.getElementById(`${gridId}_table`) as HTMLTableElement;
-    this.#topPagination = document.getElementById(`${gridId}_topPagination`) as WoltlabCorePaginationElement;
-    this.#bottomPagination = document.getElementById(`${gridId}_bottomPagination`) as WoltlabCorePaginationElement;
+    this.#pagination = document.getElementById(`${gridId}_pagination`) as WoltlabCorePaginationElement;
     this.#filterButton = document.getElementById(`${gridId}_filterButton`) as HTMLButtonElement;
     this.#filterPills = document.getElementById(`${gridId}_filters`) as HTMLElement;
+    this.#noItemsNotice = document.getElementById(`${gridId}_noItemsNotice`) as HTMLElement;
     this.#pageNo = pageNo;
     this.#baseUrl = baseUrl;
     this.#sortField = sortField;
@@ -54,26 +54,20 @@ export class GridView {
   }
 
   #initPagination(): void {
-    this.#topPagination.addEventListener("switchPage", (event: CustomEvent) => {
-      void this.#switchPage(event.detail);
-    });
-    this.#bottomPagination.addEventListener("switchPage", (event: CustomEvent) => {
+    this.#pagination.addEventListener("switchPage", (event: CustomEvent) => {
       void this.#switchPage(event.detail);
     });
   }
 
   #initSorting(): void {
-    this.#table.querySelectorAll<HTMLTableCellElement>('th[data-sortable="1"]').forEach((element) => {
-      const link = document.createElement("a");
-      link.role = "button";
-      link.addEventListener("click", () => {
-        this.#sort(element.dataset.id!);
+    this.#table
+      .querySelectorAll<HTMLTableCellElement>('.gridView__headerColumn[data-sortable="1"]')
+      .forEach((element) => {
+        const button = element.querySelector<HTMLButtonElement>(".gridView__headerColumn__button");
+        button?.addEventListener("click", () => {
+          this.#sort(element.dataset.id!);
+        });
       });
-
-      link.textContent = element.textContent;
-      element.innerHTML = "";
-      element.append(link);
-    });
 
     this.#renderActiveSorting();
   }
@@ -101,8 +95,7 @@ export class GridView {
   }
 
   #switchPage(pageNo: number, updateQueryString: boolean = true): void {
-    this.#topPagination.page = pageNo;
-    this.#bottomPagination.page = pageNo;
+    this.#pagination.page = pageNo;
     this.#pageNo = pageNo;
 
     void this.#loadRows(updateQueryString);
@@ -121,8 +114,9 @@ export class GridView {
     ).unwrap();
     DomUtil.setInnerHtml(this.#table.querySelector("tbody")!, response.template);
 
-    this.#topPagination.count = response.pages;
-    this.#bottomPagination.count = response.pages;
+    this.#table.hidden = response.totalRows == 0;
+    this.#noItemsNotice.hidden = response.totalRows != 0;
+    this.#pagination.count = response.pages;
 
     if (updateQueryString) {
       this.#updateQueryString();
@@ -235,7 +229,7 @@ export class GridView {
     this.#filters.forEach((value, key) => {
       const button = document.createElement("button");
       button.type = "button";
-      button.classList.add("button");
+      button.classList.add("button", "small");
       button.innerText = labels[key];
       button.addEventListener("click", () => {
         this.#removeFilter(key);

@@ -7,11 +7,11 @@ define(["require", "exports", "tslib", "../Api/GridViews/GetRows", "../Dom/Util"
     class GridView {
         #gridClassName;
         #table;
-        #topPagination;
-        #bottomPagination;
+        #pagination;
         #baseUrl;
         #filterButton;
         #filterPills;
+        #noItemsNotice;
         #pageNo;
         #sortField;
         #sortOrder;
@@ -22,10 +22,10 @@ define(["require", "exports", "tslib", "../Api/GridViews/GetRows", "../Dom/Util"
         constructor(gridId, gridClassName, pageNo, baseUrl = "", sortField = "", sortOrder = "ASC", gridViewParameters) {
             this.#gridClassName = gridClassName;
             this.#table = document.getElementById(`${gridId}_table`);
-            this.#topPagination = document.getElementById(`${gridId}_topPagination`);
-            this.#bottomPagination = document.getElementById(`${gridId}_bottomPagination`);
+            this.#pagination = document.getElementById(`${gridId}_pagination`);
             this.#filterButton = document.getElementById(`${gridId}_filterButton`);
             this.#filterPills = document.getElementById(`${gridId}_filters`);
+            this.#noItemsNotice = document.getElementById(`${gridId}_noItemsNotice`);
             this.#pageNo = pageNo;
             this.#baseUrl = baseUrl;
             this.#sortField = sortField;
@@ -42,23 +42,18 @@ define(["require", "exports", "tslib", "../Api/GridViews/GetRows", "../Dom/Util"
             });
         }
         #initPagination() {
-            this.#topPagination.addEventListener("switchPage", (event) => {
-                void this.#switchPage(event.detail);
-            });
-            this.#bottomPagination.addEventListener("switchPage", (event) => {
+            this.#pagination.addEventListener("switchPage", (event) => {
                 void this.#switchPage(event.detail);
             });
         }
         #initSorting() {
-            this.#table.querySelectorAll('th[data-sortable="1"]').forEach((element) => {
-                const link = document.createElement("a");
-                link.role = "button";
-                link.addEventListener("click", () => {
+            this.#table
+                .querySelectorAll('.gridView__headerColumn[data-sortable="1"]')
+                .forEach((element) => {
+                const button = element.querySelector(".gridView__headerColumn__button");
+                button?.addEventListener("click", () => {
                     this.#sort(element.dataset.id);
                 });
-                link.textContent = element.textContent;
-                element.innerHTML = "";
-                element.append(link);
             });
             this.#renderActiveSorting();
         }
@@ -82,16 +77,16 @@ define(["require", "exports", "tslib", "../Api/GridViews/GetRows", "../Dom/Util"
             });
         }
         #switchPage(pageNo, updateQueryString = true) {
-            this.#topPagination.page = pageNo;
-            this.#bottomPagination.page = pageNo;
+            this.#pagination.page = pageNo;
             this.#pageNo = pageNo;
             void this.#loadRows(updateQueryString);
         }
         async #loadRows(updateQueryString = true) {
             const response = (await (0, GetRows_1.getRows)(this.#gridClassName, this.#pageNo, this.#sortField, this.#sortOrder, this.#filters, this.#gridViewParameters)).unwrap();
             Util_1.default.setInnerHtml(this.#table.querySelector("tbody"), response.template);
-            this.#topPagination.count = response.pages;
-            this.#bottomPagination.count = response.pages;
+            this.#table.hidden = response.totalRows == 0;
+            this.#noItemsNotice.hidden = response.totalRows != 0;
+            this.#pagination.count = response.pages;
             if (updateQueryString) {
                 this.#updateQueryString();
             }
@@ -181,7 +176,7 @@ define(["require", "exports", "tslib", "../Api/GridViews/GetRows", "../Dom/Util"
             this.#filters.forEach((value, key) => {
                 const button = document.createElement("button");
                 button.type = "button";
-                button.classList.add("button");
+                button.classList.add("button", "small");
                 button.innerText = labels[key];
                 button.addEventListener("click", () => {
                     this.#removeFilter(key);

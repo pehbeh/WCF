@@ -6,6 +6,6 @@ class TitleColumnRenderer extends DefaultColumnRenderer
 {
     public function getClasses(): string
     {
-        return 'columnTitle';
+        return 'gridView__column--title';
     }
 }

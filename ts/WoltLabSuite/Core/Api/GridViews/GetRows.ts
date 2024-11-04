@@ -4,6 +4,7 @@ import { ApiResult, apiResultFromError, apiResultFromValue } from "../Result";
 type Response = {
   template: string;
   pages: number;
+  totalRows: number;
   filterLabels: ArrayLike<string>;
 };
 

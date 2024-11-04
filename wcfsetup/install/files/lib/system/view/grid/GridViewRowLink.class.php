@@ -31,9 +31,7 @@ class GridViewRowLink
             $attributes[] = 'href="' . $href . '"';
             $isButton = false;
         }
-        if ($this->cssClass) {
-            $attributes[] = 'class="' . StringUtil::encodeHTML($this->cssClass) . '"';
-        }
+        $attributes[] = 'class="gridView__rowLink ' . StringUtil::encodeHTML($this->cssClass) . '"';
         $attributes[] = 'tabindex="' . ($isPrimaryColumn ? '0' : '-1') . '"';
 
         if ($isButton) {
