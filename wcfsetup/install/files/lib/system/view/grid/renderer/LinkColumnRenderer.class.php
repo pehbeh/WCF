@@ -14,7 +14,6 @@ class LinkColumnRenderer extends AbstractColumnRenderer
         private readonly string $titleLanguageItem = ''
     ) {}
 
-
     public function render(mixed $value, mixed $context = null): string
     {
         \assert($context instanceof DatabaseObject);
