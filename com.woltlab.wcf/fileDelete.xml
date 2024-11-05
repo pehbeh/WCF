@@ -2790,6 +2790,7 @@
 		<file>lib/system/html/input/node/HtmlInputNodeWoltlabColor.class.php</file>
 		<file>lib/system/html/input/node/HtmlInputNodeWoltlabMention.class.php</file>
 		<file>lib/system/html/input/node/IHtmlInputNodeProcessor.class.php</file>
+		<file>lib/system/html/metacode/upcast/ImageMetacodeUpcast.class.php</file>
 		<file>lib/system/html/node/HtmlNodeProcessor.class.php</file>
 		<file>lib/system/html/output/AmpHtmlOutputProcessor.class.php</file>
 		<file>lib/system/html/output/HtmlOutputNodeProcessor.class.php</file>

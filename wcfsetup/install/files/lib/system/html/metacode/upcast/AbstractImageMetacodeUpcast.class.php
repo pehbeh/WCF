@@ -12,7 +12,7 @@ use wcf\util\DOMUtil;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.1
  */
-abstract class ImageMetacodeUpcast implements IMetacodeUpcast
+abstract class AbstractImageMetacodeUpcast implements IMetacodeUpcast
 {
     /**
      * Create the figure element for the image.
