@@ -99,9 +99,8 @@ tar cvf com.woltlab.wcf/files_pre_check.tar -C wcfsetup/install/files/ \
 		<instruction type="script" run="standalone">acp/update_com.woltlab.wcf_6.1_serviceWorker.php</instruction>
 	</instructions>
 
-	<instructions type="update" fromversion="6.1.0 RC 1">
-		<instruction type="acpTemplate">acptemplates_update.tar</instruction>
-		<instruction type="file">files_update.tar</instruction>
-		<instruction type="template">templates_update.tar</instruction>
+	<instructions type="update" fromversion="6.1.0">
+		<!-- https://github.com/WoltLab/WCF/commit/3434ac976c35ac20a16b717b2fe8d457841c6220 -->
+		<instruction type="fileDelete"/>
 	</instructions>
 </package>
