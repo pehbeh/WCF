@@ -68,3 +68,6 @@ jobs:
     - name: "Check '@ckeditor/ckeditor5-inspector'"
       run: |
         diff -wu wcfsetup/install/files/js/3rdParty/ckeditor/ckeditor5-inspector/inspector.js node_modules/@ckeditor/ckeditor5-inspector/build/inspector.js
+    - name: "Check 'cropperjs'"
+      run: |
+        diff -wu wcfsetup/install/files/js/3rdParty/cropper.min.js node_modules/cropperjs/dist/cropper.min.js
