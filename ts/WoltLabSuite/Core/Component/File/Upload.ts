@@ -11,6 +11,7 @@ import ImageResizer from "WoltLabSuite/Core/Image/Resizer";
 import { AttachmentData } from "../Ckeditor/Attachment";
 import { innerError } from "WoltLabSuite/Core/Dom/Util";
 import { getPhrase } from "WoltLabSuite/Core/Language";
+import { cropImage, CropperConfiguration } from "WoltLabSuite/Core/Component/Image/Cropper";
 
 export type CkeditorDropEvent = {
   file: File;
@@ -268,9 +269,22 @@ export function setup(): void {
         return;
       }
 
-      void resizeImage(element, file).then((resizedFile) => {
-        void upload(element, resizedFile);
-      });
+      if (element.dataset.cropperConfiguration) {
+        const cropperConfiguration = JSON.parse(element.dataset.cropperConfiguration) as CropperConfiguration;
+
+        void cropImage(element, file, cropperConfiguration)
+          .then((resizedFile) => {
+            void upload(element, resizedFile);
+          })
+          .catch((e) => {
+            //TODO handle error
+            console.error(e);
+          });
+      } else {
+        void resizeImage(element, file).then((resizedFile) => {
+          void upload(element, resizedFile);
+        });
+      }
     });
 
     element.addEventListener("ckeditorDrop", (event: CustomEvent<CkeditorDropEvent>) => {
