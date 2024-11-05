@@ -2,7 +2,7 @@
 
 namespace wcf\system\file\processor;
 
-final class ImageCropperConfiguration
+final class ImageCropperConfiguration implements \JsonSerializable
 {
     public readonly float $aspectRatio;
 
@@ -36,6 +36,16 @@ final class ImageCropperConfiguration
             }
         });
         $this->sizes = $sizes;
+    }
+
+    #[\Override]
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'aspectRatio' => $this->aspectRatio,
+            'sizes' => $this->sizes,
+            'type' => $this->type->toString(),
+        ];
     }
 
     /**
