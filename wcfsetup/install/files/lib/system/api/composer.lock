@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7fb0b03afd912128e100c108aa1b7fd1",
+    "content-hash": "70268093034722fc94f786ec6395a6bf",
     "packages": [
         {
             "name": "brick/math",
@@ -2463,6 +2463,12 @@
                 "url": "https://github.com/WoltLab/jwt-library.git",
                 "reference": "18b89d806835d351ebebab3eeb8103a45cfd10b5"
             },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/WoltLab/jwt-library/zipball/18b89d806835d351ebebab3eeb8103a45cfd10b5",
+                "reference": "18b89d806835d351ebebab3eeb8103a45cfd10b5",
+                "shasum": ""
+            },
             "require": {
                 "brick/math": "^0.9|^0.10|^0.11|^0.12",
                 "ext-json": "*",
@@ -2663,6 +2669,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "minishlink/web-push": 5,
         "nikic/fast-route": 10
     },
     "prefer-stable": false,

@@ -7,9 +7,6 @@ namespace Jose\Component\Encryption\Compression;
 use InvalidArgumentException;
 use function array_key_exists;
 
-/**
- * @deprecated This class is deprecated and will be removed in v4.0. Compression is not recommended for JWE.
- */
 class CompressionMethodManager
 {
     /**
@@ -17,10 +14,7 @@ class CompressionMethodManager
      */
     private array $compressionMethods = [];
 
-    /**
-     * @param CompressionMethod[] $methods
-     */
-    public function __construct(iterable $methods = [])
+    public function __construct(array $methods = [])
     {
         foreach ($methods as $method) {
             $this->add($method);

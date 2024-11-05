@@ -11,38 +11,27 @@ class JWEDecrypterFactory
 {
     public function __construct(
         private readonly AlgorithmManagerFactory $algorithmManagerFactory,
-        private readonly null|CompressionMethodManagerFactory $compressionMethodManagerFactory = null
+        private readonly CompressionMethodManagerFactory $compressionMethodManagerFactory
     ) {
-        if ($compressionMethodManagerFactory !== null) {
-            trigger_deprecation(
-                'web-token/jwt-library',
-                '3.3.0',
-                'The parameter "$compressionMethodManagerFactory" is deprecated and will be removed in 4.0.0. Compression is not recommended for JWE. Please set "null" instead.'
-            );
-        }
     }
 
     /**
      * Creates a JWE Decrypter object using the given key encryption algorithms, content encryption algorithms and
      * compression methods.
      *
-     * @param string[] $encryptionAlgorithms
-     * @param null|string[] $contentEncryptionAlgorithms
-     * @param null|string[] $compressionMethods
+     * @param string[] $keyEncryptionAlgorithms
+     * @param string[] $contentEncryptionAlgorithms
+     * @param string[] $compressionMethods
      */
     public function create(
-        array $encryptionAlgorithms,
-        null|array $contentEncryptionAlgorithms = null,
-        null|array $compressionMethods = null
+        array $keyEncryptionAlgorithms,
+        array $contentEncryptionAlgorithms,
+        array $compressionMethods
     ): JWEDecrypter {
-        if ($contentEncryptionAlgorithms !== null) {
-            $encryptionAlgorithms = array_merge($encryptionAlgorithms, $contentEncryptionAlgorithms);
-        }
-
-        $algorithmManager = $this->algorithmManagerFactory->create($encryptionAlgorithms);
-        $compressionMethodManager = $compressionMethods === null ? null : $this->compressionMethodManagerFactory?->create(
-            $compressionMethods
+        $algorithmManager = $this->algorithmManagerFactory->create(
+            array_merge($keyEncryptionAlgorithms, $contentEncryptionAlgorithms)
         );
+        $compressionMethodManager = $this->compressionMethodManagerFactory->create($compressionMethods);
 
         return new JWEDecrypter($algorithmManager, null, $compressionMethodManager);
     }

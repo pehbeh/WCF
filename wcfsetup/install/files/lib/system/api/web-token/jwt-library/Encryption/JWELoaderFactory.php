@@ -22,16 +22,17 @@ class JWELoaderFactory
      */
     public function create(
         array $serializers,
-        array $encryptionAlgorithms,
-        null|array $contentEncryptionAlgorithms = null,
-        null|array $compressionMethods = null,
+        array $keyEncryptionAlgorithms,
+        array $contentEncryptionAlgorithms,
+        array $compressionMethods,
         array $headerCheckers = []
     ): JWELoader {
-        if ($contentEncryptionAlgorithms !== null) {
-            $encryptionAlgorithms = array_merge($encryptionAlgorithms, $contentEncryptionAlgorithms);
-        }
         $serializerManager = $this->jweSerializerManagerFactory->create($serializers);
-        $jweDecrypter = $this->jweDecrypterFactory->create($encryptionAlgorithms, null, $compressionMethods);
+        $jweDecrypter = $this->jweDecrypterFactory->create(
+            $keyEncryptionAlgorithms,
+            $contentEncryptionAlgorithms,
+            $compressionMethods
+        );
         if ($this->headerCheckerManagerFactory !== null) {
             $headerCheckerManager = $this->headerCheckerManagerFactory->create($headerCheckers);
         } else {
