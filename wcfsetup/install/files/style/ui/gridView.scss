@@ -123,6 +123,17 @@
 	justify-content: space-between;
 	border-bottom: 1px solid var(--wcfContentBorder);
 	padding-bottom: 10px;
+	gap: 5px;
+}
+
+.gridView__filters {
+	display: flex;
+	gap: 5px;
+	flex-wrap: wrap;
+}
+
+.gridView__filterButton {
+	flex: 0 0 auto;
 }
 
 .gridView__pagination {

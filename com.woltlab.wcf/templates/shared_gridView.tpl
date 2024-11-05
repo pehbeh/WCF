@@ -3,7 +3,10 @@
 		<div class="gridView__filterBar">
 			<div class="gridView__filters" id="{$view->getID()}_filters">
 				{foreach from=$view->getActiveFilters() item='value' key='key'}
-					<button type="button" class="button small" data-filter="{$key}" data-filter-value="{$value}">{$view->getFilterLabel($key)}</button>
+					<button type="button" class="button small" data-filter="{$key}" data-filter-value="{$value}">
+						{icon name='circle-xmark'}
+						{$view->getFilterLabel($key)}
+					</button>
 				{/foreach}
 			</div>
 			<div class="gridView__filterButton">

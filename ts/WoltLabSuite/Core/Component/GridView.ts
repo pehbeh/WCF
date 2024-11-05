@@ -230,7 +230,9 @@ export class GridView {
       const button = document.createElement("button");
       button.type = "button";
       button.classList.add("button", "small");
-      button.innerText = labels[key];
+      const icon = document.createElement("fa-icon");
+      icon.setIcon("circle-xmark");
+      button.append(icon, labels[key]);
       button.addEventListener("click", () => {
         this.#removeFilter(key);
       });
