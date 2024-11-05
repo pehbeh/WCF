@@ -29,14 +29,16 @@ class DateModifierTemplatePlugin implements IModifierTemplatePlugin
     public function execute($tagArgs, TemplateEngine $tplObj)
     {
         if ($tagArgs[0] instanceof \DateTimeInterface) {
-            $dateTime = $tagArgs[0];
+            $dateTime = clone $tagArgs[0];
         } else {
             $timestamp = \intval($tagArgs[0]);
             $dateTime = new \DateTimeImmutable('@' . $timestamp);
         }
 
         if (!empty($tagArgs[1])) {
-            return $dateTime->format($tagArgs[1]);
+            return $dateTime
+                ->setTimezone(WCF::getUser()->getTimeZone())
+                ->format($tagArgs[1]);
         } else {
             $locale = WCF::getLanguage()->getLocale();
             $timeZone = WCF::getUser()->getTimeZone();
