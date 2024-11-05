@@ -1,7 +1,7 @@
 
 {foreach from=$view->getRows() item='row'}
 	<tr class="gridView__row" data-object-id="{$view->getObjectID($row)}">
-		{foreach from=$view->getColumns() item='column'}
+		{foreach from=$view->getVisibleColumns() item='column'}
 			<td class="gridView__column {$column->getClasses()}">
 				{unsafe:$view->renderColumn($column, $row)}
 			</td>

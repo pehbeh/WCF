@@ -20,6 +20,7 @@ final class GridViewColumn
     private bool $sortable = false;
     private string $sortById = '';
     private ?IGridViewFilter $filter = null;
+    private bool $hidden = false;
 
     private function __construct(private readonly string $id) {}
 
@@ -157,5 +158,17 @@ final class GridViewColumn
         }
 
         return false;
+    }
+
+    public function hidden(bool $hidden = true): static
+    {
+        $this->hidden = $hidden;
+
+        return $this;
+    }
+
+    public function isHidden(): bool
+    {
+        return $this->hidden;
     }
 }

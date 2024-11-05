@@ -18,7 +18,7 @@
 	<table class="gridView__table" id="{$view->getID()}_table"{if !$view->countRows()} hidden{/if}>
 		<thead>
 			<tr class="gridView__headerRow">
-				{foreach from=$view->getColumns() item='column'}
+				{foreach from=$view->getVisibleColumns() item='column'}
 					<th
 						class="gridView__headerColumn {$column->getClasses()}"
 						data-id="{$column->getID()}"

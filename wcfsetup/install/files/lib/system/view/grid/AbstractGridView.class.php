@@ -58,6 +58,14 @@ abstract class AbstractGridView
         return $this->columns;
     }
 
+    /**
+     * @return GridViewColumn[]
+     */
+    public function getVisibleColumns(): array
+    {
+        return \array_filter($this->getColumns(), fn($column) => !$column->isHidden());
+    }
+
     public function getColumn(string $id): ?GridViewColumn
     {
         foreach ($this->getColumns() as $column) {
