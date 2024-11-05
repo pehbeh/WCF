@@ -2,22 +2,27 @@
 
 namespace wcf\system\view\grid;
 
+use wcf\system\Regex;
+use wcf\system\view\grid\filter\SelectFilter;
+use wcf\system\view\grid\filter\TextFilter;
 use wcf\system\view\grid\renderer\TimeColumnRenderer;
 use wcf\system\view\grid\renderer\TitleColumnRenderer;
 use wcf\system\WCF;
+use wcf\util\DirectoryUtil;
 use wcf\util\ExceptionLogUtil;
 
 final class ExceptionLogGridView extends ArrayGridView
 {
-    public function __construct(
-        private readonly string $logFile,
-        private readonly string $exceptionID = ''
-    ) {
+    private array $availableLogFiles;
+
+    public function __construct(bool $applyDefaultFilter = false)
+    {
         parent::__construct();
 
-        if ($this->exceptionID) {
-            $this->sortRows();
-            $this->jumpToException();
+        if ($applyDefaultFilter && $this->getDefaultLogFile() !== null) {
+            $this->setActiveFilters([
+                'logFile' => $this->getDefaultLogFile(),
+            ]);
         }
     }
 
@@ -30,12 +35,17 @@ final class ExceptionLogGridView extends ArrayGridView
                 ->sortable()
                 ->renderer(new TitleColumnRenderer()),
             GridViewColumn::for('exceptionID')
-                ->label('wcf.global.objectID')
+                ->label('wcf.acp.exceptionLog.search.exceptionID')
+                ->filter(new TextFilter())
                 ->sortable(),
             GridViewColumn::for('date')
                 ->label('wcf.acp.exceptionLog.exception.date')
                 ->sortable()
                 ->renderer(new TimeColumnRenderer()),
+            GridViewColumn::for('logFile')
+                ->label('wcf.acp.exceptionLog.search.logFile')
+                ->filter(new SelectFilter($this->getAvailableLogFiles()))
+                ->hidden(true),
         ]);
 
         $this->addRowLink(new GridViewRowLink(cssClass: 'jsExceptionLogEntry'));
@@ -49,51 +59,88 @@ final class ExceptionLogGridView extends ArrayGridView
         return WCF::getSession()->getPermission('admin.management.canViewLog');
     }
 
-    private function jumpToException(): void
-    {
-        $i = 1;
-        foreach ($this->dataArray as $key => $val) {
-            if ($key == $this->exceptionID) {
-                break;
-            }
-            $i++;
-        }
-
-        $this->setPageNo(\ceil($i / $this->getRowsPerPage()));
-    }
-
-    #[\Override]
-    public function getParameters(): array
-    {
-        return ['logFile' => $this->logFile];
-    }
-
     #[\Override]
     public function getObjectID(mixed $row): mixed
     {
         return $row['exceptionID'];
     }
 
-    protected function getDataArray(): array
+    protected function loadDataArray(): array
     {
-        if (!$this->logFile) {
-            return [];
+        if (!empty($this->getActiveFilters()['exceptionID'])) {
+            $exceptionID = $this->getActiveFilters()['exceptionID'];
+            $contents = $logFile = '';
+            foreach ($this->getAvailableLogFiles() as $logFile) {
+                $contents = \file_get_contents(WCF_DIR . $logFile);
+
+                if (\str_contains($contents, '<<<<<<<<' . $exceptionID . '<<<<')) {
+                    break;
+                }
+
+                unset($contents);
+            }
+
+            if ($contents === '') {
+                return [];
+            }
+
+            $exceptions = ExceptionLogUtil::splitLog($contents);
+            $parsedExceptions = [];
+
+            foreach ($exceptions as $key => $val) {
+                if ($key !== $exceptionID) {
+                    continue;
+                }
+
+                $parsed = ExceptionLogUtil::parseException($val);
+
+                $parsedExceptions[$key] = [
+                    'exceptionID' => $key,
+                    'message' => $parsed['message'],
+                    'date' => $parsed['date'],
+                    'logFile' => $logFile,
+                ];
+            }
+
+            return $parsedExceptions;
+        } elseif (!empty($this->getActiveFilters()['logFile'])) {
+            $contents = \file_get_contents(WCF_DIR . $this->getActiveFilters()['logFile']);
+            $exceptions = ExceptionLogUtil::splitLog($contents);
+            $parsedExceptions = [];
+
+            foreach ($exceptions as $key => $val) {
+                $parsed = ExceptionLogUtil::parseException($val);
+
+                $parsedExceptions[$key] = [
+                    'exceptionID' => $key,
+                    'message' => $parsed['message'],
+                    'date' => $parsed['date'],
+                    'logFile' => $this->getActiveFilters()['logFile'],
+                ];
+            }
+
+            return $parsedExceptions;
         }
 
-        $contents = \file_get_contents(WCF_DIR . 'log/' . $this->logFile);
-        $exceptions = ExceptionLogUtil::splitLog($contents);
-        $parsedExceptions = [];
+        return [];
+    }
 
-        foreach ($exceptions as $key => $val) {
-            $parsed = ExceptionLogUtil::parseException($val);
-
-            $parsedExceptions[$key] = [
-                'exceptionID' => $key,
-                'message' => $parsed['message'],
-                'date' => $parsed['date'],
-            ];
+    private function getAvailableLogFiles(): array
+    {
+        if (!isset($this->availableLogFiles)) {
+            $this->availableLogFiles = [];
+            $fileNameRegex = new Regex('(?:^|/)\d{4}-\d{2}-\d{2}\.txt$');
+            $logFiles = DirectoryUtil::getInstance(WCF_DIR . 'log/', false)->getFiles(\SORT_DESC, $fileNameRegex);
+            foreach ($logFiles as $logFile) {
+                $this->availableLogFiles['log/' . $logFile] = 'log/' . $logFile;
+            }
         }
 
-        return $parsedExceptions;
+        return $this->availableLogFiles;
+    }
+
+    private function getDefaultLogFile(): ?string
+    {
+        return \array_key_first($this->getAvailableLogFiles());
     }
 }

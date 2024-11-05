@@ -4,14 +4,7 @@ namespace wcf\system\view\grid;
 
 abstract class ArrayGridView extends AbstractGridView
 {
-    protected array $dataArray = [];
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->dataArray = $this->getDataArray();
-    }
+    protected array $dataArray;
 
     public function getRows(): array
     {
@@ -22,6 +15,8 @@ abstract class ArrayGridView extends AbstractGridView
 
     protected function sortRows(): void
     {
+        $this->getDataArray();
+
         \uasort($this->dataArray, function (array $a, array $b) {
             if ($this->getSortOrder() === 'ASC') {
                 return \strcmp($a[$this->getSortField()], $b[$this->getSortField()]);
@@ -33,13 +28,22 @@ abstract class ArrayGridView extends AbstractGridView
 
     protected function getRowsForPage(): array
     {
-        return \array_slice($this->dataArray, ($this->getPageNo() - 1) * $this->getRowsPerPage(), $this->getRowsPerPage());
+        return \array_slice($this->getDataArray(), ($this->getPageNo() - 1) * $this->getRowsPerPage(), $this->getRowsPerPage());
     }
 
     public function countRows(): int
     {
-        return \count($this->dataArray);
+        return \count($this->getDataArray());
     }
 
-    protected abstract function getDataArray(): array;
+    protected function getDataArray(): array
+    {
+        if (!isset($this->dataArray)) {
+            $this->dataArray = $this->loadDataArray();
+        }
+
+        return $this->dataArray;
+    }
+
+    protected abstract function loadDataArray(): array;
 }

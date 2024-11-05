@@ -6,6 +6,10 @@
 	</dd>
 </dl>
 <dl>
+	<dt>{lang}wcf.acp.exceptionLog.search.exceptionID{/lang}</dt>
+	<dd>{$exceptionID}</dd>
+</dl>
+<dl>
 	<dt>{lang}wcf.acp.exceptionLog.exception.date{/lang}</dt>
 	<dd>{$exception[date]|plainTime}</dd>
 </dl>
