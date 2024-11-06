@@ -43,6 +43,7 @@ abstract class ArrayGridView extends AbstractGridView
         if (!isset($this->dataArray)) {
             $this->dataArray = $this->loadDataArray();
             $this->applyFilters();
+            $this->fireInitializedEvent();
         }
 
         return $this->dataArray;

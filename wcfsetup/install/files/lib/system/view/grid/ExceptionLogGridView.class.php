@@ -2,6 +2,8 @@
 
 namespace wcf\system\view\grid;
 
+use wcf\event\gridView\ExceptionLogGridViewInitialized;
+use wcf\event\IPsr14Event;
 use wcf\system\Regex;
 use wcf\system\view\grid\filter\SelectFilter;
 use wcf\system\view\grid\filter\TextFilter;
@@ -143,5 +145,11 @@ final class ExceptionLogGridView extends ArrayGridView
     private function getDefaultLogFile(): ?string
     {
         return \array_key_first($this->getAvailableLogFiles());
+    }
+
+    #[\Override]
+    protected function getInitializedEvent(): ?IPsr14Event
+    {
+        return new ExceptionLogGridViewInitialized($this);
     }
 }

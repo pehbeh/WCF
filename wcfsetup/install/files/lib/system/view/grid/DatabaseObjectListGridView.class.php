@@ -48,6 +48,7 @@ abstract class DatabaseObjectListGridView extends AbstractGridView
             }
         }
         $this->applyFilters();
+        $this->fireInitializedEvent();
     }
 
     public function getObjectList(): DatabaseObjectList

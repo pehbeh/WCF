@@ -4,6 +4,8 @@ namespace wcf\system\view\grid;
 
 use LogicException;
 use wcf\action\GridViewFilterAction;
+use wcf\event\IPsr14Event;
+use wcf\system\event\EventHandler;
 use wcf\system\request\LinkHandler;
 use wcf\system\view\grid\action\IGridViewAction;
 use wcf\system\WCF;
@@ -28,12 +30,62 @@ abstract class AbstractGridView
     private int $pageNo = 1;
     private array $activeFilters = [];
 
+    /**
+     * Adds a new column to the grid view.
+     */
     public function addColumn(GridViewColumn $column): void
     {
         $this->columns[] = $column;
     }
 
     /**
+     * Adds a new column to the grid view at the position before the specific id.
+     */
+    public function addColumnBefore(GridViewColumn $column, string $beforeID): void
+    {
+        $position = -1;
+
+        foreach ($this->getColumns() as $key => $existingColumn) {
+            if ($existingColumn->getID() === $beforeID) {
+                $position = $key;
+                break;
+            }
+        }
+
+        if ($position === -1) {
+            throw new \InvalidArgumentException("Invalid column id '{$beforeID}' given.");
+        }
+
+        array_splice($this->columns, $position, 0, [
+            $column,
+        ]);
+    }
+
+    /**
+     * Adds a new column to the grid view at the position after the specific id.
+     */
+    public function addColumnAfter(GridViewColumn $column, string $afterID): void
+    {
+        $position = -1;
+
+        foreach ($this->getColumns() as $key => $existingColumn) {
+            if ($existingColumn->getID() === $afterID) {
+                $position = $key;
+                break;
+            }
+        }
+
+        if ($position === -1) {
+            throw new \InvalidArgumentException("Invalid column id '{$afterID}' given.");
+        }
+
+        array_splice($this->columns, $position + 1, 0, [
+            $column,
+        ]);
+    }
+
+    /**
+     * Adds multiple new columns to the grid view.
      * @param GridViewColumn[] $columns
      */
     public function addColumns(array $columns): void
@@ -44,6 +96,7 @@ abstract class AbstractGridView
     }
 
     /**
+     * Returns all columns of the grid view.
      * @return GridViewColumn[]
      */
     public function getColumns(): array
@@ -52,6 +105,7 @@ abstract class AbstractGridView
     }
 
     /**
+     * Returns all visible (non-hidden) columns of the grid view.
      * @return GridViewColumn[]
      */
     public function getVisibleColumns(): array
@@ -59,6 +113,9 @@ abstract class AbstractGridView
         return \array_filter($this->getColumns(), fn($column) => !$column->isHidden());
     }
 
+    /**
+     * Returns the column with the given id or null if no such column exists.
+     */
     public function getColumn(string $id): ?GridViewColumn
     {
         foreach ($this->getColumns() as $column) {
@@ -294,5 +351,20 @@ abstract class AbstractGridView
     public function getObjectID(mixed $row): mixed
     {
         return '';
+    }
+
+    protected function fireInitializedEvent(): void
+    {
+        $event = $this->getInitializedEvent();
+        if ($event === null) {
+            return;
+        }
+
+        EventHandler::getInstance()->fire($event);
+    }
+
+    protected function getInitializedEvent(): ?IPsr14Event
+    {
+        return null;
     }
 }

@@ -7,6 +7,8 @@ use wcf\data\DatabaseObjectList;
 use wcf\data\user\group\UserGroup;
 use wcf\data\user\rank\I18nUserRankList;
 use wcf\data\user\rank\UserRank;
+use wcf\event\gridView\UserRankGridViewInitialized;
+use wcf\event\IPsr14Event;
 use wcf\system\view\grid\action\DeleteAction;
 use wcf\system\view\grid\action\EditAction;
 use wcf\system\view\grid\renderer\DefaultColumnRenderer;
@@ -107,5 +109,11 @@ final class UserRankGridView extends DatabaseObjectListGridView
     protected function createObjectList(): DatabaseObjectList
     {
         return new I18nUserRankList();
+    }
+
+    #[\Override]
+    protected function getInitializedEvent(): ?IPsr14Event
+    {
+        return new UserRankGridViewInitialized($this);
     }
 }
