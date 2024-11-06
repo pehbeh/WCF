@@ -277,6 +277,11 @@ export function setup(): void {
             void upload(element, resizedFile);
           })
           .catch((e) => {
+            if (e === undefined) {
+              // User closed the dialog.
+              return;
+            }
+
             if (e instanceof Error) {
               innerError(element, e.message);
             }

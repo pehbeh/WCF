@@ -465,3 +465,7 @@ html[data-color-scheme="dark"] .dialog::backdrop {
 		min-width: 0;
 	}
 }
+
+.dialog .cropperContainer {
+	overflow: scroll;
+}

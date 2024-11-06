@@ -190,6 +190,10 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/Selector", "Wol
                         void upload(element, resizedFile);
                     })
                         .catch((e) => {
+                        if (e === undefined) {
+                            // User closed the dialog.
+                            return;
+                        }
                         if (e instanceof Error) {
                             (0, Util_1.innerError)(element, e.message);
                         }
