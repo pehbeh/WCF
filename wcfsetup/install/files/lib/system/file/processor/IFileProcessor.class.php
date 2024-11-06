@@ -159,6 +159,8 @@ interface IFileProcessor
 
     /**
      * Returns the image cropper configuration for this file processor.
+     *
+     * @since 6.2
      */
     public function getImageCropperConfiguration(): ?ImageCropperConfiguration;
 }
