@@ -264,7 +264,7 @@ class MinMaxImageCropper extends ImageCropper {
       this.cropperSelection!.$reset();
     });
 
-    // Limit the selection to the canvas boundaries
+    // Limit the selection to the min/max size
     this.cropperSelection!.addEventListener("change", (event: CustomEvent) => {
       const selection = event.detail as Selection;
 
