@@ -33,14 +33,6 @@ abstract class ImageCropper {
     this.element = element;
     this.file = file;
     this.resizer = new ImageResizer();
-
-    this.configuration.sizes = this.configuration.sizes.sort((a, b) => {
-      if (a.width >= a.height) {
-        return b.width - a.width;
-      } else {
-        return b.height - a.height;
-      }
-    });
   }
 
   public async showDialog(): Promise<File> {
@@ -175,7 +167,7 @@ class ExactImageCropper extends ImageCropper {
       );
     }
 
-    this.#size = sizes[0];
+    this.#size = sizes[sizes.length - 1];
     this.image = await this.resizer.resize(
       this.image as HTMLImageElement,
       this.image!.width >= this.image!.height ? this.image!.width : this.#size.width,
@@ -221,11 +213,11 @@ class MinMaxImageCropper extends ImageCropper {
   }
 
   get minSize() {
-    return this.configuration.sizes[1];
+    return this.configuration.sizes[0];
   }
 
   get maxSize() {
-    return this.configuration.sizes[0];
+    return this.configuration.sizes[1];
   }
 
   protected getDialogExtra(): string {

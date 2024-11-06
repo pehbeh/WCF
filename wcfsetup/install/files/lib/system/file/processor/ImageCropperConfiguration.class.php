@@ -74,6 +74,7 @@ final class ImageCropperConfiguration implements \JsonSerializable
      *   - Image is resized to 128x170
      * - Image is 300x300
      *   - Image is resized to 256x256
+     *   - The image is uploaded directly without displaying the cropping dialog
      */
     public static function createExact(ImageCropSize ...$sizes): self
     {

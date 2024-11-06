@@ -21,14 +21,6 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
             this.element = element;
             this.file = file;
             this.resizer = new Resizer_1.default();
-            this.configuration.sizes = this.configuration.sizes.sort((a, b) => {
-                if (a.width >= a.height) {
-                    return b.width - a.width;
-                }
-                else {
-                    return b.height - a.height;
-                }
-            });
         }
         async showDialog() {
             this.dialog = (0, Dialog_1.dialogFactory)().fromElement(this.image).asPrompt({
@@ -132,7 +124,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
                     height: smallestSize?.height,
                 }));
             }
-            this.#size = sizes[0];
+            this.#size = sizes[sizes.length - 1];
             this.image = await this.resizer.resize(this.image, this.image.width >= this.image.height ? this.image.width : this.#size.width, this.image.height > this.image.width ? this.image.height : this.#size.height, this.resizer.quality, true, timeout);
         }
         getCropperTemplate() {
@@ -165,10 +157,10 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
             }
         }
         get minSize() {
-            return this.configuration.sizes[1];
+            return this.configuration.sizes[0];
         }
         get maxSize() {
-            return this.configuration.sizes[0];
+            return this.configuration.sizes[1];
         }
         getDialogExtra() {
             return (0, Language_1.getPhrase)("wcf.global.button.reset");
