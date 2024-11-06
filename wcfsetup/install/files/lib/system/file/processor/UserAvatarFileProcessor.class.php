@@ -3,11 +3,15 @@
 namespace wcf\system\file\processor;
 
 use wcf\data\file\File;
-use wcf\data\file\thumbnail\FileThumbnail;
 use wcf\data\user\avatar\UserAvatar;
 use wcf\data\user\User;
+use wcf\data\user\UserEditor;
 use wcf\system\cache\runtime\UserRuntimeCache;
+use wcf\system\database\util\PreparedStatementConditionBuilder;
+use wcf\system\exception\UserInputException;
+use wcf\system\user\storage\UserStorageHandler;
 use wcf\system\WCF;
+use wcf\util\FileUtil;
 
 /**
  * @author      Olaf Braun
@@ -32,42 +36,91 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
     #[\Override]
     public function canAdopt(File $file, array $context): bool
     {
-        // TODO
-        return true;
+        $userFromContext = $this->getUser($context);
+        $userFromCoreFile = $this->getUserByFile($file);
+
+        if ($userFromContext === null) {
+            return true;
+        }
+
+        if ($userFromContext->userID === $userFromCoreFile->userID) {
+            return true;
+        }
+
+        return false;
     }
 
     #[\Override]
     public function adopt(File $file, array $context): void
     {
-        // TODO
+        $user = $this->getUser($context);
+        if ($user === null) {
+            return;
+        }
+
+        (new UserEditor($user))->update([
+            'avatarFileID' => $file->fileID,
+        ]);
+        // reset user storage
+        UserStorageHandler::getInstance()->reset([$user->userID], 'avatar');
     }
 
     #[\Override]
     public function acceptUpload(string $filename, int $fileSize, array $context): FileProcessorPreflightResult
     {
-        // TODO
+        $user = $this->getUser($context);
+
+        if ($user === null) {
+            return FileProcessorPreflightResult::InvalidContext;
+        }
+
+        if (!$this->canEditAvatar($user)) {
+            return FileProcessorPreflightResult::InsufficientPermissions;
+        }
+
+        if ($fileSize > $this->getMaximumSize($context)) {
+            return FileProcessorPreflightResult::FileSizeTooLarge;
+        }
+
+        if (!FileUtil::endsWithAllowedExtension($filename, $this->getAllowedFileExtensions($context))) {
+            return FileProcessorPreflightResult::FileExtensionNotPermitted;
+        }
+
         return FileProcessorPreflightResult::Passed;
+    }
+
+    #[\Override]
+    public function validateUpload(File $file): void
+    {
+        $imageData = @\getimagesize($file->getPathname());
+        if ($imageData === false) {
+            throw new UserInputException('file', 'noImage');
+        }
+
+        if ($imageData[0] !== $imageData[1]) {
+            throw new UserInputException('file', 'notSquare');
+        }
+
+        if ($imageData[0] != UserAvatar::AVATAR_SIZE && $imageData[0] != UserAvatar::AVATAR_SIZE_2X) {
+            throw new UserInputException('file', 'wrongSize');
+        }
     }
 
     #[\Override]
     public function canDelete(File $file): bool
     {
-        // TODO
-        return true;
+        $user = $this->getUserByFile($file);
+        if ($user === null) {
+            return false;
+        }
+
+        return $this->canEditAvatar($user);
     }
 
     #[\Override]
     public function canDownload(File $file): bool
     {
-        // TODO
         return true;
-    }
-
-    #[\Override]
-    public function getMaximumCount(array $context): ?int
-    {
-        // TODO
-        return null;
     }
 
     #[\Override]
@@ -85,21 +138,27 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
     }
 
     #[\Override]
-    public function adoptThumbnail(FileThumbnail $thumbnail): void
-    {
-        // TODO
-    }
-
-    #[\Override]
     public function delete(array $fileIDs, array $thumbnailIDs): void
     {
-        // TODO
+        $conditionBuilder = new PreparedStatementConditionBuilder();
+        $conditionBuilder->add('avatarFileID IN (?)', [$fileIDs]);
+
+        $sql = "UPDATE wcf1_user
+                SET    avatarFileID = ?
+                " . $conditionBuilder;
+        $statement = WCF::getDB()->prepare($sql);
+        $statement->execute([null, ...$conditionBuilder->getParameters()]);
     }
 
     #[\Override]
     public function countExistingFiles(array $context): ?int
     {
-        // TODO
+        $user = $this->getUser($context);
+        if ($user === null) {
+            return null;
+        }
+
+        return $user->avatarFileID === null ? 0 : 1;
     }
 
     #[\Override]
@@ -134,5 +193,33 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
         }
 
         return UserRuntimeCache::getInstance()->getObject($userID);
+    }
+
+    private function getUserByFile(File $file): ?User
+    {
+        $sql = "SELECT *
+                FROM   wcf1_user
+                WHERE  avatarFileID = ?";
+        $statement = WCF::getDB()->prepare($sql);
+        $statement->execute([$file->fileID]);
+
+        return $statement->fetchObject(User::class);
+    }
+
+    private function canEditAvatar(User $user): bool
+    {
+        if (WCF::getSession()->getPermission('admin.user.canEditUser')) {
+            return true;
+        }
+
+        if ($user->userID !== WCF::getUser()->userID) {
+            return false;
+        }
+
+        if (WCF::getUser()->disableAvatar) {
+            return false;
+        }
+
+        return WCF::getSession()->getPermission('user.profile.avatar.canUploadAvatar');
     }
 }

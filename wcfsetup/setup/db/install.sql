@@ -1558,6 +1558,7 @@ CREATE TABLE wcf1_user (
 	reactivationCode INT(10) NOT NULL DEFAULT 0,
 	registrationIpAddress VARCHAR(39) NOT NULL DEFAULT '',
 	avatarID INT(10),
+	avatarFileID INT(10) DEFAULT NULL,
 	disableAvatar TINYINT(1) NOT NULL DEFAULT 0,
 	disableAvatarReason TEXT,
 	disableAvatarExpires INT(10) NOT NULL DEFAULT 0,
