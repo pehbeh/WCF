@@ -28,13 +28,6 @@ abstract class AbstractGridView
     private int $pageNo = 1;
     private array $activeFilters = [];
 
-    public function __construct()
-    {
-        $this->init();
-    }
-
-    protected function init(): void {}
-
     public function addColumn(GridViewColumn $column): void
     {
         $this->columns[] = $column;

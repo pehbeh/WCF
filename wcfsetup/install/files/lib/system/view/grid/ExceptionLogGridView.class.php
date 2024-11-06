@@ -17,18 +17,6 @@ final class ExceptionLogGridView extends ArrayGridView
 
     public function __construct(bool $applyDefaultFilter = false)
     {
-        parent::__construct();
-
-        if ($applyDefaultFilter && $this->getDefaultLogFile() !== null) {
-            $this->setActiveFilters([
-                'logFile' => $this->getDefaultLogFile(),
-            ]);
-        }
-    }
-
-    #[\Override]
-    protected function init(): void
-    {
         $this->addColumns([
             GridViewColumn::for('message')
                 ->label('wcf.acp.exceptionLog.exception.message')
@@ -51,6 +39,12 @@ final class ExceptionLogGridView extends ArrayGridView
         $this->addRowLink(new GridViewRowLink(cssClass: 'jsExceptionLogEntry'));
         $this->setSortField('date');
         $this->setSortOrder('DESC');
+
+        if ($applyDefaultFilter && $this->getDefaultLogFile() !== null) {
+            $this->setActiveFilters([
+                'logFile' => $this->getDefaultLogFile(),
+            ]);
+        }
     }
 
     #[\Override]

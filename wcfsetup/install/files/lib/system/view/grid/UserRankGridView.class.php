@@ -17,8 +17,7 @@ use wcf\util\StringUtil;
 
 final class UserRankGridView extends DatabaseObjectListGridView
 {
-    #[\Override]
-    protected function init(): void
+    public function __construct()
     {
         $this->addColumns([
             GridViewColumn::for('rankID')

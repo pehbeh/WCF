@@ -17,8 +17,7 @@ use wcf\util\StringUtil;
 
 final class CronjobLogGridView extends DatabaseObjectListGridView
 {
-    #[\Override]
-    protected function init(): void
+    public function __construct()
     {
         $availableCronjobs = $this->getAvailableCronjobs();
 
