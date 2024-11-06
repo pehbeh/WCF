@@ -36,17 +36,65 @@ abstract class ImageCropper {
   }
 
   public async showDialog(): Promise<File> {
-    await this.loadImage();
-
     this.dialog = dialogFactory().fromElement(this.image!).asPrompt({
       extra: this.getDialogExtra(),
     });
     this.dialog.show(getPhrase("wcf.upload.crop.image"));
 
-    return this.createCropper();
+    this.createCropper();
+
+    this.dialog.addEventListener("extra", () => {
+      this.cropperImage!.$center("contain");
+      this.cropperSelection!.$reset();
+    });
+
+    return new Promise<File>((resolve, reject) => {
+      this.dialog.addEventListener("primary", () => {
+        this.cropperSelection!.$toCanvas()
+          .then((canvas) => {
+            this.resizer
+              .saveFile({ exif: this.exif, image: canvas }, this.file.name, this.file.type)
+              .then((resizedFile) => {
+                resolve(resizedFile);
+              })
+              .catch(() => {
+                reject();
+              });
+          })
+          .catch(() => {
+            reject();
+          });
+      });
+    });
   }
 
-  protected async createCropper(): Promise<File> {
+  public async loadImage() {
+    const { image, exif } = await this.resizer.loadFile(this.file);
+    this.image = image;
+    this.exif = exif;
+  }
+
+  protected setCropperStyle() {
+    this.cropperCanvas!.style.aspectRatio = `${this.image!.width}/${this.image!.height}`;
+
+    if (this.image!.width > this.image!.height) {
+      this.cropperCanvas!.style.width = `min(70vw, ${this.image!.width}px)`;
+      this.cropperCanvas!.style.height = "auto";
+    } else {
+      this.cropperCanvas!.style.height = `min(60vh, ${this.image!.height}px)`;
+      this.cropperCanvas!.style.width = "auto";
+    }
+
+    this.cropperSelection!.aspectRatio = this.configuration.aspectRatio;
+  }
+
+  protected abstract getCropperTemplate(): string;
+
+  protected getDialogExtra(): string | undefined {
+    return undefined;
+  }
+
+  protected createCropper() {
     this.#cropper = new Cropper(this.image!, {
       template: this.getCropperTemplate(),
     });
@@ -82,56 +130,6 @@ abstract class ImageCropper {
         event.preventDefault();
       }
     });
-
-    this.dialog.addEventListener("extra", () => {
-      this.cropperImage!.$center("contain");
-      this.cropperSelection!.$reset();
-    });
-
-    return new Promise<File>((resolve, reject) => {
-      this.dialog.addEventListener("primary", () => {
-        this.cropperSelection!.$toCanvas()
-          .then((canvas) => {
-            this.resizer
-              .saveFile({ exif: this.exif, image: canvas }, this.file.name, this.file.type)
-              .then((resizedFile) => {
-                resolve(resizedFile);
-              })
-              .catch(() => {
-                reject();
-              });
-          })
-          .catch(() => {
-            reject();
-          });
-      });
-    });
-  }
-
-  protected setCropperStyle() {
-    this.cropperCanvas!.style.aspectRatio = `${this.image!.width}/${this.image!.height}`;
-
-    if (this.image!.width > this.image!.height) {
-      this.cropperCanvas!.style.width = `min(70vw, ${this.image!.width}px)`;
-      this.cropperCanvas!.style.height = "auto";
-    } else {
-      this.cropperCanvas!.style.height = `min(60vh, ${this.image!.height}px)`;
-      this.cropperCanvas!.style.width = "auto";
-    }
-
-    this.cropperSelection!.aspectRatio = this.configuration.aspectRatio;
-  }
-
-  protected abstract getCropperTemplate(): string;
-
-  protected getDialogExtra(): string | undefined {
-    return undefined;
-  }
-
-  protected async loadImage() {
-    const { image, exif } = await this.resizer.loadFile(this.file);
-    this.image = image;
-    this.exif = exif;
   }
 }
 
@@ -139,8 +137,6 @@ class ExactImageCropper extends ImageCropper {
   #size?: { width: number; height: number };
 
   public async showDialog(): Promise<File> {
-    await this.loadImage();
-
     // The image already has the correct size, cropping is not necessary
     if (
       this.image!.width == this.#size!.width &&
@@ -150,27 +146,10 @@ class ExactImageCropper extends ImageCropper {
       return this.resizer.saveFile({ exif: this.exif, image: this.image }, this.file.name, this.file.type);
     }
 
-    this.dialog = dialogFactory().fromElement(this.image!).asPrompt({
-      extra: this.getDialogExtra(),
-    });
-    this.dialog.show(getPhrase("wcf.upload.crop.image"));
-
-    return this.createCropper();
+    return super.showDialog();
   }
 
-  protected getCropperTemplate(): string {
-    return `<cropper-canvas background>
-  <cropper-image></cropper-image>
-  <cropper-shade hidden></cropper-shade>
-  <cropper-selection movable outlined keyboard>
-    <cropper-grid role="grid" bordered covered></cropper-grid>
-    <cropper-crosshair centered></cropper-crosshair>
-    <cropper-handle action="move" theme-color="rgba(255, 255, 255, 0.35)"></cropper-handle>
-  </cropper-selection>
-</cropper-canvas>`;
-  }
-
-  protected async loadImage(): Promise<void> {
+  public async loadImage(): Promise<void> {
     await super.loadImage();
 
     const timeout = new Promise<File>((resolve) => {
@@ -212,34 +191,54 @@ class ExactImageCropper extends ImageCropper {
     );
   }
 
+  protected getCropperTemplate(): string {
+    return `<div class="cropperContainer">
+  <cropper-canvas background>
+    <cropper-image></cropper-image>
+    <cropper-shade hidden></cropper-shade>
+    <cropper-selection movable outlined keyboard>
+      <cropper-grid role="grid" bordered covered></cropper-grid>
+      <cropper-crosshair centered></cropper-crosshair>
+      <cropper-handle action="move" theme-color="rgba(255, 255, 255, 0.35)"></cropper-handle>
+    </cropper-selection>
+  </cropper-canvas>
+</div>`;
+  }
+
   protected setCropperStyle() {
     super.setCropperStyle();
 
     this.cropperSelection!.width = this.#size!.width;
     this.cropperSelection!.height = this.#size!.height;
+
+    this.cropperCanvas!.style.width = `${this.image!.width}px`;
+    this.cropperCanvas!.style.height = `${this.image!.height}px`;
+    this.cropperSelection!.style.removeProperty("aspectRatio");
   }
 }
 
 class MinMaxImageCropper extends ImageCropper {
   protected getCropperTemplate(): string {
-    return `<cropper-canvas background>
-  <cropper-image skewable scalable translatable></cropper-image>
-  <cropper-shade hidden></cropper-shade>
-  <cropper-handle action="move" plain></cropper-handle>
-  <cropper-selection initial-coverage="0.5" movable resizable outlined>
-    <cropper-grid role="grid" bordered covered></cropper-grid>
-    <cropper-crosshair centered></cropper-crosshair>
-    <cropper-handle action="move" theme-color="rgba(255, 255, 255, 0.35)"></cropper-handle>
-    <cropper-handle action="n-resize"></cropper-handle>
-    <cropper-handle action="e-resize"></cropper-handle>
-    <cropper-handle action="s-resize"></cropper-handle>
-    <cropper-handle action="w-resize"></cropper-handle>
-    <cropper-handle action="ne-resize"></cropper-handle>
-    <cropper-handle action="nw-resize"></cropper-handle>
-    <cropper-handle action="se-resize"></cropper-handle>
-    <cropper-handle action="sw-resize"></cropper-handle>
-  </cropper-selection>
-</cropper-canvas>`;
+    return `<div class="cropperContainer">
+  <cropper-canvas background>
+    <cropper-image skewable scalable translatable></cropper-image>
+    <cropper-shade hidden></cropper-shade>
+    <cropper-handle action="move" plain></cropper-handle>
+    <cropper-selection initial-coverage="0.5" movable resizable outlined>
+      <cropper-grid role="grid" bordered covered></cropper-grid>
+      <cropper-crosshair centered></cropper-crosshair>
+      <cropper-handle action="move" theme-color="rgba(255, 255, 255, 0.35)"></cropper-handle>
+      <cropper-handle action="n-resize"></cropper-handle>
+      <cropper-handle action="e-resize"></cropper-handle>
+      <cropper-handle action="s-resize"></cropper-handle>
+      <cropper-handle action="w-resize"></cropper-handle>
+      <cropper-handle action="ne-resize"></cropper-handle>
+      <cropper-handle action="nw-resize"></cropper-handle>
+      <cropper-handle action="se-resize"></cropper-handle>
+      <cropper-handle action="sw-resize"></cropper-handle>
+    </cropper-selection>
+  </cropper-canvas>
+</div>`;
   }
 
   protected getDialogExtra(): string {
@@ -266,5 +265,6 @@ export async function cropImage(
       throw new Error("Invalid configuration type");
   }
 
+  await imageCropper.loadImage();
   return imageCropper.showDialog();
 }
