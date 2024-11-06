@@ -253,6 +253,18 @@ export async function cropImage(
   file: File,
   configuration: CropperConfiguration,
 ): Promise<File> {
+  switch (file.type) {
+    case "image/jpeg":
+    case "image/png":
+    case "image/webp":
+      // Potential candidate for a resize operation.
+      break;
+
+    default:
+      // Not an image or an unsupported file type.
+      return file;
+  }
+
   let imageCropper: ImageCropper;
   switch (configuration.type) {
     case "exact":
