@@ -24,7 +24,7 @@ abstract class ImageCropper {
   protected cropperCanvas?: CropperCanvas | null;
   protected cropperImage?: CropperImage | null;
   protected cropperSelection?: CropperSelection | null;
-  protected dialog: WoltlabCoreDialogElement;
+  protected dialog?: WoltlabCoreDialogElement;
   protected exif?: ExifUtil.Exif;
   #cropper?: Cropper;
 
@@ -33,6 +33,14 @@ abstract class ImageCropper {
     this.element = element;
     this.file = file;
     this.resizer = new ImageResizer();
+
+    this.configuration.sizes = this.configuration.sizes.sort((a, b) => {
+      if (a.width >= a.height) {
+        return b.width - a.width;
+      } else {
+        return b.height - a.height;
+      }
+    });
   }
 
   public async showDialog(): Promise<File> {
@@ -43,13 +51,8 @@ abstract class ImageCropper {
 
     this.createCropper();
 
-    this.dialog.addEventListener("extra", () => {
-      this.cropperImage!.$center("contain");
-      this.cropperSelection!.$reset();
-    });
-
     return new Promise<File>((resolve, reject) => {
-      this.dialog.addEventListener("primary", () => {
+      this.dialog!.addEventListener("primary", () => {
         this.cropperSelection!.$toCanvas()
           .then((canvas) => {
             this.resizer
@@ -157,14 +160,6 @@ class ExactImageCropper extends ImageCropper {
     });
 
     // resize image to the largest possible size
-    this.configuration.sizes = this.configuration.sizes.sort((a, b) => {
-      if (a.width >= a.height) {
-        return b.width - a.width;
-      } else {
-        return b.height - a.height;
-      }
-    });
-
     const sizes = this.configuration.sizes.filter((size) => {
       return size.width <= this.image!.width && size.height <= this.image!.height;
     });
@@ -218,13 +213,32 @@ class ExactImageCropper extends ImageCropper {
 }
 
 class MinMaxImageCropper extends ImageCropper {
+  constructor(element: WoltlabCoreFileUploadElement, file: File, configuration: CropperConfiguration) {
+    super(element, file, configuration);
+    if (configuration.sizes.length !== 2) {
+      throw new Error("MinMaxImageCropper requires exactly two sizes");
+    }
+  }
+
+  get minSize() {
+    return this.configuration.sizes[1];
+  }
+
+  get maxSize() {
+    return this.configuration.sizes[0];
+  }
+
+  protected getDialogExtra(): string {
+    return getPhrase("wcf.global.button.reset");
+  }
+
   protected getCropperTemplate(): string {
     return `<div class="cropperContainer">
   <cropper-canvas background>
     <cropper-image skewable scalable translatable></cropper-image>
     <cropper-shade hidden></cropper-shade>
     <cropper-handle action="move" plain></cropper-handle>
-    <cropper-selection initial-coverage="0.5" movable resizable outlined>
+    <cropper-selection movable zoomable resizable outlined>
       <cropper-grid role="grid" bordered covered></cropper-grid>
       <cropper-crosshair centered></cropper-crosshair>
       <cropper-handle action="move" theme-color="rgba(255, 255, 255, 0.35)"></cropper-handle>
@@ -241,11 +255,37 @@ class MinMaxImageCropper extends ImageCropper {
 </div>`;
   }
 
-  protected getDialogExtra(): string {
-    return getPhrase("wcf.global.button.reset");
+  protected setCropperStyle() {
+    super.setCropperStyle();
+
+    this.cropperSelection!.width = this.minSize.width;
+    this.cropperSelection!.height = this.minSize.height;
+    this.cropperCanvas!.style.minWidth = `min(${this.maxSize.width}px, ${this.image!.width}px)`;
+    this.cropperCanvas!.style.minHeight = `min(${this.maxSize.height}px, ${this.image!.height}px)`;
   }
 
-  // TODO handle resize cropper selection to min/max size
+  protected createCropper() {
+    super.createCropper();
+
+    this.dialog!.addEventListener("extra", () => {
+      this.cropperImage!.$center("contain");
+      this.cropperSelection!.$reset();
+    });
+
+    // Limit the selection to the canvas boundaries
+    this.cropperSelection!.addEventListener("change", (event: CustomEvent) => {
+      const selection = event.detail as Selection;
+
+      if (
+        selection.width < this.minSize.width ||
+        selection.height < this.minSize.height ||
+        selection.width > this.maxSize.width ||
+        selection.height > this.maxSize.height
+      ) {
+        event.preventDefault();
+      }
+    });
+  }
 }
 
 export async function cropImage(

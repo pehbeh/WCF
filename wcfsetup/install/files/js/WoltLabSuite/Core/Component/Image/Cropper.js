@@ -21,6 +21,14 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
             this.element = element;
             this.file = file;
             this.resizer = new Resizer_1.default();
+            this.configuration.sizes = this.configuration.sizes.sort((a, b) => {
+                if (a.width >= a.height) {
+                    return b.width - a.width;
+                }
+                else {
+                    return b.height - a.height;
+                }
+            });
         }
         async showDialog() {
             this.dialog = (0, Dialog_1.dialogFactory)().fromElement(this.image).asPrompt({
@@ -28,10 +36,6 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
             });
             this.dialog.show((0, Language_1.getPhrase)("wcf.upload.crop.image"));
             this.createCropper();
-            this.dialog.addEventListener("extra", () => {
-                this.cropperImage.$center("contain");
-                this.cropperSelection.$reset();
-            });
             return new Promise((resolve, reject) => {
                 this.dialog.addEventListener("primary", () => {
                     this.cropperSelection.$toCanvas()
@@ -118,14 +122,6 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
                 window.setTimeout(() => resolve(this.file), 10_000);
             });
             // resize image to the largest possible size
-            this.configuration.sizes = this.configuration.sizes.sort((a, b) => {
-                if (a.width >= a.height) {
-                    return b.width - a.width;
-                }
-                else {
-                    return b.height - a.height;
-                }
-            });
             const sizes = this.configuration.sizes.filter((size) => {
                 return size.width <= this.image.width && size.height <= this.image.height;
             });
@@ -162,13 +158,28 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
         }
     }
     class MinMaxImageCropper extends ImageCropper {
+        constructor(element, file, configuration) {
+            super(element, file, configuration);
+            if (configuration.sizes.length !== 2) {
+                throw new Error("MinMaxImageCropper requires exactly two sizes");
+            }
+        }
+        get minSize() {
+            return this.configuration.sizes[1];
+        }
+        get maxSize() {
+            return this.configuration.sizes[0];
+        }
+        getDialogExtra() {
+            return (0, Language_1.getPhrase)("wcf.global.button.reset");
+        }
         getCropperTemplate() {
             return `<div class="cropperContainer">
   <cropper-canvas background>
     <cropper-image skewable scalable translatable></cropper-image>
     <cropper-shade hidden></cropper-shade>
     <cropper-handle action="move" plain></cropper-handle>
-    <cropper-selection initial-coverage="0.5" movable resizable outlined>
+    <cropper-selection movable zoomable resizable outlined>
       <cropper-grid role="grid" bordered covered></cropper-grid>
       <cropper-crosshair centered></cropper-crosshair>
       <cropper-handle action="move" theme-color="rgba(255, 255, 255, 0.35)"></cropper-handle>
@@ -184,8 +195,29 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
   </cropper-canvas>
 </div>`;
         }
-        getDialogExtra() {
-            return (0, Language_1.getPhrase)("wcf.global.button.reset");
+        setCropperStyle() {
+            super.setCropperStyle();
+            this.cropperSelection.width = this.minSize.width;
+            this.cropperSelection.height = this.minSize.height;
+            this.cropperCanvas.style.minWidth = `min(${this.maxSize.width}px, ${this.image.width}px)`;
+            this.cropperCanvas.style.minHeight = `min(${this.maxSize.height}px, ${this.image.height}px)`;
+        }
+        createCropper() {
+            super.createCropper();
+            this.dialog.addEventListener("extra", () => {
+                this.cropperImage.$center("contain");
+                this.cropperSelection.$reset();
+            });
+            // Limit the selection to the canvas boundaries
+            this.cropperSelection.addEventListener("change", (event) => {
+                const selection = event.detail;
+                if (selection.width < this.minSize.width ||
+                    selection.height < this.minSize.height ||
+                    selection.width > this.maxSize.width ||
+                    selection.height > this.maxSize.height) {
+                    event.preventDefault();
+                }
+            });
         }
     }
     async function cropImage(element, file, configuration) {
