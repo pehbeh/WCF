@@ -200,7 +200,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
                 this.cropperImage.$center("contain");
                 this.cropperSelection.$reset();
             });
-            // Limit the selection to the canvas boundaries
+            // Limit the selection to the min/max size
             this.cropperSelection.addEventListener("change", (event) => {
                 const selection = event.detail;
                 if (selection.width < this.minSize.width ||
