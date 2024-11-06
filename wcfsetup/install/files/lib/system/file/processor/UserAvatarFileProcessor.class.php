@@ -21,6 +21,8 @@ use wcf\util\FileUtil;
  */
 final class UserAvatarFileProcessor extends AbstractFileProcessor
 {
+    private const SESSION_VARIABLE = 'wcf_user_avatar_processor_%d';
+
     #[\Override]
     public function getObjectTypeName(): string
     {
@@ -56,6 +58,12 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
         $user = $this->getUser($context);
         if ($user === null) {
             return;
+        }
+
+        // Save the `fileID` in the session variable so that the current user can delete it the old avatar
+        if ($user->avatarFileID !== null) {
+            WCF::getSession()->register(\sprintf(self::SESSION_VARIABLE, $$user->avatarFileID), TIME_NOW);
+            WCF::getSession()->update();
         }
 
         (new UserEditor($user))->update([
@@ -111,7 +119,9 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
     {
         $user = $this->getUserByFile($file);
         if ($user === null) {
-            return false;
+            return WCF::getSession()->getVar(
+                \sprintf(self::SESSION_VARIABLE, $file->fileID)
+            ) !== null;
         }
 
         return $this->canEditAvatar($user);
@@ -140,6 +150,13 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
     #[\Override]
     public function delete(array $fileIDs, array $thumbnailIDs): void
     {
+        \array_map(
+            static fn(int $fileID) => WCF::getSession()->unregister(
+                \sprintf(self::SESSION_VARIABLE, $fileID)
+            ),
+            $fileIDs
+        );
+
         $conditionBuilder = new PreparedStatementConditionBuilder();
         $conditionBuilder->add('avatarFileID IN (?)', [$fileIDs]);
 
