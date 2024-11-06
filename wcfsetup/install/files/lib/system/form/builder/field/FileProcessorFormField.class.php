@@ -108,9 +108,7 @@ final class FileProcessorFormField extends AbstractFormField
     #[\Override]
     public function updatedObject(array $data, IStorableObject $object, $loadValues = true)
     {
-        if ($loadValues) {
-            $this->context['objectID'] = $object->{$object::getDatabaseTableIndexName()};
-        }
+        $this->context['objectID'] = $object->{$object::getDatabaseTableIndexName()};
 
         return parent::updatedObject($data, $object, $loadValues);
     }
