@@ -65,6 +65,7 @@ final class ExceptionLogGridView extends ArrayGridView
         return $row['exceptionID'];
     }
 
+    #[\Override]
     protected function loadDataArray(): array
     {
         if (!empty($this->getActiveFilters()['exceptionID'])) {
@@ -123,6 +124,12 @@ final class ExceptionLogGridView extends ArrayGridView
         }
 
         return [];
+    }
+
+    #[\Override]
+    protected function applyFilters(): void
+    {
+        // Overwrite the default filtering, as this is already applied when the data is loaded.
     }
 
     private function getAvailableLogFiles(): array

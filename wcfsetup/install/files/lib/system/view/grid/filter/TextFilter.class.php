@@ -22,6 +22,12 @@ class TextFilter implements IGridViewFilter
     }
 
     #[\Override]
+    public function matches(string $filterValue, string $rowValue): bool
+    {
+        return \str_contains(\mb_strtolower($rowValue), \mb_strtolower($filterValue));
+    }
+
+    #[\Override]
     public function renderValue(string $value): string
     {
         return $value;

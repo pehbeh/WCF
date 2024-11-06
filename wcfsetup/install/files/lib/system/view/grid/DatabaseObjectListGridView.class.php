@@ -59,7 +59,7 @@ abstract class DatabaseObjectListGridView extends AbstractGridView
         return $this->objectList;
     }
 
-    private function applyFilters(): void
+    protected function applyFilters(): void
     {
         foreach ($this->getActiveFilters() as $key => $value) {
             $column = $this->getColumn($key);

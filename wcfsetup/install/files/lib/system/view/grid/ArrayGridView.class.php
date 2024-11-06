@@ -2,6 +2,8 @@
 
 namespace wcf\system\view\grid;
 
+use LogicException;
+
 abstract class ArrayGridView extends AbstractGridView
 {
     protected array $dataArray;
@@ -40,9 +42,24 @@ abstract class ArrayGridView extends AbstractGridView
     {
         if (!isset($this->dataArray)) {
             $this->dataArray = $this->loadDataArray();
+            $this->applyFilters();
         }
 
         return $this->dataArray;
+    }
+
+    protected function applyFilters(): void
+    {
+        foreach ($this->getActiveFilters() as $key => $value) {
+            $column = $this->getColumn($key);
+            if (!$column) {
+                throw new LogicException("Unknown column '" . $key . "'");
+            }
+
+            $this->dataArray = \array_filter($this->dataArray, function (array $row) use ($column, $value) {
+                return $column->getFilter()->matches($value, $row[$column->getID()]);
+            });
+        }
     }
 
     protected abstract function loadDataArray(): array;

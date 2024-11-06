@@ -11,5 +11,7 @@ interface IGridViewFilter
 
     public function applyFilter(DatabaseObjectList $list, string $id, string $value): void;
 
+    public function matches(string $filterValue, string $rowValue): bool;
+
     public function renderValue(string $value): string;
 }
