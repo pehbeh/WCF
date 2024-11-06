@@ -1,3 +1,11 @@
+/**
+ * An image cropper that allows the user to crop an image before uploading it.
+ *
+ * @author    Olaf Braun
+ * @copyright 2001-2024 WoltLab GmbH
+ * @license   GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since     6.2
+ */
 define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltLabSuite/Core/Component/Dialog", "cropperjs", "WoltLabSuite/Core/Language"], function (require, exports, tslib_1, Resizer_1, Dialog_1, cropperjs_1, Language_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
