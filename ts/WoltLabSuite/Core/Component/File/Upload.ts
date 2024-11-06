@@ -277,8 +277,9 @@ export function setup(): void {
             void upload(element, resizedFile);
           })
           .catch((e) => {
-            //TODO handle error
-            console.error(e);
+            if (e instanceof Error) {
+              innerError(element, e.message);
+            }
           });
       } else {
         void resizeImage(element, file).then((resizedFile) => {

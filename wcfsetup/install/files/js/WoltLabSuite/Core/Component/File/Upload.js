@@ -190,8 +190,9 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/Selector", "Wol
                         void upload(element, resizedFile);
                     })
                         .catch((e) => {
-                        //TODO handle error
-                        console.error(e);
+                        if (e instanceof Error) {
+                            (0, Util_1.innerError)(element, e.message);
+                        }
                     });
                 }
                 else {

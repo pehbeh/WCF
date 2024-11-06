@@ -60,6 +60,7 @@ abstract class ImageCropper {
     this.cropperImage!.$center("contain");
     this.cropperSelection!.$center();
 
+    // Limit the selection to the canvas boundaries
     this.cropperSelection!.addEventListener("change", (event: CustomEvent) => {
       // see https://fengyuanchen.github.io/cropperjs/v2/api/cropper-selection.html#limit-boundaries
       const cropperCanvasRect = this.cropperCanvas!.getBoundingClientRect();
@@ -177,24 +178,30 @@ class ExactImageCropper extends ImageCropper {
     });
 
     // resize image to the largest possible size
-    this.configuration.sizes = this.configuration.sizes
-      .filter((size) => {
-        return size.width <= this.image!.width && size.height <= this.image!.height;
-      })
-      .sort((a, b) => {
-        if (a.width >= a.height) {
-          return b.width - a.width;
-        } else {
-          return b.height - a.height;
-        }
-      });
+    this.configuration.sizes = this.configuration.sizes.sort((a, b) => {
+      if (a.width >= a.height) {
+        return b.width - a.width;
+      } else {
+        return b.height - a.height;
+      }
+    });
 
-    if (this.configuration.sizes.length === 0) {
-      // TODO show error message
-      throw new Error("No suitable size found");
+    const sizes = this.configuration.sizes.filter((size) => {
+      return size.width <= this.image!.width && size.height <= this.image!.height;
+    });
+
+    if (sizes.length === 0) {
+      const smallestSize =
+        this.configuration.sizes.length > 1 ? this.configuration.sizes[this.configuration.sizes.length - 1] : undefined;
+      throw new Error(
+        getPhrase("wcf.upload.error.image.tooSmall", {
+          width: smallestSize?.width,
+          height: smallestSize?.height,
+        }),
+      );
     }
 
-    this.#size = this.configuration.sizes[0];
+    this.#size = sizes[0];
     this.image = await this.resizer.resize(
       this.image as HTMLImageElement,
       this.image!.width >= this.image!.height ? this.image!.width : this.#size.width,

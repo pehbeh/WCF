@@ -153,6 +153,7 @@ final class PreloadPhrasesCollectingListener
         $event->preload('wcf.upload.crop.image');
         $event->preload('wcf.upload.error.fileExtensionNotPermitted');
         $event->preload('wcf.upload.error.fileSizeTooLarge');
+        $event->preload('wcf.upload.error.image.tooSmall');
         $event->preload('wcf.upload.error.maximumCountReached');
 
         $event->preload('wcf.user.activityPoint');
