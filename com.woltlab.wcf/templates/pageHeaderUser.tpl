@@ -54,6 +54,18 @@
 										</div>
 									</div>
 								{/if}
+								{if $__wcf->getSession()->getPermission('user.profile.avatar.canUploadAvatar') && !$__wcf->getUserProfileHandler()->disableAvatar}
+									<div class="userMenuItem userMenuItemNarrow userMenuItemSingleLine">
+										<div class="userMenuItemImage">
+											{icon size=16 name='user-pen'}
+										</div>
+										<div class="userMenuItemContent">
+											<button type="button" class="userMenuItemLink userAvatarManagement">
+												{lang}wcf.user.avatarManagement{/lang}
+											</button>
+										</div>
+									</div>
+								{/if}
 								{if $__wcf->session->getPermission('admin.general.canUseAcp')}
 									<div class="userMenuItem userMenuItemNarrow userMenuItemSingleLine">
 										<div class="userMenuItemImage">

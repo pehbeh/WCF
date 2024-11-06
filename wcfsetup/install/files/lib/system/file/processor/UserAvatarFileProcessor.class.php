@@ -4,9 +4,9 @@ namespace wcf\system\file\processor;
 
 use wcf\data\file\File;
 use wcf\data\user\avatar\UserAvatar;
-use wcf\data\user\User;
 use wcf\data\user\UserEditor;
-use wcf\system\cache\runtime\UserRuntimeCache;
+use wcf\data\user\UserProfile;
+use wcf\system\cache\runtime\UserProfileRuntimeCache;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\exception\UserInputException;
 use wcf\system\user\storage\UserStorageHandler;
@@ -130,7 +130,12 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
     #[\Override]
     public function canDownload(File $file): bool
     {
-        return true;
+        $user = $this->getUserByFile($file);
+        if ($user === null) {
+            return false;
+        }
+
+        return $user->canSeeAvatar();
     }
 
     #[\Override]
@@ -202,28 +207,33 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
         );
     }
 
-    private function getUser(array $context): ?User
+    private function getUser(array $context): ?UserProfile
     {
         $userID = $context['objectID'] ?? null;
         if ($userID === null) {
             return null;
         }
 
-        return UserRuntimeCache::getInstance()->getObject($userID);
+        return UserProfileRuntimeCache::getInstance()->getObject($userID);
     }
 
-    private function getUserByFile(File $file): ?User
+    private function getUserByFile(File $file): ?UserProfile
     {
-        $sql = "SELECT *
+        $sql = "SELECT userID
                 FROM   wcf1_user
                 WHERE  avatarFileID = ?";
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute([$file->fileID]);
+        $userID = $statement->fetchSingleColumn();
 
-        return $statement->fetchObject(User::class);
+        if ($userID === false) {
+            return null;
+        }
+
+        return UserProfileRuntimeCache::getInstance()->getObject($userID);
     }
 
-    private function canEditAvatar(User $user): bool
+    private function canEditAvatar(UserProfile $user): bool
     {
         if (WCF::getSession()->getPermission('admin.user.canEditUser')) {
             return true;

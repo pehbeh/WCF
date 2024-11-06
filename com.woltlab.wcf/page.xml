@@ -100,20 +100,6 @@
 				<title>Benutzerkonto-Sicherheit</title>
 			</content>
 		</page>
-		<page identifier="com.woltlab.wcf.AvatarEdit">
-			<pageType>system</pageType>
-			<controller>wcf\form\AvatarEditForm</controller>
-			<name language="de">Avatar-Verwaltung</name>
-			<name language="en">Avatar Management</name>
-			<hasFixedParent>1</hasFixedParent>
-			<parent>com.woltlab.wcf.AccountManagement</parent>
-			<content language="en">
-				<title>Avatar Management</title>
-			</content>
-			<content language="de">
-				<title>Avatar-Verwaltung</title>
-			</content>
-		</page>
 		<page identifier="com.woltlab.wcf.EmailActivation">
 			<pageType>system</pageType>
 			<controller>wcf\form\EmailActivationForm</controller>
@@ -888,6 +874,7 @@ E-Mail: [E-Mail-Adresse der verantwortlichen Stelle]</p><p>Verantwortliche Stell
 		</page>
 	</import>
 	<delete>
+		<page identifier="com.woltlab.wcf.AvatarEdit"/>
 		<!-- The notification list is no longer part of the user menu. -->
 		<page identifier="com.woltlab.wcf.NotificationList"/>
 	</delete>

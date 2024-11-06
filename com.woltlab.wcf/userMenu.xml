@@ -16,11 +16,6 @@
 			<parent>wcf.user.menu.profile</parent>
 			<showorder>2</showorder>
 		</usermenuitem>
-		<usermenuitem name="wcf.user.menu.profile.avatar">
-			<controller>wcf\form\AvatarEditForm</controller>
-			<parent>wcf.user.menu.profile</parent>
-			<showorder>3</showorder>
-		</usermenuitem>
 		<usermenuitem name="wcf.user.menu.profile.signature">
 			<controller>wcf\form\SignatureEditForm</controller>
 			<parent>wcf.user.menu.profile</parent>
@@ -63,5 +58,6 @@
 	</import>
 	<delete>
 		<usermenuitem name="wcf.user.menu.community.notification"/>
+		<usermenuitem name="wcf.user.menu.profile.avatar"/>
 	</delete>
 </data>
