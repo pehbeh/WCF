@@ -11,6 +11,8 @@ use wcf\event\gridView\UserRankGridViewInitialized;
 use wcf\event\IPsr14Event;
 use wcf\system\view\grid\action\DeleteAction;
 use wcf\system\view\grid\action\EditAction;
+use wcf\system\view\grid\filter\I18nTextFilter;
+use wcf\system\view\grid\filter\SelectFilter;
 use wcf\system\view\grid\renderer\DefaultColumnRenderer;
 use wcf\system\view\grid\renderer\NumberColumnRenderer;
 use wcf\system\view\grid\renderer\TitleColumnRenderer;
@@ -30,6 +32,7 @@ final class UserRankGridView extends DatabaseObjectListGridView
                 ->label('wcf.acp.user.rank.title')
                 ->sortable()
                 ->sortById('rankTitleI18n')
+                ->filter(new I18nTextFilter())
                 ->renderer([
                     new class extends TitleColumnRenderer {
                         public function render(mixed $value, mixed $context = null): string
@@ -58,6 +61,7 @@ final class UserRankGridView extends DatabaseObjectListGridView
             GridViewColumn::for('groupID')
                 ->label('wcf.user.group')
                 ->sortable()
+                ->filter(new SelectFilter($this->getAvailableUserGroups()))
                 ->renderer([
                     new class extends DefaultColumnRenderer {
                         public function render(mixed $value, mixed $context = null): string
@@ -115,5 +119,15 @@ final class UserRankGridView extends DatabaseObjectListGridView
     protected function getInitializedEvent(): ?IPsr14Event
     {
         return new UserRankGridViewInitialized($this);
+    }
+
+    private function getAvailableUserGroups(): array
+    {
+        $groups = [];
+        foreach (UserGroup::getSortedGroupsByType([], [UserGroup::GUESTS, UserGroup::EVERYONE]) as $group) {
+            $groups[$group->groupID] = $group->getName();
+        }
+
+        return $groups;
     }
 }
