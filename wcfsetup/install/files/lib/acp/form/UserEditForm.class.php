@@ -2,9 +2,8 @@
 
 namespace wcf\acp\form;
 
+use wcf\data\file\File;
 use wcf\data\style\Style;
-use wcf\data\user\avatar\UserAvatar;
-use wcf\data\user\avatar\UserAvatarAction;
 use wcf\data\user\cover\photo\UserCoverPhoto;
 use wcf\data\user\group\UserGroup;
 use wcf\data\user\User;
@@ -76,9 +75,8 @@ class UserEditForm extends UserAddForm
 
     /**
      * user avatar object
-     * @var UserAvatar
      */
-    public $userAvatar;
+    public ?File $userAvatar = null;
 
     /**
      * avatar type
@@ -222,9 +220,6 @@ class UserEditForm extends UserAddForm
             }
         }
 
-        if (isset($_POST['avatarType'])) {
-            $this->avatarType = $_POST['avatarType'];
-        }
         if (isset($_POST['styleID'])) {
             $this->styleID = \intval($_POST['styleID']);
         }
@@ -294,8 +289,8 @@ class UserEditForm extends UserAddForm
         parent::readData();
 
         // get the avatar object
-        if ($this->avatarType == 'custom' && $this->user->avatarID) {
-            $this->userAvatar = new UserAvatar($this->user->avatarID);
+        if ($this->avatarType == 'custom' && $this->user->avatarFileID) {
+            $this->userAvatar = new File($this->user->avatarFileID);
         }
 
         // get the user cover photo object
@@ -348,7 +343,7 @@ class UserEditForm extends UserAddForm
         $this->disableCoverPhotoReason = $this->user->disableCoverPhotoReason;
         $this->disableCoverPhotoExpires = $this->user->disableCoverPhotoExpires;
 
-        if ($this->user->avatarID) {
+        if ($this->user->avatarFileID) {
             $this->avatarType = 'custom';
         }
 
@@ -396,24 +391,6 @@ class UserEditForm extends UserAddForm
         AbstractForm::save();
         $this->htmlInputProcessor->setObjectID($this->userID);
         MessageEmbeddedObjectManager::getInstance()->registerObjects($this->htmlInputProcessor);
-
-        // handle avatar
-        if ($this->avatarType != 'custom') {
-            // delete custom avatar
-            if ($this->user->avatarID) {
-                $action = new UserAvatarAction([$this->user->avatarID], 'delete');
-                $action->executeAction();
-            }
-        }
-
-        $avatarData = [];
-        if ($this->avatarType === 'none') {
-            $avatarData = [
-                'avatarID' => null,
-            ];
-        }
-
-        $this->additionalFields = \array_merge($this->additionalFields, $avatarData);
 
         if ($this->disconnect3rdParty) {
             $this->additionalFields['authData'] = '';
@@ -586,28 +563,6 @@ class UserEditForm extends UserAddForm
     }
 
     /**
-     * Validates the user avatar.
-     */
-    protected function validateAvatar()
-    {
-        if ($this->avatarType != 'custom') {
-            $this->avatarType = 'none';
-        }
-
-        try {
-            switch ($this->avatarType) {
-                case 'custom':
-                    if (!$this->user->avatarID) {
-                        throw new UserInputException('customAvatar');
-                    }
-                    break;
-            }
-        } catch (UserInputException $e) {
-            $this->errorType[$e->getField()] = $e->getType();
-        }
-    }
-
-    /**
      * @inheritDoc
      */
     public function validate()
@@ -619,8 +574,6 @@ class UserEditForm extends UserAddForm
                 throw new PermissionDeniedException();
             }
         }
-
-        $this->validateAvatar();
 
         parent::validate();
 
