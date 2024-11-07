@@ -136,7 +136,4 @@ export function setup(options: BootstrapOptions): void {
   whenFirstSeen("[data-ignore-user]", () => {
     void import("./Component/User/Ignore").then(({ setup }) => setup());
   });
-  whenFirstSeen("[data-edit-avatar]", () => {
-    void import("./Component/User/Avatar").then(({ setup }) => setup());
-  });
 }

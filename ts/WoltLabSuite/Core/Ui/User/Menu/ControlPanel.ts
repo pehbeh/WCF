@@ -44,7 +44,7 @@ function setAlignment(element: HTMLElement, referenceElement: HTMLElement): void
   }
 }
 
-export function close(): void {
+function close(): void {
   focusTrap.deactivate();
 
   element.hidden = true;

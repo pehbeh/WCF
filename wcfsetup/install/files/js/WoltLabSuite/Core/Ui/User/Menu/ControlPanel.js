@@ -9,7 +9,6 @@
 define(["require", "exports", "tslib", "../../CloseOverlay", "./Manager", "focus-trap", "../../Alignment", "../../../Dom/Util"], function (require, exports, tslib_1, CloseOverlay_1, Manager_1, focus_trap_1, Alignment, Util_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.close = close;
     exports.getElement = getElement;
     exports.setup = setup;
     CloseOverlay_1 = tslib_1.__importDefault(CloseOverlay_1);
