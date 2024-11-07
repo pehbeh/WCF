@@ -3,6 +3,8 @@
 namespace wcf\data\user;
 
 use wcf\data\DatabaseObjectDecorator;
+use wcf\data\file\File;
+use wcf\data\file\thumbnail\FileThumbnailList;
 use wcf\data\ITitledLinkObject;
 use wcf\data\trophy\Trophy;
 use wcf\data\trophy\TrophyCache;
@@ -345,10 +347,31 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
      */
     public function getAvatar()
     {
+        // TODO simplify this function?
         if ($this->avatar === null) {
             if (!$this->disableAvatar) {
                 if ($this->canSeeAvatar()) {
-                    if ($this->avatarID) {
+                    if ($this->avatarFileID !== null) {
+                        $data = UserStorageHandler::getInstance()->getField('avatar', $this->userID);
+                        if ($data === null) {
+                            $this->avatar = new File($this->avatarFileID);
+
+                            $thumbnailList = new FileThumbnailList();
+                            $thumbnailList->getConditionBuilder()->add("fileID = ?", [$this->avatarFileID]);
+                            $thumbnailList->readObjects();
+                            foreach ($thumbnailList as $thumbnail) {
+                                $this->avatar->addThumbnail($thumbnail);
+                            }
+
+                            UserStorageHandler::getInstance()->update(
+                                $this->userID,
+                                'avatar',
+                                \serialize($this->avatar)
+                            );
+                        } else {
+                            $this->avatar = \unserialize($data);
+                        }
+                    } elseif ($this->avatarID) {
                         if (!$this->fileHash) {
                             $data = UserStorageHandler::getInstance()->getField('avatar', $this->userID);
                             if ($data === null) {
@@ -391,6 +414,11 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
         }
 
         return $this->avatar;
+    }
+
+    public function setFileAvatar(File $file): void
+    {
+        $this->avatar = new AvatarDecorator($file);
     }
 
     /**

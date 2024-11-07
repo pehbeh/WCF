@@ -2,6 +2,9 @@
 
 namespace wcf\data\user\avatar;
 
+use wcf\data\file\File;
+use wcf\util\StringUtil;
+
 /**
  * Wraps avatars to provide compatibility layers.
  *
@@ -11,12 +14,9 @@ namespace wcf\data\user\avatar;
  */
 final class AvatarDecorator implements IUserAvatar, ISafeFormatAvatar
 {
-    /**
-     * @var IUserAvatar
-     */
-    private $avatar;
+    private IUserAvatar | File $avatar;
 
-    public function __construct(IUserAvatar $avatar)
+    public function __construct(IUserAvatar | File $avatar)
     {
         $this->avatar = $avatar;
     }
@@ -26,7 +26,9 @@ final class AvatarDecorator implements IUserAvatar, ISafeFormatAvatar
      */
     public function getSafeURL(?int $size = null): string
     {
-        if ($this->avatar instanceof ISafeFormatAvatar) {
+        if ($this->avatar instanceof File) {
+            return $this->getURL($size);
+        } elseif ($this->avatar instanceof ISafeFormatAvatar) {
             return $this->avatar->getSafeURL($size);
         }
 
@@ -38,7 +40,9 @@ final class AvatarDecorator implements IUserAvatar, ISafeFormatAvatar
      */
     public function getSafeImageTag(?int $size = null): string
     {
-        if ($this->avatar instanceof ISafeFormatAvatar) {
+        if ($this->avatar instanceof File) {
+            return $this->getImageTag($size);
+        } elseif ($this->avatar instanceof ISafeFormatAvatar) {
             return $this->avatar->getSafeImageTag($size);
         }
 
@@ -50,7 +54,16 @@ final class AvatarDecorator implements IUserAvatar, ISafeFormatAvatar
      */
     public function getURL($size = null)
     {
-        return $this->avatar->getURL();
+        if ($this->avatar instanceof File) {
+            $thumbnail = $this->avatar->getThumbnail($size ?? '');
+            if ($thumbnail !== null) {
+                return $thumbnail->getLink();
+            }
+
+            return $this->avatar->getLink();
+        } else {
+            return $this->avatar->getURL();
+        }
     }
 
     /**
@@ -58,7 +71,17 @@ final class AvatarDecorator implements IUserAvatar, ISafeFormatAvatar
      */
     public function getImageTag($size = null, bool $lazyLoading = true)
     {
-        return $this->avatar->getImageTag($size, $lazyLoading);
+        if ($this->avatar instanceof File) {
+            return \sprintf(
+                '<img src="%s" width="%d" height="%d" alt="" class="userAvatarImage" loading="%s">',
+                StringUtil::encodeHTML($this->getSafeURL($size)),
+                $size,
+                $size,
+                $lazyLoading ? 'lazy' : 'eager'
+            );
+        } else {
+            return $this->avatar->getImageTag($size, $lazyLoading);
+        }
     }
 
     /**
@@ -66,7 +89,11 @@ final class AvatarDecorator implements IUserAvatar, ISafeFormatAvatar
      */
     public function getWidth()
     {
-        return $this->avatar->getWidth();
+        if ($this->avatar instanceof File) {
+            return $this->avatar->width;
+        } else {
+            return $this->avatar->getWidth();
+        }
     }
 
     /**
@@ -74,6 +101,10 @@ final class AvatarDecorator implements IUserAvatar, ISafeFormatAvatar
      */
     public function getHeight()
     {
-        return $this->avatar->getHeight();
+        if ($this->avatar instanceof File) {
+            return $this->avatar->height;
+        } else {
+            return $this->avatar->getHeight();
+        }
     }
 }
