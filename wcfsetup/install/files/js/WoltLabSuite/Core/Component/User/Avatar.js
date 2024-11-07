@@ -14,13 +14,24 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/PromiseMutex", 
     async function editAvatar(button) {
         // If the user is editing their own avatar, the control panel is open and can overlay the dialog.
         CloseOverlay_1.default.execute();
-        const { ok } = await (0, Dialog_1.dialogFactory)().usingFormBuilder().fromEndpoint(button.dataset.editAvatar);
+        const { ok, result } = await (0, Dialog_1.dialogFactory)().usingFormBuilder().fromEndpoint(button.dataset.editAvatar);
         if (ok) {
-            // TODO can we simple replace all avatar images?
-            window.location.reload();
+            const avatarForm = document.getElementById("avatarForm");
+            if (avatarForm) {
+                // In the ACP, the form should not be reloaded after changing the avatar.
+                avatarForm.querySelector("img.userAvatarImage").src = result.avatar;
+            }
+            else {
+                // TODO can we simple replace all avatar images?
+                window.location.reload();
+            }
         }
     }
     function setup() {
+        (0, Selector_1.wheneverFirstSeen)("#wcf\\\\action\\\\UserAvatarAction_avatarFileIDContainer woltlab-core-file img", (img) => {
+            img.classList.add("userAvatarImage");
+            img.parentElement.classList.add("userAvatar");
+        });
         (0, Selector_1.wheneverFirstSeen)("[data-edit-avatar]", (button) => {
             button.addEventListener("click", (0, PromiseMutex_1.promiseMutex)(() => editAvatar(button)));
         });

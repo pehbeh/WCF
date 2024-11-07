@@ -12,19 +12,37 @@ import { wheneverFirstSeen } from "WoltLabSuite/Core/Helper/Selector";
 import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
 import UiCloseOverlay from "WoltLabSuite/Core/Ui/CloseOverlay";
 
+interface Result {
+  avatar: string;
+}
+
 async function editAvatar(button: HTMLElement): Promise<void> {
   // If the user is editing their own avatar, the control panel is open and can overlay the dialog.
   UiCloseOverlay.execute();
 
-  const { ok } = await dialogFactory().usingFormBuilder().fromEndpoint(button.dataset.editAvatar!);
+  const { ok, result } = await dialogFactory().usingFormBuilder().fromEndpoint<Result>(button.dataset.editAvatar!);
 
   if (ok) {
-    // TODO can we simple replace all avatar images?
-    window.location.reload();
+    const avatarForm = document.getElementById("avatarForm");
+    if (avatarForm) {
+      // In the ACP, the form should not be reloaded after changing the avatar.
+      avatarForm.querySelector<HTMLImageElement>("img.userAvatarImage")!.src = result.avatar;
+    } else {
+      // TODO can we simple replace all avatar images?
+      window.location.reload();
+    }
   }
 }
 
 export function setup(): void {
+  wheneverFirstSeen(
+    "#wcf\\\\action\\\\UserAvatarAction_avatarFileIDContainer woltlab-core-file img",
+    (img: HTMLImageElement) => {
+      img.classList.add("userAvatarImage");
+      img.parentElement!.classList.add("userAvatar");
+    },
+  );
+
   wheneverFirstSeen("[data-edit-avatar]", (button) => {
     button.addEventListener(
       "click",

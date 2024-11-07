@@ -78,9 +78,14 @@ final class UserAvatarAction implements RequestHandlerInterface
                 (new SetAvatar($user->getDecoratedObject()))();
             }
 
+            // Reload the user object to get the updated avatar
+            UserProfileRuntimeCache::getInstance()->removeObject($user->userID);
+            $user = UserProfileRuntimeCache::getInstance()->getObject($user->userID);
+
             return new JsonResponse([
-                // TODO did we need the avatar url?
-                'result' => [],
+                'result' => [
+                    'avatar' => $user->getAvatar()->getURL(),
+                ],
             ]);
         } else {
             throw new \LogicException('Unreachable');
