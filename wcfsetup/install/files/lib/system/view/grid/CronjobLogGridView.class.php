@@ -10,6 +10,7 @@ use wcf\data\DatabaseObjectList;
 use wcf\event\gridView\CronjobLogGridViewInitialized;
 use wcf\event\IPsr14Event;
 use wcf\system\view\grid\filter\SelectFilter;
+use wcf\system\view\grid\filter\TimeFilter;
 use wcf\system\view\grid\renderer\DefaultColumnRenderer;
 use wcf\system\view\grid\renderer\NumberColumnRenderer;
 use wcf\system\view\grid\renderer\TimeColumnRenderer;
@@ -45,7 +46,7 @@ final class CronjobLogGridView extends DatabaseObjectListGridView
             GridViewColumn::for('execTime')
                 ->label('wcf.acp.cronjob.log.execTime')
                 ->sortable()
-                // TODO: Add some time frame filter.
+                ->filter(new TimeFilter())
                 ->renderer(new TimeColumnRenderer()),
             GridViewColumn::for('success')
                 ->label('wcf.acp.cronjob.log.status')
