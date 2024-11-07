@@ -1678,6 +1678,7 @@
 		<file>lib/data/user/option/IUserOptionOutput.class.php</file>
 		<file>lib/data/user/option/UserOptionOutput.class.php</file>
 		<file>lib/form/AbstractSecureForm.class.php</file>
+		<file>lib/form/AvatarEditForm.class.php</file>
 		<file>lib/form/Form.class.php</file>
 		<file>lib/form/MailForm.class.php</file>
 		<file>lib/form/MultifactorAuthenticationAbortForm.class.php</file>

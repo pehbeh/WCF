@@ -7,7 +7,10 @@ use wcf\data\file\FileAction;
 use wcf\data\user\avatar\UserAvatarAction;
 use wcf\data\user\User;
 use wcf\data\user\UserEditor;
+use wcf\system\user\group\assignment\UserGroupAssignmentHandler;
 use wcf\system\user\storage\UserStorageHandler;
+use wcf\system\user\UserProfileHandler;
+use wcf\system\WCF;
 
 final class SetAvatar
 {
@@ -34,5 +37,13 @@ final class SetAvatar
         ]);
 
         UserStorageHandler::getInstance()->reset([$this->user->userID], 'avatar');
+
+        // check if the user will be automatically added to new user groups
+        // because of the changed avatar
+        UserGroupAssignmentHandler::getInstance()->checkUsers([$this->user->userID]);
+
+        if ($this->user->userID === WCF::getUser()->userID) {
+            UserProfileHandler::getInstance()->reloadUserProfile();
+        }
     }
 }
