@@ -4,12 +4,11 @@ namespace wcf\system\file\processor;
 
 use wcf\data\file\File;
 use wcf\data\user\avatar\UserAvatar;
-use wcf\data\user\UserEditor;
 use wcf\data\user\UserProfile;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\exception\UserInputException;
-use wcf\system\user\storage\UserStorageHandler;
+use wcf\system\user\command\SetAvatar;
 use wcf\system\WCF;
 use wcf\util\FileUtil;
 
@@ -66,11 +65,7 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
             WCF::getSession()->update();
         }
 
-        (new UserEditor($user->getDecoratedObject()))->update([
-            'avatarFileID' => $file->fileID,
-        ]);
-        // reset user storage
-        UserStorageHandler::getInstance()->reset([$user->userID], 'avatar');
+        (new SetAvatar($user->getDecoratedObject(), $file))();
     }
 
     #[\Override]

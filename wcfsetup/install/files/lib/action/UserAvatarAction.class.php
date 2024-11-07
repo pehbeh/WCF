@@ -6,9 +6,7 @@ use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use wcf\data\file\FileAction;
 use wcf\data\IStorableObject;
-use wcf\data\user\UserEditor;
 use wcf\data\user\UserProfile;
 use wcf\http\Helper;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
@@ -20,7 +18,7 @@ use wcf\system\form\builder\field\FileProcessorFormField;
 use wcf\system\form\builder\field\RadioButtonFormField;
 use wcf\system\form\builder\IFormDocument;
 use wcf\system\form\builder\Psr15DialogForm;
-use wcf\system\user\storage\UserStorageHandler;
+use wcf\system\user\command\SetAvatar;
 use wcf\system\user\UserProfileHandler;
 use wcf\system\WCF;
 
@@ -77,15 +75,7 @@ final class UserAvatarAction implements RequestHandlerInterface
             // However, if the user wants to delete their avatar and use a standard avatar,
             // this must be saved and the cache reset
             if ($data['avatarType'] === 'none') {
-                if ($user->avatarFileID !== null) {
-                    (new FileAction([$user->avatarFileID], 'delete'))->executeAction();
-                }
-
-                (new UserEditor($user->getDecoratedObject()))->update([
-                    'avatarFileID' => null,
-                ]);
-
-                UserStorageHandler::getInstance()->reset([$user->userID], 'avatar');
+                (new SetAvatar($user->getDecoratedObject()))();
             }
 
             return new JsonResponse([
