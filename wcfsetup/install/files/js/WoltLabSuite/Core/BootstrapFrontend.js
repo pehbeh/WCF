@@ -99,5 +99,8 @@ define(["require", "exports", "tslib", "./BackgroundQueue", "./Bootstrap", "./Ui
         (0, LazyLoader_1.whenFirstSeen)("[data-ignore-user]", () => {
             void new Promise((resolve_8, reject_8) => { require(["./Component/User/Ignore"], resolve_8, reject_8); }).then(tslib_1.__importStar).then(({ setup }) => setup());
         });
+        (0, LazyLoader_1.whenFirstSeen)("[data-edit-avatar]", () => {
+            void new Promise((resolve_9, reject_9) => { require(["./Component/User/Avatar"], resolve_9, reject_9); }).then(tslib_1.__importStar).then(({ setup }) => setup());
+        });
     }
 });

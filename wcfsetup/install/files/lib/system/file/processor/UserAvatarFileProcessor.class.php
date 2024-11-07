@@ -41,7 +41,7 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
         $userFromContext = $this->getUser($context);
         $userFromCoreFile = $this->getUserByFile($file);
 
-        if ($userFromContext === null) {
+        if ($userFromCoreFile === null) {
             return true;
         }
 
@@ -62,11 +62,11 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
 
         // Save the `fileID` in the session variable so that the current user can delete it the old avatar
         if ($user->avatarFileID !== null) {
-            WCF::getSession()->register(\sprintf(self::SESSION_VARIABLE, $$user->avatarFileID), TIME_NOW);
+            WCF::getSession()->register(\sprintf(self::SESSION_VARIABLE, $user->avatarFileID), TIME_NOW);
             WCF::getSession()->update();
         }
 
-        (new UserEditor($user))->update([
+        (new UserEditor($user->getDecoratedObject()))->update([
             'avatarFileID' => $file->fileID,
         ]);
         // reset user storage
@@ -82,7 +82,7 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
             return FileProcessorPreflightResult::InvalidContext;
         }
 
-        if (!$this->canEditAvatar($user)) {
+        if (!UserAvatarFileProcessor::canEditAvatar($user)) {
             return FileProcessorPreflightResult::InsufficientPermissions;
         }
 
@@ -124,7 +124,7 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
             ) !== null;
         }
 
-        return $this->canEditAvatar($user);
+        return UserAvatarFileProcessor::canEditAvatar($user);
     }
 
     #[\Override]
@@ -233,7 +233,7 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
         return UserProfileRuntimeCache::getInstance()->getObject($userID);
     }
 
-    private function canEditAvatar(UserProfile $user): bool
+    public static function canEditAvatar(UserProfile $user): bool
     {
         if (WCF::getSession()->getPermission('admin.user.canEditUser')) {
             return true;

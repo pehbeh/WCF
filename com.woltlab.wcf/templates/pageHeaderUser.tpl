@@ -55,12 +55,12 @@
 									</div>
 								{/if}
 								{if $__wcf->getSession()->getPermission('user.profile.avatar.canUploadAvatar') && !$__wcf->getUserProfileHandler()->disableAvatar}
-									<div class="userMenuItem userMenuItemNarrow userMenuItemSingleLine">
+									<div class="userMenuItem userMenuItemNarrow userMenuItemSingleLine userAvatarManagement" data-edit-avatar="{link controller="UserAvatar"}{/link}">
 										<div class="userMenuItemImage">
 											{icon size=16 name='user-pen'}
 										</div>
 										<div class="userMenuItemContent">
-											<button type="button" class="userMenuItemLink userAvatarManagement">
+											<button type="button" class="userMenuItemLink">
 												{lang}wcf.user.avatarManagement{/lang}
 											</button>
 										</div>
