@@ -2,6 +2,7 @@
 
 namespace wcf\acp\page;
 
+use wcf\data\file\FileList;
 use wcf\data\user\group\UserGroup;
 use wcf\data\user\option\ViewableUserOption;
 use wcf\data\user\User;
@@ -295,6 +296,8 @@ class UserListPage extends SortablePage
                     ORDER BY    " . (($this->sortField != 'email' && isset($this->options[$this->sortField])) ? 'option_value.userOption' . $this->options[$this->sortField]->optionID : 'user_table.' . $this->sortField) . " " . $this->sortOrder;
             $statement = WCF::getDB()->prepare($sql);
             $statement->execute($conditions->getParameters());
+
+            $avatarFileIDs = [];
             while ($row = $statement->fetchArray()) {
                 $groupIDs = ($userToGroups[$row['userID']] ?? []);
 
@@ -308,10 +311,24 @@ class UserListPage extends SortablePage
                 $row['isMarked'] = \intval(\in_array($row['userID'], $this->markedUsers));
 
                 $this->users[] = new UserProfile(new User(null, $row));
+
+                if ($row['avatarFileID'] !== null) {
+                    $avatarFileIDs[] = $row['avatarFileID'];
+                }
             }
+
+            $fileList = new FileList();
+            $fileList->loadThumbnails = true;
+            $fileList->setObjectIDs($avatarFileIDs);
+            $fileList->readObjects();
+            $avatarFiles = $fileList->getObjects();
 
             // get special columns
             foreach ($this->users as $user) {
+                if ($user->avatarFileID !== null) {
+                    $user->setFileAvatar($avatarFiles[$user->avatarFileID]);
+                }
+
                 foreach ($this->columns as $column) {
                     switch ($column) {
                         case 'email':

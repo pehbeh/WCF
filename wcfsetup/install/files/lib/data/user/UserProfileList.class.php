@@ -3,7 +3,6 @@
 namespace wcf\data\user;
 
 use wcf\data\file\FileList;
-use wcf\data\file\thumbnail\FileThumbnailList;
 
 /**
  * Represents a list of user profiles.
@@ -81,16 +80,10 @@ class UserProfileList extends UserList
         }
 
         $fileList = new FileList();
+        $fileList->loadThumbnails = true;
         $fileList->setObjectIDs($avatarFileIDs);
         $fileList->readObjects();
         $files = $fileList->getObjects();
-
-        $thumbnailList = new FileThumbnailList();
-        $thumbnailList->getConditionBuilder()->add("fileID IN (?)", [$avatarFileIDs]);
-        $thumbnailList->readObjects();
-        foreach ($thumbnailList as $thumbnail) {
-            $files[$thumbnail->fileID]->addThumbnail($thumbnail);
-        }
 
         foreach ($this->objects as $user) {
             if ($user->avatarFileID !== null) {
