@@ -22,7 +22,7 @@ final class SetAvatar
 
     public function __invoke()
     {
-        if ($this->file === null) {
+        if ($this->file === null && $this->user->avatarFileID !== null) {
             (new FileAction([$this->user->avatarFileID], 'delete'))->executeAction();
         }
 
