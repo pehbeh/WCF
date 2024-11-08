@@ -22,6 +22,8 @@ use wcf\util\StringUtil;
  * @property-read int|null $userID id of the user to which the user avatar belongs or null
  * @property-read string $fileHash SHA1 hash of the original avatar file
  * @property-read int $hasWebP `1` if there is a WebP variant, else `0`
+ *
+ * @deprecated 6.2
  */
 class UserAvatar extends DatabaseObject implements IUserAvatar, ISafeFormatAvatar
 {

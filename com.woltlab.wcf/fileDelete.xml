@@ -2963,6 +2963,8 @@
 		<file>lib/system/template/plugin/TemplatePluginPrefilterIcon.class.php</file>
 		<file>lib/system/template/plugin/TemplatePluginPrefilterLang.class.php</file>
 		<file>lib/system/template/plugin/WordwrapModifierTemplatePlugin.class.php</file>
+		<file>lib/system/upload/AvatarUploadFileSaveStrategy.class.php</file>
+		<file>lib/system/upload/AvatarUploadFileValidationStrategy.class.php</file>
 		<file>lib/system/user/UserCollapsibleContentHandler.class.php</file>
 		<file>lib/system/user/activity/point/AbstractUserActivityPointObjectProcessor.class.php</file>
 		<file>lib/system/user/activity/point/DefaultUserActivityPointObjectProcessor.class.php</file>

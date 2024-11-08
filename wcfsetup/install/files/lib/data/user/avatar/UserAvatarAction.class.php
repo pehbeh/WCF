@@ -22,6 +22,8 @@ use wcf\system\WCF;
  * @method  UserAvatar      create()
  * @method  UserAvatarEditor[]  getObjects()
  * @method  UserAvatarEditor    getSingleObject()
+ *
+ * @deprecated 6.2
  */
 class UserAvatarAction extends AbstractDatabaseObjectAction
 {
