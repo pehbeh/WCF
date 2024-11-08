@@ -3,7 +3,6 @@
 namespace wcf\system\file\processor;
 
 use wcf\data\file\File;
-use wcf\data\user\avatar\UserAvatar;
 use wcf\data\user\UserProfile;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
@@ -21,6 +20,13 @@ use wcf\util\FileUtil;
 final class UserAvatarFileProcessor extends AbstractFileProcessor
 {
     private const SESSION_VARIABLE = 'wcf_user_avatar_processor_%d';
+
+    public const AVATAR_SIZE = 128;
+
+    /**
+     * Size of HiDPI version
+     */
+    public const AVATAR_SIZE_2X = 256;
 
     #[\Override]
     public function getObjectTypeName(): string
@@ -104,7 +110,10 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
             throw new UserInputException('file', 'notSquare');
         }
 
-        if ($imageData[0] != UserAvatar::AVATAR_SIZE && $imageData[0] != UserAvatar::AVATAR_SIZE_2X) {
+        if (
+            $imageData[0] != UserAvatarFileProcessor::AVATAR_SIZE
+            && $imageData[0] != UserAvatarFileProcessor::AVATAR_SIZE_2X
+        ) {
             throw new UserInputException('file', 'wrongSize');
         }
     }
@@ -142,8 +151,18 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
             // 64x64
             // 48x48
             // 32x32
-            new ThumbnailFormat('128', UserAvatar::AVATAR_SIZE, UserAvatar::AVATAR_SIZE, false),
-            new ThumbnailFormat('256', UserAvatar::AVATAR_SIZE_2X, UserAvatar::AVATAR_SIZE_2X, false),
+            new ThumbnailFormat(
+                '128',
+                UserAvatarFileProcessor::AVATAR_SIZE,
+                UserAvatarFileProcessor::AVATAR_SIZE,
+                false
+            ),
+            new ThumbnailFormat(
+                '256',
+                UserAvatarFileProcessor::AVATAR_SIZE_2X,
+                UserAvatarFileProcessor::AVATAR_SIZE_2X,
+                false
+            ),
         ];
     }
 
@@ -197,8 +216,8 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
     public function getImageCropperConfiguration(): ?ImageCropperConfiguration
     {
         return ImageCropperConfiguration::createExact(
-            new ImageCropSize(UserAvatar::AVATAR_SIZE, UserAvatar::AVATAR_SIZE),
-            new ImageCropSize(UserAvatar::AVATAR_SIZE_2X, UserAvatar::AVATAR_SIZE_2X)
+            new ImageCropSize(UserAvatarFileProcessor::AVATAR_SIZE, UserAvatarFileProcessor::AVATAR_SIZE),
+            new ImageCropSize(UserAvatarFileProcessor::AVATAR_SIZE_2X, UserAvatarFileProcessor::AVATAR_SIZE_2X)
         );
     }
 
