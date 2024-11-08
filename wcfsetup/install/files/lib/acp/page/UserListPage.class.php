@@ -286,12 +286,10 @@ class UserListPage extends SortablePage
             $statement->execute($conditions->getParameters());
             $userToGroups = $statement->fetchMap('userID', 'groupID', false);
 
-            $sql = "SELECT      user_avatar.*, option_value.*, user_table.*
+            $sql = "SELECT      option_value.*, user_table.*
                     FROM        wcf1_user user_table
                     LEFT JOIN   wcf1_user_option_value option_value
                     ON          option_value.userID = user_table.userID
-                    LEFT JOIN   wcf1_user_avatar user_avatar
-                    ON          user_avatar.avatarID = user_table.avatarID
                     " . $conditions . "
                     ORDER BY    " . (($this->sortField != 'email' && isset($this->options[$this->sortField])) ? 'option_value.userOption' . $this->options[$this->sortField]->optionID : 'user_table.' . $this->sortField) . " " . $this->sortOrder;
             $statement = WCF::getDB()->prepare($sql);

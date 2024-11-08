@@ -2,8 +2,6 @@
 
 namespace wcf\data\user;
 
-use wcf\data\file\FileList;
-
 /**
  * Represents a list of user profiles.
  *
@@ -19,6 +17,8 @@ use wcf\data\file\FileList;
  */
 class UserProfileList extends UserList
 {
+    use TUserAvatarObjectList;
+
     /**
      * @inheritDoc
      */
@@ -28,8 +28,6 @@ class UserProfileList extends UserList
      * @inheritDoc
      */
     public $decoratorClassName = UserProfile::class;
-
-    public bool $loadAvatarFiles = true;
 
     /**
      * @inheritDoc
@@ -61,34 +59,5 @@ class UserProfileList extends UserList
         parent::readObjects();
 
         $this->loadAvatarFiles();
-    }
-
-    protected function loadAvatarFiles(): void
-    {
-        if (!$this->loadAvatarFiles) {
-            return;
-        }
-
-        $avatarFileIDs = [];
-        foreach ($this->objects as $user) {
-            if ($user->avatarFileID !== null) {
-                $avatarFileIDs[] = $user->avatarFileID;
-            }
-        }
-        if ($avatarFileIDs === []) {
-            return;
-        }
-
-        $fileList = new FileList();
-        $fileList->loadThumbnails = true;
-        $fileList->setObjectIDs($avatarFileIDs);
-        $fileList->readObjects();
-        $files = $fileList->getObjects();
-
-        foreach ($this->objects as $user) {
-            if ($user->avatarFileID !== null) {
-                $user->setFileAvatar($files[$user->avatarFileID]);
-            }
-        }
     }
 }

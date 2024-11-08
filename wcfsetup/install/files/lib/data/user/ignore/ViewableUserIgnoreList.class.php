@@ -2,6 +2,7 @@
 
 namespace wcf\data\user\ignore;
 
+use wcf\data\user\TUserAvatarObjectList;
 use wcf\data\user\User;
 use wcf\data\user\UserProfile;
 
@@ -14,6 +15,8 @@ use wcf\data\user\UserProfile;
  */
 class ViewableUserIgnoreList extends UserIgnoreList
 {
+    use TUserAvatarObjectList;
+
     /**
      * @inheritDoc
      */
@@ -46,16 +49,21 @@ class ViewableUserIgnoreList extends UserIgnoreList
         }
         $this->sqlSelects .= "user_ignore.ignoreID";
         $this->sqlSelects .= ", user_option_value.*";
-        $this->sqlSelects .= ", user_avatar.*";
 
         $this->sqlJoins .= "
             LEFT JOIN   wcf1_user user_table
             ON          user_table.userID = user_ignore.ignoreUserID
             LEFT JOIN   wcf1_user_option_value user_option_value
-            ON          user_option_value.userID = user_table.userID
-            LEFT JOIN   wcf1_user_avatar user_avatar
-            ON          user_avatar.avatarID = user_table.avatarID";
+            ON          user_option_value.userID = user_table.userID";
 
         $this->sqlSelects .= ", user_table.*";
+    }
+
+    #[\Override]
+    public function readObjects()
+    {
+        parent::readObjects();
+
+        $this->loadAvatarFiles();
     }
 }

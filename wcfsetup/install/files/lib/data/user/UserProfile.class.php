@@ -4,14 +4,13 @@ namespace wcf\data\user;
 
 use wcf\data\DatabaseObjectDecorator;
 use wcf\data\file\File;
-use wcf\data\file\thumbnail\FileThumbnailList;
+use wcf\data\file\FileList;
 use wcf\data\ITitledLinkObject;
 use wcf\data\trophy\Trophy;
 use wcf\data\trophy\TrophyCache;
 use wcf\data\user\avatar\AvatarDecorator;
 use wcf\data\user\avatar\DefaultAvatar;
 use wcf\data\user\avatar\IUserAvatar;
-use wcf\data\user\avatar\UserAvatar;
 use wcf\data\user\cover\photo\DefaultUserCoverPhoto;
 use wcf\data\user\cover\photo\IUserCoverPhoto;
 use wcf\data\user\cover\photo\UserCoverPhoto;
@@ -347,21 +346,18 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
      */
     public function getAvatar()
     {
-        // TODO simplify this function?
         if ($this->avatar === null) {
             if (!$this->disableAvatar) {
                 if ($this->canSeeAvatar()) {
                     if ($this->avatarFileID !== null) {
                         $data = UserStorageHandler::getInstance()->getField('avatar', $this->userID);
                         if ($data === null) {
-                            $this->avatar = new File($this->avatarFileID);
+                            $fileList = new FileList();
+                            $fileList->setObjectIDs([$this->avatarFileID]);
+                            $fileList->loadThumbnails = true;
+                            $fileList->readObjects();
 
-                            $thumbnailList = new FileThumbnailList();
-                            $thumbnailList->getConditionBuilder()->add("fileID = ?", [$this->avatarFileID]);
-                            $thumbnailList->readObjects();
-                            foreach ($thumbnailList as $thumbnail) {
-                                $this->avatar->addThumbnail($thumbnail);
-                            }
+                            $this->avatar = $fileList->getSingleObject();
 
                             UserStorageHandler::getInstance()->update(
                                 $this->userID,
@@ -370,22 +366,6 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
                             );
                         } else {
                             $this->avatar = \unserialize($data);
-                        }
-                    } elseif ($this->avatarID) {
-                        if (!$this->fileHash) {
-                            $data = UserStorageHandler::getInstance()->getField('avatar', $this->userID);
-                            if ($data === null) {
-                                $this->avatar = new UserAvatar($this->avatarID);
-                                UserStorageHandler::getInstance()->update(
-                                    $this->userID,
-                                    'avatar',
-                                    \serialize($this->avatar)
-                                );
-                            } else {
-                                $this->avatar = \unserialize($data);
-                            }
-                        } else {
-                            $this->avatar = new UserAvatar(null, $this->getDecoratedObject()->data);
                         }
                     } else {
                         $parameters = ['avatar' => null];
