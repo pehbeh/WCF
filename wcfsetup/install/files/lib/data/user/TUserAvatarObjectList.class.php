@@ -14,6 +14,8 @@ use wcf\data\file\FileList;
  *
  * @property    UserProfile[] $objects
  * @mixin DatabaseObjectList
+ *
+ * @since 6.2
  */
 trait TUserAvatarObjectList
 {
