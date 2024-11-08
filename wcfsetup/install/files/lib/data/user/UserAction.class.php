@@ -4,6 +4,7 @@ namespace wcf\data\user;
 
 use ParagonIE\ConstantTime\Hex;
 use wcf\data\AbstractDatabaseObjectAction;
+use wcf\data\file\FileAction;
 use wcf\data\IClipboardAction;
 use wcf\data\ISearchAction;
 use wcf\data\object\type\ObjectTypeCache;
@@ -139,15 +140,21 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
         }
 
         // delete avatars
-        $avatarIDs = [];
+        $avatarIDs = $avatarFileIDs = [];
         foreach ($this->getObjects() as $user) {
             if ($user->avatarID) {
                 $avatarIDs[] = $user->avatarID;
+            }
+            if ($user->avatarFileID !== null) {
+                $avatarFileIDs[] = $user->avatarFileID;
             }
         }
         if (!empty($avatarIDs)) {
             $action = new UserAvatarAction($avatarIDs, 'delete');
             $action->executeAction();
+        }
+        if (!empty($avatarFileIDs)) {
+            (new FileAction($avatarFileIDs, 'delete'))->executeAction();
         }
 
         // delete profile comments and signature attachments
