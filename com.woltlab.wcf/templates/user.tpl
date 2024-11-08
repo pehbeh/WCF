@@ -125,8 +125,10 @@
 			{/if}
 		</div>
 		<div class="contentHeaderIcon">
-			{if $user->userID == $__wcf->user->userID}
-				<a href="{link controller='AvatarEdit'}{/link}" class="jsTooltip" title="{lang}wcf.user.avatar.edit{/lang}">{@$user->getAvatar()->getImageTag(128)}</a>
+			{if $user->canEditAvatar()}
+				<buton type="button" data-edit-avatar="{link controller="UserAvatar"}{/link}" class="jsTooltip pointer box128" title="{lang}wcf.user.avatar.edit{/lang}">
+					{unsafe:$user->getAvatar()->getImageTag(128)}
+				</buton>
 			{else}
 				<span>{@$user->getAvatar()->getImageTag(128)}</span>
 			{/if}
