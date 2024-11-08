@@ -83,7 +83,7 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
             return FileProcessorPreflightResult::InvalidContext;
         }
 
-        if (!UserAvatarFileProcessor::canEditAvatar($user)) {
+        if (!$user->canEditAvatar()) {
             return FileProcessorPreflightResult::InsufficientPermissions;
         }
 
@@ -128,7 +128,7 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
             ) !== null;
         }
 
-        return UserAvatarFileProcessor::canEditAvatar($user);
+        return $user->canEditAvatar();
     }
 
     #[\Override]
@@ -245,22 +245,5 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
         }
 
         return UserProfileRuntimeCache::getInstance()->getObject($userID);
-    }
-
-    public static function canEditAvatar(UserProfile $user): bool
-    {
-        if (WCF::getSession()->getPermission('admin.user.canEditUser')) {
-            return true;
-        }
-
-        if ($user->userID !== WCF::getUser()->userID) {
-            return false;
-        }
-
-        if (WCF::getUser()->disableAvatar) {
-            return false;
-        }
-
-        return WCF::getSession()->getPermission('user.profile.avatar.canUploadAvatar');
     }
 }

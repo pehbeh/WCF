@@ -1198,4 +1198,24 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
             && $this->trophyPoints
             && ($this->isAccessible('canViewTrophies') || $this->userID == WCF::getSession()->userID);
     }
+
+    /**
+     * @since 6.2
+     */
+    public function canEditAvatar(): bool
+    {
+        if (WCF::getSession()->getPermission('admin.user.canEditUser')) {
+            return true;
+        }
+
+        if ($this->userID !== WCF::getUser()->userID) {
+            return false;
+        }
+
+        if ($this->disableAvatar) {
+            return false;
+        }
+
+        return WCF::getSession()->getPermission('user.profile.avatar.canUploadAvatar');
+    }
 }

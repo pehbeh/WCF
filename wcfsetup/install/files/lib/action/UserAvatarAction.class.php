@@ -11,7 +11,6 @@ use wcf\data\user\UserProfile;
 use wcf\http\Helper;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
 use wcf\system\exception\PermissionDeniedException;
-use wcf\system\file\processor\UserAvatarFileProcessor;
 use wcf\system\form\builder\data\processor\CustomFormDataProcessor;
 use wcf\system\form\builder\field\dependency\ValueFormFieldDependency;
 use wcf\system\form\builder\field\FileProcessorFormField;
@@ -54,7 +53,7 @@ final class UserAvatarAction implements RequestHandlerInterface
             $user = UserProfileHandler::getInstance()->getUserProfile();
         }
 
-        if (!UserAvatarFileProcessor::canEditAvatar($user)) {
+        if (!$user->canEditAvatar()) {
             throw new PermissionDeniedException();
         }
 
