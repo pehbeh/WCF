@@ -339,7 +339,7 @@ final class UserExportGdprAction extends AbstractAction
             }
         }
 
-        if ($this->user->avatarFileID !== null || $this->user->avatarID !== null) {
+        if ($this->user->avatarFileID) {
             $data['avatarURL'] = $this->user->getAvatar()->getURL();
         }
 
