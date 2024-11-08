@@ -112,23 +112,32 @@
 		{/if}
 		{/if}>
 		<div class="userProfileCoverPhoto" style="background-image: url({$user->getCoverPhoto()->getURL()})">
-			{if ($user->userID == $__wcf->user->userID || $user->canEdit()) && ($__wcf->getSession()->getPermission('user.profile.coverPhoto.canUploadCoverPhoto') || $user->coverPhotoHash)}
-				<div class="userProfileManageCoverPhoto dropdown jsOnly">
-					<a href="#" class="button small dropdownToggle">{icon name='pencil'} {lang}wcf.user.coverPhoto.edit{/lang}</a>
-					<ul class="dropdownMenu">
-						{if $__wcf->getSession()->getPermission('user.profile.coverPhoto.canUploadCoverPhoto')}
-							<li><a href="#" class="jsButtonUploadCoverPhoto jsStaticDialog" data-dialog-id="userProfileCoverPhotoUpload">{lang}wcf.user.coverPhoto.upload{/lang}</a></li>
-						{/if}
-						<li{if !$user->coverPhotoHash} style="display:none;"{/if}><a href="#" class="jsButtonDeleteCoverPhoto">{lang}wcf.user.coverPhoto.delete{/lang}</a></li>
-					</ul>
-				</div>
-			{/if}
+			<ul class="userProfileManageCoverPhoto buttonGroup buttonList smallButtons">
+				{if ($user->userID == $__wcf->user->userID || $user->canEdit()) && ($__wcf->getSession()->getPermission('user.profile.coverPhoto.canUploadCoverPhoto') || $user->coverPhotoHash)}
+					<li class="dropdown jsOnly">
+						<a href="#" class="button small dropdownToggle">{icon name='pencil'} {lang}wcf.user.coverPhoto.edit{/lang}</a>
+						<ul class="dropdownMenu">
+							{if $__wcf->getSession()->getPermission('user.profile.coverPhoto.canUploadCoverPhoto')}
+								<li><a href="#" class="jsButtonUploadCoverPhoto jsStaticDialog" data-dialog-id="userProfileCoverPhotoUpload">{lang}wcf.user.coverPhoto.upload{/lang}</a></li>
+							{/if}
+							<li{if !$user->coverPhotoHash} style="display:none;"{/if}><a href="#" class="jsButtonDeleteCoverPhoto">{lang}wcf.user.coverPhoto.delete{/lang}</a></li>
+						</ul>
+					</li>
+				{/if}
+				{if $user->canEditAvatar()}
+					<li>
+						<button type="button" data-edit-avatar="{link controller="UserAvatar"}{/link}" class="button small">
+							{lang}wcf.user.avatar.edit{/lang}
+						</button>
+					</li>
+				{/if}
+			</ul>
 		</div>
 		<div class="contentHeaderIcon">
 			{if $user->canEditAvatar()}
-				<buton type="button" data-edit-avatar="{link controller="UserAvatar"}{/link}" class="jsTooltip pointer box128" title="{lang}wcf.user.avatar.edit{/lang}">
+				<button type="button" data-edit-avatar="{link controller="UserAvatar"}{/link}" class="jsTooltip pointer" title="{lang}wcf.user.avatar.edit{/lang}">
 					{unsafe:$user->getAvatar()->getImageTag(128)}
-				</buton>
+				</button>
 			{else}
 				<span>{@$user->getAvatar()->getImageTag(128)}</span>
 			{/if}
