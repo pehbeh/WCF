@@ -53,7 +53,7 @@ class AttachmentList extends DatabaseObjectList
         FileRuntimeCache::getInstance()->cacheObjectIDs($fileIDs);
 
         foreach ($this->objects as $attachment) {
-            $file = FileRuntimeCache::getInstance()->getObject($attachment->fileID) ?? null;
+            $file = FileRuntimeCache::getInstance()->getObject($attachment->fileID);
             if ($file !== null) {
                 $attachment->setFile($file);
             }

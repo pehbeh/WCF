@@ -391,6 +391,11 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
         return $this->avatar;
     }
 
+    /**
+     * Sets the user's avatar.
+     *
+     * @since 6.2
+     */
     public function setFileAvatar(File $file): void
     {
         $this->avatar = new AvatarDecorator($file);

@@ -65,7 +65,7 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
             return;
         }
 
-        // Save the `fileID` in the session variable so that the current user can delete it the old avatar
+        // Save the `fileID` in the session variable so that the current user can delete the old avatar
         if ($user->avatarFileID !== null) {
             WCF::getSession()->register(\sprintf(self::SESSION_VARIABLE, $user->avatarFileID), TIME_NOW);
             WCF::getSession()->update();
@@ -146,11 +146,6 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
     public function getThumbnailFormats(): array
     {
         return [
-            // TODO did we need thumbnails for sizes less then 128x128?
-            // 96x96
-            // 64x64
-            // 48x48
-            // 32x32
             new ThumbnailFormat(
                 '128',
                 UserAvatarFileProcessor::AVATAR_SIZE,
