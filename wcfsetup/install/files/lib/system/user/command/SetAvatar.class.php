@@ -6,6 +6,7 @@ use wcf\data\file\File;
 use wcf\data\file\FileAction;
 use wcf\data\user\User;
 use wcf\data\user\UserEditor;
+use wcf\system\cache\runtime\UserProfileRuntimeCache;
 use wcf\system\user\group\assignment\UserGroupAssignmentHandler;
 use wcf\system\user\storage\UserStorageHandler;
 use wcf\system\user\UserProfileHandler;
@@ -39,6 +40,7 @@ final class SetAvatar
         ]);
 
         UserStorageHandler::getInstance()->reset([$this->user->userID], 'avatar');
+        UserProfileRuntimeCache::getInstance()->removeObject($this->user->userID);
 
         // check if the user will be automatically added to new user groups
         // because of the changed avatar
