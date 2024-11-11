@@ -433,11 +433,6 @@
 			<classname>wcf\system\importer\UserOptionImporter</classname>
 		</type>
 		<type>
-			<name>com.woltlab.wcf.user.avatar</name>
-			<definitionname>com.woltlab.wcf.importer</definitionname>
-			<classname>wcf\system\importer\UserAvatarImporter</classname>
-		</type>
-		<type>
 			<name>com.woltlab.wcf.user.comment</name>
 			<definitionname>com.woltlab.wcf.importer</definitionname>
 			<classname>wcf\system\importer\UserCommentImporter</classname>
@@ -1803,6 +1798,9 @@
 		</type>
 		<type name="com.woltlab.wcf.sitemap">
 			<definitionname>com.woltlab.wcf.rebuildData</definitionname>
+		</type>
+		<type name="com.woltlab.wcf.user.avatar">
+			<definitionname>com.woltlab.wcf.importer</definitionname>
 		</type>
 	</delete>
 </data>
