@@ -15,7 +15,10 @@ use wcf\data\user\UserProfileAction;
 use wcf\data\user\UserProfileList;
 use wcf\system\bbcode\BBCodeHandler;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
+use wcf\system\exception\SystemException;
+use wcf\system\file\processor\UserAvatarFileProcessor;
 use wcf\system\html\input\HtmlInputProcessor;
+use wcf\system\image\ImageHandler;
 use wcf\system\user\storage\UserStorageHandler;
 use wcf\system\WCF;
 
@@ -228,6 +231,64 @@ final class UserRebuildDataWorker extends AbstractLinearRebuildDataWorker
                     // delete avatars that are missing or broken
                     $editor->delete();
                     continue;
+                }
+
+                $width = $avatar->width;
+                $height = $avatar->height;
+                if ($width != $height) {
+                    // make avatar quadratic
+                    $width = $height = \min($avatar->width, $avatar->height, UserAvatarFileProcessor::AVATAR_SIZE);
+                    $adapter = ImageHandler::getInstance()->getAdapter();
+
+                    try {
+                        $adapter->loadFile($avatar->getLocation());
+                    } catch (SystemException $e) {
+                        // broken image
+                        $editor->delete();
+                        continue;
+                    }
+
+                    $thumbnail = $adapter->createThumbnail($width, $height, false);
+                    $adapter->writeImage($thumbnail, $avatar->getLocation());
+                    // Clear thumbnail as soon as possible to free up the memory.
+                    $thumbnail = null;
+                }
+
+                if (
+                    $width != UserAvatarFileProcessor::AVATAR_SIZE
+                    && $width != UserAvatarFileProcessor::AVATAR_SIZE_2X
+                ) {
+                    // resize avatar
+                    $adapter = ImageHandler::getInstance()->getAdapter();
+
+                    try {
+                        $adapter->loadFile($avatar->getLocation());
+                    } catch (SystemException $e) {
+                        // broken image
+                        $editor->delete();
+                        continue;
+                    }
+
+                    if ($width > UserAvatarFileProcessor::AVATAR_SIZE_2X) {
+                        $adapter->resize(
+                            0,
+                            0,
+                            $width,
+                            $height,
+                            UserAvatarFileProcessor::AVATAR_SIZE_2X,
+                            UserAvatarFileProcessor::AVATAR_SIZE_2X
+                        );
+                    } else {
+                        $adapter->resize(
+                            0,
+                            0,
+                            $width,
+                            $height,
+                            UserAvatarFileProcessor::AVATAR_SIZE,
+                            UserAvatarFileProcessor::AVATAR_SIZE
+                        );
+                    }
+                    $adapter->writeImage($adapter->getImage(), $avatar->getLocation());
                 }
 
                 $file = FileEditor::createFromExistingFile(
