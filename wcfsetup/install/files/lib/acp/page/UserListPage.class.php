@@ -2,13 +2,13 @@
 
 namespace wcf\acp\page;
 
-use wcf\data\file\FileList;
 use wcf\data\user\group\UserGroup;
 use wcf\data\user\option\ViewableUserOption;
 use wcf\data\user\User;
 use wcf\data\user\UserProfile;
 use wcf\page\SortablePage;
 use wcf\system\cache\builder\UserOptionCacheBuilder;
+use wcf\system\cache\runtime\FileRuntimeCache;
 use wcf\system\clipboard\ClipboardHandler;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\event\EventHandler;
@@ -315,18 +315,10 @@ class UserListPage extends SortablePage
                 }
             }
 
-            $fileList = new FileList();
-            $fileList->loadThumbnails = true;
-            $fileList->setObjectIDs($avatarFileIDs);
-            $fileList->readObjects();
-            $avatarFiles = $fileList->getObjects();
+            FileRuntimeCache::getInstance()->cacheObjectIDs($avatarFileIDs);
 
             // get special columns
             foreach ($this->users as $user) {
-                if ($user->avatarFileID !== null) {
-                    $user->setFileAvatar($avatarFiles[$user->avatarFileID]);
-                }
-
                 foreach ($this->columns as $column) {
                     switch ($column) {
                         case 'email':

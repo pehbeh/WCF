@@ -4,7 +4,6 @@ namespace wcf\data\user;
 
 use wcf\data\DatabaseObjectDecorator;
 use wcf\data\file\File;
-use wcf\data\file\FileList;
 use wcf\data\ITitledLinkObject;
 use wcf\data\trophy\Trophy;
 use wcf\data\trophy\TrophyCache;
@@ -21,6 +20,7 @@ use wcf\data\user\option\ViewableUserOption;
 use wcf\data\user\rank\UserRank;
 use wcf\system\cache\builder\UserGroupPermissionCacheBuilder;
 use wcf\system\cache\builder\UserRankCacheBuilder;
+use wcf\system\cache\runtime\FileRuntimeCache;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\email\Mailbox;
@@ -352,12 +352,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
                     if ($this->avatarFileID !== null) {
                         $data = UserStorageHandler::getInstance()->getField('avatar', $this->userID);
                         if ($data === null) {
-                            $fileList = new FileList();
-                            $fileList->setObjectIDs([$this->avatarFileID]);
-                            $fileList->loadThumbnails = true;
-                            $fileList->readObjects();
-
-                            $this->avatar = $fileList->getSingleObject();
+                            $this->avatar = FileRuntimeCache::getInstance()->getObject($this->avatarFileID);
 
                             UserStorageHandler::getInstance()->update(
                                 $this->userID,

@@ -58,6 +58,6 @@ class UserProfileVisitorList extends DatabaseObjectList
     {
         parent::readObjects();
 
-        $this->loadAvatarFiles();
+        $this->cacheAvatarFiles();
     }
 }

@@ -64,6 +64,6 @@ class ViewableUserIgnoreList extends UserIgnoreList
     {
         parent::readObjects();
 
-        $this->loadAvatarFiles();
+        $this->cacheAvatarFiles();
     }
 }

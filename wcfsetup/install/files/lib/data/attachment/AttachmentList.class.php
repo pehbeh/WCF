@@ -3,8 +3,7 @@
 namespace wcf\data\attachment;
 
 use wcf\data\DatabaseObjectList;
-use wcf\data\file\FileList;
-use wcf\data\file\thumbnail\FileThumbnailList;
+use wcf\system\cache\runtime\FileRuntimeCache;
 
 /**
  * Represents a list of attachments.
@@ -51,20 +50,10 @@ class AttachmentList extends DatabaseObjectList
             return;
         }
 
-        $fileList = new FileList();
-        $fileList->getConditionBuilder()->add("fileID IN (?)", [$fileIDs]);
-        $fileList->readObjects();
-        $files = $fileList->getObjects();
-
-        $thumbnailList = new FileThumbnailList();
-        $thumbnailList->getConditionBuilder()->add("fileID IN (?)", [$fileIDs]);
-        $thumbnailList->readObjects();
-        foreach ($thumbnailList as $thumbnail) {
-            $files[$thumbnail->fileID]->addThumbnail($thumbnail);
-        }
+        FileRuntimeCache::getInstance()->cacheObjectIDs($fileIDs);
 
         foreach ($this->objects as $attachment) {
-            $file = $files[$attachment->fileID] ?? null;
+            $file = FileRuntimeCache::getInstance()->getObject($attachment->fileID) ?? null;
             if ($file !== null) {
                 $attachment->setFile($file);
             }

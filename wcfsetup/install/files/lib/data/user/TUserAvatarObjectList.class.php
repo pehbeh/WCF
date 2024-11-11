@@ -3,7 +3,7 @@
 namespace wcf\data\user;
 
 use wcf\data\DatabaseObjectList;
-use wcf\data\file\FileList;
+use wcf\system\cache\runtime\FileRuntimeCache;
 
 /**
  * Contains methods to load avatar files for a list of `UserProfile`.
@@ -19,14 +19,8 @@ use wcf\data\file\FileList;
  */
 trait TUserAvatarObjectList
 {
-    public bool $loadAvatarFiles = true;
-
-    protected function loadAvatarFiles(): void
+    protected function cacheAvatarFiles(): void
     {
-        if (!$this->loadAvatarFiles) {
-            return;
-        }
-
         $avatarFileIDs = [];
         foreach ($this->objects as $user) {
             if ($user->avatarFileID !== null) {
@@ -37,16 +31,6 @@ trait TUserAvatarObjectList
             return;
         }
 
-        $fileList = new FileList();
-        $fileList->loadThumbnails = true;
-        $fileList->setObjectIDs($avatarFileIDs);
-        $fileList->readObjects();
-        $files = $fileList->getObjects();
-
-        foreach ($this->objects as $user) {
-            if ($user->avatarFileID !== null) {
-                $user->setFileAvatar($files[$user->avatarFileID]);
-            }
-        }
+        FileRuntimeCache::getInstance()->cacheObjectIDs($avatarFileIDs);
     }
 }

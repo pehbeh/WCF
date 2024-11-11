@@ -62,6 +62,6 @@ class UserFollowerList extends UserFollowList
     {
         parent::readObjects();
 
-        $this->loadAvatarFiles();
+        $this->cacheAvatarFiles();
     }
 }

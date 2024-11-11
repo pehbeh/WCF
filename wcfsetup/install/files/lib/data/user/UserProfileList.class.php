@@ -58,6 +58,6 @@ class UserProfileList extends UserList
 
         parent::readObjects();
 
-        $this->loadAvatarFiles();
+        $this->cacheAvatarFiles();
     }
 }

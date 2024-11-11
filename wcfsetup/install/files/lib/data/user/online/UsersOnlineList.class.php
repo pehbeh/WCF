@@ -94,7 +94,7 @@ class UsersOnlineList extends SessionList
         $this->objectIDs = $this->indexToObject;
         $this->rewind();
 
-        $this->loadAvatarFiles();
+        $this->cacheAvatarFiles();
     }
 
     /**
