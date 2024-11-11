@@ -6,7 +6,7 @@
  * @license   GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since     6.2
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Component/Dialog", "WoltLabSuite/Core/Ui/CloseOverlay"], function (require, exports, tslib_1, PromiseMutex_1, Selector_1, Dialog_1, CloseOverlay_1) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Component/Dialog", "WoltLabSuite/Core/Ui/Notification", "WoltLabSuite/Core/Ui/CloseOverlay"], function (require, exports, tslib_1, PromiseMutex_1, Selector_1, Dialog_1, Notification_1, CloseOverlay_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
@@ -20,9 +20,9 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/PromiseMutex", 
             if (avatarForm) {
                 // In the ACP, the form should not be reloaded after changing the avatar.
                 avatarForm.querySelector("img.userAvatarImage").src = result.avatar;
+                (0, Notification_1.show)();
             }
             else {
-                // TODO can we simple replace all avatar images?
                 window.location.reload();
             }
         }

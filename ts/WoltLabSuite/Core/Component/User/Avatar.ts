@@ -10,6 +10,7 @@
 import { promiseMutex } from "WoltLabSuite/Core/Helper/PromiseMutex";
 import { wheneverFirstSeen } from "WoltLabSuite/Core/Helper/Selector";
 import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
+import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 import UiCloseOverlay from "WoltLabSuite/Core/Ui/CloseOverlay";
 
 interface Result {
@@ -27,8 +28,8 @@ async function editAvatar(button: HTMLElement): Promise<void> {
     if (avatarForm) {
       // In the ACP, the form should not be reloaded after changing the avatar.
       avatarForm.querySelector<HTMLImageElement>("img.userAvatarImage")!.src = result.avatar;
+      showNotification();
     } else {
-      // TODO can we simple replace all avatar images?
       window.location.reload();
     }
   }

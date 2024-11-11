@@ -11,6 +11,7 @@ use wcf\data\user\UserAction;
 use wcf\data\user\UserEditor;
 use wcf\data\user\UserProfileAction;
 use wcf\form\AbstractForm;
+use wcf\system\cache\runtime\FileRuntimeCache;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\exception\PermissionDeniedException;
@@ -290,7 +291,7 @@ class UserEditForm extends UserAddForm
 
         // get the avatar object
         if ($this->avatarType == 'custom' && $this->user->avatarFileID) {
-            $this->userAvatar = new File($this->user->avatarFileID);
+            $this->userAvatar = FileRuntimeCache::getInstance()->getObject($this->user->avatarFileID);
         }
 
         // get the user cover photo object

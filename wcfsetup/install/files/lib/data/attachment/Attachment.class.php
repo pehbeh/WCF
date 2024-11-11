@@ -3,11 +3,11 @@
 namespace wcf\data\attachment;
 
 use wcf\data\DatabaseObject;
+use wcf\data\file\File;
 use wcf\data\ILinkableObject;
 use wcf\data\IThumbnailFile;
-use wcf\data\file\File;
-use wcf\data\file\thumbnail\FileThumbnailList;
 use wcf\data\object\type\ObjectTypeCache;
+use wcf\system\cache\runtime\FileRuntimeCache;
 use wcf\system\request\IRouteController;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
@@ -375,14 +375,7 @@ class Attachment extends DatabaseObject implements ILinkableObject, IRouteContro
         }
 
         if (!isset($this->file)) {
-            $this->file = new File($fileID);
-
-            $thumbnailList = new FileThumbnailList();
-            $thumbnailList->getConditionBuilder()->add("fileID = ?", [$this->file->fileID]);
-            $thumbnailList->readObjects();
-            foreach ($thumbnailList as $thumbnail) {
-                $this->file->addThumbnail($thumbnail);
-            }
+            $this->file = FileRuntimeCache::getInstance()->getObject($fileID);
         }
 
         return $this->file;
