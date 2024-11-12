@@ -14,7 +14,9 @@
 	{/hascontent}
 </header>
 
-{unsafe:$gridView->render()}
+<div class="section">
+	{unsafe:$gridView->render()}
+</div>
 
 <script data-relocate="true">
 	require(['WoltLabSuite/Core/Acp/Controller/ExceptionLog/View'], ({ setup }) => {

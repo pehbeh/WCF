@@ -32,6 +32,8 @@
 	</nav>
 </header>
 
-{unsafe:$gridView->render()}
+<div class="section">
+	{unsafe:$gridView->render()}
+</div>
 
 {include file='footer'}

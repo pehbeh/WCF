@@ -1,4 +1,4 @@
-<div class="section gridView">
+<div class="gridView">
 	{if $view->isFilterable()}
 		<div class="gridView__filterBar">
 			<div class="gridView__filters" id="{$view->getID()}_filters">
@@ -37,7 +37,7 @@
 					</th>
 				{/foreach}
 				{if $view->hasActions()}
-					<th></th>
+					<th class="gridView__headerColumn gridView__actionColumn"></th>
 				{/if}
 			</td>
 		</thead>
