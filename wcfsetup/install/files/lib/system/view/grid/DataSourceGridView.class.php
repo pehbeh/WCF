@@ -4,9 +4,9 @@ namespace wcf\system\view\grid;
 
 use LogicException;
 
-abstract class ArrayGridView extends AbstractGridView
+abstract class DataSourceGridView extends AbstractGridView
 {
-    protected array $dataArray;
+    protected array $dataSource;
 
     public function getRows(): array
     {
@@ -17,9 +17,9 @@ abstract class ArrayGridView extends AbstractGridView
 
     protected function sortRows(): void
     {
-        $this->getDataArray();
+        $this->getDataSource();
 
-        \uasort($this->dataArray, function (array $a, array $b) {
+        \uasort($this->dataSource, function (array $a, array $b) {
             if ($this->getSortOrder() === 'ASC') {
                 return \strcmp($a[$this->getSortField()], $b[$this->getSortField()]);
             } else {
@@ -30,23 +30,23 @@ abstract class ArrayGridView extends AbstractGridView
 
     protected function getRowsForPage(): array
     {
-        return \array_slice($this->getDataArray(), ($this->getPageNo() - 1) * $this->getRowsPerPage(), $this->getRowsPerPage());
+        return \array_slice($this->getDataSource(), ($this->getPageNo() - 1) * $this->getRowsPerPage(), $this->getRowsPerPage());
     }
 
     public function countRows(): int
     {
-        return \count($this->getDataArray());
+        return \count($this->getDataSource());
     }
 
-    protected function getDataArray(): array
+    protected function getDataSource(): array
     {
-        if (!isset($this->dataArray)) {
-            $this->dataArray = $this->loadDataArray();
+        if (!isset($this->dataSource)) {
+            $this->dataSource = $this->loadDataSource();
             $this->applyFilters();
             $this->fireInitializedEvent();
         }
 
-        return $this->dataArray;
+        return $this->dataSource;
     }
 
     protected function applyFilters(): void
@@ -57,11 +57,11 @@ abstract class ArrayGridView extends AbstractGridView
                 throw new LogicException("Unknown column '" . $key . "'");
             }
 
-            $this->dataArray = \array_filter($this->dataArray, function (array $row) use ($column, $value) {
+            $this->dataSource = \array_filter($this->dataSource, function (array $row) use ($column, $value) {
                 return $column->getFilter()->matches($value, $row[$column->getID()]);
             });
         }
     }
 
-    protected abstract function loadDataArray(): array;
+    protected abstract function loadDataSource(): array;
 }

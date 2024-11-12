@@ -13,7 +13,7 @@ use wcf\system\WCF;
 use wcf\util\DirectoryUtil;
 use wcf\util\ExceptionLogUtil;
 
-final class ExceptionLogGridView extends ArrayGridView
+final class ExceptionLogGridView extends DataSourceGridView
 {
     private array $availableLogFiles;
 
@@ -62,7 +62,7 @@ final class ExceptionLogGridView extends ArrayGridView
     }
 
     #[\Override]
-    protected function loadDataArray(): array
+    protected function loadDataSource(): array
     {
         if (!empty($this->getActiveFilters()['exceptionID'])) {
             $exceptionID = $this->getActiveFilters()['exceptionID'];
