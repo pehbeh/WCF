@@ -10,7 +10,7 @@ use wcf\system\endpoint\GetRequest;
 use wcf\system\endpoint\IController;
 use wcf\system\exception\PermissionDeniedException;
 use wcf\system\exception\UserInputException;
-use wcf\system\view\grid\AbstractGridView;
+use wcf\system\gridView\AbstractGridView;
 
 #[GetRequest('/core/gridViews/rows')]
 final class GetRows implements IController

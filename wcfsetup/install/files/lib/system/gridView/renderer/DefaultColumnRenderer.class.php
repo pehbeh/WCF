@@ -1,6 +1,6 @@
 <?php
 
-namespace wcf\system\view\grid\renderer;
+namespace wcf\system\gridView\renderer;
 
 use wcf\util\StringUtil;
 

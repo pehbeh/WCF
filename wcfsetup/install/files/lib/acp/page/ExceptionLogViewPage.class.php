@@ -3,9 +3,9 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
+use wcf\system\gridView\AbstractGridView;
+use wcf\system\gridView\ExceptionLogGridView;
 use wcf\system\registry\RegistryHandler;
-use wcf\system\view\grid\AbstractGridView;
-use wcf\system\view\grid\ExceptionLogGridView;
 
 /**
  * Shows the exception log.

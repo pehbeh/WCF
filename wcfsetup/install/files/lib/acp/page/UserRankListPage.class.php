@@ -3,8 +3,8 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\view\grid\AbstractGridView;
-use wcf\system\view\grid\UserRankGridView;
+use wcf\system\gridView\AbstractGridView;
+use wcf\system\gridView\UserRankGridView;
 
 /**
  * Lists available user ranks.

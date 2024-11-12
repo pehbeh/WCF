@@ -1,13 +1,13 @@
 <?php
 
-namespace wcf\system\view\grid;
+namespace wcf\system\gridView;
 
 use LogicException;
 use wcf\action\GridViewFilterAction;
 use wcf\event\IPsr14Event;
 use wcf\system\event\EventHandler;
+use wcf\system\gridView\action\IGridViewAction;
 use wcf\system\request\LinkHandler;
-use wcf\system\view\grid\action\IGridViewAction;
 use wcf\system\WCF;
 
 abstract class AbstractGridView

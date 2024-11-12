@@ -1,14 +1,14 @@
 <?php
 
-namespace wcf\system\view\grid;
+namespace wcf\system\gridView;
 
 use wcf\event\gridView\ExceptionLogGridViewInitialized;
 use wcf\event\IPsr14Event;
 use wcf\system\Regex;
-use wcf\system\view\grid\filter\SelectFilter;
-use wcf\system\view\grid\filter\TextFilter;
-use wcf\system\view\grid\renderer\TimeColumnRenderer;
-use wcf\system\view\grid\renderer\TitleColumnRenderer;
+use wcf\system\gridView\filter\SelectFilter;
+use wcf\system\gridView\filter\TextFilter;
+use wcf\system\gridView\renderer\TimeColumnRenderer;
+use wcf\system\gridView\renderer\TitleColumnRenderer;
 use wcf\system\WCF;
 use wcf\util\DirectoryUtil;
 use wcf\util\ExceptionLogUtil;

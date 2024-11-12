@@ -3,7 +3,7 @@
 namespace wcf\page;
 
 use wcf\system\request\LinkHandler;
-use wcf\system\view\grid\AbstractGridView;
+use wcf\system\gridView\AbstractGridView;
 use wcf\system\WCF;
 
 abstract class AbstractGridViewPage extends AbstractPage

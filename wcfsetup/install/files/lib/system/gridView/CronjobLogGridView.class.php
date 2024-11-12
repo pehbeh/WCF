@@ -1,6 +1,6 @@
 <?php
 
-namespace wcf\system\view\grid;
+namespace wcf\system\gridView;
 
 use wcf\data\cronjob\Cronjob;
 use wcf\data\cronjob\I18nCronjobList;
@@ -9,12 +9,12 @@ use wcf\data\cronjob\log\CronjobLogList;
 use wcf\data\DatabaseObjectList;
 use wcf\event\gridView\CronjobLogGridViewInitialized;
 use wcf\event\IPsr14Event;
-use wcf\system\view\grid\filter\SelectFilter;
-use wcf\system\view\grid\filter\TimeFilter;
-use wcf\system\view\grid\renderer\DefaultColumnRenderer;
-use wcf\system\view\grid\renderer\NumberColumnRenderer;
-use wcf\system\view\grid\renderer\TimeColumnRenderer;
-use wcf\system\view\grid\renderer\TitleColumnRenderer;
+use wcf\system\gridView\filter\SelectFilter;
+use wcf\system\gridView\filter\TimeFilter;
+use wcf\system\gridView\renderer\DefaultColumnRenderer;
+use wcf\system\gridView\renderer\NumberColumnRenderer;
+use wcf\system\gridView\renderer\TimeColumnRenderer;
+use wcf\system\gridView\renderer\TitleColumnRenderer;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace wcf\system\view\grid;
+namespace wcf\system\gridView;
 
 use wcf\system\form\builder\field\AbstractFormField;
-use wcf\system\view\grid\filter\IGridViewFilter;
-use wcf\system\view\grid\renderer\DefaultColumnRenderer;
-use wcf\system\view\grid\renderer\IColumnRenderer;
-use wcf\system\view\grid\renderer\TitleColumnRenderer;
+use wcf\system\gridView\filter\IGridViewFilter;
+use wcf\system\gridView\renderer\DefaultColumnRenderer;
+use wcf\system\gridView\renderer\IColumnRenderer;
+use wcf\system\gridView\renderer\TitleColumnRenderer;
 use wcf\system\WCF;
 
 final class GridViewColumn

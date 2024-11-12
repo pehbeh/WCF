@@ -3,7 +3,7 @@
 namespace wcf\event\gridView;
 
 use wcf\event\IPsr14Event;
-use wcf\system\view\grid\CronjobLogGridView;
+use wcf\system\gridView\CronjobLogGridView;
 
 /**
  * Indicates that the cronjob log grid view has been initialized.

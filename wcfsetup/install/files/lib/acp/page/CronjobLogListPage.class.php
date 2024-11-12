@@ -3,8 +3,8 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\view\grid\AbstractGridView;
-use wcf\system\view\grid\CronjobLogGridView;
+use wcf\system\gridView\AbstractGridView;
+use wcf\system\gridView\CronjobLogGridView;
 
 /**
  * Shows cronjob log information.

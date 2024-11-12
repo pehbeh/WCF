@@ -1,6 +1,6 @@
 <?php
 
-namespace wcf\system\view\grid;
+namespace wcf\system\gridView;
 
 use wcf\acp\form\UserOptionEditForm;
 use wcf\data\DatabaseObjectList;
@@ -8,12 +8,12 @@ use wcf\data\user\option\UserOption;
 use wcf\data\user\option\UserOptionList;
 use wcf\event\gridView\UserOptionGridViewInitialized;
 use wcf\event\IPsr14Event;
-use wcf\system\view\grid\action\DeleteAction;
-use wcf\system\view\grid\action\EditAction;
-use wcf\system\view\grid\action\ToggleAction;
-use wcf\system\view\grid\renderer\DefaultColumnRenderer;
-use wcf\system\view\grid\renderer\NumberColumnRenderer;
-use wcf\system\view\grid\renderer\TitleColumnRenderer;
+use wcf\system\gridView\action\DeleteAction;
+use wcf\system\gridView\action\EditAction;
+use wcf\system\gridView\action\ToggleAction;
+use wcf\system\gridView\renderer\DefaultColumnRenderer;
+use wcf\system\gridView\renderer\NumberColumnRenderer;
+use wcf\system\gridView\renderer\TitleColumnRenderer;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 

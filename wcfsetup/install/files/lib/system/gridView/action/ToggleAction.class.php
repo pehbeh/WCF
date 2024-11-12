@@ -1,12 +1,12 @@
 <?php
 
-namespace wcf\system\view\grid\action;
+namespace wcf\system\gridView\action;
 
 use Closure;
 use wcf\action\ApiAction;
 use wcf\data\DatabaseObject;
+use wcf\system\gridView\AbstractGridView;
 use wcf\system\request\LinkHandler;
-use wcf\system\view\grid\AbstractGridView;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 

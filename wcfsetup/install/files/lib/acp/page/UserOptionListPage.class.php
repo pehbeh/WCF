@@ -3,8 +3,8 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\view\grid\AbstractGridView;
-use wcf\system\view\grid\UserOptionGridView;
+use wcf\system\gridView\AbstractGridView;
+use wcf\system\gridView\UserOptionGridView;
 
 /**
  * Shows a list of the installed user options.

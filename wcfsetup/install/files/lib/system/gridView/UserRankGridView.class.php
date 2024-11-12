@@ -1,6 +1,6 @@
 <?php
 
-namespace wcf\system\view\grid;
+namespace wcf\system\gridView;
 
 use wcf\acp\form\UserRankEditForm;
 use wcf\data\DatabaseObjectList;
@@ -9,13 +9,13 @@ use wcf\data\user\rank\I18nUserRankList;
 use wcf\data\user\rank\UserRank;
 use wcf\event\gridView\UserRankGridViewInitialized;
 use wcf\event\IPsr14Event;
-use wcf\system\view\grid\action\DeleteAction;
-use wcf\system\view\grid\action\EditAction;
-use wcf\system\view\grid\filter\I18nTextFilter;
-use wcf\system\view\grid\filter\SelectFilter;
-use wcf\system\view\grid\renderer\DefaultColumnRenderer;
-use wcf\system\view\grid\renderer\NumberColumnRenderer;
-use wcf\system\view\grid\renderer\TitleColumnRenderer;
+use wcf\system\gridView\action\DeleteAction;
+use wcf\system\gridView\action\EditAction;
+use wcf\system\gridView\filter\I18nTextFilter;
+use wcf\system\gridView\filter\SelectFilter;
+use wcf\system\gridView\renderer\DefaultColumnRenderer;
+use wcf\system\gridView\renderer\NumberColumnRenderer;
+use wcf\system\gridView\renderer\TitleColumnRenderer;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace wcf\system\view\grid\filter;
+namespace wcf\system\gridView\filter;
 
 use wcf\data\DatabaseObjectList;
 use wcf\system\form\builder\field\AbstractFormField;

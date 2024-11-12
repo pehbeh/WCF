@@ -3,7 +3,7 @@
 namespace wcf\event\gridView;
 
 use wcf\event\IPsr14Event;
-use wcf\system\view\grid\UserOptionGridView;
+use wcf\system\gridView\UserOptionGridView;
 
 /**
  * Indicates that the user option grid view has been initialized.

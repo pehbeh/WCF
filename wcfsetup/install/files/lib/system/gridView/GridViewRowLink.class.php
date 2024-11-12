@@ -1,6 +1,6 @@
 <?php
 
-namespace wcf\system\view\grid;
+namespace wcf\system\gridView;
 
 use wcf\data\DatabaseObject;
 use wcf\system\request\LinkHandler;

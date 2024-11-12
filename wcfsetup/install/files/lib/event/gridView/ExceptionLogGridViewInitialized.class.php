@@ -3,7 +3,7 @@
 namespace wcf\event\gridView;
 
 use wcf\event\IPsr14Event;
-use wcf\system\view\grid\ExceptionLogGridView;
+use wcf\system\gridView\ExceptionLogGridView;
 
 /**
  * Indicates that the exception log grid view has been initialized.

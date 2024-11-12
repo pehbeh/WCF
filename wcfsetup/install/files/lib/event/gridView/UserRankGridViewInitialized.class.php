@@ -3,7 +3,7 @@
 namespace wcf\event\gridView;
 
 use wcf\event\IPsr14Event;
-use wcf\system\view\grid\UserRankGridView;
+use wcf\system\gridView\UserRankGridView;
 
 /**
  * Indicates that the user rank grid view has been initialized.

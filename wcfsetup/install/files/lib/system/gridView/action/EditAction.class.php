@@ -1,11 +1,11 @@
 <?php
 
-namespace wcf\system\view\grid\action;
+namespace wcf\system\gridView\action;
 
 use Closure;
 use wcf\data\DatabaseObject;
+use wcf\system\gridView\AbstractGridView;
 use wcf\system\request\LinkHandler;
-use wcf\system\view\grid\AbstractGridView;
 use wcf\system\WCF;
 
 class EditAction extends AbstractAction

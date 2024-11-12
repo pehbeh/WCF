@@ -1,8 +1,8 @@
 <?php
 
-namespace wcf\system\view\grid\action;
+namespace wcf\system\gridView\action;
 
-use wcf\system\view\grid\AbstractGridView;
+use wcf\system\gridView\AbstractGridView;
 
 interface IGridViewAction
 {

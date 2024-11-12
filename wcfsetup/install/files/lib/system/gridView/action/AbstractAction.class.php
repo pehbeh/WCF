@@ -1,6 +1,6 @@
 <?php
 
-namespace wcf\system\view\grid\action;
+namespace wcf\system\gridView\action;
 
 use Closure;
 
