@@ -9,7 +9,7 @@
 		  stylesheet.href = "{$__wcf->getPath()}style/fancybox.css";
 		  stylesheet.id = "fancybox-stylesheet";
 
-		  document.querySelector("link[rel=\"stylesheet\"]").before(stylesheet);
+		  document.querySelector('link[rel="stylesheet"]').before(stylesheet);
 		}
 	  }
 	</script>
