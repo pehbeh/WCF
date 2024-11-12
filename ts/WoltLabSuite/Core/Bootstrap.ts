@@ -179,6 +179,10 @@ export function setup(options: BoostrapOptions): void {
   whenFirstSeen("[data-fancybox]", () => {
     void import("./Component/Image/Viewer").then(({ setup }) => setup());
   });
+  whenFirstSeen(".jsImageViewer", () => {
+    console.warn("The class `jsImageViewer` is deprecated. Use the attribute `data-fancybox` instead.");
+    void import("./Component/Image/Viewer").then(({ setupLegacy }) => setupLegacy());
+  });
 
   // Move the reCAPTCHA widget overlay to the `pageOverlayContainer`
   // when widget form elements are placed in a dialog.

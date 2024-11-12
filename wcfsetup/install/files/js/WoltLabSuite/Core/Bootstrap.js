@@ -143,6 +143,10 @@ define(["require", "exports", "tslib", "./Core", "./Date/Picker", "./Devtools", 
         (0, LazyLoader_1.whenFirstSeen)("[data-fancybox]", () => {
             void new Promise((resolve_9, reject_9) => { require(["./Component/Image/Viewer"], resolve_9, reject_9); }).then(tslib_1.__importStar).then(({ setup }) => setup());
         });
+        (0, LazyLoader_1.whenFirstSeen)(".jsImageViewer", () => {
+            console.warn("The class `jsImageViewer` is deprecated. Use the attribute `data-fancybox` instead.");
+            void new Promise((resolve_10, reject_10) => { require(["./Component/Image/Viewer"], resolve_10, reject_10); }).then(tslib_1.__importStar).then(({ setupLegacy }) => setupLegacy());
+        });
         // Move the reCAPTCHA widget overlay to the `pageOverlayContainer`
         // when widget form elements are placed in a dialog.
         const observer = new MutationObserver((mutations) => {

@@ -10,6 +10,15 @@ export function setup() {
   });
 }
 
+export function setupLegacy() {
+  void getDefaultConfig().then((config) => {
+    Fancybox.bind(".jsImageViewer", {
+      ...config,
+      groupAll: true,
+    });
+  });
+}
+
 export async function createFancybox(userSlides?: Array<userSlideType>): Promise<Fancybox> {
   return new Fancybox(userSlides, await getDefaultConfig());
 }

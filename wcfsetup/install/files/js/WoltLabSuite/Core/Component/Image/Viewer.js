@@ -25,12 +25,21 @@ define(["require", "exports", "@fancyapps/ui"], function (require, exports, ui_1
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
+    exports.setupLegacy = setupLegacy;
     exports.createFancybox = createFancybox;
     exports.getLocalization = getLocalization;
     const LOCALES = ["cs", "de", "en", "es", "fr", "it", "lv", "pl", "sk"];
     function setup() {
         void getDefaultConfig().then((config) => {
             ui_1.Fancybox.bind("[data-fancybox]", config);
+        });
+    }
+    function setupLegacy() {
+        void getDefaultConfig().then((config) => {
+            ui_1.Fancybox.bind(".jsImageViewer", {
+                ...config,
+                groupAll: true,
+            });
         });
     }
     async function createFancybox(userSlides) {
