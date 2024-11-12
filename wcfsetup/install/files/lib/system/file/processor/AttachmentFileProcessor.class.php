@@ -139,6 +139,7 @@ final class AttachmentFileProcessor extends AbstractFileProcessor
 
         return [
             'attachmentID' => $attachment->attachmentID,
+            'messageObjectID' => $attachment->objectID,
         ];
     }
 
