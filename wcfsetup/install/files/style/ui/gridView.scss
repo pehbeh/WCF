@@ -139,3 +139,9 @@
 .gridView__pagination {
 	margin-top: 10px;
 }
+
+.gridView__actionColumn__buttons {
+	align-items: center;
+	display: flex;
+	gap: 10px;
+}

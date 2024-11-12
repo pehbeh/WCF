@@ -2,6 +2,7 @@
 
 namespace wcf\system\view\grid\action;
 
+use Closure;
 use wcf\action\ApiAction;
 use wcf\data\DatabaseObject;
 use wcf\data\ITitledObject;
@@ -10,22 +11,34 @@ use wcf\system\view\grid\AbstractGridView;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 
-class DeleteAction implements IGridViewAction
+class DeleteAction extends AbstractAction
 {
     public function __construct(
         private readonly string $endpoint,
-    ) {}
+        ?Closure $isAvailableCallback = null
+    ) {
+        parent::__construct($isAvailableCallback);
+    }
 
     #[\Override]
     public function render(mixed $row): string
     {
         \assert($row instanceof DatabaseObject);
 
+        $label = WCF::getLanguage()->get('wcf.global.button.delete');
+
+        if (!$this->isAvailable($row)) {
+            return <<<HTML
+                <span>
+                    {$label}
+                </span>
+                HTML;
+        }
+
         $endpoint = StringUtil::encodeHTML(
             LinkHandler::getInstance()->getControllerLink(ApiAction::class, ['id' => 'rpc']) .
                 \sprintf($this->endpoint, $row->getObjectID())
         );
-        $label = WCF::getLanguage()->get('wcf.global.button.delete');
         if ($row instanceof ITitledObject) {
             $objectName = StringUtil::encodeHTML($row->getTitle());
         } else {

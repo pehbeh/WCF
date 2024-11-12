@@ -1,7 +1,8 @@
-define(["require", "exports", "tslib", "../Api/GridViews/GetRows", "../Dom/Util", "../Helper/PromiseMutex", "../Ui/Dropdown/Simple", "./Dialog"], function (require, exports, tslib_1, GetRows_1, Util_1, PromiseMutex_1, Simple_1, Dialog_1) {
+define(["require", "exports", "tslib", "../Api/GridViews/GetRows", "../Dom/Change/Listener", "../Dom/Util", "../Helper/PromiseMutex", "../Ui/Dropdown/Simple", "./Dialog"], function (require, exports, tslib_1, GetRows_1, Listener_1, Util_1, PromiseMutex_1, Simple_1, Dialog_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GridView = void 0;
+    Listener_1 = tslib_1.__importDefault(Listener_1);
     Util_1 = tslib_1.__importDefault(Util_1);
     Simple_1 = tslib_1.__importDefault(Simple_1);
     class GridView {
@@ -90,6 +91,7 @@ define(["require", "exports", "tslib", "../Api/GridViews/GetRows", "../Dom/Util"
             if (updateQueryString) {
                 this.#updateQueryString();
             }
+            Listener_1.default.trigger();
             this.#renderFilters(response.filterLabels);
             this.#initActions();
         }
@@ -120,7 +122,10 @@ define(["require", "exports", "tslib", "../Api/GridViews/GetRows", "../Dom/Util"
         #initActions() {
             this.#table.querySelectorAll("tbody tr").forEach((row) => {
                 row.querySelectorAll(".gridViewActions").forEach((element) => {
-                    const dropdown = Simple_1.default.getDropdownMenu(element.dataset.target);
+                    let dropdown = Simple_1.default.getDropdownMenu(element.dataset.target);
+                    if (!dropdown) {
+                        dropdown = element.closest(".dropdown").querySelector(".dropdownMenu");
+                    }
                     dropdown?.querySelectorAll("[data-action]").forEach((element) => {
                         element.addEventListener("click", () => {
                             row.dispatchEvent(new CustomEvent("action", {

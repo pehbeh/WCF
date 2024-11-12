@@ -1,4 +1,5 @@
 import { getRows } from "../Api/GridViews/GetRows";
+import DomChangeListener from "../Dom/Change/Listener";
 import DomUtil from "../Dom/Util";
 import { promiseMutex } from "../Helper/PromiseMutex";
 import UiDropdownSimple from "../Ui/Dropdown/Simple";
@@ -122,6 +123,8 @@ export class GridView {
       this.#updateQueryString();
     }
 
+    DomChangeListener.trigger();
+
     this.#renderFilters(response.filterLabels);
     this.#initActions();
   }
@@ -158,7 +161,11 @@ export class GridView {
   #initActions(): void {
     this.#table.querySelectorAll<HTMLTableRowElement>("tbody tr").forEach((row) => {
       row.querySelectorAll<HTMLElement>(".gridViewActions").forEach((element) => {
-        const dropdown = UiDropdownSimple.getDropdownMenu(element.dataset.target!)!;
+        let dropdown = UiDropdownSimple.getDropdownMenu(element.dataset.target!);
+        if (!dropdown) {
+          dropdown = element.closest(".dropdown")!.querySelector<HTMLElement>(".dropdownMenu")!;
+        }
+
         dropdown?.querySelectorAll<HTMLButtonElement>("[data-action]").forEach((element) => {
           element.addEventListener("click", () => {
             row.dispatchEvent(

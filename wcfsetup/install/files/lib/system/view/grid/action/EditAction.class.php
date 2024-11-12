@@ -2,16 +2,20 @@
 
 namespace wcf\system\view\grid\action;
 
+use Closure;
 use wcf\data\DatabaseObject;
 use wcf\system\request\LinkHandler;
 use wcf\system\view\grid\AbstractGridView;
 use wcf\system\WCF;
 
-class EditAction implements IGridViewAction
+class EditAction extends AbstractAction
 {
     public function __construct(
         private readonly string $controllerClass,
-    ) {}
+        ?Closure $isAvailableCallback = null
+    ) {
+        parent::__construct($isAvailableCallback);
+    }
 
     #[\Override]
     public function render(mixed $row): string

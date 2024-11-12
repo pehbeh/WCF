@@ -155,6 +155,27 @@ abstract class AbstractGridView
         return $this->actions !== [];
     }
 
+    public function hasDropdownActions(): bool
+    {
+        return $this->getDropdownActions() !== [];
+    }
+
+    /**
+     * @return IGridViewAction[]
+     */
+    public function getDropdownActions(): array
+    {
+        return \array_filter($this->getActions(), fn($action) => !$action->isQuickAction());
+    }
+
+    /**
+     * @return IGridViewAction[]
+     */
+    public function getQuickActions(): array
+    {
+        return \array_filter($this->getActions(), fn($action) => $action->isQuickAction());
+    }
+
     public function render(): string
     {
         return WCF::getTPL()->fetch('shared_gridView', 'wcf', ['view' => $this], true);
