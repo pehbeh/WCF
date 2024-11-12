@@ -43,7 +43,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Ui/Dropdown/Simple", "
             if (file.link !== undefined && file.filename !== undefined) {
                 const link = document.createElement("a");
                 link.href = file.link;
-                link.dataset.fancybox = "attachments";
+                link.dataset.fancybox = "uploadedAttachments";
                 link.title = file.filename;
                 link.dataset.caption = file.filename;
                 link.textContent = file.filename;
