@@ -107,6 +107,14 @@ class UploadFormField extends AbstractFormField
     private $isRegistered = false;
 
     /**
+     * List of allowed file extensions or `null` if the extension is not validated.
+     *
+     * @var string[]|null
+     * @since 6.2
+     */
+    private ?array $allowedFileExtensions = null;
+
+    /**
      * Unregisters the current field in the upload handler.
      */
     private function unregisterField()
@@ -294,6 +302,43 @@ class UploadFormField extends AbstractFormField
                         ]
                     ));
                 }
+            }
+        }
+
+        if ($this->allowedFileExtensions !== null) {
+            // File extensions that contain a dot must be checked otherwise,
+            // the function `UploadFile::getFilenameExtension()` only returns the last part of the file extension.
+            //
+            // For example, if the file is called `blub.tar.gz`, only `gz` is returned.
+            // In this case, we check whether the file ends with `.tar.gz`.
+            $specialFileExtensions = \array_filter($this->allowedFileExtensions, function ($extension) {
+                return \str_contains($extension, '.');
+            });
+            $allowedFileExtensions = \array_filter($this->allowedFileExtensions, function ($extension) {
+                return !\str_contains($extension, '.');
+            });
+
+            foreach ($this->getValue() as $file) {
+                if (\in_array($file->getFilenameExtension(), $allowedFileExtensions)) {
+                    continue;
+                }
+
+                foreach ($specialFileExtensions as $extension) {
+                    if (\str_ends_with($file->getFilename(), ".{$extension}")) {
+                        continue 2;
+                    }
+                }
+
+                $this->addValidationError(
+                    new FormFieldValidationError(
+                        'acceptableFileExtensions',
+                        'wcf.form.field.upload.error.fileExtension',
+                        [
+                            'allowedFileExtensions' => $this->allowedFileExtensions,
+                            'filename' => $file->getFilename(),
+                        ]
+                    )
+                );
             }
         }
     }
@@ -952,5 +997,27 @@ class UploadFormField extends AbstractFormField
     public function getAcceptableFiles()
     {
         return $this->acceptableFiles;
+    }
+
+    /**
+     * Returns the allowed file extensions or `null` if the extension is not validated.
+     *
+     * @since  6.2
+     */
+    public function getAllowedFileExtensions(): ?array
+    {
+        return $this->allowedFileExtensions;
+    }
+
+    /**
+     * Specifies the allowed file extensions or `null` if the extension is not to be validated.
+     *
+     * @since  6.2
+     */
+    public function setAllowedFileExtensions(?array $allowedFileExtensions = null): static
+    {
+        $this->allowedFileExtensions = $allowedFileExtensions;
+
+        return $this;
     }
 }

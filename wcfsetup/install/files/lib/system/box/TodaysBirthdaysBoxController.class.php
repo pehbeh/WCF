@@ -9,7 +9,6 @@ use wcf\system\cache\runtime\UserProfileRuntimeCache;
 use wcf\system\condition\IObjectCondition;
 use wcf\system\user\UserBirthdayCache;
 use wcf\system\WCF;
-use wcf\util\DateUtil;
 
 /**
  * Shows today's birthdays.
@@ -88,8 +87,9 @@ class TodaysBirthdaysBoxController extends AbstractDatabaseObjectListBoxControll
     protected function loadContent()
     {
         // get current date
-        $currentDay = DateUtil::format(null, 'm-d');
-        $date = \explode('-', DateUtil::format(null, 'Y-n-j'));
+        $now = new \DateTimeImmutable("now", WCF::getUser()->getTimeZone());
+        $currentDay = $now->format('m-d');
+        $date = \explode('-', $now->format('Y-n-j'));
 
         // get user ids
         $userIDs = UserBirthdayCache::getInstance()->getBirthdays($date[1], $date[2]);

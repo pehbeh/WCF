@@ -4,7 +4,7 @@ namespace wcf\system\option\user;
 
 use wcf\data\user\option\UserOption;
 use wcf\data\user\User;
-use wcf\util\DateUtil;
+use wcf\system\WCF;
 
 /**
  * User option output implementation for for the output of a date input.
@@ -16,12 +16,6 @@ use wcf\util\DateUtil;
 class DateUserOptionOutput implements IUserOptionOutput
 {
     /**
-     * date format
-     * @var string
-     */
-    protected $dateFormat = DateUtil::DATE_FORMAT;
-
-    /**
      * @inheritDoc
      */
     public function getOutput(User $user, UserOption $option, $value)
@@ -32,11 +26,13 @@ class DateUserOptionOutput implements IUserOptionOutput
 
         $date = self::splitDate($value);
 
-        return DateUtil::format(
-            DateUtil::getDateTimeByTimestamp(
-                \gmmktime(12, 1, 1, $date['month'], $date['day'], $date['year'])
-            ),
-            $this->dateFormat
+        return \IntlDateFormatter::formatObject(
+            WCF::getUser()->getLocalDate(\gmmktime(12, 1, 1, $date['month'], $date['day'], $date['year'])),
+            [
+                \IntlDateFormatter::LONG,
+                \IntlDateFormatter::NONE,
+            ],
+            WCF::getLanguage()->getLocale()
         );
     }
 
