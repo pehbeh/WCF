@@ -118,7 +118,7 @@ final class DomBBCodeParser extends SingletonFactory
             $node->setAttribute('data-attributes', \base64_encode(JSON::encode($attributes)));
         }
         foreach ($nodes as $node) {
-            $node->parentNode->removeChild($node);
+            $node->parentNode?->removeChild($node);
         }
     }
 
