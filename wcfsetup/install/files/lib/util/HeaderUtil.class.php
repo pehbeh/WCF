@@ -197,7 +197,7 @@ final class HeaderUtil
                 limit: 1
             );
 
-            if (!$hasMatch) {
+            if (!$hasMatch && \str_contains($segment, '<script')) {
                 self::$output .= '</script>';
             }
         }
