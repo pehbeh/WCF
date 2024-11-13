@@ -25,7 +25,8 @@
 	grid-template-areas:
 		"file filename"
 		"file fileSize"
-		"file buttons";
+		"file buttons"
+		"file error";
 	grid-template-columns: 80px auto;
 	padding: 10px;
 }
@@ -36,6 +37,10 @@
 
 .fileList__item--error .fileList__item__file {
 	color: var(--wcfStatusErrorText);
+}
+
+.fileList__item .innerError {
+	grid-area: error;
 }
 
 .fileList__item__file {
