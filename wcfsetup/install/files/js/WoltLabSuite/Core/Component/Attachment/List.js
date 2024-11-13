@@ -41,7 +41,7 @@ define(["require", "exports", "./Entry", "../Ckeditor/Event"], function (require
             if (messageTabMenu === null) {
                 return;
             }
-            window.jQuery(messageTabMenu).messageTabMenu("showTab", "attachments");
+            window.jQuery(messageTabMenu).messageTabMenu("showTab", "attachments", true);
         })
             .collectMetaData((payload) => {
             let context = undefined;
