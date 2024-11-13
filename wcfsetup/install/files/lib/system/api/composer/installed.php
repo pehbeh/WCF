@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => '6.1.x-dev',
         'version' => '6.1.9999999.9999999-dev',
-        'reference' => 'a3e52ecf7029e45ad8f926f9c62c92d691d4dd74',
+        'reference' => '3959efa223892cb168c1f1a89bff4ae0d9b53d9b',
         'type' => 'project',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => '6.1.x-dev',
             'version' => '6.1.9999999.9999999-dev',
-            'reference' => 'a3e52ecf7029e45ad8f926f9c62c92d691d4dd74',
+            'reference' => '3959efa223892cb168c1f1a89bff4ae0d9b53d9b',
             'type' => 'project',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -415,14 +415,12 @@
             ),
         ),
         'web-token/jwt-library' => array(
-            'pretty_version' => '3.4.x-dev',
-            'version' => '3.4.9999999.9999999-dev',
+            'pretty_version' => '3.4.6',
+            'version' => '3.4.6.0',
             'reference' => '1a25c8ced3e2b3c31d32dcfad215cbd8cb812f28',
             'type' => 'library',
             'install_path' => __DIR__ . '/../web-token/jwt-library',
-            'aliases' => array(
-                0 => '3.3.50',
-            ),
+            'aliases' => array(),
             'dev_requirement' => false,
         ),
         'web-token/jwt-signature' => array(

@@ -2616,8 +2616,8 @@
         },
         {
             "name": "web-token/jwt-library",
-            "version": "3.4.x-dev",
-            "version_normalized": "3.4.9999999.9999999-dev",
+            "version": "3.4.6",
+            "version_normalized": "3.4.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-library.git",
@@ -2701,7 +2701,7 @@
             ],
             "support": {
                 "issues": "https://github.com/web-token/jwt-library/issues",
-                "source": "https://github.com/web-token/jwt-library/tree/3.4.x"
+                "source": "https://github.com/web-token/jwt-library/tree/3.4.6"
             },
             "funding": [
                 {

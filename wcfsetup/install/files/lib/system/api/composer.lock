@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "df8d36acac2bd2ee12183174cb4558ec",
+    "content-hash": "19f380ad9f8c022a19aee861df399da6",
     "packages": [
         {
             "name": "brick/math",
@@ -2511,7 +2511,7 @@
         },
         {
             "name": "web-token/jwt-library",
-            "version": "3.4.x-dev",
+            "version": "3.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-library.git",
@@ -2593,7 +2593,7 @@
             ],
             "support": {
                 "issues": "https://github.com/web-token/jwt-library/issues",
-                "source": "https://github.com/web-token/jwt-library/tree/3.4.x"
+                "source": "https://github.com/web-token/jwt-library/tree/3.4.6"
             },
             "funding": [
                 {
@@ -2723,18 +2723,10 @@
         }
     ],
     "packages-dev": [],
-    "aliases": [
-        {
-            "package": "web-token/jwt-library",
-            "version": "3.4.9999999.9999999-dev",
-            "alias": "3.3.50",
-            "alias_normalized": "3.3.50.0"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "nikic/fast-route": 10,
-        "web-token/jwt-library": 20
+        "nikic/fast-route": 10
     },
     "prefer-stable": false,
     "prefer-lowest": false,

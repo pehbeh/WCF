@@ -33,7 +33,6 @@
     "sebastian/diff": "^5.1.1",
     "symfony/polyfill-php82": "^1.30.0",
     "symfony/polyfill-php83": "^1.30",
-    "web-token/jwt-library": "3.4.x-dev as 3.3.50",
     "willdurand/negotiation": "^3.1"
   },
   "replace": {
