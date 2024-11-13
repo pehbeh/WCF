@@ -10,6 +10,14 @@ use wcf\system\gridView\action\IGridViewAction;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 
+/**
+ * Abstract implementation of a grid view.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
 abstract class AbstractGridView
 {
     /**
@@ -128,6 +136,25 @@ abstract class AbstractGridView
     }
 
     /**
+     * Returns all columns that are sortable.
+     * @return GridViewColumn[]
+     */
+    public function getSortableColumns(): array
+    {
+        return \array_filter($this->getColumns(), fn($column) => $column->isSortable());
+    }
+
+    /**
+     * Returns all columns that are filterable.
+     * @return GridViewColumn[]
+     */
+    public function getFilterableColumns(): array
+    {
+        return \array_filter($this->getColumns(), fn($column) => $column->getFilter() !== null);
+    }
+
+    /**
+     * Adds the given actions to the grid view.
      * @param IGridViewAction[] $columns
      */
     public function addActions(array $actions): void
@@ -137,12 +164,16 @@ abstract class AbstractGridView
         }
     }
 
+    /**
+     * Adds the given action to the grid view.
+     */
     public function addAction(IGridViewAction $action): void
     {
         $this->actions[] = $action;
     }
 
     /**
+     * Returns all actions of the grid view.
      * @return IGridViewAction[]
      */
     public function getActions(): array
@@ -150,17 +181,24 @@ abstract class AbstractGridView
         return $this->actions;
     }
 
+    /**
+     * Returns true, if this grid view has actions.
+     */
     public function hasActions(): bool
     {
         return $this->actions !== [];
     }
 
+    /**
+     * Returns true, if this grid view has actions that should be displayed in the dropdown.
+     */
     public function hasDropdownActions(): bool
     {
         return $this->getDropdownActions() !== [];
     }
 
     /**
+     * Returns the actions that should be displayed in the dropdown.
      * @return IGridViewAction[]
      */
     public function getDropdownActions(): array
@@ -169,6 +207,7 @@ abstract class AbstractGridView
     }
 
     /**
+     * Returns the quick actions.
      * @return IGridViewAction[]
      */
     public function getQuickActions(): array
@@ -176,16 +215,25 @@ abstract class AbstractGridView
         return \array_filter($this->getActions(), fn($action) => $action->isQuickAction());
     }
 
+    /**
+     * Renders the grid view and returns the HTML code.
+     */
     public function render(): string
     {
         return WCF::getTPL()->fetch('shared_gridView', 'wcf', ['view' => $this], true);
     }
 
+    /**
+     * Renders the rows and returns the HTML code.
+     */
     public function renderRows(): string
     {
         return WCF::getTPL()->fetch('shared_gridViewRows', 'wcf', ['view' => $this], true);
     }
 
+    /**
+     * Renders the given grid view column.
+     */
     public function renderColumn(GridViewColumn $column, mixed $row): string
     {
         $value = $column->render($this->getData($row, $column->getID()), $row);
@@ -197,11 +245,17 @@ abstract class AbstractGridView
         return $value;
     }
 
+    /**
+     * Renders the given action.
+     */
     public function renderAction(IGridViewAction $action, mixed $row): string
     {
         return $action->render($row);
     }
 
+    /**
+     * Renders the initialization code for the actions of the grid view.
+     */
     public function renderActionInitialization(): string
     {
         return implode(
@@ -213,30 +267,41 @@ abstract class AbstractGridView
         );
     }
 
+    /**
+     * Returns the row data for the given identifier.
+     */
     protected function getData(mixed $row, string $identifer): mixed
     {
         return $row[$identifer] ?? '';
     }
 
-    public abstract function getRows(): array;
-
-    public abstract function countRows(): int;
-
+    /**
+     * Counts the pages of the grid view.
+     */
     public function countPages(): int
     {
         return \ceil($this->countRows() / $this->getRowsPerPage());
     }
 
+    /**
+     * Returns the class name of this grid view.
+     */
     public function getClassName(): string
     {
         return \get_class($this);
     }
 
+    /**
+     * Returns true, if this grid view is accessible for the active user.
+     */
     public function isAccessible(): bool
     {
         return true;
     }
 
+    /**
+     * Returns the id of this grid view.
+     */
     public function getID(): string
     {
         $classNamePieces = \explode('\\', static::class);
@@ -244,32 +309,25 @@ abstract class AbstractGridView
         return \implode('-', $classNamePieces);
     }
 
+    /**
+     * Sets the base url of the grid view.
+     */
     public function setBaseUrl(string $url): void
     {
         $this->baseUrl = $url;
     }
 
+    /**
+     * Returns the base url of the grid view.
+     */
     public function getBaseUrl(): string
     {
         return $this->baseUrl;
     }
 
     /**
-     * @return GridViewColumn[]
+     * Sets the sort field of the grid view.
      */
-    public function getSortableColumns(): array
-    {
-        return \array_filter($this->getColumns(), fn($column) => $column->isSortable());
-    }
-
-    /**
-     * @return GridViewColumn[]
-     */
-    public function getFilterableColumns(): array
-    {
-        return \array_filter($this->getColumns(), fn($column) => $column->getFilter() !== null);
-    }
-
     public function setSortField(string $sortField): void
     {
         if (!\in_array($sortField, \array_map(fn($column) => $column->getID(), $this->getSortableColumns()))) {
@@ -279,6 +337,9 @@ abstract class AbstractGridView
         $this->sortField = $sortField;
     }
 
+    /**
+     * Sets the sort order of the grid view.
+     */
     public function setSortOrder(string $sortOrder): void
     {
         if ($sortOrder !== 'ASC' && $sortOrder !== 'DESC') {
@@ -288,41 +349,65 @@ abstract class AbstractGridView
         $this->sortOrder = $sortOrder;
     }
 
+    /**
+     * Returns the sort field of the grid view.
+     */
     public function getSortField(): string
     {
         return $this->sortField;
     }
 
+    /**
+     * Returns the sort order of the grid view.
+     */
     public function getSortOrder(): string
     {
         return $this->sortOrder;
     }
 
+    /**
+     * Returns the page number.
+     */
     public function getPageNo(): int
     {
         return $this->pageNo;
     }
 
+    /**
+     * Sets the page number.
+     */
     public function setPageNo(int $pageNo): void
     {
         $this->pageNo = $pageNo;
     }
 
+    /**
+     * Returns the number of rows per page.
+     */
     public function getRowsPerPage(): int
     {
         return $this->rowsPerPage;
     }
 
+    /**
+     * Sets the number of rows per page.
+     */
     public function setRowsPerPage(int $rowsPerPage): void
     {
         $this->rowsPerPage = $rowsPerPage;
     }
 
+    /**
+     * Returns true, if the grid view is filterable.
+     */
     public function isFilterable(): bool
     {
         return $this->getFilterableColumns() !== [];
     }
 
+    /**
+     * Returns the endpoint for the filter action.
+     */
     public function getFilterActionEndpoint(): string
     {
         return LinkHandler::getInstance()->getControllerLink(
@@ -331,16 +416,25 @@ abstract class AbstractGridView
         );
     }
 
+    /**
+     * Sets the active filter values.
+     */
     public function setActiveFilters(array $filters): void
     {
         $this->activeFilters = $filters;
     }
 
+    /**
+     * Returns the active filter values.
+     */
     public function getActiveFilters(): array
     {
         return $this->activeFilters;
     }
 
+    /**
+     * Returns the label for the given filter.
+     */
     public function getFilterLabel(string $id): string
     {
         $column = $this->getColumn($id);
@@ -359,21 +453,33 @@ abstract class AbstractGridView
         return $column->getLabel() . ': ' . $column->getFilter()->renderValue($this->activeFilters[$id]);
     }
 
+    /**
+     * Gets the additional parameters of the grid view.
+     */
     public function getParameters(): array
     {
         return [];
     }
 
+    /**
+     * Adds the given row link to the grid view.
+     */
     public function addRowLink(GridViewRowLink $rowLink): void
     {
         $this->rowLink = $rowLink;
     }
 
+    /**
+     * Returns the id for the given row.
+     */
     public function getObjectID(mixed $row): mixed
     {
         return '';
     }
 
+    /**
+     * Fires the initialized event.
+     */
     protected function fireInitializedEvent(): void
     {
         $event = $this->getInitializedEvent();
@@ -384,8 +490,21 @@ abstract class AbstractGridView
         EventHandler::getInstance()->fire($event);
     }
 
+    /**
+     * Returns the initialized event or null if there is no such event for this grid view.
+     */
     protected function getInitializedEvent(): ?IPsr14Event
     {
         return null;
     }
+
+    /**
+     * Returns the rows for the active page.
+     */
+    public abstract function getRows(): array;
+
+    /**
+     * Returns the total number of rows.
+     */
+    public abstract function countRows(): int;
 }

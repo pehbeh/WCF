@@ -7,6 +7,14 @@ use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\DateRangeFormField;
 use wcf\system\WCF;
 
+/**
+ * Filter for time columns.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
 class TimeFilter implements IGridViewFilter
 {
     #[\Override]

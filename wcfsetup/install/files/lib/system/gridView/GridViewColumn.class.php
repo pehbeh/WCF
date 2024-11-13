@@ -9,6 +9,14 @@ use wcf\system\gridView\renderer\IColumnRenderer;
 use wcf\system\gridView\renderer\TitleColumnRenderer;
 use wcf\system\WCF;
 
+/**
+ * Represents a column of a grid view.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
 final class GridViewColumn
 {
     /**
@@ -24,11 +32,17 @@ final class GridViewColumn
 
     private function __construct(private readonly string $id) {}
 
+    /**
+     * Creates a new column with the given id.
+     */
     public static function for(string $id): static
     {
         return new static($id);
     }
 
+    /**
+     * Renders the column with the given value.
+     */
     public function render(mixed $value, mixed $context = null): string
     {
         if ($this->getRenderers() === []) {
@@ -42,6 +56,9 @@ final class GridViewColumn
         return $value;
     }
 
+    /**
+     * Returns the css classes of this column.
+     */
     public function getClasses(): string
     {
         if ($this->getRenderers() === []) {
@@ -56,6 +73,9 @@ final class GridViewColumn
         ));
     }
 
+    /**
+     * Sets the renderer of this column.
+     */
     public function renderer(array|IColumnRenderer $renderers): static
     {
         if (!\is_array($renderers)) {
@@ -70,6 +90,9 @@ final class GridViewColumn
         return $this;
     }
 
+    /**
+     * Sets the label of this column.
+     */
     public function label(string $languageItem): static
     {
         $this->label = WCF::getLanguage()->get($languageItem);
@@ -77,6 +100,9 @@ final class GridViewColumn
         return $this;
     }
 
+    /**
+     * Sets the sortable state of this column.
+     */
     public function sortable(bool $sortable = true): static
     {
         $this->sortable = $sortable;
@@ -84,6 +110,9 @@ final class GridViewColumn
         return $this;
     }
 
+    /**
+     * Defines the ID by which this column is to be sorted.
+     */
     public function sortById(string $id): static
     {
         $this->sortById = $id;
@@ -92,6 +121,7 @@ final class GridViewColumn
     }
 
     /**
+     * Returns the renderers of this column.
      * @return IColumnRenderer[]
      */
     public function getRenderers(): array
@@ -99,26 +129,41 @@ final class GridViewColumn
         return $this->renderer;
     }
 
+    /**
+     * Returns the id of this column.
+     */
     public function getID(): string
     {
         return $this->id;
     }
 
+    /**
+     * Returns the label of this column.
+     */
     public function getLabel(): string
     {
         return $this->label;
     }
 
+    /**
+     * Returns true if this column is sortable.
+     */
     public function isSortable(): bool
     {
         return $this->sortable;
     }
 
+    /**
+     * Returns the ID by which this column is to be sorted.
+     */
     public function getSortById(): string
     {
         return $this->sortById;
     }
 
+    /**
+     * Sets a filter for this column.
+     */
     public function filter(?IGridViewFilter $filter): static
     {
         $this->filter = $filter;
@@ -126,11 +171,17 @@ final class GridViewColumn
         return $this;
     }
 
+    /**
+     * Returns the filter of this column.
+     */
     public function getFilter(): ?IGridViewFilter
     {
         return $this->filter;
     }
 
+    /**
+     * Returns the filter form field of this column.
+     */
     public function getFilterFormField(): AbstractFormField
     {
         if ($this->getFilter() === null) {
@@ -140,15 +191,9 @@ final class GridViewColumn
         return $this->getFilter()->getFormField($this->getID(), $this->getLabel());
     }
 
-    private static function getDefaultRenderer(): DefaultColumnRenderer
-    {
-        if (!isset(self::$defaultRenderer)) {
-            self::$defaultRenderer = new DefaultColumnRenderer();
-        }
-
-        return self::$defaultRenderer;
-    }
-
+    /**
+     * Returns true if this column is a title column.
+     */
     public function isTitleColumn(): bool
     {
         foreach ($this->getRenderers() as $renderer) {
@@ -160,6 +205,9 @@ final class GridViewColumn
         return false;
     }
 
+    /**
+     * Sets the hidden state of this column.
+     */
     public function hidden(bool $hidden = true): static
     {
         $this->hidden = $hidden;
@@ -167,8 +215,23 @@ final class GridViewColumn
         return $this;
     }
 
+    /**
+     * Returns true if this column is hidden.
+     */
     public function isHidden(): bool
     {
         return $this->hidden;
+    }
+
+    /**
+     * Returns the default renderer for the rendering of columns.
+     */
+    private static function getDefaultRenderer(): DefaultColumnRenderer
+    {
+        if (!isset(self::$defaultRenderer)) {
+            self::$defaultRenderer = new DefaultColumnRenderer();
+        }
+
+        return self::$defaultRenderer;
     }
 }

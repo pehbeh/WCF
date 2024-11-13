@@ -12,6 +12,14 @@ use wcf\system\exception\PermissionDeniedException;
 use wcf\system\exception\UserInputException;
 use wcf\system\gridView\AbstractGridView;
 
+/**
+ * Retrieves the rows for a grid view.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
 #[GetRequest('/core/gridViews/rows')]
 final class GetRows implements IController
 {

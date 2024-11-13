@@ -11,9 +11,17 @@ use wcf\system\exception\IllegalLinkException;
 use wcf\system\exception\PermissionDeniedException;
 use wcf\system\exception\UserInputException;
 use wcf\system\form\builder\Psr15DialogForm;
-use wcf\system\view\grid\AbstractGridView;
+use wcf\system\gridView\AbstractGridView;
 use wcf\system\WCF;
 
+/**
+ * Handles the filter dialog of grid views.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
 final class GridViewFilterAction implements RequestHandlerInterface
 {
     #[\Override]

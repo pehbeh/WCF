@@ -5,6 +5,14 @@ namespace wcf\system\gridView\filter;
 use wcf\data\DatabaseObjectList;
 use wcf\system\WCF;
 
+/**
+ * Filter for text columns that are using i18n phrases.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
 class I18nTextFilter extends TextFilter
 {
     #[\Override]

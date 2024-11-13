@@ -6,6 +6,14 @@ use wcf\system\request\LinkHandler;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\WCF;
 
+/**
+ * Abstract implementation of a page that is rendering a grid view.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
 abstract class AbstractGridViewPage extends AbstractPage
 {
     protected AbstractGridView $gridView;
@@ -70,5 +78,8 @@ abstract class AbstractGridViewPage extends AbstractPage
         $this->gridView->setBaseUrl(LinkHandler::getInstance()->getControllerLink(static::class));
     }
 
+    /**
+     * Returns the grid view instance for the rendering of this page.
+     */
     protected abstract function createGridViewController(): AbstractGridView;
 }

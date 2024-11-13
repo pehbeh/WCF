@@ -13,6 +13,14 @@ use wcf\system\WCF;
 use wcf\util\DirectoryUtil;
 use wcf\util\ExceptionLogUtil;
 
+/**
+ * Grid view for the exception log.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
 final class ExceptionLogGridView extends DataSourceGridView
 {
     private array $availableLogFiles;

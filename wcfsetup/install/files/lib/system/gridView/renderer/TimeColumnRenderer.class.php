@@ -4,8 +4,17 @@ namespace wcf\system\gridView\renderer;
 
 use wcf\system\WCF;
 
+/**
+ * Renders a unix timestamp into a human readable format.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
 class TimeColumnRenderer extends AbstractColumnRenderer
 {
+    #[\Override]
     public function render(mixed $value, mixed $context = null): string
     {
         $timestamp = \intval($value);
@@ -36,6 +45,7 @@ class TimeColumnRenderer extends AbstractColumnRenderer
         );
     }
 
+    #[\Override]
     public function getClasses(): string
     {
         return 'gridView__column--date';

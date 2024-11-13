@@ -18,6 +18,14 @@ use wcf\system\gridView\renderer\TitleColumnRenderer;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 
+/**
+ * Grid view for the cronjob log.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
 final class CronjobLogGridView extends DatabaseObjectListGridView
 {
     public function __construct()

@@ -4,6 +4,14 @@ namespace wcf\system\gridView\action;
 
 use Closure;
 
+/**
+ * Provides an abstract implementation of a grid view action.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
 abstract class AbstractAction implements IGridViewAction
 {
     public function __construct(

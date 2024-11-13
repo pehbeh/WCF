@@ -7,6 +7,14 @@ use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\SelectFormField;
 use wcf\system\WCF;
 
+/**
+ * Allows a column to be filtered on the basis of a select dropdown.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
 class SelectFilter implements IGridViewFilter
 {
     public function __construct(private readonly array $options) {}

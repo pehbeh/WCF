@@ -8,6 +8,14 @@ use wcf\system\gridView\AbstractGridView;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 
+/**
+ * Represents an edit action.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
 class EditAction extends AbstractAction
 {
     public function __construct(

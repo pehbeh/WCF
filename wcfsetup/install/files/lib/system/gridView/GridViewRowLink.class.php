@@ -6,6 +6,14 @@ use wcf\data\DatabaseObject;
 use wcf\system\request\LinkHandler;
 use wcf\util\StringUtil;
 
+/**
+ * Represents a row link of a grid view.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
 class GridViewRowLink
 {
     public function __construct(
@@ -14,6 +22,9 @@ class GridViewRowLink
         private readonly string $cssClass = ''
     ) {}
 
+    /**
+     * Renders the row link.
+     */
     public function render(mixed $value, mixed $context = null, bool $isPrimaryColumn = false): string
     {
         $href = '';

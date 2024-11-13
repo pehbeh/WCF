@@ -6,6 +6,14 @@ use wcf\data\DatabaseObject;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 
+/**
+ * Allows the setting of a link to a column.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
 class LinkColumnRenderer extends AbstractColumnRenderer
 {
     public function __construct(
@@ -14,6 +22,7 @@ class LinkColumnRenderer extends AbstractColumnRenderer
         private readonly string $titleLanguageItem = ''
     ) {}
 
+    #[\Override]
     public function render(mixed $value, mixed $context = null): string
     {
         \assert($context instanceof DatabaseObject);
