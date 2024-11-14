@@ -5,6 +5,7 @@ namespace wcf\acp\form;
 use wcf\data\template\group\TemplateGroup;
 use wcf\data\template\group\TemplateGroupAction;
 use wcf\form\AbstractFormBuilderForm;
+use wcf\system\form\builder\container\FormContainer;
 use wcf\system\form\builder\field\SelectFormField;
 use wcf\system\form\builder\field\TextFormField;
 use wcf\system\form\builder\field\validation\FormFieldValidationError;
@@ -51,19 +52,22 @@ class TemplateGroupAddForm extends AbstractFormBuilderForm
         $availableTemplateGroups = TemplateGroup::getSelectList([-1], 1);
 
         $this->form->appendChildren([
-            SelectFormField::create('parentTemplateGroupID')
-                ->label('wcf.acp.template.group.parentTemplateGroup')
-                ->options($availableTemplateGroups)
-                ->available(\count($availableTemplateGroups) > 0),
-            TextFormField::create('templateGroupName')
-                ->label('wcf.global.name')
-                ->required()
-                ->addValidator(TemplateGroupAddForm::getTemplateNameValidator($this->formObject)),
-            TextFormField::create('templateGroupFolderName')
-                ->label('wcf.acp.template.group.folderName')
-                ->required()
-                ->addValidator(TemplateGroupAddForm::getFolderNameValidator())
-                ->addValidator(TemplateGroupAddForm::getUniqueFolderNameValidator($this->formObject)),
+            FormContainer::create('general')
+                ->appendChildren([
+                    SelectFormField::create('parentTemplateGroupID')
+                        ->label('wcf.acp.template.group.parentTemplateGroup')
+                        ->options($availableTemplateGroups)
+                        ->available(\count($availableTemplateGroups) > 0),
+                    TextFormField::create('templateGroupName')
+                        ->label('wcf.global.name')
+                        ->required()
+                        ->addValidator(TemplateGroupAddForm::getTemplateNameValidator($this->formObject)),
+                    TextFormField::create('templateGroupFolderName')
+                        ->label('wcf.acp.template.group.folderName')
+                        ->required()
+                        ->addValidator(TemplateGroupAddForm::getFolderNameValidator())
+                        ->addValidator(TemplateGroupAddForm::getUniqueFolderNameValidator($this->formObject)),
+                ])
         ]);
     }
 
