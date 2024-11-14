@@ -5,7 +5,7 @@ namespace wcf\system\gridView\renderer;
 use wcf\util\StringUtil;
 
 /**
- * Formats the content of a column as a number.
+ * Formats the content of a column as a number using `StringUtil::formatNumeric()`.
  *
  * @author      Marcel Werk
  * @copyright   2001-2024 WoltLab GmbH

@@ -8,7 +8,7 @@ use wcf\system\form\builder\field\DateRangeFormField;
 use wcf\system\WCF;
 
 /**
- * Filter for time columns.
+ * Filter for columns that contain unix timestamps.
  *
  * @author      Marcel Werk
  * @copyright   2001-2024 WoltLab GmbH
