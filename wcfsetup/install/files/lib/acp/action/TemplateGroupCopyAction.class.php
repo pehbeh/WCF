@@ -7,6 +7,7 @@ use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use wcf\acp\form\TemplateGroupAddForm;
 use wcf\data\template\group\TemplateGroup;
 use wcf\data\template\group\TemplateGroupAction;
 use wcf\data\template\TemplateAction;
@@ -15,12 +16,9 @@ use wcf\http\Helper;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\exception\PermissionDeniedException;
 use wcf\system\form\builder\field\TextFormField;
-use wcf\system\form\builder\field\validation\FormFieldValidationError;
-use wcf\system\form\builder\field\validation\FormFieldValidator;
 use wcf\system\form\builder\Psr15DialogForm;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
-use wcf\util\FileUtil;
 
 /**
  * Handles the copying of template groups.
@@ -120,62 +118,13 @@ final class TemplateGroupCopyAction implements RequestHandlerInterface
                 ->label('wcf.global.name')
                 ->required()
                 ->value($templateGroup->templateGroupName)
-                ->addValidator(
-                    new FormFieldValidator('templateNameValidator', function (TextFormField $formField) {
-                        $sql = "SELECT  COUNT(*)
-                                FROM    wcf1_template_group
-                                WHERE   templateGroupName = ?";
-                        $statement = WCF::getDB()->prepare($sql);
-                        $statement->execute([$formField->getValue()]);
-
-                        if ($statement->fetchSingleColumn()) {
-                            $formField->addValidationError(
-                                new FormFieldValidationError(
-                                    'notUnique',
-                                    'wcf.acp.template.group.name.error.notUnique'
-                                )
-                            );
-                        }
-                    })
-                ),
+                ->addValidator(TemplateGroupAddForm::getTemplateNameValidator()),
             TextFormField::create('templateGroupFolderName')
                 ->label('wcf.acp.template.group.folderName')
                 ->required()
                 ->value($templateGroup->templateGroupFolderName)
-                ->addValidator(
-                    new FormFieldValidator('folderNameValidator', function (TextFormField $formField) {
-                        $formField->value(FileUtil::addTrailingSlash($formField->getValue()));
-
-                        if (!\preg_match('/^[a-z0-9_\- ]+\/$/i', $formField->getValue())) {
-                            $formField->addValidationError(
-                                new FormFieldValidationError(
-                                    'invalid',
-                                    'wcf.acp.template.group.folderName.error.invalid'
-                                )
-                            );
-                        }
-                    })
-                )
-                ->addValidator(
-                    new FormFieldValidator('uniqueFolderNameValidator', function (TextFormField $formField) {
-                        $formField->value(FileUtil::addTrailingSlash($formField->getValue()));
-
-                        $sql = "SELECT  COUNT(*)
-                                FROM    wcf1_template_group
-                                WHERE   templateGroupFolderName = ?";
-                        $statement = WCF::getDB()->prepare($sql);
-                        $statement->execute([$formField->getValue()]);
-
-                        if ($statement->fetchSingleColumn()) {
-                            $formField->addValidationError(
-                                new FormFieldValidationError(
-                                    'notUnique',
-                                    'wcf.acp.template.group.folderName.error.notUnique'
-                                )
-                            );
-                        }
-                    })
-                ),
+                ->addValidator(TemplateGroupAddForm::getFolderNameValidator())
+                ->addValidator(TemplateGroupAddForm::getUniqueFolderNameValidator()),
         ]);
 
         $form->build();

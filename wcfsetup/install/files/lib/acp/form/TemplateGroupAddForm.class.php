@@ -58,69 +58,84 @@ class TemplateGroupAddForm extends AbstractFormBuilderForm
             TextFormField::create('templateGroupName')
                 ->label('wcf.global.name')
                 ->required()
-                ->addValidator(
-                    new FormFieldValidator('templateNameValidator', function (TextFormField $formField) {
-                        if ($formField->getValue() === $this->formObject?->templateGroupName) {
-                            return;
-                        }
-
-                        $sql = "SELECT  COUNT(*)
-                                FROM    wcf1_template_group
-                                WHERE   templateGroupName = ?";
-                        $statement = WCF::getDB()->prepare($sql);
-                        $statement->execute([$formField->getValue()]);
-
-                        if ($statement->fetchSingleColumn()) {
-                            $formField->addValidationError(
-                                new FormFieldValidationError(
-                                    'notUnique',
-                                    'wcf.acp.template.group.name.error.notUnique'
-                                )
-                            );
-                        }
-                    })
-                ),
+                ->addValidator(TemplateGroupAddForm::getTemplateNameValidator($this->formObject)),
             TextFormField::create('templateGroupFolderName')
                 ->label('wcf.acp.template.group.folderName')
                 ->required()
-                ->addValidator(
-                    new FormFieldValidator('folderNameValidator', function (TextFormField $formField) {
-                        $formField->value(FileUtil::addTrailingSlash($formField->getValue()));
+                ->addValidator(TemplateGroupAddForm::getFolderNameValidator())
+                ->addValidator(TemplateGroupAddForm::getUniqueFolderNameValidator($this->formObject)),
+        ]);
+    }
 
-                        if (!\preg_match('/^[a-z0-9_\- ]+\/$/i', $formField->getValue())) {
-                            $formField->addValidationError(
-                                new FormFieldValidationError(
-                                    'invalid',
-                                    'wcf.acp.template.group.folderName.error.invalid'
-                                )
-                            );
-                        }
-                    })
-                )
-                ->addValidator(
-                    new FormFieldValidator('uniqueFolderNameValidator', function (TextFormField $formField) {
-                        $formField->value(FileUtil::addTrailingSlash($formField->getValue()));
+    public static function getFolderNameValidator(): FormFieldValidator
+    {
+        return new FormFieldValidator('folderNameValidator', function (TextFormField $formField) {
+            $formField->value(FileUtil::addTrailingSlash($formField->getValue()));
 
-                        if ($formField->getValue() === $this->formObject?->templateGroupFolderName) {
-                            return;
-                        }
+            if (!\preg_match('/^[a-z0-9_\- ]+\/$/i', $formField->getValue())) {
+                $formField->addValidationError(
+                    new FormFieldValidationError(
+                        'invalid',
+                        'wcf.acp.template.group.folderName.error.invalid'
+                    )
+                );
+            }
+        });
+    }
 
-                        $sql = "SELECT  COUNT(*)
+    public static function getUniqueFolderNameValidator(?TemplateGroup $formObject = null): FormFieldValidator
+    {
+        return new FormFieldValidator(
+            'uniqueFolderNameValidator',
+            function (TextFormField $formField) use ($formObject) {
+                $formField->value(FileUtil::addTrailingSlash($formField->getValue()));
+
+                if ($formField->getValue() === $formObject?->templateGroupFolderName) {
+                    return;
+                }
+
+                $sql = "SELECT  COUNT(*)
                                 FROM    wcf1_template_group
                                 WHERE   templateGroupFolderName = ?";
-                        $statement = WCF::getDB()->prepare($sql);
-                        $statement->execute([$formField->getValue()]);
+                $statement = WCF::getDB()->prepare($sql);
+                $statement->execute([$formField->getValue()]);
 
-                        if ($statement->fetchSingleColumn()) {
-                            $formField->addValidationError(
-                                new FormFieldValidationError(
-                                    'notUnique',
-                                    'wcf.acp.template.group.folderName.error.notUnique'
-                                )
-                            );
-                        }
-                    })
-                ),
-        ]);
+                if ($statement->fetchSingleColumn()) {
+                    $formField->addValidationError(
+                        new FormFieldValidationError(
+                            'notUnique',
+                            'wcf.acp.template.group.folderName.error.notUnique'
+                        )
+                    );
+                }
+            }
+        );
+    }
+
+    public static function getTemplateNameValidator(?TemplateGroup $formObject = null): FormFieldValidator
+    {
+        return new FormFieldValidator(
+            'templateNameValidator',
+            function (TextFormField $formField) use ($formObject) {
+                if ($formField->getValue() === $formObject?->templateGroupName) {
+                    return;
+                }
+
+                $sql = "SELECT  COUNT(*)
+                                FROM    wcf1_template_group
+                                WHERE   templateGroupName = ?";
+                $statement = WCF::getDB()->prepare($sql);
+                $statement->execute([$formField->getValue()]);
+
+                if ($statement->fetchSingleColumn()) {
+                    $formField->addValidationError(
+                        new FormFieldValidationError(
+                            'notUnique',
+                            'wcf.acp.template.group.name.error.notUnique'
+                        )
+                    );
+                }
+            }
+        );
     }
 }
