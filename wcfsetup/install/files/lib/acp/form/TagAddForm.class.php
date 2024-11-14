@@ -2,25 +2,34 @@
 
 namespace wcf\acp\form;
 
+use wcf\data\IStorableObject;
 use wcf\data\tag\Tag;
 use wcf\data\tag\TagAction;
-use wcf\data\tag\TagEditor;
-use wcf\form\AbstractForm;
-use wcf\system\exception\UserInputException;
+use wcf\data\tag\TagList;
+use wcf\form\AbstractFormBuilderForm;
+use wcf\system\form\builder\container\FormContainer;
+use wcf\system\form\builder\data\processor\CustomFormDataProcessor;
+use wcf\system\form\builder\field\SingleSelectionFormField;
+use wcf\system\form\builder\field\tag\TagFormField;
+use wcf\system\form\builder\field\TextFormField;
+use wcf\system\form\builder\field\validation\FormFieldValidationError;
+use wcf\system\form\builder\field\validation\FormFieldValidator;
+use wcf\system\form\builder\IFormDocument;
+use wcf\system\form\builder\TemplateFormNode;
 use wcf\system\language\LanguageFactory;
-use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
-use wcf\util\ArrayUtil;
 use wcf\util\StringUtil;
 
 /**
  * Shows the tag add form.
  *
- * @author  Tim Duesterhus
- * @copyright   2001-2019 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @author      Olaf Braun, Tim Duesterhus
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @property Tag $formObject
  */
-class TagAddForm extends AbstractForm
+class TagAddForm extends AbstractFormBuilderForm
 {
     /**
      * @inheritDoc
@@ -38,187 +47,101 @@ class TagAddForm extends AbstractForm
     public $neededModules = ['MODULE_TAGGING'];
 
     /**
-     * list of available languages
-     * @var array
+     * @inheritDoc
      */
-    public $availableLanguages = [];
-
-    /**
-     * name value
-     * @var string
-     */
-    public $name = '';
-
-    /**
-     * language value
-     * @var string
-     */
-    public $languageID = 0;
-
-    /**
-     * synonyms
-     * @var string[]
-     */
-    public $synonyms = [];
+    public $objectActionClass = TagAction::class;
 
     /**
      * @inheritDoc
      */
-    public function readParameters()
-    {
-        parent::readParameters();
+    public $objectEditLinkController = TagEditForm::class;
 
-        $this->availableLanguages = LanguageFactory::getInstance()->getContentLanguages();
+    #[\Override]
+    protected function createForm()
+    {
+        parent::createForm();
+
+        $this->form->appendChildren([
+            FormContainer::create('general')
+                ->appendChildren([
+                    TextFormField::create('name')
+                        ->label('wcf.global.name')
+                        ->required()
+                        ->maximumLength(TAGGING_MAX_TAG_LENGTH)
+                        ->addValidator(
+                            new FormFieldValidator('duplicateTagValidator', function (TextFormField $field) {
+                                $languageIDFormField = $field->getDocument()->getNodeById('languageID');
+                                \assert($languageIDFormField instanceof SingleSelectionFormField);
+                                $languageID = $languageIDFormField->getValue();
+
+                                $tag = Tag::getTag($field->getValue(), $languageID);
+                                if ($tag !== null && $tag->tagID !== $this->formObject?->tagID) {
+                                    $field->addValidationError(
+                                        new FormFieldValidationError(
+                                            'duplicate',
+                                            'wcf.acp.tag.error.name.duplicate'
+                                        )
+                                    );
+                                }
+                            })
+                        ),
+                    SingleSelectionFormField::create('languageID')
+                        ->label('wcf.acp.tag.languageID')
+                        ->options(LanguageFactory::getInstance()->getContentLanguages())
+                        ->value(WCF::getUser()->languageID)
+                        ->immutable($this->formAction !== 'create')
+                        ->required(),
+                    TagFormField::create('synonyms')
+                        ->available($this->formObject?->synonymFor === null)
+                        ->label('wcf.acp.tag.synonyms'),
+                    TemplateFormNode::create('tagSynonymFor')
+                        ->available($this->formObject?->synonymFor !== null)
+                        ->variables([
+                            'synonym' => new Tag($this->formObject?->synonymFor),
+                        ])
+                        ->templateName('__tagFormSynonym')
+                ])
+        ]);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function readFormParameters()
+    #[\Override]
+    protected function finalizeForm()
     {
-        parent::readFormParameters();
+        parent::finalizeForm();
 
-        if (isset($_POST['name'])) {
-            $this->name = \str_replace(',', '', StringUtil::trim($_POST['name']));
-        }
-        if (isset($_POST['languageID'])) {
-            $this->languageID = \intval($_POST['languageID']);
-        }
+        $this->form->getDataHandler()
+            ->addProcessor(
+                new CustomFormDataProcessor(
+                    'tagNameProcessor',
+                    static function (IFormDocument $document, array $parameters) {
+                        $parameters['data']['name'] = \str_replace(
+                            ',',
+                            '',
+                            StringUtil::trim($parameters['data']['name'])
+                        );
 
-        // actually these are synonyms
-        if (isset($_POST['tags']) && \is_array($_POST['tags'])) {
-            $this->synonyms = ArrayUtil::trim($_POST['tags']);
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function validate()
-    {
-        parent::validate();
-
-        if (empty($this->name)) {
-            throw new UserInputException('name');
-        }
-
-        // validate language
-        if (!isset($this->tagObj)) {
-            if (empty($this->availableLanguages)) {
-                // force default language id
-                $this->languageID = LanguageFactory::getInstance()->getDefaultLanguageID();
-            } else {
-                if (!isset($this->availableLanguages[$this->languageID])) {
-                    throw new UserInputException('languageID', 'notFound');
-                }
-            }
-        }
-
-        // check for duplicates
-        $tag = Tag::getTag($this->name, $this->languageID);
-        if ($tag !== null && (!isset($this->tagObj) || $tag->tagID != $this->tagObj->tagID)) {
-            throw new UserInputException('name', 'duplicate');
-        }
-
-        // validate synonyms
-        foreach ($this->synonyms as $key => $synonym) {
-            if (\mb_strtolower($synonym) == \mb_strtolower($this->name)) {
-                unset($this->synonyms[$key]);
-            }
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function readData()
-    {
-        parent::readData();
-
-        if (empty($_POST)) {
-            // pre-select default language id
-            if (!empty($this->availableLanguages)) {
-                $this->languageID = LanguageFactory::getInstance()->getDefaultLanguageID();
-                if (!isset($this->availableLanguages[$this->languageID])) {
-                    // language id is not within content languages, try user's language instead
-                    $this->languageID = WCF::getUser()->languageID;
-                    if (!isset($this->availableLanguages[$this->languageID])) {
-                        // this installation is weird, just select nothing
-                        $this->languageID = 0;
+                        return $parameters;
                     }
-                }
-            }
-        }
-    }
+                )
+            )
+            ->addProcessor(
+                new CustomFormDataProcessor(
+                    'synonymsProcessor',
+                    null,
+                    static function (IFormDocument $document, array $data, IStorableObject $tag) {
+                        \assert($tag instanceof Tag);
 
-    /**
-     * @inheritDoc
-     */
-    public function save()
-    {
-        parent::save();
+                        $synonymList = new TagList();
+                        $synonymList->getConditionBuilder()->add('synonymFor = ?', [$tag->tagID]);
+                        $synonymList->readObjects();
+                        $data['synonyms'] = [];
+                        foreach ($synonymList as $synonym) {
+                            $data['synonyms'][] = $synonym->name;
+                        }
 
-        // save tag
-        $this->objectAction = new TagAction([], 'create', [
-            'data' => \array_merge($this->additionalFields, [
-                'name' => $this->name,
-                'languageID' => $this->languageID,
-            ]),
-        ]);
-        $this->objectAction->executeAction();
-        $returnValues = $this->objectAction->getReturnValues();
-        $editor = new TagEditor($returnValues['returnValues']);
-
-        foreach ($this->synonyms as $synonym) {
-            if (empty($synonym)) {
-                continue;
-            }
-
-            // find existing tag
-            $synonymObj = Tag::getTag($synonym, $this->languageID);
-            if ($synonymObj === null) {
-                $synonymAction = new TagAction([], 'create', [
-                    'data' => [
-                        'name' => $synonym,
-                        'languageID' => $this->languageID,
-                        'synonymFor' => $editor->tagID,
-                    ],
-                ]);
-                $synonymAction->executeAction();
-            } else {
-                $editor->addSynonym($synonymObj);
-            }
-        }
-
-        $this->saved();
-
-        // reset values
-        $this->name = '';
-        $this->synonyms = [];
-
-        // show success message
-        WCF::getTPL()->assign([
-            'success' => true,
-            'objectEditLink' => LinkHandler::getInstance()->getControllerLink(
-                TagEditForm::class,
-                ['id' => $returnValues['returnValues']->tagID]
-            ),
-        ]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function assignVariables()
-    {
-        parent::assignVariables();
-
-        WCF::getTPL()->assign([
-            'action' => 'add',
-            'availableLanguages' => $this->availableLanguages,
-            'name' => $this->name,
-            'languageID' => $this->languageID,
-            'synonyms' => $this->synonyms,
-        ]);
+                        return $data;
+                    }
+                )
+            );
     }
 }
