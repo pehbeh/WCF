@@ -268,7 +268,7 @@
 		<item name="wcf.acp.captcha.question.add"><![CDATA[Captcha-Frage hinzufügen]]></item>
 		<item name="wcf.acp.captcha.question.answers"><![CDATA[Antworten]]></item>
 		<item name="wcf.acp.captcha.question.answers.description"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Gib{else}Geben Sie{/if} pro Zeile eine mögliche Antwort ein. Antworten, die mit „~“ beginnen und enden, werden als reguläre Ausdrücke interpretiert.]]></item>
-		<item name="wcf.acp.captcha.question.answers.error.invalidRegex"><![CDATA[Der reguläre Ausdruck „{$invalidRegex}“ ist ungültig.]]></item>
+		<item name="wcf.acp.captcha.question.answers.error.invalidRegex"><![CDATA[Der reguläre Ausdruck „{$invalidRegex}“ ist ungültig{if $language} für die Sprache „{$language}“{/if}.]]></item>
 		<item name="wcf.acp.captcha.question.edit"><![CDATA[Captcha-Frage bearbeiten]]></item>
 		<item name="wcf.acp.captcha.question.isDisabled"><![CDATA[Frage deaktivieren]]></item>
 		<item name="wcf.acp.captcha.question.list"><![CDATA[Captcha-Fragen]]></item>

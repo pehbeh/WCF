@@ -267,7 +267,7 @@
 		<item name="wcf.acp.captcha.question.add"><![CDATA[Add Captcha Question]]></item>
 		<item name="wcf.acp.captcha.question.answers"><![CDATA[Answers]]></item>
 		<item name="wcf.acp.captcha.question.answers.description"><![CDATA[Answers beginning and ending with “~” will be interpreted as regular expressions. Enter one answer per line.]]></item>
-		<item name="wcf.acp.captcha.question.answers.error.invalidRegex"><![CDATA[The regular expression “{$invalidRegex}” is invalid.]]></item>
+		<item name="wcf.acp.captcha.question.answers.error.invalidRegex"><![CDATA[The regular expression “{$invalidRegex}” is invalid{if $language} for language “{$language}”{/if}.]]></item>
 		<item name="wcf.acp.captcha.question.edit"><![CDATA[Edit Captcha Question]]></item>
 		<item name="wcf.acp.captcha.question.isDisabled"><![CDATA[Disable captcha question]]></item>
 		<item name="wcf.acp.captcha.question.list"><![CDATA[Captcha Questions]]></item>
