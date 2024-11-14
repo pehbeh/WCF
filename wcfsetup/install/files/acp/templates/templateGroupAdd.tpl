@@ -2,17 +2,8 @@
 
 {if $action === 'edit'}
 	<script data-relocate="true">
-		require(['Language', 'WoltLabSuite/Core/Acp/Ui/Template/Group/Copy'], function (Language, AcpUiTemplateGroupCopy) {
-			Language.addObject({
-				'wcf.acp.template.group.copy': '{jslang}wcf.acp.template.group.copy{/jslang}',
-				'wcf.acp.template.group.name.error.notUnique': '{jslang}wcf.acp.template.group.name.error.notUnique{/jslang}',
-				'wcf.acp.template.group.folderName': '{jslang}wcf.acp.template.group.folderName{/jslang}',
-				'wcf.acp.template.group.folderName.error.invalid': '{jslang}wcf.acp.template.group.folderName.error.invalid{/jslang}',
-				'wcf.acp.template.group.folderName.error.notUnique': '{jslang}wcf.acp.template.group.folderName.error.notUnique{/jslang}',
-				'wcf.global.name': '{jslang}wcf.global.name{/jslang}'
-			});
-
-			AcpUiTemplateGroupCopy.init({$formObject->templateGroupID});
+		require(['WoltLabSuite/Core/Acp/Ui/Template/Group/Copy'], (AcpUiTemplateGroupCopy) => {
+			AcpUiTemplateGroupCopy.init();
 		});
 	</script>
 {/if}
@@ -24,7 +15,7 @@
 	
 	<nav class="contentHeaderNavigation">
 		<ul>
-			{if $action === 'edit'}<li><a href="#" class="jsButtonCopy button">{icon name='copy'} <span>{lang}wcf.acp.template.group.copy{/lang}</span></a></li>{/if}
+			{if $action === 'edit'}<li><button type="button" class="jsButtonCopy button" data-endpoint="{link controller="TemplateGroupCopy" id=$formObject->templateGroupID}{/link}">{icon name='copy'} <span>{lang}wcf.acp.template.group.copy{/lang}</span></button></li>{/if}
 			<li><a href="{link controller='TemplateGroupList'}{/link}" class="button">{icon name='list'} <span>{lang}wcf.acp.menu.link.template.group.list{/lang}</span></a></li>
 			
 			{event name='contentHeaderNavigation'}

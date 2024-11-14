@@ -1,0 +1,185 @@
+<?php
+
+namespace wcf\acp\action;
+
+use CuyZ\Valinor\Mapper\MappingError;
+use Laminas\Diactoros\Response\JsonResponse;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use wcf\data\template\group\TemplateGroup;
+use wcf\data\template\group\TemplateGroupAction;
+use wcf\data\template\TemplateAction;
+use wcf\data\template\TemplateList;
+use wcf\http\Helper;
+use wcf\system\exception\IllegalLinkException;
+use wcf\system\exception\PermissionDeniedException;
+use wcf\system\form\builder\field\TextFormField;
+use wcf\system\form\builder\field\validation\FormFieldValidationError;
+use wcf\system\form\builder\field\validation\FormFieldValidator;
+use wcf\system\form\builder\Psr15DialogForm;
+use wcf\system\request\LinkHandler;
+use wcf\system\WCF;
+use wcf\util\FileUtil;
+
+/**
+ * Handles the copying of template groups.
+ *
+ * @author      Olaf Braun
+ * @copyright   2001-2023 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
+final class TemplateGroupCopyAction implements RequestHandlerInterface
+{
+    #[\Override]
+    public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        if (!WCF::getSession()->getPermission('admin.template.canManageTemplate')) {
+            throw new PermissionDeniedException();
+        }
+
+        try {
+            $queryParameters = Helper::mapQueryParameters(
+                $_GET,
+                <<<'EOT'
+                    array {
+                        id: positive-int
+                    }
+                    EOT
+            );
+            $templateGroup = new TemplateGroup($queryParameters['id']);
+
+            if (!$templateGroup->getObjectID()) {
+                throw new IllegalLinkException();
+            }
+        } catch (MappingError) {
+            throw new IllegalLinkException();
+        }
+
+        $form = $this->getForm($templateGroup);
+
+        if ($request->getMethod() === 'GET') {
+            return $form->toResponse();
+        } elseif ($request->getMethod() === 'POST') {
+            $response = $form->validateRequest($request);
+            if ($response !== null) {
+                return $response;
+            }
+
+            $data = $form->getData()['data'];
+            $data['parentTemplateGroupID'] = $templateGroup->parentTemplateGroupID ?: null;
+
+            $returnValues = (new TemplateGroupAction([], 'create', ['data' => $data]))->executeAction();
+            /** @var TemplateGroup $templateGroup */
+            $templateGroup = $returnValues['returnValues'];
+
+            $templateList = new TemplateList();
+            $templateList->getConditionBuilder()->add(
+                "template.templateGroupID = ?",
+                [$templateGroup->templateGroupID]
+            );
+            $templateList->readObjects();
+
+            foreach ($templateList as $template) {
+                (new TemplateAction([], 'create', [
+                    'data' => [
+                        'application' => $template->application,
+                        'templateName' => $template->templateName,
+                        'packageID' => $template->packageID,
+                        'templateGroupID' => $templateGroup->templateGroupID,
+                    ],
+                    'source' => $template->getSource(),
+                ]))->executeAction();
+            }
+
+            return new JsonResponse([
+                'result' => [
+                    'redirectURL' => LinkHandler::getInstance()->getLink(
+                        'TemplateGroupEdit',
+                        [
+                            'isACP' => true,
+                            'id' => $templateGroup->templateGroupID,
+                        ]
+                    ),
+                ]
+            ]);
+        } else {
+            throw new \LogicException('Unreachable');
+        }
+    }
+
+    private function getForm(TemplateGroup $templateGroup): Psr15DialogForm
+    {
+        $form = new Psr15DialogForm(
+            TemplateGroupCopyAction::class,
+            WCF::getLanguage()->get('wcf.acp.template.group.copy')
+        );
+        $form->appendChildren([
+            TextFormField::create('templateGroupName')
+                ->label('wcf.global.name')
+                ->required()
+                ->value($templateGroup->templateGroupName)
+                ->addValidator(
+                    new FormFieldValidator('templateNameValidator', function (TextFormField $formField) {
+                        $sql = "SELECT  COUNT(*)
+                                FROM    wcf1_template_group
+                                WHERE   templateGroupName = ?";
+                        $statement = WCF::getDB()->prepare($sql);
+                        $statement->execute([$formField->getValue()]);
+
+                        if ($statement->fetchSingleColumn()) {
+                            $formField->addValidationError(
+                                new FormFieldValidationError(
+                                    'notUnique',
+                                    'wcf.acp.template.group.name.error.notUnique'
+                                )
+                            );
+                        }
+                    })
+                ),
+            TextFormField::create('templateGroupFolderName')
+                ->label('wcf.acp.template.group.folderName')
+                ->required()
+                ->value($templateGroup->templateGroupFolderName)
+                ->addValidator(
+                    new FormFieldValidator('folderNameValidator', function (TextFormField $formField) {
+                        $formField->value(FileUtil::addTrailingSlash($formField->getValue()));
+
+                        if (!\preg_match('/^[a-z0-9_\- ]+\/$/i', $formField->getValue())) {
+                            $formField->addValidationError(
+                                new FormFieldValidationError(
+                                    'invalid',
+                                    'wcf.acp.template.group.folderName.error.invalid'
+                                )
+                            );
+                        }
+                    })
+                )
+                ->addValidator(
+                    new FormFieldValidator('uniqueFolderNameValidator', function (TextFormField $formField) {
+                        $formField->value(FileUtil::addTrailingSlash($formField->getValue()));
+
+                        $sql = "SELECT  COUNT(*)
+                                FROM    wcf1_template_group
+                                WHERE   templateGroupFolderName = ?";
+                        $statement = WCF::getDB()->prepare($sql);
+                        $statement->execute([$formField->getValue()]);
+
+                        if ($statement->fetchSingleColumn()) {
+                            $formField->addValidationError(
+                                new FormFieldValidationError(
+                                    'notUnique',
+                                    'wcf.acp.template.group.folderName.error.notUnique'
+                                )
+                            );
+                        }
+                    })
+                ),
+        ]);
+
+        $form->build();
+
+        return $form;
+    }
+}
