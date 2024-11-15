@@ -10,7 +10,7 @@
 			});
 			
 			const queue = [ {implode from=$queue item=item}'{@$item}'{/implode} ];
-			new AcpUiDataImportManager(queue, '{link controller='RebuildData' encode=false}{/link}');
+			new AcpUiDataImportManager(queue, '{link controller='RebuildData' encode=false}{/link}', '{$cacheClearEndpoint|encodeJS}');
 		});
 	</script>
 {/if}

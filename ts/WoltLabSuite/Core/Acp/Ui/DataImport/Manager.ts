@@ -14,31 +14,28 @@ import { AjaxResponse } from "../../../Controller/Clipboard/Data";
 import { DialogCallbackSetup } from "../../../Ui/Dialog/Data";
 import DomUtil from "../../../Dom/Util";
 import UiDialog from "../../../Ui/Dialog";
+import { prepareRequest } from "WoltLabSuite/Core/Ajax/Backend";
 
 export class AcpUiDataImportManager implements AjaxCallbackObject {
   private readonly queue: string[];
   private readonly redirectUrl: string;
   private currentAction = "";
   private index = -1;
+  private cacheClearEndpoint = "";
 
-  constructor(queue: string[], redirectUrl: string) {
+  constructor(queue: string[], redirectUrl: string, cacheClearEndpoint: string) {
     this.queue = queue;
     this.redirectUrl = redirectUrl;
+    this.cacheClearEndpoint = cacheClearEndpoint;
 
-    this.invoke();
+    void this.invoke();
   }
 
-  private invoke(): void {
+  private async invoke(): Promise<void> {
     this.index++;
     if (this.index >= this.queue.length) {
-      Ajax.apiOnce({
-        url: "index.php?cache-clear/&t=" + Core.getXsrfToken(),
-        data: {
-          noRedirect: 1,
-        },
-        silent: true,
-        success: () => this.showCompletedDialog(),
-      });
+      await prepareRequest(this.cacheClearEndpoint).post().fetchAsResponse();
+      this.showCompletedDialog();
     } else {
       this.run(Language.get("wcf.acp.dataImport.data." + this.queue[this.index]), this.queue[this.index]);
     }
@@ -108,7 +105,7 @@ export class AcpUiDataImportManager implements AjaxCallbackObject {
         parameters: data.parameters,
       });
     } else {
-      this.invoke();
+      void this.invoke();
     }
   }
 

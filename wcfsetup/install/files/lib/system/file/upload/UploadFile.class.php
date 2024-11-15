@@ -140,8 +140,14 @@ class UploadFile
 
         if ($this->processed) {
             if ($this->imageLink === null) {
-                // try to guess path
-                $link = \str_replace(WCF_DIR, WCF::getPath(), $this->location);
+                $corePath = FileUtil::unifyDirSeparator(\WCF_DIR);
+                $location = FileUtil::unifyDirSeparator($this->location);
+
+                if (\str_starts_with($location, $corePath)) {
+                    $link = WCF::getPath() . \mb_substr($location, \mb_strlen($corePath));
+                } else {
+                    $link = $location;
+                }
             } else {
                 $link = $this->imageLink;
             }

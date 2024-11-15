@@ -259,6 +259,9 @@ class DailyMailNotificationCronjob extends AbstractCronjob
                 $maximumNotificationCount++;
             }
             $remainingNotificationCount = $notificationCount - $maximumNotificationCount;
+            if ($remainingNotificationCount < 0) {
+                $remainingNotificationCount = 0;
+            }
             $notifications = \array_slice($notifications, 0, $maximumNotificationCount);
 
             $html = new RecipientAwareTextMimePart(
