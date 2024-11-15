@@ -76,4 +76,14 @@ class CaptchaQuestionAction extends AbstractDatabaseObjectAction implements ITog
 
         return $captchaQuestion;
     }
+
+    #[\Override]
+    public function delete()
+    {
+        $returnValue = parent::delete();
+
+        $this->deleteI18nValues();
+
+        return $returnValue;
+    }
 }
