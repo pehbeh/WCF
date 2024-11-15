@@ -31,16 +31,16 @@
           width: 40px;
           height: 24px;
           cursor: pointer;
-          background-color: var(--wcfSidebarDimmedText);
+          background-color: var(--wcfToggleButtonBackground);
           transition: 0.4s;
         }
 
         :host([checked]) [part="track"] {
-          background-color: var(--wcfStatusSuccessText);
+          background-color: var(--wcfToggleButtonBackgroundActive);
         }
 
         [part="slider"] {
-          background-color: white;
+          background-color: var(--wcfToggleButtonSliderBackground);
           border-radius: 50%;
           position: absolute;
           top: 2px;
@@ -53,15 +53,16 @@
         }
 
         :host([checked]) [part="slider"] {
+          background-color: var(--wcfToggleButtonSliderBackgroundActive);
           transform: translateX(18px);
         }
 
         ::slotted(fa-icon) {
-          color: var(--wcfSidebarDimmedText);
+          color: var(--wcfToggleButtonBackground);
         }
 
         :host([checked]) ::slotted(fa-icon) {
-          color: var(--wcfStatusSuccessText);
+          color: var(--wcfToggleButtonBackgroundActive);
         }
       `;
 
