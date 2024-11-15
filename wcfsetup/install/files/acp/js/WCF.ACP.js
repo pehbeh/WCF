@@ -93,63 +93,6 @@ WCF.ACP.Cronjob.ExecutionHandler = Class.extend({
 });
 
 /**
- * Handles the cronjob log list.
- */
-WCF.ACP.Cronjob.LogList = Class.extend({
-	/**
-	 * error message dialog
-	 * @var	jQuery
-	 */
-	_dialog: null,
-	
-	/**
-	 * Initializes WCF.ACP.Cronjob.LogList object.
-	 */
-	init: function() {
-		// bind event listener to delete cronjob log button
-		$('.jsCronjobLogDelete').click(function() {
-			WCF.System.Confirmation.show(WCF.Language.get('wcf.acp.cronjob.log.clear.confirm'), function(action) {
-				if (action == 'confirm') {
-					new WCF.Action.Proxy({
-						autoSend: true,
-						data: {
-							actionName: 'clearAll',
-							className: 'wcf\\data\\cronjob\\log\\CronjobLogAction'
-						},
-						success: function() {
-							window.location.reload();
-						}
-					});
-				}
-			});
-		});
-		
-		// bind event listeners to error badges
-		$('.jsCronjobError').click($.proxy(this._showError, this));
-	},
-	
-	/**
-	 * Shows certain error message
-	 * 
-	 * @param	object		event
-	 */
-	_showError: function(event) {
-		var $errorBadge = $(event.currentTarget);
-		
-		if (this._dialog === null) {
-			this._dialog = $('<div style="overflow: auto"><pre>' + $errorBadge.next().html() + '</pre></div>').hide().appendTo(document.body);
-			this._dialog.wcfDialog({
-				title: WCF.Language.get('wcf.acp.cronjob.log.error.details')
-			});
-		}
-		else {
-			this._dialog.html('<pre>' + $errorBadge.next().html() + '</pre>');
-			this._dialog.wcfDialog('open');
-		}
-	}
-});
-
-/**
  * Namespace for ACP package management.
  */
 WCF.ACP.Package = { };

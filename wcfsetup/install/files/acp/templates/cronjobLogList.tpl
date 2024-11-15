@@ -1,13 +1,23 @@
 {include file='header' pageTitle='wcf.acp.cronjob.log'}
 
 <script data-relocate="true">
-	$(function() {
-		WCF.Language.addObject({
-			'wcf.acp.cronjob.log.clear.confirm': '{jslang}wcf.acp.cronjob.log.clear.confirm{/jslang}',
-			'wcf.acp.cronjob.log.error.details': '{jslang}wcf.acp.cronjob.log.error.details{/jslang}'
+	require(['WoltLabSuite/Core/Api/Cronjobs/Logs/ClearLogs', 'Ui/Notification', 'WoltLabSuite/Core/Component/Confirmation'], ({ clearLogs }, UiNotification, { confirmationFactory }) => {
+		document.querySelectorAll('.jsCronjobLogDelete').forEach((button) => {
+			button.addEventListener('click', async () => {
+				const result = await confirmationFactory()
+					.custom('{jslang}wcf.acp.cronjob.log.clear.confirm{/jslang}')
+					.withoutMessage();
+					
+				if (result) {
+					const response = await clearLogs();
+					if (response.ok) {
+						UiNotification.show(undefined, () => {
+							window.location.reload();
+						});
+					}
+				}
+			});
 		});
-		
-		new WCF.ACP.Cronjob.LogList();
 	});
 </script>
 
