@@ -124,6 +124,12 @@ declare global {
     set url(url: string);
   }
 
+  interface WoltlabCoreToggleButtonElement extends HTMLElement {
+    toggle(): void;
+    get checked(): boolean;
+    set checked(checked: boolean);
+  }
+
   interface HTMLElementTagNameMap {
     "fa-brand": FaBrand;
     "fa-icon": FaIcon;
@@ -132,9 +138,10 @@ declare global {
     "woltlab-core-date-time": WoltlabCoreDateTime;
     "woltlab-core-file": WoltlabCoreFileElement;
     "woltlab-core-file-upload": WoltlabCoreFileUploadElement;
+    "woltlab-core-google-maps": WoltlabCoreGoogleMapsElement;
     "woltlab-core-loading-indicator": WoltlabCoreLoadingIndicatorElement;
     "woltlab-core-pagination": WoltlabCorePaginationElement;
-    "woltlab-core-google-maps": WoltlabCoreGoogleMapsElement;
     "woltlab-core-reaction-summary": WoltlabCoreReactionSummaryElement;
+    "woltlab-core-toggle-button": WoltlabCoreToggleButtonElement;
   }
 }
