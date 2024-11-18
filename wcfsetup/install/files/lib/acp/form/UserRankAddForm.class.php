@@ -2,29 +2,33 @@
 
 namespace wcf\acp\form;
 
+use wcf\data\IStorableObject;
 use wcf\data\user\group\UserGroup;
+use wcf\data\user\rank\UserRank;
 use wcf\data\user\rank\UserRankAction;
-use wcf\data\user\rank\UserRankEditor;
-use wcf\data\user\UserProfile;
-use wcf\form\AbstractForm;
-use wcf\system\exception\UserInputException;
-use wcf\system\file\upload\UploadField;
-use wcf\system\file\upload\UploadFile;
-use wcf\system\file\upload\UploadHandler;
-use wcf\system\language\I18nHandler;
-use wcf\system\Regex;
-use wcf\system\request\LinkHandler;
+use wcf\form\AbstractFormBuilderForm;
+use wcf\system\form\builder\container\FormContainer;
+use wcf\system\form\builder\data\processor\CustomFormDataProcessor;
+use wcf\system\form\builder\field\BadgeColorFormField;
+use wcf\system\form\builder\field\BooleanFormField;
+use wcf\system\form\builder\field\IntegerFormField;
+use wcf\system\form\builder\field\SelectFormField;
+use wcf\system\form\builder\field\SingleSelectionFormField;
+use wcf\system\form\builder\field\TextFormField;
+use wcf\system\form\builder\field\UploadFormField;
+use wcf\system\form\builder\IFormDocument;
 use wcf\system\WCF;
-use wcf\util\StringUtil;
 
 /**
  * Shows the user rank add form.
  *
- * @author  Marcel Werk
- * @copyright   2001-2019 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @author      Olaf Braun, Marcel Werk
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @property UserRank $formObject
  */
-class UserRankAddForm extends AbstractForm
+class UserRankAddForm extends AbstractFormBuilderForm
 {
     /**
      * @inheritDoc
@@ -42,270 +46,102 @@ class UserRankAddForm extends AbstractForm
     public $neededModules = ['MODULE_USER_RANK'];
 
     /**
-     * rank group id
-     * @var int
+     * @inheritDoc
      */
-    public $groupID = 0;
-
-    /**
-     * rank title
-     * @var string
-     */
-    public $rankTitle = '';
-
-    /**
-     * CSS class name
-     * @var string
-     */
-    public $cssClassName = '';
-
-    /**
-     * custom CSS class name
-     * @var string
-     */
-    public $customCssClassName = '';
-
-    /**
-     * required activity points to acquire the rank
-     * @var int
-     */
-    public $requiredPoints = 0;
-
-    /**
-     * @deprecated since 5.4
-     */
-    public $rankImage = '';
-
-    /**
-     * number of image repeats
-     * @var int
-     */
-    public $repeatImage = 1;
-
-    /**
-     * required gender setting (1=male; 2=female)
-     * @var int
-     */
-    public $requiredGender = 0;
-
-    /**
-     * hide generic user title
-     * @var int
-     */
-    public $hideTitle = 0;
-
-    /**
-     * list of pre-defined css class names
-     * @var string[]
-     */
-    public $availableCssClassNames = [
-        'yellow',
-        'orange',
-        'brown',
-        'red',
-        'pink',
-        'purple',
-        'blue',
-        'green',
-        'black',
-
-        'none', /* not a real value */
-        'custom', /* not a real value */
-    ];
-
-    /**
-     * @var UploadFile[]
-     */
-    public $removedRankImages;
-
-    /**
-     * @var UploadFile|bool
-     */
-    public $rankImageFile;
+    public $objectActionClass = UserRankAction::class;
 
     /**
      * @inheritDoc
      */
-    public function readParameters()
+    public $objectEditLinkController = UserRankEditForm::class;
+
+    #[\Override]
+    public function createForm()
     {
-        parent::readParameters();
+        parent::createForm();
 
-        I18nHandler::getInstance()->register('rankTitle');
-
-        $this->rebuildUploadField();
-    }
-
-    protected function rebuildUploadField(): void
-    {
-        if (UploadHandler::getInstance()->isRegisteredFieldId('rankImage')) {
-            UploadHandler::getInstance()->unregisterUploadField('rankImage');
-        }
-        $field = new UploadField('rankImage');
-        $field->setImageOnly(true);
-        $field->setAllowSvgImage(true);
-        $field->maxFiles = 1;
-        UploadHandler::getInstance()->registerUploadField($field);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function readFormParameters()
-    {
-        parent::readFormParameters();
-
-        I18nHandler::getInstance()->readValues();
-
-        if (I18nHandler::getInstance()->isPlainValue('rankTitle')) {
-            $this->rankTitle = I18nHandler::getInstance()->getValue('rankTitle');
-        }
-        if (isset($_POST['cssClassName'])) {
-            $this->cssClassName = StringUtil::trim($_POST['cssClassName']);
-        }
-        if (isset($_POST['customCssClassName'])) {
-            $this->customCssClassName = StringUtil::trim($_POST['customCssClassName']);
-        }
-        if (isset($_POST['groupID'])) {
-            $this->groupID = \intval($_POST['groupID']);
-        }
-        if (isset($_POST['requiredPoints'])) {
-            $this->requiredPoints = \intval($_POST['requiredPoints']);
-        }
-        if (isset($_POST['repeatImage'])) {
-            $this->repeatImage = \intval($_POST['repeatImage']);
-        }
-        if (isset($_POST['requiredGender'])) {
-            $this->requiredGender = \intval($_POST['requiredGender']);
-        }
-        if (isset($_POST['hideTitle'])) {
-            $this->hideTitle = \intval($_POST['hideTitle']);
-        }
-
-        $this->removedRankImages = UploadHandler::getInstance()->getRemovedFilesByFieldId('rankImage');
-        $rankImageFiles = UploadHandler::getInstance()->getFilesByFieldId('rankImage');
-        $this->rankImageFile = \reset($rankImageFiles);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function validate()
-    {
-        parent::validate();
-
-        // validate label
-        if (!I18nHandler::getInstance()->validateValue('rankTitle')) {
-            if (I18nHandler::getInstance()->isPlainValue('rankTitle')) {
-                throw new UserInputException('rankTitle');
-            } else {
-                throw new UserInputException('rankTitle', 'multilingual');
-            }
-        }
-
-        // validate group
-        if (!$this->groupID) {
-            throw new UserInputException('groupID');
-        }
-        $userGroup = UserGroup::getGroupByID($this->groupID);
-        if ($userGroup === null || $userGroup->groupType == UserGroup::GUESTS || $userGroup->groupType == UserGroup::EVERYONE) {
-            throw new UserInputException('groupID', 'invalid');
-        }
-
-        // css class name
-        if (empty($this->cssClassName)) {
-            throw new UserInputException('cssClassName', 'empty');
-        } elseif (!\in_array($this->cssClassName, $this->availableCssClassNames)) {
-            throw new UserInputException('cssClassName', 'invalid');
-        } elseif ($this->cssClassName == 'custom') {
-            if (!empty($this->customCssClassName) && !Regex::compile('^-?[_a-zA-Z]+[_a-zA-Z0-9-]+$')->match($this->customCssClassName)) {
-                throw new UserInputException('cssClassName', 'invalid');
-            }
-        }
-
-        // required gender
-        if ($this->requiredGender < 0 || $this->requiredGender > UserProfile::GENDER_OTHER) {
-            $this->requiredGender = 0;
-        }
-
-        if ($this->hideTitle && !$this->rankImageFile) {
-            throw new UserInputException('hideTitle', 'rankImage');
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function save()
-    {
-        parent::save();
-
-        // save label
-        $this->objectAction = new UserRankAction([], 'create', [
-            'data' => \array_merge($this->additionalFields, [
-                'rankTitle' => $this->rankTitle,
-                'cssClassName' => $this->cssClassName == 'custom' ? $this->customCssClassName : $this->cssClassName,
-                'groupID' => $this->groupID,
-                'requiredPoints' => $this->requiredPoints,
-                'repeatImage' => $this->repeatImage,
-                'requiredGender' => $this->requiredGender,
-                'hideTitle' => ($this->hideTitle ? 1 : 0),
-            ]),
-            'rankImageFile' => $this->rankImageFile,
-        ]);
-        $returnValues = $this->objectAction->executeAction();
-        $rankID = $returnValues['returnValues']->rankID;
-
-        if (!I18nHandler::getInstance()->isPlainValue('rankTitle')) {
-            I18nHandler::getInstance()->save('rankTitle', 'wcf.user.rank.userRank' . $rankID, 'wcf.user', 1);
-
-            // update name
-            $rankEditor = new UserRankEditor($returnValues['returnValues']);
-            $rankEditor->update([
-                'rankTitle' => 'wcf.user.rank.userRank' . $rankID,
-            ]);
-        }
-        $this->saved();
-
-        // reset values
-        $this->rankTitle = $this->cssClassName = $this->customCssClassName = $this->rankImage = '';
-        $this->groupID = $this->requiredPoints = $this->requiredGender = $this->hideTitle = 0;
-        $this->repeatImage = 1;
-
-        I18nHandler::getInstance()->reset();
-        $this->rebuildUploadField();
-
-        // show success message
-        WCF::getTPL()->assign([
-            'success' => true,
-            'objectEditLink' => LinkHandler::getInstance()->getControllerLink(
-                UserRankEditForm::class,
-                ['id' => $rankID]
-            ),
+        $this->form->appendChildren([
+            FormContainer::create('section')
+                ->appendChildren([
+                    TextFormField::create('rankTitle')
+                        ->label('wcf.acp.user.rank.title')
+                        ->i18n()
+                        ->languageItemPattern('wcf.user.rank.userRank\d+')
+                        ->required(),
+                    BadgeColorFormField::create('cssClassName')
+                        ->label('wcf.acp.user.rank.cssClassName')
+                        ->description('wcf.acp.user.rank.cssClassName.description')
+                        ->textReferenceNodeId('rankTitle')
+                        ->defaultLabelText(WCF::getLanguage()->get('wcf.acp.user.rank.title'))
+                        ->required()
+                ]),
+            FormContainer::create('imageContainer')
+                ->label('wcf.acp.user.rank.image')
+                ->appendChildren([
+                    UploadFormField::create('rankImageFile')
+                        ->label('wcf.acp.user.rank.image')
+                        ->imageOnly()
+                        ->maximum(1)
+                        ->allowSvgImage(),
+                    IntegerFormField::create('repeatImage')
+                        ->label('wcf.acp.user.rank.repeatImage')
+                        ->description('wcf.acp.user.rank.repeatImage.description')
+                        ->addFieldClass('tiny')
+                        ->minimum(1)
+                        ->value(1),
+                    BooleanFormField::create('hideTitle')
+                        ->label('wcf.acp.user.rank.hideTitle')
+                        ->description('wcf.acp.user.rank.hideTitle.description')
+                        ->value(false)
+                ]),
+            FormContainer::create('requirementsContainer')
+                ->label('wcf.acp.user.rank.requirement')
+                ->appendChildren([
+                    SingleSelectionFormField::create('groupID')
+                        ->label('wcf.user.group')
+                        ->description('wcf.acp.user.rank.userGroup.description')
+                        ->options(UserGroup::getSortedGroupsByType([], [UserGroup::GUESTS, UserGroup::EVERYONE]))
+                        ->required(),
+                    SelectFormField::create('requiredGender')
+                        ->label('wcf.user.option.gender')
+                        ->description('wcf.acp.user.rank.requiredGender.description')
+                        ->options([
+                            1 => 'wcf.user.gender.male',
+                            2 => 'wcf.user.gender.female',
+                            3 => 'wcf.user.gender.other'
+                        ]),
+                    IntegerFormField::create('requiredPoints')
+                        ->label('wcf.acp.user.rank.requiredPoints')
+                        ->description('wcf.acp.user.rank.requiredPoints.description')
+                        ->addFieldClass('tiny')
+                        ->minimum(0)
+                        ->value(0),
+                ])
         ]);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function assignVariables()
+    #[\Override]
+    protected function finalizeForm()
     {
-        parent::assignVariables();
+        parent::finalizeForm();
 
-        I18nHandler::getInstance()->assignVariables();
+        $this->form->getDataHandler()
+            ->addProcessor(
+                new CustomFormDataProcessor(
+                    'requiredGenderProcessor',
+                    function (IFormDocument $document, array $parameters) {
+                        $parameters['data']['requiredGender'] = $parameters['data']['requiredGender'] ?: 0;
 
-        WCF::getTPL()->assign([
-            'action' => 'add',
-            'availableCssClassNames' => $this->availableCssClassNames,
-            'cssClassName' => $this->cssClassName,
-            'customCssClassName' => $this->customCssClassName,
-            'groupID' => $this->groupID,
-            'rankTitle' => $this->rankTitle,
-            'availableGroups' => UserGroup::getSortedGroupsByType([], [UserGroup::GUESTS, UserGroup::EVERYONE]),
-            'requiredPoints' => $this->requiredPoints,
-            'rankImage' => $this->rankImage,
-            'repeatImage' => $this->repeatImage,
-            'requiredGender' => $this->requiredGender,
-            'hideTitle' => $this->hideTitle,
-        ]);
+                        return $parameters;
+                    },
+                    function (IFormDocument $document, array $data, IStorableObject $object) {
+                        \assert($object instanceof UserRank);
+
+                        $data['requiredGender'] = $data['requiredGender'] ?: null;
+
+                        return $data;
+                    }
+                )
+            );
     }
 }
