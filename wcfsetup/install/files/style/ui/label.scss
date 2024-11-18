@@ -50,3 +50,23 @@
 .labelChooser > .dropdownToggle > span {
 	cursor: pointer;
 }
+
+.labelSelection > li.custom {
+	display: flex;
+}
+
+.labelSelection__label {
+	display: flex;
+	flex: 1 1 auto;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.labelSelection__radio {
+	flex: 0 0 auto;
+	margin-right: 7px;
+}
+
+.labelSelection > li.custom .labelSelection__span {
+	flex: 1 1 auto;
+}
