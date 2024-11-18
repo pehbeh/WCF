@@ -87,6 +87,19 @@ final class BadgeColorFormField extends RadioButtonFormField implements IPattern
     }
 
     #[\Override]
+    public function value($value)
+    {
+        if (!\in_array($value, self::AVAILABLE_CSS_CLASSNAMES)) {
+            parent::value('custom');
+            $this->customClassName = $value;
+        } else {
+            parent::value($value);
+        }
+
+        return $this;
+    }
+
+    #[\Override]
     public function getSaveValue()
     {
         if ($this->hasCustomClassName()) {
