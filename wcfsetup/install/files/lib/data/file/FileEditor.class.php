@@ -117,8 +117,7 @@ class FileEditor extends DatabaseObjectEditor
     public static function createFromExistingFile(
         string $pathname,
         string $originalFilename,
-        string $objectTypeName,
-        bool $copy = false
+        string $objectTypeName
     ): ?File {
         if (!\is_readable($pathname)) {
             return null;
@@ -175,11 +174,10 @@ class FileEditor extends DatabaseObjectEditor
             \mkdir($filePath, recursive: true);
         }
 
-        if ($copy) {
-            \copy($pathname, $filePath . $file->getSourceFilename());
-        } else {
-            \rename($pathname, $filePath . $file->getSourceFilename());
-        }
+        \rename(
+            $pathname,
+            $filePath . $file->getSourceFilename()
+        );
 
         return $file;
     }

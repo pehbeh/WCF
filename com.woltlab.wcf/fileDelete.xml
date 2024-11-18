@@ -2771,7 +2771,6 @@
 		<file>lib/system/html/output/node/HtmlOutputNodeWoltlabSize.class.php</file>
 		<file>lib/system/html/output/node/QuoteHtmlOutputNode.class.php</file>
 		<file>lib/system/image/Thumbnail.class.php</file>
-		<file>lib/system/importer/UserAvatarImporter.class.php</file>
 		<file>lib/system/language/I18nPlural.class.php</file>
 		<file>lib/system/language/LanguageServerProcessor.class.php</file>
 		<file>lib/system/language/preload/LanguagePreloader.class.php</file>

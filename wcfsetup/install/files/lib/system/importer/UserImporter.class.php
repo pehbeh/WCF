@@ -2,7 +2,6 @@
 
 namespace wcf\system\importer;
 
-use wcf\data\file\FileEditor;
 use wcf\data\user\group\UserGroup;
 use wcf\data\user\option\UserOption;
 use wcf\data\user\option\UserOptionList;
@@ -201,18 +200,6 @@ class UserImporter extends AbstractImporter
 
         // assign an interface language
         $data['languageID'] = \reset($languageIDs);
-
-        if (!empty($additionalData['avatarLocation']) && \is_readable($additionalData['avatarLocation'])) {
-            $avatarFile = FileEditor::createFromExistingFile(
-                $additionalData['avatarLocation'],
-                $additionalData['avatarFilename'] ?? \pathinfo($additionalData['avatarLocation'], \PATHINFO_BASENAME),
-                'com.woltlab.wcf.user.avatar',
-                true
-            );
-            if ($avatarFile !== null) {
-                $data['avatarFileID'] = $avatarFile->fileID;
-            }
-        }
 
         // create user
         $user = UserEditor::create($data);
