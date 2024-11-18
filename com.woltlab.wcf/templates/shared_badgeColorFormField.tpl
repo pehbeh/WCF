@@ -7,13 +7,18 @@
 					*}name="{$field->getPrefixedId()}" {*
 					*}value="{$color}"{*
 					*}{if !$field->getFieldClasses()|empty} class="{implode from=$field->getFieldClasses() item=class glue=' '}{$class}{/implode}"{/if}{*
-					*}{if $field->getValue() !== null && $field->getValue() == $color} checked{/if}{*
+					*}{if $field->getValue() === $color || ($color === 'custom' && !$field->getCustomClassName()|empty)} checked{/if}{*
 					*}{if $field->isImmutable()} disabled{/if}{*
 					*}{foreach from=$field->getFieldAttributes() key=attributeName item=attributeValue} {$attributeName}="{$attributeValue}"{/foreach}{*
 					*}>
 				{if $color == 'custom'}
 					<span class="labelSelection__span">
-						<input type="text" id="{$field->getPrefixedId()}Custom" name="{$field->getPrefixedId()}customCssClassName" value="{$field->getCustomClassName()}" class="long labelSelection__custom__input">
+						<input type="text" id="{$field->getPrefixedId()}Custom" {*
+							*}name="{$field->getPrefixedId()}customCssClassName" {*
+						    *}value="{$field->getCustomClassName()}" {*
+							*}class="long labelSelection__custom__input" {*
+							*}{if $field->getPattern() !== null} pattern="{$field->getPattern()}"{/if}{*
+						*}>
 					</span>
 				{else}
 					<span class="labelSelection__span badge label{if $color != 'none'} {$color}{/if}">{$field->getDefaultLabelText()}</span>

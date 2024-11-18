@@ -2,7 +2,10 @@
 
 namespace wcf\system\form\builder\field;
 
+use wcf\system\form\builder\field\validation\FormFieldValidationError;
+use wcf\system\Regex;
 use wcf\system\WCF;
+use wcf\util\StringUtil;
 
 /**
  * Implementation of a badge color form field for selecting a single color or a custom color.
@@ -31,10 +34,12 @@ final class BadgeColorFormField extends RadioButtonFormField implements IPattern
         'none', /* not a real value */
         'custom', /* not a real value */
     ];
+
     /**
      * @inheritDoc
      */
     protected $templateName = 'shared_badgeColorFormField';
+
     protected ?string $textReferenceNodeId;
     protected string $defaultLabelText;
     protected string $customClassName = '';
@@ -46,6 +51,49 @@ final class BadgeColorFormField extends RadioButtonFormField implements IPattern
             ->defaultLabelText(WCF::getLanguage()->get('wcf.acp.label.defaultValue'))
             ->options(\array_combine(self::AVAILABLE_CSS_CLASSNAMES, self::AVAILABLE_CSS_CLASSNAMES))
             ->pattern('^-?[_a-zA-Z]+[_a-zA-Z0-9-]+$');
+    }
+
+    #[\Override]
+    public function readValue()
+    {
+        if ($this->getDocument()->hasRequestData($this->getPrefixedId())) {
+            $this->value = StringUtil::trim($this->getDocument()->getRequestData($this->getPrefixedId()));
+
+            if ($this->value === 'custom') {
+                $this->customClassName = StringUtil::trim(
+                    $this->getDocument()->getRequestData($this->getPrefixedId() . 'customCssClassName')
+                );
+            }
+        }
+
+        return $this;
+    }
+
+    #[\Override]
+    public function validate()
+    {
+        if ($this->getValue() === 'custom') {
+            if (!Regex::compile($this->getPattern())->match($this->customClassName)) {
+                $this->addValidationError(
+                    new FormFieldValidationError(
+                        'invalid',
+                        'wcf.global.form.error.invalidCssClassName'
+                    )
+                );
+            }
+        } else {
+            parent::validate();
+        }
+    }
+
+    #[\Override]
+    public function getSaveValue()
+    {
+        if ($this->hasCustomClassName()) {
+            return $this->getCustomClassName();
+        }
+
+        return $this->getValue();
     }
 
     public function defaultLabelText(string $text): self
@@ -77,6 +125,11 @@ final class BadgeColorFormField extends RadioButtonFormField implements IPattern
     public function getTextReferenceNodeId(): ?string
     {
         return $this->textReferenceNodeId;
+    }
+
+    public function hasCustomClassName(): bool
+    {
+        return $this->value === 'custom';
     }
 
     public function getCustomClassName(): string
