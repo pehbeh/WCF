@@ -2,22 +2,29 @@
 
 namespace wcf\acp\form;
 
+use wcf\data\IStorableObject;
+use wcf\data\user\option\category\UserOptionCategory;
 use wcf\data\user\option\category\UserOptionCategoryAction;
 use wcf\data\user\option\category\UserOptionCategoryEditor;
-use wcf\form\AbstractForm;
-use wcf\system\exception\UserInputException;
+use wcf\data\user\option\category\UserOptionCategoryList;
+use wcf\form\AbstractFormBuilderForm;
+use wcf\system\form\builder\container\FormContainer;
+use wcf\system\form\builder\data\processor\CustomFormDataProcessor;
+use wcf\system\form\builder\field\ShowOrderFormField;
+use wcf\system\form\builder\field\TextFormField;
+use wcf\system\form\builder\IFormDocument;
 use wcf\system\language\I18nHandler;
-use wcf\system\request\LinkHandler;
-use wcf\system\WCF;
 
 /**
  * Shows the form for adding new user option categories.
  *
- * @author  Marcel Werk
- * @copyright   2001-2019 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @author      Olaf Braun, Marcel Werk
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @property UserOptionCategory $formObject
  */
-class UserOptionCategoryAddForm extends AbstractForm
+class UserOptionCategoryAddForm extends AbstractFormBuilderForm
 {
     /**
      * @inheritDoc
@@ -30,75 +37,76 @@ class UserOptionCategoryAddForm extends AbstractForm
     public $neededPermissions = ['admin.user.canManageUserOption'];
 
     /**
-     * category name
-     * @var string
+     * @inheritDoc
      */
-    public $categoryName = '';
-
-    /**
-     * show order
-     * @var int
-     */
-    public $showOrder = 0;
+    public $objectActionClass = UserOptionCategoryAction::class;
 
     /**
      * @inheritDoc
      */
-    public function readParameters()
-    {
-        parent::readParameters();
-
-        I18nHandler::getInstance()->register('categoryName');
-    }
+    public $objectEditLinkController = UserOptionCategoryEditForm::class;
 
     /**
      * @inheritDoc
      */
-    public function readFormParameters()
+    public $additionalFields = ['parentCategoryName' => 'profile'];
+
+    #[\Override]
+    protected function createForm()
     {
-        parent::readFormParameters();
+        parent::createForm();
 
-        I18nHandler::getInstance()->readValues();
+        $this->form->appendChildren([
+            FormContainer::create('general')
+                ->appendChildren([
+                    TextFormField::create('categoryName')
+                        ->required()
+                        ->label('wcf.global.name')
+                        ->i18n()
+                        ->i18nRequired()
+                        ->languageItemPattern('wcf.user.option.category.(category\d+|[\w\.]+)'),
+                    ShowOrderFormField::create()
+                        ->options(function () {
+                            $categoryList = new UserOptionCategoryList();
+                            $categoryList->getConditionBuilder()->add('parentCategoryName = ?', ['profile']);
+                            $categoryList->readObjects();
+                            $categories = [];
 
-        if (I18nHandler::getInstance()->isPlainValue('categoryName')) {
-            $this->categoryName = I18nHandler::getInstance()->getValue('categoryName');
-        }
-        if (isset($_POST['showOrder'])) {
-            $this->showOrder = \intval($_POST['showOrder']);
-        }
-    }
+                            foreach ($categoryList->getObjects() as $category) {
+                                $categories[$category->categoryID] = $category->getTitle();
+                            }
 
-    /**
-     * @inheritDoc
-     */
-    public function validate()
-    {
-        parent::validate();
-
-        if (!I18nHandler::getInstance()->validateValue('categoryName', true)) {
-            throw new UserInputException('categoryName', 'multilingual');
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function save()
-    {
-        parent::save();
-
-        // save label
-        $this->objectAction = new UserOptionCategoryAction([], 'create', [
-            'data' => \array_merge($this->additionalFields, [
-                'parentCategoryName' => 'profile',
-                'categoryName' => $this->categoryName,
-                'showOrder' => $this->showOrder,
-            ]),
+                            return $categories;
+                        }),
+                ]),
         ]);
-        $this->objectAction->executeAction();
+    }
 
-        // update name
+    #[\Override]
+    protected function finalizeForm()
+    {
+        parent::finalizeForm();
+
+        $this->form->getDataHandler()
+            ->addProcessor(
+                new CustomFormDataProcessor(
+                    'categoryName',
+                    null,
+                    function (IFormDocument $document, array $data, IStorableObject $object) {
+                        \assert($object instanceof UserOptionCategory);
+                        $data['categoryName'] = 'wcf.user.option.category.' . $object->categoryName;
+
+                        return $data;
+                    }
+                ),
+            );
+    }
+
+    #[\Override]
+    public function saved()
+    {
         $returnValues = $this->objectAction->getReturnValues();
+
         $categoryID = $returnValues['returnValues']->categoryID;
         I18nHandler::getInstance()->save(
             'categoryName',
@@ -109,37 +117,7 @@ class UserOptionCategoryAddForm extends AbstractForm
         $categoryEditor->update([
             'categoryName' => 'category' . $categoryID,
         ]);
-        $this->saved();
 
-        // reset values
-        $this->categoryName = '';
-        $this->showOrder = 0;
-
-        I18nHandler::getInstance()->reset();
-
-        // show success message
-        WCF::getTPL()->assign([
-            'success' => true,
-            'objectEditLink' => LinkHandler::getInstance()->getControllerLink(
-                UserOptionCategoryEditForm::class,
-                ['id' => $categoryID]
-            ),
-        ]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function assignVariables()
-    {
-        parent::assignVariables();
-
-        I18nHandler::getInstance()->assignVariables();
-
-        WCF::getTPL()->assign([
-            'action' => 'add',
-            'categoryName' => $this->categoryName,
-            'showOrder' => $this->showOrder,
-        ]);
+        parent::saved();
     }
 }
