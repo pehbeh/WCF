@@ -6505,6 +6505,7 @@ WCF.Category = { };
 if (COMPILER_TARGET_DEFAULT) {
 	/**
 	 * Handles selection of categories.
+	 * @deprecated 6.2 Not (or no longer) used in the software.
 	 */
 	WCF.Category.NestedList = Class.extend({
 		/**
