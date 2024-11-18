@@ -52,7 +52,6 @@ class UserOptionCategoryEditForm extends UserOptionCategoryAddForm
         }
     }
 
-
     #[\Override]
     public function saved()
     {
