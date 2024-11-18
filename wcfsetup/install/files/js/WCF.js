@@ -1240,6 +1240,7 @@ WCF.Action.Proxy = Class.extend({
  * 
  * @param	object		options
  * @param	object		callbacks
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.Action.SimpleProxy = Class.extend({
 	/**
