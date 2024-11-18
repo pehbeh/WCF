@@ -46,11 +46,6 @@ class UserOptionCategoryAddForm extends AbstractFormBuilderForm
      */
     public $objectEditLinkController = UserOptionCategoryEditForm::class;
 
-    /**
-     * @inheritDoc
-     */
-    public $additionalFields = ['parentCategoryName' => 'profile'];
-
     #[\Override]
     protected function createForm()
     {
@@ -100,6 +95,16 @@ class UserOptionCategoryAddForm extends AbstractFormBuilderForm
                     }
                 ),
             );
+    }
+
+    #[\Override]
+    public function save()
+    {
+        if ($this->formAction === 'create') {
+            $this->additionalFields['parentCategoryName'] = 'profile';
+        }
+
+        parent::save();
     }
 
     #[\Override]
