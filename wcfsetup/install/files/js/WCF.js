@@ -2012,6 +2012,8 @@ WCF.String = {
  * Basic implementation for WCF TabMenus. Use the data attributes 'active' to specify the
  * tab which should be shown on init. Furthermore you may specify a 'store' data-attribute
  * which will be filled with the currently selected tab.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.TabMenu = {
 	/**
