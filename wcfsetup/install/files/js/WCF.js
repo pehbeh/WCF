@@ -4264,6 +4264,7 @@ if (COMPILER_TARGET_DEFAULT) {
 	 * @param        string                title
 	 * @param        object                parameters
 	 * @param        object                callback
+	 * @deprecated 6.2 Use `WoltLabSuite/Core/Acp/Ui/Worker` instead.
 	 */
 	WCF.System.Worker = Class.extend({
 		/**
