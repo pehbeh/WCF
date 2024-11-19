@@ -6153,6 +6153,8 @@ jQuery.fn.extend({
 
 /**
  * Provides a slideshow for lists.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 $.widget('ui.wcfSlideshow', {
 	/**
