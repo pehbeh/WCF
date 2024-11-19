@@ -3,6 +3,8 @@
 namespace wcf\data\page;
 
 use wcf\data\DatabaseObjectDecorator;
+use wcf\data\IObjectTreeNode;
+use wcf\data\TObjectTreeNode;
 
 /**
  * Represents a page node element.
@@ -15,29 +17,14 @@ use wcf\data\DatabaseObjectDecorator;
  * @method  Page    getDecoratedObject()
  * @mixin   Page
  */
-class PageNode extends DatabaseObjectDecorator implements \Countable, \RecursiveIterator
+class PageNode extends DatabaseObjectDecorator implements IObjectTreeNode
 {
-    /**
-     * parent node
-     * @var PageNode
-     */
-    protected $parentNode;
-
-    /**
-     * children of this node
-     * @var PageNode[]
-     */
-    protected $children = [];
+    use TObjectTreeNode;
 
     /**
      * node depth
      */
     protected int $depth = 0;
-
-    /**
-     * iterator position
-     */
-    private int $position = 0;
 
     /**
      * @inheritDoc
@@ -70,83 +57,15 @@ class PageNode extends DatabaseObjectDecorator implements \Countable, \Recursive
         $this->children = $children;
     }
 
-    /**
-     * Returns the parent node
-     */
-    public function getParentNode(): ?self
-    {
-        return $this->parentNode;
-    }
-
-    /**
-     * Returns the number of children.
-     */
-    public function count(): int
-    {
-        return \count($this->children);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function rewind(): void
-    {
-        $this->position = 0;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function valid(): bool
-    {
-        return isset($this->children[$this->position]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function next(): void
-    {
-        $this->position++;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function current(): self
-    {
-        return $this->children[$this->position];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function key(): int
-    {
-        return $this->position;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getChildren(): self
-    {
-        return $this->children[$this->position];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function hasChildren(): bool
-    {
-        return \count($this->children) > 0;
-    }
-
-    /**
-     * Returns node depth.
-     */
+    #[\Override]
     public function getDepth(): int
     {
         return $this->depth;
+    }
+
+    #[\Override]
+    public function __toString(): string
+    {
+        return $this->getDecoratedObject()->name;
     }
 }
