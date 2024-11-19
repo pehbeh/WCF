@@ -5,6 +5,7 @@ namespace wcf\system\gridView\filter;
 use wcf\data\DatabaseObjectList;
 use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\TextFormField;
+use wcf\system\WCF;
 
 /**
  * Filter for text columns.
@@ -26,7 +27,7 @@ class TextFilter implements IGridViewFilter
     #[\Override]
     public function applyFilter(DatabaseObjectList $list, string $id, string $value): void
     {
-        $list->getConditionBuilder()->add("$id LIKE ?", ['%' . $value . '%']);
+        $list->getConditionBuilder()->add("$id LIKE ?", ['%' . WCF::getDB()->escapeLikeValue($value) . '%']);
     }
 
     #[\Override]
