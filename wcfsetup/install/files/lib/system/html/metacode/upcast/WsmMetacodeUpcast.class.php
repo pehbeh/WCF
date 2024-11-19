@@ -15,7 +15,7 @@ use wcf\util\StringUtil;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.1
  */
-final class WsmMetacodeUpcast extends ImageMetacodeUpcast
+final class WsmMetacodeUpcast extends AbstractImageMetacodeUpcast
 {
     #[\Override]
     public function upcast(\DOMElement $element, array $attributes): void

@@ -1,5 +1,4 @@
-{include file='header' pageTitle='wcf.acp.license'}
-
+{capture append='headContent'}
 <style>
 	.licensed_packages__package__title {
 		font-size: var(--wcfFontSizeHeadline);
@@ -30,10 +29,13 @@
 		color: var(--wcfContentDimmedText);
 	}
 </style>
+{/capture}
+
+{include file='header' pageTitle='wcf.acp.license'}
 
 <header class="contentHeader">
 	<div class="contentHeaderTitle">
-		<h1 class="contentTitle">{lang}wcf.acp.license{/lang}</span></h1>
+		<h1 class="contentTitle">{lang}wcf.acp.license{/lang}</h1>
 		{if $licenseData->getLicenseNumber()}
 			<p class="contentDescription">{lang licenseNumber=$licenseData->getLicenseNumber()}wcf.acp.license.licenseNo{/lang}</p>
 		{/if}
@@ -60,7 +62,7 @@
 </header>
 
 {if $licenseData->getLicenseType() === 'developer'}
-	<woltlab-core-notice type="warning">{lang}wcf.acp.license.developerLicense{/lang}</woltlab-core-notice>
+	<woltlab-core-notice type="info">{lang}wcf.acp.license.developerLicense{/lang}</woltlab-core-notice>
 {/if}
 
 {hascontent}

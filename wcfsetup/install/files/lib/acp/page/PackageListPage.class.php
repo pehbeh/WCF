@@ -2,7 +2,7 @@
 
 namespace wcf\acp\page;
 
-use wcf\data\package\PackageList;
+use wcf\data\package\I18nPackageList;
 use wcf\data\package\update\server\PackageUpdateServer;
 use wcf\page\SortablePage;
 use wcf\system\application\ApplicationHandler;
@@ -16,7 +16,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    PackageList $objectList
+ * @property    I18nPackageList $objectList
  */
 class PackageListPage extends SortablePage
 {
@@ -55,7 +55,7 @@ class PackageListPage extends SortablePage
         'packageID',
         'package',
         'packageDir',
-        'packageName',
+        'packageNameI18n',
         'packageDescription',
         'packageDate',
         'packageURL',
@@ -69,7 +69,7 @@ class PackageListPage extends SortablePage
     /**
      * @inheritDoc
      */
-    public $objectListClassName = PackageList::class;
+    public $objectListClassName = I18nPackageList::class;
 
     /**
      * @inheritDoc
@@ -106,7 +106,7 @@ class PackageListPage extends SortablePage
      */
     protected function readObjects()
     {
-        $this->sqlOrderBy = 'package.' . ($this->sortField == 'packageType' ? 'isApplication ' . $this->sortOrder : $this->sortField . ' ' . $this->sortOrder) . ($this->sortField != 'packageName' ? ', package.packageName ASC' : '');
+        $this->sqlOrderBy = ($this->sortField == 'packageNameI18n' ? '' : 'package.') . ($this->sortField == 'packageType' ? 'isApplication ' . $this->sortOrder : $this->sortField . ' ' . $this->sortOrder) . ($this->sortField != 'packageNameI18n' ? ', packageNameI18n ASC' : '');
 
         parent::readObjects();
     }

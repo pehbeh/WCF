@@ -52,8 +52,8 @@ export function getLocalizationData(localization: string): I18n {
 
 export function getDataSource(locale: string): string {
   if (!locales.includes(locale)) {
-    return `${window.WSC_API_URL}emoji/en.json`;
+    return `${window.WCF_PATH}emoji/en.json`;
   }
 
-  return `${window.WSC_API_URL}emoji/${locale}.json`;
+  return `${window.WCF_PATH}emoji/${locale}.json`;
 }

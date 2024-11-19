@@ -1240,6 +1240,7 @@ WCF.Action.Proxy = Class.extend({
  * 
  * @param	object		options
  * @param	object		callbacks
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.Action.SimpleProxy = Class.extend({
 	/**
@@ -2011,6 +2012,8 @@ WCF.String = {
  * Basic implementation for WCF TabMenus. Use the data attributes 'active' to specify the
  * tab which should be shown on init. Furthermore you may specify a 'store' data-attribute
  * which will be filled with the currently selected tab.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.TabMenu = {
 	/**
@@ -6505,6 +6508,7 @@ WCF.Category = { };
 if (COMPILER_TARGET_DEFAULT) {
 	/**
 	 * Handles selection of categories.
+	 * @deprecated 6.2 Not (or no longer) used in the software.
 	 */
 	WCF.Category.NestedList = Class.extend({
 		/**
