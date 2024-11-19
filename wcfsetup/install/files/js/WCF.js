@@ -5701,6 +5701,9 @@ else {
 	});
 }
 
+/**
+ * @deprecated 6.2 Use `WoltLabSuite/Core/Controller/Popover` instead.
+ */
 WCF.Popover = Class.extend({
 	/**
 	 * currently active element id
