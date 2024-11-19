@@ -4073,6 +4073,8 @@ WCF.System.Confirmation = {
 
 /**
  * Disables the ability to scroll the page.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.System.DisableScrolling = {
 	/**
