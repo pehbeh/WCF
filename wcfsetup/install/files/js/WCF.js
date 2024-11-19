@@ -5759,6 +5759,7 @@ WCF.Popover = Class.extend({
  * 
  * @param	string		itemListSelector
  * @param	string		searchInputSelector
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.EditableItemList = Class.extend({
 	/**
