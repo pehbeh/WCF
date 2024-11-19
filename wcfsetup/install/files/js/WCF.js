@@ -2573,6 +2573,8 @@ WCF.DOMNodeInsertedHandler = {
 
 /**
  * Notifies objects once a DOM node was removed.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.DOMNodeRemovedHandler = {
 	/**
