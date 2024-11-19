@@ -2921,6 +2921,9 @@ else {
 	});
 }
 
+/**
+ * @deprecated 6.2 Not (or no longer) used in the software.
+ */
 WCF.PageVisibilityHandler = {
 	/**
 	 * list of callbacks
