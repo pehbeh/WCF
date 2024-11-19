@@ -2044,6 +2044,8 @@ WCF.Collapsible = {};
 /**
  * Simple implementation for collapsible content, neither does it
  * store its state nor does it allow AJAX callbacks to fetch content.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.Collapsible.Simple = {
 	/**
@@ -2123,6 +2125,7 @@ WCF.Collapsible.Simple = {
  * and closed state will be cached.
  * 
  * @param	string		className
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.Collapsible.Remote = Class.extend({
 	/**
@@ -2360,6 +2363,8 @@ WCF.Collapsible.Remote = Class.extend({
  * Basic implementation for collapsible containers with AJAX support. Requires collapsible
  * content to be available in DOM already, if you want to load content on the fly use
  * WCF.Collapsible.Remote instead.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.Collapsible.SimpleRemote = WCF.Collapsible.Remote.extend({
 	/**
