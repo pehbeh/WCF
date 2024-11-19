@@ -6436,6 +6436,9 @@ jQuery.fn.extend({
 	}
 });
 
+/**
+ * @deprecated 6.2 Use `WoltLabSuite/Core/Ui/TabMenu` instead.
+ */
 jQuery.fn.extend({
 	wcfTabs: function(method) {
 		var element = this[0], parameters = Array.prototype.slice.call(arguments, 1);
