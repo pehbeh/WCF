@@ -6390,6 +6390,9 @@ $.widget('ui.wcfSlideshow', {
 	}
 });
 
+/**
+ * @deprecated 6.2 Use `WoltLabSuite/Core/Date/Picker` instead.
+ */
 jQuery.fn.extend({
 	datepicker: function(method) {
 		var element = this[0], parameters = Array.prototype.slice.call(arguments, 1);
