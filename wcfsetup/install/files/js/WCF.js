@@ -742,6 +742,8 @@ $.extend(WCF, {
 
 /**
  * Browser related functions.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.Browser = {
 	/**

@@ -901,6 +901,8 @@ if (COMPILER_TARGET_DEFAULT) {
 	
 	/**
 	 * Handles submit buttons for forms with an embedded WYSIWYG editor.
+	 * 
+	 * @deprecated 6.2 Not (or no longer) used in the software.
 	 */
 	WCF.Message.Submit = {
 		/**
