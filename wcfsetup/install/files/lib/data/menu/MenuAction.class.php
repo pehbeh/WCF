@@ -5,6 +5,7 @@ namespace wcf\data\menu;
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\data\box\BoxAction;
 use wcf\data\box\BoxEditor;
+use wcf\data\TI18nDatabaseObjectAction;
 use wcf\system\exception\PermissionDeniedException;
 
 /**
@@ -20,6 +21,8 @@ use wcf\system\exception\PermissionDeniedException;
  */
 class MenuAction extends AbstractDatabaseObjectAction
 {
+    use TI18nDatabaseObjectAction;
+
     /**
      * @inheritDoc
      */
@@ -51,14 +54,23 @@ class MenuAction extends AbstractDatabaseObjectAction
      */
     public function create()
     {
+        // `title` column doesn't have a default value
+        $this->parameters['data']['title'] = $this->parameters['data']['title'] ?? '';
+
         /** @var Menu $menu */
         $menu = parent::create();
+
+        $this->saveI18nValue($menu);
 
         // create box
         $boxData = $this->parameters['boxData'];
         $boxData['menuID'] = $menu->menuID;
         $boxData['identifier'] = '';
-        $boxAction = new BoxAction([], 'create', ['data' => $boxData, 'pageIDs' => $this->parameters['pageIDs'] ?? []]);
+        $boxAction = new BoxAction([], 'create', [
+            'data' => $boxData,
+            'pageIDs' => $this->parameters['pageIDs'] ?? [],
+            'acl' => $this->parameters['acl'] ?? []
+        ]);
         $returnValues = $boxAction->executeAction();
 
         // set generic box identifier
@@ -69,6 +81,16 @@ class MenuAction extends AbstractDatabaseObjectAction
 
         // return new menu
         return $menu;
+    }
+
+    #[\Override]
+    public function update()
+    {
+        parent::update();
+
+        foreach ($this->getObjects() as $menu) {
+            $this->saveI18nValue($menu->getDecoratedObject());
+        }
     }
 
     /**
@@ -83,5 +105,25 @@ class MenuAction extends AbstractDatabaseObjectAction
                 throw new PermissionDeniedException();
             }
         }
+    }
+
+    #[\Override]
+    public function getI18nSaveTypes(): array
+    {
+        return [
+            'title' => 'wcf.menu.com.woltlab.wcf.genericMenu\d+'
+        ];
+    }
+
+    #[\Override]
+    public function getLanguageCategory(): string
+    {
+        return 'wcf.menu';
+    }
+
+    #[\Override]
+    public function getPackageID(): int
+    {
+        return PACKAGE_ID;
     }
 }
