@@ -3883,6 +3883,8 @@ WCF.System.Dependency.Manager = {
 
 /**
  * Stores object references for global access.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.System.ObjectStore = {
 	/**
