@@ -1,4 +1,4 @@
-<ul class="labelSelection">
+<ul class="labelSelection{if !$field->getClasses()|empty} {implode from=$field->getClasses() item=class glue=' '}{$class}{/implode}{/if}">
 	{foreach from=$field->getOptions() item=color}
 		<li{if $color == 'custom'} class="custom"{/if}>
 			<label class="labelSelection__label">

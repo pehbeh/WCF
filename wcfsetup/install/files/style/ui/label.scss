@@ -51,6 +51,10 @@
 	cursor: pointer;
 }
 
+.labelSelection.inlineList > li {
+	flex-basis: 30%;
+}
+
 .labelSelection > li.custom {
 	display: flex;
 }
