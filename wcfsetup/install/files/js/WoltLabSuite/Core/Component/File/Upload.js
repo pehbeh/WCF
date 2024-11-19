@@ -100,7 +100,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/Selector", "Wol
                 maxWidth = Math.min(maxWidth, window.screen.width);
             }
         }
-        const canvas = await resizer.resize(image, maxWidth, maxHeight, resizeConfiguration.quality, true, timeout);
+        const canvas = await resizer.resize(image, maxWidth, maxHeight, resizeConfiguration.quality, false, timeout);
         if (canvas === undefined) {
             // The resize operation failed, timed out or there was no need to perform
             // any scaling whatsoever.
