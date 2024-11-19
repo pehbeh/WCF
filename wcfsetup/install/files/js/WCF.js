@@ -4165,6 +4165,8 @@ WCF.System.DisableZoom = {
 
 /**
  * System-wide handler for push notifications.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.System.PushNotification = {
 	/**
