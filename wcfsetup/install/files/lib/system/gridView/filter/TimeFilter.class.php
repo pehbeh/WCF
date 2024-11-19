@@ -22,6 +22,7 @@ class TimeFilter implements IGridViewFilter
     {
         return DateRangeFormField::create($id)
             ->label($label)
+            ->nullable()
             ->supportTime();
     }
 

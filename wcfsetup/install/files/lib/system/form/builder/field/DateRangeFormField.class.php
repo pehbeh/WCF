@@ -50,7 +50,7 @@ class DateRangeFormField extends AbstractFormField implements
      */
     public function getSaveValue()
     {
-        if ($this->getValue() === null && $this->isNullable()) {
+        if (!$this->getFromValue() && !$this->getToValue() && $this->isNullable()) {
             return null;
         }
 
