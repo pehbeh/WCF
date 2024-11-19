@@ -607,6 +607,9 @@ WCF.ACP.Package.Uninstallation = WCF.ACP.Package.Installation.extend({
 
 WCF.ACP.Package.Server = { };
 
+/**
+ * @deprecated 6.2 Not (or no longer) used in the software.
+ */
 WCF.ACP.Package.Server.Installation = Class.extend({
 	_proxy: null,
 	_selectedPackage: '',
