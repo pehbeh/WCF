@@ -600,6 +600,7 @@ if (COMPILER_TARGET_DEFAULT) {
 	 * @param        integer                languageID
 	 * @param        object                availableLanguages
 	 * @param        boolean                forceSelection
+	 * @deprecated 6.2 Not (or no longer) used in the software.
 	 */
 	WCF.Message.Multilingualism = Class.extend({
 		/**
