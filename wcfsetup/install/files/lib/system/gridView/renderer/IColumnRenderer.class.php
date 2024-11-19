@@ -21,4 +21,9 @@ interface IColumnRenderer
      * Returns the css classes of a column.
      */
     public function getClasses(): string;
+
+    /**
+     * Is called after the grid view data has been loaded and allows additional data to be loaded or cached.
+     */
+    public function prepare(mixed $value, mixed $context = null): void;
 }

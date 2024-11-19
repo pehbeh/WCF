@@ -17,4 +17,7 @@ abstract class AbstractColumnRenderer implements IColumnRenderer
     {
         return '';
     }
+
+    #[\Override]
+    public function prepare(mixed $value, mixed $context = null): void {}
 }

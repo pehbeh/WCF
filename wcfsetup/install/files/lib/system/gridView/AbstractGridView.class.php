@@ -228,6 +228,8 @@ abstract class AbstractGridView
      */
     public function renderRows(): string
     {
+        $this->prepareRenderers();
+
         return WCF::getTPL()->fetch('shared_gridViewRows', 'wcf', ['view' => $this], true);
     }
 
@@ -496,6 +498,20 @@ abstract class AbstractGridView
     protected function getInitializedEvent(): ?IPsr14Event
     {
         return null;
+    }
+
+    /**
+     * Prepares the column renderers.
+     */
+    protected function prepareRenderers(): void
+    {
+        foreach ($this->getVisibleColumns() as $column) {
+            foreach ($column->getRenderers() as $renderer) {
+                foreach ($this->getRows() as $row) {
+                    $renderer->prepare($this->getData($row, $column->getID()), $row);
+                }
+            }
+        }
     }
 
     /**
