@@ -212,6 +212,8 @@ else {
 
 /**
  * Prevents multiple submits of the same form by disabling the submit button.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.Message.FormGuard = Class.extend({
 	/**
