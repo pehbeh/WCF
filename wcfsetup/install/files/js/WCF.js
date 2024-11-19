@@ -4121,6 +4121,8 @@ WCF.System.DisableScrolling = {
 
 /**
  * Disables the ability to zoom the page.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.System.DisableZoom = {
 	/**
