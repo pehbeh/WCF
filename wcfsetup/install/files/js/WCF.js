@@ -1757,6 +1757,7 @@ WCF.Date = {};
  * Hash-like dictionary. Based upon idead from Prototype's hash
  * 
  * @see	https://github.com/sstephenson/prototype/blob/master/src/prototype/lang/hash.js
+ * @deprecated 6.2 Use `WoltLabSuite/Core/Dictionary` instead.
  */
 WCF.Dictionary = Class.extend({
 	/**
