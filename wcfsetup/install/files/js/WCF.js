@@ -2469,6 +2469,8 @@ WCF.Effect = {};
 
 /**
  * Scrolls to a specific element offset, optionally handling menu height.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.Effect.Scroll = Class.extend({
 	/**
