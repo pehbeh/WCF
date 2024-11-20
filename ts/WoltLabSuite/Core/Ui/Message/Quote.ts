@@ -105,6 +105,14 @@ export class UiMessageQuote implements AjaxCallbackObject {
       },
       { passive: false },
     );
+
+    window.addEventListener(
+      "resize",
+      () => {
+        this.copyQuote.classList.remove("active");
+      },
+      { passive: true },
+    );
   }
 
   /**

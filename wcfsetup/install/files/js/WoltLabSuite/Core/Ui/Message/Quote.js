@@ -49,6 +49,9 @@ define(["require", "exports", "tslib", "../../Ajax", "../../Core", "../../Event/
                     }, { once: true, passive: false });
                 }
             }, { passive: false });
+            window.addEventListener("resize", () => {
+                this.copyQuote.classList.remove("active");
+            }, { passive: true });
         }
         /**
          * Initializes message containers.
