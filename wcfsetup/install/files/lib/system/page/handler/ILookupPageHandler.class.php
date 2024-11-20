@@ -34,7 +34,7 @@ interface ILookupPageHandler extends IMenuPageHandler
      * an `objectID => title` relation.
      *
      * @param string $searchString search string
-     * @return  string[]
+     * @return  string[][]
      */
     public function lookup($searchString);
 }
