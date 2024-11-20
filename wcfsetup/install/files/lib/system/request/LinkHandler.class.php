@@ -83,10 +83,10 @@ final class LinkHandler extends SingletonFactory
 
         $matches = $this->controllerRegex->getMatches();
 
-        // important: matches cannot overwrite explicitly set parameters
-        $parameters['application'] = $parameters['application'] ?? $matches['application'];
-        $parameters['isACP'] = $parameters['isACP'] ?? $matches['isAcp'];
-        $parameters['forceFrontend'] = $parameters['forceFrontend'] ?? !$matches['isAcp'];
+        // Overwrite legacy parameters, as these always result from the given controller class.
+        $parameters['application'] = $matches['application'];
+        $parameters['isACP'] = $matches['isAcp'];
+        $parameters['forceFrontend'] = !$matches['isAcp'];
 
         return $this->getLink($matches['controller'], $parameters, $url);
     }
