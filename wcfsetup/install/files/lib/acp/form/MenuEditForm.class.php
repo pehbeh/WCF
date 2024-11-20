@@ -34,7 +34,7 @@ class MenuEditForm extends MenuAddForm
      */
     public function readParameters()
     {
-        AbstractFormBuilderForm::readParameters();
+        parent::readParameters();
 
         try {
             $queryParameters = Helper::mapQueryParameters(
