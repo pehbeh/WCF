@@ -5,6 +5,7 @@ namespace wcf\data\menu;
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\data\box\BoxAction;
 use wcf\data\box\BoxEditor;
+use wcf\data\DatabaseObject;
 use wcf\data\TI18nDatabaseObjectAction;
 use wcf\system\exception\PermissionDeniedException;
 
@@ -111,7 +112,7 @@ class MenuAction extends AbstractDatabaseObjectAction
     public function getI18nSaveTypes(): array
     {
         return [
-            'title' => 'wcf.menu.com.woltlab.wcf.genericMenu\d+'
+            'title' => 'wcf.menu.\w+'
         ];
     }
 
@@ -125,5 +126,16 @@ class MenuAction extends AbstractDatabaseObjectAction
     public function getPackageID(): int
     {
         return PACKAGE_ID;
+    }
+
+    protected function getLanguageItem(DatabaseObject $object, string $regex): string
+    {
+        \assert($object instanceof Menu);
+
+        return \str_replace(
+            '\w+',
+            $object->identifier ?: 'com.woltlab.wcf.genericMenu' . $object->menuID,
+            $regex
+        );
     }
 }
