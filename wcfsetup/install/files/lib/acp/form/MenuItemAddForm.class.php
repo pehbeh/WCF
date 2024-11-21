@@ -153,7 +153,7 @@ class MenuItemAddForm extends AbstractFormBuilderForm
                                 ->fieldId('isInternalLink')
                                 ->values([1])
                         ),
-                    $this->getPageObjectIDFormField($pageHandlers)
+                    $this->getPageObjectIDFormField($pageNodeList, $pageHandlers)
                         ->id('pageObjectID')
                         ->label('wcf.page.pageObjectID')
                         ->addFieldClass('short')
@@ -292,23 +292,28 @@ class MenuItemAddForm extends AbstractFormBuilderForm
         );
     }
 
-    protected function getPageObjectIDFormField(array $pageHandlers): IntegerFormField
-    {
-        return new class($pageHandlers) extends IntegerFormField {
+    protected function getPageObjectIDFormField(
+        \RecursiveIteratorIterator $pageNodeList,
+        array $pageHandlers
+    ): IntegerFormField {
+        return new class($pageNodeList, $pageHandlers) extends IntegerFormField {
             protected $templateName = '__pageObjectIDFormField';
             protected array $pageHandlers;
+            protected \RecursiveIteratorIterator $pageNodeList;
 
-            public function __construct(array $pageHandlers)
+            public function __construct(\RecursiveIteratorIterator $pageNodeList, array $pageHandlers)
             {
                 parent::__construct();
                 $this->pageHandlers = $pageHandlers;
+                $this->pageNodeList = $pageNodeList;
             }
 
             #[\Override]
             public function getHtmlVariables()
             {
                 return array_merge(parent::getHtmlVariables(), [
-                    'pageHandlers' => $this->pageHandlers
+                    'pageHandlers' => $this->pageHandlers,
+                    'pageNodeList' => $this->pageNodeList,
                 ]);
             }
         };
