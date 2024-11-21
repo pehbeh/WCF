@@ -7,21 +7,25 @@ use Cron\FieldFactory;
 use wcf\data\cronjob\Cronjob;
 use wcf\data\cronjob\CronjobAction;
 use wcf\data\cronjob\CronjobEditor;
-use wcf\form\AbstractForm;
-use wcf\system\exception\UserInputException;
+use wcf\form\AbstractFormBuilderForm;
+use wcf\system\cronjob\ICronjob;
+use wcf\system\form\builder\container\FormContainer;
+use wcf\system\form\builder\field\ClassNameFormField;
+use wcf\system\form\builder\field\TextFormField;
+use wcf\system\form\builder\field\validation\FormFieldValidationError;
+use wcf\system\form\builder\field\validation\FormFieldValidator;
 use wcf\system\language\I18nHandler;
-use wcf\system\request\LinkHandler;
-use wcf\system\WCF;
-use wcf\util\StringUtil;
 
 /**
  * Shows the cronjob add form.
  *
- * @author  Alexander Ebert
- * @copyright   2001-2019 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @author      Olaf Braun, Alexander Ebert
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @property Cronjob $formObject
  */
-class CronjobAddForm extends AbstractForm
+class CronjobAddForm extends AbstractFormBuilderForm
 {
     /**
      * @inheritDoc
@@ -34,216 +38,144 @@ class CronjobAddForm extends AbstractForm
     public $neededPermissions = ['admin.management.canManageCronjob'];
 
     /**
-     * cronjob class name
-     * @var string
+     * @inheritDoc
      */
-    public $className = '';
-
-    /**
-     * cronjob package id
-     * @var int
-     */
-    public $packageID = PACKAGE_ID;
-
-    /**
-     * cronjob description
-     * @var string
-     */
-    public $description = '';
-
-    /**
-     * execution time (min)
-     * @var string
-     */
-    public $startMinute = '*';
-
-    /**
-     * execution time (hour)
-     * @var string
-     */
-    public $startHour = '*';
-
-    /**
-     * execution time (day of month)
-     * @var string
-     */
-    public $startDom = '*';
-
-    /**
-     * execution time (month)
-     * @var string
-     */
-    public $startMonth = '*';
-
-    /**
-     * execution time (day of week)
-     * @var string
-     */
-    public $startDow = '*';
+    public $objectActionClass = CronjobAction::class;
 
     /**
      * @inheritDoc
      */
-    public function readParameters()
-    {
-        parent::readParameters();
+    public $objectEditLinkController = CronjobEditForm::class;
 
-        I18nHandler::getInstance()->register('description');
+    #[\Override]
+    protected function createForm()
+    {
+        parent::createForm();
+
+        $this->form->appendChildren([
+            FormContainer::create('generalContainer')
+                ->appendChildren([
+                    ClassNameFormField::create('className')
+                        ->label('wcf.acp.cronjob.className')
+                        ->implementedInterface(ICronjob::class)
+                        ->required(),
+                    TextFormField::create('description')
+                        ->label('wcf.acp.cronjob.description')
+                        ->required()
+                        ->i18n()
+                        ->languageItemPattern('wcf.acp.cronjob.description.cronjob\d+'),
+                ]),
+            FormContainer::create('timingContainer')
+                ->label('wcf.acp.cronjob.timing')
+                ->appendChildren([
+                    TextFormField::create('startMinute')
+                        ->label('wcf.acp.cronjob.startMinute')
+                        ->description('wcf.acp.cronjob.startMinute.description')
+                        ->addFieldClass('short')
+                        ->value('*')
+                        ->addValidator($this->getTimeFormFiledValidator())
+                        ->required(),
+                    TextFormField::create('startHour')
+                        ->label('wcf.acp.cronjob.startHour')
+                        ->description('wcf.acp.cronjob.startHour.description')
+                        ->addFieldClass('short')
+                        ->value('*')
+                        ->addValidator($this->getTimeFormFiledValidator())
+                        ->required(),
+                    TextFormField::create('startDom')
+                        ->label('wcf.acp.cronjob.startDom')
+                        ->description('wcf.acp.cronjob.startDom.description')
+                        ->addFieldClass('short')
+                        ->value('*')
+                        ->addValidator($this->getTimeFormFiledValidator())
+                        ->required(),
+                    TextFormField::create('startMonth')
+                        ->label('wcf.acp.cronjob.startMonth')
+                        ->description('wcf.acp.cronjob.startMonth.description')
+                        ->addFieldClass('short')
+                        ->value('*')
+                        ->addValidator($this->getTimeFormFiledValidator())
+                        ->required(),
+                    TextFormField::create('startDow')
+                        ->label('wcf.acp.cronjob.startDow')
+                        ->description('wcf.acp.cronjob.startDow.description')
+                        ->addFieldClass('short')
+                        ->value('*')
+                        ->addValidator($this->getTimeFormFiledValidator())
+                        ->required(),
+                ]),
+        ]);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function readFormParameters()
+    public static function getTimeFormFiledValidator(): FormFieldValidator
     {
-        parent::readFormParameters();
+        return new FormFieldValidator(
+            'format',
+            static function (TextFormField $formField) {
+                $fieldFactory = new FieldFactory();
+                $position = match ($formField->getId()) {
+                    'startMinute' => CronExpression::MINUTE,
+                    'startHour' => CronExpression::HOUR,
+                    'startDom' => CronExpression::DAY,
+                    'startMonth' => CronExpression::MONTH,
+                    'startDow' => CronExpression::WEEKDAY,
+                };
 
-        I18nHandler::getInstance()->readValues();
-
-        if (isset($_POST['className'])) {
-            $this->className = StringUtil::trim($_POST['className']);
-        }
-        if (isset($_POST['description'])) {
-            $this->description = StringUtil::trim($_POST['description']);
-        }
-        if (isset($_POST['startMinute'])) {
-            $this->startMinute = \str_replace(' ', '', $_POST['startMinute']);
-        }
-        if (isset($_POST['startHour'])) {
-            $this->startHour = \str_replace(' ', '', $_POST['startHour']);
-        }
-        if (isset($_POST['startDom'])) {
-            $this->startDom = \str_replace(' ', '', $_POST['startDom']);
-        }
-        if (isset($_POST['startMonth'])) {
-            $this->startMonth = \str_replace(' ', '', $_POST['startMonth']);
-        }
-        if (isset($_POST['startDow'])) {
-            $this->startDow = \str_replace(' ', '', $_POST['startDow']);
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function validate()
-    {
-        parent::validate();
-
-        // validate class name
-        if (empty($this->className)) {
-            throw new UserInputException('className');
-        }
-
-        if (!\class_exists($this->className)) {
-            throw new UserInputException('className', 'doesNotExist');
-        }
-
-        // validate description
-        if (!I18nHandler::getInstance()->validateValue('description')) {
-            if (I18nHandler::getInstance()->isPlainValue('description')) {
-                throw new UserInputException('description');
-            } else {
-                throw new UserInputException('description', 'multilingual');
+                if (!$fieldFactory->getField($position)->validate($formField->getValue())) {
+                    $formField->addValidationError(
+                        new FormFieldValidationError(
+                            'format',
+                            "wcf.acp.pip.cronjob.{$formField->getId()}.error.format"
+                        )
+                    );
+                }
             }
-        }
-
-        $fieldFactory = new FieldFactory();
-        if (!$fieldFactory->getField(CronExpression::MINUTE)->validate($this->startMinute)) {
-            throw new UserInputException('startMinute', 'invalid');
-        }
-        if (!$fieldFactory->getField(CronExpression::HOUR)->validate($this->startHour)) {
-            throw new UserInputException('startHour', 'invalid');
-        }
-        if (!$fieldFactory->getField(CronExpression::DAY)->validate($this->startDom)) {
-            throw new UserInputException('startDom', 'invalid');
-        }
-        if (!$fieldFactory->getField(CronExpression::MONTH)->validate($this->startMonth)) {
-            throw new UserInputException('startMonth', 'invalid');
-        }
-        if (!$fieldFactory->getField(CronExpression::WEEKDAY)->validate($this->startDow)) {
-            throw new UserInputException('startDow', 'invalid');
-        }
+        );
     }
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function save()
     {
+        if ($this->formAction === 'create') {
+            $this->additionalFields['packageID'] = PACKAGE_ID;
+            $this->additionalFields['cronjobName'] = 'com.woltlab.wcf.cronjob';
+        }
+
         parent::save();
+    }
 
-        // save cronjob
-        $data = \array_merge($this->additionalFields, [
-            'className' => $this->className,
-            'packageID' => $this->packageID,
-            'cronjobName' => 'com.woltlab.wcf.cronjob',
-            'description' => $this->description,
-            'startMinute' => $this->startMinute,
-            'startHour' => $this->startHour,
-            'startDom' => $this->startDom,
-            'startMonth' => $this->startMonth,
-            'startDow' => $this->startDow,
-        ]);
+    #[\Override]
+    public function saved()
+    {
+        $updateData = [];
+        $formData = $this->form->getData();
 
-        $this->objectAction = new CronjobAction([], 'create', ['data' => $data]);
-        /** @var Cronjob $cronjob */
-        $cronjob = $this->objectAction->executeAction()['returnValues'];
-        $cronjobID = $cronjob->cronjobID;
+        if ($this->formAction === 'create') {
+            $cronjob = $this->objectAction->getReturnValues()['returnValues'];
+            \assert($cronjob instanceof Cronjob);
 
-        // update `cronjobName`
-        $data = ['cronjobName' => 'com.woltlab.wcf.cronjob' . $cronjobID];
+            // update `cronjobName`
+            $updateData['cronjobName'] = 'com.woltlab.wcf.cronjob' . $cronjob->cronjobID;
+        } else {
+            $cronjob = $this->formObject;
+        }
 
-        if (!I18nHandler::getInstance()->isPlainValue('description')) {
+        $languageItem = "wcf.acp.cronjob.description.cronjob{$cronjob->cronjobID}";
+        if (isset($formData['description_i18n'])) {
+            $updateData['description'] = $languageItem;
             I18nHandler::getInstance()->save(
-                'description',
-                'wcf.acp.cronjob.description.cronjob' . $cronjobID,
+                $formData['description_i18n'],
+                $languageItem,
                 'wcf.acp.cronjob',
-                $this->packageID
+                $cronjob->packageID
             );
-
-            // update group name
-            $data['description'] = 'wcf.acp.cronjob.description.cronjob' . $cronjobID;
+        } elseif ($cronjob->description === $languageItem) {
+            I18nHandler::getInstance()->remove($cronjob->description);
         }
 
         $cronjobEditor = new CronjobEditor($cronjob);
-        $cronjobEditor->update($data);
+        $cronjobEditor->update($updateData);
 
-        $this->saved();
-
-        // reset values
-        $this->className = $this->description = '';
-        $this->startMinute = $this->startHour = $this->startDom = $this->startMonth = $this->startDow = '*';
-        I18nHandler::getInstance()->reset();
-
-        // show success message
-        WCF::getTPL()->assign([
-            'success' => true,
-            'objectEditLink' => LinkHandler::getInstance()->getControllerLink(
-                CronjobEditForm::class,
-                ['id' => $cronjobID]
-            ),
-        ]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function assignVariables()
-    {
-        parent::assignVariables();
-
-        I18nHandler::getInstance()->assignVariables();
-
-        WCF::getTPL()->assign([
-            'className' => $this->className,
-            'description' => $this->description,
-            'startMinute' => $this->startMinute,
-            'startHour' => $this->startHour,
-            'startDom' => $this->startDom,
-            'startMonth' => $this->startMonth,
-            'startDow' => $this->startDow,
-            'action' => 'add',
-        ]);
+        parent::saved();
     }
 }
