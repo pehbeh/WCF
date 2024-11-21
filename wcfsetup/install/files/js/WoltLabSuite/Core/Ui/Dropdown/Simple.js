@@ -67,6 +67,9 @@ define(["require", "exports", "tslib", "../../CallbackList", "../../Core", "../.
                     if (!Core.stringToBool(menu.dataset.dropdownIgnorePageScroll || "")) {
                         UiDropdownSimple.close(containerId);
                     }
+                    else {
+                        UiDropdownSimple.setAlignment(dropdown, _menus.get(containerId));
+                    }
                 }
             }
         });
