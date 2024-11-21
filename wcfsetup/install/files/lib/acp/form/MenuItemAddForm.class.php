@@ -5,6 +5,7 @@ namespace wcf\acp\form;
 use wcf\data\IStorableObject;
 use wcf\data\menu\item\MenuItem;
 use wcf\data\menu\item\MenuItemAction;
+use wcf\data\menu\item\MenuItemNode;
 use wcf\data\menu\item\MenuItemNodeTree;
 use wcf\data\menu\Menu;
 use wcf\data\page\Page;
@@ -108,7 +109,20 @@ class MenuItemAddForm extends AbstractFormBuilderForm
                 ->appendChildren([
                     SelectFormField::create('parentItemID')
                         ->label('wcf.acp.menu.item.parentItem')
-                        ->options($this->menuItemNodeList, true),
+                        ->options(function () {
+                            $result = [];
+                            foreach ($this->menuItemNodeList as $menuItem) {
+                                \assert($menuItem instanceof MenuItemNode);
+
+                                $result[] = [
+                                    'depth' => $menuItem->getDepth(),
+                                    'isSelectable' => $menuItem->itemID !== $this->formObject?->itemID,
+                                    'label' => $menuItem->getTitle(),
+                                    'value' => $menuItem->getObjectID(),
+                                ];
+                            }
+                            return $result;
+                        }, true),
                     TitleFormField::create()
                         ->i18n()
                         ->required()
