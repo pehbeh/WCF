@@ -6,16 +6,13 @@
 <button type="button" id="{$previewButtonID}" class="button jsOnly">{lang}wcf.global.button.preview{/lang}</button>
 
 <script data-relocate="true">
-	$(function() {
-		WCF.Language.addObject({
-			'wcf.global.preview': '{jslang}wcf.global.preview{/jslang}' 
-		});
-		
-		new WCF.Message.DefaultPreview({
-			messageFieldID: '{$previewMessageFieldID}',
-			previewButtonID: '{$previewButtonID}',
-			messageObjectType: '{$previewMessageObjectType}',
-			messageObjectID: '{$previewMessageObjectID}'
-		});
+	require(["WoltLabSuite/Core/Controller/Message/Preview"], ({ setup }) => {
+		{jsphrase name='wcf.global.preview'}
+		setup(
+			'{unsafe:$previewMessageFieldID|encodeJS}',
+			'{unsafe:$previewButtonID|encodeJS}',
+			'{unsafe:$previewMessageObjectType|encodeJS}',
+			'{unsafe:$previewMessageObjectID|encodeJS}'
+		);
 	});
 </script>

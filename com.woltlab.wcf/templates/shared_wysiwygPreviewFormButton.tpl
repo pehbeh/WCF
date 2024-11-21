@@ -5,16 +5,13 @@
 *}>{$button->getLabel()}</button>
 
 <script data-relocate="true">
-	require(['Language'], function(Language) {
-		Language.addObject({
-			'wcf.global.preview': '{jslang}wcf.global.preview{/jslang}'
-		});
-		
-		new WCF.Message.DefaultPreview({
-			messageFieldID: '{@$button->getPrefixedWysiwygId()|encodeJS}',
-			previewButtonID: '{@$button->getPrefixedId()|encodeJS}',
-			messageObjectType: '{@$button->getObjectType()->objectType|encodeJS}',
-			messageObjectID: '{@$button->getObjectId()}'
-		});
+	require(["WoltLabSuite/Core/Controller/Message/Preview"], ({ setup }) => {
+		{jsphrase name='wcf.global.preview'}
+		setup(
+			'{unsafe:$button->getPrefixedWysiwygId()|encodeJS}',
+			'{unsafe:$button->getPrefixedId()|encodeJS}',
+			'{unsafe:$button->getObjectType()->objectType|encodeJS}',
+			'{unsafe:$button->getObjectId()}'
+		);
 	});
 </script>

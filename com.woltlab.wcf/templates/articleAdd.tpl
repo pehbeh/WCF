@@ -615,29 +615,34 @@
 	</div>
 </form>
 
-{js application='wcf' file='WCF.Label' bundle='WCF.Combined'}
 <script data-relocate="true">
-	$(function() {
-		WCF.Language.addObject({
-			'wcf.label.none': '{jslang}wcf.label.none{/jslang}',
-			'wcf.global.preview': '{jslang}wcf.global.preview{/jslang}',
-		});
-		
-		{if !$labelGroups|empty}
-			new WCF.Label.ArticleLabelChooser({ {implode from=$labelGroupsToCategories key=__labelCategoryID item=labelGroupIDs}{@$__labelCategoryID}: [ {implode from=$labelGroupIDs item=labelGroupID}{@$labelGroupID}{/implode} ] {/implode} }, { {implode from=$labelIDs key=groupID item=labelID}{@$groupID}: {@$labelID}{/implode} }, '.articleAddForm');
-		{/if}
-		
-		new WCF.Message.I18nPreview({
-			messageFields: [
+	require(["WoltLabSuite/Core/Controller/Message/I18nPreview"], ({ setup }) => {
+		{jsphrase name='wcf.global.preview'}
+		setup(
+			[
 				{if !$isMultilingual}
 					'content0',
 				{else}
 					{implode from=$availableLanguages item=availableLanguage}'content{$availableLanguage->languageID}'{/implode}
 				{/if}
 			],
-			messageObjectType: 'com.woltlab.wcf.article.content',
-			messageObjectID: {if $action === 'edit'}{$article->articleID}{else}0{/if}
+			'buttonMessagePreview',
+			'com.woltlab.wcf.article.content',
+			{if $action === 'edit'}{$article->articleID}{else}0{/if}
+		);
+	});
+</script>
+
+{js application='wcf' file='WCF.Label' bundle='WCF.Combined'}
+<script data-relocate="true">
+	$(function() {
+		WCF.Language.addObject({
+			'wcf.label.none': '{jslang}wcf.label.none{/jslang}',
 		});
+		
+		{if !$labelGroups|empty}
+			new WCF.Label.ArticleLabelChooser({ {implode from=$labelGroupsToCategories key=__labelCategoryID item=labelGroupIDs}{@$__labelCategoryID}: [ {implode from=$labelGroupIDs item=labelGroupID}{@$labelGroupID}{/implode} ] {/implode} }, { {implode from=$labelIDs key=groupID item=labelID}{@$groupID}: {@$labelID}{/implode} }, '.articleAddForm');
+		{/if}
 	});
 </script>
 
