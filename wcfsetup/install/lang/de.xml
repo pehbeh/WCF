@@ -3801,7 +3801,7 @@ Dateianhänge:
 		<item name="wcf.edit.reason"><![CDATA[Änderungsgrund]]></item>
 		<item name="wcf.edit.currentVersion"><![CDATA[Aktuell]]></item>
 		<item name="wcf.edit.revert"><![CDATA[Wiederherstellen]]></item>
-		<item name="wcf.edit.revert.sure"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Möchtest du{else}Möchten Sie{/if} die Version von <span class="confirmationObject">{$edit->username}</span> vom <span class="confirmationObject">{$edit->time|plainTime}</span> wirklich wiederherstellen?]]></item>
+		<item name="wcf.edit.revert.confirmMessage"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Möchtest du{else}Möchten Sie{/if} die Version von „{$edit->username}“ vom {time time=$edit->time type='plainTime'} wirklich wiederherstellen?]]></item>
 		<item name="wcf.edit.reverted"><![CDATA[Wiederhergestellt auf Version von {$edit->username} vom {$edit->time|plainTime}]]></item>
 		<item name="wcf.edit.button.compare"><![CDATA[Vergleichen]]></item>
 		<item name="wcf.edit.button.goToContent"><![CDATA[Zum Inhalt gehen]]></item>

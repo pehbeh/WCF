@@ -8,13 +8,8 @@ use wcf\data\object\type\ObjectType;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\data\object\type\ObjectTypeList;
 use wcf\system\application\ApplicationHandler;
-use wcf\system\exception\PermissionDeniedException;
-use wcf\system\exception\UserInputException;
-use wcf\system\IAJAXInvokeAction;
-use wcf\system\request\RequestHandler;
 use wcf\system\SingletonFactory;
 use wcf\system\WCF;
-use wcf\util\StringUtil;
 
 /**
  * Represents objects that support some of their properties to be saved.
@@ -24,37 +19,13 @@ use wcf\util\StringUtil;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  */
-class VersionTracker extends SingletonFactory implements IAJAXInvokeAction
+class VersionTracker extends SingletonFactory
 {
-    /**
-     * list of methods that may be invoked via ajax
-     * @var string[]
-     */
-    public static $allowInvoke = ['revert'];
-
     /**
      * list of available object types
      * @var ObjectType[]
      */
     protected $availableObjectTypes = [];
-
-    /**
-     * version tracker object used for the version revert process
-     * @var IVersionTrackerObject
-     */
-    protected $object;
-
-    /**
-     * object type processor object
-     * @var IVersionTrackerProvider
-     */
-    protected $processor;
-
-    /**
-     * version tracker entry used for the version revert process
-     * @var VersionTrackerEntry
-     */
-    protected $version;
 
     /**
      * @inheritDoc
@@ -219,52 +190,6 @@ class VersionTracker extends SingletonFactory implements IAJAXInvokeAction
         throw new \InvalidArgumentException(
             "Unknown object type '" . $name . "' for definition 'com.woltlab.wcf.versionTracker.objectType'."
         );
-    }
-
-    /**
-     * Validates parameters to revert an object to a previous version.
-     *
-     * @throws      PermissionDeniedException
-     * @throws      UserInputException
-     */
-    public function validateRevert()
-    {
-        if (!RequestHandler::getInstance()->isACPRequest()) {
-            throw new PermissionDeniedException();
-        }
-
-        if (!isset($_POST['parameters'])) {
-            throw new UserInputException('parameters');
-        }
-
-        $objectTypeName = (isset($_POST['parameters']['objectType'])) ? StringUtil::trim($_POST['parameters']['objectType']) : '';
-        $objectID = (isset($_POST['parameters']['objectID'])) ? \intval($_POST['parameters']['objectID']) : 0;
-        $versionID = (isset($_POST['parameters']['versionID'])) ? \intval($_POST['parameters']['versionID']) : 0;
-
-        $objectType = $this->getObjectType($objectTypeName);
-        /** @var IVersionTrackerProvider $processor */
-        $this->processor = $objectType->getProcessor();
-        if (!$this->processor->canAccess()) {
-            throw new PermissionDeniedException();
-        }
-
-        $this->object = $this->processor->getObjectByID($objectID);
-        if (!$this->object->getObjectID()) {
-            throw new UserInputException('objectID');
-        }
-
-        $this->version = $this->getVersion($objectTypeName, $versionID);
-        if (!$this->version->versionID) {
-            throw new UserInputException('versionID');
-        }
-    }
-
-    /**
-     * Reverts an object to a previous version.
-     */
-    public function revert()
-    {
-        $this->processor->revert($this->object, $this->version);
     }
 
     /**

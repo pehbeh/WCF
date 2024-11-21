@@ -12,6 +12,8 @@ WCF.Message = { };
 if (COMPILER_TARGET_DEFAULT) {
 	/**
 	 * Provides the dynamic parts of the edit history interface.
+	 * 
+	 * @deprecated 6.2 Use `WoltLabSuite/Core/Controller/EditHistory/VersionList` or `WoltLabSuite/Core/Acp/Controller/VersionTracker/VersionList` instead.
 	 */
 	WCF.Message.EditHistory = Class.extend({
 		/**
