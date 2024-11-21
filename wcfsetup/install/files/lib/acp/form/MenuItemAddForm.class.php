@@ -7,6 +7,7 @@ use wcf\data\menu\item\MenuItemAction;
 use wcf\data\menu\item\MenuItemNodeTree;
 use wcf\data\menu\Menu;
 use wcf\data\page\Page;
+use wcf\data\page\PageNode;
 use wcf\data\page\PageNodeTree;
 use wcf\form\AbstractFormBuilderForm;
 use wcf\system\exception\IllegalLinkException;
@@ -91,6 +92,15 @@ class MenuItemAddForm extends AbstractFormBuilderForm
         parent::createForm();
 
         $this->menuItemNodeList = (new MenuItemNodeTree($this->menuID, null, false))->getNodeList();
+        $pageNodeList = (new PageNodeTree())->getNodeList();
+
+        $pageHandlers = [];
+        foreach ($pageNodeList as $page) {
+            \assert($page instanceof PageNode);
+            if ($page->getHandler() instanceof ILookupPageHandler) {
+                $pageHandlers[$page->pageID] = $page->requireObjectID;
+            }
+        }
 
         $this->form->appendChildren([
             FormContainer::create('generalContainer')
@@ -121,15 +131,15 @@ class MenuItemAddForm extends AbstractFormBuilderForm
                         ->value(1),
                     SingleSelectionFormField::create('pageID')
                         ->label('wcf.acp.page.page')
-                        ->options((new PageNodeTree())->getNodeList(), true)
+                        ->options($pageNodeList, true)
                         ->required()
                         ->addDependency(
                             ValueFormFieldDependency::create('isInternalLinkDependency')
                                 ->fieldId('isInternalLink')
                                 ->values([1])
                         ),
-                    // TODO change this to an new FormField
-                    IntegerFormField::create('pageObjectID')
+                    $this->getPageObjectIDFormField($pageHandlers)
+                        ->id('pageObjectID')
                         ->label('wcf.page.pageObjectID')
                         ->addFieldClass('short')
                         ->addValidator(
@@ -176,6 +186,11 @@ class MenuItemAddForm extends AbstractFormBuilderForm
                             ValueFormFieldDependency::create('isInternalLinkDependency')
                                 ->fieldId('isInternalLink')
                                 ->values([1])
+                        )
+                        ->addDependency(
+                            ValueFormFieldDependency::create('pageIDDependency')
+                                ->fieldId('pageID')
+                                ->values(\array_keys($pageHandlers))
                         ),
                     UrlFormField::create('externalURL')
                         ->label('wcf.acp.menu.item.externalURL')
@@ -254,5 +269,27 @@ class MenuItemAddForm extends AbstractFormBuilderForm
                 ]
             )
         );
+    }
+
+    protected function getPageObjectIDFormField(array $pageHandlers): IntegerFormField
+    {
+        return new class($pageHandlers) extends IntegerFormField {
+            protected $templateName = '__pageObjectIDFormField';
+            protected array $pageHandlers;
+
+            public function __construct(array $pageHandlers)
+            {
+                parent::__construct();
+                $this->pageHandlers = $pageHandlers;
+            }
+
+            #[\Override]
+            public function getHtmlVariables()
+            {
+                return array_merge(parent::getHtmlVariables(), [
+                    'pageHandlers' => $this->pageHandlers
+                ]);
+            }
+        };
     }
 }
