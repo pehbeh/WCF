@@ -171,7 +171,10 @@ class MenuItemAction extends AbstractDatabaseObjectAction implements ISortableAc
     #[\Override]
     public function getI18nSaveTypes(): array
     {
-        return ['title' => 'wcf.menu.item.\w+'];
+        return [
+            'title' => 'wcf.menu.item.\w+',
+            'externalURL' => 'wcf.menu.item.externalURL\d+',
+        ];
     }
 
     #[\Override]
@@ -189,11 +192,14 @@ class MenuItemAction extends AbstractDatabaseObjectAction implements ISortableAc
     protected function getLanguageItem(DatabaseObject $object, string $regex): string
     {
         \assert($object instanceof MenuItem);
-
-        return \str_replace(
-            '\w+',
-            $object->identifier ?: 'com.woltlab.wcf.generic' . $object->itemID,
-            $regex
-        );
+        if (\str_contains($regex, '\d+')) {
+            return \str_replace('\d+', $object->itemID, $regex);
+        } else {
+            return \str_replace(
+                '\w+',
+                $object->identifier ?: 'com.woltlab.wcf.generic' . $object->itemID,
+                $regex
+            );
+        }
     }
 }

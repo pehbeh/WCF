@@ -2,6 +2,7 @@
 
 namespace wcf\acp\form;
 
+use wcf\data\IStorableObject;
 use wcf\data\menu\item\MenuItem;
 use wcf\data\menu\item\MenuItemAction;
 use wcf\data\menu\item\MenuItemNodeTree;
@@ -223,11 +224,17 @@ class MenuItemAddForm extends AbstractFormBuilderForm
                             $parameters['data']['externalURL'] = '';
                         } else {
                             $parameters['data']['pageID'] = null;
-                            $parameters['data']['pageObjectID'] = null;
+                            $parameters['data']['pageObjectID'] = 0;
                         }
                         unset($parameters['data']['isInternalLink']);
 
                         return $parameters;
+                    },
+                    function (IFormDocument $document, array $data, IStorableObject $object) {
+                        \assert($object instanceof MenuItem);
+                        $data['isInternalLink'] = $object->pageID !== null;
+
+                        return $data;
                     }
                 )
             );
