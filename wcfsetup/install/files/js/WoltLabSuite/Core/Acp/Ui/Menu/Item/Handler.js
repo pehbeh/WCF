@@ -12,15 +12,15 @@ define(["require", "exports", "tslib", "../../../../Ui/Page/Search/Handler", "Wo
     UiPageSearchHandler = tslib_1.__importStar(UiPageSearchHandler);
     class AcpUiMenuItemHandler {
         #handlers;
-        #identifier;
+        #identifiers;
         #pageId;
         #pageObjectId;
         /**
          * Initializes the interface logic.
          */
-        constructor(fieldPrefix, handlers, identifier) {
+        constructor(fieldPrefix, handlers, identifiers) {
             this.#handlers = handlers;
-            this.#identifier = identifier;
+            this.#identifiers = identifiers;
             if (this.#handlers.size) {
                 this.#pageId = document.getElementById("pageID");
                 this.#pageObjectId = document.getElementById(fieldPrefix);
@@ -33,7 +33,7 @@ define(["require", "exports", "tslib", "../../../../Ui/Page/Search/Handler", "Wo
          */
         openSearch() {
             const selectedOption = this.#pageId.options[this.#pageId.selectedIndex];
-            const pageIdentifier = this.#identifier.get(parseInt(selectedOption.value));
+            const pageIdentifier = this.#identifiers.get(parseInt(selectedOption.value));
             const languageItem = `wcf.page.pageObjectID.search.${pageIdentifier}`;
             let labelLanguageItem;
             if ((0, Language_1.getPhrase)(languageItem) !== languageItem) {
