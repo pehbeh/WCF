@@ -688,6 +688,8 @@ if (COMPILER_TARGET_DEFAULT) {
 	
 	/**
 	 * Loads smiley categories upon user request.
+	 * 
+	 * @deprecated 6.2 No longer in use.
 	 */
 	WCF.Message.SmileyCategories = Class.extend({
 		/**
@@ -1828,6 +1830,8 @@ WCF.Message.Share.Content = Class.extend({
 
 /**
  * Provides a specialized tab menu used for message options, integrates better into the editor.
+ * 
+ * @deprecated 6.2 Use `WoltLabSuite/Core/Component/Message/MessageTabMenu` instead.
  */
 $.widget('wcf.messageTabMenu', {
 	/**

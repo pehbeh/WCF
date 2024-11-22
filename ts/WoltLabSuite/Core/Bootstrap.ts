@@ -157,7 +157,9 @@ export function setup(options: BoostrapOptions): void {
   whenFirstSeen("[data-report-content]", () => {
     void import("./Ui/Moderation/Report").then(({ setup }) => setup());
   });
-
+  whenFirstSeen(".messageTabMenu", () => {
+    void import("./Component/Message/MessageTabMenu").then(({ setup }) => setup());
+  });
   whenFirstSeen("woltlab-core-pagination", () => {
     void import("./Ui/Pagination/JumpToPage").then(({ setup }) => setup());
   });

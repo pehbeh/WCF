@@ -137,7 +137,8 @@
 		background-color: var(--wcfContentContainerBackground);
 	}
 
-	.messageTabMenuNavigation > ul > li.active > a::after {
+	.messageTabMenuNavigation > ul > li.active > a::after,
+	.messageTabMenuNavigation > ul > li.active > button::after {
 		border-bottom-color: var(--wcfContentContainerBackground);
 	}
 
