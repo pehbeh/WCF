@@ -15,6 +15,7 @@ jobs:
         branch:
         - '6.0'
         - '6.1'
+        - '6.2'
     steps:
     - run: |
         sudo apt-get install -y \
