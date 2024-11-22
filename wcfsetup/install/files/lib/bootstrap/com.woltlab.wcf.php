@@ -137,7 +137,7 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\comments\responses\RenderResponses());
             $event->register(new \wcf\system\endpoint\controller\core\comments\responses\UpdateResponse());
             $event->register(new \wcf\system\endpoint\controller\core\exceptions\RenderException);
-            $event->register(new \wcf\system\endpoint\controller\core\gridViews\GetRows);
+            $event->register(new \wcf\system\endpoint\controller\core\gridviews\GetRows);
             $event->register(new \wcf\system\endpoint\controller\core\cronjobs\logs\ClearLogs());
             $event->register(new \wcf\system\endpoint\controller\core\messages\GetMentionSuggestions());
             $event->register(new \wcf\system\endpoint\controller\core\messages\RenderQuote());

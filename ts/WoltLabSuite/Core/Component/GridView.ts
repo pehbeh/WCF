@@ -1,4 +1,4 @@
-import { getRows } from "../Api/GridViews/GetRows";
+import { getRows } from "../Api/Gridviews/GetRows";
 import DomChangeListener from "../Dom/Change/Listener";
 import DomUtil from "../Dom/Util";
 import { promiseMutex } from "../Helper/PromiseMutex";

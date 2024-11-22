@@ -1,4 +1,4 @@
-define(["require", "exports", "tslib", "../Api/GridViews/GetRows", "../Dom/Change/Listener", "../Dom/Util", "../Helper/PromiseMutex", "../Ui/Dropdown/Simple", "./Dialog"], function (require, exports, tslib_1, GetRows_1, Listener_1, Util_1, PromiseMutex_1, Simple_1, Dialog_1) {
+define(["require", "exports", "tslib", "../Api/Gridviews/GetRows", "../Dom/Change/Listener", "../Dom/Util", "../Helper/PromiseMutex", "../Ui/Dropdown/Simple", "./Dialog"], function (require, exports, tslib_1, GetRows_1, Listener_1, Util_1, PromiseMutex_1, Simple_1, Dialog_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GridView = void 0;

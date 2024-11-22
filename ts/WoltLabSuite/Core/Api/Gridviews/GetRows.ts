@@ -16,7 +16,7 @@ export async function getRows(
   filters?: Map<string, string>,
   gridViewParameters?: Map<string, string>,
 ): Promise<ApiResult<Response>> {
-  const url = new URL(`${window.WSC_RPC_API_URL}core/gridViews/rows`);
+  const url = new URL(`${window.WSC_RPC_API_URL}core/gridviews/rows`);
   url.searchParams.set("gridView", gridViewClass);
   url.searchParams.set("pageNo", pageNo.toString());
   url.searchParams.set("sortField", sortField);
