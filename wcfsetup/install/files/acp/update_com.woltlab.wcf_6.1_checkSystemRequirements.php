@@ -39,7 +39,7 @@ if (!$checkForTls()) {
 $requiredPhpExtensions = \array_filter(
     [
         'openssl' => \extension_loaded('openssl'),
-        'gmp' => \extension_loaded('gmp'),
+        'gmp' => \extension_loaded('gmp') || \extension_loaded('bcmath'),
     ],
     static fn($value) => $value === false
 );
