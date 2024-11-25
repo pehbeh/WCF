@@ -15,6 +15,8 @@ WCF.User.Profile = {};
 
 /**
  * Shows the activity point list for users.
+ * 
+ * @deprecated 6.2 Use `WoltLabSuite/Core/Component/User/ActivityPointList` instead.
  */
 WCF.User.Profile.ActivityPointList = {
 	/**

@@ -175,6 +175,9 @@ export function setup(options: BoostrapOptions): void {
     void import("./Component/File/woltlab-core-file");
     void import("./Component/File/Upload").then(({ setup }) => setup());
   });
+  whenFirstSeen(".activityPointsDisplay", () => {
+    void import("./Component/User/ActivityPointList").then(({ setup }) => setup());
+  });
 
   // Move the reCAPTCHA widget overlay to the `pageOverlayContainer`
   // when widget form elements are placed in a dialog.
