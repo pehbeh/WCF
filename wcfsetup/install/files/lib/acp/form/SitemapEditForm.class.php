@@ -2,24 +2,36 @@
 
 namespace wcf\acp\form;
 
+use CuyZ\Valinor\Mapper\MappingError;
+use wcf\data\IStorableObject;
 use wcf\data\object\type\ObjectType;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\form\AbstractForm;
+use wcf\form\AbstractFormBuilderForm;
+use wcf\http\Helper;
 use wcf\system\exception\IllegalLinkException;
-use wcf\system\exception\UserInputException;
+use wcf\system\form\builder\container\FormContainer;
+use wcf\system\form\builder\data\processor\CustomFormDataProcessor;
+use wcf\system\form\builder\field\BooleanFormField;
+use wcf\system\form\builder\field\IntegerFormField;
+use wcf\system\form\builder\field\SingleSelectionFormField;
+use wcf\system\form\builder\IFormDocument;
 use wcf\system\registry\RegistryHandler;
+use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\system\worker\SitemapRebuildWorker;
 
 /**
  * Shows the sitemap edit form.
  *
- * @author  Joshua Ruesweg
- * @copyright   2001-2019 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
- * @since   3.1
+ * @author      Olaf Braun, Joshua Ruesweg
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       3.1
+ *
+ * @property ObjectType|null $formObject
  */
-class SitemapEditForm extends AbstractForm
+class SitemapEditForm extends AbstractFormBuilderForm
 {
     /**
      * @inheritDoc
@@ -37,166 +49,137 @@ class SitemapEditForm extends AbstractForm
     public $neededPermissions = ['admin.management.canRebuildData'];
 
     /**
-     * The sitemap object type name.
-     * @var string
-     */
-    public $objectTypeName;
-
-    /**
-     * The sitemap object type.
-     * @var ObjectType
-     */
-    public $objectType;
-
-    /**
-     * The changeFreq for this sitemap object.
-     * @var string
-     */
-    public $changeFreq = 'monthly';
-
-    /**
-     * An array with valid changeFreq values.
-     *
-     * @var array<string>
-     */
-    public $validChangeFreq = [
-        'always',
-        'hourly',
-        'daily',
-        'weekly',
-        'monthly',
-        'yearly',
-        'never',
-    ];
-
-    /**
-     * `1` iff the sitemap is disabled. Otherwise `0`.
-     * @var int
-     */
-    public $isDisabled = 0;
-
-    /**
-     * The time in seconds how long the sitemap should be cached.
-     * @var int
-     */
-    public $rebuildTime = 172800; // two days
-
-    /**
      * @inheritDoc
      */
+    public $formAction = 'edit';
+
+    #[\Override]
     public function readParameters()
     {
         parent::readParameters();
 
-        if (isset($_GET['objectType'])) {
-            $this->objectTypeName = $_GET['objectType'];
-        }
-        $this->objectType = ObjectTypeCache::getInstance()->getObjectTypeByName(
-            'com.woltlab.wcf.sitemap.object',
-            $this->objectTypeName
-        );
+        try {
+            $queryParameters = Helper::mapQueryParameters(
+                $_GET,
+                <<<'EOT'
+                    array {
+                        objectType: non-empty-string
+                    }
+                    EOT
+            );
+            $this->formObject = ObjectTypeCache::getInstance()->getObjectTypeByName(
+                'com.woltlab.wcf.sitemap.object',
+                $queryParameters['objectType']
+            );
 
-        if ($this->objectType === null) {
+            if ($this->formObject === null) {
+                throw new IllegalLinkException();
+            }
+        } catch (MappingError) {
             throw new IllegalLinkException();
         }
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function readData()
+    #[\Override]
+    protected function createForm()
     {
-        parent::readData();
+        parent::createForm();
 
-        if (empty($_POST)) {
-            $sitemapData = RegistryHandler::getInstance()->get(
-                'com.woltlab.wcf',
-                SitemapRebuildWorker::REGISTRY_PREFIX . $this->objectTypeName
+        $this->form->appendChildren([
+            FormContainer::create('section')
+                ->appendChildren([
+                    SingleSelectionFormField::create('changeFreq')
+                        ->label('wcf.acp.sitemap.changeFreq')
+                        ->options([
+                            'always' => 'wcf.acp.sitemap.changeFreq.always',
+                            'hourly' => 'wcf.acp.sitemap.changeFreq.hourly',
+                            'daily' => 'wcf.acp.sitemap.changeFreq.daily',
+                            'weekly' => 'wcf.acp.sitemap.changeFreq.weekly',
+                            'monthly' => 'wcf.acp.sitemap.changeFreq.monthly',
+                            'yearly' => 'wcf.acp.sitemap.changeFreq.yearly',
+                            'never' => 'wcf.acp.sitemap.changeFreq.never',
+                        ])
+                        ->value('monthly')
+                        ->required(),
+                    IntegerFormField::create('rebuildTime')
+                        ->label('wcf.acp.sitemap.rebuildTime')
+                        ->description('wcf.acp.sitemap.rebuildTime.description')
+                        ->suffix('wcf.acp.option.suffix.seconds')
+                        ->minimum(0)
+                        ->value(172800)
+                        ->addFieldClass('short'),
+                    BooleanFormField::create('isDisabled')
+                        ->label('wcf.acp.sitemap.isDisabled')
+                ])
+        ]);
+    }
+
+    #[\Override]
+    protected function finalizeForm()
+    {
+        parent::finalizeForm();
+
+        $this->form->getDataHandler()
+            ->addProcessor(
+                new CustomFormDataProcessor(
+                    'registryDataProcessor',
+                    null,
+                    function (IFormDocument $document, array $data, IStorableObject $object) {
+                        \assert($object instanceof ObjectType);
+                        $sitemapData = RegistryHandler::getInstance()->get(
+                            'com.woltlab.wcf',
+                            SitemapRebuildWorker::REGISTRY_PREFIX . $object->objectType
+                        );
+                        $sitemapData = @\unserialize($sitemapData);
+
+                        if (\is_array($sitemapData)) {
+                            $data["changeFreq"] = $sitemapData['changeFreq'];
+                            $data["rebuildTime"] = $sitemapData['rebuildTime'];
+                            $data["isDisabled"] = $sitemapData['isDisabled'];
+                        } else {
+                            if ($object->changeFreq !== null) {
+                                $data["changeFreq"] = $object->changeFreq;
+                            }
+                            if ($object->rebuildTime !== null) {
+                                $data["rebuildTime"] = $object->rebuildTime;
+                            }
+                            if ($object->isDisabled !== null) {
+                                $data["isDisabled"] = $object->isDisabled;
+                            }
+                        }
+
+                        return $data;
+                    }
+                )
             );
-            $sitemapData = @\unserialize($sitemapData);
-
-            if (\is_array($sitemapData)) {
-                $this->changeFreq = $sitemapData['changeFreq'];
-                $this->rebuildTime = $sitemapData['rebuildTime'];
-                $this->isDisabled = $sitemapData['isDisabled'];
-            } else {
-                if ($this->objectType->changeFreq !== null) {
-                    $this->changeFreq = $this->objectType->changeFreq;
-                }
-                if ($this->objectType->rebuildTime !== null) {
-                    $this->rebuildTime = $this->objectType->rebuildTime;
-                }
-                if ($this->objectType->isDisabled !== null) {
-                    $this->isDisabled = $this->objectType->isDisabled;
-                }
-            }
-        }
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function readFormParameters()
-    {
-        parent::readFormParameters();
-
-        if (isset($_POST['changeFreq'])) {
-            $this->changeFreq = $_POST['changeFreq'];
-        }
-        if (isset($_POST['rebuildTime'])) {
-            $this->rebuildTime = \intval($_POST['rebuildTime']);
-        }
-        $this->isDisabled = (isset($_POST['isDisabled'])) ? 1 : 0;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function validate()
-    {
-        parent::validate();
-
-        if (!\in_array($this->changeFreq, $this->validChangeFreq)) {
-            throw new UserInputException('changeFreq');
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function save()
     {
-        parent::save();
+        AbstractForm::save();
+
+        $formData = $this->form->getData();
+        if (!isset($formData['data'])) {
+            $formData['data'] = [];
+        }
+        $formData['data'] = \array_merge($this->additionalFields, $formData['data']);
 
         RegistryHandler::getInstance()->set(
             'com.woltlab.wcf',
-            SitemapRebuildWorker::REGISTRY_PREFIX . $this->objectTypeName,
-            \serialize([
-                'changeFreq' => $this->changeFreq,
-                'rebuildTime' => $this->rebuildTime,
-                'isDisabled' => $this->isDisabled,
-            ])
+            SitemapRebuildWorker::REGISTRY_PREFIX . $this->formObject->objectType,
+            \serialize($formData['data'])
         );
 
         $this->saved();
-
-        // show success message
         WCF::getTPL()->assign('success', true);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function assignVariables()
+    #[\Override]
+    protected function setFormAction()
     {
-        parent::assignVariables();
-
-        WCF::getTPL()->assign([
-            'objectType' => $this->objectType,
-            'changeFreq' => $this->changeFreq,
-            'rebuildTime' => $this->rebuildTime,
-            'validChangeFreq' => $this->validChangeFreq,
-            'isDisabled' => $this->isDisabled,
-        ]);
+        $this->form->action(LinkHandler::getInstance()->getControllerLink(static::class, [
+            'objectType' => $this->formObject->objectType
+        ]));
     }
 }
