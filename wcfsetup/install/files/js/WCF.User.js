@@ -866,6 +866,7 @@ WCF.Notification = { };
 if (COMPILER_TARGET_DEFAULT) {
 	/**
 	 * Handles the notification list.
+	 * @deprecated 6.2 Use `WoltLabSuite/Core/Controller/User/Notification/List` instead.
 	 */
 	WCF.Notification.List = Class.extend({
 		/**
