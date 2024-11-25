@@ -66,7 +66,7 @@ class UserRankAddForm extends AbstractFormBuilderForm
                     TextFormField::create('rankTitle')
                         ->label('wcf.acp.user.rank.title')
                         ->i18n()
-                        ->languageItemPattern('wcf.user.rank.userRank\d+')
+                        ->languageItemPattern('wcf.user.rank.\w+')
                         ->required(),
                     BadgeColorFormField::create('cssClassName')
                         ->label('wcf.acp.user.rank.cssClassName')

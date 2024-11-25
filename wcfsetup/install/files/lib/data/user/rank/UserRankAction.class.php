@@ -3,6 +3,7 @@
 namespace wcf\data\user\rank;
 
 use wcf\data\AbstractDatabaseObjectAction;
+use wcf\data\TI18nDatabaseObjectAction;
 use wcf\system\exception\InvalidObjectArgument;
 use wcf\system\file\upload\UploadFile;
 
@@ -18,6 +19,8 @@ use wcf\system\file\upload\UploadFile;
  */
 class UserRankAction extends AbstractDatabaseObjectAction
 {
+    use TI18nDatabaseObjectAction;
+
     /**
      * @inheritDoc
      */
@@ -35,6 +38,8 @@ class UserRankAction extends AbstractDatabaseObjectAction
     {
         /** @var UserRank $rank */
         $rank = parent::create();
+
+        $this->saveI18nValue($rank);
 
         if (isset($this->parameters['rankImageFile']) && !empty($this->parameters['rankImageFile'])) {
             $rankImageFile = \reset($this->parameters['rankImageFile']);
@@ -119,5 +124,32 @@ class UserRankAction extends AbstractDatabaseObjectAction
         }
 
         parent::update();
+
+        foreach ($this->objects as $object) {
+            $this->saveI18nValue($object->getDecoratedObject());
+        }
+    }
+
+    #[\Override]
+    public function delete()
+    {
+        parent::delete();
+
+        $this->deleteI18nValues();
+    }
+
+    public function getI18nSaveTypes(): array
+    {
+        return ['rankTitle' => 'wcf.user.rank.userRank\d+'];
+    }
+
+    public function getLanguageCategory(): string
+    {
+        return 'wcf.user.rank';
+    }
+
+    public function getPackageID(): int
+    {
+        return PACKAGE_ID;
     }
 }
