@@ -23,6 +23,7 @@ export class BadgeColorPreview {
     }
 
     this.#referenceField.addEventListener("input", () => this.#updatePreview());
+    this.#updatePreview();
   }
 
   #updatePreview(): void {

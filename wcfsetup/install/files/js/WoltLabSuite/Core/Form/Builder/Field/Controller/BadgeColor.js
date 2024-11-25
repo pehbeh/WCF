@@ -23,6 +23,7 @@ define(["require", "exports"], function (require, exports) {
                 throw new Error("Unknown reference element '" + referenceFieldId + "'.");
             }
             this.#referenceField.addEventListener("input", () => this.#updatePreview());
+            this.#updatePreview();
         }
         #updatePreview() {
             const value = this.#referenceField.value.trim() || this.#defaultLabelText;
