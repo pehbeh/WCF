@@ -45,12 +45,13 @@ class BBCodeMediaProviderEditForm extends BBCodeMediaProviderAddForm
                     }
                     EOT
             );
-            $this->formObject = new BBCodeMediaProvider($queryParameters['id']);
-
-            if (!$this->formObject->getObjectID()) {
-                throw new IllegalLinkException();
-            }
         } catch (MappingError) {
+            throw new IllegalLinkException();
+        }
+
+        $this->formObject = new BBCodeMediaProvider($queryParameters['id']);
+
+        if (!$this->formObject->getObjectID()) {
             throw new IllegalLinkException();
         }
     }
