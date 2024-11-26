@@ -206,7 +206,7 @@ define(["require", "exports", "tslib", "../../../../../../Core", "../../../../..
                 containerId: instructionListContainer.id,
                 isSimpleSorting: true,
                 options: {
-                    toleranceElement: "> div",
+                //TODO toleranceElement: "> div",
                 },
             });
             if (instructionsData.type === "update") {

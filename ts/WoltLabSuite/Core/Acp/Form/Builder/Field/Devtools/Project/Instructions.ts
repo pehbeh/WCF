@@ -295,7 +295,7 @@ class Instructions {
       containerId: instructionListContainer.id,
       isSimpleSorting: true,
       options: {
-        toleranceElement: "> div",
+        //TODO toleranceElement: "> div",
       },
     });
 

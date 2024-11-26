@@ -8,7 +8,7 @@
  */
 
 import * as Core from "../../Core";
-import * as UiScreen from "../Screen";
+import Sortable from "sortablejs";
 
 interface UnknownObject {
   [key: string]: unknown;
@@ -18,13 +18,14 @@ interface SortableListOptions {
   containerId: string;
   className: string;
   offset: number;
-  options: UnknownObject;
+  options: Sortable.Options;
   isSimpleSorting: boolean;
   additionalParameters: UnknownObject;
 }
 
 class UiSortableList {
   protected readonly _options: SortableListOptions;
+  readonly #container: HTMLElement | null;
 
   /**
    * Initializes the sortable list controller.
@@ -35,52 +36,29 @@ class UiSortableList {
         containerId: "",
         className: "",
         offset: 0,
-        options: {},
+        options: {
+          animation: 150,
+          chosenClass: "sortablePlaceholder",
+          fallbackOnBody: true,
+          swapThreshold: 0.65,
+          filter: (event: Event | TouchEvent, target: HTMLElement, sortable: Sortable) => {
+            //TODO
+            console.log(event, target, sortable);
+            return true;
+          },
+        },
         isSimpleSorting: false,
         additionalParameters: {},
       },
       opts,
     ) as SortableListOptions;
 
-    UiScreen.on("screen-sm-md", {
-      match: () => this._enable(true),
-      unmatch: () => this._disable(),
-      setup: () => this._enable(true),
-    });
-
-    UiScreen.on("screen-lg", {
-      match: () => this._enable(false),
-      unmatch: () => this._disable(),
-      setup: () => this._enable(false),
-    });
-  }
-
-  /**
-   * Enables sorting with an optional sort handle.
-   */
-  protected _enable(hasHandle: boolean): void {
-    const options = this._options.options;
-    if (hasHandle) {
-      options.handle = ".sortableNodeHandle";
+    this.#container = document.getElementById(this._options.containerId);
+    if (!this.#container) {
+      throw new Error(`Container '${this._options.containerId}' not found.`);
     }
 
-    new window.WCF.Sortable.List(
-      this._options.containerId,
-      this._options.className,
-      this._options.offset,
-      options,
-      this._options.isSimpleSorting,
-      this._options.additionalParameters,
-    );
-  }
-
-  /**
-   * Disables sorting for registered containers.
-   */
-  protected _disable(): void {
-    window
-      .jQuery(`#${this._options.containerId} .sortableList`)
-      [this._options.isSimpleSorting ? "sortable" : "nestedSortable"]("destroy");
+    new Sortable(this.#container.querySelector(".sortableList")!, this._options.options);
   }
 }
 

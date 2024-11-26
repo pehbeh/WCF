@@ -66,7 +66,7 @@ define(["require", "exports", "tslib", "../../Core", "../../Language", "../Sorta
             new List_1.default({
                 containerId: containerId,
                 options: {
-                    toleranceElement: "> div",
+                //TODO toleranceElement: "> div",
                 },
             });
             if (this.options.isAjax) {

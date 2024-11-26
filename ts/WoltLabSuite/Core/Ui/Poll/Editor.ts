@@ -123,7 +123,7 @@ class UiPollEditor {
     new UiSortableList({
       containerId: containerId,
       options: {
-        toleranceElement: "> div",
+        //TODO toleranceElement: "> div",
       },
     });
 
