@@ -67,15 +67,16 @@ class SitemapEditForm extends AbstractFormBuilderForm
                     }
                     EOT
             );
-            $this->formObject = ObjectTypeCache::getInstance()->getObjectTypeByName(
-                'com.woltlab.wcf.sitemap.object',
-                $queryParameters['objectType']
-            );
-
-            if ($this->formObject === null) {
-                throw new IllegalLinkException();
-            }
         } catch (MappingError) {
+            throw new IllegalLinkException();
+        }
+
+        $this->formObject = ObjectTypeCache::getInstance()->getObjectTypeByName(
+            'com.woltlab.wcf.sitemap.object',
+            $queryParameters['objectType']
+        );
+
+        if ($this->formObject === null) {
             throw new IllegalLinkException();
         }
     }
