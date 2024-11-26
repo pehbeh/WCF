@@ -40,12 +40,13 @@ class CaptchaQuestionEditForm extends CaptchaQuestionAddForm
                     }
                     EOT
             );
-            $this->formObject = new CaptchaQuestion($queryParameters['id']);
-
-            if (!$this->formObject->getObjectID()) {
-                throw new IllegalLinkException();
-            }
         } catch (MappingError) {
+            throw new IllegalLinkException();
+        }
+
+        $this->formObject = new CaptchaQuestion($queryParameters['id']);
+
+        if (!$this->formObject->getObjectID()) {
             throw new IllegalLinkException();
         }
     }
