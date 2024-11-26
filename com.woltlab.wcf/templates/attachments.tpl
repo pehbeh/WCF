@@ -7,8 +7,8 @@
 				{content}
 					{foreach from=$attachmentList->getGroupedObjects($objectID) item=attachment}
 						{if $attachment->showAsImage() && !$attachment->isEmbedded()}
-							<li class="attachmentThumbnail" data-attachment-id="{@$attachment->attachmentID}">
-								<a href="{$attachment->getLink()}"{if $attachment->canDownload()} class="jsImageViewer jsTooltip" title="{lang}wcf.attachment.image.title{/lang}"{/if}>
+							<li class="attachmentThumbnail" data-attachment-id="{$attachment->attachmentID}">
+								<a href="{$attachment->getLink()}"{if $attachment->canDownload()} data-fancybox="message-{$attachmentList->getObjectTypeName()}-{$objectID}" data-caption="{$attachment->filename}" aria-title="{lang}wcf.attachment.image.title{/lang}"{/if}>
 									<div class="attachmentThumbnailContainer">
 										<span class="attachmentThumbnailImage">
 											{if $attachment->hasThumbnail()}
@@ -44,7 +44,7 @@
 									<ul class="attachmentMetaData inlineList">
 										<li>
 											{icon name='file-lines'}
-											{@$attachment->filesize|filesize}
+											{$attachment->filesize|filesize}
 										</li>
 										<li>
 											{icon name='up-right-and-down-left-from-center'}

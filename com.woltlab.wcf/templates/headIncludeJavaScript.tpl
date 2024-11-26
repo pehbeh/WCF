@@ -138,7 +138,6 @@ window.addEventListener('pageshow', function(event) {
 </script>
 
 {js application='wcf' file='WCF.ColorPicker' bundle='WCF.Combined' hasTiny=true}
-{js application='wcf' file='WCF.ImageViewer' bundle='WCF.Combined' hasTiny=true}
 {js application='wcf' file='WCF.Label' bundle='WCF.Combined' hasTiny=true}
 {js application='wcf' file='WCF.Location' bundle='WCF.Combined' hasTiny=true}
 {js application='wcf' file='WCF.Message' bundle='WCF.Combined' hasTiny=true}
@@ -179,5 +178,5 @@ window.addEventListener('pageshow', function(event) {
 	});
 </script>
 
-{include file='imageViewer'}
+{include file='shared_imageViewer'}
 {include file='headIncludeJsonLd'}

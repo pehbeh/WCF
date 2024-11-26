@@ -30,6 +30,11 @@ requirejs.config({
 			location: "3rdParty/visual-dom-diff",
 			main: "index",
 		},
+		{
+			name: "@fancyapps/ui",
+			location: "3rdParty/fancybox",
+			main: "fancybox.umd",
+		},
 	],
 	shim: {
 		"perfect-scrollbar": { exports: "PerfectScrollbar" },

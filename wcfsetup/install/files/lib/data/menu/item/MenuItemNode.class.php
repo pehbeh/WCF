@@ -3,6 +3,8 @@
 namespace wcf\data\menu\item;
 
 use wcf\data\DatabaseObjectDecorator;
+use wcf\data\IObjectTreeNode;
+use wcf\data\TObjectTreeNode;
 
 /**
  * Represents a menu item node element.
@@ -15,13 +17,9 @@ use wcf\data\DatabaseObjectDecorator;
  * @method  MenuItem    getDecoratedObject()
  * @mixin   MenuItem
  */
-class MenuItemNode extends DatabaseObjectDecorator implements \Countable, \RecursiveIterator
+class MenuItemNode extends DatabaseObjectDecorator implements IObjectTreeNode
 {
-    /**
-     * children of this node
-     * @var MenuItemNode[]
-     */
-    protected $children = [];
+    use TObjectTreeNode;
 
     /**
      * node depth
@@ -32,12 +30,6 @@ class MenuItemNode extends DatabaseObjectDecorator implements \Countable, \Recur
      * true if item or one of its children is active
      */
     protected bool $isActive = false;
-
-    /**
-     * parent node
-     * @var MenuItemNode
-     */
-    protected $parentNode;
 
     /**
      * iterator position
@@ -79,54 +71,6 @@ class MenuItemNode extends DatabaseObjectDecorator implements \Countable, \Recur
     }
 
     /**
-     * Returns the parent node
-     */
-    public function getParentNode(): self
-    {
-        return $this->parentNode;
-    }
-
-    /**
-     * Returns the number of children.
-     */
-    public function count(): int
-    {
-        return \count($this->children);
-    }
-
-    /**
-     * Returns true if this element is the last sibling.
-     */
-    public function isLastSibling(): bool
-    {
-        foreach ($this->parentNode as $key => $child) {
-            if ($child === $this) {
-                if ($key == \count($this->parentNode) - 1) {
-                    return true;
-                }
-
-                return false;
-            }
-        }
-    }
-
-    /**
-     * Returns the number of open parent nodes.
-     */
-    public function getOpenParentNodes(): int
-    {
-        $element = $this;
-        $i = 0;
-
-        while ($element->parentNode->parentNode != null && $element->isLastSibling()) {
-            $i++;
-            $element = $element->parentNode;
-        }
-
-        return $i;
-    }
-
-    /**
      * Marks this item and all its direct ancestors as active.
      */
     public function setIsActive(): void
@@ -145,62 +89,6 @@ class MenuItemNode extends DatabaseObjectDecorator implements \Countable, \Recur
     public function isActiveNode(): bool
     {
         return $this->isActive;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function rewind(): void
-    {
-        $this->position = 0;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function valid(): bool
-    {
-        return isset($this->children[$this->position]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function next(): void
-    {
-        $this->position++;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function current(): self
-    {
-        return $this->children[$this->position];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function key(): int
-    {
-        return $this->position;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getChildren(): self
-    {
-        return $this->children[$this->position];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function hasChildren(): bool
-    {
-        return \count($this->children) > 0;
     }
 
     /**

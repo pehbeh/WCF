@@ -71,6 +71,7 @@ abstract class AbstractFormBuilderForm extends AbstractForm
      * name of the application for the link to the edit form
      * @var string
      * @since 5.3
+     * @deprecated 6.2 No longer in use.
      */
     public $objectEditLinkApplication = 'wcf';
 
@@ -194,7 +195,6 @@ abstract class AbstractFormBuilderForm extends AbstractForm
             WCF::getTPL()->assign(
                 'objectEditLink',
                 LinkHandler::getInstance()->getControllerLink($this->objectEditLinkController, [
-                    'application' => $this->objectEditLinkApplication,
                     'id' => $this->objectAction->getReturnValues()['returnValues']->getObjectID(),
                 ])
             );

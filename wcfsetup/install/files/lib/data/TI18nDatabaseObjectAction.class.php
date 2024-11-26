@@ -25,23 +25,23 @@ trait TI18nDatabaseObjectAction
      */
     protected function deleteI18nValues(): void
     {
-        $langaugeItems = [];
+        $languageItems = [];
         foreach ($this->getObjects() as $object) {
             foreach ($this->getI18nSaveTypes() as $name => $regex) {
-                if ($object->$name === \str_replace('\d+', $object->getObjectID(), $regex)) {
-                    $langaugeItems[] = $object->$name;
+                if ($object->$name === $this->getLanguageItem($object, $regex)) {
+                    $languageItems[] = $object->$name;
                 }
             }
         }
-        $this->deleteI18nItems($langaugeItems);
+        $this->deleteI18nItems($languageItems);
     }
 
     /**
      * Deletes language items and clears the language cache.
      */
-    private function deleteI18nItems(array $langaugeItems): void
+    private function deleteI18nItems(array $languageItems): void
     {
-        if ($langaugeItems !== []) {
+        if ($languageItems === []) {
             return;
         }
 
@@ -53,7 +53,7 @@ trait TI18nDatabaseObjectAction
         $languageCategoryID = $statement->fetchSingleColumn();
 
         $conditions = new PreparedStatementConditionBuilder();
-        $conditions->add('languageItem IN (?)', [$langaugeItems]);
+        $conditions->add('languageItem IN (?)', [$languageItems]);
         $conditions->add('packageID = ?', [$this->getPackageID()]);
         $conditions->add('languageCategoryID = ?', [$languageCategoryID]);
 
@@ -100,7 +100,7 @@ trait TI18nDatabaseObjectAction
         $updateData = $deleteData = [];
 
         foreach ($this->getI18nSaveTypes() as $name => $regex) {
-            $languageName = \str_replace('\d+', $object->getObjectID(), $regex);
+            $languageName = $this->getLanguageItem($object, $regex);
             if (isset($this->parameters[$name . '_i18n'])) {
                 I18nHandler::getInstance()->save(
                     $this->parameters[$name . '_i18n'],
@@ -120,5 +120,13 @@ trait TI18nDatabaseObjectAction
             $editor = new $this->className($object);
             $editor->update($updateData);
         }
+    }
+
+    /**
+     * Formats the language item.
+     */
+    protected function getLanguageItem(DatabaseObject $object, string $regex): string
+    {
+        return \str_replace('\d+', $object->getObjectID(), $regex);
     }
 }
