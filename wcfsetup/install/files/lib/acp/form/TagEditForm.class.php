@@ -45,12 +45,13 @@ class TagEditForm extends TagAddForm
                     }
                     EOT
             );
-            $this->formObject = new Tag($queryParameters['id']);
-
-            if (!$this->formObject->getObjectID()) {
-                throw new IllegalLinkException();
-            }
         } catch (MappingError) {
+            throw new IllegalLinkException();
+        }
+
+        $this->formObject = new Tag($queryParameters['id']);
+
+        if (!$this->formObject->getObjectID()) {
             throw new IllegalLinkException();
         }
     }
