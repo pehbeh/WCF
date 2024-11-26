@@ -3,7 +3,7 @@
 namespace wcf\system\package\plugin;
 
 use Cron\CronExpression;
-use Cron\FieldFactory;
+use wcf\acp\form\CronjobAddForm;
 use wcf\data\cronjob\CronjobEditor;
 use wcf\data\cronjob\CronjobList;
 use wcf\system\cronjob\ICronjob;
@@ -18,8 +18,6 @@ use wcf\system\form\builder\field\dependency\ValueFormFieldDependency;
 use wcf\system\form\builder\field\option\OptionFormField;
 use wcf\system\form\builder\field\SingleSelectionFormField;
 use wcf\system\form\builder\field\TextFormField;
-use wcf\system\form\builder\field\validation\FormFieldValidationError;
-use wcf\system\form\builder\field\validation\FormFieldValidator;
 use wcf\system\form\builder\IFormDocument;
 use wcf\system\language\LanguageFactory;
 use wcf\system\WCF;
@@ -306,7 +304,6 @@ class CronjobPackageInstallationPlugin extends AbstractXMLPackageInstallationPlu
                 ->value(true),
         ]);
 
-        $fieldFactory = new FieldFactory();
         foreach (['startMinute', 'startHour', 'startDom', 'startMonth', 'startDow'] as $timeProperty) {
             $dataContainer->insertBefore(
                 TextFormField::create($timeProperty)
@@ -319,27 +316,7 @@ class CronjobPackageInstallationPlugin extends AbstractXMLPackageInstallationPlu
                             ->fieldId('expressionType')
                             ->values([''])
                     )
-                    ->addValidator(new FormFieldValidator(
-                        'format',
-                        static function (TextFormField $formField) use ($timeProperty, $fieldFactory) {
-                            $position = match ($timeProperty) {
-                                'startMinute' => CronExpression::MINUTE,
-                                'startHour' => CronExpression::HOUR,
-                                'startDom' => CronExpression::DAY,
-                                'startMonth' => CronExpression::MONTH,
-                                'startDow' => CronExpression::WEEKDAY,
-                            };
-
-                            if (!$fieldFactory->getField($position)->validate($formField->getSaveValue())) {
-                                $formField->addValidationError(
-                                    new FormFieldValidationError(
-                                        'format',
-                                        "wcf.acp.pip.cronjob.{$timeProperty}.error.format"
-                                    )
-                                );
-                            }
-                        }
-                    )),
+                    ->addValidator(CronjobAddForm::getTimeFormFiledValidator()),
                 'expression'
             );
         }
