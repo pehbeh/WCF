@@ -6,7 +6,7 @@
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.2
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Api/Versionstrackers/RevertVersion", "WoltLabSuite/Core/Component/Confirmation", "WoltLabSuite/Core/Ui/Notification"], function (require, exports, tslib_1, RevertVersion_1, Confirmation_1, UiNotification) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Api/VersionTrackers/RevertVersion", "WoltLabSuite/Core/Component/Confirmation", "WoltLabSuite/Core/Ui/Notification"], function (require, exports, tslib_1, RevertVersion_1, Confirmation_1, UiNotification) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;

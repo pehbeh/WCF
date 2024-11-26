@@ -7,7 +7,7 @@
  * @since 6.2
  */
 
-import { revertVersion } from "WoltLabSuite/Core/Api/Versionstrackers/RevertVersion";
+import { revertVersion } from "WoltLabSuite/Core/Api/VersionTrackers/RevertVersion";
 import { confirmationFactory } from "WoltLabSuite/Core/Component/Confirmation";
 import * as UiNotification from "WoltLabSuite/Core/Ui/Notification";
 

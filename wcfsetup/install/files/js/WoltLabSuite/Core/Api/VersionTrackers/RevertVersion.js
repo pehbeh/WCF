@@ -13,7 +13,7 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "../Result"], fu
     exports.revertVersion = revertVersion;
     async function revertVersion(objectType, objectId, versionId) {
         try {
-            await (0, Backend_1.prepareRequest)(`${window.WSC_RPC_API_URL}core/versiontrackers/revert`)
+            await (0, Backend_1.prepareRequest)(`${window.WSC_RPC_API_URL}core/version-trackers/revert`)
                 .post({
                 objectType,
                 objectId,

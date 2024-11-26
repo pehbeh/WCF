@@ -1,6 +1,6 @@
 <?php
 
-namespace wcf\system\endpoint\controller\core\versiontrackers;
+namespace wcf\system\endpoint\controller\core\versionTrackers;
 
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -22,7 +22,7 @@ use wcf\system\version\VersionTracker;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-#[PostRequest('/core/versiontrackers/revert')]
+#[PostRequest('/core/version-trackers/revert')]
 final class RevertVersion implements IController
 {
     #[\Override]

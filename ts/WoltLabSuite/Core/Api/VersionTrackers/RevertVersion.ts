@@ -13,7 +13,7 @@ import { ApiResult, apiResultFromError, apiResultFromValue } from "../Result";
 
 export async function revertVersion(objectType: string, objectId: number, versionId: number): Promise<ApiResult<[]>> {
   try {
-    await prepareRequest(`${window.WSC_RPC_API_URL}core/versiontrackers/revert`)
+    await prepareRequest(`${window.WSC_RPC_API_URL}core/version-trackers/revert`)
       .post({
         objectType,
         objectId,
