@@ -61,7 +61,7 @@ define(["require", "exports", "tslib", "../../Ajax", "../../Ui/Scroll", "../../U
         #focusEditor() {
             window.setTimeout(() => {
                 UiScroll.element(this.#container, () => {
-                    this.#getEditor().focus();
+                    this.#getEditor().focus(false);
                 });
             }, 0);
         }

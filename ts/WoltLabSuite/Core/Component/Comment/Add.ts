@@ -79,7 +79,7 @@ export class CommentAdd {
   #focusEditor(): void {
     window.setTimeout(() => {
       UiScroll.element(this.#container, () => {
-        this.#getEditor().focus();
+        this.#getEditor().focus(false);
       });
     }, 0);
   }

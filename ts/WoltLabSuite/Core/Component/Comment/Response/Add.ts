@@ -65,10 +65,9 @@ export class CommentResponseAdd {
       this.#messageCache.set(this.#commentId, this.#getContent());
     }
 
+    this.container.hidden = false;
     this.#setContent(this.#messageCache.get(commentId) || "");
     this.#commentId = commentId;
-
-    this.container.hidden = false;
   }
 
   /**
@@ -191,7 +190,7 @@ export class CommentResponseAdd {
    * Sets the content and places the caret at the end of the editor.
    */
   #setContent(html: string): void {
-    this.#getEditor().setHtml(html);
+    this.#getEditor().setHtml(html, false);
 
     // the error message can appear anywhere in the container, not exclusively after the textarea
     const innerError = this.#textarea.parentElement!.querySelector(".innerError");
@@ -208,7 +207,7 @@ export class CommentResponseAdd {
   #focusEditor(): void {
     window.setTimeout(() => {
       UiScroll.element(this.container, () => {
-        this.#getEditor().focus();
+        this.#getEditor().focus(false);
       });
     }, 0);
   }
