@@ -140,7 +140,7 @@
 			
 			<script data-relocate="true">
 				require(['WoltLabSuite/Core/Acp/Controller/VersionTracker/VersionList'], ({ setup }) => {
-					setup(document.getElementById('versionList'), '{$objectType|encodeJS}', {$objectID});
+					setup(document.getElementById('versionList'), '{unsafe:$objectType|encodeJS}', {$objectID});
 				});
 			</script>
 		</table>
