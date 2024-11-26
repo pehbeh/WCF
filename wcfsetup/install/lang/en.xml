@@ -740,7 +740,7 @@ You can access the error log at: {link controller='ExceptionLogView' isEmail=tru
 		<item name="wcf.acp.group.option.error.exceedsOwnPermission"><![CDATA[You cannot grant user group permissions exceeding your own permissions.]]></item>
 		<item name="wcf.acp.group.option.error.tooHigh"><![CDATA[The set value is too high.{if $option->maxvalue !== null} The maximum value is {#$option->maxvalue}.{/if}]]></item>
 		<item name="wcf.acp.group.option.error.tooLow"><![CDATA[The set value is too low.{if $option->minvalue !== null} The minimum value is {#$option->minvalue}.{/if}]]></item>
-		<item name="wcf.acp.group.option.error.maximumUploadLimit"><![CDATA[The set value is too large, the maximum value is {$option->maximumUploadLimit|filesize}.]]></item>
+		<item name="wcf.acp.group.option.error.maximumUploadLimit"><![CDATA[The set value is too large. The maximum value is {$option->maximumUploadLimit|filesize}.]]></item>
 		<item name="wcf.acp.group.showMembers"><![CDATA[Display Members]]></item>
 		<item name="wcf.acp.group.option.admin.general.canViewPageDuringOfflineMode"><![CDATA[Can access page during maintenance mode]]></item>
 		<item name="wcf.acp.group.option.admin.user.canBanUser"><![CDATA[Can ban users]]></item>
@@ -1060,9 +1060,7 @@ You can access the error log at: {link controller='ExceptionLogView' isEmail=tru
 		<item name="wcf.acp.license.noCredentials"><![CDATA[Remove License Data]]></item>
 		<item name="wcf.acp.license.noCredentialsConfirm"><![CDATA[Remove the existing license data]]></item>
 		<item name="wcf.acp.license.licenseNo"><![CDATA[License {$licenseNumber}]]></item>
-		<item name="wcf.acp.license.developerLicense"><![CDATA[{icon name='wrench'} <strong>Developer License</strong><br>
-<br>
-The developer license permits exclusively the use during the development as well as for the operation of demo installations. It does not authorize the use of the software in productive environments.]]></item>
+		<item name="wcf.acp.license.developerLicense"><![CDATA[The <strong>developer license</strong> permits exclusively the use during the development as well as for the operation of demo installations. It does not authorize the use of the software in productive environments.]]></item>
 		<item name="wcf.acp.license.package.install"><![CDATA[Install]]></item>
 		<item name="wcf.acp.license.package.installed"><![CDATA[Already installed]]></item>
 		<item name="wcf.acp.license.package.outdated"><![CDATA[Up to version {$accessibleVersion}]]></item>
@@ -2987,8 +2985,8 @@ If you have <strong>already bought the licenses for the listed apps</strong>, th
 		<item name="wcf.acp.template.source"><![CDATA[Template Source Code]]></item>
 		<item name="wcf.acp.template.name.error.notUnique"><![CDATA[This name is already taken by a different template.]]></item>
 		<item name="wcf.acp.template.name.error.invalid"><![CDATA[This name is invalid.]]></item>
-		<item name="wcf.acp.template.group.error.shared"><![CDATA[The template must be in the „Shared templates“ template group.]]></item>
-		<item name="wcf.acp.template.group.error.notShared"><![CDATA[The template must not be in the „Shared templates“ template group.]]></item>
+		<item name="wcf.acp.template.group.error.shared"><![CDATA[The template must be in the “Shared templates” template group.]]></item>
+		<item name="wcf.acp.template.group.error.notShared"><![CDATA[The template must not be in the “Shared templates” template group.]]></item>
 	</category>
 	<category name="wcf.acp.user">
 		<item name="wcf.acp.user.add"><![CDATA[Add User]]></item>
@@ -4066,15 +4064,7 @@ Attachments:
 		<item name="wcf.image.coverPhoto.upload.limits"><![CDATA[Minimum Image Size: {$coverPhotoDimensions.min.width} × {$coverPhotoDimensions.min.height} pixels<br>Maximum Image Size: {$coverPhotoDimensions.max.width} × {$coverPhotoDimensions.max.height} pixels<br>Allowed File Extensions: gif, jpg, jpeg, png, webp<br>Maximum Filesize: {$__wcf->session->getPermission($coverPhotoPermissionMaxSize)|filesize}]]></item>
 	</category>
 	<category name="wcf.imageViewer">
-		<item name="wcf.imageViewer.button.enlarge"><![CDATA[Full Screen Mode]]></item>
-		<item name="wcf.imageViewer.button.full"><![CDATA[View Source Image]]></item>
 		<item name="wcf.imageViewer.button.openSlideshow"><![CDATA[Slideshow]]></item>
-		<item name="wcf.imageViewer.seriesIndex"><![CDATA[{literal}{x} of {y}{/literal}]]></item>
-		<item name="wcf.imageViewer.close"><![CDATA[Close]]></item>
-		<item name="wcf.imageViewer.counter"><![CDATA[{literal}Image {x} of {y}{/literal}]]></item>
-		<item name="wcf.imageViewer.enlarge"><![CDATA[View Full Image]]></item>
-		<item name="wcf.imageViewer.next"><![CDATA[Next Image]]></item>
-		<item name="wcf.imageViewer.previous"><![CDATA[Previous Image]]></item>
 	</category>
 	<category name="wcf.label">
 		<item name="wcf.label.all"><![CDATA[All]]></item>
@@ -5570,7 +5560,7 @@ your notifications on <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phras
 		<item name="wcf.upload.error.fileExtensionNotPermitted"><![CDATA[The file type of “{$filename}” is not permitted.]]></item>
 		<item name="wcf.upload.error.fileSizeTooLarge"><![CDATA[The file is too large.]]></item>
 		<item name="wcf.upload.error.maximumCountReached"><![CDATA[{plural value=$maximumCount 1='Only one file' other='Only up to # files'} may be uploaded.]]></item>
-		<item name="wcf.upload.error.adopt"><![CDATA[The file „{$filename}“ cannot be assigned.]]></item>
+		<item name="wcf.upload.error.adopt"><![CDATA[The file “{$filename}” cannot be assigned.]]></item>
 	</category>
 </import>
 <delete>
@@ -7102,6 +7092,14 @@ your notifications on <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phras
 	<item name="wcf.imageViewer.caption"/>
 	<item name="wcf.imageViewer.pause"/>
 	<item name="wcf.imageViewer.play"/>
+	<item name="wcf.imageViewer.button.enlarge"/>
+	<item name="wcf.imageViewer.button.full"/>
+	<item name="wcf.imageViewer.seriesIndex"/>
+	<item name="wcf.imageViewer.close"/>
+	<item name="wcf.imageViewer.counter"/>
+	<item name="wcf.imageViewer.enlarge"/>
+	<item name="wcf.imageViewer.next"/>
+	<item name="wcf.imageViewer.previous"/>
 	<item name="wcf.label.error.notValid"/>
 	<item name="wcf.like.likesReceived.showDetails"/>
 	<item name="wcf.like.reactionReputation"/>

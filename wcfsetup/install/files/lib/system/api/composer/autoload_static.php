@@ -47,6 +47,7 @@ class ComposerStaticInita1f5f7c74275d47a45049a2936db1d0d
             'Psr\\Http\\Client\\' => 16,
             'Psr\\EventDispatcher\\' => 20,
             'Psr\\Clock\\' => 10,
+            'Psr\\Cache\\' => 10,
             'Pelago\\Emogrifier\\' => 18,
             'ParagonIE\\ConstantTime\\' => 23,
         ),
@@ -149,6 +150,10 @@ class ComposerStaticInita1f5f7c74275d47a45049a2936db1d0d
         'Psr\\Clock\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/clock/src',
+        ),
+        'Psr\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
         'Pelago\\Emogrifier\\' => 
         array (
@@ -1027,6 +1032,7 @@ class ComposerStaticInita1f5f7c74275d47a45049a2936db1d0d
         'Jose\\Component\\Core\\JWK' => __DIR__ . '/..' . '/web-token/jwt-library/Core/JWK.php',
         'Jose\\Component\\Core\\JWKSet' => __DIR__ . '/..' . '/web-token/jwt-library/Core/JWKSet.php',
         'Jose\\Component\\Core\\JWT' => __DIR__ . '/..' . '/web-token/jwt-library/Core/JWT.php',
+        'Jose\\Component\\Core\\Util\\Base64UrlSafe' => __DIR__ . '/..' . '/web-token/jwt-library/Core/Util/Base64UrlSafe.php',
         'Jose\\Component\\Core\\Util\\BigInteger' => __DIR__ . '/..' . '/web-token/jwt-library/Core/Util/BigInteger.php',
         'Jose\\Component\\Core\\Util\\ECKey' => __DIR__ . '/..' . '/web-token/jwt-library/Core/Util/ECKey.php',
         'Jose\\Component\\Core\\Util\\ECSignature' => __DIR__ . '/..' . '/web-token/jwt-library/Core/Util/ECSignature.php',
@@ -1353,6 +1359,10 @@ class ComposerStaticInita1f5f7c74275d47a45049a2936db1d0d
         'Pelago\\Emogrifier\\HtmlProcessor\\HtmlPruner' => __DIR__ . '/..' . '/pelago/emogrifier/src/HtmlProcessor/HtmlPruner.php',
         'Pelago\\Emogrifier\\Utilities\\ArrayIntersector' => __DIR__ . '/..' . '/pelago/emogrifier/src/Utilities/ArrayIntersector.php',
         'Pelago\\Emogrifier\\Utilities\\CssConcatenator' => __DIR__ . '/..' . '/pelago/emogrifier/src/Utilities/CssConcatenator.php',
+        'Psr\\Cache\\CacheException' => __DIR__ . '/..' . '/psr/cache/src/CacheException.php',
+        'Psr\\Cache\\CacheItemInterface' => __DIR__ . '/..' . '/psr/cache/src/CacheItemInterface.php',
+        'Psr\\Cache\\CacheItemPoolInterface' => __DIR__ . '/..' . '/psr/cache/src/CacheItemPoolInterface.php',
+        'Psr\\Cache\\InvalidArgumentException' => __DIR__ . '/..' . '/psr/cache/src/InvalidArgumentException.php',
         'Psr\\Clock\\ClockInterface' => __DIR__ . '/..' . '/psr/clock/src/ClockInterface.php',
         'Psr\\EventDispatcher\\EventDispatcherInterface' => __DIR__ . '/..' . '/psr/event-dispatcher/src/EventDispatcherInterface.php',
         'Psr\\EventDispatcher\\ListenerProviderInterface' => __DIR__ . '/..' . '/psr/event-dispatcher/src/ListenerProviderInterface.php',

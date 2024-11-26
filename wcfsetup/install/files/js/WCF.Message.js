@@ -212,6 +212,8 @@ else {
 
 /**
  * Prevents multiple submits of the same form by disabling the submit button.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.Message.FormGuard = Class.extend({
 	/**
@@ -598,6 +600,7 @@ if (COMPILER_TARGET_DEFAULT) {
 	 * @param        integer                languageID
 	 * @param        object                availableLanguages
 	 * @param        boolean                forceSelection
+	 * @deprecated 6.2 Not (or no longer) used in the software.
 	 */
 	WCF.Message.Multilingualism = Class.extend({
 		/**
@@ -901,6 +904,8 @@ if (COMPILER_TARGET_DEFAULT) {
 	
 	/**
 	 * Handles submit buttons for forms with an embedded WYSIWYG editor.
+	 * 
+	 * @deprecated 6.2 Not (or no longer) used in the software.
 	 */
 	WCF.Message.Submit = {
 		/**

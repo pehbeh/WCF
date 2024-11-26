@@ -1,4 +1,4 @@
-define(["require", "exports", "tslib", "../../../Ajax", "../../../Core", "../../../Language", "../../../Dom/Util", "../../../Ui/Dialog"], function (require, exports, tslib_1, Ajax, Core, Language, Util_1, Dialog_1) {
+define(["require", "exports", "tslib", "../../../Ajax", "../../../Core", "../../../Language", "../../../Dom/Util", "../../../Ui/Dialog", "WoltLabSuite/Core/Ajax/Backend"], function (require, exports, tslib_1, Ajax, Core, Language, Util_1, Dialog_1, Backend_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.AcpUiDataImportManager = void 0;
@@ -12,22 +12,18 @@ define(["require", "exports", "tslib", "../../../Ajax", "../../../Core", "../../
         redirectUrl;
         currentAction = "";
         index = -1;
-        constructor(queue, redirectUrl) {
+        cacheClearEndpoint = "";
+        constructor(queue, redirectUrl, cacheClearEndpoint) {
             this.queue = queue;
             this.redirectUrl = redirectUrl;
-            this.invoke();
+            this.cacheClearEndpoint = cacheClearEndpoint;
+            void this.invoke();
         }
-        invoke() {
+        async invoke() {
             this.index++;
             if (this.index >= this.queue.length) {
-                Ajax.apiOnce({
-                    url: "index.php?cache-clear/&t=" + Core.getXsrfToken(),
-                    data: {
-                        noRedirect: 1,
-                    },
-                    silent: true,
-                    success: () => this.showCompletedDialog(),
-                });
+                await (0, Backend_1.prepareRequest)(this.cacheClearEndpoint).post().fetchAsResponse();
+                this.showCompletedDialog();
             }
             else {
                 this.run(Language.get("wcf.acp.dataImport.data." + this.queue[this.index]), this.queue[this.index]);
@@ -86,7 +82,7 @@ define(["require", "exports", "tslib", "../../../Ajax", "../../../Core", "../../
                 });
             }
             else {
-                this.invoke();
+                void this.invoke();
             }
         }
         _dialogSetup() {

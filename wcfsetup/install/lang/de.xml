@@ -1082,9 +1082,7 @@ Sie erreichen das Fehlerprotokoll unter: {link controller='ExceptionLogView' isE
 		<item name="wcf.acp.license.noCredentials"><![CDATA[Lizenzdaten entfernen]]></item>
 		<item name="wcf.acp.license.noCredentialsConfirm"><![CDATA[Die hinterlegten Lizenzdaten entfernen]]></item>
 		<item name="wcf.acp.license.licenseNo"><![CDATA[Lizenz {$licenseNumber}]]></item>
-		<item name="wcf.acp.license.developerLicense"><![CDATA[{icon name='wrench'} <strong>Entwickler-Lizenz</strong><br>
-<br>
-Die Entwickler-Lizenz gestattet ausschließlich den Einsatz während der Entwicklung sowie zum Betrieb von Demo-Installationen und berechtigt nicht zum Einsatz der Software in produktiven Umgebungen.]]></item>
+		<item name="wcf.acp.license.developerLicense"><![CDATA[Die <strong>Entwickler-Lizenz</strong> gestattet ausschließlich den Einsatz während der Entwicklung sowie zum Betrieb von Demo-Installationen und berechtigt nicht zum Einsatz der Software in produktiven Umgebungen.]]></item>
 		<item name="wcf.acp.license.package.install"><![CDATA[Installieren]]></item>
 		<item name="wcf.acp.license.package.installed"><![CDATA[Bereits installiert]]></item>
 		<item name="wcf.acp.license.package.outdated"><![CDATA[Bis Version {$accessibleVersion}]]></item>
@@ -4120,15 +4118,7 @@ Dateianhänge:
 		<item name="wcf.image.coverPhoto.upload.limits"><![CDATA[Minimale Bildgröße: {$coverPhotoDimensions.min.width} × {$coverPhotoDimensions.min.height} Pixel<br>Maximale Bildgröße: {$coverPhotoDimensions.max.width} × {$coverPhotoDimensions.max.height} Pixel<br>Erlaubte Dateiendungen: gif, jpg, jpeg, png, webp<br>Maximale Dateigröße: {$__wcf->session->getPermission($coverPhotoPermissionMaxSize)|filesize}]]></item>
 	</category>
 	<category name="wcf.imageViewer">
-		<item name="wcf.imageViewer.button.enlarge"><![CDATA[Vollbild-Modus]]></item>
-		<item name="wcf.imageViewer.button.full"><![CDATA[Originalversion aufrufen]]></item>
 		<item name="wcf.imageViewer.button.openSlideshow"><![CDATA[Slideshow]]></item>
-		<item name="wcf.imageViewer.seriesIndex"><![CDATA[{literal}{x} von {y}{/literal}]]></item>
-		<item name="wcf.imageViewer.close"><![CDATA[Schließen]]></item>
-		<item name="wcf.imageViewer.counter"><![CDATA[{literal}Bild {x} von {y}{/literal}]]></item>
-		<item name="wcf.imageViewer.enlarge"><![CDATA[Bild direkt anzeigen]]></item>
-		<item name="wcf.imageViewer.next"><![CDATA[Nächstes Bild]]></item>
-		<item name="wcf.imageViewer.previous"><![CDATA[Vorheriges Bild]]></item>
 	</category>
 	<category name="wcf.label">
 		<item name="wcf.label.all"><![CDATA[Alle]]></item>
@@ -7211,6 +7201,14 @@ Benachrichtigungen auf <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phra
 	<item name="wcf.imageViewer.caption"/>
 	<item name="wcf.imageViewer.pause"/>
 	<item name="wcf.imageViewer.play"/>
+	<item name="wcf.imageViewer.button.enlarge"/>
+	<item name="wcf.imageViewer.button.full"/>
+	<item name="wcf.imageViewer.seriesIndex"/>
+	<item name="wcf.imageViewer.close"/>
+	<item name="wcf.imageViewer.counter"/>
+	<item name="wcf.imageViewer.enlarge"/>
+	<item name="wcf.imageViewer.next"/>
+	<item name="wcf.imageViewer.previous"/>
 	<item name="wcf.label.error.notValid"/>
 	<item name="wcf.like.likesReceived.showDetails"/>
 	<item name="wcf.like.reactionReputation"/>

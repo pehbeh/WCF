@@ -36,6 +36,10 @@
     }
 
     #setupShadowRoot(): void {
+      if (this.shadowRoot !== null) {
+        return;
+      }
+
       const shadow = this.attachShadow({ mode: "open" });
 
       const style = document.createElement("style");

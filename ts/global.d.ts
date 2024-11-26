@@ -19,6 +19,8 @@ type IconMetadata = [Codepoint, HasRegularVariant];
 type IconSize = 16 | 24 | 32 | 48 | 64 | 96 | 128 | 144;
 type LoadingIndicatorIconSize = 24 | 48 | 96;
 
+type WoltlabCoreNoticeElementType = "error" | "info" | "success" | "warning";
+
 declare global {
   interface WoltLabTemplate {
     fetch(v: object): string;
@@ -107,6 +109,12 @@ declare global {
     set hideText(hideText: boolean);
   }
 
+  interface WoltlabCoreNoticeElement extends HTMLElement {
+    get type(): WoltlabCoreNoticeElementType;
+    set type(type: WoltlabCoreNoticeElementType);
+    get icon(): string;
+  }
+
   interface WoltlabCoreReactionSummaryElement extends HTMLElement {
     get objectId(): number;
     get objectType(): string;
@@ -124,6 +132,12 @@ declare global {
     set url(url: string);
   }
 
+  interface WoltlabCoreToggleButtonElement extends HTMLElement {
+    toggle(): void;
+    get checked(): boolean;
+    set checked(checked: boolean);
+  }
+
   interface HTMLElementTagNameMap {
     "fa-brand": FaBrand;
     "fa-icon": FaIcon;
@@ -132,9 +146,11 @@ declare global {
     "woltlab-core-date-time": WoltlabCoreDateTime;
     "woltlab-core-file": WoltlabCoreFileElement;
     "woltlab-core-file-upload": WoltlabCoreFileUploadElement;
-    "woltlab-core-loading-indicator": WoltlabCoreLoadingIndicatorElement;
-    "woltlab-core-pagination": WoltlabCorePaginationElement;
     "woltlab-core-google-maps": WoltlabCoreGoogleMapsElement;
+    "woltlab-core-loading-indicator": WoltlabCoreLoadingIndicatorElement;
+    "woltlab-core-notice": WoltlabCoreNoticeElement;
+    "woltlab-core-pagination": WoltlabCorePaginationElement;
     "woltlab-core-reaction-summary": WoltlabCoreReactionSummaryElement;
+    "woltlab-core-toggle-button": WoltlabCoreToggleButtonElement;
   }
 }

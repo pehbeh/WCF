@@ -199,7 +199,7 @@ export class FileProcessor {
         if (container === null) {
           container = document.createElement("div");
           container.classList.add("fileUpload__preview");
-          this.#uploadButton.insertAdjacentElement("beforebegin", container);
+          this.#uploadButton.insertAdjacentElement("afterbegin", container);
         }
         container.append(element);
       } else {
@@ -263,7 +263,8 @@ export class FileProcessor {
           filenameLink.href = element.link;
           filenameLink.title = element.filename;
           filenameLink.textContent = element.filename;
-          filenameLink.classList.add("jsImageViewer");
+          filenameLink.dataset.fancybox = "";
+          filenameLink.dataset.caption = element.filename;
 
           // Insert a hidden image element that will be used by the image viewer as the preview image
           const previewImage = document.createElement("img");

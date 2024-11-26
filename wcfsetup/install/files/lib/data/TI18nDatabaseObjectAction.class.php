@@ -28,7 +28,7 @@ trait TI18nDatabaseObjectAction
         $languageItems = [];
         foreach ($this->getObjects() as $object) {
             foreach ($this->getI18nSaveTypes() as $name => $regex) {
-                if ($object->$name === \str_replace('\d+', $object->getObjectID(), $regex)) {
+                if ($object->$name === $this->getLanguageItem($object, $regex)) {
                     $languageItems[] = $object->$name;
                 }
             }
@@ -100,7 +100,7 @@ trait TI18nDatabaseObjectAction
         $updateData = $deleteData = [];
 
         foreach ($this->getI18nSaveTypes() as $name => $regex) {
-            $languageName = \str_replace('\d+', $object->getObjectID(), $regex);
+            $languageName = $this->getLanguageItem($object, $regex);
             if (isset($this->parameters[$name . '_i18n'])) {
                 I18nHandler::getInstance()->save(
                     $this->parameters[$name . '_i18n'],
@@ -120,5 +120,13 @@ trait TI18nDatabaseObjectAction
             $editor = new $this->className($object);
             $editor->update($updateData);
         }
+    }
+
+    /**
+     * Formats the language item.
+     */
+    protected function getLanguageItem(DatabaseObject $object, string $regex): string
+    {
+        return \str_replace('\d+', $object->getObjectID(), $regex);
     }
 }

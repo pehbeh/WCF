@@ -3,7 +3,6 @@
 namespace wcf\data\cronjob\log;
 
 use wcf\data\AbstractDatabaseObjectAction;
-use wcf\system\WCF;
 
 /**
  * Executes cronjob log-related actions.
@@ -22,25 +21,4 @@ class CronjobLogAction extends AbstractDatabaseObjectAction
      * @inheritDoc
      */
     protected $className = CronjobLogEditor::class;
-
-    /**
-     * @inheritDoc
-     */
-    protected $requireACP = ['clearAll'];
-
-    /**
-     * Validates the clear all action.
-     */
-    public function validateClearAll()
-    {
-        WCF::getSession()->checkPermissions(['admin.management.canManageCronjob']);
-    }
-
-    /**
-     * Deletes the entire cronjob log.
-     */
-    public function clearAll()
-    {
-        CronjobLogEditor::clearLogs();
-    }
 }

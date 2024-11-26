@@ -125,4 +125,9 @@ class Menu extends DatabaseObject implements ITitledObject
 
         return $this->menuItemNodeTree;
     }
+
+    public function isMainMenu(): bool
+    {
+        return $this->identifier === 'com.woltlab.wcf.MainMenu';
+    }
 }

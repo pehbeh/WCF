@@ -742,6 +742,8 @@ $.extend(WCF, {
 
 /**
  * Browser related functions.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.Browser = {
 	/**
@@ -1240,6 +1242,7 @@ WCF.Action.Proxy = Class.extend({
  * 
  * @param	object		options
  * @param	object		callbacks
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.Action.SimpleProxy = Class.extend({
 	/**
@@ -1754,6 +1757,7 @@ WCF.Date = {};
  * Hash-like dictionary. Based upon idead from Prototype's hash
  * 
  * @see	https://github.com/sstephenson/prototype/blob/master/src/prototype/lang/hash.js
+ * @deprecated 6.2 Use `WoltLabSuite/Core/Dictionary` instead.
  */
 WCF.Dictionary = Class.extend({
 	/**
@@ -2011,6 +2015,8 @@ WCF.String = {
  * Basic implementation for WCF TabMenus. Use the data attributes 'active' to specify the
  * tab which should be shown on init. Furthermore you may specify a 'store' data-attribute
  * which will be filled with the currently selected tab.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.TabMenu = {
 	/**
@@ -2038,6 +2044,8 @@ WCF.Collapsible = {};
 /**
  * Simple implementation for collapsible content, neither does it
  * store its state nor does it allow AJAX callbacks to fetch content.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.Collapsible.Simple = {
 	/**
@@ -2117,6 +2125,7 @@ WCF.Collapsible.Simple = {
  * and closed state will be cached.
  * 
  * @param	string		className
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.Collapsible.Remote = Class.extend({
 	/**
@@ -2354,6 +2363,8 @@ WCF.Collapsible.Remote = Class.extend({
  * Basic implementation for collapsible containers with AJAX support. Requires collapsible
  * content to be available in DOM already, if you want to load content on the fly use
  * WCF.Collapsible.Remote instead.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.Collapsible.SimpleRemote = WCF.Collapsible.Remote.extend({
 	/**
@@ -2464,6 +2475,8 @@ WCF.Effect = {};
 
 /**
  * Scrolls to a specific element offset, optionally handling menu height.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.Effect.Scroll = Class.extend({
 	/**
@@ -2568,6 +2581,8 @@ WCF.DOMNodeInsertedHandler = {
 
 /**
  * Notifies objects once a DOM node was removed.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.DOMNodeRemovedHandler = {
 	/**
@@ -2916,6 +2931,9 @@ else {
 	});
 }
 
+/**
+ * @deprecated 6.2 Not (or no longer) used in the software.
+ */
 WCF.PageVisibilityHandler = {
 	/**
 	 * list of callbacks
@@ -3878,6 +3896,8 @@ WCF.System.Dependency.Manager = {
 
 /**
  * Stores object references for global access.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.System.ObjectStore = {
 	/**
@@ -4068,6 +4088,8 @@ WCF.System.Confirmation = {
 
 /**
  * Disables the ability to scroll the page.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.System.DisableScrolling = {
 	/**
@@ -4116,6 +4138,8 @@ WCF.System.DisableScrolling = {
 
 /**
  * Disables the ability to zoom the page.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.System.DisableZoom = {
 	/**
@@ -4160,6 +4184,8 @@ WCF.System.DisableZoom = {
 
 /**
  * System-wide handler for push notifications.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.System.PushNotification = {
 	/**
@@ -4259,6 +4285,7 @@ if (COMPILER_TARGET_DEFAULT) {
 	 * @param        string                title
 	 * @param        object                parameters
 	 * @param        object                callback
+	 * @deprecated 6.2 Use `WoltLabSuite/Core/Acp/Ui/Worker` instead.
 	 */
 	WCF.System.Worker = Class.extend({
 		/**
@@ -5696,6 +5723,9 @@ else {
 	});
 }
 
+/**
+ * @deprecated 6.2 Use `WoltLabSuite/Core/Controller/Popover` instead.
+ */
 WCF.Popover = Class.extend({
 	/**
 	 * currently active element id
@@ -5754,6 +5784,7 @@ WCF.Popover = Class.extend({
  * 
  * @param	string		itemListSelector
  * @param	string		searchInputSelector
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.EditableItemList = Class.extend({
 	/**
@@ -6144,6 +6175,8 @@ jQuery.fn.extend({
 
 /**
  * Provides a slideshow for lists.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 $.widget('ui.wcfSlideshow', {
 	/**
@@ -6357,6 +6390,9 @@ $.widget('ui.wcfSlideshow', {
 	}
 });
 
+/**
+ * @deprecated 6.2 Use `WoltLabSuite/Core/Date/Picker` instead.
+ */
 jQuery.fn.extend({
 	datepicker: function(method) {
 		var element = this[0], parameters = Array.prototype.slice.call(arguments, 1);
@@ -6403,6 +6439,9 @@ jQuery.fn.extend({
 	}
 });
 
+/**
+ * @deprecated 6.2 Use `WoltLabSuite/Core/Ui/TabMenu` instead.
+ */
 jQuery.fn.extend({
 	wcfTabs: function(method) {
 		var element = this[0], parameters = Array.prototype.slice.call(arguments, 1);
@@ -6505,6 +6544,7 @@ WCF.Category = { };
 if (COMPILER_TARGET_DEFAULT) {
 	/**
 	 * Handles selection of categories.
+	 * @deprecated 6.2 Not (or no longer) used in the software.
 	 */
 	WCF.Category.NestedList = Class.extend({
 		/**

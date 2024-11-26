@@ -472,7 +472,7 @@ abstract class CategoryAddFormBuilderForm extends AbstractFormBuilderForm
             $languageItem = "{$processor->getI18nLangVarPrefix()}.description.category{$category->getObjectID()}";
             $updateData['description'] = $languageItem;
             I18nHandler::getInstance()->save(
-                $formData['title_i18n'],
+                $formData['description_i18n'],
                 $languageItem,
                 $processor->getDescriptionLangVarCategory(),
                 $category->getObjectType()->packageID

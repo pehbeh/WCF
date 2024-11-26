@@ -10,7 +10,7 @@
 		cursor: text;
 	}
 
-	&:focus-within {
+	&:focus-within:focus-visible {
 		border-color: var(--wcfInputBorderActive);
 	}
 

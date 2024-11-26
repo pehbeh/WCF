@@ -16,7 +16,6 @@ use wcf\event\IPsr14Event;
 final class ResponseUpdated implements IPsr14Event
 {
     public function __construct(
-        public readonly CommentResponse $comment,
-    ) {
-    }
+        public readonly CommentResponse $response,
+    ) {}
 }
