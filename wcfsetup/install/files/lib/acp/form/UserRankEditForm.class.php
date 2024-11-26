@@ -42,12 +42,13 @@ class UserRankEditForm extends UserRankAddForm
                     }
                     EOT
             );
-            $this->formObject = new UserRank($queryParameters['id']);
-
-            if (!$this->formObject->getObjectID()) {
-                throw new IllegalLinkException();
-            }
         } catch (MappingError) {
+            throw new IllegalLinkException();
+        }
+
+        $this->formObject = new UserRank($queryParameters['id']);
+
+        if (!$this->formObject->getObjectID()) {
             throw new IllegalLinkException();
         }
     }
