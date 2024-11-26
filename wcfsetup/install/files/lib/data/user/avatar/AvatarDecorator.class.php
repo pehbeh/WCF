@@ -3,6 +3,7 @@
 namespace wcf\data\user\avatar;
 
 use wcf\data\file\File;
+use wcf\system\file\processor\UserAvatarFileProcessor;
 use wcf\util\StringUtil;
 
 /**
@@ -55,7 +56,8 @@ final class AvatarDecorator implements IUserAvatar, ISafeFormatAvatar
     public function getURL($size = null)
     {
         if ($this->avatar instanceof File) {
-            $thumbnail = $this->avatar->getThumbnail($size ?? '');
+            $thumbnail = $this->avatar->getThumbnail(UserAvatarFileProcessor::AVATAR_SIZE_2X)
+                ?? $this->avatar->getThumbnail(UserAvatarFileProcessor::AVATAR_SIZE);
             if ($thumbnail !== null) {
                 return $thumbnail->getLink();
             }
