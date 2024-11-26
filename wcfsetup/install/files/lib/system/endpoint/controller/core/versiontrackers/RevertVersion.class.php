@@ -28,7 +28,7 @@ final class RevertVersion implements IController
     #[\Override]
     public function __invoke(ServerRequestInterface $request, array $variables): ResponseInterface
     {
-        $parameters = Helper::mapApiParameters($request, RevertObjectParameters::class);
+        $parameters = Helper::mapApiParameters($request, RevertVersionParameters::class);
 
         $objectType = VersionTracker::getInstance()->getObjectType($parameters->objectType);
         $processor = $objectType->getProcessor();
@@ -55,7 +55,7 @@ final class RevertVersion implements IController
 }
 
 /** @internal */
-final class RevertObjectParameters
+final class RevertVersionParameters
 {
     public function __construct(
         /** @var non-empty-string */
