@@ -29,6 +29,7 @@ interface BootstrapOptions {
     publicKey: string;
     serviceWorkerJsUrl: string;
     registerUrl: string;
+    notificationLastReadTime: number;
   };
   dynamicColorScheme: boolean;
   endpointUserPopover: string;
@@ -114,6 +115,7 @@ export function setup(options: BootstrapOptions): void {
         options.serviceWorker.publicKey,
         options.serviceWorker.serviceWorkerJsUrl,
         options.serviceWorker.registerUrl,
+        options.serviceWorker.notificationLastReadTime,
       );
     }
   }

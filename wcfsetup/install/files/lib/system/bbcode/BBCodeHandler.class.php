@@ -189,7 +189,30 @@ class BBCodeHandler extends SingletonFactory
      */
     public function getCodeBlockLanguages(): array
     {
-        return \explode("\n", StringUtil::unifyNewlines(\MESSAGE_PUBLIC_HIGHLIGHTERS));
+        $highlighters = \explode("\n", StringUtil::unifyNewlines(\MESSAGE_PUBLIC_HIGHLIGHTERS));
+        if ($highlighters !== []) {
+            return $highlighters;
+        }
+
+        return [
+            'c',
+            'cpp',
+            'csharp',
+            'css',
+            'go',
+            'html',
+            'java',
+            'javascript',
+            'json',
+            'php',
+            'python',
+            'ruby',
+            'rust',
+            'sql',
+            'typescript',
+            'xml',
+            'yaml',
+        ];
     }
 
     /**

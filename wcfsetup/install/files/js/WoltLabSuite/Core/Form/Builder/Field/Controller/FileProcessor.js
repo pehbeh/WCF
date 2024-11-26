@@ -152,7 +152,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
                     if (container === null) {
                         container = document.createElement("div");
                         container.classList.add("fileUpload__preview");
-                        this.#uploadButton.insertAdjacentElement("beforebegin", container);
+                        this.#uploadButton.insertAdjacentElement("afterbegin", container);
                     }
                     container.append(element);
                 }

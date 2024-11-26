@@ -2,6 +2,7 @@
 
 namespace wcf\acp\form;
 
+use wcf\acp\action\CacheClearAction;
 use wcf\data\application\Application;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\form\AbstractForm;
@@ -9,6 +10,7 @@ use wcf\system\application\ApplicationHandler;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\exception\UserInputException;
 use wcf\system\importer\UserImporter;
+use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\ArrayUtil;
 use wcf\util\StringUtil;
@@ -136,7 +138,7 @@ class DataImportForm extends AbstractForm
         $collator = new \Collator(WCF::getLanguage()->getLocale());
         \uksort(
             $this->exporters,
-            static fn (string $a, string $b) => $collator->compare(
+            static fn(string $a, string $b) => $collator->compare(
                 WCF::getLanguage()->get('wcf.acp.dataImport.exporter.' . $a),
                 WCF::getLanguage()->get('wcf.acp.dataImport.exporter.' . $b)
             )
@@ -301,7 +303,10 @@ class DataImportForm extends AbstractForm
             'additionalData' => $this->additionalData,
         ]);
 
-        WCF::getTPL()->assign('queue', $queue);
+        WCF::getTPL()->assign([
+            'queue' => $queue,
+            'cacheClearEndpoint' => LinkHandler::getInstance()->getControllerLink(CacheClearAction::class),
+        ]);
     }
 
     /**

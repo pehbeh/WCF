@@ -100,8 +100,8 @@ final class DeleteComments
     {
         $responseList = new CommentResponseList();
         $responseList->getConditionBuilder()->add('comment_response.commentID IN (?)', [$this->commentIDs]);
-        $responseList->readObjectIDs();
-        if (!\count($responseList->getObjectIDs())) {
+        $responseList->readObjects();
+        if (!\count($responseList)) {
             return;
         }
 

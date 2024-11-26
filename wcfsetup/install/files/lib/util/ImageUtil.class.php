@@ -204,27 +204,21 @@ final class ImageUtil
      * supports WebP images.
      *
      * @since 5.4
+     * @deprecated 6.1
      */
     public static function browserSupportsWebp(): bool
     {
-        static $supportsWebP = null;
-
-        if ($supportsWebP === null) {
-            $supportsWebP = false;
-            if (!empty($_SERVER["HTTP_ACCEPT"])) {
-                $acceptableMimeTypes = \array_map(static function ($acceptableMimeType) {
-                    [$mimeType] = ArrayUtil::trim(\explode(";", $acceptableMimeType), false);
-
-                    return $mimeType;
-                }, Header::splitList($_SERVER["HTTP_ACCEPT"]));
-
-                if (\in_array("image/webp", $acceptableMimeTypes)) {
-                    $supportsWebP = true;
-                }
-            }
-        }
-
-        return $supportsWebP;
+        // WebP is supported in all current browsers. Furthermore, this
+        // detection uses the “accept” header for the page request which is a
+        // bit unreliable. Safari has never exposed image formats there and
+        // Firefox recently decided to drop the support for it in
+        // https://bugzilla.mozilla.org/show_bug.cgi?id=1917177.
+        //
+        // Exposing the recognized image formats in this header is actually in
+        // violation of the spec and we must therefore expect it to be dropped
+        // from Chromium based browsers at some point.
+        // See https://fetch.spec.whatwg.org/#document-accept-header-value
+        return true;
     }
 
     /**

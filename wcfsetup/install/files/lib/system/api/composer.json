@@ -19,7 +19,7 @@
     "laminas/laminas-diactoros": "^3.3.1",
     "laminas/laminas-httphandlerrunner": "^2.10.0",
     "laminas/laminas-progressbar": "^2.13",
-    "minishlink/web-push": "^v9.0.0-rc2",
+    "minishlink/web-push": "^v9.0.1",
     "nikic/fast-route": "2.0.0-beta1",
     "paragonie/constant_time_encoding": "^3.0",
     "pelago/emogrifier": "^7.2.0",
@@ -33,7 +33,6 @@
     "sebastian/diff": "^5.1.1",
     "symfony/polyfill-php82": "^1.30.0",
     "symfony/polyfill-php83": "^1.30",
-    "web-token/jwt-library": "^3.3.50",
     "willdurand/negotiation": "^3.1"
   },
   "replace": {
@@ -47,11 +46,5 @@
     "web-token/jwt-signature-algorithm-ecdsa": "*",
     "web-token/jwt-util-ecc": "*"
   },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/WoltLab/jwt-library.git"
-    }
-  ],
   "type": "project"
 }

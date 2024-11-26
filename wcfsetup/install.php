@@ -17,6 +17,8 @@ define('SETUP_FILE', INSTALL_SCRIPT_DIR . 'WCFSetup.tar.gz');
 
 define('NO_IMPORTS', 1);
 
+define('WCF_N', 1);
+
 $neededFilesPattern = [
 	'!^setup/.*!',
 	'!^install/files/acp/images/woltlabSuite.*!',

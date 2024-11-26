@@ -22,8 +22,7 @@ final class UpdateResponse
     public function __construct(
         private readonly CommentResponse $response,
         private readonly HtmlInputProcessor $htmlInputProcessor,
-    ) {
-    }
+    ) {}
 
     public function __invoke(): void
     {
@@ -42,7 +41,7 @@ final class UpdateResponse
         ]);
         $action->executeAction();
 
-        $event = new ResponseUpdated(new CommentResponse($this->response->commentID));
+        $event = new ResponseUpdated(new CommentResponse($this->response->responseID));
         EventHandler::getInstance()->fire($event);
     }
 }
