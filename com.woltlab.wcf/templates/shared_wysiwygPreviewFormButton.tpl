@@ -11,7 +11,7 @@
 			'{unsafe:$button->getPrefixedWysiwygId()|encodeJS}',
 			'{unsafe:$button->getPrefixedId()|encodeJS}',
 			'{unsafe:$button->getObjectType()->objectType|encodeJS}',
-			'{unsafe:$button->getObjectId()}'
+			'{unsafe:$button->getObjectId()|encodeJS}'
 		);
 	});
 </script>
