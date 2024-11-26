@@ -24,7 +24,7 @@
     "@types/prismjs": "^1.26.5",
     "@types/supercluster": "^7.1.3",
     "@types/twitter-for-web": "0.0.6",
-    "@woltlab/editor": "git+https://github.com/WoltLab/editor.git#b9a8e10528a42c5aac06ec1837881a7dd141aefb",
+    "@woltlab/editor": "git+https://github.com/WoltLab/editor.git#b0b1b4d626068a27a99cb1b5b7f5d3daf3178933",
     "@woltlab/visual-dom-diff": "git+https://github.com/WoltLab/visual-dom-diff.git#e5b51fce3157d1eda310566fc1f86101341d1fea",
     "@woltlab/zxcvbn": "git+https://github.com/WoltLab/zxcvbn.git#5b582b24e437f1883ccad3c37dae7c3c5f1e7da3",
     "emoji-picker-element": "^1.23.0",
