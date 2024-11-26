@@ -40,12 +40,13 @@ class CronjobEditForm extends CronjobAddForm
                     }
                     EOT
             );
-            $this->formObject = new Cronjob($queryParameters['id']);
-
-            if (!$this->formObject->getObjectID()) {
-                throw new IllegalLinkException();
-            }
         } catch (MappingError) {
+            throw new IllegalLinkException();
+        }
+
+        $this->formObject = new Cronjob($queryParameters['id']);
+
+        if (!$this->formObject->getObjectID()) {
             throw new IllegalLinkException();
         }
     }
