@@ -1,15 +1,9 @@
-{if !$__messageFormSmiliesJavascript|isset}
-	{assign var='__messageFormSmiliesJavascript' value=true}
-	
-	{js application='wcf' file='WCF.Message' bundle='WCF.Combined'}
-{/if}
-
 {assign var=__tabCount value=0}
 {capture assign=__categoryTabs}
 	{foreach from=$smileyCategories item=smileyCategory}
 		{assign var=__tabCount value=$__tabCount + 1}
 		{assign var='__smileyAnchor' value='smilies-'|concat:$smileyCategory->categoryID}
-		<li data-name="smilies-{@$smileyCategory->categoryID}" data-smiley-category-id="{@$smileyCategory->categoryID}"><a>{$smileyCategory->getTitle()}</a></li>
+		<li data-name="smilies-{@$smileyCategory->categoryID}" data-smiley-category-id="{@$smileyCategory->categoryID}"><button type="button">{$smileyCategory->getTitle()}</button></li>
 	{/foreach}
 {/capture}
 
@@ -17,9 +11,9 @@
 	{assign var='__firstSmileyCategory' value=$smileyCategories|reset}
 	{capture assign=__defaultSmilies}
 		{if $__firstSmileyCategory->categoryID}
-			{include file='__messageFormSmilies' smilies=$__wcf->getSmileyCache()->getCategorySmilies($__firstSmileyCategory->categoryID)}
+			{include file='shared_messageFormSmilies' smilies=$__wcf->getSmileyCache()->getCategorySmilies($__firstSmileyCategory->categoryID)}
 		{else}
-			{include file='__messageFormSmilies' smilies=$__wcf->getSmileyCache()->getCategorySmilies()}
+			{include file='shared_messageFormSmilies' smilies=$__wcf->getSmileyCache()->getCategorySmilies()}
 		{/if}
 	{/capture}
 	
@@ -32,15 +26,13 @@
 		
 		{foreach from=$smileyCategories item=smileyCategory}
 			<div class="messageTabMenuContent" id="smilies-{if $wysiwygSelector|isset}{$wysiwygSelector|encodeJS}{else}text{/if}-{@$smileyCategory->categoryID}">
-				{if $__firstSmileyCategory->categoryID == $smileyCategory->categoryID}{@$__defaultSmilies}{/if}
+				{if $__firstSmileyCategory->categoryID == $smileyCategory->categoryID}
+					{@$__defaultSmilies}
+				{else}
+					{include file='shared_messageFormSmilies' smilies=$__wcf->getSmileyCache()->getCategorySmilies($smileyCategory->categoryID)}
+				{/if}
 			</div>
 		{/foreach}
-		
-		<script data-relocate="true">
-			$(function() {
-				new WCF.Message.SmileyCategories('{if $wysiwygSelector|isset}{$wysiwygSelector|encodeJS}{else}text{/if}');
-			});
-		</script>
 	{else}
 		{@$__defaultSmilies}
 	{/if}

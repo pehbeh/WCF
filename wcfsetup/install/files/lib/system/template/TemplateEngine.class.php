@@ -138,6 +138,8 @@ class TemplateEngine extends SingletonFactory
         '__multiPageCondition' => 'shared_multiPageCondition',
         '__multilineItemListFormField' => 'shared_multilineItemListFormField',
         'imageViewer' => 'shared_imageViewer',
+        'messageFormSmilies' => 'shared_messageFormSmileyTab',
+        '__messageFormSmilies' => 'shared_messageFormSmilies',
     ];
 
     /**

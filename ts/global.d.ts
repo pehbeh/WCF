@@ -66,8 +66,6 @@ declare global {
 
   interface JQuery {
     sortable(...args: any[]): unknown;
-
-    messageTabMenu(...args: any[]): unknown;
   }
 
   type ArbitraryObject = Record<string, unknown>;
