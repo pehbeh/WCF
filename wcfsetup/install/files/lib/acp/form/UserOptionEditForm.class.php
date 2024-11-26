@@ -43,12 +43,13 @@ class UserOptionEditForm extends UserOptionAddForm
                     }
                     EOT
             );
-            $this->formObject = new UserOption($queryParameters['id']);
-
-            if (!$this->formObject->getObjectID()) {
-                throw new IllegalLinkException();
-            }
         } catch (MappingError) {
+            throw new IllegalLinkException();
+        }
+
+        $this->formObject = new UserOption($queryParameters['id']);
+
+        if (!$this->formObject->getObjectID()) {
             throw new IllegalLinkException();
         }
     }
