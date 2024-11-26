@@ -1,6 +1,6 @@
 <div class="inputAddon">
 	<input type="number" {*
-		*}step="{@$field->getStep()}" {*
+		*}step="{$field->getStep()}" {*
 		*}id="{$field->getPrefixedId()}" {*
 		*}name="{$field->getPrefixedId()}" {*
 		*}value="{$field->getValue()}"{*
@@ -30,13 +30,13 @@
 	require(['Language', 'WoltLabSuite/Core/Acp/Ui/Menu/Item/Handler'], (Language, { AcpUiMenuItemHandler }) => {
 		Language.addObject({
 			{foreach from=$pageNodeList item=pageNode}
-			{capture assign='pageObjectIDLanguageItem'}{lang __optional=true}wcf.page.pageObjectID.{@$pageNode->identifier}{/lang}{/capture}
+			{capture assign='pageObjectIDLanguageItem'}{lang __optional=true}wcf.page.pageObjectID.{$pageNode->identifier}{/lang}{/capture}
 			{if $pageObjectIDLanguageItem}
-				'wcf.page.pageObjectID.{@$pageNode->identifier}': '{@$pageObjectIDLanguageItem|encodeJS}',
+				'wcf.page.pageObjectID.{$pageNode->identifier}': '{@$pageObjectIDLanguageItem|encodeJS}',
 			{/if}
-			{capture assign='pageObjectIDLanguageItem'}{lang __optional=true}wcf.page.pageObjectID.search.{@$pageNode->identifier}{/lang}{/capture}
+			{capture assign='pageObjectIDLanguageItem'}{lang __optional=true}wcf.page.pageObjectID.search.{$pageNode->identifier}{/lang}{/capture}
 			{if $pageObjectIDLanguageItem}
-				'wcf.page.pageObjectID.search.{@$pageNode->identifier}': '{@$pageObjectIDLanguageItem|encodeJS}',
+				'wcf.page.pageObjectID.search.{$pageNode->identifier}': '{@$pageObjectIDLanguageItem|encodeJS}',
 			{/if}
 			{/foreach}
 		});
