@@ -45,12 +45,13 @@ class MenuEditForm extends MenuAddForm
                     }
                     EOT
             );
-            $this->formObject = new Menu($queryParameters['id']);
-
-            if (!$this->formObject->getObjectID()) {
-                throw new IllegalLinkException();
-            }
         } catch (MappingError) {
+            throw new IllegalLinkException();
+        }
+
+        $this->formObject = new Menu($queryParameters['id']);
+
+        if (!$this->formObject->getObjectID()) {
             throw new IllegalLinkException();
         }
     }
