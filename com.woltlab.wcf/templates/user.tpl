@@ -126,7 +126,7 @@
 				{/if}
 				{if $user->canEditAvatar()}
 					<li>
-						<button type="button" data-edit-avatar="{link controller="UserAvatar"}{/link}" class="button small">
+						<button type="button" data-edit-avatar="{link controller="UserAvatar" id=$user->userID}{/link}" class="button small">
 							{lang}wcf.user.avatar.edit{/lang}
 						</button>
 					</li>
@@ -135,7 +135,7 @@
 		</div>
 		<div class="contentHeaderIcon">
 			{if $user->canEditAvatar()}
-				<button type="button" data-edit-avatar="{link controller="UserAvatar"}{/link}" class="jsTooltip pointer" title="{lang}wcf.user.avatar.edit{/lang}">
+				<button type="button" data-edit-avatar="{link controller="UserAvatar" id=$user->userID}{/link}" class="jsTooltip pointer" title="{lang}wcf.user.avatar.edit{/lang}">
 					{unsafe:$user->getAvatar()->getImageTag(128)}
 				</button>
 			{else}
