@@ -3747,7 +3747,7 @@ Attachments:
 		<item name="wcf.edit.reason"><![CDATA[Edit Reason]]></item>
 		<item name="wcf.edit.currentVersion"><![CDATA[Current]]></item>
 		<item name="wcf.edit.revert"><![CDATA[Revert]]></item>
-		<item name="wcf.edit.revert.sure"><![CDATA[Do you really want to revert to the version at <span class="confirmationObject">{$edit->time|plainTime}</span>, created by <span class="confirmationObject">{$edit->username}</span>?]]></item>
+		<item name="wcf.edit.revert.confirmMessage"><![CDATA[Do you really want to revert to the version at {time time=$edit->time type='plainTime'}, created by “{$edit->username}”?]]></item>
 		<item name="wcf.edit.reverted"><![CDATA[Reverted to the version at {$edit->time|plainTime}, created by {$edit->username}]]></item>
 		<item name="wcf.edit.button.compare"><![CDATA[Compare]]></item>
 		<item name="wcf.edit.button.goToContent"><![CDATA[Go to Related Content]]></item>
