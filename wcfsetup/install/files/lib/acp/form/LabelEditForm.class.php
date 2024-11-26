@@ -45,12 +45,13 @@ class LabelEditForm extends LabelAddForm
                     }
                     EOT
             );
-            $this->formObject = new Label($queryParameters['id']);
-
-            if (!$this->formObject->getObjectID()) {
-                throw new IllegalLinkException();
-            }
         } catch (MappingError) {
+            throw new IllegalLinkException();
+        }
+
+        $this->formObject = new Label($queryParameters['id']);
+
+        if (!$this->formObject->getObjectID()) {
             throw new IllegalLinkException();
         }
     }
