@@ -164,7 +164,7 @@ async function resizeImage(element: WoltlabCoreFileUploadElement, file: File): P
     }
   }
 
-  const canvas = await resizer.resize(image, maxWidth, maxHeight, resizeConfiguration.quality, true, timeout);
+  const canvas = await resizer.resize(image, maxWidth, maxHeight, resizeConfiguration.quality, false, timeout);
   if (canvas === undefined) {
     // The resize operation failed, timed out or there was no need to perform
     // any scaling whatsoever.

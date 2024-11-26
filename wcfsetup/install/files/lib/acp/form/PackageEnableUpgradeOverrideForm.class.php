@@ -8,7 +8,6 @@ use wcf\form\AbstractFormBuilderForm;
 use wcf\system\event\EventHandler;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\form\builder\field\BooleanFormField;
-use wcf\system\form\builder\field\MultilineTextFormField;
 use wcf\system\form\builder\field\RejectEverythingFormField;
 use wcf\system\form\builder\TemplateFormNode;
 use wcf\system\registry\RegistryHandler;
@@ -160,7 +159,7 @@ final class PackageEnableUpgradeOverrideForm extends AbstractFormBuilderForm
             'dom',
             'exif',
             'gd',
-            'gmp',
+            ['gmp', 'bcmath'],
             'intl',
             'libxml',
             'mbstring',
@@ -172,7 +171,11 @@ final class PackageEnableUpgradeOverrideForm extends AbstractFormBuilderForm
 
         $missingExtensions = [];
         foreach ($requiredExtensions as $extension) {
-            if (!\extension_loaded($extension)) {
+            if (\is_array($extension)) {
+                if (\array_filter($extension, '\extension_loaded') === []) {
+                    $missingExtensions[] = $extension[0];
+                }
+            } elseif (!\extension_loaded($extension)) {
                 $missingExtensions[] = $extension;
             }
         }

@@ -99,6 +99,14 @@ class UiReactionHandler {
 
     DomChangeListener.add(`WoltLabSuite/Core/Ui/Reaction/Handler-${objectType}`, () => this.initReactButtons());
     UiCloseOverlay.add("WoltLabSuite/Core/Ui/Reaction/Handler", () => this._closePopover());
+
+    window.addEventListener(
+      "resize",
+      () => {
+        this._closePopover();
+      },
+      { passive: true },
+    );
   }
 
   /**

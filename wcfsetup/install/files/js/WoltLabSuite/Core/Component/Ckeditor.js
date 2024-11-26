@@ -36,7 +36,7 @@ define(["require", "exports", "tslib", "./Ckeditor/Attachment", "./Ckeditor/Medi
                 (0, Autosave_1.deleteDraft)(this.#features.autosave);
             }
         }
-        focus() {
+        focus(scrollIntoView = true) {
             // Check if the editor is (at least partially) in the viewport otherwise
             // scroll to it before setting the focus.
             const editorContainer = this.#editor.ui.element;
@@ -49,7 +49,7 @@ define(["require", "exports", "tslib", "./Ckeditor/Attachment", "./Ckeditor/Medi
             else if (bottom > 0 && bottom < viewportHeight) {
                 isPartiallyVisible = true;
             }
-            if (isPartiallyVisible) {
+            if (isPartiallyVisible || !scrollIntoView) {
                 this.#editor.editing.view.focus();
             }
             else {

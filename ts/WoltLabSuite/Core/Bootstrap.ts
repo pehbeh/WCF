@@ -199,6 +199,32 @@ export function setup(options: BoostrapOptions): void {
         }
 
         if (node.querySelector(".g-recaptcha-bubble-arrow") === null) {
+          // On mobile screens the arrow might not exist, instead we can try to
+          // find an <iframe> that is wrapped in anonymous <div>s that are a
+          // direct child of <body>.
+          const iframe = node.querySelector("iframe");
+          if (iframe === null) {
+            continue;
+          }
+
+          if (!iframe.src.startsWith("https://www.google.com/recaptcha/api")) {
+            continue;
+          }
+
+          if (iframe.parentElement?.parentElement?.parentElement === document.body) {
+            const name = "a-" + iframe.name.split("-")[1];
+            const widget = document.querySelector(`iframe[name="${name}"]`);
+            if (!widget) {
+              continue;
+            }
+            const dialog = widget.closest("woltlab-core-dialog");
+            if (!dialog) {
+              continue;
+            }
+
+            getPageOverlayContainer().append(node);
+          }
+
           continue;
         }
 
