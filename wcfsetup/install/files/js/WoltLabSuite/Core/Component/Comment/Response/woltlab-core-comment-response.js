@@ -71,7 +71,9 @@ define(["require", "exports", "tslib", "../../../Dom/Util", "../../../Ui/Dropdow
                 void this.#saveEdit();
             });
             window.setTimeout(() => {
-                UiScroll.element(this);
+                UiScroll.element(this, () => {
+                    (0, Ckeditor_1.getCkeditorById)(this.#editorId).focus(false);
+                });
             }, 250);
         }
         async #saveEdit() {

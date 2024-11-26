@@ -53,7 +53,7 @@ class Ckeditor {
     }
   }
 
-  focus(): void {
+  focus(scrollIntoView: boolean = true): void {
     // Check if the editor is (at least partially) in the viewport otherwise
     // scroll to it before setting the focus.
     const editorContainer = this.#editor.ui.element!;
@@ -67,7 +67,7 @@ class Ckeditor {
       isPartiallyVisible = true;
     }
 
-    if (isPartiallyVisible) {
+    if (isPartiallyVisible || !scrollIntoView) {
       this.#editor.editing.view.focus();
     } else {
       scrollToElement(editorContainer, () => {
