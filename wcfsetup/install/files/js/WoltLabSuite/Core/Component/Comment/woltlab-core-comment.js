@@ -77,7 +77,9 @@ define(["require", "exports", "tslib", "../../Ajax", "../../Dom/Util", "../../Ui
                 void this.#saveEdit();
             });
             window.setTimeout(() => {
-                UiScroll.element(this);
+                UiScroll.element(this, () => {
+                    (0, Ckeditor_1.getCkeditorById)(this.#editorId).focus(false);
+                });
             }, 250);
         }
         async #saveEdit() {
