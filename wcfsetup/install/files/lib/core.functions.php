@@ -92,9 +92,7 @@ namespace wcf {
 	 * @deprecated 6.0 Use #[\SensitiveParameter] instead.
 	 */
 	#[\Attribute(\Attribute::TARGET_PARAMETER)]
-	class SensitiveArgument
-	{
-	}
+	class SensitiveArgument {}
 }
 
 namespace wcf\functions\exception {
@@ -257,8 +255,6 @@ namespace wcf\functions\exception {
 	function printThrowable(\Throwable $e)
 	{
 		$exceptionID = logThrowable($e, $logFile);
-		if (\wcf\getRequestId()) $exceptionID .= '/' . \wcf\getRequestId();
-
 		$exceptionTitle = $exceptionSubtitle = $exceptionExplanation = '';
 		$logFile = sanitizePath($logFile);
 		try {
