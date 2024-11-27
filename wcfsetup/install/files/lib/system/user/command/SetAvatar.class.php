@@ -42,8 +42,7 @@ final class SetAvatar
         UserStorageHandler::getInstance()->reset([$this->user->userID], 'avatar');
         UserProfileRuntimeCache::getInstance()->removeObject($this->user->userID);
 
-        // check if the user will be automatically added to new user groups
-        // because of the changed avatar
+        // Setting an avatar could satisfy the condition to assign a user to user groups.
         UserGroupAssignmentHandler::getInstance()->checkUsers([$this->user->userID]);
 
         if ($this->user->userID === WCF::getUser()->userID) {
