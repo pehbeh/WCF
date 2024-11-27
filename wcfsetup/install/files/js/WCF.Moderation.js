@@ -15,6 +15,7 @@ if (COMPILER_TARGET_DEFAULT) {
 	 *
 	 * @param        integer                queueID
 	 * @param        string                redirectURL
+	 * @deprecated 6.2 No longer in use.
 	 */
 	WCF.Moderation.Management = Class.extend({
 		/**
@@ -181,6 +182,7 @@ if (COMPILER_TARGET_DEFAULT) {
 	 * Manages disabled content within moderation.
 	 *
 	 * @see        WCF.Moderation.Management
+	 * @deprecated 6.2 No longer in use.
 	 */
 	WCF.Moderation.Activation.Management = WCF.Moderation.Management.extend({
 		/**
@@ -255,6 +257,7 @@ if (COMPILER_TARGET_DEFAULT) {
 	 * Manages reported content within moderation.
 	 *
 	 * @see        WCF.Moderation.Management
+	 * @deprecated 6.2 No longer in use.
 	 */
 	WCF.Moderation.Report.Management = WCF.Moderation.Management.extend({
 		/**
