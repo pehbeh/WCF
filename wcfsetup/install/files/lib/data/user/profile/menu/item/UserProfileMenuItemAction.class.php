@@ -49,7 +49,6 @@ class UserProfileMenuItemAction extends AbstractDatabaseObjectAction implements 
     {
         $this->readString('menuItem', false, 'data');
         $this->readInteger('userID', false, 'data');
-        $this->readString('containerID', false, 'data');
 
         $this->menuItem = UserProfileMenu::getInstance()->getMenuItem($this->parameters['data']['menuItem']);
         if ($this->menuItem === null) {
@@ -78,7 +77,6 @@ class UserProfileMenuItemAction extends AbstractDatabaseObjectAction implements 
         $contentManager = $this->menuItem->getContentManager();
 
         return [
-            'containerID' => $this->parameters['data']['containerID'],
             'template' => $contentManager->getContent($this->parameters['data']['userID']),
         ];
     }
