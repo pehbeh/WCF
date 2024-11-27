@@ -294,7 +294,7 @@ class Instructions {
     new UiSortableList({
       containerId: instructionListContainer.id,
       isSimpleSorting: true,
-      toleranceElement: "div",
+      toleranceElement: "> div",
     });
 
     if (instructionsData.type === "update") {

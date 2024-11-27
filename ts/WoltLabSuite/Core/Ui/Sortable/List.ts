@@ -20,8 +20,24 @@ interface SortableListOptions {
   offset: number;
   options: Sortable.Options;
   isSimpleSorting: boolean;
-  toleranceElement: string;
+  toleranceElement?: string;
+  maxNestingLevel?: number;
   additionalParameters: UnknownObject;
+}
+
+function getNestingLevel(element: HTMLElement, container?: HTMLElement): number {
+  let nestingLevel = 0;
+  let sortableNode: HTMLElement | null = Sortable.utils.closest(element, ".sortableNode");
+
+  while (
+    sortableNode !== null &&
+    (!container || (sortableNode !== container && sortableNode.parentNode !== container))
+  ) {
+    sortableNode = Sortable.utils.closest(sortableNode.parentElement!, ".sortableNode");
+    nestingLevel++;
+  }
+
+  return nestingLevel;
 }
 
 class UiSortableList {
@@ -37,24 +53,73 @@ class UiSortableList {
         containerId: "",
         className: "",
         offset: 0,
+        maxNestingLevel: undefined,
+        toleranceElement: "> span",
         options: {
           animation: 150,
           swapThreshold: 0.65,
           fallbackOnBody: true,
+          dataIdAttr: "object-id",
           chosenClass: "sortablePlaceholder",
           ghostClass: "",
-          draggable: "li:not(.sortableNoSorting)",
-          toleranceElement: "span",
+          draggable: "li",
           filter: (event: Event | TouchEvent, target: HTMLElement) => {
+            if (Sortable.utils.is(target, ".sortableNoSorting")) {
+              return true;
+            }
+
             const eventTarget = event.target as HTMLElement;
             if (eventTarget === target) {
               return false;
             }
-            if (eventTarget.parentElement !== target) {
+            if (eventTarget.parentElement === target) {
+              return false;
+            }
+            if (!this._options.toleranceElement) {
+              return true;
+            }
+
+            return Sortable.utils.is(target, this._options.toleranceElement);
+          },
+          onMove: (event: Sortable.MoveEvent) => {
+            if (this._options.maxNestingLevel === undefined) {
+              return true;
+            }
+
+            const closest = Sortable.utils.closest(event.to, ".sortableNode");
+            if (!closest) {
+              // Top level
+              return true;
+            }
+
+            if (closest && Sortable.utils.is(closest, ".sortableNoNesting")) {
               return false;
             }
 
-            return eventTarget.nodeName !== this._options.toleranceElement;
+            const levelOfDraggedNode = Math.max(
+              ...Array.from(event.dragged.querySelectorAll(".sortableList")).map((list: HTMLElement) => {
+                return getNestingLevel(list, event.dragged);
+              }),
+            );
+
+            if (getNestingLevel(event.to) + levelOfDraggedNode > this._options.maxNestingLevel) {
+              return false;
+            }
+
+            return true;
+          },
+          onEnd: (event: Sortable.SortableEvent) => {
+            if (this._options.maxNestingLevel === undefined) {
+              return;
+            }
+
+            event.to.querySelectorAll(".sortableNode").forEach((node: HTMLElement) => {
+              if (getNestingLevel(node) > this._options.maxNestingLevel!) {
+                node.classList.add("sortableNoNesting");
+              } else {
+                node.classList.remove("sortableNoNesting");
+              }
+            });
           },
         } as Sortable.Options,
         isSimpleSorting: false,
@@ -71,7 +136,8 @@ class UiSortableList {
     if (this._options.isSimpleSorting) {
       const sortableList = this.#container.querySelector<HTMLElement>(".sortableList")!;
       if (sortableList.nodeName === "TBODY") {
-        this._options.options.draggable = "tr:not(.sortableNoSorting)";
+        this._options.options.draggable = "tr";
+        this._options.toleranceElement = undefined;
       }
 
       new Sortable(sortableList, {

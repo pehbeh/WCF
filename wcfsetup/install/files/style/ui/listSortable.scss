@@ -85,10 +85,13 @@
 		color: var(--wcfStatusErrorText);
 	}
 
-
-	.sortableNodeLabel {
+	.sortableNodeLabel, &:is(tr):hover > td {
 		background-color: transparent;
 	}
+}
+
+.table tr.sortablePlaceholder:hover > td {
+	background-color: transparent;
 }
 
 @include screen-xs {

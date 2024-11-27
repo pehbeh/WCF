@@ -122,7 +122,7 @@ class UiPollEditor {
 
     new UiSortableList({
       containerId: containerId,
-      toleranceElement: "div",
+      toleranceElement: "> div",
     });
 
     if (this.options.isAjax) {
