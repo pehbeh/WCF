@@ -4,7 +4,7 @@ namespace wcf\data\user\rank;
 
 use wcf\data\DatabaseObject;
 use wcf\data\ITitledObject;
-use wcf\system\file\upload\UploadFile;
+use wcf\system\form\builder\field\UploadFormField;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 
@@ -68,25 +68,14 @@ class UserRank extends DatabaseObject implements ITitledObject
     }
 
     /**
-     * Returns the currently uploaded rank image or null, if the rank has no image.
-     *
-     * @since       5.4
+     * @see UploadFormField::updatedObject()
      */
-    public function getImageFile(): ?UploadFile
+    public function getRankImageFileUploadFileLocations(): array
     {
-        if ($this->rankImage) {
-            $location = WCF_DIR . self::RANK_IMAGE_DIR . $this->rankImage;
-            if (\file_exists($location)) {
-                return new UploadFile(
-                    $location,
-                    $this->rankImage,
-                    true,
-                    true,
-                    true
-                );
-            }
+        if (!$this->rankImage) {
+            return [];
         }
 
-        return null;
+        return [WCF_DIR . self::RANK_IMAGE_DIR . $this->rankImage];
     }
 }
