@@ -78,12 +78,16 @@
 	background-color: var(--wcfStatusWarningBackground);
 	border: 1px solid var(--wcfStatusWarningBorder);
 	color: var(--wcfStatusWarningText);
-	padding: 10px;
 
 	&.sortableInvalidTarget {
 		background-color: var(--wcfStatusErrorBackground);
 		border-color: var(--wcfStatusErrorBorder);
 		color: var(--wcfStatusErrorText);
+	}
+
+
+	.sortableNodeLabel {
+		background-color: transparent;
 	}
 }
 

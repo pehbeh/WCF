@@ -20,6 +20,7 @@ interface SortableListOptions {
   offset: number;
   options: Sortable.Options;
   isSimpleSorting: boolean;
+  toleranceElement: string;
   additionalParameters: UnknownObject;
 }
 
@@ -38,15 +39,24 @@ class UiSortableList {
         offset: 0,
         options: {
           animation: 150,
-          chosenClass: "sortablePlaceholder",
-          fallbackOnBody: true,
           swapThreshold: 0.65,
-          filter: (event: Event | TouchEvent, target: HTMLElement, sortable: Sortable) => {
-            //TODO
-            console.log(event, target, sortable);
-            return true;
+          fallbackOnBody: true,
+          chosenClass: "sortablePlaceholder",
+          ghostClass: "",
+          draggable: "li:not(.sortableNoSorting)",
+          toleranceElement: "span",
+          filter: (event: Event | TouchEvent, target: HTMLElement) => {
+            const eventTarget = event.target as HTMLElement;
+            if (eventTarget === target) {
+              return false;
+            }
+            if (eventTarget.parentElement !== target) {
+              return false;
+            }
+
+            return eventTarget.nodeName !== this._options.toleranceElement;
           },
-        },
+        } as Sortable.Options,
         isSimpleSorting: false,
         additionalParameters: {},
       },
@@ -58,7 +68,24 @@ class UiSortableList {
       throw new Error(`Container '${this._options.containerId}' not found.`);
     }
 
-    new Sortable(this.#container.querySelector(".sortableList")!, this._options.options);
+    if (this._options.isSimpleSorting) {
+      const sortableList = this.#container.querySelector<HTMLElement>(".sortableList")!;
+      if (sortableList.nodeName === "TBODY") {
+        this._options.options.draggable = "tr:not(.sortableNoSorting)";
+      }
+
+      new Sortable(sortableList, {
+        direction: "vertical",
+        ...this._options.options,
+      });
+    } else {
+      this.#container.querySelectorAll(".sortableList").forEach((list: HTMLElement) => {
+        new Sortable(list, {
+          group: "nested",
+          ...this._options.options,
+        });
+      });
+    }
   }
 }
 

@@ -12,9 +12,7 @@
 				
 				new UiSortableList({
 					containerId: '{$option->optionName}SortableList',
-					options: {
-						toleranceElement: ''
-					}
+					toleranceElement: '',
 				});
 				
 				// re-select the previously selected tab

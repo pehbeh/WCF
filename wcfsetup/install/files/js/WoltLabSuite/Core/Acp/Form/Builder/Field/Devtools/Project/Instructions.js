@@ -205,9 +205,7 @@ define(["require", "exports", "tslib", "../../../../../../Core", "../../../../..
             new List_1.default({
                 containerId: instructionListContainer.id,
                 isSimpleSorting: true,
-                options: {
-                //TODO toleranceElement: "> div",
-                },
+                toleranceElement: "div",
             });
             if (instructionsData.type === "update") {
                 document

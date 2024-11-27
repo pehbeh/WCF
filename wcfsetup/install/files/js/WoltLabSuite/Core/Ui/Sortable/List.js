@@ -23,12 +23,21 @@ define(["require", "exports", "tslib", "../../Core", "sortablejs"], function (re
                 offset: 0,
                 options: {
                     animation: 150,
-                    chosenClass: "sortablePlaceholder",
-                    fallbackOnBody: true,
                     swapThreshold: 0.65,
-                    filter: (event, target, sortable) => {
-                        console.log(event, target, sortable);
-                        return true;
+                    fallbackOnBody: true,
+                    chosenClass: "sortablePlaceholder",
+                    ghostClass: "",
+                    draggable: "li:not(.sortableNoSorting)",
+                    toleranceElement: "span",
+                    filter: (event, target) => {
+                        const eventTarget = event.target;
+                        if (eventTarget === target) {
+                            return false;
+                        }
+                        if (eventTarget.parentElement !== target) {
+                            return false;
+                        }
+                        return eventTarget.nodeName !== this._options.toleranceElement;
                     },
                 },
                 isSimpleSorting: false,
@@ -38,7 +47,24 @@ define(["require", "exports", "tslib", "../../Core", "sortablejs"], function (re
             if (!this.#container) {
                 throw new Error(`Container '${this._options.containerId}' not found.`);
             }
-            new sortablejs_1.default(this.#container.querySelector(".sortableList"), this._options.options);
+            if (this._options.isSimpleSorting) {
+                const sortableList = this.#container.querySelector(".sortableList");
+                if (sortableList.nodeName === "TBODY") {
+                    this._options.options.draggable = "tr:not(.sortableNoSorting)";
+                }
+                new sortablejs_1.default(sortableList, {
+                    direction: "vertical",
+                    ...this._options.options,
+                });
+            }
+            else {
+                this.#container.querySelectorAll(".sortableList").forEach((list) => {
+                    new sortablejs_1.default(list, {
+                        group: "nested",
+                        ...this._options.options,
+                    });
+                });
+            }
         }
     }
     return UiSortableList;

@@ -65,9 +65,7 @@ define(["require", "exports", "tslib", "../../Core", "../../Language", "../Sorta
             this.createOptionList(pollOptions || []);
             new List_1.default({
                 containerId: containerId,
-                options: {
-                //TODO toleranceElement: "> div",
-                },
+                toleranceElement: "div",
             });
             if (this.options.isAjax) {
                 const element = document.getElementById(this.wysiwygId);
