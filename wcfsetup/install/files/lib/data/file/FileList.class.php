@@ -31,7 +31,7 @@ class FileList extends DatabaseObjectList
 
     public function loadThumbnails(): void
     {
-        if (!$this->loadThumbnails) {
+        if (!$this->loadThumbnails || $this->getObjectIDs() === []) {
             return;
         }
 
