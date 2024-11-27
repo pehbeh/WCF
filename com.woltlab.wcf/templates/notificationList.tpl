@@ -1,7 +1,7 @@
 {capture assign='contentTitleBadge'}<span class="badge jsNotificationsBadge">{#$__wcf->getUserNotificationHandler()->countAllNotifications()}</span>{/capture}
 
 {capture assign='headContent'}
-	<link rel="alternate" type="application/rss+xml" title="{lang}wcf.global.button.rss{/lang}" href="{link controller='NotificationRssFeed'}at={@$__wcf->getUser()->userID}-{@$__wcf->getUser()->accessToken}{/link}">
+	<link rel="alternate" type="application/rss+xml" title="{lang}wcf.global.button.rss{/lang}" href="{link controller='NotificationRssFeed'}at={$__wcf->getUser()->userID}-{$__wcf->getUser()->accessToken}{/link}">
 {/capture}
 
 {capture assign='contentInteractionPagination'}
@@ -15,7 +15,7 @@
 {/capture}
 
 {capture assign='contentInteractionDropdownItems'}
-	<li><a rel="alternate" href="{link controller='NotificationRssFeed'}at={@$__wcf->getUser()->userID}-{@$__wcf->getUser()->accessToken}{/link}">{lang}wcf.global.button.rss{/lang}</a></li>
+	<li><a rel="alternate" href="{link controller='NotificationRssFeed'}at={$__wcf->getUser()->userID}-{$__wcf->getUser()->accessToken}{/link}">{lang}wcf.global.button.rss{/lang}</a></li>
 {/capture}
 
 {include file='header'}
@@ -26,7 +26,7 @@
 	{foreach from=$notifications[notifications] item=$notification}
 		{if $notification[event]->getPeriod() != $lastPeriod}
 			{if $lastPeriod}
-					</ul>
+					</div>
 				</section>
 			{/if}
 			{assign var=lastPeriod value=$notification[event]->getPeriod()}
@@ -34,46 +34,51 @@
 			<section class="section sectionContainerList">
 				<h2 class="sectionTitle">{$lastPeriod}</h2>
 			
-				<ul class="containerList userNotificationItemList">
+				<div class="notificationList">
 		{/if}
 				{capture assign='__notificationLink'}{if $notification[event]->isConfirmed()}{$notification[event]->getLink()}{else}{link controller='NotificationConfirm' id=$notification[notificationID]}{/link}{/if}{/capture}
-				<li class="jsNotificationItem notificationItem{if $notification[authors] > 1} groupedNotificationItem{/if}{if !$notification[event]->isConfirmed()} notificationUnconfirmed{/if}" data-link="{@$__notificationLink}" data-link-replace-all="{if $notification[event]->isConfirmed()}false{else}true{/if}" data-object-id="{@$notification[notificationID]}" data-is-read="{if $notification[event]->isConfirmed()}true{else}false{/if}" data-is-grouped="{if $notification[authors] > 1}true{else}false{/if}">
-					<div class="box32">
+				
+				<div 
+					class="notificationListItem"
+					data-object-id="{$notification[notificationID]}"
+					data-is-read="{if $notification[event]->isConfirmed()}true{else}false{/if}"
+				>
+					<div class="notificationListItem__avatar">
 						{if $notification[authors] < 2}
-							<div class="jsTooltip" title="{$notification[event]->getAuthor()->username}">
-								{@$notification[event]->getAuthor()->getAvatar()->getImageTag(32)}
-							</div>
-							
-							<div class="details">
-								<p>
-									{if !$notification[confirmed]}<span class="badge label newContentBadge">{lang}wcf.message.new{/lang}</span>{/if}
-									<a href="{@$__notificationLink}" class="userNotificationItemLink">{@$notification[event]->getMessage()}</a>
-								</p>
-								<p><small>{@$notification[time]|time}</small></p>
-							</div>
+							{user object=$notification[event]->getAuthor() type='avatar48' ariaHidden='true' tabindex='-1'}
 						{else}
-							<div>
-								{icon size=32 name='users'}
-							</div>
-							
-							<div class="details">
-								<p>
-									{if !$notification[confirmed]}<span class="badge label newContentBadge">{lang}wcf.message.new{/lang}</span>{/if}
-									<a href="{@$__notificationLink}" class="userNotificationItemLink">{@$notification[event]->getMessage()}</a>
-								</p>
-								<p><small>{@$notification[time]|time}</small></p>
-								
-								<ul class="userAvatarList small">
-									{foreach from=$notification[event]->getAuthors() item=author}
-										{if $author->userID}
-											<li class="jsTooltip" title="{$author->username}">{user object=$author type='avatar24'}</li>
-										{/if}
-									{/foreach}
-								</ul>
-							</div>
+							{icon size=48 name='users'}
 						{/if}
 					</div>
-				</li>
+
+					<h3 class="notificationListItem__title">
+						<a href="{unsafe:$__notificationLink}" class="notificationListItem__link">{unsafe:$notification[event]->getMessage()}</a>
+					</h3>
+
+					<div class="notificationListItem__time">
+						{time time=$notification[time]}
+					</div>
+
+					{if $notification[authors] > 1}
+						<div class="notificationListItem__authors">
+							<ul class="userAvatarList small">
+								{foreach from=$notification[event]->getAuthors() item=author}
+									{if $author->userID}
+										<li class="jsTooltip" title="{$author->username}">{user object=$author type='avatar24'}</li>
+									{/if}
+								{/foreach}
+							</ul>
+						</div>
+					{/if}
+
+					{if !$notification[event]->isConfirmed()}
+						<div class="notificationListItem__unread">
+							<button type="button" class="notificationListItem__markAsRead jsTooltip" title="{lang}wcf.global.button.markAsRead{/lang}">
+								{icon name='check'}
+							</button>
+						</div>
+					{/if}
+				</div>
 	{/foreach}
 		</ul>
 	</section>
@@ -81,7 +86,7 @@
 	<footer class="contentFooter">
 		{hascontent}
 			<div class="paginationBottom">
-				{content}{@$pagesLinks}{/content}
+				{content}{unsafe:$pagesLinks}{/content}
 			</div>
 		{/hascontent}
 		
@@ -98,12 +103,10 @@
 {/if}
 
 <script data-relocate="true">
-	$(function() {
-		WCF.Language.addObject({
-			'wcf.user.notification.markAllAsConfirmed.confirmMessage': '{jslang}wcf.user.notification.markAllAsConfirmed.confirmMessage{/jslang}'
-		});
+	require(['WoltLabSuite/Core/Controller/User/Notification/List'], ({ setup }) => {
+		{jsphrase name='wcf.user.notification.markAllAsConfirmed.confirmMessage'}
 		
-		new WCF.Notification.List();
+		setup();
 	});
 </script>
 

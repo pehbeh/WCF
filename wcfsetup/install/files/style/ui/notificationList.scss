@@ -1,0 +1,128 @@
+.notificationList {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.notificationListItem {
+	display: grid;
+	grid-template-areas:
+		"avatar title unread"
+		"avatar time unread"
+		"avatar authors unread";
+	grid-template-columns: min-content 1fr min-content;
+	column-gap: 15px;
+	row-gap: 5px;
+	position: relative;
+
+	&:not(:last-child) {
+		padding-bottom: 20px;
+		border-bottom: 1px solid var(--wcfContentBorderInner);
+	}
+}
+
+.notificationListItem__avatar {
+	grid-area: avatar;
+}
+
+.notificationListItem__title {
+	grid-area: title;
+
+	@include wcfFontHeadline;
+}
+
+.notificationListItem__time {
+	grid-area: time;
+	color: var(--wcfContentDimmedText);
+
+	@include wcfFontSmall;
+}
+
+.notificationListItem__authors {
+	grid-area: authors;
+	margin-top: 5px;
+}
+
+.notificationListItem__link {
+	color: inherit;
+
+	&::before {
+		content: "";
+		inset: 0;
+		position: absolute;
+	}
+
+	&:hover,
+	&:focus {
+		color: inherit;
+	}
+}
+
+.notificationListItem__unread {
+	align-self: center;
+	align-items: center;
+	bottom: 0;
+	display: flex;
+	grid-area: unread;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 34px;
+
+	&::before {
+		background-color: var(--wcfUserMenuIndicator);
+		border-radius: 50%;
+		content: "";
+		height: 10px;
+		left: 7px;
+		opacity: 1;
+		position: absolute;
+		top: calc(50% - 5px);
+		width: 10px;
+	}
+}
+
+html:not(.touch) .notificationListItem__unread::before {
+	transition:
+		left 0.12s ease-in-out,
+		opacity 0.12s ease-in-out;
+}
+
+html:not(.touch) .notificationListItem:hover .notificationListItem__unread::before {
+	opacity: 0;
+	left: 0;
+}
+
+.notificationListItem__markAsRead {
+	display: block;
+	opacity: 1;
+	position: relative;
+	left: 0;
+	width: 100%;
+}
+
+html:not(.touch) .notificationListItem__markAsRead {
+	transform: scale(1);
+	transition:
+		opacity 0.12s ease-in-out,
+		left 0.12s ease-in-out,
+		transform 0.24s ease-in-out;
+
+	&:hover {
+		transform: scale(1.5);
+	}
+}
+
+/* Tapping the indicator on touch devices triggers the action
+   to mark the item as read. Positioning the button over the
+   indicator masks this behavior. */
+html.touch .notificationListItem__markAsRead {
+	opacity: 0;
+	left: 0;
+	width: 24px;
+}
+
+.notificationListItem:not(:hover) .notificationListItem__markAsRead {
+	opacity: 0;
+	left: 10px;
+}
