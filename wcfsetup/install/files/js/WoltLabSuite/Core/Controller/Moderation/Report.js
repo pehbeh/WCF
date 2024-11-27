@@ -29,9 +29,8 @@ define(["require", "exports", "WoltLabSuite/Core/Api/ModerationQueues/ChangeJust
             const label = document.createElement("label");
             const input = document.createElement("input");
             input.type = "checkbox";
-            const text = document.createTextNode((0, Language_1.getPhrase)("wcf.moderation.report.removeReport.markAsJustified"));
             dialog.content.append(label);
-            label.append(input, " ", text);
+            label.append(input, " ", (0, Language_1.getPhrase)("wcf.moderation.report.removeReport.markAsJustified"));
         });
         if (result) {
             const response = await (0, CloseReport_1.closeReport)(queueId, dialog.content.querySelector("input").checked);
@@ -50,9 +49,8 @@ define(["require", "exports", "WoltLabSuite/Core/Api/ModerationQueues/ChangeJust
             const input = document.createElement("input");
             input.type = "checkbox";
             input.checked = justified;
-            const text = document.createTextNode((0, Language_1.getPhrase)("wcf.moderation.report.changeJustifiedStatus.markAsJustified"));
             dialog.content.append(label);
-            label.append(input, " ", text);
+            label.append(input, " ", (0, Language_1.getPhrase)("wcf.moderation.report.changeJustifiedStatus.markAsJustified"));
         });
         if (result) {
             const response = await (0, ChangeJustifiedStatus_1.changeJustifiedStatus)(queueId, dialog.content.querySelector("input").checked);

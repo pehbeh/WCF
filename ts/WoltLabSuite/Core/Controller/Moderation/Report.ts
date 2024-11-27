@@ -36,10 +36,9 @@ async function handleCloseReport(queueId: number, redirectUrl: string): Promise<
       const label = document.createElement("label");
       const input = document.createElement("input");
       input.type = "checkbox";
-      const text = document.createTextNode(getPhrase("wcf.moderation.report.removeReport.markAsJustified"));
 
       dialog.content.append(label);
-      label.append(input, " ", text);
+      label.append(input, " ", getPhrase("wcf.moderation.report.removeReport.markAsJustified"));
     });
 
   if (result) {
@@ -60,10 +59,9 @@ async function handleChangeJustifiedStatus(queueId: number, justified: boolean, 
       const input = document.createElement("input");
       input.type = "checkbox";
       input.checked = justified;
-      const text = document.createTextNode(getPhrase("wcf.moderation.report.changeJustifiedStatus.markAsJustified"));
 
       dialog.content.append(label);
-      label.append(input, " ", text);
+      label.append(input, " ", getPhrase("wcf.moderation.report.changeJustifiedStatus.markAsJustified"));
     });
 
   if (result) {
