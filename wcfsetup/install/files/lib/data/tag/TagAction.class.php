@@ -16,9 +16,9 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Tag     create()
  * @method  TagEditor[] getObjects()
  * @method  TagEditor   getSingleObject()
+ * @property TagEditor[] $objects
  */
 class TagAction extends AbstractDatabaseObjectAction implements ISearchAction
 {
@@ -63,6 +63,67 @@ class TagAction extends AbstractDatabaseObjectAction implements ISearchAction
 
         if (isset($this->parameters['data']['excludedSearchValues']) && !\is_array($this->parameters['data']['excludedSearchValues'])) {
             throw new UserInputException('excludedSearchValues');
+        }
+    }
+
+    #[\Override]
+    public function create()
+    {
+        $tag = parent::create();
+        \assert($tag instanceof Tag);
+
+        $editor = new TagEditor($tag);
+        $this->saveSynonyms($editor);
+
+        return $tag;
+    }
+
+    #[\Override]
+    public function update()
+    {
+        parent::update();
+
+        foreach ($this->objects as $tagEditor) {
+            if ($tagEditor->synonymFor !== null) {
+                continue;
+            }
+
+            // remove synonyms first
+            $sql = "UPDATE  wcf1_tag
+                    SET     synonymFor = ?
+                    WHERE   synonymFor = ?";
+            $statement = WCF::getDB()->prepare($sql);
+            $statement->execute([
+                null,
+                $tagEditor->tagID,
+            ]);
+
+            $this->saveSynonyms($tagEditor);
+        }
+    }
+
+    private function saveSynonyms(TagEditor $tagEditor): void
+    {
+        $synonyms = $this->parameters['synonyms'] ?? [];
+        foreach ($synonyms as $synonym) {
+            if (empty($synonym)) {
+                continue;
+            }
+
+            // find existing tag
+            $synonymObj = Tag::getTag($synonym, $tagEditor->languageID);
+            if ($synonymObj === null) {
+                $synonymAction = new TagAction([], 'create', [
+                    'data' => [
+                        'name' => $synonym,
+                        'languageID' => $tagEditor->languageID,
+                        'synonymFor' => $tagEditor->tagID,
+                    ],
+                ]);
+                $synonymAction->executeAction();
+            } else {
+                $tagEditor->addSynonym($synonymObj);
+            }
         }
     }
 
