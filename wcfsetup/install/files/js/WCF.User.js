@@ -968,6 +968,7 @@ if (COMPILER_TARGET_DEFAULT) {
 	 * Signature preview.
 	 *
 	 * @see        WCF.Message.Preview
+	 * @deprecated 6.2 Use `WoltLabSuite/Core/Component/User/Signature/Preview` instead.
 	 */
 	WCF.User.SignaturePreview = WCF.Message.Preview.extend({
 		/**
