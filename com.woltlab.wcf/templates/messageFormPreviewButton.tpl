@@ -6,7 +6,7 @@
 <button type="button" id="{$previewButtonID}" class="button jsOnly">{lang}wcf.global.button.preview{/lang}</button>
 
 <script data-relocate="true">
-	require(["WoltLabSuite/Core/Controller/Message/Preview"], ({ setup }) => {
+	require(["WoltLabSuite/Core/Component/Message/Preview"], ({ setup }) => {
 		{jsphrase name='wcf.global.preview'}
 		setup(
 			'{unsafe:$previewMessageFieldID|encodeJS}',

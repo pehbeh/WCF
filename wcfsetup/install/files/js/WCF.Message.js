@@ -238,7 +238,7 @@ if (COMPILER_TARGET_DEFAULT) {
 	 * @param        string                className
 	 * @param        string                messageFieldID
 	 * @param        string                previewButtonID
-	 * @deprecated 6.2 Use `WoltLabSuite/Core/Controller/Message/Preview` instead.
+	 * @deprecated 6.2 Use `WoltLabSuite/Core/Component/Message/Preview` instead.
 	 */
 	WCF.Message.Preview = Class.extend({
 		/**
@@ -455,7 +455,7 @@ if (COMPILER_TARGET_DEFAULT) {
 	 * Default implementation for message previews.
 	 *
 	 * @see        WCF.Message.Preview
-	 * @deprecated 6.2 Use `WoltLabSuite/Core/Controller/Message/Preview` instead.
+	 * @deprecated 6.2 Use `WoltLabSuite/Core/Component/Message/Preview` instead.
 	 */
 	WCF.Message.DefaultPreview = WCF.Message.Preview.extend({
 		_dialog: null,
@@ -520,7 +520,7 @@ if (COMPILER_TARGET_DEFAULT) {
 	});
 	
 	/**
-	 * @deprecated 6.2 Use `WoltLabSuite/Core/Controller/Message/I18nPreview` instead.
+	 * @deprecated 6.2 Use `WoltLabSuite/Core/Component/Message/I18nPreview` instead.
 	 */
 	WCF.Message.I18nPreview = WCF.Message.Preview.extend({
 		_activeMessageField: '',

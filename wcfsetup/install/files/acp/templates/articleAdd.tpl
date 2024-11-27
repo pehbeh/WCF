@@ -617,7 +617,7 @@
 </form>
 
 <script data-relocate="true">
-	require(["WoltLabSuite/Core/Controller/Message/I18nPreview"], ({ setup }) => {
+	require(["WoltLabSuite/Core/Component/Message/I18nPreview"], ({ setup }) => {
 		{jsphrase name='wcf.global.preview'}
 		setup(
 			[

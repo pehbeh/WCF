@@ -5,7 +5,7 @@
 *}>{$button->getLabel()}</button>
 
 <script data-relocate="true">
-	require(["WoltLabSuite/Core/Controller/Message/Preview"], ({ setup }) => {
+	require(["WoltLabSuite/Core/Component/Message/Preview"], ({ setup }) => {
 		{jsphrase name='wcf.global.preview'}
 		setup(
 			'{unsafe:$button->getPrefixedWysiwygId()|encodeJS}',

@@ -75,7 +75,7 @@
 </form>
 
 <script data-relocate="true">
-	require(["WoltLabSuite/Core/Controller/User/Signature/Preview"], ({ setup }) => {
+	require(["WoltLabSuite/Core/Component/User/Signature/Preview"], ({ setup }) => {
 		setup();
 	});
 </script>
