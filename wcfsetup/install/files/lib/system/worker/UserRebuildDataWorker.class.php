@@ -237,7 +237,11 @@ final class UserRebuildDataWorker extends AbstractLinearRebuildDataWorker
                 $height = $avatar->height;
                 if ($width != $height) {
                     // make avatar quadratic
-                    $width = $height = \min($avatar->width, $avatar->height, UserAvatarFileProcessor::AVATAR_SIZE);
+                    // minimum size is 128x128, maximum size is 256x256
+                    $width = $height = \min(
+                        \max($avatar->width, $avatar->height, UserAvatarFileProcessor::AVATAR_SIZE),
+                        UserAvatarFileProcessor::AVATAR_SIZE_2X
+                    );
                     $adapter = ImageHandler::getInstance()->getAdapter();
 
                     try {
