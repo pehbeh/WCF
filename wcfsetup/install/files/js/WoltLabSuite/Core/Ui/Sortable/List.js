@@ -23,6 +23,7 @@ define(["require", "exports", "tslib", "../../Core", "sortablejs"], function (re
     class UiSortableList {
         _options;
         #container;
+        #sortables = new Map();
         /**
          * Initializes the sortable list controller.
          */
@@ -37,7 +38,7 @@ define(["require", "exports", "tslib", "../../Core", "sortablejs"], function (re
                     animation: 150,
                     swapThreshold: 0.65,
                     fallbackOnBody: true,
-                    dataIdAttr: "object-id",
+                    dataIdAttr: "data-object-id",
                     chosenClass: "sortablePlaceholder",
                     ghostClass: "",
                     draggable: "li",
@@ -69,13 +70,10 @@ define(["require", "exports", "tslib", "../../Core", "sortablejs"], function (re
                         if (closest && sortablejs_1.default.utils.is(closest, ".sortableNoNesting")) {
                             return false;
                         }
-                        console.log(event.dragged);
                         const levelOfDraggedNode = Math.max(...Array.from(event.dragged.querySelectorAll(".sortableList")).map((list) => {
-                            console.log(list);
                             return getNestingLevel(list, event.dragged);
                         }));
                         if (getNestingLevel(event.to) + levelOfDraggedNode > this._options.maxNestingLevel) {
-                            console.log(`${getNestingLevel(event.to)} + ${levelOfDraggedNode} > ${this._options.maxNestingLevel}`);
                             return false;
                         }
                         return true;
@@ -107,19 +105,38 @@ define(["require", "exports", "tslib", "../../Core", "sortablejs"], function (re
                     this._options.options.draggable = "tr";
                     this._options.toleranceElement = undefined;
                 }
-                new sortablejs_1.default(sortableList, {
+                this.#sortables.set(0, new sortablejs_1.default(sortableList, {
                     direction: "vertical",
                     ...this._options.options,
-                });
+                }));
             }
             else {
                 this.#container.querySelectorAll(".sortableList").forEach((list) => {
-                    new sortablejs_1.default(list, {
+                    this.#sortables.set(parseInt(list.dataset.objectId, 10), new sortablejs_1.default(list, {
                         group: "nested",
                         ...this._options.options,
-                    });
+                    }));
                 });
             }
+            if (this._options.className) {
+                let formSubmit = this.#container.querySelector(".formSubmit");
+                if (!formSubmit) {
+                    formSubmit = this.#container.nextElementSibling;
+                }
+                if (!formSubmit) {
+                    console.debug("[UiSortableList] Unable to find form submit for saving, aborting.");
+                    return;
+                }
+                formSubmit.querySelector('button[data-type="submit"]')?.addEventListener("click", () => {
+                    this.save();
+                });
+            }
+        }
+        save() {
+            if (!this._options.className) {
+                return;
+            }
+            // TODO save postions and send them to server
         }
     }
     return UiSortableList;

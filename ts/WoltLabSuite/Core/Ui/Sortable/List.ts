@@ -43,6 +43,7 @@ function getNestingLevel(element: HTMLElement, container?: HTMLElement): number 
 class UiSortableList {
   protected readonly _options: SortableListOptions;
   readonly #container: HTMLElement | null;
+  readonly #sortables = new Map<number, Sortable>();
 
   /**
    * Initializes the sortable list controller.
@@ -59,7 +60,7 @@ class UiSortableList {
           animation: 150,
           swapThreshold: 0.65,
           fallbackOnBody: true,
-          dataIdAttr: "object-id",
+          dataIdAttr: "data-object-id",
           chosenClass: "sortablePlaceholder",
           ghostClass: "",
           draggable: "li",
@@ -140,18 +141,47 @@ class UiSortableList {
         this._options.toleranceElement = undefined;
       }
 
-      new Sortable(sortableList, {
-        direction: "vertical",
-        ...this._options.options,
-      });
+      this.#sortables.set(
+        0,
+        new Sortable(sortableList, {
+          direction: "vertical",
+          ...this._options.options,
+        }),
+      );
     } else {
       this.#container.querySelectorAll(".sortableList").forEach((list: HTMLElement) => {
-        new Sortable(list, {
-          group: "nested",
-          ...this._options.options,
-        });
+        this.#sortables.set(
+          parseInt(list.dataset.objectId!, 10),
+          new Sortable(list, {
+            group: "nested",
+            ...this._options.options,
+          }),
+        );
       });
     }
+
+    if (this._options.className) {
+      let formSubmit = this.#container.querySelector(".formSubmit");
+      if (!formSubmit) {
+        formSubmit = this.#container.nextElementSibling;
+      }
+      if (!formSubmit) {
+        console.debug("[UiSortableList] Unable to find form submit for saving, aborting.");
+        return;
+      }
+
+      formSubmit.querySelector('button[data-type="submit"]')?.addEventListener("click", () => {
+        this.save();
+      });
+    }
+  }
+
+  public save(): void {
+    if (!this._options.className) {
+      return;
+    }
+
+    // TODO save postions and send them to server
   }
 }
 
