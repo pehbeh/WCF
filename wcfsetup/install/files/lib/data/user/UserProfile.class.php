@@ -1204,7 +1204,10 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
      */
     public function canEditAvatar(): bool
     {
-        if (WCF::getSession()->getPermission('admin.user.canEditUser')) {
+        if (
+            WCF::getSession()->getPermission('admin.user.canEditUser')
+            && UserGroup::isAccessibleGroup($this->getGroupIDs())
+        ) {
             return true;
         }
 
