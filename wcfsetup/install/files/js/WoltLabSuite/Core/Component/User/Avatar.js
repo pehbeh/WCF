@@ -5,6 +5,7 @@
  * @copyright 2001-2024 WoltLab GmbH
  * @license   GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since     6.2
+ * @woltlabExcludeBundle all
  */
 define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Component/Dialog", "WoltLabSuite/Core/Ui/Notification", "WoltLabSuite/Core/Ui/CloseOverlay"], function (require, exports, tslib_1, PromiseMutex_1, Selector_1, Dialog_1, Notification_1, CloseOverlay_1) {
     "use strict";
