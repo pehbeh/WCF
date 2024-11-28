@@ -12,11 +12,6 @@ namespace wcf\data\user\cover\photo;
 interface IUserCoverPhoto
 {
     /**
-     * Deletes this cover photo.
-     */
-    public function delete();
-
-    /**
      * Returns the physical location of this cover photo.
      */
     public function getLocation(?bool $forceWebP = null): string;

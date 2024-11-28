@@ -17,9 +17,6 @@ use wcf\system\html\output\HtmlOutputProcessor;
 use wcf\system\message\embedded\object\MessageEmbeddedObjectManager;
 use wcf\system\option\user\UserOptionHandler;
 use wcf\system\upload\UploadFile;
-use wcf\system\upload\UploadHandler;
-use wcf\system\upload\UserCoverPhotoUploadFileSaveStrategy;
-use wcf\system\upload\UserCoverPhotoUploadFileValidationStrategy;
 use wcf\system\user\group\assignment\UserGroupAssignmentHandler;
 use wcf\system\user\storage\UserStorageHandler;
 use wcf\system\WCF;
@@ -596,128 +593,6 @@ class UserProfileAction extends UserAction
 
         return [
             'avatar' => $avatar,
-        ];
-    }
-
-    /**
-     * Validates the 'uploadCoverPhoto' method.
-     *
-     * @throws  PermissionDeniedException
-     * @throws  UserInputException
-     * @since   3.1
-     */
-    public function validateUploadCoverPhoto()
-    {
-        WCF::getSession()->checkPermissions(['user.profile.coverPhoto.canUploadCoverPhoto']);
-
-        $this->readInteger('userID', true);
-        // The `userID` parameter did not exist in 3.1, defaulting to the own user for backwards compatibility.
-        if (!$this->parameters['userID']) {
-            $this->parameters['userID'] = WCF::getUser()->userID;
-        }
-
-        $this->user = new User($this->parameters['userID']);
-        if (!$this->user->userID) {
-            throw new UserInputException('userID');
-        } elseif ($this->user->userID == WCF::getUser()->userID && WCF::getUser()->disableCoverPhoto) {
-            throw new PermissionDeniedException();
-        } elseif (
-            $this->user->userID != WCF::getUser()->userID
-            && (!$this->user->canEdit() || !WCF::getSession()->getPermission('admin.user.canDisableCoverPhoto'))
-        ) {
-            throw new PermissionDeniedException();
-        }
-
-        // validate uploaded file
-        if (!isset($this->parameters['__files']) || \count($this->parameters['__files']->getFiles()) != 1) {
-            throw new UserInputException('files');
-        }
-
-        /** @var UploadHandler $uploadHandler */
-        $uploadHandler = $this->parameters['__files'];
-
-        $this->uploadFile = $uploadHandler->getFiles()[0];
-
-        $uploadHandler->validateFiles(new UserCoverPhotoUploadFileValidationStrategy());
-    }
-
-    /**
-     * Uploads a cover photo.
-     *
-     * @since   3.1
-     */
-    public function uploadCoverPhoto()
-    {
-        $saveStrategy = new UserCoverPhotoUploadFileSaveStrategy(
-            (!empty($this->parameters['userID']) ? \intval($this->parameters['userID']) : WCF::getUser()->userID)
-        );
-        /** @noinspection PhpUndefinedMethodInspection */
-        $this->parameters['__files']->saveFiles($saveStrategy);
-
-        if ($this->uploadFile->getValidationErrorType()) {
-            return [
-                'filesize' => $this->uploadFile->getFilesize(),
-                'errorMessage' => WCF::getLanguage()->getDynamicVariable(
-                    'wcf.user.coverPhoto.upload.error.' . $this->uploadFile->getValidationErrorType(),
-                    [
-                        'file' => $this->uploadFile,
-                    ]
-                ),
-                'errorType' => $this->uploadFile->getValidationErrorType(),
-            ];
-        } else {
-            return [
-                'url' => $saveStrategy->getCoverPhoto()->getURL(),
-            ];
-        }
-    }
-
-    /**
-     * Validates the `deleteCoverPhoto` action.
-     *
-     * @throws  PermissionDeniedException
-     * @throws  UserInputException
-     */
-    public function validateDeleteCoverPhoto()
-    {
-        $this->readInteger('userID', true);
-        // The `userID` parameter did not exist in 3.1, defaulting to the own user for backwards compatibility.
-        if (!$this->parameters['userID']) {
-            $this->parameters['userID'] = WCF::getUser()->userID;
-        }
-
-        $this->user = new User($this->parameters['userID']);
-        if (!$this->user->userID) {
-            throw new UserInputException('userID');
-        } elseif (
-            $this->user->userID != WCF::getUser()->userID
-            && (!$this->user->canEdit() || !WCF::getSession()->getPermission('admin.user.canDisableCoverPhoto'))
-        ) {
-            throw new PermissionDeniedException();
-        }
-    }
-
-    /**
-     * Deletes the cover photo of the active user.
-     *
-     * @return  string[]    link to the new cover photo
-     */
-    public function deleteCoverPhoto()
-    {
-        if ($this->user->coverPhotoHash) {
-            UserProfileRuntimeCache::getInstance()->getObject($this->user->userID)->getCoverPhoto()->delete();
-
-            (new UserEditor($this->user))->update([
-                'coverPhotoHash' => null,
-                'coverPhotoExtension' => '',
-            ]);
-        }
-
-        // force-reload the user profile to use a predictable code-path to fetch the cover photo
-        UserProfileRuntimeCache::getInstance()->removeObject($this->user->userID);
-
-        return [
-            'url' => UserProfileRuntimeCache::getInstance()->getObject($this->user->userID)->getCoverPhoto()->getURL(),
         ];
     }
 
