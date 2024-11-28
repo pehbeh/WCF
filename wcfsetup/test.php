@@ -16,7 +16,7 @@ $requiredExtensions = [
     'ctype',
     'dom',
     'exif',
-    'gmp',
+    ['gmp', 'bcmath'],
     'intl',
     'libxml',
     'mbstring',
@@ -196,7 +196,11 @@ function checkResult()
     }
 
     foreach ($requiredExtensions as $extension) {
-        if (!\extension_loaded($extension)) {
+        if (\is_array($extension)) {
+            if (\array_filter($extension, '\extension_loaded') === []) {
+                return false;
+            }
+        } elseif (!\extension_loaded($extension)) {
             return false;
         }
     }
@@ -478,7 +482,15 @@ function checkTls(): bool
                         <li class="success"><?= getPhrase('php_x64_failure') ?></li>
                     <?php } ?>
 
-                    <?php foreach ($requiredExtensions as $extension) { ?>
+                    <?php foreach ($requiredExtensions as $extension) {
+                        if (\is_array($extension)) {
+                            $filteredExtensions = \array_filter($extension, '\extension_loaded');
+                            if ($filteredExtensions === []) {
+                                $extension = $extension[0];
+                            } else {
+                                $extension = \reset($filteredExtensions);
+                            }
+                        } ?>
                         <?php if (\extension_loaded($extension)) { ?>
                             <li class="success"><?= getPhrase('php_extension_success', [$extension]) ?></li>
                         <?php } else { ?>

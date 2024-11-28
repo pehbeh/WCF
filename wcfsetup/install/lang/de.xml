@@ -268,7 +268,7 @@
 		<item name="wcf.acp.captcha.question.add"><![CDATA[Captcha-Frage hinzufügen]]></item>
 		<item name="wcf.acp.captcha.question.answers"><![CDATA[Antworten]]></item>
 		<item name="wcf.acp.captcha.question.answers.description"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Gib{else}Geben Sie{/if} pro Zeile eine mögliche Antwort ein. Antworten, die mit „~“ beginnen und enden, werden als reguläre Ausdrücke interpretiert.]]></item>
-		<item name="wcf.acp.captcha.question.answers.error.invalidRegex"><![CDATA[Der reguläre Ausdruck „{$invalidRegex}“ ist ungültig.]]></item>
+		<item name="wcf.acp.captcha.question.answers.error.invalidRegex"><![CDATA[Der reguläre Ausdruck „{$invalidRegex}“ ist ungültig{if $language} für die Sprache „{$language}“{/if}.]]></item>
 		<item name="wcf.acp.captcha.question.edit"><![CDATA[Captcha-Frage bearbeiten]]></item>
 		<item name="wcf.acp.captcha.question.isDisabled"><![CDATA[Frage deaktivieren]]></item>
 		<item name="wcf.acp.captcha.question.list"><![CDATA[Captcha-Fragen]]></item>
@@ -3801,7 +3801,7 @@ Dateianhänge:
 		<item name="wcf.edit.reason"><![CDATA[Änderungsgrund]]></item>
 		<item name="wcf.edit.currentVersion"><![CDATA[Aktuell]]></item>
 		<item name="wcf.edit.revert"><![CDATA[Wiederherstellen]]></item>
-		<item name="wcf.edit.revert.sure"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Möchtest du{else}Möchten Sie{/if} die Version von <span class="confirmationObject">{$edit->username}</span> vom <span class="confirmationObject">{$edit->time|plainTime}</span> wirklich wiederherstellen?]]></item>
+		<item name="wcf.edit.revert.confirmMessage"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Möchtest du{else}Möchten Sie{/if} die Version von „{$edit->username}“ vom {time time=$edit->time type='plainTime'} wirklich wiederherstellen?]]></item>
 		<item name="wcf.edit.reverted"><![CDATA[Wiederhergestellt auf Version von {$edit->username} vom {$edit->time|plainTime}]]></item>
 		<item name="wcf.edit.button.compare"><![CDATA[Vergleichen]]></item>
 		<item name="wcf.edit.button.goToContent"><![CDATA[Zum Inhalt gehen]]></item>
@@ -4052,6 +4052,7 @@ Dateianhänge:
 		<item name="wcf.global.form.required"><![CDATA[Benötigte Angaben]]></item>
 		<item name="wcf.global.form.password.button.hide"><![CDATA[Verbergen]]></item>
 		<item name="wcf.global.form.password.button.show"><![CDATA[Anzeigen]]></item>
+		<item name="wcf.global.form.error.invalidCssClassName"><![CDATA[Der eingegebene Wert ist keine gültige CSS-Klasse.]]></item>
 	</category>
 	<category name="wcf.form">
 		<item name="wcf.form.field.className"><![CDATA[Klasse]]></item>
@@ -4118,15 +4119,7 @@ Dateianhänge:
 		<item name="wcf.image.coverPhoto.upload.limits"><![CDATA[Minimale Bildgröße: {$coverPhotoDimensions.min.width} × {$coverPhotoDimensions.min.height} Pixel<br>Maximale Bildgröße: {$coverPhotoDimensions.max.width} × {$coverPhotoDimensions.max.height} Pixel<br>Erlaubte Dateiendungen: gif, jpg, jpeg, png, webp<br>Maximale Dateigröße: {$__wcf->session->getPermission($coverPhotoPermissionMaxSize)|filesize}]]></item>
 	</category>
 	<category name="wcf.imageViewer">
-		<item name="wcf.imageViewer.button.enlarge"><![CDATA[Vollbild-Modus]]></item>
-		<item name="wcf.imageViewer.button.full"><![CDATA[Originalversion aufrufen]]></item>
 		<item name="wcf.imageViewer.button.openSlideshow"><![CDATA[Slideshow]]></item>
-		<item name="wcf.imageViewer.seriesIndex"><![CDATA[{literal}{x} von {y}{/literal}]]></item>
-		<item name="wcf.imageViewer.close"><![CDATA[Schließen]]></item>
-		<item name="wcf.imageViewer.counter"><![CDATA[{literal}Bild {x} von {y}{/literal}]]></item>
-		<item name="wcf.imageViewer.enlarge"><![CDATA[Bild direkt anzeigen]]></item>
-		<item name="wcf.imageViewer.next"><![CDATA[Nächstes Bild]]></item>
-		<item name="wcf.imageViewer.previous"><![CDATA[Vorheriges Bild]]></item>
 	</category>
 	<category name="wcf.label">
 		<item name="wcf.label.all"><![CDATA[Alle]]></item>
@@ -5569,6 +5562,8 @@ Benachrichtigungen auf <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phra
 		<item name="wcf.upload.error.maximumCountReached"><![CDATA[Es {plural value=$maximumCount 1='darf nur eine Datei' other='dürfen nur # Dateien'} hochgeladen werden.]]></item>
 		<item name="wcf.upload.error.adopt"><![CDATA[Die Datei „{$filename}“ kann nicht zugewiesen werden.]]></item>
 		<item name="wcf.upload.error.image.tooSmall"><![CDATA[Das Bild ist zu klein. Es muss mindestens {$width} x {$height} Pixel groß sein.]]></item>
+		<item name="wcf.upload.error.delete.unknownError"><![CDATA[Beim Löschen der Datei ist ein unbekannter Fehler aufgetreten.]]></item>
+		<item name="wcf.upload.error.delete.permissionDenied"><![CDATA[Die Datei kann nicht gelöscht werden, {if LANGUAGE_USE_INFORMAL_VARIANT}verwende{else}verwenden Sie{/if} stattdessen <strong>Ersetzen</strong>, um die Datei zu ersetzen.]]></item>
 	</category>
 </import>
 <delete>
@@ -7211,6 +7206,14 @@ Benachrichtigungen auf <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phra
 	<item name="wcf.imageViewer.caption"/>
 	<item name="wcf.imageViewer.pause"/>
 	<item name="wcf.imageViewer.play"/>
+	<item name="wcf.imageViewer.button.enlarge"/>
+	<item name="wcf.imageViewer.button.full"/>
+	<item name="wcf.imageViewer.seriesIndex"/>
+	<item name="wcf.imageViewer.close"/>
+	<item name="wcf.imageViewer.counter"/>
+	<item name="wcf.imageViewer.enlarge"/>
+	<item name="wcf.imageViewer.next"/>
+	<item name="wcf.imageViewer.previous"/>
 	<item name="wcf.label.error.notValid"/>
 	<item name="wcf.like.likesReceived.showDetails"/>
 	<item name="wcf.like.reactionReputation"/>

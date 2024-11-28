@@ -8,8 +8,9 @@ use CuyZ\Valinor\Definition\Attributes;
 use CuyZ\Valinor\Definition\MethodDefinition;
 use CuyZ\Valinor\Definition\Parameters;
 use CuyZ\Valinor\Definition\Repository\AttributesRepository;
-use CuyZ\Valinor\Utility\Reflection\Reflection;
-use ReflectionAttribute;
+use CuyZ\Valinor\Definition\Repository\Reflection\TypeResolver\FunctionReturnTypeResolver;
+use CuyZ\Valinor\Definition\Repository\Reflection\TypeResolver\ReflectionTypeResolver;
+use CuyZ\Valinor\Type\Types\UnresolvableType;
 use ReflectionMethod;
 use ReflectionParameter;
 
@@ -32,23 +33,28 @@ final class ReflectionMethodDefinitionBuilder
     {
         /** @var non-empty-string $name */
         $name = $reflection->name;
-
-        $attributes = array_map(
-            fn (ReflectionAttribute $attribute) => $this->attributesRepository->for($attribute),
-            Reflection::attributes($reflection)
-        );
+        $signature = $reflection->getDeclaringClass()->name . '::' . $reflection->name . '()';
 
         $parameters = array_map(
             fn (ReflectionParameter $parameter) => $this->parameterBuilder->for($parameter, $typeResolver),
             $reflection->getParameters()
         );
 
-        $returnType = $typeResolver->resolveType($reflection);
+        $returnTypeResolver = new FunctionReturnTypeResolver($typeResolver);
+
+        $returnType = $returnTypeResolver->resolveReturnTypeFor($reflection);
+        $nativeReturnType = $returnTypeResolver->resolveNativeReturnTypeFor($reflection);
+
+        if ($returnType instanceof UnresolvableType) {
+            $returnType = $returnType->forMethodReturnType($signature);
+        } elseif (! $returnType->matches($nativeReturnType)) {
+            $returnType = UnresolvableType::forNonMatchingMethodReturnTypes($name, $nativeReturnType, $returnType);
+        }
 
         return new MethodDefinition(
             $name,
-            Reflection::signature($reflection),
-            new Attributes(...$attributes),
+            $signature,
+            new Attributes(...$this->attributesRepository->for($reflection)),
             new Parameters(...$parameters),
             $reflection->isStatic(),
             $reflection->isPublic(),

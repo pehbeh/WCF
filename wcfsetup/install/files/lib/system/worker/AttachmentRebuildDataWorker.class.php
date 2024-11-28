@@ -45,6 +45,8 @@ class AttachmentRebuildDataWorker extends AbstractLinearRebuildDataWorker
             \assert($attachment instanceof Attachment);
 
             if ($attachment->fileID !== null) {
+                $this->removeThumbnails($attachment);
+
                 continue;
             }
 
@@ -62,6 +64,7 @@ class AttachmentRebuildDataWorker extends AbstractLinearRebuildDataWorker
             }
 
             $attachmentToFileID[$attachment->attachmentID] = $file->fileID;
+            $this->removeThumbnails($attachment);
         }
 
         $this->setFileIDs($attachmentToFileID);
@@ -102,5 +105,22 @@ class AttachmentRebuildDataWorker extends AbstractLinearRebuildDataWorker
         }
 
         AttachmentEditor::deleteAll($attachmentIDs);
+    }
+
+    private function removeThumbnails(Attachment $attachment): void
+    {
+        if ($attachment->thumbnailType) {
+            $filepath = $attachment->getThumbnailLocation();
+            if (\file_exists($filepath)) {
+                \unlink($filepath);
+            }
+        }
+
+        if ($attachment->tinyThumbnailType) {
+            $filepath = $attachment->getTinyThumbnailLocation();
+            if (\file_exists($filepath)) {
+                \unlink($filepath);
+            }
+        }
     }
 }

@@ -5,44 +5,32 @@ namespace wcf\acp\form;
 use wcf\data\bbcode\media\provider\BBCodeMediaProvider;
 use wcf\data\bbcode\media\provider\BBCodeMediaProviderAction;
 use wcf\data\bbcode\media\provider\BBCodeMediaProviderEditor;
-use wcf\form\AbstractForm;
-use wcf\system\exception\UserInputException;
+use wcf\form\AbstractFormBuilderForm;
+use wcf\system\bbcode\media\provider\IBBCodeMediaProvider;
+use wcf\system\form\builder\container\FormContainer;
+use wcf\system\form\builder\field\ClassNameFormField;
+use wcf\system\form\builder\field\MultilineTextFormField;
+use wcf\system\form\builder\field\TextFormField;
+use wcf\system\form\builder\field\validation\FormFieldValidationError;
+use wcf\system\form\builder\field\validation\FormFieldValidator;
 use wcf\system\Regex;
-use wcf\system\request\LinkHandler;
-use wcf\system\WCF;
 use wcf\util\StringUtil;
 
 /**
  * Shows the BBCode media provider add form.
  *
- * @author  Tim Duesterhus
- * @copyright   2001-2019 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @author      Olaf Braun, Tim Duesterhus
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @property BBCodeMediaProvider $formObjects
  */
-class BBCodeMediaProviderAddForm extends AbstractForm
+class BBCodeMediaProviderAddForm extends AbstractFormBuilderForm
 {
     /**
      * @inheritDoc
      */
     public $activeMenuItem = 'wcf.acp.menu.link.bbcode.mediaProvider.add';
-
-    /**
-     * media provider class name
-     * @var string
-     */
-    public $className = '';
-
-    /**
-     * media provider package id
-     * @var int
-     */
-    public $packageID = PACKAGE_ID;
-
-    /**
-     * html value
-     * @var string
-     */
-    public $html = '';
 
     /**
      * @inheritDoc
@@ -55,124 +43,90 @@ class BBCodeMediaProviderAddForm extends AbstractForm
     public $templateName = 'bbcodeMediaProviderAdd';
 
     /**
-     * title value
-     * @var string
+     * @inheritDoc
      */
-    public $title = '';
-
-    /**
-     * regex value
-     * @var string
-     */
-    public $regex = '';
+    public $objectActionClass = BBCodeMediaProviderAction::class;
 
     /**
      * @inheritDoc
      */
-    public function readFormParameters()
-    {
-        parent::readFormParameters();
+    public $objectEditLinkController = BBCodeMediaProviderEditForm::class;
 
-        if (isset($_POST['title'])) {
-            $this->title = StringUtil::trim($_POST['title']);
-        }
-        if (isset($_POST['regex'])) {
-            $this->regex = StringUtil::trim($_POST['regex']);
-        }
-        if (isset($_POST['html'])) {
-            $this->html = StringUtil::trim($_POST['html']);
-        }
-        if (isset($_POST['className'])) {
-            $this->className = StringUtil::trim($_POST['className']);
-        }
+    #[\Override]
+    protected function createForm()
+    {
+        parent::createForm();
+
+        $this->form->appendChildren([
+            FormContainer::create('general')
+                ->appendChildren([
+                    TextFormField::create('title')
+                        ->label('wcf.acp.bbcode.mediaProvider.title')
+                        ->required(),
+                    MultilineTextFormField::create('regex')
+                        ->label('wcf.acp.bbcode.mediaProvider.regex')
+                        ->description('wcf.acp.bbcode.mediaProvider.regex.description')
+                        ->required()
+                        ->addValidator(
+                            new FormFieldValidator('regexValidator', function (MultilineTextFormField $formField) {
+                                $lines = \explode("\n", StringUtil::unifyNewlines($formField->getValue()));
+
+                                foreach ($lines as $line) {
+                                    if (!Regex::compile($line)->isValid()) {
+                                        $formField->addValidationError(
+                                            new FormFieldValidationError(
+                                                'invalid',
+                                                'wcf.acp.bbcode.mediaProvider.regex.error.invalid'
+                                            )
+                                        );
+                                    }
+                                }
+                            })
+                        ),
+                    MultilineTextFormField::create('html')
+                        ->label('wcf.acp.bbcode.mediaProvider.html')
+                        ->description('wcf.acp.bbcode.mediaProvider.html.description')
+                        ->addValidator(
+                            new FormFieldValidator('emptyValidator', function (MultilineTextFormField $formField) {
+                                $classNameFormField = $formField->getDocument()->getNodeById('className');
+                                \assert($classNameFormField instanceof ClassNameFormField);
+
+                                if (empty($formField->getValue()) && empty($classNameFormField->getValue())) {
+                                    $formField->addValidationError(
+                                        new FormFieldValidationError('empty')
+                                    );
+                                }
+                            })
+                        ),
+                    ClassNameFormField::create('className')
+                        ->label('wcf.acp.bbcode.mediaProvider.className')
+                        ->implementedInterface(IBBCodeMediaProvider::class)
+                ])
+        ]);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function validate()
-    {
-        parent::validate();
-
-        // validate fields
-        if (empty($this->title)) {
-            throw new UserInputException('title');
-        }
-        if (empty($this->regex)) {
-            throw new UserInputException('regex');
-        }
-        if (empty($this->className) && empty($this->html)) {
-            throw new UserInputException('html');
-        }
-        // validate class name
-        if (!empty($this->className) && !\class_exists($this->className)) {
-            throw new UserInputException('className', 'notFound');
-        }
-
-        $lines = \explode("\n", StringUtil::unifyNewlines($this->regex));
-
-        foreach ($lines as $line) {
-            if (!Regex::compile($line)->isValid()) {
-                throw new UserInputException('regex', 'invalid');
-            }
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function save()
     {
+        if ($this->formAction === "create") {
+            $this->additionalFields['packageID'] = PACKAGE_ID;
+            $this->additionalFields['name'] = 'placeholder_' . StringUtil::getRandomID();
+        }
+
         parent::save();
-
-        $name = 'placeholder_' . StringUtil::getRandomID();
-
-        // save media provider
-        $this->objectAction = new BBCodeMediaProviderAction([], 'create', [
-            'data' => \array_merge($this->additionalFields, [
-                'title' => $this->title,
-                'regex' => $this->regex,
-                'html' => $this->html,
-                'className' => $this->className,
-                'packageID' => $this->packageID,
-                'name' => $name,
-            ]),
-        ]);
-        $returnValues = $this->objectAction->executeAction();
-        $this->saved();
-
-        /** @var BBCodeMediaProvider $provider */
-        $provider = $returnValues['returnValues'];
-        (new BBCodeMediaProviderEditor($provider))->update([
-            'name' => 'com.woltlab.wcf.generic' . $provider->providerID,
-        ]);
-
-        // reset values
-        $this->title = $this->regex = $this->html = $this->className = '';
-
-        // show success message
-        WCF::getTPL()->assign([
-            'success' => true,
-            'objectEditLink' => LinkHandler::getInstance()->getControllerLink(
-                BBCodeMediaProviderEditForm::class,
-                ['id' => $provider->providerID]
-            ),
-        ]);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function assignVariables()
+    #[\Override]
+    public function saved()
     {
-        parent::assignVariables();
+        if ($this->formAction === "create") {
+            /** @var BBCodeMediaProvider $provider */
+            $provider = $this->objectAction->getReturnValues()['returnValues'];
+            (new BBCodeMediaProviderEditor($provider))->update([
+                'name' => 'com.woltlab.wcf.generic' . $provider->providerID,
+            ]);
+        }
 
-        WCF::getTPL()->assign([
-            'action' => 'add',
-            'title' => $this->title,
-            'regex' => $this->regex,
-            'html' => $this->html,
-            'className' => $this->className,
-        ]);
+        parent::saved();
     }
 }

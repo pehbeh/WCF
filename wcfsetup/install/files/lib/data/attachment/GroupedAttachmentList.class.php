@@ -112,4 +112,12 @@ class GroupedAttachmentList extends AttachmentList
 
         return [];
     }
+
+    /**
+     * @since 6.2
+     */
+    public function getObjectTypeName(): string
+    {
+        return $this->objectType->objectType;
+    }
 }

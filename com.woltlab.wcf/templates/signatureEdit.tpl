@@ -17,9 +17,17 @@
 		<section class="section">
 			<h2 class="sectionTitle">{lang}wcf.user.signature.current{/lang}</h2>
 			
-			<div class="htmlContent messageSignatureConstraints">{@$signatureCache}</div>
+			<div class="htmlContent messageSignatureConstraints">{unsafe:$signatureCache}</div>
 		</section>
 	{/if}
+
+	<template id="previewTemplate">
+		<section class="section">
+			<h2 class="sectionTitle">{lang}wcf.global.preview{/lang}</h2>
+			
+			<div class="htmlContent messageSignatureConstraints" id="previewContainer"></div>
+		</section>
+	</template>
 	
 	{if !$__wcf->user->disableSignature}
 		<section class="section" id="signatureContainer">
@@ -42,7 +50,7 @@
 							{elseif $errorType == 'disallowedBBCodes'}
 								{lang}wcf.message.error.disallowedBBCodes{/lang}
 							{else}
-								{lang}wcf.user.signature.error.{@$errorType}{/lang}
+								{lang}wcf.user.signature.error.{$errorType}{/lang}
 							{/if}
 						</small>
 					{/if}
@@ -67,12 +75,8 @@
 </form>
 
 <script data-relocate="true">
-	$(function() {
-		WCF.Language.addObject({
-			'wcf.global.preview': '{jslang}wcf.global.preview{/jslang}'
-		});
-		
-		new WCF.User.SignaturePreview('wcf\\data\\user\\UserProfileAction', 'text', 'previewButton');
+	require(["WoltLabSuite/Core/Component/User/Signature/Preview"], ({ setup }) => {
+		setup();
 	});
 </script>
 

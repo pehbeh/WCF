@@ -15,6 +15,8 @@ WCF.User.Profile = {};
 
 /**
  * Shows the activity point list for users.
+ * 
+ * @deprecated 6.2 Use `WoltLabSuite/Core/Component/User/ActivityPointList` instead.
  */
 WCF.User.Profile.ActivityPointList = {
 	/**
@@ -866,6 +868,7 @@ WCF.Notification = { };
 if (COMPILER_TARGET_DEFAULT) {
 	/**
 	 * Handles the notification list.
+	 * @deprecated 6.2 Use `WoltLabSuite/Core/Controller/User/Notification/List` instead.
 	 */
 	WCF.Notification.List = Class.extend({
 		/**
@@ -965,6 +968,7 @@ if (COMPILER_TARGET_DEFAULT) {
 	 * Signature preview.
 	 *
 	 * @see        WCF.Message.Preview
+	 * @deprecated 6.2 Use `WoltLabSuite/Core/Component/User/Signature/Preview` instead.
 	 */
 	WCF.User.SignaturePreview = WCF.Message.Preview.extend({
 		/**

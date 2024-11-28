@@ -91,7 +91,9 @@ export class WoltlabCoreCommentResponseElement extends HTMLParsedElement {
     });
 
     window.setTimeout(() => {
-      UiScroll.element(this);
+      UiScroll.element(this, () => {
+        getCkeditorById(this.#editorId)!.focus(false);
+      });
     }, 250);
   }
 

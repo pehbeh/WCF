@@ -13,6 +13,7 @@ import {
 
 type FileProcessorData = {
   attachmentID: number;
+  messageObjectID: number | null;
 };
 
 function fileInitializationCompleted(element: HTMLElement, file: WoltlabCoreFileElement, editor: HTMLElement): void {
@@ -59,8 +60,10 @@ function fileInitializationCompleted(element: HTMLElement, file: WoltlabCoreFile
     if (file.link !== undefined && file.filename !== undefined) {
       const link = document.createElement("a");
       link.href = file.link!;
-      link.classList.add("jsImageViewer");
+      link.dataset.fancybox =
+        "attachments" + (data.messageObjectID ? `-${(data as FileProcessorData).messageObjectID}` : "");
       link.title = file.filename;
+      link.dataset.caption = file.filename;
       link.textContent = file.filename;
 
       const filename = element.querySelector(".fileList__item__filename")!;

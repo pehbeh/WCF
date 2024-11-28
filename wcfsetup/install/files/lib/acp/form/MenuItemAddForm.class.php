@@ -2,31 +2,45 @@
 
 namespace wcf\acp\form;
 
+use wcf\data\IStorableObject;
 use wcf\data\menu\item\MenuItem;
 use wcf\data\menu\item\MenuItemAction;
-use wcf\data\menu\item\MenuItemEditor;
+use wcf\data\menu\item\MenuItemNode;
 use wcf\data\menu\item\MenuItemNodeTree;
 use wcf\data\menu\Menu;
 use wcf\data\page\Page;
+use wcf\data\page\PageNode;
 use wcf\data\page\PageNodeTree;
-use wcf\form\AbstractForm;
+use wcf\form\AbstractFormBuilderForm;
 use wcf\system\exception\IllegalLinkException;
-use wcf\system\exception\UserInputException;
-use wcf\system\language\I18nHandler;
+use wcf\system\form\builder\container\FormContainer;
+use wcf\system\form\builder\data\processor\CustomFormDataProcessor;
+use wcf\system\form\builder\field\BooleanFormField;
+use wcf\system\form\builder\field\dependency\ValueFormFieldDependency;
+use wcf\system\form\builder\field\IntegerFormField;
+use wcf\system\form\builder\field\RadioButtonFormField;
+use wcf\system\form\builder\field\SelectFormField;
+use wcf\system\form\builder\field\SingleSelectionFormField;
+use wcf\system\form\builder\field\TitleFormField;
+use wcf\system\form\builder\field\UrlFormField;
+use wcf\system\form\builder\field\validation\FormFieldValidationError;
+use wcf\system\form\builder\field\validation\FormFieldValidator;
+use wcf\system\form\builder\IFormDocument;
 use wcf\system\page\handler\ILookupPageHandler;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
-use wcf\util\StringUtil;
 
 /**
  * Shows the menu item add form.
  *
- * @author  Marcel Werk
- * @copyright   2001-2019 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
- * @since   3.0
+ * @author      Olaf Braun, Marcel Werk
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       3.0
+ *
+ * @property   MenuItem $formObject
  */
-class MenuItemAddForm extends AbstractForm
+class MenuItemAddForm extends AbstractFormBuilderForm
 {
     /**
      * @inheritDoc
@@ -40,85 +54,27 @@ class MenuItemAddForm extends AbstractForm
 
     /**
      * menu id
-     * @var int
      */
-    public $menuID = 0;
+    public int $menuID = 0;
 
     /**
      * menu object
-     * @var Menu
      */
-    public $menu;
+    public Menu $menu;
 
-    /**
-     * activation state
-     * @var bool
-     */
-    public $isDisabled = false;
-
-    /**
-     * internal link
-     * @var bool
-     */
-    public $isInternalLink = true;
-
-    /**
-     * list of page handlers by page id
-     * @var \wcf\system\page\handler\IMenuPageHandler[]
-     */
-    public $pageHandlers = [];
-
-    /**
-     * page id
-     * @var int
-     */
-    public $pageID;
-
-    /**
-     * page object id
-     * @var int
-     */
-    public $pageObjectID;
-
-    /**
-     * menu item title
-     * @var string
-     */
-    public $title = '';
-
-    /**
-     * external url
-     * @var string
-     */
-    public $externalURL = '';
-
-    /**
-     * id of the parent menu item
-     * @var int
-     */
-    public $parentItemID;
-
-    /**
-     * show order
-     * @var int
-     */
-    public $showOrder = 0;
-
-    /**
-     * menu item node tree
-     * @var MenuItemNodeTree
-     */
-    public $menuItems;
-
-    /**
-     * nested list of page nodes
-     * @var \RecursiveIteratorIterator
-     */
-    public $pageNodeList;
+    public \RecursiveIteratorIterator $menuItemNodeList;
 
     /**
      * @inheritDoc
      */
+    public $objectEditLinkController = MenuItemEditForm::class;
+
+    /**
+     * @inheritDoc
+     */
+    public $objectActionClass = MenuItemAction::class;
+
+    #[\Override]
     public function readParameters()
     {
         parent::readParameters();
@@ -130,225 +86,236 @@ class MenuItemAddForm extends AbstractForm
         if (!$this->menu->menuID) {
             throw new IllegalLinkException();
         }
-
-        I18nHandler::getInstance()->register('title');
-        I18nHandler::getInstance()->register('externalURL');
-
-        $this->pageNodeList = (new PageNodeTree())->getNodeList();
-
-        // fetch page handlers
-        foreach ($this->pageNodeList as $pageNode) {
-            $handler = $pageNode->getHandler();
-            if ($handler !== null) {
-                if ($handler instanceof ILookupPageHandler) {
-                    $this->pageHandlers[$pageNode->pageID] = $pageNode->requireObjectID;
-                }
-            }
-        }
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function readFormParameters()
+    #[\Override]
+    protected function createForm()
     {
-        parent::readFormParameters();
+        parent::createForm();
 
-        I18nHandler::getInstance()->readValues();
-        if (I18nHandler::getInstance()->isPlainValue('title')) {
-            $this->title = I18nHandler::getInstance()->getValue('title');
-        }
-        if (I18nHandler::getInstance()->isPlainValue('externalURL')) {
-            $this->externalURL = I18nHandler::getInstance()->getValue('externalURL');
+        $this->menuItemNodeList = (new MenuItemNodeTree($this->menuID, null, false))->getNodeList();
+        $pageNodeList = (new PageNodeTree())->getNodeList();
+
+        $pageHandlers = [];
+        foreach ($pageNodeList as $page) {
+            \assert($page instanceof PageNode);
+            if ($page->getHandler() instanceof ILookupPageHandler) {
+                $pageHandlers[$page->pageID] = $page->requireObjectID;
+            }
         }
 
-        if (isset($_POST['isDisabled'])) {
-            $this->isDisabled = true;
-        }
-        $this->isInternalLink = false;
-        if (isset($_POST['isInternalLink'])) {
-            $this->isInternalLink = (bool)$_POST['isInternalLink'];
-        }
-        if (!empty($_POST['pageID'])) {
-            $this->pageID = \intval($_POST['pageID']);
-        }
-        if (!empty($_POST['pageObjectID'])) {
-            $this->pageObjectID = \intval($_POST['pageObjectID']);
-        }
-        if (!empty($_POST['parentItemID'])) {
-            $this->parentItemID = \intval($_POST['parentItemID']);
-        }
-        if (isset($_POST['showOrder'])) {
-            $this->showOrder = \intval($_POST['showOrder']);
-        }
+        $this->form->appendChildren([
+            FormContainer::create('generalContainer')
+                ->appendChildren([
+                    SelectFormField::create('parentItemID')
+                        ->label('wcf.acp.menu.item.parentItem')
+                        ->options(function () {
+                            $result = [];
+                            foreach ($this->menuItemNodeList as $menuItem) {
+                                \assert($menuItem instanceof MenuItemNode);
+
+                                $result[] = [
+                                    'depth' => $menuItem->getDepth(),
+                                    'isSelectable' => $menuItem->itemID !== $this->formObject?->itemID,
+                                    'label' => $menuItem->getTitle(),
+                                    'value' => $menuItem->getObjectID(),
+                                ];
+                            }
+                            return $result;
+                        }, true),
+                    TitleFormField::create()
+                        ->i18n()
+                        ->required()
+                        ->languageItemPattern('wcf.menu.item.[\w\.]+'),
+                    IntegerFormField::create('showOrder')
+                        ->label('wcf.global.showOrder')
+                        ->minimum(0)
+                        ->value(0),
+                    BooleanFormField::create('isDisabled')
+                        ->label('wcf.acp.menu.item.isDisabled')
+                        ->value(false)
+                ]),
+            FormContainer::create('linkContainer')
+                ->label('wcf.acp.menu.item.link')
+                ->appendChildren([
+                    RadioButtonFormField::create('isInternalLink')
+                        ->options([
+                            0 => 'wcf.acp.menu.item.link.external',
+                            1 => 'wcf.acp.menu.item.link.internal',
+                        ])
+                        ->value(1),
+                    SingleSelectionFormField::create('pageID')
+                        ->label('wcf.acp.page.page')
+                        ->options($pageNodeList, true)
+                        ->required()
+                        ->addDependency(
+                            ValueFormFieldDependency::create('isInternalLinkDependency')
+                                ->fieldId('isInternalLink')
+                                ->values([1])
+                        ),
+                    $this->getPageObjectIDFormField($pageNodeList, $pageHandlers)
+                        ->id('pageObjectID')
+                        ->label('wcf.page.pageObjectID')
+                        ->addFieldClass('short')
+                        ->addValidator(
+                            new FormFieldValidator('requiredObjectIDValidator', function (IntegerFormField $formField) {
+                                $pageFormField = $this->form->getNodeById('pageID');
+                                \assert($pageFormField instanceof SingleSelectionFormField);
+                                $pageID = $pageFormField->getValue();
+                                $page = new Page($pageID);
+                                $pageObjectID = $formField->getValue();
+
+                                if (!$page->pageID) {
+                                    return;
+                                }
+
+                                if ($page->requireObjectID) {
+                                    $pageHandler = $page->getHandler();
+
+                                    if ($pageHandler instanceof ILookupPageHandler) {
+                                        if (empty($pageObjectID)) {
+                                            $formField->addValidationError(new FormFieldValidationError('empty'));
+                                            return;
+                                        }
+                                        if (!$pageHandler->isValid($pageObjectID)) {
+                                            $formField->addValidationError(
+                                                new FormFieldValidationError(
+                                                    'invalid',
+                                                    'wcf.acp.menu.item.pageObjectID.error.invalid'
+                                                )
+                                            );
+                                        }
+                                    } elseif ($pageHandler !== null) {
+                                        // page requires an object id, but no handler is registered
+                                        $pageFormField->addValidationError(
+                                            new FormFieldValidationError(
+                                                'invalid',
+                                                'wcf.acp.menu.item.pageID.error.invalid'
+                                            )
+                                        );
+                                    }
+                                }
+                            })
+                        )
+                        ->addDependency(
+                            ValueFormFieldDependency::create('isInternalLinkDependency')
+                                ->fieldId('isInternalLink')
+                                ->values([1])
+                        )
+                        ->addDependency(
+                            ValueFormFieldDependency::create('pageIDDependency')
+                                ->fieldId('pageID')
+                                ->values(\array_keys($pageHandlers))
+                        ),
+                    UrlFormField::create('externalURL')
+                        ->label('wcf.acp.menu.item.externalURL')
+                        ->maximumLength(255)
+                        ->placeholder('http://')
+                        ->i18n()
+                        ->required()
+                        ->languageItemPattern('wcf.menu.item.externalURL\d+')
+                        ->addDependency(
+                            ValueFormFieldDependency::create('isInternalLinkDependency')
+                                ->fieldId('isInternalLink')
+                                ->values([0])
+                        )
+                ])
+        ]);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function validate()
+    #[\Override]
+    protected function finalizeForm()
     {
-        parent::validate();
+        parent::finalizeForm();
 
-        // validate parent menu item
-        if ($this->parentItemID) {
-            $parentMenuItem = new MenuItem($this->parentItemID);
-            if (!$parentMenuItem->itemID || $parentMenuItem->menuID != $this->menuID) {
-                throw new UserInputException('parentItemID', 'invalid');
-            }
-        }
+        $this->form
+            ->getDataHandler()
+            ->addProcessor(
+                new CustomFormDataProcessor(
+                    'externalLinkDataProcessor',
+                    function (IFormDocument $document, array $parameters) {
+                        if ($parameters['data']['isInternalLink']) {
+                            $parameters['data']['externalURL'] = '';
+                        } else {
+                            $parameters['data']['pageID'] = null;
+                            $parameters['data']['pageObjectID'] = 0;
+                        }
+                        unset($parameters['data']['isInternalLink']);
 
-        // validate page menu item name
-        if (!I18nHandler::getInstance()->validateValue('title')) {
-            if (I18nHandler::getInstance()->isPlainValue('title')) {
-                throw new UserInputException('title');
-            } else {
-                throw new UserInputException('title', 'multilingual');
-            }
-        }
+                        return $parameters;
+                    },
+                    function (IFormDocument $document, array $data, IStorableObject $object) {
+                        \assert($object instanceof MenuItem);
+                        $data['isInternalLink'] = $object->pageID !== null;
 
-        // validate menu item controller
-        if ($this->isInternalLink) {
-            $this->externalURL = '';
-
-            if (!$this->pageID) {
-                throw new UserInputException('pageID');
-            }
-            $page = new Page($this->pageID);
-            if (!$page->pageID) {
-                throw new UserInputException('pageID', 'invalid');
-            }
-
-            // validate page object id
-            if ($page->requireObjectID) {
-                if (isset($this->pageHandlers[$page->pageID])) {
-                    if ($this->pageHandlers[$page->pageID] && !$this->pageObjectID) {
-                        throw new UserInputException('pageObjectID');
+                        return $data;
                     }
-
-                    /** @var ILookupPageHandler $handler */
-                    $handler = $page->getHandler();
-                    if ($this->pageObjectID && !$handler->isValid($this->pageObjectID)) {
-                        throw new UserInputException('pageObjectID', 'invalid');
-                    }
-                } else {
-                    // page requires an object id, but no handler is registered
-                    throw new UserInputException('pageID', 'invalid');
-                }
-            }
-        } else {
-            $this->pageID = $this->pageObjectID = null;
-
-            // validate external url
-            if (!I18nHandler::getInstance()->validateValue('externalURL')) {
-                throw new UserInputException('externalURL');
-            }
-        }
+                )
+            );
     }
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function save()
     {
+        if ($this->formAction === 'create') {
+            $this->additionalFields['menuID'] = $this->menuID;
+            $this->additionalFields['identifier'] = '';
+            $this->additionalFields['packageID'] = PACKAGE_ID;
+        }
+
         parent::save();
-
-        $this->objectAction = new MenuItemAction([], 'create', [
-            'data' => \array_merge($this->additionalFields, [
-                'isDisabled' => $this->isDisabled ? 1 : 0,
-                'title' => $this->title,
-                'pageID' => $this->pageID,
-                'pageObjectID' => $this->pageObjectID ?: 0,
-                'externalURL' => $this->externalURL,
-                'menuID' => $this->menuID,
-                'parentItemID' => $this->parentItemID,
-                'showOrder' => $this->showOrder,
-                'identifier' => StringUtil::getRandomID(),
-                'packageID' => 1,
-            ]),
-        ]);
-        $this->objectAction->executeAction();
-
-        $returnValues = $this->objectAction->getReturnValues();
-        $menuItem = $returnValues['returnValues'];
-
-        // set generic identifier
-        $data = [
-            'identifier' => 'com.woltlab.wcf.generic' . $menuItem->itemID,
-        ];
-        if (!I18nHandler::getInstance()->isPlainValue('title')) {
-            I18nHandler::getInstance()->save('title', 'wcf.menu.item.' . $data['identifier'], 'wcf.menu');
-            $data['title'] = 'wcf.menu.item.' . $data['identifier'];
-        }
-        if (!I18nHandler::getInstance()->isPlainValue('externalURL')) {
-            I18nHandler::getInstance()->save(
-                'externalURL',
-                'wcf.menu.item.externalURL' . $menuItem->itemID,
-                'wcf.menu'
-            );
-            $data['externalURL'] = 'wcf.menu.item.externalURL' . $menuItem->itemID;
-        }
-
-        // update values
-        $menuItemEditor = new MenuItemEditor($menuItem);
-        $menuItemEditor->update($data);
-
-        // call saved event
-        $this->saved();
-
-        // show success message
-        WCF::getTPL()->assign([
-            'success' => true,
-            'objectEditLink' => LinkHandler::getInstance()->getControllerLink(
-                MenuItemEditForm::class,
-                ['id' => $menuItem->itemID]
-            ),
-        ]);
-
-        // reset variables
-        $this->isInternalLink = true;
-        $this->isDisabled = false;
-        $this->pageID = $this->pageObjectID = $this->parentItemID = null;
-        $this->externalURL = $this->title = '';
-        $this->showOrder = 0;
-
-        I18nHandler::getInstance()->reset();
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function readData()
-    {
-        parent::readData();
-
-        $this->menuItems = new MenuItemNodeTree($this->menuID, null, false);
-    }
-
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function assignVariables()
     {
         parent::assignVariables();
 
-        I18nHandler::getInstance()->assignVariables();
-
         WCF::getTPL()->assign([
-            'action' => 'add',
             'menuID' => $this->menuID,
             'menu' => $this->menu,
-            'isDisabled' => $this->isDisabled,
-            'isInternalLink' => $this->isInternalLink,
-            'pageID' => $this->pageID,
-            'pageObjectID' => $this->pageObjectID,
-            'title' => $this->title,
-            'externalURL' => $this->externalURL,
-            'parentItemID' => $this->parentItemID,
-            'showOrder' => $this->showOrder,
-            'menuItemNodeList' => $this->menuItems->getNodeList(),
-            'pageNodeList' => $this->pageNodeList,
-            'pageHandlers' => $this->pageHandlers,
+            'menuItemNodeList' => $this->menuItemNodeList,
         ]);
+    }
+
+    #[\Override]
+    protected function setFormAction()
+    {
+        $this->form->action(
+            LinkHandler::getInstance()->getLink(
+                'MenuItemAdd',
+                [
+                    'menuID' => $this->menuID,
+                    'isACP' => true
+                ]
+            )
+        );
+    }
+
+    protected function getPageObjectIDFormField(
+        \RecursiveIteratorIterator $pageNodeList,
+        array $pageHandlers
+    ): IntegerFormField {
+        return new class($pageNodeList, $pageHandlers) extends IntegerFormField {
+            protected $templateName = '__pageObjectIDFormField';
+            protected array $pageHandlers;
+            protected \RecursiveIteratorIterator $pageNodeList;
+
+            public function __construct(\RecursiveIteratorIterator $pageNodeList, array $pageHandlers)
+            {
+                parent::__construct();
+                $this->pageHandlers = $pageHandlers;
+                $this->pageNodeList = $pageNodeList;
+            }
+
+            #[\Override]
+            public function getHtmlVariables()
+            {
+                return array_merge(parent::getHtmlVariables(), [
+                    'pageHandlers' => $this->pageHandlers,
+                    'pageNodeList' => $this->pageNodeList,
+                ]);
+            }
+        };
     }
 }

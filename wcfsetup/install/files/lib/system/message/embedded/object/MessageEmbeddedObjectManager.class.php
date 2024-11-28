@@ -351,6 +351,26 @@ class MessageEmbeddedObjectManager extends SingletonFactory
     }
 
     /**
+     * @since 6.2
+     */
+    public function getActiveMessageObjectType(): ?string
+    {
+        if (!$this->activeMessageObjectTypeID) {
+            return null;
+        }
+
+        return ObjectTypeCache::getInstance()->getObjectType($this->activeMessageObjectTypeID)?->objectType;
+    }
+
+    /**
+     * @since 6.2
+     */
+    public function getActiveMessageID(): ?int
+    {
+        return $this->activeMessageID;
+    }
+
+    /**
      * Returns all embedded objects of a specific type.
      *
      * @param string $embeddedObjectType

@@ -15,6 +15,7 @@ if (COMPILER_TARGET_DEFAULT) {
 	 *
 	 * @param        integer                queueID
 	 * @param        string                redirectURL
+	 * @deprecated 6.2 No longer in use.
 	 */
 	WCF.Moderation.Management = Class.extend({
 		/**
@@ -172,142 +173,6 @@ else {
 }
 
 /**
- * Namespace for moderation queue related classes.
- */
-WCF.Moderation.Queue = { };
-
-if (COMPILER_TARGET_DEFAULT) {
-	/**
-	 * Marks one moderation queue entry as read.
-	 * 
-	 * @deprecated  6.0, use `WoltLabSuite/Core/Ui/Moderation/MarkAsRead` instead
-	 */
-	WCF.Moderation.Queue.MarkAsRead = Class.extend({
-		/**
-		 * action proxy
-		 * @var        WCF.Action.Proxy
-		 */
-		_proxy: null,
-		
-		/**
-		 * Initializes the mark as read for queue entries.
-		 */
-		init: function () {
-			this._proxy = new WCF.Action.Proxy({
-				success: $.proxy(this._success, this)
-			});
-			
-			$(document).on('dblclick', '.moderationList .new .columnAvatar', $.proxy(this._dblclick, this));
-		},
-		
-		/**
-		 * Handles double clicks on avatar.
-		 *
-		 * @param        object                event
-		 */
-		_dblclick: function (event) {
-			this._proxy.setOption('data', {
-				actionName: 'markAsRead',
-				className: 'wcf\\data\\moderation\\queue\\ModerationQueueAction',
-				objectIDs: [$(event.currentTarget).parents('.moderationQueueEntry:eq(0)').data('queueID')]
-			});
-			this._proxy.sendRequest();
-		},
-		
-		/**
-		 * Handles successful AJAX requests.
-		 *
-		 * @param        object                data
-		 * @param        string                textStatus
-		 * @param        jQuery                jqXHR
-		 */
-		_success: function (data, textStatus, jqXHR) {
-			$('.moderationList .new').each(function (index, element) {
-				var $element = $(element);
-				if (WCF.inArray($element.data('queueID'), data.objectIDs)) {
-					// remove new class
-					$element.removeClass('new');
-					
-					// remove event
-					$element.find('.columnAvatar').off('dblclick');
-				}
-			});
-		}
-	});
-	
-	/**
-	 * Marks all moderation queue entries as read.
-	 * 
-	 * @deprecated  6.0, use `WoltLabSuite/Core/Ui/Moderation/MarkAllAsRead` instead
-	 */
-	WCF.Moderation.Queue.MarkAllAsRead = Class.extend({
-		/**
-		 * action proxy
-		 * @var        WCF.Action.Proxy
-		 */
-		_proxy: null,
-		
-		/**
-		 * Initializes the WCF.Moderation.Queue.MarkAllAsRead class.
-		 */
-		init: function () {
-			this._proxy = new WCF.Action.Proxy({
-				success: $.proxy(this._success, this)
-			});
-			
-			$('.markAllAsReadButton').click($.proxy(this._click, this));
-		},
-		
-		/**
-		 * Handles clicks.
-		 *
-		 * @param        object                event
-		 */
-		_click: function (event) {
-			event.preventDefault();
-			
-			this._proxy.setOption('data', {
-				actionName: 'markAllAsRead',
-				className: 'wcf\\data\\moderation\\queue\\ModerationQueueAction'
-			});
-			this._proxy.sendRequest();
-		},
-		
-		/**
-		 * Marks all queue entries as read.
-		 *
-		 * @param        object                data
-		 * @param        string                textStatus
-		 * @param        jQuery                jqXHR
-		 */
-		_success: function (data, textStatus, jqXHR) {
-			// remove badge in userpanel
-			$('#outstandingModeration .badgeUpdate').remove();
-			
-			// fix moderation list
-			var $moderationList = $('.moderationList');
-			$moderationList.find('.new').removeClass('new');
-			$moderationList.find('.columnAvatar').off('dblclick');
-		}
-	});
-}
-else {
-	WCF.Moderation.Queue.MarkAsRead = Class.extend({
-		_proxy: {},
-		init: function() {},
-		_dblclick: function() {},
-		_success: function() {}
-	});
-	
-	WCF.Moderation.Queue.MarkAllAsRead = Class.extend({
-		_proxy: {},
-		init: function() {},
-		_click: function() {},
-		_success: function() {}
-	});
-}
-
-/**
  * Namespace for activation related classes.
  */
 WCF.Moderation.Activation = { };
@@ -317,6 +182,7 @@ if (COMPILER_TARGET_DEFAULT) {
 	 * Manages disabled content within moderation.
 	 *
 	 * @see        WCF.Moderation.Management
+	 * @deprecated 6.2 No longer in use.
 	 */
 	WCF.Moderation.Activation.Management = WCF.Moderation.Management.extend({
 		/**
@@ -391,6 +257,7 @@ if (COMPILER_TARGET_DEFAULT) {
 	 * Manages reported content within moderation.
 	 *
 	 * @see        WCF.Moderation.Management
+	 * @deprecated 6.2 No longer in use.
 	 */
 	WCF.Moderation.Report.Management = WCF.Moderation.Management.extend({
 		/**

@@ -1,8 +1,6 @@
 {
   "include": [
-    "ts/**/*",
-    // Is required to load `svg` files as a module in the editor
-    "node_modules/@woltlab/editor/types.d.ts"
+    "ts/**/*"
   ],
   "exclude": [
     "ts/WoltLabSuite/WebComponent.*",

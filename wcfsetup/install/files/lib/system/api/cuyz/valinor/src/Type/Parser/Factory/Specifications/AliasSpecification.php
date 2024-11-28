@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace CuyZ\Valinor\Type\Parser\Factory\Specifications;
 
-use CuyZ\Valinor\Type\Parser\Factory\TypeParserFactory;
 use CuyZ\Valinor\Type\Parser\Lexer\Token\ObjectToken;
 use CuyZ\Valinor\Type\Parser\Lexer\Token\TraversingToken;
-use CuyZ\Valinor\Type\Parser\TypeParser;
 use CuyZ\Valinor\Utility\Reflection\PhpParser;
 use CuyZ\Valinor\Utility\Reflection\Reflection;
 use ReflectionClass;
 use ReflectionFunction;
 use Reflector;
+
+use function array_shift;
+use function explode;
+use function in_array;
+use function strtolower;
 
 /** @internal */
 final class AliasSpecification implements TypeParserSpecification
@@ -49,39 +52,27 @@ final class AliasSpecification implements TypeParserSpecification
         return $token;
     }
 
-    public function manipulateParser(TypeParser $parser, TypeParserFactory $typeParserFactory): TypeParser
-    {
-        return $parser;
-    }
-
     private function resolveAlias(string $symbol): string
     {
-        $alias = $symbol;
+        $aliases = PhpParser::parseUseStatements($this->reflection);
 
-        $namespaceParts = explode('\\', $symbol);
-        $lastPart = array_shift($namespaceParts);
-
-        if ($lastPart) {
-            $alias = strtolower($lastPart);
+        if (in_array($symbol, $aliases, true)) {
+            return $symbol;
         }
 
-        $aliases = PhpParser::parseUseStatements($this->reflection);
+        $namespaceParts = explode('\\', $symbol);
+
+        $alias = strtolower(array_shift($namespaceParts));
 
         if (! isset($aliases[$alias])) {
             return $symbol;
         }
 
-        if ($aliases[$alias] === $symbol) {
-            return $symbol;
+        if ($namespaceParts === []) {
+            return $aliases[$alias];
         }
 
-        $full = $aliases[$alias];
-
-        if (! empty($namespaceParts)) {
-            $full .= '\\' . implode('\\', $namespaceParts);
-        }
-
-        return $full;
+        return $aliases[$alias] . '\\' . implode('\\', $namespaceParts);
     }
 
     private function resolveNamespaced(string $symbol): string
@@ -96,13 +87,17 @@ final class AliasSpecification implements TypeParserSpecification
             }
         }
 
-        $namespace = $reflection->getNamespaceName();
+        if ($reflection->inNamespace()) {
+            $namespace = $reflection->getNamespaceName();
+        } elseif ($reflection instanceof ReflectionFunction) {
+            $namespace = PhpParser::parseNamespace($reflection);
+        }
 
-        if (! $namespace) {
+        if (! isset($namespace)) {
             return $symbol;
         }
 
-        $full = $namespace . '\\' . $symbol;
+        $full = "$namespace\\$symbol";
 
         if (Reflection::classOrInterfaceExists($full)) {
             return $full;

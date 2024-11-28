@@ -4,8 +4,7 @@ namespace wcf\data\label;
 
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\data\ISortableAction;
-use wcf\data\language\item\LanguageItemAction;
-use wcf\system\database\util\PreparedStatementConditionBuilder;
+use wcf\data\TI18nDatabaseObjectAction;
 use wcf\system\exception\UserInputException;
 use wcf\system\label\LabelHandler;
 use wcf\system\WCF;
@@ -22,6 +21,8 @@ use wcf\system\WCF;
  */
 class LabelAction extends AbstractDatabaseObjectAction implements ISortableAction
 {
+    use TI18nDatabaseObjectAction;
+
     /**
      * @inheritDoc
      */
@@ -58,9 +59,13 @@ class LabelAction extends AbstractDatabaseObjectAction implements ISortableActio
             $showOrder = $this->parameters['data']['showOrder'];
             unset($this->parameters['data']['showOrder']);
         }
+        // `label` column doesn't have a default value
+        $this->parameters['data']['label'] = $this->parameters['data']['label'] ?? '';
 
         /** @var Label $label */
         $label = parent::create();
+
+        $this->saveI18nValue($label);
 
         (new LabelEditor($label))->setShowOrder($label->groupID, $showOrder);
 
@@ -73,6 +78,10 @@ class LabelAction extends AbstractDatabaseObjectAction implements ISortableActio
     public function update()
     {
         parent::update();
+
+        foreach ($this->getObjects() as $labelEditor) {
+            $this->saveI18nValue($labelEditor->getDecoratedObject());
+        }
 
         // update showOrder if required
         if (
@@ -97,31 +106,7 @@ class LabelAction extends AbstractDatabaseObjectAction implements ISortableActio
     {
         parent::delete();
 
-        if (!empty($this->objects)) {
-            // identify i18n labels
-            $languageVariables = [];
-            foreach ($this->getObjects() as $object) {
-                if (\preg_match('~wcf.acp.label.label\d+~', $object->label)) {
-                    $languageVariables[] = $object->label;
-                }
-            }
-
-            // remove language variables
-            if (!empty($languageVariables)) {
-                $conditions = new PreparedStatementConditionBuilder();
-                $conditions->add("languageItem IN (?)", [$languageVariables]);
-
-                $sql = "SELECT  languageItemID
-                        FROM    wcf1_language_item
-                        " . $conditions;
-                $statement = WCF::getDB()->prepare($sql);
-                $statement->execute($conditions->getParameters());
-                $languageItemIDs = $statement->fetchAll(\PDO::FETCH_COLUMN);
-
-                $objectAction = new LanguageItemAction($languageItemIDs, 'delete');
-                $objectAction->executeAction();
-            }
-        }
+        $this->deleteI18nValues();
     }
 
     /**
@@ -176,5 +161,23 @@ class LabelAction extends AbstractDatabaseObjectAction implements ISortableActio
             }
         }
         WCF::getDB()->commitTransaction();
+    }
+
+    #[\Override]
+    public function getI18nSaveTypes(): array
+    {
+        return ['label' => 'wcf.acp.label.label\d+'];
+    }
+
+    #[\Override]
+    public function getLanguageCategory(): string
+    {
+        return 'wcf.acp.label';
+    }
+
+    #[\Override]
+    public function getPackageID(): int
+    {
+        return PACKAGE_ID;
     }
 }

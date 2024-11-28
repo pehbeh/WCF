@@ -3,30 +3,35 @@
 {capture assign='contentHeader'}
 	<header class="contentHeader">
 		<div class="contentHeaderTitle">
-			<h1 class="contentTitle">{$__wcf->getActivePage()->getTitle()}</h1>
-			
-			{if $queue->lastChangeTime}
-				<dl class="plain inlineDataList">
-					<dt>{lang}wcf.moderation.lastChangeTime{/lang}</dt>
-					<dd>{@$queue->lastChangeTime|time}</dd>
-				</dl>
-			{/if}
-			
-			<dl class="plain inlineDataList" id="moderationAssignedUserContainer">
-				<dt>{lang}wcf.moderation.assignedUser{/lang}</dt>
-				<dd id="moderationAssignedUser">
-					{if $queue->assignedUserID}
-						<a href="{link controller='User' id=$assignedUserID}{/link}" class="userLink" data-object-id="{@$assignedUserID}">{$queue->assignedUsername}</a>
-					{else}
-						{lang}wcf.moderation.assignedUser.nobody{/lang}
-					{/if}
-				</dd>
-			</dl>
-			
-			<dl class="plain inlineDataList" id="moderationStatusContainer">
-				<dt>{lang}wcf.moderation.status{/lang}</dt>
-				<dd id="moderationQueueStatus">{$queue->getStatus()}</dd>
-			</dl>
+			<h1 class="contentTitle">{$__wcf->getActivePage()->getTitle()}: {$queue->getTitle()}</h1>
+			<ul class="inlineList contentHeaderMetaData">
+				{event name='beforeMetaData'}
+
+				{if $queue->lastChangeTime}
+					<li title="{lang}wcf.moderation.lastChangeTime{/lang}">
+						{icon name='clock'}
+						{time time=$queue->lastChangeTime}
+					</li>
+				{/if}
+
+				<li title="{lang}wcf.moderation.assignedUser{/lang}">
+					{icon name='user'}
+					<span id="moderationAssignedUser">
+						{if $queue->assignedUserID}
+							<a href="{link controller='User' id=$assignedUserID}{/link}" class="userLink" data-object-id="{$assignedUserID}">{$queue->assignedUsername}</a>
+						{else}
+							{lang}wcf.moderation.assignedUser.nobody{/lang}
+						{/if}
+					</span>
+				</li>
+
+				<li title="{lang}wcf.moderation.status{/lang}">
+					{icon name='arrows-rotate'}
+					<span id="moderationQueueStatus">{$queue->getStatus()}</span>
+				</li>
+
+				{event name='afterMetaData'}
+			</ul>
 		</div>
 		
 		{hascontent}
@@ -53,8 +58,29 @@
 		<span>{lang}wcf.moderation.assignedUser.change{/lang}</span>
 	</button>
 	{if !$queue->isDone()}
-		<button type="button" id="enableContent" class="contentInteractionButton button small jsOnly">{icon name='check'} <span>{lang}wcf.moderation.activation.enableContent{/lang}</span></button>
-		{if $queueManager->canRemoveContent($queue->getDecoratedObject())}<button type="button" id="removeContent" class="contentInteractionButton button small jsOnly">{icon name='xmark'} <span>{lang}wcf.moderation.activation.removeContent{/lang}</span></button>{/if}
+		<button
+			type="button"
+			id="enableContent"
+			class="contentInteractionButton button small jsOnly"
+			data-object-id="{$queue->queueID}"
+			data-redirect-url="{link controller='ModerationList'}{/link}"
+		>
+			{icon name='check'}
+			<span>{lang}wcf.moderation.activation.enableContent{/lang}</span>
+		</button>
+		{if $queueManager->canRemoveContent($queue->getDecoratedObject())}
+			<button
+				type="button"
+				id="removeContent"
+				class="contentInteractionButton button small jsOnly"
+				data-object-id="{$queue->queueID}"
+				data-object-name="{$queue->getTitle()}"
+				data-redirect-url="{link controller='ModerationList'}{/link}"
+			>
+				{icon name='xmark'}
+				<span>{lang}wcf.moderation.activation.removeContent{/lang}</span>
+			</button>
+		{/if}
 	{/if}
 {/capture}
 
@@ -65,10 +91,10 @@
 <section class="section sectionContainerList">
 	<header class="sectionHeader">
 		<h2 class="sectionTitle">{lang}wcf.moderation.activation.content{/lang}</h2>
-		<p class="sectionDescription">{lang}wcf.moderation.type.{@$queue->getObjectTypeName()}{/lang}</p>
+		<p class="sectionDescription">{lang}wcf.moderation.type.{$queue->getObjectTypeName()}{/lang}</p>
 	</header>
 
-	{@$disabledContent}
+	{unsafe:$disabledContent}
 </section>
 
 <section id="comments" class="section sectionContainerList moderationComments">
@@ -86,15 +112,17 @@
 		
 		setup(document.getElementById('moderationAssignUser'));
 	});
-	
-	$(function() {
-		WCF.Language.addObject({
-			'wcf.moderation.activation.enableContent.confirmMessage': '{jslang}wcf.moderation.activation.enableContent.confirmMessage{/jslang}',
-			'wcf.moderation.activation.removeContent.confirmMessage': '{jslang}wcf.moderation.activation.removeContent.confirmMessage{/jslang}',
+
+	{if !$queue->isDone()}
+		require(['WoltLabSuite/Core/Controller/Moderation/Activation'], ({ setup }) => {
+			{jsphrase name='wcf.moderation.activation.enableContent.confirmMessage'}
+			
+			setup(
+				document.getElementById('enableContent'),
+				document.getElementById('removeContent'),
+			);
 		});
-		
-		new WCF.Moderation.Activation.Management({@$queue->queueID}, '{link controller='ModerationList' encode=false}{/link}');
-	});
+	{/if}
 </script>
 
 {include file='footer'}

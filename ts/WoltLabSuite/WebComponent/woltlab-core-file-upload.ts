@@ -9,6 +9,11 @@
       this.#element.type = "file";
       this.#element.classList.add("woltlabCoreFileUpload__input");
 
+      // Prevents the underlying dialog from being closed when the File selection dialog is closed by the user.
+      this.#element.addEventListener("cancel", (event) => {
+        event.stopPropagation();
+      });
+
       this.#element.addEventListener("change", () => {
         const { files } = this.#element;
         if (files === null || files.length === 0) {
