@@ -1576,9 +1576,10 @@ CREATE TABLE wcf1_user (
 	authData VARCHAR(191) NOT NULL DEFAULT '',
 	likesReceived MEDIUMINT(7) NOT NULL DEFAULT 0,
 	trophyPoints INT(10) NOT NULL DEFAULT 0,
-	coverPhotoHash CHAR(40) DEFAULT NULL,
-	coverPhotoExtension VARCHAR(4) NOT NULL DEFAULT '',
-	coverPhotoHasWebP TINYINT(1) NOT NULL DEFAULT 0,
+	coverPhotoFileID INT(10) DEFAULT NULL,
+	coverPhotoHash CHAR(40) DEFAULT NULL, -- deprecated since 6.2
+	coverPhotoExtension VARCHAR(4) NOT NULL DEFAULT '', -- deprecated since 6.2
+	coverPhotoHasWebP TINYINT(1) NOT NULL DEFAULT 0, -- deprecated since 6.2
 	disableCoverPhoto TINYINT(1) NOT NULL DEFAULT 0,
 	disableCoverPhotoReason TEXT,
 	disableCoverPhotoExpires INT(10) NOT NULL DEFAULT 0,

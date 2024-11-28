@@ -1190,4 +1190,24 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
             && $this->trophyPoints
             && ($this->isAccessible('canViewTrophies') || $this->userID == WCF::getSession()->userID);
     }
+
+    /**
+     * @since 6.2
+     */
+    public function canEditCoverPhoto(): bool
+    {
+        if ($this->canEdit() && WCF::getSession()->getPermission('admin.user.canDisableCoverPhoto')) {
+            return true;
+        }
+
+        if ($this->userID !== WCF::getUser()->userID) {
+            return false;
+        }
+
+        if ($this->disableCoverPhoto) {
+            return false;
+        }
+
+        return WCF::getSession()->getPermission('user.profile.coverPhoto.canUploadCoverPhoto');
+    }
 }

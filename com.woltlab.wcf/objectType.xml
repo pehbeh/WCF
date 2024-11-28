@@ -1744,6 +1744,11 @@
 			<definitionname>com.woltlab.wcf.file</definitionname>
 			<classname>wcf\system\file\processor\AttachmentFileProcessor</classname>
 		</type>
+		<type>
+			<name>com.woltlab.wcf.user.coverPhoto</name>
+			<definitionname>com.woltlab.wcf.file</definitionname>
+			<classname>wcf\system\file\processor\UserCoverPhotoFileProcessor</classname>
+		</type>
 		<!-- deprecated -->
 		<type>
 			<name>com.woltlab.wcf.page.controller</name>

@@ -45,6 +45,7 @@ define(["require", "exports", "tslib", "./BackgroundQueue", "./Bootstrap", "./Ui
             dynamicColorScheme: options.dynamicColorScheme,
             enableMobileMenu: true,
             pageMenuMainProvider: new Frontend_1.default(),
+            defaultCoverPhoto: options.defaultCoverPhoto,
         });
         UiPageHeaderMenu.init();
         if (options.styleChanger) {

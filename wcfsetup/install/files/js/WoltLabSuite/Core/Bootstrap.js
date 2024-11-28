@@ -153,6 +153,9 @@ define(["require", "exports", "tslib", "./Core", "./Date/Picker", "./Devtools", 
             console.warn("The class `jsImageViewer` is deprecated. Use the attribute `data-fancybox` instead.");
             void new Promise((resolve_12, reject_12) => { require(["./Component/Image/Viewer"], resolve_12, reject_12); }).then(tslib_1.__importStar).then(({ setupLegacy }) => setupLegacy());
         });
+        (0, LazyLoader_1.whenFirstSeen)("[data-edit-cover-photo]", () => {
+            void new Promise((resolve_13, reject_13) => { require(["./Component/User/CoverPhoto"], resolve_13, reject_13); }).then(tslib_1.__importStar).then(({ setup }) => setup(options.defaultCoverPhoto));
+        });
         // Move the reCAPTCHA widget overlay to the `pageOverlayContainer`
         // when widget form elements are placed in a dialog.
         const observer = new MutationObserver((mutations) => {

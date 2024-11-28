@@ -88,6 +88,7 @@ window.addEventListener('pageshow', function(event) {
 			dynamicColorScheme: {if $__wcf->getStyleHandler()->getColorScheme() === 'system'}true{else}false{/if},
 			endpointUserPopover: {if $__wcf->getSession()->getPermission('user.profile.canViewUserProfile')}'{link controller='UserPopover'}{/link}'{else}''{/if},
 			executeCronjobs: {if $executeCronjobs}'{link controller="CronjobPerform"}{/link}'{else}undefined{/if},
+			defaultCoverPhoto: '{unsafe:$__wcf->styleHandler->getStyle()->getCoverPhotoUrl()|encodeJS}',
 			{if ENABLE_SHARE_BUTTONS}
 				{assign var='__shareProviders' value="\n"|explode:SHARE_BUTTONS_PROVIDERS}
 				shareButtonProviders: [
