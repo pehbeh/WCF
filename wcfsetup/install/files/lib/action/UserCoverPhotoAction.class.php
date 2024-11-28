@@ -2,7 +2,6 @@
 
 namespace wcf\action;
 
-use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -56,21 +55,6 @@ final class UserCoverPhotoAction implements RequestHandlerInterface
 
         if ($request->getMethod() === 'GET') {
             return $form->toResponse();
-        } elseif ($request->getMethod() === 'POST') {
-            $response = $form->validateRequest($request);
-            if ($response !== null) {
-                return $response;
-            }
-
-            $data = $form->getData()['data'];
-
-            //TODO
-
-            return new JsonResponse([
-                'result' => [
-                    'coverPhoto' => null, //TODO
-                ],
-            ]);
         } else {
             throw new \LogicException('Unreachable');
         }
