@@ -1,12 +1,12 @@
 /**
  * Sortable lists with optimized handling per device sizes.
  *
- * @author  Alexander Ebert
- * @copyright  2001-2019 WoltLab GmbH
+ * @author  Olaf Braun, Alexander Ebert
+ * @copyright  2001-2024 WoltLab GmbH
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @woltlabExcludeBundle tiny
  */
-define(["require", "exports", "tslib", "../../Core", "sortablejs"], function (require, exports, tslib_1, Core, sortablejs_1) {
+define(["require", "exports", "tslib", "../../Core", "sortablejs", "WoltLabSuite/Core/Ajax", "WoltLabSuite/Core/Ui/Notification", "WoltLabSuite/Core/Language"], function (require, exports, tslib_1, Core, sortablejs_1, Ajax_1, Notification_1, Language_1) {
     "use strict";
     Core = tslib_1.__importStar(Core);
     sortablejs_1 = tslib_1.__importDefault(sortablejs_1);
@@ -33,10 +33,9 @@ define(["require", "exports", "tslib", "../../Core", "sortablejs"], function (re
                 className: "",
                 offset: 0,
                 maxNestingLevel: undefined,
-                toleranceElement: "> span",
+                toleranceElement: "span",
                 options: {
                     animation: 150,
-                    swapThreshold: 0.65,
                     fallbackOnBody: true,
                     dataIdAttr: "data-object-id",
                     chosenClass: "sortablePlaceholder",
@@ -56,7 +55,7 @@ define(["require", "exports", "tslib", "../../Core", "sortablejs"], function (re
                         if (!this._options.toleranceElement) {
                             return true;
                         }
-                        return sortablejs_1.default.utils.is(target, this._options.toleranceElement);
+                        return !sortablejs_1.default.utils.is(eventTarget, this._options.toleranceElement);
                     },
                     onMove: (event) => {
                         if (this._options.maxNestingLevel === undefined) {
@@ -105,7 +104,7 @@ define(["require", "exports", "tslib", "../../Core", "sortablejs"], function (re
                     this._options.options.draggable = "tr";
                     this._options.toleranceElement = undefined;
                 }
-                this.#sortables.set(0, new sortablejs_1.default(sortableList, {
+                this.#sortables.set(sortableList.dataset.objectId ? parseInt(sortableList.dataset.objectId, 10) : 0, new sortablejs_1.default(sortableList, {
                     direction: "vertical",
                     ...this._options.options,
                 }));
@@ -136,7 +135,24 @@ define(["require", "exports", "tslib", "../../Core", "sortablejs"], function (re
             if (!this._options.className) {
                 return;
             }
-            // TODO save postions and send them to server
+            const structure = Object.fromEntries(Array.from(this.#sortables).map(([objectId, sortable]) => [objectId, sortable.toArray()]));
+            const parameters = Core.extend({
+                data: {
+                    offset: this._options.offset,
+                    structure: structure,
+                },
+            }, this._options.additionalParameters);
+            (0, Ajax_1.apiOnce)({
+                data: {
+                    actionName: "updatePosition",
+                    className: this._options.className,
+                    interfaceName: "wcf\\data\\ISortableAction",
+                    parameters: parameters,
+                },
+                success: () => {
+                    (0, Notification_1.show)((0, Language_1.getPhrase)("wcf.global.success.edit"));
+                },
+            });
         }
     }
     return UiSortableList;
