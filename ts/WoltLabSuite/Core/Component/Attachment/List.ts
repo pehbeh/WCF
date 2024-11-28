@@ -2,6 +2,7 @@ import WoltlabCoreFileElement from "../File/woltlab-core-file";
 import { CkeditorDropEvent } from "../File/Upload";
 import { createAttachmentFromFile } from "./Entry";
 import { listenToCkeditor } from "../Ckeditor/Event";
+import { getTabMenu } from "../Message/MessageTabMenu";
 
 function fileToAttachment(fileList: HTMLElement, file: WoltlabCoreFileElement, editor: HTMLElement): void {
   fileList.append(createAttachmentFromFile(file, editor));
@@ -54,7 +55,7 @@ export function setup(editorId: string): void {
         return;
       }
 
-      window.jQuery(messageTabMenu).messageTabMenu("showTab", "attachments");
+      getTabMenu(editorId)?.setActiveTab("attachments");
     })
     .collectMetaData((payload) => {
       let context: Context | undefined = undefined;

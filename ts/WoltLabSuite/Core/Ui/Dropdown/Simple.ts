@@ -69,6 +69,8 @@ function onScroll() {
         const menu = _menus.get(dropdown.id) as HTMLElement;
         if (!Core.stringToBool(menu.dataset.dropdownIgnorePageScroll || "")) {
           UiDropdownSimple.close(containerId);
+        } else {
+          UiDropdownSimple.setAlignment(dropdown, _menus.get(containerId)!);
         }
       }
     }

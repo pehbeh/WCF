@@ -429,6 +429,7 @@ class Attachment extends DatabaseObject implements ILinkableObject, IRouteContro
     {
         return $this->getFile()?->toHtmlElement([
             'attachmentID' => $this->attachmentID,
+            'messageObjectID' => $this->objectID,
         ]);
     }
 

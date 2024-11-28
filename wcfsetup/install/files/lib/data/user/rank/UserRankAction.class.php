@@ -3,6 +3,7 @@
 namespace wcf\data\user\rank;
 
 use wcf\data\AbstractDatabaseObjectAction;
+use wcf\data\TI18nDatabaseObjectAction;
 use wcf\system\exception\InvalidObjectArgument;
 use wcf\system\file\upload\UploadFile;
 
@@ -18,6 +19,8 @@ use wcf\system\file\upload\UploadFile;
  */
 class UserRankAction extends AbstractDatabaseObjectAction
 {
+    use TI18nDatabaseObjectAction;
+
     /**
      * @inheritDoc
      */
@@ -36,23 +39,27 @@ class UserRankAction extends AbstractDatabaseObjectAction
         /** @var UserRank $rank */
         $rank = parent::create();
 
-        if (isset($this->parameters['rankImageFile']) && $this->parameters['rankImageFile']) {
-            if (!($this->parameters['rankImageFile'] instanceof UploadFile)) {
+        $this->saveI18nValue($rank);
+
+        if (isset($this->parameters['rankImageFile']) && !empty($this->parameters['rankImageFile'])) {
+            $rankImageFile = \reset($this->parameters['rankImageFile']);
+
+            if (!($rankImageFile instanceof UploadFile)) {
                 throw new InvalidObjectArgument(
-                    $this->parameters['rankImageFile'],
+                    $rankImageFile,
                     UploadFile::class,
                     "The parameter 'rankImageFile'"
                 );
             }
 
-            if (!$this->parameters['rankImageFile']->isProcessed()) {
-                $fileName = $rank->rankID . '-' . $this->parameters['rankImageFile']->getFilename();
+            if (!$rankImageFile->isProcessed()) {
+                $fileName = $rank->rankID . '-' . $rankImageFile->getFilename();
 
                 \rename(
-                    $this->parameters['rankImageFile']->getLocation(),
+                    $rankImageFile->getLocation(),
                     WCF_DIR . UserRank::RANK_IMAGE_DIR . $fileName
                 );
-                $this->parameters['rankImageFile']->setProcessed(WCF_DIR . UserRank::RANK_IMAGE_DIR . $fileName);
+                $rankImageFile->setProcessed(WCF_DIR . UserRank::RANK_IMAGE_DIR . $fileName);
 
                 $updateData['rankImage'] = $fileName;
 
@@ -89,26 +96,27 @@ class UserRankAction extends AbstractDatabaseObjectAction
             }
 
             $object = \reset($this->objects);
+            $rankImageFile = \reset($this->parameters['rankImageFile']);
 
-            if (!$this->parameters['rankImageFile']) {
+            if (!$rankImageFile) {
                 $this->parameters['data']['rankImage'] = "";
             } else {
-                if (!($this->parameters['rankImageFile'] instanceof UploadFile)) {
+                if (!($rankImageFile instanceof UploadFile)) {
                     throw new InvalidObjectArgument(
-                        $this->parameters['rankImageFile'],
+                        $rankImageFile,
                         UploadFile::class,
                         "The parameter 'rankImageFile'"
                     );
                 }
 
-                if (!$this->parameters['rankImageFile']->isProcessed()) {
-                    $fileName = $object->rankID . '-' . $this->parameters['rankImageFile']->getFilename();
+                if (!$rankImageFile->isProcessed()) {
+                    $fileName = $object->rankID . '-' . $rankImageFile->getFilename();
 
                     \rename(
-                        $this->parameters['rankImageFile']->getLocation(),
+                        $rankImageFile->getLocation(),
                         WCF_DIR . UserRank::RANK_IMAGE_DIR . $fileName
                     );
-                    $this->parameters['rankImageFile']->setProcessed(WCF_DIR . UserRank::RANK_IMAGE_DIR . $fileName);
+                    $rankImageFile->setProcessed(WCF_DIR . UserRank::RANK_IMAGE_DIR . $fileName);
 
                     $this->parameters['data']['rankImage'] = $fileName;
                 }
@@ -116,5 +124,32 @@ class UserRankAction extends AbstractDatabaseObjectAction
         }
 
         parent::update();
+
+        foreach ($this->objects as $object) {
+            $this->saveI18nValue($object->getDecoratedObject());
+        }
+    }
+
+    #[\Override]
+    public function delete()
+    {
+        parent::delete();
+
+        $this->deleteI18nValues();
+    }
+
+    public function getI18nSaveTypes(): array
+    {
+        return ['rankTitle' => 'wcf.user.rank.userRank\d+'];
+    }
+
+    public function getLanguageCategory(): string
+    {
+        return 'wcf.user.rank';
+    }
+
+    public function getPackageID(): int
+    {
+        return PACKAGE_ID;
     }
 }

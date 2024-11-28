@@ -3,30 +3,35 @@
 {capture assign='contentHeader'}
 	<header class="contentHeader">
 		<div class="contentHeaderTitle">
-			<h1 class="contentTitle">{$__wcf->getActivePage()->getTitle()}</h1>
-			
-			{if $queue->lastChangeTime}
-				<dl class="plain inlineDataList">
-					<dt>{lang}wcf.moderation.lastChangeTime{/lang}</dt>
-					<dd>{@$queue->lastChangeTime|time}</dd>
-				</dl>
-			{/if}
-			
-			<dl class="plain inlineDataList" id="moderationAssignedUserContainer">
-				<dt>{lang}wcf.moderation.assignedUser{/lang}</dt>
-				<dd id="moderationAssignedUser">
-					{if $queue->assignedUserID}
-						<a href="{link controller='User' id=$assignedUserID}{/link}" class="userLink" data-object-id="{@$assignedUserID}">{$queue->assignedUsername}</a>
-					{else}
-						{lang}wcf.moderation.assignedUser.nobody{/lang}
-					{/if}
-				</dd>
-			</dl>
-			
-			<dl class="plain inlineDataList" id="moderationStatusContainer">
-				<dt>{lang}wcf.moderation.status{/lang}</dt>
-				<dd id="moderationQueueStatus">{$queue->getStatus()}</dd>
-			</dl>
+			<h1 class="contentTitle">{$__wcf->getActivePage()->getTitle()}: {$queue->getTitle()}</h1>
+			<ul class="inlineList contentHeaderMetaData">
+				{event name='beforeMetaData'}
+
+				{if $queue->lastChangeTime}
+					<li title="{lang}wcf.moderation.lastChangeTime{/lang}">
+						{icon name='clock'}
+						{time time=$queue->lastChangeTime}
+					</li>
+				{/if}
+
+				<li title="{lang}wcf.moderation.assignedUser{/lang}">
+					{icon name='user'}
+					<span id="moderationAssignedUser">
+						{if $queue->assignedUserID}
+							<a href="{link controller='User' id=$assignedUserID}{/link}" class="userLink" data-object-id="{$assignedUserID}">{$queue->assignedUsername}</a>
+						{else}
+							{lang}wcf.moderation.assignedUser.nobody{/lang}
+						{/if}
+					</span>
+				</li>
+
+				<li title="{lang}wcf.moderation.status{/lang}">
+					{icon name='arrows-rotate'}
+					<span id="moderationQueueStatus">{$queue->getStatus()}</span>
+				</li>
+
+				{event name='afterMetaData'}
+			</ul>
 		</div>
 		
 		{hascontent}
@@ -54,12 +59,32 @@
 	</button>
 	{if !$queue->isDone()}
 		{if $queueManager->canRemoveContent($queue->getDecoratedObject())}
-			<button type="button" id="removeContent" class="contentInteractionButton button small jsOnly">{icon name='xmark'} <span>{lang}wcf.moderation.activation.removeContent{/lang}</span></button>
+			<button
+				type="button"
+				id="removeContent"
+				class="contentInteractionButton button small jsOnly"
+				data-object-id="{$queue->queueID}"
+				data-object-name="{$queue->getTitle()}"
+				data-redirect-url="{link controller='ModerationList'}{/link}"
+			>{icon name='xmark'} <span>{lang}wcf.moderation.activation.removeContent{/lang}</span></button>
 		{/if}
-		<button type="button" id="removeReport" class="contentInteractionButton button small jsOnly">{icon name='square-check'} <span>{lang}wcf.moderation.report.removeReport{/lang}</span></button>
+		<button
+			type="button"
+			id="removeReport"
+			class="contentInteractionButton button small jsOnly"
+			data-object-id="{$queue->queueID}"
+			data-redirect-url="{link controller='ModerationList'}{/link}"
+		>{icon name='square-check'} <span>{lang}wcf.moderation.report.removeReport{/lang}</span></button>
 	{/if}
 	{if $queue->canChangeJustifiedStatus()}
-		<button type="button" id="changeJustifiedStatus" class="contentInteractionButton button small jsOnly">{icon name='arrows-rotate'} <span>{lang}wcf.moderation.report.changeJustifiedStatus{/lang}</span></button>
+		<button
+			type="button"
+			id="changeJustifiedStatus"
+			class="contentInteractionButton button small jsOnly"
+			data-object-id="{$queue->queueID}"
+			data-redirect-url="{link controller='ModerationReport' object=$queue}{/link}"
+			data-justified="{if $queue->markAsJustified}true{else}false{/if}"
+		>{icon name='arrows-rotate'} <span>{lang}wcf.moderation.report.changeJustifiedStatus{/lang}</span></button>
 	{/if}
 {/capture}
 
@@ -81,11 +106,11 @@
 					{else}
 						{lang}wcf.user.guest{/lang}
 					{/if}
-					<small class="separatorLeft">{@$queue->time|time}</small>
+					<small class="separatorLeft">{time time=$queue->time}</small>
 				</h3>
 			</div>
 			
-			<div class="containerContent">{@$queue->getFormattedMessage()}</div>
+			<div class="containerContent">{unsafe:$queue->getFormattedMessage()}</div>
 		</div>
 	</div>
 </section>
@@ -93,10 +118,10 @@
 <section class="section">
 	<header class="sectionHeader">
 		<h2 class="sectionTitle">{lang}wcf.moderation.report.reportedContent{/lang}</h2>
-		<p class="sectionDescription">{lang}wcf.moderation.type.{@$queue->getObjectTypeName()}{/lang}</p>
+		<p class="sectionDescription">{lang}wcf.moderation.type.{$queue->getObjectTypeName()}{/lang}</p>
 	</header>
 	
-	{@$reportedContent}
+	{unsafe:$reportedContent}
 </section>
 
 <section id="comments" class="section sectionContainerList moderationComments">
@@ -115,21 +140,16 @@
 		setup(document.getElementById('moderationAssignUser'));
 	});
 
-	$(function() {
-		WCF.Language.addObject({
-			'wcf.moderation.report.removeContent.confirmMessage': '{jslang}wcf.moderation.report.removeContent.confirmMessage{/jslang}',
-			'wcf.moderation.report.removeContent.reason': '{jslang}wcf.moderation.report.removeContent.reason{/jslang}',
-			'wcf.moderation.report.removeReport.confirmMessage': '{jslang}wcf.moderation.report.removeReport.confirmMessage{/jslang}',
-			'wcf.moderation.report.removeReport.markAsJustified': '{jslang}wcf.moderation.report.removeReport.markAsJustified{/jslang}',
-			'wcf.moderation.report.removeReport.confirmMessage': '{jslang}wcf.moderation.report.removeReport.confirmMessage{/jslang}',
-			'wcf.moderation.report.changeJustifiedStatus.markAsJustified': '{jslang}wcf.moderation.report.changeJustifiedStatus.markAsJustified{/jslang}',
-			'wcf.moderation.report.changeJustifiedStatus.confirmMessage': '{jslang}wcf.moderation.report.changeJustifiedStatus.confirmMessage{/jslang}',
-		});
+	require(['WoltLabSuite/Core/Controller/Moderation/Report'], ({ setup }) => {
+		{jsphrase name='wcf.moderation.report.removeReport.confirmMessage'}
+		{jsphrase name='wcf.moderation.report.removeReport.markAsJustified'}
+		{jsphrase name='wcf.moderation.report.changeJustifiedStatus.confirmMessage'}
+		{jsphrase name='wcf.moderation.report.changeJustifiedStatus.markAsJustified'}
 		
-		new WCF.Moderation.Report.Management(
-			{@$queue->queueID},
-			'{link controller='ModerationList' encode=false}{/link}',
-			{if $queue->markAsJustified}true{else}false{/if}
+		setup(
+			document.getElementById('removeContent'),
+			document.getElementById('removeReport'),
+			document.getElementById('changeJustifiedStatus')
 		);
 	});
 </script>

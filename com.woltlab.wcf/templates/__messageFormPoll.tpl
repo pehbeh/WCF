@@ -17,7 +17,7 @@
 		});
 	</script>
 
-	<div id="poll" class="jsOnly messageTabMenuContent">
+	<div id="poll-{if $wysiwygSelector|isset}{$wysiwygSelector}{else}text{/if}" class="jsOnly messageTabMenuContent">
 		<dl{if $errorField == 'pollOptions'} class="formError"{/if}>
 			<dt>
 				<label for="pollQuestion">{lang}wcf.poll.question{/lang}</label>

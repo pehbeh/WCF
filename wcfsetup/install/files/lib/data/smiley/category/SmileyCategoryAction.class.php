@@ -39,6 +39,8 @@ class SmileyCategoryAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates smiley category id.
+     *
+     * @deprecated 6.2 No longer in use.
      */
     public function validateGetSmilies()
     {
@@ -53,6 +55,7 @@ class SmileyCategoryAction extends AbstractDatabaseObjectAction
      * Returns parsed template for smiley category's smilies.
      *
      * @return  array
+     * @deprecated 6.2 No longer in use.
      */
     public function getSmilies()
     {
@@ -64,7 +67,7 @@ class SmileyCategoryAction extends AbstractDatabaseObjectAction
 
         return [
             'smileyCategoryID' => $this->smileyCategory->categoryID,
-            'template' => WCF::getTPL()->fetch('__messageFormSmilies'),
+            'template' => WCF::getTPL()->fetch('shared_messageFormSmilies'),
         ];
     }
 }

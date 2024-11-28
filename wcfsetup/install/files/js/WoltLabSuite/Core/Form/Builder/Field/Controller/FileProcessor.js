@@ -4,7 +4,7 @@
  * @license   GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since     6.1
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Api/Files/DeleteFile", "WoltLabSuite/Core/Dom/Change/Listener", "WoltLabSuite/Core/Component/File/Helper", "WoltLabSuite/Core/Component/File/Upload"], function (require, exports, tslib_1, Language_1, DeleteFile_1, Listener_1, Helper_1, Upload_1) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Api/Files/DeleteFile", "WoltLabSuite/Core/Dom/Change/Listener", "WoltLabSuite/Core/Component/File/Helper", "WoltLabSuite/Core/Component/File/Upload", "WoltLabSuite/Core/Dom/Util"], function (require, exports, tslib_1, Language_1, DeleteFile_1, Listener_1, Helper_1, Upload_1, Util_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FileProcessor = void 0;
@@ -92,8 +92,22 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
             deleteButton.classList.add("button", "small");
             deleteButton.textContent = (0, Language_1.getPhrase)("wcf.global.button.delete");
             deleteButton.addEventListener("click", async () => {
-                await (0, DeleteFile_1.deleteFile)(element.fileId);
-                this.#unregisterFile(element);
+                const result = await (0, DeleteFile_1.deleteFile)(element.fileId);
+                if (result.ok) {
+                    this.#unregisterFile(element);
+                }
+                else {
+                    let container = element;
+                    if (!this.#useBigPreview) {
+                        container = container.parentElement;
+                    }
+                    if (result.error.code === "permission_denied") {
+                        (0, Util_1.innerError)(container, (0, Language_1.getPhrase)("wcf.upload.error.delete.permissionDenied"), true);
+                    }
+                    else {
+                        (0, Util_1.innerError)(container, result.error.message ?? (0, Language_1.getPhrase)("wcf.upload.error.delete.unknownError"));
+                    }
+                }
             });
             return deleteButton;
         }
@@ -152,7 +166,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
                     if (container === null) {
                         container = document.createElement("div");
                         container.classList.add("fileUpload__preview");
-                        this.#uploadButton.insertAdjacentElement("beforebegin", container);
+                        this.#uploadButton.insertAdjacentElement("afterbegin", container);
                     }
                     container.append(element);
                 }
@@ -212,7 +226,8 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
                         filenameLink.href = element.link;
                         filenameLink.title = element.filename;
                         filenameLink.textContent = element.filename;
-                        filenameLink.classList.add("jsImageViewer");
+                        filenameLink.dataset.fancybox = "";
+                        filenameLink.dataset.caption = element.filename;
                         // Insert a hidden image element that will be used by the image viewer as the preview image
                         const previewImage = document.createElement("img");
                         previewImage.src = thumbnail !== undefined ? thumbnail.link : element.link;

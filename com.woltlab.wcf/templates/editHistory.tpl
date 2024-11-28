@@ -79,7 +79,7 @@
 			{lang}wcf.edit.versions{/lang} <span class="badge">{#$versionCount+1}</span>
 		</h2>
 		
-		<table class="table">
+		<table class="table" id="editHistory">
 			<thead>
 				<tr>
 					<th class="columnID columnEditID" colspan="2">{lang}wcf.edit.version{/lang}</th>
@@ -103,14 +103,14 @@
 					<td class="columnID"><strong>{lang}wcf.edit.currentVersion{/lang}</strong></td>
 					<td class="columnText columnUser"><a href="{link controller='User' id=$object->getUserID() title=$object->getUsername()}{/link}">{$object->getUsername()}</a></td>
 					<td class="columnText columnEditReason">{$object->getEditReason()}</td>
-					<td class="columnDate columnTime">{@$object->getTime()|time}</td>
+					<td class="columnDate columnTime">{time time=$object->getTime()}</td>
 					
 					{event name='columns'}
 				</tr>
 				{foreach from=$objects item=edit name=edit}
 					<tr class="jsEditRow">
 						<td class="columnIcon">
-							<button type="button" class="jsRevertButton jsTooltip" title="{lang}wcf.edit.revert{/lang}" data-object-id="{@$edit->entryID}" data-confirm-message="{lang __encode=true}wcf.edit.revert.sure{/lang}">
+							<button type="button" class="jsRevertButton jsTooltip" title="{lang}wcf.edit.revert{/lang}" data-object-id="{@$edit->entryID}" data-confirm-message="{lang __encode=true}wcf.edit.revert.confirmMessage{/lang}">
 								{icon name='rotate-left'}
 							</button>
 							<input type="radio" name="oldID" value="{$edit->entryID}"{if $oldID == $edit->entryID} checked{/if}> <input type="radio" name="newID" value="{$edit->entryID}"{if $newID == $edit->entryID} checked{/if}>
@@ -119,15 +119,15 @@
 						<td class="columnID">{#($tpl[foreach][edit][total] - $tpl[foreach][edit][iteration] + 1)}</td>
 						<td class="columnText columnUser"><a href="{link controller='User' id=$edit->userID title=$edit->username}{/link}">{$edit->username}</a></td>
 						<td class="columnText columnEditReason">{$edit->editReason}</td>
-						<td class="columnDate columnTime">{@$edit->time|time}</td>
+						<td class="columnDate columnTime">{time time=$edit->time}</td>
 						
 						{event name='columns'}
 					</tr>
 				{/foreach}
 			</tbody>
 			<script data-relocate="true">
-				$(function () {
-					new WCF.Message.EditHistory($('input[name=oldID]'), $('input[name=newID]'), '.jsEditRow');
+				require(['WoltLabSuite/Core/Controller/EditHistory/VersionList'], ({ setup }) => {
+					setup(document.getElementById('editHistory'));
 				});
 			</script>
 		</table>

@@ -124,6 +124,9 @@ define(["require", "exports", "tslib", "./Core", "./Date/Picker", "./Devtools", 
         (0, LazyLoader_1.whenFirstSeen)("[data-report-content]", () => {
             void new Promise((resolve_2, reject_2) => { require(["./Ui/Moderation/Report"], resolve_2, reject_2); }).then(tslib_1.__importStar).then(({ setup }) => setup());
         });
+        (0, LazyLoader_1.whenFirstSeen)(".messageTabMenu", () => {
+            void new Promise((resolve_3, reject_3) => { require(["./Component/Message/MessageTabMenu"], resolve_3, reject_3); }).then(tslib_1.__importStar).then(({ setup }) => setup());
+        });
         (0, LazyLoader_1.whenFirstSeen)("[data-edit-avatar]", () => {
             void new Promise((resolve_3, reject_3) => { require(["./Component/User/Avatar"], resolve_3, reject_3); }).then(tslib_1.__importStar).then(({ setup }) => setup());
         });
@@ -143,6 +146,20 @@ define(["require", "exports", "tslib", "./Core", "./Date/Picker", "./Devtools", 
             void new Promise((resolve_8, reject_8) => { require(["./Component/File/woltlab-core-file"], resolve_8, reject_8); }).then(tslib_1.__importStar);
             void new Promise((resolve_9, reject_9) => { require(["./Component/File/Upload"], resolve_9, reject_9); }).then(tslib_1.__importStar).then(({ setup }) => setup());
         });
+        (0, LazyLoader_1.whenFirstSeen)(".activityPointsDisplay", () => {
+            void new Promise((resolve_10, reject_10) => { require(["./Component/User/ActivityPointList"], resolve_10, reject_10); }).then(tslib_1.__importStar).then(({ setup }) => setup());
+        });
+        (0, LazyLoader_1.whenFirstSeen)("[data-fancybox]", () => {
+            void new Promise((resolve_11, reject_11) => { require(["./Component/Image/Viewer"], resolve_11, reject_11); }).then(tslib_1.__importStar).then(({ setup }) => setup());
+        });
+        (0, LazyLoader_1.whenFirstSeen)(".jsImageViewer", () => {
+            console.warn("The class `jsImageViewer` is deprecated. Use the attribute `data-fancybox` instead.");
+            void new Promise((resolve_12, reject_12) => { require(["./Component/Image/Viewer"], resolve_12, reject_12); }).then(tslib_1.__importStar).then(({ setupLegacy }) => setupLegacy());
+        });
+        (0, LazyLoader_1.whenFirstSeen)("woltlab-core-file-upload", () => {
+            void new Promise((resolve_8, reject_8) => { require(["./Component/File/woltlab-core-file"], resolve_8, reject_8); }).then(tslib_1.__importStar);
+            void new Promise((resolve_9, reject_9) => { require(["./Component/File/Upload"], resolve_9, reject_9); }).then(tslib_1.__importStar).then(({ setup }) => setup());
+        });
         // Move the reCAPTCHA widget overlay to the `pageOverlayContainer`
         // when widget form elements are placed in a dialog.
         const observer = new MutationObserver((mutations) => {
@@ -152,6 +169,28 @@ define(["require", "exports", "tslib", "./Core", "./Date/Picker", "./Devtools", 
                         continue;
                     }
                     if (node.querySelector(".g-recaptcha-bubble-arrow") === null) {
+                        // On mobile screens the arrow might not exist, instead we can try to
+                        // find an <iframe> that is wrapped in anonymous <div>s that are a
+                        // direct child of <body>.
+                        const iframe = node.querySelector("iframe");
+                        if (iframe === null) {
+                            continue;
+                        }
+                        if (!iframe.src.startsWith("https://www.google.com/recaptcha/api")) {
+                            continue;
+                        }
+                        if (iframe.parentElement?.parentElement?.parentElement === document.body) {
+                            const name = "a-" + iframe.name.split("-")[1];
+                            const widget = document.querySelector(`iframe[name="${name}"]`);
+                            if (!widget) {
+                                continue;
+                            }
+                            const dialog = widget.closest("woltlab-core-dialog");
+                            if (!dialog) {
+                                continue;
+                            }
+                            (0, PageOverlay_1.getPageOverlayContainer)().append(node);
+                        }
                         continue;
                     }
                     const iframe = node.querySelector("iframe");

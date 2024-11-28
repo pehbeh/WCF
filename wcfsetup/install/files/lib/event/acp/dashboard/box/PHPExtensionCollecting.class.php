@@ -15,13 +15,13 @@ use wcf\event\IPsr14Event;
 final class PHPExtensionCollecting implements IPsr14Event
 {
     /**
-     * @var string[]
+     * @var string[]|string[][]
      */
     private array $extensions = [
         'ctype',
         'dom',
         'exif',
-        'gmp',
+        ['gmp', 'bcmath'],
         'intl',
         'libxml',
         'mbstring',
@@ -33,8 +33,9 @@ final class PHPExtensionCollecting implements IPsr14Event
 
     /**
      * Registers a php extension.
+     * If `$extension` is an array, the system checks whether one of the extensions is available.
      */
-    public function register(string $extension): void
+    public function register(string | array $extension): void
     {
         if (\in_array($extension, $this->extensions)) {
             return;
@@ -43,7 +44,7 @@ final class PHPExtensionCollecting implements IPsr14Event
     }
 
     /**
-     * @return string[]
+     * @return string[]|string[][]
      */
     public function getExtensions(): array
     {

@@ -2,30 +2,49 @@
 
 namespace wcf\acp\form;
 
+use Laminas\Diactoros\Response\HtmlResponse;
+use wcf\data\IStorableObject;
 use wcf\data\user\option\category\UserOptionCategory;
 use wcf\data\user\option\category\UserOptionCategoryList;
 use wcf\data\user\option\UserOption;
 use wcf\data\user\option\UserOptionAction;
 use wcf\data\user\option\UserOptionEditor;
-use wcf\form\AbstractForm;
-use wcf\system\exception\UserInputException;
+use wcf\form\AbstractFormBuilderForm;
+use wcf\http\error\HtmlErrorRenderer;
+use wcf\system\form\builder\container\FormContainer;
+use wcf\system\form\builder\data\processor\CustomFormDataProcessor;
+use wcf\system\form\builder\field\BooleanFormField;
+use wcf\system\form\builder\field\ClassNameFormField;
+use wcf\system\form\builder\field\dependency\ValueFormFieldDependency;
+use wcf\system\form\builder\field\IntegerFormField;
+use wcf\system\form\builder\field\ItemListFormField;
+use wcf\system\form\builder\field\MultilineItemListFormField;
+use wcf\system\form\builder\field\MultilineTextFormField;
+use wcf\system\form\builder\field\SingleSelectionFormField;
+use wcf\system\form\builder\field\TextFormField;
+use wcf\system\form\builder\field\validation\FormFieldValidationError;
+use wcf\system\form\builder\field\validation\FormFieldValidator;
+use wcf\system\form\builder\IFormDocument;
 use wcf\system\language\I18nHandler;
 use wcf\system\option\user\DateUserOptionOutput;
+use wcf\system\option\user\IUserOptionOutput;
 use wcf\system\option\user\LabeledUrlUserOptionOutput;
+use wcf\system\option\user\MessageUserOptionOutput;
 use wcf\system\option\user\SelectOptionsUserOptionOutput;
 use wcf\system\option\user\URLUserOptionOutput;
-use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 
 /**
  * Shows the user option add form.
  *
- * @author  Marcel Werk
- * @copyright   2001-2019 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @author      Olaf Braun, Marcel Werk
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @property UserOption $formObject
  */
-class UserOptionAddForm extends AbstractForm
+class UserOptionAddForm extends AbstractFormBuilderForm
 {
     /**
      * @inheritDoc
@@ -38,113 +57,10 @@ class UserOptionAddForm extends AbstractForm
     public $neededPermissions = ['admin.user.canManageUserOption'];
 
     /**
-     * option name
-     * @var string
-     */
-    public $optionName = '';
-
-    /**
-     * option description
-     * @var string
-     */
-    public $optionDescription = '';
-
-    /**
-     * category name
-     * @var string
-     */
-    public $categoryName = '';
-
-    /**
-     * option type
-     * @var string
-     */
-    public $optionType = 'text';
-
-    /**
-     * option default value
-     * @var string
-     */
-    public $defaultValue = '';
-
-    /**
-     * validation pattern
-     * @var string
-     */
-    public $validationPattern = '';
-
-    /**
-     * select options
-     * @var string
-     */
-    public $selectOptions = '';
-
-    /**
-     * @var string
-     * @since 5.4
-     */
-    public $labeledUrl = '';
-
-    /**
-     * field is required
-     * @var bool
-     */
-    public $required = 0;
-
-    /**
-     * shows this field in the registration process
-     * @var bool
-     */
-    public $askDuringRegistration = 0;
-
-    /**
-     * edit permission bitmask
-     * @var int
-     */
-    public $editable = 3;
-
-    /**
-     * view permission bitmask
-     * @var int
-     */
-    public $visible = 15;
-
-    /**
-     * field is searchable
-     * @var bool
-     */
-    public $searchable = 0;
-
-    /**
-     * show order
-     * @var int
-     */
-    public $showOrder = 0;
-
-    /**
-     * output class
-     * @var string
-     */
-    public $outputClass = '';
-
-    /**
      * available option categories
      * @var UserOptionCategory[]
      */
-    public $availableCategories = [];
-
-    /**
-     * valid editability bits for UserOptions
-     * @var int[]
-     */
-    public $validEditableBits = [
-        UserOption::EDITABILITY_NONE,
-        UserOption::EDITABILITY_OWNER,
-        UserOption::EDITABILITY_ADMINISTRATOR,
-        UserOption::EDITABILITY_ALL,
-        UserOption::EDITABILITY_OWNER_DURING_REGISTRATION_AND_ADMINISTRATOR,
-    ];
-
+    public array $availableCategories = [];
     /**
      * available option types
      * @var string[]
@@ -181,203 +97,272 @@ class UserOptionAddForm extends AbstractForm
     /**
      * @inheritDoc
      */
+    public $objectActionClass = UserOptionAction::class;
+
+    /**
+     * @inheritDoc
+     */
+    public $objectEditLinkController = UserOptionEditForm::class;
+
+    #[\Override]
     public function readParameters()
     {
         parent::readParameters();
-
-        I18nHandler::getInstance()->register('optionName');
-        I18nHandler::getInstance()->register('optionDescription');
 
         // get available categories
         $categoryList = new UserOptionCategoryList();
         $categoryList->getConditionBuilder()->add('parentCategoryName = ?', ['profile']);
         $categoryList->readObjects();
         $this->availableCategories = $categoryList->getObjects();
+
+        if (empty($this->availableCategories)) {
+            $this->setPsr7Response(
+                new HtmlResponse(
+                    (new HtmlErrorRenderer())->renderHtmlMessage(
+                        WCF::getLanguage()->getDynamicVariable('wcf.global.error.title'),
+                        WCF::getLanguage()->getDynamicVariable('wcf.acp.user.option.error.noCategories'),
+                        null,
+                        !WCF::getUser()->userID,
+                    ),
+                    403
+                )
+            );
+        }
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function readFormParameters()
+    #[\Override]
+    public function createForm()
     {
-        parent::readFormParameters();
+        parent::createForm();
 
-        I18nHandler::getInstance()->readValues();
+        $this->form->appendChildren([
+            FormContainer::create('general')
+                ->appendChildren([
+                    TextFormField::create('optionName')
+                        ->label('wcf.global.name')
+                        ->required()
+                        ->i18n()
+                        ->i18nRequired()
+                        ->languageItemPattern('wcf.user.option.(option\d+|\w+)'),
+                    MultilineTextFormField::create('optionDescription')
+                        ->label('wcf.acp.user.option.description')
+                        ->i18n()
+                        ->i18nRequired()
+                        ->languageItemPattern('wcf.user.option.(option\d+|\w+).description'),
+                    SingleSelectionFormField::create('categoryName')
+                        ->label('wcf.global.category')
+                        ->required()
+                        ->options(function () {
+                            $options = [];
+                            foreach ($this->availableCategories as $category) {
+                                $options[$category->categoryName] = $category->getTitle();
+                            }
 
-        if (I18nHandler::getInstance()->isPlainValue('optionName')) {
-            $this->optionName = I18nHandler::getInstance()->getValue('optionName');
-        }
-        if (I18nHandler::getInstance()->isPlainValue('optionDescription')) {
-            $this->optionDescription = I18nHandler::getInstance()->getValue('optionDescription');
-        }
-        if (isset($_POST['categoryName'])) {
-            $this->categoryName = $_POST['categoryName'];
-        }
-        if (isset($_POST['optionType'])) {
-            $this->optionType = $_POST['optionType'];
-        }
-        if (isset($_POST['defaultValue'])) {
-            $this->defaultValue = $_POST['defaultValue'];
-        }
-        if (isset($_POST['validationPattern'])) {
-            $this->validationPattern = $_POST['validationPattern'];
-        }
-        if (isset($_POST['selectOptions'])) {
-            $this->selectOptions = $_POST['selectOptions'];
-        }
-        if (isset($_POST['required'])) {
-            $this->required = \intval($_POST['required']);
-        }
-        if (isset($_POST['askDuringRegistration'])) {
-            $this->askDuringRegistration = \intval($_POST['askDuringRegistration']);
-        }
-        if (isset($_POST['editable'])) {
-            $this->editable = \intval($_POST['editable']);
-        }
-        if (isset($_POST['visible'])) {
-            $this->visible = \intval($_POST['visible']);
-        }
-        if (isset($_POST['searchable'])) {
-            $this->searchable = \intval($_POST['searchable']);
-        }
-        if (isset($_POST['showOrder'])) {
-            $this->showOrder = \intval($_POST['showOrder']);
-        }
-        if (isset($_POST['outputClass'])) {
-            $this->outputClass = StringUtil::trim($_POST['outputClass']);
-        }
-        if (isset($_POST['labeledUrl'])) {
-            $this->labeledUrl = StringUtil::trim($_POST['labeledUrl']);
-        }
-
-        if ($this->optionType == 'boolean' || $this->optionType == 'integer') {
-            $this->defaultValue = \intval($this->defaultValue);
-        }
-        if ($this->optionType == 'float') {
-            $this->defaultValue = \floatval($this->defaultValue);
-        }
-        if ($this->optionType == 'date') {
-            if (!\preg_match('/\d{4}-\d{2}-\d{2}/', $this->defaultValue)) {
-                $this->defaultValue = '';
-            }
-        }
-
-        $this->setDefaultOutputClass();
+                            return $options;
+                        }),
+                    IntegerFormField::create('showOrder')
+                        ->label('wcf.form.field.showOrder')
+                        ->value(0)
+                ]),
+            FormContainer::create('typeDataContainer')
+                ->label('wcf.acp.user.option.typeData')
+                ->appendChildren([
+                    SingleSelectionFormField::create('optionType')
+                        ->label('wcf.acp.user.option.optionType')
+                        ->description('wcf.acp.user.option.optionType.description')
+                        ->required()
+                        ->immutable($this->formAction !== 'create')
+                        ->options(\array_combine(self::$availableOptionTypes, self::$availableOptionTypes))
+                        ->value('text'),
+                    TextFormField::create('defaultValue')
+                        ->label('wcf.acp.user.option.defaultValue')
+                        ->description('wcf.acp.user.option.defaultValue.description')
+                        ->addFieldClass('long'),
+                    MultilineItemListFormField::create('selectOptions')
+                        ->label('wcf.acp.user.option.selectOptions')
+                        ->description('wcf.acp.user.option.selectOptions.description')
+                        ->required()
+                        ->saveValueType(ItemListFormField::SAVE_VALUE_TYPE_NSV)
+                        ->addDependency(
+                            ValueFormFieldDependency::create('optionType')
+                                ->fieldId('optionType')
+                                ->values(self::$optionTypesUsingSelectOptions)
+                        ),
+                    TextFormField::create('labeledUrl')
+                        ->label('wcf.acp.user.option.labeledUrl')
+                        ->description('wcf.acp.user.option.labeledUrl.description')
+                        ->addFieldClass('long')
+                        ->required()
+                        ->addValidator(
+                            new FormFieldValidator('labeldUrlValidator', function (TextFormField $field) {
+                                if (!\strpos($field->getValue(), '%s')) {
+                                    $field->addValidationError(
+                                        new FormFieldValidationError(
+                                            'invalid',
+                                            'wcf.acp.user.option.labeledUrl.error.invalid'
+                                        )
+                                    );
+                                }
+                            })
+                        )
+                        ->addDependency(
+                            ValueFormFieldDependency::create('optionType')
+                                ->fieldId('optionType')
+                                ->values(['labeledUrl'])
+                        ),
+                    ClassNameFormField::create('outputClass')
+                        ->label('wcf.acp.user.option.outputClass')
+                        ->description('wcf.acp.user.option.outputClass.description')
+                        ->implementedInterface(IUserOptionOutput::class)
+                ]),
+            FormContainer::create('access')
+                ->label('wcf.acp.user.option.access')
+                ->appendChildren([
+                    SingleSelectionFormField::create('editable')
+                        ->label('wcf.acp.user.option.editable')
+                        ->options([
+                            1 => 'wcf.acp.user.option.editable.1',
+                            2 => 'wcf.acp.user.option.editable.2',
+                            3 => 'wcf.acp.user.option.editable.3',
+                            6 => 'wcf.acp.user.option.editable.6',
+                        ])
+                        ->value(3),
+                    SingleSelectionFormField::create('visible')
+                        ->label('wcf.acp.user.option.visible')
+                        ->options([
+                            0 => 'wcf.acp.user.option.visible.0',
+                            1 => 'wcf.acp.user.option.visible.1',
+                            2 => 'wcf.acp.user.option.visible.2',
+                            3 => 'wcf.acp.user.option.visible.3',
+                            7 => 'wcf.acp.user.option.visible.7',
+                            15 => 'wcf.acp.user.option.visible.15',
+                        ])
+                        ->value(15),
+                    TextFormField::create('validationPattern')
+                        ->label('wcf.acp.user.option.validationPattern')
+                        ->description('wcf.acp.user.option.validationPattern.description')
+                        ->addDependency(
+                            ValueFormFieldDependency::create('validationPatternOptionTypeDependency')
+                                ->fieldId('optionType')
+                                ->negate()
+                                ->values(self::$optionTypesUsingSelectOptions)
+                        ),
+                    BooleanFormField::create('required')
+                        ->label('wcf.acp.user.option.required')
+                        ->value(false),
+                    BooleanFormField::create('askDuringRegistration')
+                        ->label('wcf.acp.user.option.askDuringRegistration')
+                        ->value(false),
+                    BooleanFormField::create('searchable')
+                        ->label('wcf.acp.user.option.searchable')
+                        ->value(false),
+                ])
+        ]);
     }
 
-    /**
-     * Sets the default output class.
-     */
-    protected function setDefaultOutputClass()
+    #[\Override]
+    protected function finalizeForm()
     {
-        if (empty($this->outputClass)) {
-            if (\in_array($this->optionType, self::$optionTypesUsingSelectOptions)) {
-                $this->outputClass = SelectOptionsUserOptionOutput::class;
-            }
+        parent::finalizeForm();
 
-            if ($this->optionType == 'date') {
-                $this->outputClass = DateUserOptionOutput::class;
-            }
+        $this->form->getDataHandler()
+            ->addProcessor(
+                new CustomFormDataProcessor(
+                    'optionNameDataProcessor',
+                    null,
+                    function (IFormDocument $document, array $data, IStorableObject $object) {
+                        \assert($object instanceof UserOption);
+                        $data['optionName'] = 'wcf.user.option.' . $object->optionName;
+                        $data['optionDescription'] = 'wcf.user.option.' . $object->optionName . '.description';
 
-            if ($this->optionType == 'URL') {
-                $this->outputClass = URLUserOptionOutput::class;
-            }
+                        return $data;
+                    }
+                ),
+            )
+            ->addProcessor(
+                new CustomFormDataProcessor(
+                    'additionDataProcessor',
+                    function (IFormDocument $document, array $parameters) {
+                        $additionalData = $this->formObject?->additionalData ?: [];
 
-            if ($this->optionType == 'labeledUrl') {
-                $this->outputClass = LabeledUrlUserOptionOutput::class;
-            }
-        }
+                        if ($parameters['data']['optionType'] == 'select') {
+                            $additionalData['allowEmptyValue'] = true;
+                        } elseif ($parameters['data']['optionType'] == 'message') {
+                            $additionalData['messageObjectType'] = 'com.woltlab.wcf.user.option.generic';
+                        }
+
+                        $parameters['data']['additionalData'] = \serialize($additionalData);
+
+                        return $parameters;
+                    }
+                )
+            )
+            ->addProcessor(
+                new CustomFormDataProcessor(
+                    'outputClassDataProcessor',
+                    function (IFormDocument $document, array $parameters) {
+                        if ($this->formAction !== 'create') {
+                            return $parameters;
+                        }
+
+                        $outputClass = $parameters['data']['outputClass'];
+                        $optionType = $parameters['data']['optionType'];
+
+                        if (empty($outputClass)) {
+                            if (\in_array($optionType, self::$optionTypesUsingSelectOptions)) {
+                                $parameters['data']['outputClass'] = SelectOptionsUserOptionOutput::class;
+                            } else {
+                                $parameters['data']['outputClass'] = match ($optionType) {
+                                    'date' => DateUserOptionOutput::class,
+                                    'URL' => URLUserOptionOutput::class,
+                                    'labeledUrl' => LabeledUrlUserOptionOutput::class,
+                                    'message' => MessageUserOptionOutput::class,
+                                    default => ''
+                                };
+                            }
+                        }
+
+                        return $parameters;
+                    }
+                )
+            )
+            ->addProcessor(
+                new CustomFormDataProcessor(
+                    'defaultValueDataProcessor',
+                    function (IFormDocument $document, array $parameters) {
+                        $optionType = $parameters['data']['optionType'];
+                        $defaultValue = $parameters['data']['defaultValue'];
+
+                        $parameters['data']['defaultValue'] = match ($optionType) {
+                            'boolean', 'integer' => \intval($defaultValue),
+                            'float' => \floatval($defaultValue),
+                            'date' => \preg_match('/\d{4}-\d{2}-\d{2}/', $defaultValue) ? $defaultValue : '',
+                            default => $defaultValue,
+                        };
+
+                        return $parameters;
+                    }
+                )
+            );
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function validate()
-    {
-        parent::validate();
-
-        // option name
-        if (!I18nHandler::getInstance()->validateValue('optionName', true)) {
-            throw new UserInputException('optionName', 'multilingual');
-        }
-
-        // category name
-        if (empty($this->categoryName)) {
-            throw new UserInputException('categoryName');
-        }
-        $sql = "SELECT  categoryID
-                FROM    wcf1_user_option_category
-                WHERE   categoryName = ?";
-        $statement = WCF::getDB()->prepare($sql);
-        $statement->execute([$this->categoryName]);
-        if ($statement->fetchArray() === false) {
-            throw new UserInputException('categoryName');
-        }
-
-        // option type
-        if (!\in_array($this->optionType, self::$availableOptionTypes)) {
-            throw new UserInputException('optionType');
-        }
-
-        // select options
-        if (\in_array($this->optionType, self::$optionTypesUsingSelectOptions) && empty($this->selectOptions)) {
-            throw new UserInputException('selectOptions');
-        }
-
-        if ($this->outputClass && !\class_exists($this->outputClass)) {
-            throw new UserInputException('outputClass', 'doesNotExist');
-        }
-
-        if (!\in_array($this->editable, $this->validEditableBits)) {
-            $this->editable = UserOption::EDITABILITY_ALL;
-        }
-
-        if ($this->optionType == 'labeledUrl' && \strpos($this->labeledUrl, '%s') === false) {
-            throw new UserInputException('labeledUrl', 'invalid');
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function save()
     {
+        if ($this->formAction === 'create') {
+            $this->additionalFields['optionName'] = StringUtil::getRandomID();
+            $this->additionalFields['packageID'] = PACKAGE_ID;
+        }
+
         parent::save();
+    }
 
-        $additionalData = [];
-        if ($this->optionType == 'select') {
-            $additionalData['allowEmptyValue'] = true;
-        }
-        if ($this->optionType == 'message') {
-            $additionalData['messageObjectType'] = 'com.woltlab.wcf.user.option.generic';
-        }
+    #[\Override]
+    public function saved()
+    {
+        $userOption = $this->objectAction->getReturnValues()['returnValues'];
+        \assert($userOption instanceof UserOption);
 
-        $this->objectAction = new UserOptionAction([], 'create', [
-            'data' => \array_merge($this->additionalFields, [
-                'optionName' => StringUtil::getRandomID(),
-                'categoryName' => $this->categoryName,
-                'optionType' => $this->optionType,
-                'defaultValue' => $this->defaultValue,
-                'showOrder' => $this->showOrder,
-                'outputClass' => $this->outputClass,
-                'validationPattern' => $this->validationPattern,
-                'selectOptions' => $this->selectOptions,
-                'required' => $this->required,
-                'askDuringRegistration' => $this->askDuringRegistration,
-                'searchable' => $this->searchable,
-                'editable' => $this->editable,
-                'visible' => $this->visible,
-                'packageID' => 1,
-                'additionalData' => !empty($additionalData) ? \serialize($additionalData) : '',
-                'labeledUrl' => $this->labeledUrl,
-            ]),
-        ]);
-        $this->objectAction->executeAction();
-
-        $returnValues = $this->objectAction->getReturnValues();
-        $userOption = $returnValues['returnValues'];
-
-        // save language vars
         I18nHandler::getInstance()->save(
             'optionName',
             'wcf.user.option.option' . $userOption->optionID,
@@ -392,55 +377,7 @@ class UserOptionAddForm extends AbstractForm
         $editor->update([
             'optionName' => 'option' . $userOption->optionID,
         ]);
-        $this->saved();
 
-        // reset values
-        $this->optionName = $this->optionDescription = $this->categoryName = $this->optionType = $this->defaultValue = $this->validationPattern = $this->selectOptions = $this->outputClass = '';
-        $this->optionType = 'text';
-        $this->required = $this->searchable = $this->showOrder = $this->askDuringRegistration = 0;
-        $this->editable = 3;
-        $this->visible = 15;
-
-        I18nHandler::getInstance()->reset();
-
-        // show success
-        WCF::getTPL()->assign([
-            'success' => true,
-            'objectEditLink' => LinkHandler::getInstance()->getControllerLink(
-                UserOptionEditForm::class,
-                ['id' => $userOption->optionID]
-            ),
-        ]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function assignVariables()
-    {
-        parent::assignVariables();
-
-        I18nHandler::getInstance()->assignVariables();
-
-        WCF::getTPL()->assign([
-            'optionName' => $this->optionName,
-            'optionDescription' => $this->optionDescription,
-            'categoryName' => $this->categoryName,
-            'optionType' => $this->optionType,
-            'defaultValue' => $this->defaultValue,
-            'validationPattern' => $this->validationPattern,
-            'selectOptions' => $this->selectOptions,
-            'required' => $this->required,
-            'askDuringRegistration' => $this->askDuringRegistration,
-            'editable' => $this->editable,
-            'visible' => $this->visible,
-            'searchable' => $this->searchable,
-            'showOrder' => $this->showOrder,
-            'outputClass' => $this->outputClass,
-            'action' => 'add',
-            'availableCategories' => $this->availableCategories,
-            'availableOptionTypes' => self::$availableOptionTypes,
-            'labeledUrl' => $this->labeledUrl,
-        ]);
+        parent::saved();
     }
 }

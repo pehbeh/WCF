@@ -82,6 +82,7 @@ window.addEventListener('pageshow', function(event) {
 				publicKey: '{@SERVICE_WORKER_PUBLIC_KEY|encodeJS}',
 				serviceWorkerJsUrl: '{$__wcf->getPath('wcf')}service-worker/',
 				registerUrl: '{link controller="RegisterServiceWorker"}{/link}',
+				notificationLastReadTime: {$__wcf->getUserNotificationHandler()->getTimeOfLastReadNotification()}
 			},
 			{/if}
 			dynamicColorScheme: {if $__wcf->getStyleHandler()->getColorScheme() === 'system'}true{else}false{/if},
@@ -137,7 +138,6 @@ window.addEventListener('pageshow', function(event) {
 </script>
 
 {js application='wcf' file='WCF.ColorPicker' bundle='WCF.Combined' hasTiny=true}
-{js application='wcf' file='WCF.ImageViewer' bundle='WCF.Combined' hasTiny=true}
 {js application='wcf' file='WCF.Label' bundle='WCF.Combined' hasTiny=true}
 {js application='wcf' file='WCF.Location' bundle='WCF.Combined' hasTiny=true}
 {js application='wcf' file='WCF.Message' bundle='WCF.Combined' hasTiny=true}
@@ -160,8 +160,6 @@ window.addEventListener('pageshow', function(event) {
 
 <script data-relocate="true">
 	$(function() {
-		WCF.User.Profile.ActivityPointList.init();
-		
 		{if MODULE_TROPHY && $__wcf->session->getPermission('user.profile.trophy.canSeeTrophies')}
 			require(['WoltLabSuite/Core/Ui/User/Trophy/List'], function (UserTrophyList) {
 				new UserTrophyList();
@@ -180,5 +178,5 @@ window.addEventListener('pageshow', function(event) {
 	});
 </script>
 
-{include file='imageViewer'}
+{include file='shared_imageViewer'}
 {include file='headIncludeJsonLd'}

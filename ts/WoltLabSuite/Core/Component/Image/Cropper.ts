@@ -1,3 +1,12 @@
+/**
+ * An image cropper that allows the user to crop an image before uploading it.
+ *
+ * @author    Olaf Braun
+ * @copyright 2001-2024 WoltLab GmbH
+ * @license   GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since     6.2
+ */
+
 import ImageResizer from "WoltLabSuite/Core/Image/Resizer";
 import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
 import Cropper, { CropperCanvas, CropperImage, CropperSelection } from "cropperjs";

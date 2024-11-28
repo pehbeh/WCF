@@ -1291,6 +1291,7 @@
 		<file>js/WCF.Comment.min.js</file>
 		<file>js/WCF.Core.min.js</file>
 		<file>js/WCF.ImageViewer.min.js</file>
+		<file>js/WCF.ImageViewer.js</file>
 		<file>js/WCF.Label.min.js</file>
 		<file>js/WCF.Like.js</file>
 		<file>js/WCF.Like.min.js</file>
@@ -2166,6 +2167,39 @@
 		<file>lib/system/api/paragonie/random_compat/other/build_phar.php</file>
 		<file>lib/system/api/paragonie/random_compat/psalm-autoload.php</file>
 		<file>lib/system/api/paragonie/random_compat/psalm.xml</file>
+		<file>lib/system/api/paragonie/sodium_compat/autoload-php7.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/composer-php52.json</file>
+		<file>lib/system/api/paragonie/sodium_compat/lib/constants.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/lib/sodium_compat.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/BLAKE2b.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/ChaCha20.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/ChaCha20/Ctx.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/ChaCha20/IetfCtx.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/Curve25519.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/Curve25519/Fe.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/Curve25519/Ge/Cached.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/Curve25519/Ge/P1p1.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/Curve25519/Ge/P2.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/Curve25519/Ge/P3.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/Curve25519/Ge/Precomp.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/Curve25519/H.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/Curve25519/README.md</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/Ed25519.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/HChaCha20.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/HSalsa20.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/Int32.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/Int64.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/Poly1305.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/Poly1305/State.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/Salsa20.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/SecretStream/State.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/SipHash.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/Util.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/X25519.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/XChaCha20.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Core32/XSalsa20.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/Crypto32.php</file>
+		<file>lib/system/api/paragonie/sodium_compat/src/PHP52/SplFixedArray.php</file>
 		<file>lib/system/api/parsedown/LICENSE.txt</file>
 		<file>lib/system/api/parsedown/Parsedown.php</file>
 		<file>lib/system/api/parsedown/README.md</file>
@@ -2758,6 +2792,7 @@
 		<file>lib/system/html/input/node/HtmlInputNodeWoltlabColor.class.php</file>
 		<file>lib/system/html/input/node/HtmlInputNodeWoltlabMention.class.php</file>
 		<file>lib/system/html/input/node/IHtmlInputNodeProcessor.class.php</file>
+		<file>lib/system/html/metacode/upcast/ImageMetacodeUpcast.class.php</file>
 		<file>lib/system/html/node/HtmlNodeProcessor.class.php</file>
 		<file>lib/system/html/output/AmpHtmlOutputProcessor.class.php</file>
 		<file>lib/system/html/output/HtmlOutputNodeProcessor.class.php</file>

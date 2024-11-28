@@ -12,6 +12,8 @@ WCF.Message = { };
 if (COMPILER_TARGET_DEFAULT) {
 	/**
 	 * Provides the dynamic parts of the edit history interface.
+	 * 
+	 * @deprecated 6.2 Use `WoltLabSuite/Core/Controller/EditHistory/VersionList` or `WoltLabSuite/Core/Acp/Controller/VersionTracker/VersionList` instead.
 	 */
 	WCF.Message.EditHistory = Class.extend({
 		/**
@@ -212,6 +214,8 @@ else {
 
 /**
  * Prevents multiple submits of the same form by disabling the submit button.
+ * 
+ * @deprecated 6.2 Not (or no longer) used in the software.
  */
 WCF.Message.FormGuard = Class.extend({
 	/**
@@ -236,6 +240,7 @@ if (COMPILER_TARGET_DEFAULT) {
 	 * @param        string                className
 	 * @param        string                messageFieldID
 	 * @param        string                previewButtonID
+	 * @deprecated 6.2 Use `WoltLabSuite/Core/Component/Message/Preview` instead.
 	 */
 	WCF.Message.Preview = Class.extend({
 		/**
@@ -452,6 +457,7 @@ if (COMPILER_TARGET_DEFAULT) {
 	 * Default implementation for message previews.
 	 *
 	 * @see        WCF.Message.Preview
+	 * @deprecated 6.2 Use `WoltLabSuite/Core/Component/Message/Preview` instead.
 	 */
 	WCF.Message.DefaultPreview = WCF.Message.Preview.extend({
 		_dialog: null,
@@ -515,6 +521,9 @@ if (COMPILER_TARGET_DEFAULT) {
 		}
 	});
 	
+	/**
+	 * @deprecated 6.2 Use `WoltLabSuite/Core/Component/Message/I18nPreview` instead.
+	 */
 	WCF.Message.I18nPreview = WCF.Message.Preview.extend({
 		_activeMessageField: '',
 		_dialog: null,
@@ -598,6 +607,7 @@ if (COMPILER_TARGET_DEFAULT) {
 	 * @param        integer                languageID
 	 * @param        object                availableLanguages
 	 * @param        boolean                forceSelection
+	 * @deprecated 6.2 Not (or no longer) used in the software.
 	 */
 	WCF.Message.Multilingualism = Class.extend({
 		/**
@@ -683,6 +693,8 @@ if (COMPILER_TARGET_DEFAULT) {
 	
 	/**
 	 * Loads smiley categories upon user request.
+	 * 
+	 * @deprecated 6.2 No longer in use.
 	 */
 	WCF.Message.SmileyCategories = Class.extend({
 		/**
@@ -901,6 +913,8 @@ if (COMPILER_TARGET_DEFAULT) {
 	
 	/**
 	 * Handles submit buttons for forms with an embedded WYSIWYG editor.
+	 * 
+	 * @deprecated 6.2 Not (or no longer) used in the software.
 	 */
 	WCF.Message.Submit = {
 		/**
@@ -1821,6 +1835,8 @@ WCF.Message.Share.Content = Class.extend({
 
 /**
  * Provides a specialized tab menu used for message options, integrates better into the editor.
+ * 
+ * @deprecated 6.2 Use `WoltLabSuite/Core/Component/Message/MessageTabMenu` instead.
  */
 $.widget('wcf.messageTabMenu', {
 	/**

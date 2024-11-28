@@ -1,4 +1,4 @@
-define(["require", "exports", "./Entry", "../Ckeditor/Event"], function (require, exports, Entry_1, Event_1) {
+define(["require", "exports", "./Entry", "../Ckeditor/Event", "../Message/MessageTabMenu"], function (require, exports, Entry_1, Event_1, MessageTabMenu_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
@@ -41,7 +41,7 @@ define(["require", "exports", "./Entry", "../Ckeditor/Event"], function (require
             if (messageTabMenu === null) {
                 return;
             }
-            window.jQuery(messageTabMenu).messageTabMenu("showTab", "attachments");
+            (0, MessageTabMenu_1.getTabMenu)(editorId)?.setActiveTab("attachments");
         })
             .collectMetaData((payload) => {
             let context = undefined;

@@ -2559,6 +2559,10 @@ INSERT INTO wcf1_style_variable (variableName, defaultValue, defaultValueDarkMod
 INSERT INTO wcf1_style_variable (variableName, defaultValue, defaultValueDarkMode) VALUES('wcfSidebarBorder', 'rgba(236, 241, 247, 0)', 'rgba(57, 65, 77, 1)');
 INSERT INTO wcf1_style_variable (variableName, defaultValue, defaultValueDarkMode) VALUES('individualScssDarkMode', '', '');
 INSERT INTO wcf1_style_variable (variableName, defaultValue, defaultValueDarkMode) VALUES('wcfHeaderMenuDropdownBorder', 'rgba(36, 66, 95, 1)', 'rgba(36, 66, 95, 1)');
+INSERT INTO wcf1_style_variable (variableName, defaultValue, defaultValueDarkMode) VALUES('wcfToggleButtonBackground', 'rgba(105, 109, 114, 1)', 'rgba(89, 89, 89, 1)');
+INSERT INTO wcf1_style_variable (variableName, defaultValue, defaultValueDarkMode) VALUES('wcfToggleButtonBackgroundActive', 'rgba(60, 118, 61, 1)', 'rgba(0, 113, 84, 1)');
+INSERT INTO wcf1_style_variable (variableName, defaultValue, defaultValueDarkMode) VALUES('wcfToggleButtonSliderBackground', 'rgba(250, 250, 250, 1)', 'rgba(203, 203, 203, 1)');
+INSERT INTO wcf1_style_variable (variableName, defaultValue, defaultValueDarkMode) VALUES('wcfToggleButtonSliderBackgroundActive', 'rgba(250, 250, 250, 1)', 'rgba(203, 203, 203, 1)');
 
 -- System template groups
 INSERT INTO wcf1_template_group (parentTemplateGroupID, templateGroupName, templateGroupFolderName) VALUES (NULL, 'wcf.acp.template.group.email', '_wcf_email/');

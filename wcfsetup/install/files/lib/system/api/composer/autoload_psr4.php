@@ -20,6 +20,7 @@ return array(
     'Psr\\Http\\Client\\' => array($vendorDir . '/psr/http-client/src'),
     'Psr\\EventDispatcher\\' => array($vendorDir . '/psr/event-dispatcher/src'),
     'Psr\\Clock\\' => array($vendorDir . '/psr/clock/src'),
+    'Psr\\Cache\\' => array($vendorDir . '/psr/cache/src'),
     'Pelago\\Emogrifier\\' => array($vendorDir . '/pelago/emogrifier/src'),
     'ParagonIE\\ConstantTime\\' => array($vendorDir . '/paragonie/constant_time_encoding/src'),
     'Negotiation\\' => array($vendorDir . '/willdurand/negotiation/src/Negotiation'),

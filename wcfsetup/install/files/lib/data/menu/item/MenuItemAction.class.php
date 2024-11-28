@@ -3,10 +3,12 @@
 namespace wcf\data\menu\item;
 
 use wcf\data\AbstractDatabaseObjectAction;
+use wcf\data\DatabaseObject;
 use wcf\data\ISortableAction;
 use wcf\data\IToggleAction;
 use wcf\data\menu\Menu;
 use wcf\data\TDatabaseObjectToggle;
+use wcf\data\TI18nDatabaseObjectAction;
 use wcf\system\exception\PermissionDeniedException;
 use wcf\system\exception\UserInputException;
 use wcf\system\WCF;
@@ -19,13 +21,13 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  MenuItem        create()
  * @method  MenuItemEditor[]    getObjects()
  * @method  MenuItemEditor      getSingleObject()
  */
 class MenuItemAction extends AbstractDatabaseObjectAction implements ISortableAction, IToggleAction
 {
     use TDatabaseObjectToggle;
+    use TI18nDatabaseObjectAction;
 
     /**
      * @inheritDoc
@@ -51,6 +53,37 @@ class MenuItemAction extends AbstractDatabaseObjectAction implements ISortableAc
      * @inheritDoc
      */
     protected $requireACP = ['create', 'delete', 'toggle', 'update'];
+
+    public function create()
+    {
+        // `title` column doesn't have a default value
+        $this->parameters['data']['title'] = $this->parameters['data']['title'] ?? '';
+
+        /** @var MenuItem $menuItem */
+        $menuItem = parent::create();
+
+        if (!$menuItem->identifier) {
+            $editor = new MenuItemEditor($menuItem);
+            $editor->update([
+                'identifier' => 'com.woltlab.wcf.generic' . $menuItem->itemID,
+            ]);
+            $menuItem = new MenuItem($menuItem->itemID);
+        }
+
+        $this->saveI18nValue($menuItem);
+
+        return $menuItem;
+    }
+
+    #[\Override]
+    public function update()
+    {
+        parent::update();
+
+        foreach ($this->getObjects() as $editor) {
+            $this->saveI18nValue($editor->getDecoratedObject());
+        }
+    }
 
     /**
      * @inheritDoc
@@ -133,5 +166,40 @@ class MenuItemAction extends AbstractDatabaseObjectAction implements ISortableAc
             }
         }
         WCF::getDB()->commitTransaction();
+    }
+
+    #[\Override]
+    public function getI18nSaveTypes(): array
+    {
+        return [
+            'title' => 'wcf.menu.item.\w+',
+            'externalURL' => 'wcf.menu.item.externalURL\d+',
+        ];
+    }
+
+    #[\Override]
+    public function getLanguageCategory(): string
+    {
+        return 'wcf.menu';
+    }
+
+    #[\Override]
+    public function getPackageID(): int
+    {
+        return PACKAGE_ID;
+    }
+
+    protected function getLanguageItem(DatabaseObject $object, string $regex): string
+    {
+        \assert($object instanceof MenuItem);
+        if (\str_contains($regex, '\d+')) {
+            return \str_replace('\d+', $object->itemID, $regex);
+        } else {
+            return \str_replace(
+                '\w+',
+                $object->identifier ?: 'com.woltlab.wcf.generic' . $object->itemID,
+                $regex
+            );
+        }
     }
 }

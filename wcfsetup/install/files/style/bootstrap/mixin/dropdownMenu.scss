@@ -26,7 +26,7 @@
 		display: block;
 
 		&:hover:not(.dropdownDivider):not(.dropdownList):not(.dropdownText),
-		&:focus-within,
+		&:focus-within:focus-visible,
 		&.dropdownList > li:hover:not(.dropdownDivider),
 		&.dropdownNavigationItem,
 		&.active {

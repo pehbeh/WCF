@@ -249,7 +249,11 @@ final class StatusMessageAcpDashboardBox extends AbstractAcpDashboardBox
         $missingExtensions = [];
 
         foreach ($event->getExtensions() as $extension) {
-            if (!\extension_loaded($extension)) {
+            if (\is_array($extension)) {
+                if (\array_filter($extension, '\extension_loaded') === []) {
+                    $missingExtensions[] = $extension[0];
+                }
+            } elseif (!\extension_loaded($extension)) {
                 $missingExtensions[] = $extension;
             }
         }

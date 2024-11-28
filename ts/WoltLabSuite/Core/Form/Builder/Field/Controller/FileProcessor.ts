@@ -16,6 +16,7 @@ import {
   trackUploadProgress,
 } from "WoltLabSuite/Core/Component/File/Helper";
 import { clearPreviousErrors } from "WoltLabSuite/Core/Component/File/Upload";
+import { innerError } from "WoltLabSuite/Core/Dom/Util";
 
 type FileId = string;
 const fileProcessors = new Map<FileId, FileProcessor>();
@@ -129,9 +130,21 @@ export class FileProcessor {
     deleteButton.classList.add("button", "small");
     deleteButton.textContent = getPhrase("wcf.global.button.delete");
     deleteButton.addEventListener("click", async () => {
-      await deleteFile(element.fileId!);
+      const result = await deleteFile(element.fileId!);
+      if (result.ok) {
+        this.#unregisterFile(element);
+      } else {
+        let container: HTMLElement = element;
+        if (!this.#useBigPreview) {
+          container = container.parentElement!;
+        }
 
-      this.#unregisterFile(element);
+        if (result.error.code === "permission_denied") {
+          innerError(container, getPhrase("wcf.upload.error.delete.permissionDenied"), true);
+        } else {
+          innerError(container, result.error.message ?? getPhrase("wcf.upload.error.delete.unknownError"));
+        }
+      }
     });
 
     return deleteButton;
@@ -199,7 +212,7 @@ export class FileProcessor {
         if (container === null) {
           container = document.createElement("div");
           container.classList.add("fileUpload__preview");
-          this.#uploadButton.insertAdjacentElement("beforebegin", container);
+          this.#uploadButton.insertAdjacentElement("afterbegin", container);
         }
         container.append(element);
       } else {
@@ -263,7 +276,8 @@ export class FileProcessor {
           filenameLink.href = element.link;
           filenameLink.title = element.filename;
           filenameLink.textContent = element.filename;
-          filenameLink.classList.add("jsImageViewer");
+          filenameLink.dataset.fancybox = "";
+          filenameLink.dataset.caption = element.filename;
 
           // Insert a hidden image element that will be used by the image viewer as the preview image
           const previewImage = document.createElement("img");

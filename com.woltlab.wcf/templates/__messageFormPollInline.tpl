@@ -18,7 +18,7 @@
 		});
 	</script>
 	
-	<div class="jsOnly messageTabMenuContent">
+	<div id="poll-{if $wysiwygSelector|isset}{$wysiwygSelector}{else}text{/if}" class="jsOnly messageTabMenuContent">
 		<dl>
 			<dt>
 				<label for="{$wysiwygSelector}pollQuestion">{lang}wcf.poll.question{/lang}</label>

@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace CuyZ\Valinor\Definition\Repository\Reflection;
 
-use CuyZ\Valinor\Definition\AttributeDefinition;
 use CuyZ\Valinor\Definition\Attributes;
 use CuyZ\Valinor\Definition\PropertyDefinition;
 use CuyZ\Valinor\Definition\Repository\AttributesRepository;
+use CuyZ\Valinor\Definition\Repository\Reflection\TypeResolver\PropertyTypeResolver;
+use CuyZ\Valinor\Definition\Repository\Reflection\TypeResolver\ReflectionTypeResolver;
 use CuyZ\Valinor\Type\Type;
 use CuyZ\Valinor\Type\Types\NullType;
 use CuyZ\Valinor\Type\Types\UnresolvableType;
-use CuyZ\Valinor\Utility\Reflection\Reflection;
-use ReflectionAttribute;
 use ReflectionProperty;
-
-use function array_map;
 
 /** @internal */
 final class ReflectionPropertyDefinitionBuilder
@@ -24,19 +21,22 @@ final class ReflectionPropertyDefinitionBuilder
 
     public function for(ReflectionProperty $reflection, ReflectionTypeResolver $typeResolver): PropertyDefinition
     {
+        $propertyTypeResolver = new PropertyTypeResolver($typeResolver);
+
         /** @var non-empty-string $name */
         $name = $reflection->name;
-        $signature = Reflection::signature($reflection);
-        $type = $typeResolver->resolveType($reflection);
-        $nativeType = $typeResolver->resolveNativeType($reflection);
+        $signature = $reflection->getDeclaringClass()->name . '::$' . $reflection->name;
+        $type = $propertyTypeResolver->resolveTypeFor($reflection);
+        $nativeType = $propertyTypeResolver->resolveNativeTypeFor($reflection);
         $hasDefaultValue = $this->hasDefaultValue($reflection, $type);
         $defaultValue = $reflection->getDefaultValue();
         $isPublic = $reflection->isPublic();
 
-        if ($hasDefaultValue
-            && ! $type instanceof UnresolvableType
-            && ! $type->accepts($defaultValue)
-        ) {
+        if ($type instanceof UnresolvableType) {
+            $type = $type->forProperty($signature);
+        } elseif (! $type->matches($nativeType)) {
+            $type = UnresolvableType::forNonMatchingPropertyTypes($signature, $nativeType, $type);
+        } elseif ($hasDefaultValue && ! $type->accepts($defaultValue)) {
             $type = UnresolvableType::forInvalidPropertyDefaultValue($signature, $type, $defaultValue);
         }
 
@@ -48,7 +48,7 @@ final class ReflectionPropertyDefinitionBuilder
             $hasDefaultValue,
             $defaultValue,
             $isPublic,
-            new Attributes(...$this->attributes($reflection)),
+            new Attributes(...$this->attributesRepository->for($reflection)),
         );
     }
 
@@ -60,16 +60,5 @@ final class ReflectionPropertyDefinitionBuilder
 
         return $reflection->getDeclaringClass()->getDefaultProperties()[$reflection->name] !== null
             || NullType::get()->matches($type);
-    }
-
-    /**
-     * @return list<AttributeDefinition>
-     */
-    private function attributes(ReflectionProperty $reflection): array
-    {
-        return array_map(
-            fn (ReflectionAttribute $attribute) => $this->attributesRepository->for($attribute),
-            Reflection::attributes($reflection)
-        );
     }
 }

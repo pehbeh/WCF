@@ -78,6 +78,8 @@ final class WoltLabSuiteMediaBBCode extends AbstractBBCode
                         'media' => $media->getLocalizedVersion(MessageEmbeddedObjectManager::getInstance()->getActiveMessageLanguageID()),
                         'thumbnailSize' => $thumbnailSize,
                         'width' => $width,
+                        'activeMessageID' => MessageEmbeddedObjectManager::getInstance()->getActiveMessageID(),
+                        'activeMessageObjectType' => MessageEmbeddedObjectManager::getInstance()->getActiveMessageObjectType(),
                     ], true);
                 } elseif ($media->isVideo() || $media->isAudio()) {
                     return WCF::getTPL()->fetch('shared_bbcode_wsm', 'wcf', [
