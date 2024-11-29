@@ -5,7 +5,6 @@ namespace wcf\data\file;
 use wcf\data\DatabaseObjectEditor;
 use wcf\data\file\temporary\FileTemporary;
 use wcf\data\file\thumbnail\FileThumbnailEditor;
-use wcf\data\file\thumbnail\FileThumbnailList;
 use wcf\system\file\processor\FileProcessor;
 use wcf\system\image\ImageHandler;
 use wcf\util\ExifUtil;
@@ -41,18 +40,12 @@ class FileEditor extends DatabaseObjectEditor
     public static function deleteAll(array $objectIDs = [])
     {
         $fileList = new FileList();
+        $fileList->loadThumbnails = true;
         $fileList->getConditionBuilder()->add("fileID IN (?)", [$objectIDs]);
         $fileList->readObjects();
         $files = $fileList->getObjects();
         if (\count($files) === 0) {
             return 0;
-        }
-
-        $thumbnailList = new FileThumbnailList();
-        $thumbnailList->getConditionBuilder()->add("fileID IN (?)", [$objectIDs]);
-        $thumbnailList->readObjects();
-        foreach ($thumbnailList as $thumbnail) {
-            $files[$thumbnail->fileID]->addThumbnail($thumbnail);
         }
 
         foreach ($files as $file) {
