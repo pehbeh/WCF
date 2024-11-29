@@ -50,6 +50,9 @@ final class SetCoverPhoto
         UserProfileRuntimeCache::getInstance()->removeObject($this->user->userID);
     }
 
+    /**
+     * Returns the location of a user's cover photo before WCF6.2.
+     */
     /** @noinspection PhpUndefinedFieldInspection */
     public static function getCoverPhotoLocation(User $user, bool $forceWebP): ?string
     {
