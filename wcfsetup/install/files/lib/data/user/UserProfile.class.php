@@ -20,6 +20,7 @@ use wcf\data\user\option\ViewableUserOption;
 use wcf\data\user\rank\UserRank;
 use wcf\system\cache\builder\UserGroupPermissionCacheBuilder;
 use wcf\system\cache\builder\UserRankCacheBuilder;
+use wcf\system\cache\runtime\FileRuntimeCache;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\email\Mailbox;
