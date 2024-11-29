@@ -16,6 +16,8 @@ import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 import * as FormBuilderManager from "WoltLabSuite/Core/Form/Builder/Manager";
 import WoltlabCoreFile from "WoltLabSuite/Core/Component/File/woltlab-core-file";
 import { fire as fireEvent } from "WoltLabSuite/Core/Event/Handler";
+import { getPhrase } from "WoltLabSuite/Core/Language";
+import DomUtil from "WoltLabSuite/Core/Dom/Util";
 
 type ResponseGetForm = {
   dialog: string;
@@ -26,7 +28,9 @@ type ResponseGetForm = {
 async function editCoverPhoto(button: HTMLElement, defaultCoverPhoto?: string): Promise<void> {
   const json = (await prepareRequest(button.dataset.editCoverPhoto!).get().fetchAsJson()) as ResponseGetForm;
   const dialog = dialogFactory().fromHtml(json.dialog).withoutControls();
-  const oldCoverPhoto = document.querySelector<HTMLElement>(".userProfileCoverPhoto")?.style.backgroundImage;
+  const coverPhotoElement = getCoverPhotoElement();
+  const coverPhotoNotice = document.getElementById("coverPhotoNotice");
+  const oldCoverPhoto = coverPhotoElement?.style.backgroundImage;
 
   dialog.addEventListener("afterClose", () => {
     const file = dialog.querySelector<WoltlabCoreFile>("woltlab-core-file");
@@ -36,13 +40,32 @@ async function editCoverPhoto(button: HTMLElement, defaultCoverPhoto?: string): 
       FormBuilderManager.unregisterForm(json.formId);
     }
 
-    if (oldCoverPhoto === `url("${coverPhotoUrl}")`) {
+    if (oldCoverPhoto === coverPhotoUrl || oldCoverPhoto === `url("${coverPhotoUrl}")`) {
       // nothing changed
       return;
     }
 
-    const photo = document.querySelector<HTMLElement>(".userProfileCoverPhoto");
-    photo!.style.setProperty("background-image", `url(${coverPhotoUrl})`, "");
+    if (coverPhotoElement && coverPhotoUrl) {
+      coverPhotoElement.style.setProperty("background-image", `url(${coverPhotoUrl})`, "");
+    } else {
+      // ACP cover photo management
+      if (!coverPhotoElement && coverPhotoUrl) {
+        coverPhotoNotice!.parentElement!.appendChild(
+          DomUtil.createFragmentFromHtml(
+            `<div id="coverPhotoPreview" style="background-image: url(${coverPhotoUrl});"></div>`,
+          ),
+        );
+        coverPhotoNotice!.remove();
+      } else if (coverPhotoElement && !coverPhotoUrl) {
+        coverPhotoElement.parentElement!.appendChild(
+          DomUtil.createFragmentFromHtml(
+            `<woltlab-core-notice id="coverPhotoNotice" type="info">${getPhrase("wcf.user.coverPhoto.noImage")}</woltlab-core-notice>`,
+          ),
+        );
+        coverPhotoElement.remove();
+      }
+    }
+
     showNotification();
     fireEvent("com.woltlab.wcf.user", "coverPhoto", {
       url: coverPhotoUrl,
@@ -50,6 +73,10 @@ async function editCoverPhoto(button: HTMLElement, defaultCoverPhoto?: string): 
   });
 
   dialog.show(json.title);
+}
+
+function getCoverPhotoElement(): HTMLElement | null {
+  return document.querySelector<HTMLElement>(".userProfileCoverPhoto") ?? document.getElementById("coverPhotoPreview");
 }
 
 export function setup(defaultCoverPhoto?: string): void {

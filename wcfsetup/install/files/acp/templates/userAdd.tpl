@@ -722,24 +722,30 @@
 						<p class="sectionDescription">{lang}wcf.acp.user.coverPhoto.description{/lang}</p>
 					</header>
 
-					{if $userCoverPhoto}
+					<dl>
+						<dt></dt>
+						<dd>
+							{if $userCoverPhoto}
+								<div id="coverPhotoPreview" style="background-image: url({$userCoverPhoto->getURL()})"></div>
+							{else}
+								<woltlab-core-notice id="coverPhotoNotice" type="info">{lang}wcf.user.coverPhoto.noImage{/lang}</woltlab-core-notice>
+							{/if}
+						</dd>
+					</dl>
+
+					{if $__wcf->session->getPermission('admin.user.canDisableCoverPhoto')}
 						<dl>
 							<dt></dt>
 							<dd>
-								<div id="coverPhotoPreview" style="background-image: url({$userCoverPhoto->getURL()})"></div>
+								<button type="button" class="button" data-edit-cover-photo="{link controller="UserCoverPhoto" forceFrontend=true id=$user->userID}{/link}">
+									{lang}wcf.user.coverPhoto.management{/lang}
+								</button>
 							</dd>
 						</dl>
 
-						{if $__wcf->session->getPermission('admin.user.canDisableCoverPhoto')}
-							<dl>
-								<dt></dt>
-								<dd>
-									<label><input type="checkbox" id="deleteCoverPhoto" name="deleteCoverPhoto" value="1"{if $deleteCoverPhoto == 1} checked{/if}> {lang}wcf.acp.user.deleteCoverPhoto{/lang}</label>
-								</dd>
-							</dl>
-						{/if}
-					{else}
-						<woltlab-core-notice type="info">{lang}wcf.user.coverPhoto.noImage{/lang}</woltlab-core-notice>
+						<script data-relocate="true">
+							{jsphrase name='wcf.user.coverPhoto.noImage'}
+						</script>
 					{/if}
 
 					{event name='coverPhotoFields'}
