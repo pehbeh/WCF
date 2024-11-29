@@ -48,6 +48,10 @@ define(["require", "exports", "tslib", "../../Core", "sortablejs", "WoltLabSuite
                 isSimpleSorting: false,
                 additionalParameters: {},
             }, opts);
+            // Support legacy options pre 6.2
+            if (typeof this._options.options.toleranceElement === "string") {
+                this._options.toleranceElement = this._options.options.toleranceElement;
+            }
             this.#container = document.getElementById(this._options.containerId);
             if (!this.#container) {
                 throw new Error(`Container '${this._options.containerId}' not found.`);
