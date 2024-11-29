@@ -1535,6 +1535,8 @@
 		<file>js/WoltLabSuite/Core/Ui/Redactor/RuntimeStyle.js</file>
 		<file>js/WoltLabSuite/Core/Ui/Redactor/Spoiler.js</file>
 		<file>js/WoltLabSuite/Core/Ui/Redactor/Table.js</file>
+		<file>js/WoltLabSuite/Core/Ui/User/CoverPhoto/Delete.js</file>
+		<file>js/WoltLabSuite/Core/Ui/User/CoverPhoto/Upload.js</file>
 		<file>js/WoltLabSuite/Core/Ui/User/Menu/DropDown.js</file>
 		<file>js/WoltLabSuite/WebComponent/fa-brand.js</file>
 		<file>js/WoltLabSuite/WebComponent/fa-icon.js</file>
