@@ -15,13 +15,23 @@ define(["require", "exports", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabS
         if (ok) {
             if (result.type) {
                 button.dataset.ignored = "1";
-                button.dataset.tooltip = (0, Language_1.getPhrase)("wcf.user.button.unignore");
-                button.querySelector("fa-icon")?.setIcon("eye", true);
+                if (button.dataset.type === "button") {
+                    button.textContent = (0, Language_1.getPhrase)("wcf.user.button.unignore");
+                }
+                else {
+                    button.dataset.tooltip = (0, Language_1.getPhrase)("wcf.user.button.unignore");
+                    button.querySelector("fa-icon")?.setIcon("eye", true);
+                }
             }
             else {
                 button.dataset.ignored = "0";
-                button.dataset.tooltip = (0, Language_1.getPhrase)("wcf.user.button.ignore");
-                button.querySelector("fa-icon")?.setIcon("eye-slash", true);
+                if (button.dataset.type === "button") {
+                    button.textContent = (0, Language_1.getPhrase)("wcf.user.button.ignore");
+                }
+                else {
+                    button.dataset.tooltip = (0, Language_1.getPhrase)("wcf.user.button.ignore");
+                    button.querySelector("fa-icon")?.setIcon("eye-slash", true);
+                }
             }
             (0, Notification_1.show)();
         }

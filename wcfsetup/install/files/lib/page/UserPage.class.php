@@ -19,6 +19,7 @@ use wcf\system\menu\user\profile\UserProfileMenu;
 use wcf\system\MetaTagHandler;
 use wcf\system\page\PageLocationManager;
 use wcf\system\request\LinkHandler;
+use wcf\system\view\user\profile\UserProfileHeaderView;
 use wcf\system\WCF;
 
 /**
@@ -189,6 +190,7 @@ class UserPage extends AbstractPage
             'isAccessible' => UserGroup::isAccessibleGroup($this->user->getGroupIDs()),
             'coverPhotoDimensions' => UserCoverPhoto::getCoverPhotoDimensions(),
             'specialTrophyCount' => (MODULE_TROPHY ? \count($this->user->getSpecialTrophies()) : 0),
+            'userProfileHeaderView' => new UserProfileHeaderView($this->user),
         ]);
     }
 

@@ -13,6 +13,9 @@ interface AjaxResponse extends ResponseData {
   };
 }
 
+/**
+ * @deprecated 6.2 Use `WoltLabSuite/Core/Component/User/Follow` instead.
+ */
 class UiUserProfileMenuItemFollow extends UiUserProfileMenuItemAbstract {
   constructor(userId: number, isActive: boolean) {
     super(userId, isActive);

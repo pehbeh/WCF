@@ -22,8 +22,13 @@ async function toggleFollow(button: HTMLElement): Promise<void> {
       .fetchAsResponse();
 
     button.dataset.following = "1";
-    button.dataset.tooltip = getPhrase("wcf.user.button.unfollow");
-    button.querySelector("fa-icon")?.setIcon("circle-minus");
+
+    if (button.dataset.type === "button") {
+      button.textContent = getPhrase("wcf.user.button.unfollow");
+    } else {
+      button.dataset.tooltip = getPhrase("wcf.user.button.unfollow");
+      button.querySelector("fa-icon")?.setIcon("circle-minus");
+    }
   } else {
     await prepareRequest(button.dataset.followUser!)
       .post({
@@ -32,8 +37,13 @@ async function toggleFollow(button: HTMLElement): Promise<void> {
       .fetchAsResponse();
 
     button.dataset.following = "0";
-    button.dataset.tooltip = getPhrase("wcf.user.button.follow");
-    button.querySelector("fa-icon")?.setIcon("circle-plus");
+
+    if (button.dataset.type === "button") {
+      button.textContent = getPhrase("wcf.user.button.follow");
+    } else {
+      button.dataset.tooltip = getPhrase("wcf.user.button.follow");
+      button.querySelector("fa-icon")?.setIcon("circle-plus");
+    }
   }
 
   UiNotification.show();
