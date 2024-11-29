@@ -58,15 +58,13 @@ class UserCoverPhotoCondition extends AbstractSelectCondition implements
         switch ($conditionData['userCoverPhoto']) {
             case self::NO_COVER_PHOTO:
                 $objectList->getConditionBuilder()->add(
-                    '(user_table.coverPhotoHash = ? OR user_table.coverPhotoHash IS NULL)',
-                    ['']
+                    '(user_table.coverPhotoFileID IS NULL)',
                 );
                 break;
 
             case self::COVER_PHOTO:
                 $objectList->getConditionBuilder()->add(
-                    '(user_table.coverPhotoHash <> ? AND user_table.coverPhotoHash IS NOT NULL)',
-                    ['']
+                    '(user_table.coverPhotoFileID IS NOT NULL)',
                 );
                 break;
         }
@@ -79,11 +77,11 @@ class UserCoverPhotoCondition extends AbstractSelectCondition implements
     {
         switch ($condition->userCoverPhoto) {
             case self::NO_COVER_PHOTO:
-                return $user->coverPhotoExtension === '' || $user->coverPhotoExtension === null;
+                return $user->coverPhotoFileID === null;
                 break;
 
             case self::COVER_PHOTO:
-                return $user->coverPhotoExtension !== '' && $user->coverPhotoExtension !== null;
+                return $user->coverPhotoFileID !== null;
                 break;
         }
     }

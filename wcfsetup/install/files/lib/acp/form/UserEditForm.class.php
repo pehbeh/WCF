@@ -480,15 +480,6 @@ class UserEditForm extends UserAddForm
             $data['data']['disableCoverPhoto'] = $this->disableCoverPhoto;
             $data['data']['disableCoverPhotoReason'] = $this->disableCoverPhotoReason;
             $data['data']['disableCoverPhotoExpires'] = $this->disableCoverPhotoExpires;
-
-            if ($this->deleteCoverPhoto) {
-                UserProfileRuntimeCache::getInstance()->getObject($this->userID)->getCoverPhoto()->delete();
-
-                $data['data']['coverPhotoHash'] = null;
-                $data['data']['coverPhotoExtension'] = '';
-
-                UserProfileRuntimeCache::getInstance()->removeObject($this->userID);
-            }
         }
 
         $this->objectAction = new UserAction([$this->userID], 'update', $data);
