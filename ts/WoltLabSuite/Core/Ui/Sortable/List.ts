@@ -9,7 +9,7 @@
 
 import * as Core from "../../Core";
 import Sortable from "sortablejs";
-import { apiOnce } from "WoltLabSuite/Core/Ajax";
+import { dboAction } from "WoltLabSuite/Core/Ajax";
 import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 import { getPhrase } from "WoltLabSuite/Core/Language";
 
@@ -66,64 +66,9 @@ class UiSortableList {
           chosenClass: "sortablePlaceholder",
           ghostClass: "",
           draggable: "li",
-          filter: (event: Event | TouchEvent, target: HTMLElement) => {
-            if (Sortable.utils.is(target, ".sortableNoSorting")) {
-              return true;
-            }
-
-            const eventTarget = event.target as HTMLElement;
-            if (eventTarget === target) {
-              return false;
-            }
-            if (eventTarget.parentElement === target) {
-              return false;
-            }
-            if (!this._options.toleranceElement) {
-              return true;
-            }
-
-            return !Sortable.utils.is(eventTarget, this._options.toleranceElement);
-          },
-          onMove: (event: Sortable.MoveEvent) => {
-            if (this._options.maxNestingLevel === undefined) {
-              return true;
-            }
-
-            const closest = Sortable.utils.closest(event.to, ".sortableNode");
-            if (!closest) {
-              // Top level
-              return true;
-            }
-
-            if (closest && Sortable.utils.is(closest, ".sortableNoNesting")) {
-              return false;
-            }
-
-            const levelOfDraggedNode = Math.max(
-              ...Array.from(event.dragged.querySelectorAll(".sortableList")).map((list: HTMLElement) => {
-                return getNestingLevel(list, event.dragged);
-              }),
-            );
-
-            if (getNestingLevel(event.to) + levelOfDraggedNode > this._options.maxNestingLevel) {
-              return false;
-            }
-
-            return true;
-          },
-          onEnd: (event: Sortable.SortableEvent) => {
-            if (this._options.maxNestingLevel === undefined) {
-              return;
-            }
-
-            event.to.querySelectorAll(".sortableNode").forEach((node: HTMLElement) => {
-              if (getNestingLevel(node) > this._options.maxNestingLevel!) {
-                node.classList.add("sortableNoNesting");
-              } else {
-                node.classList.remove("sortableNoNesting");
-              }
-            });
-          },
+          filter: this.#filter.bind(this),
+          onMove: this.#onMove.bind(this),
+          onEnd: this.#onEnd.bind(this),
         } as Sortable.Options,
         isSimpleSorting: false,
         additionalParameters: {},
@@ -173,12 +118,12 @@ class UiSortableList {
       }
 
       formSubmit.querySelector('button[data-type="submit"]')?.addEventListener("click", () => {
-        this.save();
+        void this.save();
       });
     }
   }
 
-  public save(): void {
+  public async save() {
     if (!this._options.className) {
       return;
     }
@@ -195,19 +140,72 @@ class UiSortableList {
         },
       },
       this._options.additionalParameters,
+    ) as Record<string, unknown>;
+
+    await dboAction("updatePosition", this._options.className).payload(parameters).dispatch();
+
+    showNotification(getPhrase("wcf.global.success.edit"));
+  }
+
+  #onMove(event: Sortable.MoveEvent) {
+    if (this._options.maxNestingLevel === undefined) {
+      return true;
+    }
+
+    const closest = Sortable.utils.closest(event.to, ".sortableNode");
+    if (!closest) {
+      // Top level
+      return true;
+    }
+
+    if (closest && Sortable.utils.is(closest, ".sortableNoNesting")) {
+      return false;
+    }
+
+    const levelOfDraggedNode = Math.max(
+      ...Array.from(event.dragged.querySelectorAll(".sortableList")).map((list: HTMLElement) => {
+        return getNestingLevel(list, event.dragged);
+      }),
     );
 
-    apiOnce({
-      data: {
-        actionName: "updatePosition",
-        className: this._options.className,
-        interfaceName: "wcf\\data\\ISortableAction",
-        parameters: parameters,
-      },
-      success: () => {
-        showNotification(getPhrase("wcf.global.success.edit"));
-      },
+    if (getNestingLevel(event.to) + levelOfDraggedNode > this._options.maxNestingLevel) {
+      return false;
+    }
+
+    return true;
+  }
+
+  #onEnd(event: Sortable.SortableEvent) {
+    if (this._options.maxNestingLevel === undefined) {
+      return;
+    }
+
+    event.to.querySelectorAll(".sortableNode").forEach((node: HTMLElement) => {
+      if (getNestingLevel(node) > this._options.maxNestingLevel!) {
+        node.classList.add("sortableNoNesting");
+      } else {
+        node.classList.remove("sortableNoNesting");
+      }
     });
+  }
+
+  #filter(event: Event | TouchEvent, target: HTMLElement) {
+    if (Sortable.utils.is(target, ".sortableNoSorting")) {
+      return true;
+    }
+
+    const eventTarget = event.target as HTMLElement;
+    if (eventTarget === target) {
+      return false;
+    }
+    if (eventTarget.parentElement === target) {
+      return false;
+    }
+    if (!this._options.toleranceElement) {
+      return true;
+    }
+
+    return !Sortable.utils.is(eventTarget, this._options.toleranceElement);
   }
 }
 

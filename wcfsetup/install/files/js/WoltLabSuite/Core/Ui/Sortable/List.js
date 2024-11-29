@@ -41,55 +41,9 @@ define(["require", "exports", "tslib", "../../Core", "sortablejs", "WoltLabSuite
                     chosenClass: "sortablePlaceholder",
                     ghostClass: "",
                     draggable: "li",
-                    filter: (event, target) => {
-                        if (sortablejs_1.default.utils.is(target, ".sortableNoSorting")) {
-                            return true;
-                        }
-                        const eventTarget = event.target;
-                        if (eventTarget === target) {
-                            return false;
-                        }
-                        if (eventTarget.parentElement === target) {
-                            return false;
-                        }
-                        if (!this._options.toleranceElement) {
-                            return true;
-                        }
-                        return !sortablejs_1.default.utils.is(eventTarget, this._options.toleranceElement);
-                    },
-                    onMove: (event) => {
-                        if (this._options.maxNestingLevel === undefined) {
-                            return true;
-                        }
-                        const closest = sortablejs_1.default.utils.closest(event.to, ".sortableNode");
-                        if (!closest) {
-                            // Top level
-                            return true;
-                        }
-                        if (closest && sortablejs_1.default.utils.is(closest, ".sortableNoNesting")) {
-                            return false;
-                        }
-                        const levelOfDraggedNode = Math.max(...Array.from(event.dragged.querySelectorAll(".sortableList")).map((list) => {
-                            return getNestingLevel(list, event.dragged);
-                        }));
-                        if (getNestingLevel(event.to) + levelOfDraggedNode > this._options.maxNestingLevel) {
-                            return false;
-                        }
-                        return true;
-                    },
-                    onEnd: (event) => {
-                        if (this._options.maxNestingLevel === undefined) {
-                            return;
-                        }
-                        event.to.querySelectorAll(".sortableNode").forEach((node) => {
-                            if (getNestingLevel(node) > this._options.maxNestingLevel) {
-                                node.classList.add("sortableNoNesting");
-                            }
-                            else {
-                                node.classList.remove("sortableNoNesting");
-                            }
-                        });
-                    },
+                    filter: this.#filter.bind(this),
+                    onMove: this.#onMove.bind(this),
+                    onEnd: this.#onEnd.bind(this),
                 },
                 isSimpleSorting: false,
                 additionalParameters: {},
@@ -127,11 +81,11 @@ define(["require", "exports", "tslib", "../../Core", "sortablejs", "WoltLabSuite
                     return;
                 }
                 formSubmit.querySelector('button[data-type="submit"]')?.addEventListener("click", () => {
-                    this.save();
+                    void this.save();
                 });
             }
         }
-        save() {
+        async save() {
             if (!this._options.className) {
                 return;
             }
@@ -142,17 +96,57 @@ define(["require", "exports", "tslib", "../../Core", "sortablejs", "WoltLabSuite
                     structure: structure,
                 },
             }, this._options.additionalParameters);
-            (0, Ajax_1.apiOnce)({
-                data: {
-                    actionName: "updatePosition",
-                    className: this._options.className,
-                    interfaceName: "wcf\\data\\ISortableAction",
-                    parameters: parameters,
-                },
-                success: () => {
-                    (0, Notification_1.show)((0, Language_1.getPhrase)("wcf.global.success.edit"));
-                },
+            await (0, Ajax_1.dboAction)("updatePosition", this._options.className).payload(parameters).dispatch();
+            (0, Notification_1.show)((0, Language_1.getPhrase)("wcf.global.success.edit"));
+        }
+        #onMove(event) {
+            if (this._options.maxNestingLevel === undefined) {
+                return true;
+            }
+            const closest = sortablejs_1.default.utils.closest(event.to, ".sortableNode");
+            if (!closest) {
+                // Top level
+                return true;
+            }
+            if (closest && sortablejs_1.default.utils.is(closest, ".sortableNoNesting")) {
+                return false;
+            }
+            const levelOfDraggedNode = Math.max(...Array.from(event.dragged.querySelectorAll(".sortableList")).map((list) => {
+                return getNestingLevel(list, event.dragged);
+            }));
+            if (getNestingLevel(event.to) + levelOfDraggedNode > this._options.maxNestingLevel) {
+                return false;
+            }
+            return true;
+        }
+        #onEnd(event) {
+            if (this._options.maxNestingLevel === undefined) {
+                return;
+            }
+            event.to.querySelectorAll(".sortableNode").forEach((node) => {
+                if (getNestingLevel(node) > this._options.maxNestingLevel) {
+                    node.classList.add("sortableNoNesting");
+                }
+                else {
+                    node.classList.remove("sortableNoNesting");
+                }
             });
+        }
+        #filter(event, target) {
+            if (sortablejs_1.default.utils.is(target, ".sortableNoSorting")) {
+                return true;
+            }
+            const eventTarget = event.target;
+            if (eventTarget === target) {
+                return false;
+            }
+            if (eventTarget.parentElement === target) {
+                return false;
+            }
+            if (!this._options.toleranceElement) {
+                return true;
+            }
+            return !sortablejs_1.default.utils.is(eventTarget, this._options.toleranceElement);
         }
     }
     return UiSortableList;
