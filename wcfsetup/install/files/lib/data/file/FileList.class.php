@@ -3,6 +3,7 @@
 namespace wcf\data\file;
 
 use wcf\data\DatabaseObjectList;
+use wcf\data\file\thumbnail\FileThumbnailList;
 
 /**
  * @author Alexander Ebert
@@ -18,4 +19,27 @@ use wcf\data\DatabaseObjectList;
 class FileList extends DatabaseObjectList
 {
     public $className = File::class;
+    public bool $loadThumbnails = false;
+
+    #[\Override]
+    public function readObjects()
+    {
+        parent::readObjects();
+
+        $this->loadThumbnails();
+    }
+
+    public function loadThumbnails(): void
+    {
+        if (!$this->loadThumbnails || $this->getObjectIDs() === []) {
+            return;
+        }
+
+        $thumbnailList = new FileThumbnailList();
+        $thumbnailList->getConditionBuilder()->add("fileID IN (?)", [$this->getObjectIDs()]);
+        $thumbnailList->readObjects();
+        foreach ($thumbnailList as $thumbnail) {
+            $this->objects[$thumbnail->fileID]->addThumbnail($thumbnail);
+        }
+    }
 }
