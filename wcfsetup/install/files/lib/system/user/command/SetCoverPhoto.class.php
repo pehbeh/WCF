@@ -31,12 +31,14 @@ final class SetCoverPhoto
         }
 
         // Delete the old cover photo if it exists.
-        if (\file_exists($this->getCoverPhotoLocation($this->user, false))) {
-            @\unlink($this->getCoverPhotoLocation($this->user, false));
-        }
+        $oldCoverPhotoLocation = self::getCoverPhotoLocation($this->user, false);
+        $oldCoverPhotoWebPLocation = self::getCoverPhotoLocation($this->user, true);
 
-        if (\file_exists($this->getCoverPhotoLocation($this->user, true))) {
-            @\unlink($this->getCoverPhotoLocation($this->user, true));
+        if ($oldCoverPhotoLocation && \file_exists($oldCoverPhotoLocation)) {
+            @\unlink($oldCoverPhotoLocation);
+        }
+        if ($oldCoverPhotoWebPLocation && \file_exists($oldCoverPhotoWebPLocation)) {
+            @\unlink($oldCoverPhotoWebPLocation);
         }
 
         (new UserEditor($this->user))->update([
@@ -48,9 +50,13 @@ final class SetCoverPhoto
         UserProfileRuntimeCache::getInstance()->removeObject($this->user->userID);
     }
 
-    public static function getCoverPhotoLocation(User $user, bool $forceWebP): string
+    /** @noinspection PhpUndefinedFieldInspection */
+    public static function getCoverPhotoLocation(User $user, bool $forceWebP): ?string
     {
-        /** @noinspection PhpUndefinedFieldInspection */
+        if (!$user->coverPhotoHash || !$user->coverPhotoExtension) {
+            return null;
+        }
+
         return \sprintf(
             '%simages/coverPhotos/%s/%d-%s.%s',
             WCF_DIR,
