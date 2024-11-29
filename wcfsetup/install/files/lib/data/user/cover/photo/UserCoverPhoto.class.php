@@ -3,6 +3,7 @@
 namespace wcf\data\user\cover\photo;
 
 use wcf\data\file\File;
+use wcf\data\file\FileAction;
 
 /**
  * Represents a user's cover photo.
@@ -28,6 +29,12 @@ final class UserCoverPhoto implements IUserCoverPhoto
         protected readonly int $userID,
         protected readonly File $file
     ) {
+    }
+
+    #[\Override]
+    public function delete()
+    {
+        (new FileAction([$this->file], 'delete'))->executeAction();
     }
 
     #[\Override]
