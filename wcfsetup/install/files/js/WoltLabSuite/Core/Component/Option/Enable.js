@@ -1,3 +1,11 @@
+/**
+ * Enables or disables options based on the value of the element.
+ *
+ * @author Olaf Braun
+ * @copyright 2001-2024 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
+ */
 define(["require", "exports", "WoltLabSuite/Core/Helper/Selector"], function (require, exports, Selector_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -66,11 +74,9 @@ define(["require", "exports", "WoltLabSuite/Core/Helper/Selector"], function (re
                 // escape dots so that they are not recognized as class selectors
                 const elementId = element.id.replace(/\./g, "\\.");
                 const noElement = document.getElementById(elementId + "_no");
-                if (noElement)
-                    noElement.disabled = !enable;
+                noElement.disabled = !enable;
                 const neverElement = document.getElementById(elementId + "_never");
-                if (neverElement)
-                    neverElement.disabled = !enable;
+                neverElement.disabled = !enable;
             }
         }
         else {
