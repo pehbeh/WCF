@@ -3,10 +3,6 @@
 {event name='javascriptInclude'}
 
 <script data-relocate="true">
-	$(function() {
-		new WCF.Option.Handler();
-	});
-
 	document.addEventListener("DOMContentLoaded", () => {
 		const searchParams = new URLSearchParams(document.location.search);
 		const optionName = searchParams.get("optionName");

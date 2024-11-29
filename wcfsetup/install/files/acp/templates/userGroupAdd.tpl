@@ -2,8 +2,6 @@
 
 <script data-relocate="true">
 	$(function() {
-		new WCF.Option.Handler();
-		
 		{if $action == 'edit' && $group->canCopy()}
 			WCF.Language.addObject({
 				'wcf.acp.group.copy.confirmMessage': '{jslang}wcf.acp.group.copy.confirmMessage{/jslang}',

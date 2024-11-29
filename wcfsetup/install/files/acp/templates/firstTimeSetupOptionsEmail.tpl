@@ -3,10 +3,6 @@
 {event name='javascriptInclude'}
 
 <script data-relocate="true">
-	$(function() {
-		new WCF.Option.Handler();
-	});
-	
 	{event name='javascriptInit'}
 </script>
 

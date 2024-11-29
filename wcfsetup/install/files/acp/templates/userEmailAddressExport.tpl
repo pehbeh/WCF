@@ -1,11 +1,5 @@
 {include file='header' pageTitle='wcf.acp.user.exportEmailAddress'}
 
-<script data-relocate="true">
-	$(function() {
-		new WCF.Option.Handler();
-	});
-</script>
-
 <header class="contentHeader">
 	<div class="contentHeaderTitle">
 		<h1 class="contentTitle">{lang}wcf.acp.user.exportEmailAddress{/lang}</h1>
