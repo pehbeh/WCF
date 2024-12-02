@@ -53,7 +53,7 @@ define(["require", "exports", "tslib", "../../../Ajax", "../../../Core", "../../
         const overrideScss = document.getElementById("overrideScss");
         const refreshCodeMirror = (element) => {
             element.codemirror.refresh();
-            element.codemirror.setCursor(element.codemirror.getCursor());
+            element.codemirror.setCursor(element.codemirror.getCursor(), undefined, { scroll: false });
         };
         if (isTainted) {
             EventHandler.add("com.woltlab.wcf.simpleTabMenu_styleTabMenuContainer", "select", () => {
