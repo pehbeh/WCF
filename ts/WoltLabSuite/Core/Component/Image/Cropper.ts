@@ -14,6 +14,7 @@ import type { Selection } from "@cropper/element-selection";
 import { getPhrase } from "WoltLabSuite/Core/Language";
 import WoltlabCoreDialogElement from "WoltLabSuite/Core/Element/woltlab-core-dialog";
 import * as ExifUtil from "WoltLabSuite/Core/Image/ExifUtil";
+import ExifReader from "exifreader";
 
 export interface CropperConfiguration {
   aspectRatio: number;
@@ -35,6 +36,7 @@ abstract class ImageCropper {
   protected cropperSelection?: CropperSelection | null;
   protected dialog?: WoltlabCoreDialogElement;
   protected exif?: ExifUtil.Exif;
+  protected orientation?: number;
   #cropper?: Cropper;
 
   constructor(element: WoltlabCoreFileUploadElement, file: File, configuration: CropperConfiguration) {
@@ -42,6 +44,26 @@ abstract class ImageCropper {
     this.element = element;
     this.file = file;
     this.resizer = new ImageResizer();
+  }
+
+  protected get width() {
+    switch (this.orientation) {
+      case 90:
+      case 270:
+        return this.image!.height;
+      default:
+        return this.image!.width;
+    }
+  }
+
+  protected get height() {
+    switch (this.orientation) {
+      case 90:
+      case 270:
+        return this.image!.width;
+      default:
+        return this.image!.height;
+    }
   }
 
   public async showDialog(): Promise<File> {
@@ -57,7 +79,11 @@ abstract class ImageCropper {
         this.cropperSelection!.$toCanvas()
           .then((canvas) => {
             this.resizer
-              .saveFile({ exif: this.exif, image: canvas }, this.file.name, this.file.type)
+              .saveFile(
+                { exif: this.orientation ? undefined : this.exif, image: canvas },
+                this.file.name,
+                this.file.type,
+              )
               .then((resizedFile) => {
                 resolve(resizedFile);
               })
@@ -76,26 +102,41 @@ abstract class ImageCropper {
     const { image, exif } = await this.resizer.loadFile(this.file);
     this.image = image;
     this.exif = exif;
-  }
-
-  protected setCropperStyle() {
-    this.cropperCanvas!.style.aspectRatio = `${this.image!.width}/${this.image!.height}`;
-
-    if (this.image!.width > this.image!.height) {
-      this.cropperCanvas!.style.width = `min(70vw, ${this.image!.width}px)`;
-      this.cropperCanvas!.style.height = "auto";
-    } else {
-      this.cropperCanvas!.style.height = `min(60vh, ${this.image!.height}px)`;
-      this.cropperCanvas!.style.width = "auto";
+    const tags = await ExifReader.load(this.file);
+    if (tags.Orientation) {
+      switch (tags.Orientation.value) {
+        case 3:
+          this.orientation = 180;
+          break;
+        case 6:
+          this.orientation = 90;
+          break;
+        case 8:
+          this.orientation = 270;
+          break;
+        // Any other rotation is unsupported.
+      }
     }
-
-    this.cropperSelection!.aspectRatio = this.configuration.aspectRatio;
   }
 
   protected abstract getCropperTemplate(): string;
 
   protected getDialogExtra(): string | undefined {
     return undefined;
+  }
+
+  protected setCropperStyle() {
+    this.cropperCanvas!.style.aspectRatio = `${this.width}/${this.height}`;
+
+    if (this.width > this.height) {
+      this.cropperCanvas!.style.width = `min(70vw, ${this.width}px)`;
+      this.cropperCanvas!.style.height = "auto";
+    } else {
+      this.cropperCanvas!.style.height = `min(60vh, ${this.height}px)`;
+      this.cropperCanvas!.style.width = "auto";
+    }
+
+    this.cropperSelection!.aspectRatio = this.configuration.aspectRatio;
   }
 
   protected createCropper() {
@@ -109,6 +150,9 @@ abstract class ImageCropper {
 
     this.setCropperStyle();
 
+    if (this.orientation) {
+      this.cropperImage!.$rotate(`${this.orientation}deg`);
+    }
     this.cropperImage!.$center("contain");
     this.cropperSelection!.$center();
 
@@ -143,11 +187,15 @@ class ExactImageCropper extends ImageCropper {
   public async showDialog(): Promise<File> {
     // The image already has the correct size, cropping is not necessary
     if (
-      this.image!.width == this.#size!.width &&
-      this.image!.height == this.#size!.height &&
+      this.width == this.#size!.width &&
+      this.height == this.#size!.height &&
       this.image instanceof HTMLCanvasElement
     ) {
-      return this.resizer.saveFile({ exif: this.exif, image: this.image }, this.file.name, this.file.type);
+      return this.resizer.saveFile(
+        { exif: this.orientation ? undefined : this.exif, image: this.image },
+        this.file.name,
+        this.file.type,
+      );
     }
 
     return super.showDialog();
@@ -162,7 +210,7 @@ class ExactImageCropper extends ImageCropper {
 
     // resize image to the largest possible size
     const sizes = this.configuration.sizes.filter((size) => {
-      return size.width <= this.image!.width && size.height <= this.image!.height;
+      return size.width <= this.width && size.height <= this.height;
     });
 
     if (sizes.length === 0) {
@@ -179,8 +227,8 @@ class ExactImageCropper extends ImageCropper {
     this.#size = sizes[sizes.length - 1];
     this.image = await this.resizer.resize(
       this.image as HTMLImageElement,
-      this.image!.width >= this.image!.height ? this.image!.width : this.#size.width,
-      this.image!.height > this.image!.width ? this.image!.height : this.#size.height,
+      this.width >= this.height ? this.width : this.#size.width,
+      this.height > this.width ? this.height : this.#size.height,
       this.resizer.quality,
       true,
       timeout,
@@ -190,7 +238,7 @@ class ExactImageCropper extends ImageCropper {
   protected getCropperTemplate(): string {
     return `<div class="cropperContainer">
   <cropper-canvas background>
-    <cropper-image></cropper-image>
+    <cropper-image rotatable></cropper-image>
     <cropper-shade hidden></cropper-shade>
     <cropper-selection movable outlined keyboard>
       <cropper-grid role="grid" bordered covered></cropper-grid>
@@ -207,8 +255,8 @@ class ExactImageCropper extends ImageCropper {
     this.cropperSelection!.width = this.#size!.width;
     this.cropperSelection!.height = this.#size!.height;
 
-    this.cropperCanvas!.style.width = `${this.image!.width}px`;
-    this.cropperCanvas!.style.height = `${this.image!.height}px`;
+    this.cropperCanvas!.style.width = `${this.width}px`;
+    this.cropperCanvas!.style.height = `${this.height}px`;
     this.cropperSelection!.style.removeProperty("aspectRatio");
   }
 }
@@ -236,7 +284,7 @@ class MinMaxImageCropper extends ImageCropper {
   protected getCropperTemplate(): string {
     return `<div class="cropperContainer">
   <cropper-canvas background>
-    <cropper-image skewable scalable translatable></cropper-image>
+    <cropper-image skewable scalable translatable rotatable></cropper-image>
     <cropper-shade hidden></cropper-shade>
     <cropper-handle action="move" plain></cropper-handle>
     <cropper-selection movable zoomable resizable outlined>
@@ -261,8 +309,8 @@ class MinMaxImageCropper extends ImageCropper {
 
     this.cropperSelection!.width = this.minSize.width;
     this.cropperSelection!.height = this.minSize.height;
-    this.cropperCanvas!.style.minWidth = `min(${this.maxSize.width}px, ${this.image!.width}px)`;
-    this.cropperCanvas!.style.minHeight = `min(${this.maxSize.height}px, ${this.image!.height}px)`;
+    this.cropperCanvas!.style.minWidth = `min(${this.maxSize.width}px, ${this.width}px)`;
+    this.cropperCanvas!.style.minHeight = `min(${this.maxSize.height}px, ${this.height}px)`;
   }
 
   protected createCropper() {

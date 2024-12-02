@@ -6,12 +6,13 @@
  * @license   GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since     6.2
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltLabSuite/Core/Component/Dialog", "cropperjs", "WoltLabSuite/Core/Language"], function (require, exports, tslib_1, Resizer_1, Dialog_1, cropperjs_1, Language_1) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltLabSuite/Core/Component/Dialog", "cropperjs", "WoltLabSuite/Core/Language", "exifreader"], function (require, exports, tslib_1, Resizer_1, Dialog_1, cropperjs_1, Language_1, exifreader_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.cropImage = cropImage;
     Resizer_1 = tslib_1.__importDefault(Resizer_1);
     cropperjs_1 = tslib_1.__importDefault(cropperjs_1);
+    exifreader_1 = tslib_1.__importDefault(exifreader_1);
     class ImageCropper {
         configuration;
         file;
@@ -23,12 +24,31 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
         cropperSelection;
         dialog;
         exif;
+        orientation;
         #cropper;
         constructor(element, file, configuration) {
             this.configuration = configuration;
             this.element = element;
             this.file = file;
             this.resizer = new Resizer_1.default();
+        }
+        get width() {
+            switch (this.orientation) {
+                case 90:
+                case 270:
+                    return this.image.height;
+                default:
+                    return this.image.width;
+            }
+        }
+        get height() {
+            switch (this.orientation) {
+                case 90:
+                case 270:
+                    return this.image.width;
+                default:
+                    return this.image.height;
+            }
         }
         async showDialog() {
             this.dialog = (0, Dialog_1.dialogFactory)().fromElement(this.image).asPrompt({
@@ -41,7 +61,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
                     this.cropperSelection.$toCanvas()
                         .then((canvas) => {
                         this.resizer
-                            .saveFile({ exif: this.exif, image: canvas }, this.file.name, this.file.type)
+                            .saveFile({ exif: this.orientation ? undefined : this.exif, image: canvas }, this.file.name, this.file.type)
                             .then((resizedFile) => {
                             resolve(resizedFile);
                         })
@@ -59,21 +79,36 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
             const { image, exif } = await this.resizer.loadFile(this.file);
             this.image = image;
             this.exif = exif;
-        }
-        setCropperStyle() {
-            this.cropperCanvas.style.aspectRatio = `${this.image.width}/${this.image.height}`;
-            if (this.image.width > this.image.height) {
-                this.cropperCanvas.style.width = `min(70vw, ${this.image.width}px)`;
-                this.cropperCanvas.style.height = "auto";
+            const tags = await exifreader_1.default.load(this.file);
+            if (tags.Orientation) {
+                switch (tags.Orientation.value) {
+                    case 3:
+                        this.orientation = 180;
+                        break;
+                    case 6:
+                        this.orientation = 90;
+                        break;
+                    case 8:
+                        this.orientation = 270;
+                        break;
+                    // Any other rotation is unsupported.
+                }
             }
-            else {
-                this.cropperCanvas.style.height = `min(60vh, ${this.image.height}px)`;
-                this.cropperCanvas.style.width = "auto";
-            }
-            this.cropperSelection.aspectRatio = this.configuration.aspectRatio;
         }
         getDialogExtra() {
             return undefined;
+        }
+        setCropperStyle() {
+            this.cropperCanvas.style.aspectRatio = `${this.width}/${this.height}`;
+            if (this.width > this.height) {
+                this.cropperCanvas.style.width = `min(70vw, ${this.width}px)`;
+                this.cropperCanvas.style.height = "auto";
+            }
+            else {
+                this.cropperCanvas.style.height = `min(60vh, ${this.height}px)`;
+                this.cropperCanvas.style.width = "auto";
+            }
+            this.cropperSelection.aspectRatio = this.configuration.aspectRatio;
         }
         createCropper() {
             this.#cropper = new cropperjs_1.default(this.image, {
@@ -83,6 +118,9 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
             this.cropperImage = this.#cropper.getCropperImage();
             this.cropperSelection = this.#cropper.getCropperSelection();
             this.setCropperStyle();
+            if (this.orientation) {
+                this.cropperImage.$rotate(`${this.orientation}deg`);
+            }
             this.cropperImage.$center("contain");
             this.cropperSelection.$center();
             // Limit the selection to the canvas boundaries
@@ -109,10 +147,10 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
         #size;
         async showDialog() {
             // The image already has the correct size, cropping is not necessary
-            if (this.image.width == this.#size.width &&
-                this.image.height == this.#size.height &&
+            if (this.width == this.#size.width &&
+                this.height == this.#size.height &&
                 this.image instanceof HTMLCanvasElement) {
-                return this.resizer.saveFile({ exif: this.exif, image: this.image }, this.file.name, this.file.type);
+                return this.resizer.saveFile({ exif: this.orientation ? undefined : this.exif, image: this.image }, this.file.name, this.file.type);
             }
             return super.showDialog();
         }
@@ -123,7 +161,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
             });
             // resize image to the largest possible size
             const sizes = this.configuration.sizes.filter((size) => {
-                return size.width <= this.image.width && size.height <= this.image.height;
+                return size.width <= this.width && size.height <= this.height;
             });
             if (sizes.length === 0) {
                 const smallestSize = this.configuration.sizes.length > 1 ? this.configuration.sizes[this.configuration.sizes.length - 1] : undefined;
@@ -133,12 +171,12 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
                 }));
             }
             this.#size = sizes[sizes.length - 1];
-            this.image = await this.resizer.resize(this.image, this.image.width >= this.image.height ? this.image.width : this.#size.width, this.image.height > this.image.width ? this.image.height : this.#size.height, this.resizer.quality, true, timeout);
+            this.image = await this.resizer.resize(this.image, this.width >= this.height ? this.width : this.#size.width, this.height > this.width ? this.height : this.#size.height, this.resizer.quality, true, timeout);
         }
         getCropperTemplate() {
             return `<div class="cropperContainer">
   <cropper-canvas background>
-    <cropper-image></cropper-image>
+    <cropper-image rotatable></cropper-image>
     <cropper-shade hidden></cropper-shade>
     <cropper-selection movable outlined keyboard>
       <cropper-grid role="grid" bordered covered></cropper-grid>
@@ -152,8 +190,8 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
             super.setCropperStyle();
             this.cropperSelection.width = this.#size.width;
             this.cropperSelection.height = this.#size.height;
-            this.cropperCanvas.style.width = `${this.image.width}px`;
-            this.cropperCanvas.style.height = `${this.image.height}px`;
+            this.cropperCanvas.style.width = `${this.width}px`;
+            this.cropperCanvas.style.height = `${this.height}px`;
             this.cropperSelection.style.removeProperty("aspectRatio");
         }
     }
@@ -176,7 +214,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
         getCropperTemplate() {
             return `<div class="cropperContainer">
   <cropper-canvas background>
-    <cropper-image skewable scalable translatable></cropper-image>
+    <cropper-image skewable scalable translatable rotatable></cropper-image>
     <cropper-shade hidden></cropper-shade>
     <cropper-handle action="move" plain></cropper-handle>
     <cropper-selection movable zoomable resizable outlined>
@@ -199,8 +237,8 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
             super.setCropperStyle();
             this.cropperSelection.width = this.minSize.width;
             this.cropperSelection.height = this.minSize.height;
-            this.cropperCanvas.style.minWidth = `min(${this.maxSize.width}px, ${this.image.width}px)`;
-            this.cropperCanvas.style.minHeight = `min(${this.maxSize.height}px, ${this.image.height}px)`;
+            this.cropperCanvas.style.minWidth = `min(${this.maxSize.width}px, ${this.width}px)`;
+            this.cropperCanvas.style.minHeight = `min(${this.maxSize.height}px, ${this.height}px)`;
         }
         createCropper() {
             super.createCropper();
