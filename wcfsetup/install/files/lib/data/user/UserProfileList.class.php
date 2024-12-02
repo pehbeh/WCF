@@ -2,6 +2,8 @@
 
 namespace wcf\data\user;
 
+use wcf\system\cache\runtime\FileRuntimeCache;
+
 /**
  * Represents a list of user profiles.
  *
@@ -59,5 +61,13 @@ class UserProfileList extends UserList
         }
 
         parent::readObjects();
+
+        $coverPhotoFileIDs = [];
+        foreach ($this->objects as $object) {
+            if ($object->coverPhotoFileID) {
+                $coverPhotoFileIDs[] = $object->coverPhotoFileID;
+            }
+        }
+        FileRuntimeCache::getInstance()->cacheObjectIDs($coverPhotoFileIDs);
     }
 }
