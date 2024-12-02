@@ -51,7 +51,7 @@ class DevtoolsProjectAddForm extends AbstractFormBuilderForm
     /**
      * Defines the minimum WCF version supported by the dev tool.
      */
-    private const MIN_WCF_VERSION = "3.1.0";
+    private const MIN_WCF_VERSION = "5.4.22";
 
     /**
      * @inheritDoc
