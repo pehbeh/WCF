@@ -2257,6 +2257,7 @@ ALTER TABLE wcf1_tracked_visit_type ADD FOREIGN KEY (userID) REFERENCES wcf1_use
 ALTER TABLE wcf1_unfurl_url ADD FOREIGN KEY (imageID) REFERENCES wcf1_unfurl_url_image (imageID) ON DELETE SET NULL;
 
 ALTER TABLE wcf1_user ADD FOREIGN KEY (avatarID) REFERENCES wcf1_user_avatar (avatarID) ON DELETE SET NULL;
+ALTER TABLE wcf1_user ADD FOREIGN KEY (coverPhotoFileID) REFERENCES wcf1_file (fileID) ON DELETE SET NULL;
 ALTER TABLE wcf1_user ADD FOREIGN KEY (rankID) REFERENCES wcf1_user_rank (rankID) ON DELETE SET NULL;
 ALTER TABLE wcf1_user ADD FOREIGN KEY (userOnlineGroupID) REFERENCES wcf1_user_group (groupID) ON DELETE SET NULL;
 
