@@ -9,9 +9,14 @@
 
 import { wheneverFirstSeen } from "WoltLabSuite/Core/Helper/Selector";
 
+type SelectOption = {
+  value: string;
+  option: string;
+};
+
 function change(option: HTMLInputElement | HTMLSelectElement) {
-  const disableOptions = eval(option.dataset.disableOptions!);
-  const enableOptions = eval(option.dataset.enableOptions!);
+  const disableOptions = JSON.parse(option.dataset.disableOptions!);
+  const enableOptions = JSON.parse(option.dataset.enableOptions!);
 
   if (option instanceof HTMLInputElement) {
     switch (option.type) {
@@ -22,7 +27,7 @@ function change(option: HTMLInputElement | HTMLSelectElement) {
       case "radio":
         if (option.checked) {
           let isActive = true;
-          if (option.dataset.isBoolean && option.value != "1") {
+          if (option.dataset.isBoolean && option.value !== "1") {
             isActive = false;
           }
           showOptions(isActive, disableOptions, enableOptions);
@@ -31,13 +36,24 @@ function change(option: HTMLInputElement | HTMLSelectElement) {
     }
   } else if (option instanceof HTMLSelectElement) {
     const value = option.value;
-    const relevantDisableOptions: string[] = disableOptions
-      .filter((item) => item.value == value)
-      .map((item) => item.option);
+    const relevantDisableOptions: string[] = [];
+    const relevantEnableOptions: string[] = [];
 
-    const relevantEnableOptions: string[] = enableOptions
-      .filter((item) => item.value == value)
-      .map((item) => item.option);
+    for (const item of disableOptions as SelectOption[]) {
+      if (item.value === value) {
+        relevantDisableOptions.push(item.option);
+      } else {
+        relevantEnableOptions.push(item.option);
+      }
+    }
+
+    for (const item of enableOptions as SelectOption[]) {
+      if (item.value === value) {
+        relevantEnableOptions.push(item.option);
+      } else {
+        relevantDisableOptions.push(item.option);
+      }
+    }
 
     showOptions(true, relevantDisableOptions, relevantEnableOptions);
   }
@@ -84,11 +100,16 @@ function enableOption(element: HTMLElement, enable: boolean) {
       noElement.disabled = !enable;
 
       const neverElement = document.getElementById(elementId + "_never") as HTMLInputElement;
-      neverElement.disabled = !enable;
+      if (neverElement) {
+        neverElement.disabled = !enable;
+      }
     }
   } else {
-    if (enable) element.removeAttribute("readonly");
-    else element.setAttribute("readonly", "true");
+    if (enable) {
+      element.removeAttribute("readonly");
+    } else {
+      element.setAttribute("readonly", "true");
+    }
   }
 
   if (enable) {

@@ -65,12 +65,12 @@ class CaptchaSelectOptionType extends AbstractOptionType
                         if (!empty($disableOptions)) {
                             $disableOptions .= ',';
                         }
-                        $disableOptions .= "{ value: '" . $key . "', option: '" . \mb_substr($item, 1) . "' }";
+                        $disableOptions .= '{ "value": "' . $key . '", "option": "' . \mb_substr($item, 1) . '" }';
                     } else {
                         if (!empty($enableOptions)) {
                             $enableOptions .= ',';
                         }
-                        $enableOptions .= "{ value: '" . $key . "', option: '" . $item . "' }";
+                        $enableOptions .= '{ "value": "' . $key . '", "option": "' . $item . '" }';
                     }
                 }
             }
