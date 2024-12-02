@@ -172,7 +172,17 @@ final class FileProcessor extends SingletonFactory
         }
 
         $filename = FileUtil::getTemporaryFilename(extension: 'webp');
-        $imageAdapter->saveImageAs($imageAdapter->getImage(), $filename, 'webp', 80);
+
+        try {
+            $imageAdapter->saveImageAs($imageAdapter->getImage(), $filename, 'webp', 80);
+        } catch (\Throwable $e) {
+            // Ignore any errors trying to save the file unless in debug mode.
+            if (\ENABLE_DEBUG_MODE) {
+                throw $e;
+            }
+
+            return;
+        }
 
         (new FileEditor($file))->update([
             'fileHashWebp' => \hash_file('sha256', $filename),
