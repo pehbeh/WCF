@@ -6609,6 +6609,8 @@ if (COMPILER_TARGET_DEFAULT) {
 	
 	/**
 	 * Handles selection of categories.
+	 *
+	 * @deprecated 6.2 Use `WoltLabSuite/Core/Component/Category/Flexible` instead.
 	 */
 	WCF.Category.FlexibleCategoryList = Class.extend({
 		/**
