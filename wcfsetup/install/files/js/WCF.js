@@ -5493,6 +5493,7 @@ if (COMPILER_TARGET_DEFAULT) {
 	 * @param        string                className
 	 * @param        integer                offset
 	 * @param        object                options
+	 * @deprecated 6.2 Use `WoltLabSuite/Core/Ui/Sortable/List` instead.
 	 */
 	WCF.Sortable.List = Class.extend({
 		/**
