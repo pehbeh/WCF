@@ -10,24 +10,61 @@
 
 .recentActivityListItem {
 	display: grid;
-	grid-template-areas:
-		"avatar title"
-		"avatar description"
-		"avatar time";
-	grid-template-columns: min-content 1fr;
 	column-gap: 15px;
 	row-gap: 5px;
 	position: relative;
+	grid-template-areas:
+		"avatar title"
+		"avatar time";
+	grid-template-columns: min-content 1fr;
+	grid-template-rows: min-content 1fr;
 
-	&.recentActivityListItem--compact {
+	&.recentActivityListItem--withDescription {
 		grid-template-areas:
 			"avatar title"
+			"avatar description"
 			"avatar time";
+		grid-template-rows: min-content min-content 1fr;
 	}
 
 	&:not(:last-child) {
 		padding-bottom: 20px;
 		border-bottom: 1px solid var(--wcfContentBorderInner);
+	}
+
+	@include screen-md-up {
+		&.recentActivityListItem--withImage {
+			grid-template-areas:
+				"avatar title image"
+				"avatar time image";
+			grid-template-columns: min-content 1fr min-content;
+		}
+
+		&.recentActivityListItem--withDescription.recentActivityListItem--withImage {
+			grid-template-areas:
+				"avatar title image"
+				"avatar description image"
+				"avatar time image";
+		}
+	}
+
+	@include screen-sm-down {
+		&.recentActivityListItem--withImage {
+			grid-template-areas:
+				"avatar title"
+				"avatar image"
+				"avatar time";
+			grid-template-rows: min-content min-content 1fr;
+		}
+
+		&.recentActivityListItem--withDescription.recentActivityListItem--withImage {
+			grid-template-areas:
+				"avatar title"
+				"avatar image"
+				"avatar description"
+				"avatar time";
+			grid-template-rows: min-content min-content min-content 1fr;
+		}
 	}
 }
 
@@ -51,6 +88,20 @@
 	color: var(--wcfContentDimmedText);
 
 	@include wcfFontSmall;
+}
+
+.recentActivityListItem__image {
+	grid-area: image;
+	align-self: center;
+}
+
+.recentActivityListItem__image img {
+	border-radius: var(--wcfBorderRadius);
+	max-width: 300px;
+
+	@include screen-sm-down {
+		max-width: 100%;
+	}
 }
 
 .recentActivityListItem__link {

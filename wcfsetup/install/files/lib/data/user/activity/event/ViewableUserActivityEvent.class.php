@@ -67,6 +67,11 @@ class ViewableUserActivityEvent extends DatabaseObjectDecorator
     protected string $link = '';
 
     /**
+     * @since 6.2
+     */
+    protected string $image = '';
+
+    /**
      * Marks this event as accessible for current user.
      */
     public function setIsAccessible()
@@ -212,5 +217,21 @@ class ViewableUserActivityEvent extends DatabaseObjectDecorator
     public function isIgnoredContent(): bool
     {
         return UserProfileHandler::getInstance()->getUserProfile()->isIgnoredUser($this->getUserProfile()->userID, 2);
+    }
+
+    /**
+     * @since 6.2
+     */
+    public function setImage(string $image): void
+    {
+        $this->image = $image;
+    }
+
+    /**
+     * @since 6.2
+     */
+    public function getImage(): string
+    {
+        return $this->image;
     }
 }

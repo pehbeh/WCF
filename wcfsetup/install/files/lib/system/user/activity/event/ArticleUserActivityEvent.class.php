@@ -47,6 +47,9 @@ class ArticleUserActivityEvent extends SingletonFactory implements IUserActivity
                     ));
                     $event->setDescription(\strip_tags($article->getFormattedTeaser()), true);
                     $event->setLink($article->getLink());
+                    if ($article->getTeaserImage()) {
+                        $event->setImage($article->getTeaserImage()->getThumbnailLink('medium'));
+                    }
                 }
             } else {
                 $event->setIsOrphaned();
