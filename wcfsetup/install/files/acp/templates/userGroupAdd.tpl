@@ -2,7 +2,7 @@
 
 <script data-relocate="true">
 	{if $action == 'edit' && $group->canCopy()}
-		require(['WoltLabSuite/Core/Acp/Ui/User/Group/Copy'], ({ init }) => {
+		require(['WoltLabSuite/Core/Acp/Component/User/Group/Copy'], ({ init }) => {
 			init();
 		});
 	{/if}
