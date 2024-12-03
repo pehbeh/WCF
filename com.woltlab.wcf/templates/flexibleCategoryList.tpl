@@ -32,7 +32,7 @@
 	{/foreach}
 </ol>
 <script data-relocate="true">
-	$(function() {
-		new WCF.Category.FlexibleCategoryList('{$flexibleCategoryListID}');
+	require(['WoltLabSuite/Core/Component/Category/Flexible'], ({ FlexibleCategoryList }) => {
+		new FlexibleCategoryList('{$flexibleCategoryListID}');
 	});
 </script>

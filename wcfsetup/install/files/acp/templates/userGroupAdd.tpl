@@ -1,21 +1,13 @@
 {include file='header' pageTitle='wcf.acp.group.'|concat:$action}
 
 <script data-relocate="true">
+	{if $action == 'edit' && $group->canCopy()}
+		require(['WoltLabSuite/Core/Acp/Component/User/Group/Copy'], ({ init }) => {
+			init();
+		});
+	{/if}
+
 	$(function() {
-		{if $action == 'edit' && $group->canCopy()}
-			WCF.Language.addObject({
-				'wcf.acp.group.copy.confirmMessage': '{jslang}wcf.acp.group.copy.confirmMessage{/jslang}',
-				'wcf.acp.group.copy.copyACLOptions': '{jslang}wcf.acp.group.copy.copyACLOptions{/jslang}',
-				'wcf.acp.group.copy.copyACLOptions.description': '{jslang}wcf.acp.group.copy.copyACLOptions.description{/jslang}',
-				'wcf.acp.group.copy.copyMembers': '{jslang}wcf.acp.group.copy.copyMembers{/jslang}',
-				'wcf.acp.group.copy.copyMembers.description': '{jslang}wcf.acp.group.copy.copyMembers.description{/jslang}',
-				'wcf.acp.group.copy.copyUserGroupOptions': '{jslang}wcf.acp.group.copy.copyUserGroupOptions{/jslang}',
-				'wcf.acp.group.copy.copyUserGroupOptions.description': '{jslang}wcf.acp.group.copy.copyUserGroupOptions.description{/jslang}'
-			});
-			
-			new WCF.ACP.User.Group.Copy({@$groupID});
-		{/if}
-		
 		{if $action === 'add' && $isBlankForm}
 			elBySelAll('.jsBbcodeSelectOptionHtml input[type="checkbox"]', undefined, function (checkbox) {
 				checkbox.checked = true;
@@ -52,7 +44,7 @@
 				{/if}
 				
 				{if $group->canCopy()}
-					<li><a class="jsButtonUserGroupCopy button">{icon name='copy'} <span>{lang}wcf.acp.group.button.copy{/lang}</span></a></li>
+					<li><button type="button" class="jsButtonUserGroupCopy button" data-endpoint="{link controller="UserGroupCopy" id=$groupID}{/link}">{icon name='copy'} <span>{lang}wcf.acp.group.button.copy{/lang}</span></button></li>
 				{/if}
 			{/if}
 			
