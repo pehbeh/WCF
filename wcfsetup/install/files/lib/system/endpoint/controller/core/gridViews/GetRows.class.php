@@ -1,6 +1,6 @@
 <?php
 
-namespace wcf\system\endpoint\controller\core\gridviews;
+namespace wcf\system\endpoint\controller\core\gridViews;
 
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -20,7 +20,7 @@ use wcf\system\gridView\AbstractGridView;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-#[GetRequest('/core/gridviews/rows')]
+#[GetRequest('/core/grid-views/rows')]
 final class GetRows implements IController
 {
     #[\Override]
