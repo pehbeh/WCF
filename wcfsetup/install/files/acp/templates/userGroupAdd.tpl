@@ -46,7 +46,7 @@
 				{/if}
 				
 				{if $group->canCopy()}
-					<li><button class="jsButtonUserGroupCopy button" data-endpoint="{link controller="UserGroupCopy" id=$groupID}{/link}">{icon name='copy'} <span>{lang}wcf.acp.group.button.copy{/lang}</span></button></li>
+					<li><button type="button" class="jsButtonUserGroupCopy button" data-endpoint="{link controller="UserGroupCopy" id=$groupID}{/link}">{icon name='copy'} <span>{lang}wcf.acp.group.button.copy{/lang}</span></button></li>
 				{/if}
 			{/if}
 			
