@@ -3,7 +3,7 @@
 <script data-relocate="true">
 	{jsphrase name='wcf.acp.tag.setAsSynonyms'}
 
-	require(['WoltLabSuite/Core/Controller/Clipboard', 'WoltLabSuite/Core/Acp/Ui/Tag/SynonymsHandler'], (ControllerClipboard, { init }) => {
+	require(['WoltLabSuite/Core/Controller/Clipboard', 'WoltLabSuite/Core/Acp/Component/Tag/SynonymsHandler'], (ControllerClipboard, { init }) => {
 		ControllerClipboard.setup({
 			pageClassName: 'wcf\\acp\\page\\TagListPage',
 			hasMarkedItems: {if $hasMarkedItems}true{else}false{/if},
