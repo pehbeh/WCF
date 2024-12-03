@@ -8,8 +8,6 @@
 	{/if}
 
 	$(function() {
-		new WCF.Option.Handler();
-		
 		{if $action === 'add' && $isBlankForm}
 			elBySelAll('.jsBbcodeSelectOptionHtml input[type="checkbox"]', undefined, function (checkbox) {
 				checkbox.checked = true;

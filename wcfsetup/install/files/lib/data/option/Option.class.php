@@ -119,12 +119,12 @@ class Option extends DatabaseObject
                     if (!empty($disableOptions)) {
                         $disableOptions .= ',';
                     }
-                    $disableOptions .= "'" . \mb_substr($item, 1) . "' ";
+                    $disableOptions .= '"' . \mb_substr($item, 1) . '" ';
                 } else {
                     if (!empty($enableOptions)) {
                         $enableOptions .= ',';
                     }
-                    $enableOptions .= "'" . $item . "' ";
+                    $enableOptions .= '"' . $item . '" ';
                 }
             }
         }

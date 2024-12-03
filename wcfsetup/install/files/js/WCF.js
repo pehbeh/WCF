@@ -2691,6 +2691,8 @@ WCF.Option = { };
 if (COMPILER_TARGET_DEFAULT) {
 	/**
 	 * Handles option selection.
+	 *
+	 * @deprecated 6.2 Use `WoltLabSuite/Core/Component/Option/Enable` instead.
 	 */
 	WCF.Option.Handler = Class.extend({
 		/**

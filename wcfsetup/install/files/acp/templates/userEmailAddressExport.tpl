@@ -1,11 +1,5 @@
 {include file='header' pageTitle='wcf.acp.user.exportEmailAddress'}
 
-<script data-relocate="true">
-	$(function() {
-		new WCF.Option.Handler();
-	});
-</script>
-
 <header class="contentHeader">
 	<div class="contentHeaderTitle">
 		<h1 class="contentTitle">{lang}wcf.acp.user.exportEmailAddress{/lang}</h1>
@@ -39,8 +33,8 @@
 		<dl>
 			<dt><label>{lang}wcf.acp.user.exportEmailAddress.fileType{/lang}</label></dt>
 			<dd>
-				<label><input type="radio" name="fileType" value="csv" {if $fileType == 'csv'}checked {/if}class="jsEnablesOptions" data-disable-options="[ ]" data-enable-options="[ 'separatorDiv', 'textSeparatorDiv' ]"> {lang}wcf.acp.user.exportEmailAddress.fileType.csv{/lang}</label>
-				<label><input type="radio" class="jsEnablesOptions" name="fileType" value="xml" {if $fileType == 'xml'}checked {/if}data-disable-options="[ 'separatorDiv', 'textSeparatorDiv' ]" data-enable-options="[ ]"> {lang}wcf.acp.user.exportEmailAddress.fileType.xml{/lang}</label>
+				<label><input type="radio" name="fileType" value="csv" {if $fileType == 'csv'}checked {/if}class="jsEnablesOptions" data-disable-options="[ ]" data-enable-options='[ "separator", "textSeparator" ]'> {lang}wcf.acp.user.exportEmailAddress.fileType.csv{/lang}</label>
+				<label><input type="radio" class="jsEnablesOptions" name="fileType" value="xml" {if $fileType == 'xml'}checked {/if}data-disable-options='[ "separator", "textSeparator" ]' data-enable-options="[ ]"> {lang}wcf.acp.user.exportEmailAddress.fileType.xml{/lang}</label>
 			</dd>
 		</dl>
 		
