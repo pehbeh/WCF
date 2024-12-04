@@ -210,7 +210,7 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
     #[\Override]
     public function getImageCropperConfiguration(): ?ImageCropperConfiguration
     {
-        return ImageCropperConfiguration::createExact(
+        return ImageCropperConfiguration::forExact(
             new ImageCropSize(UserAvatarFileProcessor::AVATAR_SIZE, UserAvatarFileProcessor::AVATAR_SIZE),
             new ImageCropSize(UserAvatarFileProcessor::AVATAR_SIZE_2X, UserAvatarFileProcessor::AVATAR_SIZE_2X)
         );
