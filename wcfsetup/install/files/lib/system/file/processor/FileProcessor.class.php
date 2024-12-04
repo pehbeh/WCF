@@ -160,6 +160,9 @@ final class FileProcessor extends SingletonFactory
         }
 
         $imageAdapter = ImageHandler::getInstance()->getAdapter();
+        if (!$imageAdapter->checkMemoryLimit($file->width, $file->height, $file->mimeType)) {
+            return;
+        }
 
         try {
             $imageAdapter->loadSingleFrameFromFile($file->getPathname());
@@ -250,6 +253,9 @@ final class FileProcessor extends SingletonFactory
 
             if ($imageAdapter === null) {
                 $imageAdapter = ImageHandler::getInstance()->getAdapter();
+                if (!$imageAdapter->checkMemoryLimit($file->width, $file->height, $file->mimeType)) {
+                    return;
+                }
 
                 try {
                     $imageAdapter->loadSingleFrameFromFile($file->getPathname());
