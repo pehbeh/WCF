@@ -208,7 +208,7 @@ final class UserCoverPhotoFileProcessor extends AbstractFileProcessor
     #[\Override]
     public function getImageCropperConfiguration(): ?ImageCropperConfiguration
     {
-        return ImageCropperConfiguration::createMinMax(
+        return ImageCropperConfiguration::forMinMax(
             new ImageCropSize(UserCoverPhoto::MIN_WIDTH, UserCoverPhoto::MIN_HEIGHT),
             new ImageCropSize(UserCoverPhoto::MAX_WIDTH, UserCoverPhoto::MAX_HEIGHT)
         );
