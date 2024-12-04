@@ -19,7 +19,7 @@ final class ImageCropperConfiguration implements \JsonSerializable
      */
     public readonly array $sizes;
 
-    public function __construct(
+    private function __construct(
         public readonly ImageCropperType $type,
         ImageCropSize ...$sizes
     ) {
@@ -61,7 +61,7 @@ final class ImageCropperConfiguration implements \JsonSerializable
      * The user can freely select, move and scale.
      * However, the cropping area is limited to `$min` and `$max`.
      */
-    public static function createMinMax(ImageCropSize $min, ImageCropSize $max): self
+    public static function forMinMax(ImageCropSize $min, ImageCropSize $max): self
     {
         return new self(ImageCropperType::MinMax, $min, $max);
     }
@@ -84,7 +84,7 @@ final class ImageCropperConfiguration implements \JsonSerializable
      *   - Image is resized to 256x256
      *   - The image is uploaded directly without displaying the cropping dialog
      */
-    public static function createExact(ImageCropSize ...$sizes): self
+    public static function forExact(ImageCropSize ...$sizes): self
     {
         return new self(ImageCropperType::Exact, ...$sizes);
     }

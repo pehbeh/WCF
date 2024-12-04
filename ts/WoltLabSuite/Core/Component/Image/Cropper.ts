@@ -155,6 +155,7 @@ abstract class ImageCropper {
     }
     this.cropperImage!.$center("contain");
     this.cropperSelection!.$center();
+    this.cropperSelection!.scrollIntoView({ block: "center", inline: "center" });
 
     // Limit the selection to the canvas boundaries
     this.cropperSelection!.addEventListener("change", (event: CustomEvent) => {
