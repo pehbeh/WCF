@@ -7,6 +7,7 @@ use wcf\data\reaction\type\ReactionTypeCache;
 use wcf\data\user\avatar\UserAvatar;
 use wcf\data\user\avatar\UserAvatarEditor;
 use wcf\data\user\avatar\UserAvatarList;
+use wcf\data\user\cover\photo\UserCoverPhoto;
 use wcf\data\user\User;
 use wcf\data\user\UserEditor;
 use wcf\data\user\UserList;
@@ -295,12 +296,23 @@ final class UserRebuildDataWorker extends AbstractLinearRebuildDataWorker
             $userProfiles->readObjects();
             foreach ($userProfiles as $user) {
                 $file = FileEditor::createFromExistingFile(
-                    SetCoverPhoto::getCoverPhotoLocation($user, false),
+                    UserCoverPhoto::getLegacyLocation($user, false),
                     $user->coverPhotoHash . '.' . $user->coverPhotoExtension,
                     'com.woltlab.wcf.user.coverPhoto',
                 );
 
                 (new SetCoverPhoto($user, $file))();
+
+                // Delete the old cover photo files.
+                $oldCoverPhotoLocation = UserCoverPhoto::getLegacyLocation($user, false);
+                $oldCoverPhotoWebPLocation = UserCoverPhoto::getLegacyLocation($user, true);
+
+                if ($oldCoverPhotoLocation && \file_exists($oldCoverPhotoLocation)) {
+                    @\unlink($oldCoverPhotoLocation);
+                }
+                if ($oldCoverPhotoWebPLocation && \file_exists($oldCoverPhotoWebPLocation)) {
+                    @\unlink($oldCoverPhotoWebPLocation);
+                }
             }
         }
     }

@@ -4,6 +4,7 @@ namespace wcf\data\user\cover\photo;
 
 use wcf\data\file\File;
 use wcf\data\file\FileAction;
+use wcf\data\user\User;
 
 /**
  * Represents a user's cover photo.
@@ -70,5 +71,29 @@ final class UserCoverPhoto implements IUserCoverPhoto
                 'width' => self::MIN_WIDTH,
             ],
         ];
+    }
+
+    /**
+     * Returns the location of a user's cover photo before WCF6.2.
+     */
+    /** @noinspection PhpUndefinedFieldInspection */
+    public static function getLegacyLocation(User $user, bool $forceWebP): ?string
+    {
+        if (!$user->coverPhotoHash || !$user->coverPhotoExtension) {
+            return null;
+        }
+
+        return \sprintf(
+            '%simages/coverPhotos/%s/%d-%s.%s',
+            WCF_DIR,
+            \substr(
+                $user->coverPhotoHash,
+                0,
+                2
+            ),
+            $user->userID,
+            $user->coverPhotoHash,
+            $forceWebP ? 'webp' : $user->coverPhotoExtension
+        );
     }
 }
