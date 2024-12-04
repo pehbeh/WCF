@@ -288,7 +288,7 @@ class MinMaxImageCropper extends ImageCropper {
     <cropper-image skewable scalable translatable rotatable></cropper-image>
     <cropper-shade hidden></cropper-shade>
     <cropper-handle action="move" plain></cropper-handle>
-    <cropper-selection movable zoomable resizable outlined>
+    <cropper-selection movable resizable outlined>
       <cropper-grid role="grid" bordered covered></cropper-grid>
       <cropper-crosshair centered></cropper-crosshair>
       <cropper-handle action="move" theme-color="rgba(255, 255, 255, 0.35)"></cropper-handle>
@@ -308,8 +308,8 @@ class MinMaxImageCropper extends ImageCropper {
   protected setCropperStyle() {
     super.setCropperStyle();
 
-    this.cropperSelection!.width = this.minSize.width;
-    this.cropperSelection!.height = this.minSize.height;
+    this.cropperSelection!.width = Math.min(this.width, this.maxSize.width);
+    this.cropperSelection!.height = Math.min(this.height, this.maxSize.height);
     this.cropperCanvas!.style.minWidth = `min(${this.maxSize.width}px, ${this.width}px)`;
     this.cropperCanvas!.style.minHeight = `min(${this.maxSize.height}px, ${this.height}px)`;
   }
@@ -320,6 +320,7 @@ class MinMaxImageCropper extends ImageCropper {
     this.dialog!.addEventListener("extra", () => {
       this.cropperImage!.$center("contain");
       this.cropperSelection!.$reset();
+      this.cropperSelection!.scrollIntoView({ block: "center", inline: "center" });
     });
 
     // Limit the selection to the min/max size
