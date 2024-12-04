@@ -18,6 +18,7 @@ import WoltlabCoreFile from "WoltLabSuite/Core/Component/File/woltlab-core-file"
 import { fire as fireEvent } from "WoltLabSuite/Core/Event/Handler";
 import { getPhrase } from "WoltLabSuite/Core/Language";
 import DomUtil from "WoltLabSuite/Core/Dom/Util";
+import { unescapeHTML } from "WoltLabSuite/Core/StringUtil";
 
 type ResponseGetForm = {
   dialog: string;
@@ -25,7 +26,8 @@ type ResponseGetForm = {
   title: string;
 };
 
-async function editCoverPhoto(button: HTMLElement, defaultCoverPhoto?: string): Promise<void> {
+async function editCoverPhoto(button: HTMLElement): Promise<void> {
+  const defaultCoverPhoto = button.dataset.defaultCoverPhoto;
   const json = (await prepareRequest(button.dataset.editCoverPhoto!).get().fetchAsJson()) as ResponseGetForm;
   const dialog = dialogFactory().fromHtml(json.dialog).withoutControls();
   const coverPhotoElement = getCoverPhotoElement();
@@ -34,25 +36,26 @@ async function editCoverPhoto(button: HTMLElement, defaultCoverPhoto?: string): 
 
   dialog.addEventListener("afterClose", () => {
     const file = dialog.querySelector<WoltlabCoreFile>("woltlab-core-file");
-    const coverPhotoUrl = file?.link ?? defaultCoverPhoto;
+    const coverPhotoUrl = unescapeHTML(file?.link ?? defaultCoverPhoto ?? "");
+    const coverPhotoStyle = `url("${coverPhotoUrl}")`;
 
     if (FormBuilderManager.hasForm(json.formId)) {
       FormBuilderManager.unregisterForm(json.formId);
     }
 
-    if (oldCoverPhoto === coverPhotoUrl || oldCoverPhoto === `url("${coverPhotoUrl}")`) {
+    if (oldCoverPhoto === coverPhotoUrl || oldCoverPhoto === coverPhotoStyle) {
       // nothing changed
       return;
     }
 
     if (coverPhotoElement && coverPhotoUrl) {
-      coverPhotoElement.style.setProperty("background-image", `url(${coverPhotoUrl})`, "");
+      coverPhotoElement.style.setProperty("background-image", coverPhotoStyle, "");
     } else {
       // ACP cover photo management
       if (!coverPhotoElement && coverPhotoUrl) {
         coverPhotoNotice!.parentElement!.appendChild(
           DomUtil.createFragmentFromHtml(
-            `<div id="coverPhotoPreview" style="background-image: url(${coverPhotoUrl});"></div>`,
+            `<div id="coverPhotoPreview" style="background-image: ${coverPhotoStyle};"></div>`,
           ),
         );
         coverPhotoNotice!.remove();
@@ -79,11 +82,11 @@ function getCoverPhotoElement(): HTMLElement | null {
   return document.querySelector<HTMLElement>(".userProfileCoverPhoto") ?? document.getElementById("coverPhotoPreview");
 }
 
-export function setup(defaultCoverPhoto?: string): void {
+export function setup(): void {
   wheneverFirstSeen("[data-edit-cover-photo]", (button) => {
     button.addEventListener(
       "click",
-      promiseMutex(() => editCoverPhoto(button, defaultCoverPhoto)),
+      promiseMutex(() => editCoverPhoto(button)),
     );
   });
 }

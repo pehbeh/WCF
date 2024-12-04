@@ -31,7 +31,6 @@ interface BootstrapOptions {
     registerUrl: string;
     notificationLastReadTime: number;
   };
-  defaultCoverPhoto?: string;
   dynamicColorScheme: boolean;
   endpointUserPopover: string;
   executeCronjobs: string | undefined;
@@ -71,7 +70,6 @@ export function setup(options: BootstrapOptions): void {
     dynamicColorScheme: options.dynamicColorScheme,
     enableMobileMenu: true,
     pageMenuMainProvider: new UiPageMenuMainFrontend(),
-    defaultCoverPhoto: options.defaultCoverPhoto,
   });
   UiPageHeaderMenu.init();
 

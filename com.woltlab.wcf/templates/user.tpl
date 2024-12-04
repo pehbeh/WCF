@@ -115,7 +115,7 @@
 			{if $user->canEditCoverPhoto()}
 				<ul class="userProfileManageCoverPhoto buttonGroup buttonList smallButtons">
 					<li>
-						<button type="button" data-edit-cover-photo="{link controller="UserCoverPhoto" id=$user->userID}{/link}" class="button small">
+						<button type="button" data-edit-cover-photo="{link controller="UserCoverPhoto" id=$user->userID}{/link}" data-default-cover-photo="{$__wcf->styleHandler->getStyle()->getCoverPhotoUrl()}" class="button small">
 							{icon name='pencil'} {lang}wcf.user.coverPhoto.management{/lang}
 						</button>
 					</li>

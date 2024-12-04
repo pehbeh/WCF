@@ -52,7 +52,6 @@ window.__wcf_bc_eventHandler = EventHandler;
 export interface BoostrapOptions {
   dynamicColorScheme: boolean;
   enableMobileMenu: boolean;
-  defaultCoverPhoto?: string;
   pageMenuMainProvider: PageMenuMainProvider;
 }
 
@@ -190,7 +189,7 @@ export function setup(options: BoostrapOptions): void {
     void import("./Component/Image/Viewer").then(({ setupLegacy }) => setupLegacy());
   });
   whenFirstSeen("[data-edit-cover-photo]", () => {
-    void import("./Component/User/CoverPhoto").then(({ setup }) => setup(options.defaultCoverPhoto));
+    void import("./Component/User/CoverPhoto").then(({ setup }) => setup());
   });
 
   // Move the reCAPTCHA widget overlay to the `pageOverlayContainer`
