@@ -67,6 +67,7 @@ class SystemCheckPage extends AbstractPage
         'dom',
         'exif',
         'gd',
+        ['gmp', 'bcmath'],
         'intl',
         'libxml',
         'mbstring',
@@ -314,8 +315,11 @@ class SystemCheckPage extends AbstractPage
     protected function validatePhpExtensions()
     {
         foreach ($this->phpExtensions as $phpExtension) {
-            $result = \extension_loaded($phpExtension);
-            if (!$result) {
+            if (\is_array($phpExtension)) {
+                if (\array_filter($phpExtension, '\extension_loaded') === []) {
+                    $this->results['php']['extension'][] = $phpExtension[0];
+                }
+            } elseif (!\extension_loaded($phpExtension)) {
                 $this->results['php']['extension'][] = $phpExtension;
             }
         }
