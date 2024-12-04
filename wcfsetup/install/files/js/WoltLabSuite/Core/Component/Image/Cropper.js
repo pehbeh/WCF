@@ -123,6 +123,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
             }
             this.cropperImage.$center("contain");
             this.cropperSelection.$center();
+            this.cropperSelection.scrollIntoView({ block: "center", inline: "center" });
             // Limit the selection to the canvas boundaries
             this.cropperSelection.addEventListener("change", (event) => {
                 // see https://fengyuanchen.github.io/cropperjs/v2/api/cropper-selection.html#limit-boundaries
