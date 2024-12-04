@@ -9,6 +9,7 @@ body[data-page-identifier="com.woltlab.wcf.User"] .userProfileContent:first-chil
 .userProfileHeader {
 	flex: 1 1 auto;
 	background-color: var(--wcfContentBackground);
+	border: 1px solid var(--wcfContentBorderInner);
 	border-radius: var(--wcfBorderRadius);
 	box-shadow: var(--wcfBoxShadowCard);
 	margin-bottom: 30px;
