@@ -8,6 +8,8 @@ use wcf\data\IThumbnailFile;
 use wcf\data\file\File;
 use wcf\data\file\thumbnail\FileThumbnailList;
 use wcf\data\object\type\ObjectTypeCache;
+use wcf\system\file\processor\IImageDataProvider;
+use wcf\system\file\processor\ImageData;
 use wcf\system\request\IRouteController;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
@@ -48,7 +50,7 @@ use wcf\util\FileUtil;
  * @property-read int|null $thumbnailID
  * @property-read int|null $tinyThumbnailID
  */
-class Attachment extends DatabaseObject implements ILinkableObject, IRouteController, IThumbnailFile
+class Attachment extends DatabaseObject implements ILinkableObject, IRouteController, IThumbnailFile, IImageDataProvider
 {
     /**
      * indicates if the attachment is embedded
@@ -211,11 +213,13 @@ class Attachment extends DatabaseObject implements ILinkableObject, IRouteContro
      */
     public function migrateStorage()
     {
-        foreach ([
-            $this->getLocation(),
-            $this->getThumbnailLocation(),
-            $this->getThumbnailLocation('tiny'),
-        ] as $location) {
+        foreach (
+            [
+                $this->getLocation(),
+                $this->getThumbnailLocation(),
+                $this->getThumbnailLocation('tiny'),
+            ] as $location
+        ) {
             if (!\str_ends_with($location, '.bin')) {
                 \rename($location, $location . '.bin');
             }
@@ -479,5 +483,15 @@ class Attachment extends DatabaseObject implements ILinkableObject, IRouteContro
                 'width' => ATTACHMENT_THUMBNAIL_WIDTH,
             ],
         ];
+    }
+
+    #[\Override]
+    public function getImageData(?int $minWidth = null, ?int $minHeight = null): ?ImageData
+    {
+        if (!$this->getFile()) {
+            return null;
+        }
+
+        return $this->getFile()->getImageData($minWidth, $minHeight);
     }
 }

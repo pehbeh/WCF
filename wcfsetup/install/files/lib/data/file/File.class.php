@@ -9,6 +9,8 @@ use wcf\data\ILinkableObject;
 use wcf\system\application\ApplicationHandler;
 use wcf\system\file\processor\FileProcessor;
 use wcf\system\file\processor\IFileProcessor;
+use wcf\system\file\processor\IImageDataProvider;
+use wcf\system\file\processor\ImageData;
 use wcf\system\request\LinkHandler;
 use wcf\util\JSON;
 use wcf\util\StringUtil;
@@ -30,7 +32,7 @@ use wcf\util\StringUtil;
  * @property-read int|null $height
  * @property-read string|null $fileHashWebp
  */
-class File extends DatabaseObject implements ILinkableObject
+class File extends DatabaseObject implements ILinkableObject, IImageDataProvider
 {
     /**
      * List of common file extensions that are always safe to be served directly
@@ -239,5 +241,31 @@ class File extends DatabaseObject implements ILinkableObject
         }
 
         return 'bin';
+    }
+
+    #[\Override]
+    public function getImageData(?int $minWidth = null, ?int $minHeight = null): ?ImageData
+    {
+        if (!$this->isImage()) {
+            return null;
+        }
+
+        if ($minWidth !== null || $minHeight !== null) {
+            $thumbnails = $this->getThumbnails();
+            usort($thumbnails, fn(FileThumbnail $a, FileThumbnail $b) => $a->width <=> $b->width);
+
+            foreach ($thumbnails as $thumbnail) {
+                if ($minWidth !== null && $minWidth > $thumbnail->width) {
+                    continue;
+                }
+                if ($minHeight !== null && $minHeight > $thumbnail->height) {
+                    continue;
+                }
+
+                return new ImageData($thumbnail->getLink(), $thumbnail->width, $thumbnail->height);
+            }
+        }
+
+        return new ImageData($this->getLink(), $this->width, $this->height);
     }
 }

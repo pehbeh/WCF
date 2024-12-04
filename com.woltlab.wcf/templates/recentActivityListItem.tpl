@@ -25,7 +25,7 @@
 
 		{if $event->getImage()}
 			<div class="recentActivityListItem__image">
-				<img src="{$event->getImage()}" loading="lazy">
+				{unsafe:$event->getImage()->toHtml()}
 			</div>
 		{/if}
 

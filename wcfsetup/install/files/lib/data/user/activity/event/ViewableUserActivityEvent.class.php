@@ -5,6 +5,7 @@ namespace wcf\data\user\activity\event;
 use wcf\data\DatabaseObjectDecorator;
 use wcf\data\user\UserProfile;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
+use wcf\system\file\processor\ImageData;
 use wcf\system\user\activity\event\UserActivityEventHandler;
 use wcf\system\user\UserProfileHandler;
 
@@ -69,7 +70,7 @@ class ViewableUserActivityEvent extends DatabaseObjectDecorator
     /**
      * @since 6.2
      */
-    protected string $image = '';
+    protected ?ImageData $image = null;
 
     /**
      * Marks this event as accessible for current user.
@@ -222,7 +223,7 @@ class ViewableUserActivityEvent extends DatabaseObjectDecorator
     /**
      * @since 6.2
      */
-    public function setImage(string $image): void
+    public function setImage(ImageData $image): void
     {
         $this->image = $image;
     }
@@ -230,7 +231,7 @@ class ViewableUserActivityEvent extends DatabaseObjectDecorator
     /**
      * @since 6.2
      */
-    public function getImage(): string
+    public function getImage(): ?ImageData
     {
         return $this->image;
     }
