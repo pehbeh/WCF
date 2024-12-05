@@ -21,7 +21,7 @@
 >
 	<div class="userProfileHeader__coverPhotoContainer">
 		<div class="userProfileHeader__coverPhoto">
-			<img src="{$view->user->getCoverPhoto()->getURL()}" class="userProfileHeader__coverPhotoImage" loading="lazy">
+			<img src="{$view->user->getCoverPhoto()->getURL()}" class="userProfileHeader__coverPhotoImage">
 		</div>
 		
 		<div class="userProfileHeader__manageButtons">
