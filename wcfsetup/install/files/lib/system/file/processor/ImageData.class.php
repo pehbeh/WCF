@@ -18,8 +18,18 @@ final class ImageData
         public readonly int $height
     ) {}
 
-    public function toHtml(): string
+    public function toHtml(string $cssClassName = ''): string
     {
+        if ($cssClassName !== '') {
+            return \sprintf(
+                '<img src="%s" class="%s" alt="" width="%d" height="%d" loading="lazy">',
+                StringUtil::encodeHTML($this->src),
+                StringUtil::encodeHTML($cssClassName),
+                $this->width,
+                $this->height
+            );
+        }
+
         return \sprintf(
             '<img src="%s" alt="" width="%d" height="%d" loading="lazy">',
             StringUtil::encodeHTML($this->src),
