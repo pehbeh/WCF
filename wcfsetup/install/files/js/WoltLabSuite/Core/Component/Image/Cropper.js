@@ -13,6 +13,12 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
     Resizer_1 = tslib_1.__importDefault(Resizer_1);
     cropperjs_1 = tslib_1.__importDefault(cropperjs_1);
     exifreader_1 = tslib_1.__importDefault(exifreader_1);
+    function inSelection(selection, maxSelection) {
+        return (selection.x >= maxSelection.x &&
+            selection.y >= maxSelection.y &&
+            selection.x + selection.width <= maxSelection.x + maxSelection.width &&
+            selection.y + selection.height <= maxSelection.y + maxSelection.height);
+    }
     class ImageCropper {
         configuration;
         file;
@@ -100,7 +106,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
         }
         setCropperStyle() {
             this.cropperCanvas.style.aspectRatio = `${this.width}/${this.height}`;
-            if (this.width > this.height) {
+            if (this.width >= this.height) {
                 this.cropperCanvas.style.width = `min(70vw, ${this.width}px)`;
                 this.cropperCanvas.style.height = "auto";
             }
@@ -121,27 +127,28 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
             if (this.orientation) {
                 this.cropperImage.$rotate(`${this.orientation}deg`);
             }
-            this.cropperImage.$center("contain");
-            this.cropperSelection.$center();
-            this.cropperSelection.scrollIntoView({ block: "center", inline: "center" });
+            this.centerSelection();
             // Limit the selection to the canvas boundaries
             this.cropperSelection.addEventListener("change", (event) => {
                 // see https://fengyuanchen.github.io/cropperjs/v2/api/cropper-selection.html#limit-boundaries
                 const cropperCanvasRect = this.cropperCanvas.getBoundingClientRect();
                 const selection = event.detail;
+                const cropperImageRect = this.cropperImage.getBoundingClientRect();
                 const maxSelection = {
-                    x: 0,
-                    y: 0,
-                    width: cropperCanvasRect.width,
-                    height: cropperCanvasRect.height,
+                    x: cropperImageRect.left - cropperCanvasRect.left,
+                    y: cropperImageRect.top - cropperCanvasRect.top,
+                    width: cropperImageRect.width,
+                    height: cropperImageRect.height,
                 };
-                if (selection.x < maxSelection.x ||
-                    selection.y < maxSelection.y ||
-                    selection.x + selection.width > maxSelection.x + maxSelection.width ||
-                    selection.y + selection.height > maxSelection.y + maxSelection.height) {
+                if (!inSelection(selection, maxSelection)) {
                     event.preventDefault();
                 }
             });
+        }
+        centerSelection() {
+            this.cropperImage.$center("contain");
+            this.cropperSelection.$center();
+            this.cropperSelection.scrollIntoView({ block: "center", inline: "center" });
         }
     }
     class ExactImageCropper extends ImageCropper {
@@ -214,10 +221,10 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
         }
         getCropperTemplate() {
             return `<div class="cropperContainer">
-  <cropper-canvas background>
+  <cropper-canvas background scale-step="0.0">
     <cropper-image skewable scalable translatable rotatable></cropper-image>
     <cropper-shade hidden></cropper-shade>
-    <cropper-handle action="move" plain></cropper-handle>
+    <cropper-handle action="scale" hidden disabled></cropper-handle>
     <cropper-selection movable resizable outlined>
       <cropper-grid role="grid" bordered covered></cropper-grid>
       <cropper-crosshair centered></cropper-crosshair>
@@ -236,17 +243,17 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
         }
         setCropperStyle() {
             super.setCropperStyle();
-            this.cropperSelection.width = Math.min(this.width, this.maxSize.width);
-            this.cropperSelection.height = Math.min(this.height, this.maxSize.height);
-            this.cropperCanvas.style.minWidth = `min(${this.maxSize.width}px, ${this.width}px)`;
-            this.cropperCanvas.style.minHeight = `min(${this.maxSize.height}px, ${this.height}px)`;
+            if (this.width >= this.height) {
+                this.cropperCanvas.style.width = `${Math.min(this.maxSize.width, this.width)}px`;
+            }
+            else {
+                this.cropperCanvas.style.height = `${Math.min(this.maxSize.height, this.height)}px`;
+            }
         }
         createCropper() {
             super.createCropper();
             this.dialog.addEventListener("extra", () => {
-                this.cropperImage.$center("contain");
-                this.cropperSelection.$reset();
-                this.cropperSelection.scrollIntoView({ block: "center", inline: "center" });
+                this.centerSelection();
             });
             // Limit the selection to the min/max size
             this.cropperSelection.addEventListener("change", (event) => {
@@ -258,6 +265,13 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
                     event.preventDefault();
                 }
             });
+        }
+        centerSelection() {
+            this.cropperImage.$center("contain");
+            const { width: imageWidth } = this.cropperImage.getBoundingClientRect();
+            this.cropperSelection.$change(0, 0, imageWidth, 0, this.configuration.aspectRatio, true);
+            this.cropperSelection.$center();
+            this.cropperSelection.scrollIntoView({ block: "center", inline: "center" });
         }
     }
     async function cropImage(element, file, configuration) {
