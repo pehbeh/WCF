@@ -393,21 +393,22 @@ class MessageEmbeddedObjectManager extends SingletonFactory
     }
 
     /**
-     * Returns all embedded objects of a specific type in a specific message.
+     * Returns all embedded objects in a specific message.
      *
      * @since 6.2
      */
-    public function getObjectsForMessage(string $embeddedObjectType, string $messageObjectType, int $messageID): array
+    public function getObjectsForMessage(string $messageObjectType, int $messageID): array
     {
-        $embeddedObjectTypeID = ObjectTypeCache::getInstance()
-            ->getObjectTypeIDByName('com.woltlab.wcf.message.embeddedObject', $embeddedObjectType);
         $messageObjectTypeID = ObjectTypeCache::getInstance()
             ->getObjectTypeIDByName('com.woltlab.wcf.message', $messageObjectType);
         $returnValue = [];
-        if (!empty($this->messageEmbeddedObjects[$messageObjectTypeID][$messageID][$embeddedObjectTypeID])) {
-            foreach ($this->messageEmbeddedObjects[$messageObjectTypeID][$messageID][$embeddedObjectTypeID] as $embeddedObjectID) {
-                if (isset($this->embeddedObjects[$embeddedObjectTypeID][$embeddedObjectID])) {
-                    $returnValue[] = $this->embeddedObjects[$embeddedObjectTypeID][$embeddedObjectID];
+
+        if (!empty($this->messageEmbeddedObjects[$messageObjectTypeID][$messageID])) {
+            foreach ($this->messageEmbeddedObjects[$messageObjectTypeID][$messageID] as $embeddedObjectTypeID => $embeddedObjectIDs) {
+                foreach ($embeddedObjectIDs as $embeddedObjectID) {
+                    if (isset($this->embeddedObjects[$embeddedObjectTypeID][$embeddedObjectID])) {
+                        $returnValue[] = $this->embeddedObjects[$embeddedObjectTypeID][$embeddedObjectID];
+                    }
                 }
             }
         }
