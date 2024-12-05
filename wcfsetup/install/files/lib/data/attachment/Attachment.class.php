@@ -6,6 +6,7 @@ use wcf\data\DatabaseObject;
 use wcf\data\ILinkableObject;
 use wcf\data\IThumbnailFile;
 use wcf\data\file\File;
+use wcf\data\file\thumbnail\FileThumbnail;
 use wcf\data\file\thumbnail\FileThumbnailList;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\system\file\processor\IImageDataProvider;
@@ -492,6 +493,39 @@ class Attachment extends DatabaseObject implements ILinkableObject, IRouteContro
             return null;
         }
 
-        return $this->getFile()->getImageData($minWidth, $minHeight);
+        if (!$this->getFile()->isImage()) {
+            return null;
+        }
+
+        if ($minWidth !== null || $minHeight !== null) {
+            if ($this->canViewPreview()) {
+                $thumbnails = $this->getFile()->getThumbnails();
+                usort($thumbnails, fn(FileThumbnail $a, FileThumbnail $b) => $a->width <=> $b->width);
+
+                foreach ($thumbnails as $thumbnail) {
+                    if ($minWidth !== null && $minWidth > $thumbnail->width) {
+                        continue;
+                    }
+                    if ($minHeight !== null && $minHeight > $thumbnail->height) {
+                        continue;
+                    }
+
+                    return new ImageData($thumbnail->getLink(), $thumbnail->width, $thumbnail->height);
+                }
+            }
+
+            if ($minWidth !== null && $minWidth > $this->width) {
+                return null;
+            }
+            if ($minHeight !== null && $minHeight > $this->height) {
+                return null;
+            }
+        }
+
+        if (!$this->canDownload()) {
+            return null;
+        }
+
+        return new ImageData($this->getLink(), $this->width, $this->height);
     }
 }

@@ -320,6 +320,10 @@ class Media extends DatabaseObject implements ILinkableObject, IRouteController,
             return null;
         }
 
+        if (!$this->isAccessible()) {
+            return null;
+        }
+
         if ($minWidth !== null || $minHeight !== null) {
             foreach (\array_keys(self::$thumbnailSizes) as $size) {
                 if ($minWidth !== null && $minWidth > $this->getThumbnailWidth($size)) {
@@ -332,7 +336,12 @@ class Media extends DatabaseObject implements ILinkableObject, IRouteController,
                 return new ImageData($this->getThumbnailLink($size), $this->getThumbnailWidth($size), $this->getThumbnailHeight($size));
             }
 
-            return null;
+            if ($minWidth !== null && $minWidth > $this->width) {
+                return null;
+            }
+            if ($minHeight !== null && $minHeight > $this->height) {
+                return null;
+            }
         }
 
         return new ImageData($this->getLink(), $this->width, $this->height);
