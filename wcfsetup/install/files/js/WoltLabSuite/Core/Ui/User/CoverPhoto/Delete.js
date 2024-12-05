@@ -47,8 +47,8 @@ define(["require", "exports", "tslib", "../../../Ajax", "../../../Dom/Util", "..
             });
         }
         _ajaxSuccess(data) {
-            const photo = document.querySelector(".userProfileCoverPhoto");
-            photo.style.setProperty("background-image", `url(${data.returnValues.url})`, "");
+            const photo = document.querySelector(".userProfileHeader__coverPhotoImage");
+            photo.src = data.returnValues.url;
             Util_1.default.hide(this.button.parentElement);
             UiNotification.show();
         }

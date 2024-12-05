@@ -6,6 +6,9 @@ define(["require", "exports", "tslib", "../../../../../Language", "../../../../N
     Language = tslib_1.__importStar(Language);
     UiNotification = tslib_1.__importStar(UiNotification);
     Abstract_1 = tslib_1.__importDefault(Abstract_1);
+    /**
+     * @deprecated 6.2 Use `WoltLabSuite/Core/Component/User/Follow` instead.
+     */
     class UiUserProfileMenuItemFollow extends Abstract_1.default {
         constructor(userId, isActive) {
             super(userId, isActive);

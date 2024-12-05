@@ -9,6 +9,9 @@
 define(["require", "exports", "tslib", "../../../../../Ajax"], function (require, exports, tslib_1, Ajax) {
     "use strict";
     Ajax = tslib_1.__importStar(Ajax);
+    /**
+     * @deprecated 6.2 No longer in use.
+     */
     class UiUserProfileMenuItemAbstract {
         _button = document.createElement("a");
         _isActive;

@@ -3,6 +3,8 @@
 namespace wcf\system\menu\user\profile\content;
 
 use wcf\data\user\User;
+use wcf\data\user\UserProfile;
+use wcf\system\cache\runtime\UserProfileRuntimeCache;
 use wcf\system\option\user\UserOptionHandler;
 use wcf\system\SingletonFactory;
 use wcf\system\WCF;
@@ -39,7 +41,7 @@ class AboutUserProfileMenuContent extends SingletonFactory implements IUserProfi
         WCF::getTPL()->assign([
             'options' => $this->optionHandler->getOptionTree(),
             'userID' => $user->userID,
-            'user' => $user,
+            'user' => UserProfileRuntimeCache::getInstance()->getObject($user->userID),
         ]);
 
         return WCF::getTPL()->fetch('userProfileAbout');

@@ -4861,6 +4861,7 @@ not register with us.]]></item>
 		<item name="wcf.user.ignore.type.hideMessages"><![CDATA[Block Direct Contact and Hide Created Messages]]></item>
 		<item name="wcf.user.ignore.error.cannotBeIgnored"><![CDATA[The user cannot be blocked.]]></item>
 		<item name="wcf.user.reactionsReceived"><![CDATA[Reactions]]></item>
+		<item name="wcf.user.oldUsername"><![CDATA[Previous Username]]></item>
 	</category>
 	<category name="wcf.user.menu">
 		<item name="wcf.user.menu.community"><![CDATA[Community]]></item>
@@ -5481,6 +5482,7 @@ your notifications on <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phras
 		<item name="wcf.user.profile.protected"><![CDATA[This member limits who may view their full profile.]]></item>
 		<item name="wcf.user.profile.management"><![CDATA[Management]]></item>
 		<item name="wcf.user.profile.title"><![CDATA[User profile of {$user->username}]]></item>
+		<item name="wcf.user.profile.miscInformation"><![CDATA[Miscellaneous Information]]></item>
 	</category>
 	<category name="wcf.user.objectWatch">
 		<item name="wcf.user.objectWatch.button.subscribe"><![CDATA[Subscribe]]></item>

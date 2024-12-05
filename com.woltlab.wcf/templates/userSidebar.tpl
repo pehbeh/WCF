@@ -1,4 +1,32 @@
 {if !$user->isProtected()}
+	{if MODULE_TROPHY && $__wcf->session->getPermission('user.profile.trophy.canSeeTrophies') && ($user->isAccessible('canViewTrophies') || $user->userID == $__wcf->session->userID) && $specialTrophyCount}
+		<section class="box" data-static-box-identifier="com.woltlab.wcf.UserTrophies">
+			<h2 class="boxTitle">{lang}wcf.user.trophy.trophyPoints{/lang} <span class="badge">{#$user->trophyPoints}</span></h2>
+			
+			<div class="boxContent">
+				<ol class="sidebarItemList">
+					{foreach from=$user->getSpecialTrophies() item=trophy}
+						<li class="sidebarItemListEntry">
+							<span class="sidebarItemListEntryIcon">
+								{unsafe:$trophy->renderTrophy(24)}
+							</span>
+
+							<div class="sidebarItemListEntryContent">
+								<a href="{unsafe:$trophy->getLink()}" class="sidebarItemListEntryLink">
+									{$trophy}
+								</a>
+							</div>
+						</li>
+					{/foreach}
+				</ol>
+				
+				{if $user->trophyPoints > $specialTrophyCount}
+					<button type="button" class="button small more userTrophyOverlayList" data-user-id="{$user->userID}">{lang}wcf.global.button.showAll{/lang}</button>
+				{/if}
+			</div>
+		</section>
+	{/if}
+	
 	{if $followingCount}
 		<section class="box" data-static-box-identifier="com.woltlab.wcf.UserProfileFollowing">
 			<h2 class="boxTitle">{lang}wcf.user.profile.following{/lang} <span class="badge">{#$followingCount}</span></h2>

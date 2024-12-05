@@ -4859,6 +4859,7 @@ sich{/if} nicht bei uns registriert {if LANGUAGE_USE_INFORMAL_VARIANT}hast{else}
 		<item name="wcf.user.ignore.type.hideMessages"><![CDATA[Direkten Kontakt blockieren und erstellte Inhalte ausblenden]]></item>
 		<item name="wcf.user.ignore.error.cannotBeIgnored"><![CDATA[Der Benutzer kann nicht blockiert werden.]]></item>
 		<item name="wcf.user.reactionsReceived"><![CDATA[Reaktionen]]></item>
+		<item name="wcf.user.oldUsername"><![CDATA[Vorheriger Benutzername]]></item>
 	</category>
 	<category name="wcf.user.menu">
 		<item name="wcf.user.menu.community"><![CDATA[Community]]></item>
@@ -5479,6 +5480,7 @@ Benachrichtigungen auf <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phra
 		<item name="wcf.user.profile.protected"><![CDATA[Der Benutzer hat den Zugriff auf sein vollständiges Profil eingeschränkt.]]></item>
 		<item name="wcf.user.profile.management"><![CDATA[Verwaltung]]></item>
 		<item name="wcf.user.profile.title"><![CDATA[Benutzerprofil von {$user->username}]]></item>
+		<item name="wcf.user.profile.miscInformation"><![CDATA[Sonstige Informationen]]></item>
 	</category>
 	<category name="wcf.user.objectWatch">
 		<item name="wcf.user.objectWatch.button.subscribe"><![CDATA[Abonnieren]]></item>

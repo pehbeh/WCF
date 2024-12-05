@@ -7,6 +7,9 @@ define(["require", "exports", "tslib", "../../../../../Language", "../../../../N
     UiNotification = tslib_1.__importStar(UiNotification);
     Abstract_1 = tslib_1.__importDefault(Abstract_1);
     Dialog_1 = tslib_1.__importDefault(Dialog_1);
+    /**
+     * @deprecated 6.2 Use `WoltLabSuite/Core/Component/User/Ignore` instead.
+     */
     class UiUserProfileMenuItemIgnore extends Abstract_1.default {
         dialog;
         constructor(userId, isActive) {
