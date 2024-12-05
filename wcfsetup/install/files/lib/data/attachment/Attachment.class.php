@@ -107,7 +107,7 @@ class Attachment extends DatabaseObject implements ILinkableObject, IRouteContro
      */
     public function canViewPreview()
     {
-        return $this->getPermission('canViewPreview');
+        return $this->canDownload() || $this->getPermission('canViewPreview');
     }
 
     /**
