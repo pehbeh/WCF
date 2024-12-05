@@ -25,6 +25,15 @@ export interface CropperConfiguration {
   }[];
 }
 
+function inSelection(selection: Selection, maxSelection: Selection): boolean {
+  return (
+    selection.x >= maxSelection.x &&
+    selection.y >= maxSelection.y &&
+    selection.x + selection.width <= maxSelection.x + maxSelection.width &&
+    selection.y + selection.height <= maxSelection.y + maxSelection.height
+  );
+}
+
 abstract class ImageCropper {
   readonly configuration: CropperConfiguration;
   readonly file: File;
@@ -128,7 +137,7 @@ abstract class ImageCropper {
   protected setCropperStyle() {
     this.cropperCanvas!.style.aspectRatio = `${this.width}/${this.height}`;
 
-    if (this.width > this.height) {
+    if (this.width >= this.height) {
       this.cropperCanvas!.style.width = `min(70vw, ${this.width}px)`;
       this.cropperCanvas!.style.height = "auto";
     } else {
@@ -153,9 +162,8 @@ abstract class ImageCropper {
     if (this.orientation) {
       this.cropperImage!.$rotate(`${this.orientation}deg`);
     }
-    this.cropperImage!.$center("contain");
-    this.cropperSelection!.$center();
-    this.cropperSelection!.scrollIntoView({ block: "center", inline: "center" });
+
+    this.centerSelection();
 
     // Limit the selection to the canvas boundaries
     this.cropperSelection!.addEventListener("change", (event: CustomEvent) => {
@@ -163,22 +171,24 @@ abstract class ImageCropper {
       const cropperCanvasRect = this.cropperCanvas!.getBoundingClientRect();
       const selection = event.detail as Selection;
 
+      const cropperImageRect = this.cropperImage!.getBoundingClientRect();
       const maxSelection: Selection = {
-        x: 0,
-        y: 0,
-        width: cropperCanvasRect.width,
-        height: cropperCanvasRect.height,
+        x: Math.round(cropperImageRect.left - cropperCanvasRect.left),
+        y: Math.round(cropperImageRect.top - cropperCanvasRect.top),
+        width: Math.round(cropperImageRect.width),
+        height: Math.round(cropperImageRect.height),
       };
 
-      if (
-        selection.x < maxSelection.x ||
-        selection.y < maxSelection.y ||
-        selection.x + selection.width > maxSelection.x + maxSelection.width ||
-        selection.y + selection.height > maxSelection.y + maxSelection.height
-      ) {
+      if (!inSelection(selection, maxSelection)) {
         event.preventDefault();
       }
     });
+  }
+
+  protected centerSelection(): void {
+    this.cropperImage!.$center("contain");
+    this.cropperSelection!.$center();
+    this.cropperSelection!.scrollIntoView({ block: "center", inline: "center" });
   }
 }
 
@@ -284,11 +294,11 @@ class MinMaxImageCropper extends ImageCropper {
 
   protected getCropperTemplate(): string {
     return `<div class="cropperContainer">
-  <cropper-canvas background>
+  <cropper-canvas background scale-step="0.0">
     <cropper-image skewable scalable translatable rotatable></cropper-image>
     <cropper-shade hidden></cropper-shade>
-    <cropper-handle action="move" plain></cropper-handle>
-    <cropper-selection movable zoomable resizable outlined>
+    <cropper-handle action="scale" hidden disabled></cropper-handle>
+    <cropper-selection movable resizable outlined>
       <cropper-grid role="grid" bordered covered></cropper-grid>
       <cropper-crosshair centered></cropper-crosshair>
       <cropper-handle action="move" theme-color="rgba(255, 255, 255, 0.35)"></cropper-handle>
@@ -308,18 +318,18 @@ class MinMaxImageCropper extends ImageCropper {
   protected setCropperStyle() {
     super.setCropperStyle();
 
-    this.cropperSelection!.width = this.minSize.width;
-    this.cropperSelection!.height = this.minSize.height;
-    this.cropperCanvas!.style.minWidth = `min(${this.maxSize.width}px, ${this.width}px)`;
-    this.cropperCanvas!.style.minHeight = `min(${this.maxSize.height}px, ${this.height}px)`;
+    if (this.width >= this.height) {
+      this.cropperCanvas!.style.width = `${Math.min(this.maxSize.width, this.width)}px`;
+    } else {
+      this.cropperCanvas!.style.height = `${Math.min(this.maxSize.height, this.height)}px`;
+    }
   }
 
   protected createCropper() {
     super.createCropper();
 
     this.dialog!.addEventListener("extra", () => {
-      this.cropperImage!.$center("contain");
-      this.cropperSelection!.$reset();
+      this.centerSelection();
     });
 
     // Limit the selection to the min/max size
@@ -335,6 +345,23 @@ class MinMaxImageCropper extends ImageCropper {
         event.preventDefault();
       }
     });
+  }
+
+  protected centerSelection(): void {
+    this.cropperImage!.$center("contain");
+
+    const { width: imageWidth } = this.cropperImage!.getBoundingClientRect();
+
+    this.cropperSelection!.$change(
+      0,
+      0,
+      imageWidth,
+      0,
+      this.configuration.aspectRatio,
+      true,
+    );
+    this.cropperSelection!.$center();
+    this.cropperSelection!.scrollIntoView({ block: "center", inline: "center" });
   }
 }
 
