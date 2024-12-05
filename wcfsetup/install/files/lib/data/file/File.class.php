@@ -264,6 +264,8 @@ class File extends DatabaseObject implements ILinkableObject, IImageDataProvider
 
                 return new ImageData($thumbnail->getLink(), $thumbnail->width, $thumbnail->height);
             }
+
+            return null;
         }
 
         return new ImageData($this->getLink(), $this->width, $this->height);
