@@ -3,8 +3,7 @@
 		<div class="userCard__header__background">
 			<img
 				class="userCard__header__background__image"
-				src="{$user->getCoverPhoto()->getURL()}"
-				loading="lazy">
+				src="{$user->getCoverPhoto()->getURL()}">
 		</div>
 		<div class="userCard__header__avatar">
 			{user object=$user type='avatar64' ariaHidden='true' tabindex='-1'}
