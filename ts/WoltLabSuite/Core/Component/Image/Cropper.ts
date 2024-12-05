@@ -173,10 +173,10 @@ abstract class ImageCropper {
 
       const cropperImageRect = this.cropperImage!.getBoundingClientRect();
       const maxSelection: Selection = {
-        x: cropperImageRect.left - cropperCanvasRect.left,
-        y: cropperImageRect.top - cropperCanvasRect.top,
-        width: cropperImageRect.width,
-        height: cropperImageRect.height,
+        x: Math.round(cropperImageRect.left - cropperCanvasRect.left),
+        y: Math.round(cropperImageRect.top - cropperCanvasRect.top),
+        width: Math.round(cropperImageRect.width),
+        height: Math.round(cropperImageRect.height),
       };
 
       if (!inSelection(selection, maxSelection)) {
