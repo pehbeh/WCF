@@ -135,10 +135,10 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
                 const selection = event.detail;
                 const cropperImageRect = this.cropperImage.getBoundingClientRect();
                 const maxSelection = {
-                    x: cropperImageRect.left - cropperCanvasRect.left,
-                    y: cropperImageRect.top - cropperCanvasRect.top,
-                    width: cropperImageRect.width,
-                    height: cropperImageRect.height,
+                    x: Math.round(cropperImageRect.left - cropperCanvasRect.left),
+                    y: Math.round(cropperImageRect.top - cropperCanvasRect.top),
+                    width: Math.round(cropperImageRect.width),
+                    height: Math.round(cropperImageRect.height),
                 };
                 if (!inSelection(selection, maxSelection)) {
                     event.preventDefault();
