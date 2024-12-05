@@ -5,6 +5,7 @@ namespace wcf\data\user\activity\event;
 use wcf\data\DatabaseObjectDecorator;
 use wcf\data\user\UserProfile;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
+use wcf\system\file\processor\ImageData;
 use wcf\system\user\activity\event\UserActivityEventHandler;
 use wcf\system\user\UserProfileHandler;
 
@@ -65,6 +66,11 @@ class ViewableUserActivityEvent extends DatabaseObjectDecorator
      * @since 6.1
      */
     protected string $link = '';
+
+    /**
+     * @since 6.2
+     */
+    protected ?ImageData $image = null;
 
     /**
      * Marks this event as accessible for current user.
@@ -212,5 +218,21 @@ class ViewableUserActivityEvent extends DatabaseObjectDecorator
     public function isIgnoredContent(): bool
     {
         return UserProfileHandler::getInstance()->getUserProfile()->isIgnoredUser($this->getUserProfile()->userID, 2);
+    }
+
+    /**
+     * @since 6.2
+     */
+    public function setImage(ImageData $image): void
+    {
+        $this->image = $image;
+    }
+
+    /**
+     * @since 6.2
+     */
+    public function getImage(): ?ImageData
+    {
+        return $this->image;
     }
 }
