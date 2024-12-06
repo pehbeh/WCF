@@ -10,7 +10,7 @@ use wcf\data\user\UserProfile;
 use wcf\event\user\profile\UserProfileHeaderInteractionOptionCollecting;
 use wcf\event\user\profile\UserProfileHeaderManagementOptionCollecting;
 use wcf\event\user\profile\UserProfileHeaderSearchContentLinkCollecting;
-use wcf\event\user\profile\UserProfileHeaderStatItemCollecting;
+use wcf\event\user\profile\UserProfileStatItemCollecting;
 use wcf\system\event\EventHandler;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
@@ -27,7 +27,7 @@ use wcf\util\StringUtil;
 final class UserProfileHeaderView
 {
     /**
-     * @var UserProfileHeaderViewStatItem[]
+     * @var UserProfileStatItem[]
      */
     private array $statItems = [];
 
@@ -68,7 +68,7 @@ final class UserProfileHeaderView
     }
 
     /**
-     * @return UserProfileHeaderViewStatItem[]
+     * @return UserProfileStatItem[]
      */
     public function getStatItems(): array
     {
@@ -136,24 +136,7 @@ final class UserProfileHeaderView
 
     private function initStatItems(): void
     {
-        if (\MODULE_LIKE && $this->user->likesReceived) {
-            $this->statItems[] = UserProfileHeaderViewStatItem::forLink(
-                WCF::getLanguage()->get('wcf.user.reactionsReceived'),
-                StringUtil::formatNumeric($this->user->likesReceived),
-                '#likes'
-            );
-        }
-
-        if ($this->user->activityPoints) {
-            $this->statItems[] = UserProfileHeaderViewStatItem::forButton(
-                WCF::getLanguage()->get('wcf.user.activityPoint'),
-                StringUtil::formatNumeric($this->user->activityPoints),
-                'activityPointsDisplay',
-                'data-user-id="' . $this->user->userID . '"'
-            );
-        }
-
-        $event = new UserProfileHeaderStatItemCollecting($this->user);
+        $event = new UserProfileStatItemCollecting($this->user);
         EventHandler::getInstance()->fire($event);
         if ($event->getItems() !== []) {
             $this->statItems = \array_merge($this->statItems, $event->getItems());

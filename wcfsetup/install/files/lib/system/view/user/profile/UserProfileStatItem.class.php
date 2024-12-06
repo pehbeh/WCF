@@ -3,14 +3,14 @@
 namespace wcf\system\view\user\profile;
 
 /**
- * Represents an item of the statistics in the user profile header.
+ * Represents an item of the statistics in the user profile.
  *
  * @author      Marcel Werk
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-final class UserProfileHeaderViewStatItem
+final class UserProfileStatItem
 {
     public static function forText(string $title, string $value): self
     {
