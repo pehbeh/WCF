@@ -111,21 +111,23 @@ final class HtmlUpcastNodeWoltlabMetacode extends AbstractHtmlUpcastNode
                         DOMUtil::removeNode($element, true);
                     }
                 } else {
-                    $insertNode = $element->parentNode->insertBefore(
+                    $element->parentNode->insertBefore(
                         $element->ownerDocument->createTextNode("[{$name}{$attributes}]"),
                         $element
                     );
+                    $endNode = $element->parentNode->insertBefore(
+                        $element->ownerDocument->createTextNode("[/{$name}]"),
+                        $element->nextSibling
+                    );
                     if ($bbcode->isSourceCode) {
-                        $insertNode->parentNode->appendChild(
-                            $element->ownerDocument->createTextNode($element->textContent)
+                        $endNode->parentNode->insertBefore(
+                            $element->ownerDocument->createTextNode($element->textContent),
+                            $endNode
                         );
                         DOMUtil::removeNode($element);
                     } else {
                         DOMUtil::removeNode($element, true);
                     }
-                    $insertNode->parentNode->appendChild(
-                        $element->ownerDocument->createTextNode("[/{$name}]")
-                    );
                 }
             }
         }
