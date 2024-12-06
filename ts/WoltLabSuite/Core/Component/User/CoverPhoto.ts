@@ -18,7 +18,7 @@ import WoltlabCoreFile from "WoltLabSuite/Core/Component/File/woltlab-core-file"
 import { fire as fireEvent } from "WoltLabSuite/Core/Event/Handler";
 import { getPhrase } from "WoltLabSuite/Core/Language";
 import DomUtil from "WoltLabSuite/Core/Dom/Util";
-import { unescapeHTML } from "WoltLabSuite/Core/StringUtil";
+import { escapeHTML } from "WoltLabSuite/Core/StringUtil";
 
 type ResponseGetForm = {
   dialog: string;
@@ -36,7 +36,7 @@ async function editCoverPhoto(button: HTMLElement): Promise<void> {
 
   dialog.addEventListener("afterClose", () => {
     const file = dialog.querySelector<WoltlabCoreFile>("woltlab-core-file");
-    const coverPhotoUrl = unescapeHTML(file?.link ?? defaultCoverPhoto ?? "");
+    const coverPhotoUrl = file?.link ?? defaultCoverPhoto ?? "";
     const coverPhotoStyle = `url("${coverPhotoUrl}")`;
 
     if (FormBuilderManager.hasForm(json.formId)) {
@@ -49,13 +49,13 @@ async function editCoverPhoto(button: HTMLElement): Promise<void> {
     }
 
     if (coverPhotoElement && coverPhotoUrl) {
-      coverPhotoElement.style.setProperty("background-image", coverPhotoStyle, "");
+      coverPhotoElement.style.backgroundImage = coverPhotoStyle;
     } else {
       // ACP cover photo management
       if (!coverPhotoElement && coverPhotoUrl) {
         coverPhotoNotice!.parentElement!.appendChild(
           DomUtil.createFragmentFromHtml(
-            `<div id="coverPhotoPreview" style="background-image: ${coverPhotoStyle};"></div>`,
+            `<div id="coverPhotoPreview" style="background-image: ${escapeHTML(coverPhotoStyle)};"></div>`,
           ),
         );
         coverPhotoNotice!.remove();

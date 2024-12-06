@@ -22,7 +22,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/PromiseMutex", 
         const oldCoverPhoto = coverPhotoElement?.style.backgroundImage;
         dialog.addEventListener("afterClose", () => {
             const file = dialog.querySelector("woltlab-core-file");
-            const coverPhotoUrl = (0, StringUtil_1.unescapeHTML)(file?.link ?? defaultCoverPhoto ?? "");
+            const coverPhotoUrl = file?.link ?? defaultCoverPhoto ?? "";
             const coverPhotoStyle = `url("${coverPhotoUrl}")`;
             if (FormBuilderManager.hasForm(json.formId)) {
                 FormBuilderManager.unregisterForm(json.formId);
@@ -32,12 +32,12 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/PromiseMutex", 
                 return;
             }
             if (coverPhotoElement && coverPhotoUrl) {
-                coverPhotoElement.style.setProperty("background-image", coverPhotoStyle, "");
+                coverPhotoElement.style.backgroundImage = coverPhotoStyle;
             }
             else {
                 // ACP cover photo management
                 if (!coverPhotoElement && coverPhotoUrl) {
-                    coverPhotoNotice.parentElement.appendChild(Util_1.default.createFragmentFromHtml(`<div id="coverPhotoPreview" style="background-image: ${coverPhotoStyle};"></div>`));
+                    coverPhotoNotice.parentElement.appendChild(Util_1.default.createFragmentFromHtml(`<div id="coverPhotoPreview" style="background-image: ${(0, StringUtil_1.escapeHTML)(coverPhotoStyle)};"></div>`));
                     coverPhotoNotice.remove();
                 }
                 else if (coverPhotoElement && !coverPhotoUrl) {
