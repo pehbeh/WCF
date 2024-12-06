@@ -372,10 +372,13 @@ class MinMaxImageCropper extends ImageCropper {
 
   protected centerSelection(): void {
     this.cropperImage!.$center("contain");
+    this.#cropperCanvasRect = this.cropperImage!.getBoundingClientRect();
 
-    const { width: imageWidth } = this.cropperImage!.getBoundingClientRect();
-
-    this.cropperSelection!.$change(0, 0, imageWidth, 0, this.configuration.aspectRatio, true);
+    if (this.configuration.aspectRatio >= 1.0) {
+      this.cropperSelection!.$change(0, 0, this.#cropperCanvasRect.width, 0, this.configuration.aspectRatio, true);
+    } else {
+      this.cropperSelection!.$change(0, 0, 0, this.#cropperCanvasRect.height, this.configuration.aspectRatio, true);
+    }
     this.cropperSelection!.$center();
     this.cropperSelection!.scrollIntoView({ block: "center", inline: "center" });
   }

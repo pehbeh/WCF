@@ -283,8 +283,13 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
         }
         centerSelection() {
             this.cropperImage.$center("contain");
-            const { width: imageWidth } = this.cropperImage.getBoundingClientRect();
-            this.cropperSelection.$change(0, 0, imageWidth, 0, this.configuration.aspectRatio, true);
+            this.#cropperCanvasRect = this.cropperImage.getBoundingClientRect();
+            if (this.configuration.aspectRatio >= 1.0) {
+                this.cropperSelection.$change(0, 0, this.#cropperCanvasRect.width, 0, this.configuration.aspectRatio, true);
+            }
+            else {
+                this.cropperSelection.$change(0, 0, 0, this.#cropperCanvasRect.height, this.configuration.aspectRatio, true);
+            }
             this.cropperSelection.$center();
             this.cropperSelection.scrollIntoView({ block: "center", inline: "center" });
         }
