@@ -123,3 +123,13 @@
 		}
 	}
 }
+
+/* This code is necessary to move the third-party buttons in the login form below the submit button. */
+form#login {
+	display: flex;
+	flex-direction: column;
+
+	.authOtherOptionButtons {
+		order: 1;
+	}
+}
