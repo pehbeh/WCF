@@ -14,7 +14,7 @@ use wcf\system\WCF;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-class LinkColumnRenderer extends AbstractColumnRenderer
+class LinkColumnRenderer extends AbstractColumnRenderer implements ILinkColumnRenderer
 {
     public function __construct(
         private readonly string $controllerClass,

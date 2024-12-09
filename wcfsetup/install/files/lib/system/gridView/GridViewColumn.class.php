@@ -6,6 +6,7 @@ use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\gridView\filter\IGridViewFilter;
 use wcf\system\gridView\renderer\DefaultColumnRenderer;
 use wcf\system\gridView\renderer\IColumnRenderer;
+use wcf\system\gridView\renderer\ILinkColumnRenderer;
 use wcf\system\gridView\renderer\TitleColumnRenderer;
 use wcf\system\WCF;
 
@@ -221,6 +222,17 @@ final class GridViewColumn
     public function isHidden(): bool
     {
         return $this->hidden;
+    }
+
+    /**
+     * Returns true if the row link should be applied to this column.
+     */
+    public function applyRowLink(): bool
+    {
+        return \count(\array_filter(
+            $this->getRenderers(),
+            fn(IColumnRenderer $renderer) => $renderer instanceof ILinkColumnRenderer
+        )) === 0;
     }
 
     /**

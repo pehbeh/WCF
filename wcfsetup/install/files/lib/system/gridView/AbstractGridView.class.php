@@ -240,7 +240,7 @@ abstract class AbstractGridView
     {
         $value = $column->render($this->getData($row, $column->getID()), $row);
 
-        if (isset($this->rowLink)) {
+        if (isset($this->rowLink) && $column->applyRowLink()) {
             $value = $this->rowLink->render($value, $row, $column->isTitleColumn());
         }
 
