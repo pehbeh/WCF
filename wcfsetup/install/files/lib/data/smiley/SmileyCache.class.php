@@ -166,7 +166,7 @@ class SmileyCache extends SingletonFactory
     }
 
     /**
-     * Return all smileys that match `:[a-z]+(?:_[a-z]+)*:`.
+     * Return all smileys that match `:[a-z][a-z0-9]*+(?:_[a-z0-9]+)*:`.
      *
      * @return Smiley[]
      * @since 6.1
@@ -178,7 +178,7 @@ class SmileyCache extends SingletonFactory
             foreach ($this->getVisibleCategories() as $category) {
                 foreach ($category as $smiley) {
                     foreach ($smiley->smileyCodes as $smileyCode) {
-                        if (\preg_match('~^:[a-z]+(?:_[a-z]+)*:$~', $smileyCode)) {
+                        if (\preg_match('~^:[a-z][a-z0-9]*+(?:_[a-z0-9]+)*:$~', $smileyCode)) {
                             $this->emojis[$smileyCode] = $smiley;
                         }
                     }
