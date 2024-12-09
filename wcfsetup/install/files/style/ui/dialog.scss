@@ -465,3 +465,13 @@ html[data-color-scheme="dark"] .dialog::backdrop {
 		min-width: 0;
 	}
 }
+
+.dialog cropper-canvas {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* If the height of the image is many times greater than the width, a white area would be displayed at the bottom and/or top. */
+.dialog cropper-shade {
+	outline-width: max(100vh, 100vw) !important;
+}
