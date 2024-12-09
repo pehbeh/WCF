@@ -98,7 +98,7 @@ define(["require", "exports", "tslib", "../../Core", "../../Dom/Util", "../../La
             this._input = input;
             // set fixed height to avoid layout jumps
             const fixedHeight = Math.max(this._element.offsetHeight, 200);
-            this._element.style.setProperty("height", `${fixedHeight}px`, "");
+            this._element.style.setProperty("min-height", `${fixedHeight}px`, "");
         }
         /**
          * Resets the filter.
