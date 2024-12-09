@@ -15,6 +15,7 @@ import { getPhrase } from "WoltLabSuite/Core/Language";
 import WoltlabCoreDialogElement from "WoltLabSuite/Core/Element/woltlab-core-dialog";
 import * as ExifUtil from "WoltLabSuite/Core/Image/ExifUtil";
 import ExifReader from "exifreader";
+import DomUtil from "WoltLabSuite/Core/Dom/Util";
 
 export interface CropperConfiguration {
   aspectRatio: number;
@@ -27,8 +28,8 @@ export interface CropperConfiguration {
 
 function inSelection(selection: Selection, maxSelection: Selection): boolean {
   return (
-    selection.x >= maxSelection.x &&
-    selection.y >= maxSelection.y &&
+    Math.ceil(selection.x) >= maxSelection.x &&
+    Math.ceil(selection.y) >= maxSelection.y &&
     Math.ceil(selection.x + selection.width) <= Math.ceil(maxSelection.x + maxSelection.width) &&
     Math.ceil(selection.y + selection.height) <= Math.ceil(maxSelection.y + maxSelection.height)
   );
@@ -82,6 +83,21 @@ abstract class ImageCropper {
     this.dialog.show(getPhrase("wcf.upload.crop.image"));
 
     this.createCropper();
+
+    const resize = () => {
+      this.centerSelection();
+    };
+
+    window.addEventListener("resize", resize, { passive: true });
+    this.dialog.addEventListener(
+      "afterClose",
+      () => {
+        window.removeEventListener("resize", resize);
+      },
+      {
+        once: true,
+      },
+    );
 
     return new Promise<File>((resolve, reject) => {
       this.dialog!.addEventListener("primary", () => {
@@ -371,6 +387,12 @@ class MinMaxImageCropper extends ImageCropper {
   }
 
   protected centerSelection(): void {
+    // Reset to get the maximum available height
+    this.cropperCanvas!.style.height = "";
+
+    const dimensions = DomUtil.outerDimensions(this.cropperCanvas!.parentElement!);
+    this.cropperCanvas!.style.height = `${dimensions.height}px`;
+
     this.cropperImage!.$center("contain");
     this.#cropperCanvasRect = this.cropperImage!.getBoundingClientRect();
 

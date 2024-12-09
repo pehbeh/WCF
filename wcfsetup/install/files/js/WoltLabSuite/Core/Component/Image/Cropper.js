@@ -6,16 +6,17 @@
  * @license   GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since     6.2
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltLabSuite/Core/Component/Dialog", "cropperjs", "WoltLabSuite/Core/Language", "exifreader"], function (require, exports, tslib_1, Resizer_1, Dialog_1, cropperjs_1, Language_1, exifreader_1) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltLabSuite/Core/Component/Dialog", "cropperjs", "WoltLabSuite/Core/Language", "exifreader", "WoltLabSuite/Core/Dom/Util"], function (require, exports, tslib_1, Resizer_1, Dialog_1, cropperjs_1, Language_1, exifreader_1, Util_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.cropImage = cropImage;
     Resizer_1 = tslib_1.__importDefault(Resizer_1);
     cropperjs_1 = tslib_1.__importDefault(cropperjs_1);
     exifreader_1 = tslib_1.__importDefault(exifreader_1);
+    Util_1 = tslib_1.__importDefault(Util_1);
     function inSelection(selection, maxSelection) {
-        return (selection.x >= maxSelection.x &&
-            selection.y >= maxSelection.y &&
+        return (Math.ceil(selection.x) >= maxSelection.x &&
+            Math.ceil(selection.y) >= maxSelection.y &&
             Math.ceil(selection.x + selection.width) <= Math.ceil(maxSelection.x + maxSelection.width) &&
             Math.ceil(selection.y + selection.height) <= Math.ceil(maxSelection.y + maxSelection.height));
     }
@@ -62,6 +63,15 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
             });
             this.dialog.show((0, Language_1.getPhrase)("wcf.upload.crop.image"));
             this.createCropper();
+            const resize = () => {
+                this.centerSelection();
+            };
+            window.addEventListener("resize", resize, { passive: true });
+            this.dialog.addEventListener("afterClose", () => {
+                window.removeEventListener("resize", resize);
+            }, {
+                once: true,
+            });
             return new Promise((resolve, reject) => {
                 this.dialog.addEventListener("primary", () => {
                     void this.getCanvas()
@@ -282,6 +292,10 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
             });
         }
         centerSelection() {
+            // Reset to get the maximum available height
+            this.cropperCanvas.style.height = "";
+            const dimensions = Util_1.default.outerDimensions(this.cropperCanvas.parentElement);
+            this.cropperCanvas.style.height = `${dimensions.height}px`;
             this.cropperImage.$center("contain");
             this.#cropperCanvasRect = this.cropperImage.getBoundingClientRect();
             if (this.configuration.aspectRatio >= 1.0) {
