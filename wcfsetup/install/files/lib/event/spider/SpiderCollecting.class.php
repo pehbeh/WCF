@@ -277,6 +277,7 @@ final class SpiderCollecting implements IPsr14Event
                 'https://cloud.google.com/monitoring/alerts/uptime-checks'
             )
         );
+        $this->register(new Spider('GoogleOther', 'GoogleOther'));
         $this->register(new Spider('Google-Ads-Creatives-Assistant', 'Google-Ads-Creatives-Assistant'));
         $this->register(new Spider('Google-AdWords-Express', 'Google-AdWords-Express'));
         $this->register(new Spider('AdsBot-Google', 'Google Ads-Bot', 'http://www.google.com/adsbot.html'));
