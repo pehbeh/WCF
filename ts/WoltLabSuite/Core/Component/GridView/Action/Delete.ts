@@ -3,7 +3,7 @@ import { confirmationFactory } from "../../Confirmation";
 import * as UiNotification from "WoltLabSuite/Core/Ui/Notification";
 
 async function handleDelete(row: HTMLTableRowElement, objectName: string, endpoint: string): Promise<void> {
-  const confirmationResult = await confirmationFactory().delete(objectName);
+  const confirmationResult = await confirmationFactory().delete(objectName ? objectName : undefined);
   if (!confirmationResult) {
     return;
   }

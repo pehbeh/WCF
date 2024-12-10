@@ -4,7 +4,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Api/DeleteObject", "..
     exports.setup = setup;
     UiNotification = tslib_1.__importStar(UiNotification);
     async function handleDelete(row, objectName, endpoint) {
-        const confirmationResult = await (0, Confirmation_1.confirmationFactory)().delete(objectName);
+        const confirmationResult = await (0, Confirmation_1.confirmationFactory)().delete(objectName ? objectName : undefined);
         if (!confirmationResult) {
             return;
         }
