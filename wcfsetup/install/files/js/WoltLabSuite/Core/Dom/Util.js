@@ -82,6 +82,34 @@ define(["require", "exports", "tslib", "../StringUtil"], function (require, expo
             return id;
         },
         /**
+         * Returns the inner height of an element including paddings.
+         */
+        innerHeight(element, styles) {
+            styles = styles || window.getComputedStyle(element);
+            let height = element.clientHeight;
+            height += ~~styles.paddingTop + ~~styles.paddingBottom;
+            return height;
+        },
+        /**
+         * Returns the inner width of an element including paddings.
+         */
+        innerWidth(element, styles) {
+            styles = styles || window.getComputedStyle(element);
+            let width = element.clientWidth;
+            width += ~~styles.paddingLeft + ~~styles.paddingRight;
+            return width;
+        },
+        /**
+         * Returns the inner dimensions of an element including paddings.
+         */
+        innerDimensions(element) {
+            const styles = window.getComputedStyle(element);
+            return {
+                height: DomUtil.innerHeight(element, styles),
+                width: DomUtil.innerWidth(element, styles),
+            };
+        },
+        /**
          * Returns the outer height of an element including margins.
          */
         outerHeight(element, styles) {
