@@ -22,6 +22,10 @@ class TruncatedTextColumnRenderer extends DefaultColumnRenderer
     #[\Override]
     public function render(mixed $value, mixed $context = null): string
     {
+        if (!$value) {
+            return '';
+        }
+
         $renderedValue = StringUtil::encodeHTML(StringUtil::truncate($value, $this->length, $this->etc));
 
         if (\mb_strlen($value) > $this->length) {
