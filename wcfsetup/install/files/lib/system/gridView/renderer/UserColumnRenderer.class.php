@@ -15,10 +15,22 @@ use wcf\util\StringUtil;
  */
 class UserColumnRenderer extends DefaultColumnRenderer
 {
+    public function __construct(
+        public readonly string $fallbackValue = 'username'
+    ) {}
+
     #[\Override]
     public function render(mixed $value, mixed $context = null): string
     {
         if (!$value) {
+            if ($this->fallbackValue) {
+                if (\is_array($context)) {
+                    return StringUtil::encodeHTML($context[$this->fallbackValue] ?? '');
+                } else {
+                    return StringUtil::encodeHTML($context->{$this->fallbackValue} ?? '');
+                }
+            }
+
             return '';
         }
 
