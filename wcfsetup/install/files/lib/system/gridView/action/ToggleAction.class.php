@@ -24,6 +24,7 @@ class ToggleAction extends AbstractAction
         private readonly string $enableEndpoint,
         private readonly string $disableEndpoint,
         private readonly string $propertyName = 'isDisabled',
+        private readonly bool $propertyIsDisabledState = true,
         ?Closure $isAvailableCallback = null
     ) {
         parent::__construct($isAvailableCallback);
@@ -44,7 +45,8 @@ class ToggleAction extends AbstractAction
         );
 
         $ariaLabel = WCF::getLanguage()->get('wcf.global.button.enable');
-        $checked = !$row->{$this->propertyName} ? 'checked' : '';
+        $checked = (!$row->{$this->propertyName} && $this->propertyIsDisabledState)
+            || ($row->{$this->propertyName} && !$this->propertyIsDisabledState) ? 'checked' : '';
 
         return <<<HTML
             <woltlab-core-toggle-button aria-label="{$ariaLabel}" data-enable-endpoint="{$enableEndpoint}" data-disable-endpoint="{$disableEndpoint}" {$checked}></woltlab-core-toggle-button>
