@@ -17,6 +17,8 @@ use wcf\system\WCF;
  */
 class TextFilter implements IGridViewFilter
 {
+    public function __construct(private readonly string $columnName = '') {}
+
     #[\Override]
     public function getFormField(string $id, string $label): AbstractFormField
     {
@@ -27,7 +29,10 @@ class TextFilter implements IGridViewFilter
     #[\Override]
     public function applyFilter(DatabaseObjectList $list, string $id, string $value): void
     {
-        $list->getConditionBuilder()->add("$id LIKE ?", ['%' . WCF::getDB()->escapeLikeValue($value) . '%']);
+        $list->getConditionBuilder()->add(
+            ($this->columnName ?: $id) . " LIKE ?",
+            ['%' . WCF::getDB()->escapeLikeValue($value) . '%']
+        );
     }
 
     #[\Override]
