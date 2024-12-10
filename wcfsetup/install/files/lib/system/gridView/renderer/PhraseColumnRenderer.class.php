@@ -18,6 +18,6 @@ class PhraseColumnRenderer extends DefaultColumnRenderer
     #[\Override]
     public function render(mixed $value, mixed $context = null): string
     {
-        return StringUtil::encodeHTML(WCF::getLanguage()->get($value));
+        return WCF::getLanguage()->get($value);
     }
 }

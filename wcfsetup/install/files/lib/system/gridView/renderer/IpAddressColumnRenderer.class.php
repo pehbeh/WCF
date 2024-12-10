@@ -22,6 +22,6 @@ class IpAddressColumnRenderer extends DefaultColumnRenderer
             return '';
         }
 
-        return StringUtil::encodeHTML(UserUtil::convertIPv6To4($value));
+        return UserUtil::convertIPv6To4($value);
     }
 }

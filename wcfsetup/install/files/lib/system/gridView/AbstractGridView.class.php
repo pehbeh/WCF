@@ -9,6 +9,7 @@ use wcf\system\event\EventHandler;
 use wcf\system\gridView\action\IGridViewAction;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
+use wcf\util\StringUtil;
 
 /**
  * Abstract implementation of a grid view.
@@ -238,7 +239,12 @@ abstract class AbstractGridView
      */
     public function renderColumn(GridViewColumn $column, mixed $row): string
     {
-        $value = $column->render($this->getData($row, $column->getID()), $row);
+        $value = $this->getData($row, $column->getID());
+        if ($column->encodeValue()) {
+            $value = StringUtil::encodeHTML($value);
+        }
+
+        $value = $column->render($value, $row);
 
         if (isset($this->rowLink) && $column->applyRowLink()) {
             $value = $this->rowLink->render($value, $row, $column->isTitleColumn());

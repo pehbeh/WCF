@@ -49,6 +49,7 @@ final class ACPSessionLogGridView extends DatabaseObjectListGridView
             GridViewColumn::for('userAgent')
                 ->label('wcf.user.userAgent')
                 ->sortable()
+                ->valueEncoding(false)
                 ->renderer(new TruncatedTextColumnRenderer())
                 ->filter(new TextFilter()),
             GridViewColumn::for('time')

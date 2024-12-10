@@ -6,7 +6,7 @@ use wcf\system\cache\runtime\AbstractRuntimeCache;
 use wcf\system\cache\runtime\UserRuntimeCache;
 
 /**
- * Formats the content of a column as a user link.
+ * Formats the content of a column as a user link. The value of the column must be a user id.
  *
  * @author      Marcel Werk
  * @copyright   2001-2024 WoltLab GmbH

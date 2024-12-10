@@ -18,7 +18,7 @@ class DefaultColumnRenderer extends AbstractColumnRenderer
     #[\Override]
     public function render(mixed $value, mixed $context = null): string
     {
-        return StringUtil::encodeHTML($value);
+        return $value;
     }
 
     #[\Override]

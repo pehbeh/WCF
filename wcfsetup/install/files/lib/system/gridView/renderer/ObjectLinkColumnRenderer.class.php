@@ -19,7 +19,7 @@ use wcf\util\StringUtil;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-abstract class ObjectLinkColumnRenderer extends AbstractColumnRenderer implements ILinkColumnRenderer
+abstract class ObjectLinkColumnRenderer extends DefaultColumnRenderer implements ILinkColumnRenderer
 {
     public function __construct(
         private readonly string $controllerClass = '',

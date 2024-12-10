@@ -17,6 +17,6 @@ class EmailColumnRenderer extends AbstractColumnRenderer implements ILinkColumnR
     #[\Override]
     public function render(mixed $value, mixed $context = null): string
     {
-        return \sprintf('<a href="mailto:%s">%s</a>', StringUtil::encodeHTML($value), StringUtil::encodeHTML($value));
+        return \sprintf('<a href="mailto:%s">%s</a>', $value, $value);
     }
 }

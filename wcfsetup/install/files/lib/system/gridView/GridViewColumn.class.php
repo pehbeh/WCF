@@ -30,6 +30,7 @@ final class GridViewColumn
     private string $sortById = '';
     private ?IGridViewFilter $filter = null;
     private bool $hidden = false;
+    private bool $valueEncoding = true;
 
     private function __construct(private readonly string $id) {}
 
@@ -222,6 +223,24 @@ final class GridViewColumn
     public function isHidden(): bool
     {
         return $this->hidden;
+    }
+
+    /**
+     * Determines whether the value of this column should be encoded before rendering.
+     */
+    public function valueEncoding(bool $valueEncoding = true): static
+    {
+        $this->valueEncoding = $valueEncoding;
+
+        return $this;
+    }
+
+    /**
+     * Returns true if the value of this column should be encoded before rendering.
+     */
+    public function encodeValue(): bool
+    {
+        return $this->valueEncoding;
     }
 
     /**

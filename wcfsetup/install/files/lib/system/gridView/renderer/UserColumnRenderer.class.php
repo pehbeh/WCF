@@ -6,7 +6,7 @@ use wcf\system\cache\runtime\UserRuntimeCache;
 use wcf\util\StringUtil;
 
 /**
- * Formats the content of a column as a user.
+ * Formats the content of a column as a user. The value of the column must be a user id.
  *
  * @author      Marcel Werk
  * @copyright   2001-2024 WoltLab GmbH
