@@ -469,6 +469,9 @@ html[data-color-scheme="dark"] .dialog::backdrop {
 .dialog cropper-canvas {
 	margin-left: auto;
 	margin-right: auto;
+	/* overwrites the default values of `min-height: 100px` and `min-width: 200px` */
+	min-height: 1px;
+	min-width: 1px;
 }
 
 /* If the height of the image is many times greater than the width, a white area would be displayed at the bottom and/or top. */
