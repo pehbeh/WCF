@@ -28,10 +28,10 @@ export interface CropperConfiguration {
 
 function inSelection(selection: Selection, maxSelection: Selection): boolean {
   return (
-    Math.ceil(selection.x) >= maxSelection.x &&
-    Math.ceil(selection.y) >= maxSelection.y &&
-    Math.ceil(selection.x + selection.width) <= Math.ceil(maxSelection.x + maxSelection.width) &&
-    Math.ceil(selection.y + selection.height) <= Math.ceil(maxSelection.y + maxSelection.height)
+    Math.round(selection.x) >= maxSelection.x &&
+    Math.round(selection.y) >= maxSelection.y &&
+    Math.round(selection.x + selection.width) <= Math.round(maxSelection.x + maxSelection.width) &&
+    Math.round(selection.y + selection.height) <= Math.round(maxSelection.y + maxSelection.height)
   );
 }
 
@@ -355,18 +355,22 @@ class MinMaxImageCropper extends ImageCropper {
       this.#cropperCanvasRect = this.cropperCanvas!.getBoundingClientRect();
 
       const maxImageWidth = Math.min(this.image!.width, this.maxSize.width);
-      const widthRatio = this.#cropperCanvasRect.width / maxImageWidth;
+      const maxImageHeight = Math.min(this.image!.height, this.maxSize.height);
+      const selectionRatio = Math.min(
+        this.#cropperCanvasRect.width / maxImageWidth,
+        this.#cropperCanvasRect.height / maxImageHeight,
+      );
 
-      const minWidth = this.minSize.width * widthRatio;
-      const maxWidth = this.maxSize.width * widthRatio;
+      const minWidth = this.minSize.width * selectionRatio;
+      const maxWidth = this.maxSize.width * selectionRatio;
       const minHeight = minWidth / this.configuration.aspectRatio;
       const maxHeight = maxWidth / this.configuration.aspectRatio;
 
       if (
-        selection.width < minWidth ||
-        selection.height < minHeight ||
-        selection.width > maxWidth ||
-        selection.height > maxHeight
+        Math.round(selection.width) < minWidth ||
+        Math.round(selection.height) < minHeight ||
+        Math.round(selection.width) > maxWidth ||
+        Math.round(selection.height) > maxHeight
       ) {
         event.preventDefault();
       }
@@ -387,20 +391,33 @@ class MinMaxImageCropper extends ImageCropper {
   }
 
   protected centerSelection(): void {
-    // Reset to get the maximum available height
+    // Reset to get the maximum available height and width
     this.cropperCanvas!.style.height = "";
+    this.cropperCanvas!.style.width = "";
 
-    const dimensions = DomUtil.outerDimensions(this.cropperCanvas!.parentElement!);
-    this.cropperCanvas!.style.height = `${dimensions.height}px`;
+    const dimension = DomUtil.innerDimensions(this.cropperCanvas!.parentElement!);
+    const ratio = Math.min(dimension.width / this.image!.width, dimension.height / this.image!.height);
+
+    this.cropperCanvas!.style.height = `${this.image!.height * ratio}px`;
+    this.cropperCanvas!.style.width = `${this.image!.width * ratio}px`;
 
     this.cropperImage!.$center("contain");
     this.#cropperCanvasRect = this.cropperImage!.getBoundingClientRect();
 
-    if (this.configuration.aspectRatio >= 1.0) {
-      this.cropperSelection!.$change(0, 0, this.#cropperCanvasRect.width, 0, this.configuration.aspectRatio, true);
-    } else {
-      this.cropperSelection!.$change(0, 0, 0, this.#cropperCanvasRect.height, this.configuration.aspectRatio, true);
-    }
+    const selectionRatio = Math.min(
+      this.#cropperCanvasRect.width / this.maxSize.width,
+      this.#cropperCanvasRect.height / this.maxSize.height,
+    );
+
+    this.cropperSelection!.$change(
+      0,
+      0,
+      this.maxSize.width * selectionRatio,
+      this.maxSize.height * selectionRatio,
+      this.configuration.aspectRatio,
+      true,
+    );
+
     this.cropperSelection!.$center();
     this.cropperSelection!.scrollIntoView({ block: "center", inline: "center" });
   }

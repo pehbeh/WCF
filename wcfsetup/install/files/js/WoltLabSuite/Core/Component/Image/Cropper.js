@@ -15,10 +15,10 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
     exifreader_1 = tslib_1.__importDefault(exifreader_1);
     Util_1 = tslib_1.__importDefault(Util_1);
     function inSelection(selection, maxSelection) {
-        return (Math.ceil(selection.x) >= maxSelection.x &&
-            Math.ceil(selection.y) >= maxSelection.y &&
-            Math.ceil(selection.x + selection.width) <= Math.ceil(maxSelection.x + maxSelection.width) &&
-            Math.ceil(selection.y + selection.height) <= Math.ceil(maxSelection.y + maxSelection.height));
+        return (Math.round(selection.x) >= maxSelection.x &&
+            Math.round(selection.y) >= maxSelection.y &&
+            Math.round(selection.x + selection.width) <= Math.round(maxSelection.x + maxSelection.width) &&
+            Math.round(selection.y + selection.height) <= Math.round(maxSelection.y + maxSelection.height));
     }
     class ImageCropper {
         configuration;
@@ -267,15 +267,16 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
                 const selection = event.detail;
                 this.#cropperCanvasRect = this.cropperCanvas.getBoundingClientRect();
                 const maxImageWidth = Math.min(this.image.width, this.maxSize.width);
-                const widthRatio = this.#cropperCanvasRect.width / maxImageWidth;
-                const minWidth = this.minSize.width * widthRatio;
-                const maxWidth = this.maxSize.width * widthRatio;
+                const maxImageHeight = Math.min(this.image.height, this.maxSize.height);
+                const selectionRatio = Math.min(this.#cropperCanvasRect.width / maxImageWidth, this.#cropperCanvasRect.height / maxImageHeight);
+                const minWidth = this.minSize.width * selectionRatio;
+                const maxWidth = this.maxSize.width * selectionRatio;
                 const minHeight = minWidth / this.configuration.aspectRatio;
                 const maxHeight = maxWidth / this.configuration.aspectRatio;
-                if (selection.width < minWidth ||
-                    selection.height < minHeight ||
-                    selection.width > maxWidth ||
-                    selection.height > maxHeight) {
+                if (Math.round(selection.width) < minWidth ||
+                    Math.round(selection.height) < minHeight ||
+                    Math.round(selection.width) > maxWidth ||
+                    Math.round(selection.height) > maxHeight) {
                     event.preventDefault();
                 }
             });
@@ -292,18 +293,17 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
             });
         }
         centerSelection() {
-            // Reset to get the maximum available height
+            // Reset to get the maximum available height and width
             this.cropperCanvas.style.height = "";
-            const dimensions = Util_1.default.outerDimensions(this.cropperCanvas.parentElement);
-            this.cropperCanvas.style.height = `${dimensions.height}px`;
+            this.cropperCanvas.style.width = "";
+            const dimension = Util_1.default.innerDimensions(this.cropperCanvas.parentElement);
+            const ratio = Math.min(dimension.width / this.image.width, dimension.height / this.image.height);
+            this.cropperCanvas.style.height = `${this.image.height * ratio}px`;
+            this.cropperCanvas.style.width = `${this.image.width * ratio}px`;
             this.cropperImage.$center("contain");
             this.#cropperCanvasRect = this.cropperImage.getBoundingClientRect();
-            if (this.configuration.aspectRatio >= 1.0) {
-                this.cropperSelection.$change(0, 0, this.#cropperCanvasRect.width, 0, this.configuration.aspectRatio, true);
-            }
-            else {
-                this.cropperSelection.$change(0, 0, 0, this.#cropperCanvasRect.height, this.configuration.aspectRatio, true);
-            }
+            const selectionRatio = Math.min(this.#cropperCanvasRect.width / this.maxSize.width, this.#cropperCanvasRect.height / this.maxSize.height);
+            this.cropperSelection.$change(0, 0, this.maxSize.width * selectionRatio, this.maxSize.height * selectionRatio, this.configuration.aspectRatio, true);
             this.cropperSelection.$center();
             this.cropperSelection.scrollIntoView({ block: "center", inline: "center" });
         }
