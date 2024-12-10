@@ -5,6 +5,7 @@ namespace wcf\system\gridView\renderer;
 use wcf\data\DatabaseObject;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
+use wcf\util\StringUtil;
 
 /**
  * Allows the setting of a link to a column.
@@ -31,7 +32,7 @@ class LinkColumnRenderer extends AbstractColumnRenderer implements ILinkColumnRe
             \array_merge($this->parameters, ['object' => $context])
         );
 
-        return '<a href="' . $href . '"'
+        return '<a href="' . StringUtil::encodeHTML($href) . '"'
             . ($this->titleLanguageItem ? ' title="' . WCF::getLanguage()->get($this->titleLanguageItem) . '"' : '') . '>'
             . $value
             . '</a>';
