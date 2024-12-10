@@ -1230,14 +1230,8 @@ You can access the error log at: {link controller='ExceptionLogView' isEmail=tru
 	<category name="wcf.acp.modificationLog">
 		<item name="wcf.acp.modificationLog.list"><![CDATA[Global Modification Log]]></item>
 		<item name="wcf.acp.modificationLog.action"><![CDATA[Action]]></item>
-		<item name="wcf.acp.modificationLog.action.all"><![CDATA[All Actions]]></item>
 		<item name="wcf.acp.modificationLog.affectedObject"><![CDATA[Affected Object]]></item>
-		<item name="wcf.acp.modificationLog.affectedObject.id"><![CDATA[ID: {@$modificationLog->objectID}]]></item>
 		<item name="wcf.acp.modificationLog.affectedObject.unknown"><![CDATA[(Does not exist anymore)]]></item>
-		<item name="wcf.acp.modificationLog.package.all"><![CDATA[All Sources]]></item>
-		<item name="wcf.acp.modificationLog.time.afterDate"><![CDATA[After the date]]></item>
-		<item name="wcf.acp.modificationLog.time.beforeDate"><![CDATA[Before the date]]></item>
-		<item name="wcf.acp.modificationLog.unsupportedObjectTypes"><![CDATA[Some types are currently not supported and require changes to be made by the vendor.]]></item>
 		<item name="wcf.acp.modificationLog.action.allPackageActions"><![CDATA[All Actions from “{$package->getName()}”]]></item>
 	</category>
 	<category name="wcf.acp.notice">
