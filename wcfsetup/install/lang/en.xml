@@ -1392,6 +1392,9 @@ You can access the error log at: {link controller='ExceptionLogView' isEmail=tru
 		<item name="wcf.acp.option.package_server_auth_code"><![CDATA[Authentication Code]]></item>
 		<item name="wcf.acp.option.package_server_auth_code.description"><![CDATA[Your authentication code is available in the customers area on woltlab.com.]]></item>
 		<item name="wcf.acp.option.category.security.antispam.recaptcha"><![CDATA[reCAPTCHA]]></item>
+		<item name="wcf.acp.option.recaptcha_publickey_v3"><![CDATA[Public API Key (reCAPTCHA v3)]]></item>
+		<item name="wcf.acp.option.recaptcha_publickey_v3.description"><![CDATA[You can request your own API-Key for using reCAPTCHA on the <a href="https://www.google.com/recaptcha/admin" class="externalURL">reCAPTCHA website</a>.]]></item>
+		<item name="wcf.acp.option.recaptcha_privatekey_v3"><![CDATA[Private API Key (reCAPTCHA v3)]]></item>
 		<item name="wcf.acp.option.recaptcha_publickey"><![CDATA[Public API Key (reCAPTCHA v2)]]></item>
 		<item name="wcf.acp.option.recaptcha_publickey.description"><![CDATA[You can request your own API-Key for using reCAPTCHA on the <a href="https://www.google.com/recaptcha/admin" class="externalURL">reCAPTCHA website</a>.]]></item>
 		<item name="wcf.acp.option.recaptcha_privatekey"><![CDATA[Private API Key (reCAPTCHA v2)]]></item>
