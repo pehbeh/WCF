@@ -53,6 +53,10 @@ define(["require", "exports", "tslib", "../Dom/Util", "../Helper/PageOverlay", "
                 this.#timerShouldShow = new Repeating_1.default((timer) => {
                     timer.stop();
                     const objectId = this.#getObjectId();
+                    if (objectId === undefined) {
+                        console.error("Missing attribute `data-object-id` for element", this.#element);
+                        return;
+                    }
                     void this.#cache.get(objectId).then((content) => {
                         if (content === "") {
                             return;
@@ -88,7 +92,11 @@ define(["require", "exports", "tslib", "../Dom/Util", "../Helper/PageOverlay", "
             this.#container?.setAttribute("aria-hidden", "true");
         }
         #getObjectId() {
-            return parseInt(this.#element.dataset.objectId);
+            const objectId = parseInt(this.#element.dataset.objectId || "");
+            if (Number.isNaN(objectId) || objectId === 0) {
+                return undefined;
+            }
+            return objectId;
         }
         #getContainer() {
             if (this.#container === undefined) {
