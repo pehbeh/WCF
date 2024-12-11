@@ -167,17 +167,26 @@ class HtmlInputNodeWoltlabMetacodeMarker extends AbstractHtmlInputNode
      */
     protected function isInsideCode(\DOMElement $element)
     {
+        static $sourceBBCodes;
+        if ($sourceBBCodes === null) {
+            $sourceBBCodes = BBCodeParser::getInstance()->getSourceBBCodes();
+        }
+
         $parent = $element;
         while ($parent = $parent->parentNode) {
+            if (!($parent instanceof \DOMElement)) {
+                return false;
+            }
+
             $nodeName = $parent->nodeName;
 
             if ($nodeName === 'code' || $nodeName === 'kbd' || $nodeName === 'pre') {
                 return true;
-            } elseif ($nodeName === 'woltlab-metacode') {
-                $name = $parent->getAttribute('data-name');
-                if ($name === 'code' || $name === 'tt') {
-                    return true;
-                }
+            } elseif (
+                $nodeName === 'woltlab-metacode'
+                && \in_array($parent->getAttribute('data-name'), $sourceBBCodes)
+            ) {
+                return true;
             }
         }
 
