@@ -92,7 +92,7 @@ class HtmlSimpleParser extends SingletonFactory
         foreach ($data as $handler => $values) {
             $values = $this->handlers[$handler]->validateValues($objectType, $objectID, $values);
             if (!empty($values)) {
-                $embeddedContent[$this->handlers[$handler]->objectTypeID] = $values;
+                $embeddedContent[$this->handlers[$handler]->objectTypeID] = \array_unique($values);
             }
         }
 
