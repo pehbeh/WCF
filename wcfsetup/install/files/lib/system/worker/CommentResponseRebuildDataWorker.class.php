@@ -87,6 +87,8 @@ final class CommentResponseRebuildDataWorker extends AbstractLinearRebuildDataWo
             $responseEditor->update($data);
         }
         WCF::getDB()->commitTransaction();
+
+        MessageEmbeddedObjectManager::getInstance()->commitBulkOperation();
     }
 
     private function getHtmlInputProcessor(): HtmlInputProcessor
