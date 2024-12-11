@@ -18,33 +18,35 @@
 		</div>
 	{/if}
 	
-	<table class="gridView__table" id="{$view->getID()}_table"{if !$view->countRows()} hidden{/if}>
-		<thead>
-			<tr class="gridView__headerRow">
-				{foreach from=$view->getVisibleColumns() item='column'}
-					<th
-						class="gridView__headerColumn {$column->getClasses()}"
-						data-id="{$column->getID()}"
-						data-sortable="{$column->isSortable()}"
-					>
-						{if $column->isSortable()}
-							<button type="button" class="gridView__headerColumn__button">
+	<div class="gridView__tableContainer">
+		<table class="gridView__table" id="{$view->getID()}_table"{if !$view->countRows()} hidden{/if}>
+			<thead>
+				<tr class="gridView__headerRow">
+					{foreach from=$view->getVisibleColumns() item='column'}
+						<th
+							class="gridView__headerColumn {$column->getClasses()}"
+							data-id="{$column->getID()}"
+							data-sortable="{$column->isSortable()}"
+						>
+							{if $column->isSortable()}
+								<button type="button" class="gridView__headerColumn__button">
+									{unsafe:$column->getLabel()}
+								</button>
+							{else}
 								{unsafe:$column->getLabel()}
-							</button>
-						{else}
-							{unsafe:$column->getLabel()}
-						{/if}
-					</th>
-				{/foreach}
-				{if $view->hasActions()}
-					<th class="gridView__headerColumn gridView__actionColumn"></th>
-				{/if}
-			</td>
-		</thead>
-		<tbody>
-			{unsafe:$view->renderRows()}
-		</tbody>
-	</table>
+							{/if}
+						</th>
+					{/foreach}
+					{if $view->hasActions()}
+						<th class="gridView__headerColumn gridView__actionColumn"></th>
+					{/if}
+				</td>
+			</thead>
+			<tbody>
+				{unsafe:$view->renderRows()}
+			</tbody>
+		</table>
+	</div>
 
 	<div class="gridView__pagination">
 		<woltlab-core-pagination id="{$view->getID()}_pagination" page="{$view->getPageNo()}" count="{$view->countPages()}"></woltlab-core-pagination>
