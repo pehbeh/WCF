@@ -28,15 +28,13 @@
 			{event name='beforeManageButtons'}
 			
 			{if $view->canEditCoverPhoto()}
-				<div class="dropdown">
-					<button type="button" class="button small dropdownToggle">{icon name='camera'} {lang}wcf.user.coverPhoto.edit{/lang}</button>
-					<ul class="dropdownMenu">
-						{if $view->canAddCoverPhoto()}
-							<li><button type="button" class="jsButtonUploadCoverPhoto jsStaticDialog" data-dialog-id="userProfileCoverPhotoUpload">{lang}wcf.user.coverPhoto.upload{/lang}</button></li>
-						{/if}
-						<li{if !$view->user->coverPhotoHash} style="display:none;"{/if}><button type="button" class="jsButtonDeleteCoverPhoto">{lang}wcf.user.coverPhoto.delete{/lang}</button></li>
-					</ul>
-				</div>
+				<ul class="userProfileManageCoverPhoto buttonGroup buttonList smallButtons">
+					<li>
+						<button type="button" data-edit-cover-photo="{link controller="UserCoverPhoto" id=$user->userID}{/link}" data-default-cover-photo="{$__wcf->styleHandler->getStyle()->getCoverPhotoUrl()}" class="button small">
+							{icon name='camera'} {lang}wcf.user.coverPhoto.management{/lang}
+						</button>
+					</li>
+				</ul>
 			{/if}
 
 			{if $view->canEditUser()}

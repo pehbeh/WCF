@@ -32,7 +32,7 @@ async function editCoverPhoto(button: HTMLElement): Promise<void> {
   const dialog = dialogFactory().fromHtml(json.dialog).withoutControls();
   const coverPhotoElement = getCoverPhotoElement();
   const coverPhotoNotice = document.getElementById("coverPhotoNotice");
-  const oldCoverPhoto = coverPhotoElement?.style.backgroundImage;
+  const oldCoverPhoto = getCoverPhotoUrl(coverPhotoElement);
 
   dialog.addEventListener("afterClose", () => {
     const file = dialog.querySelector<WoltlabCoreFile>("woltlab-core-file");
@@ -48,8 +48,8 @@ async function editCoverPhoto(button: HTMLElement): Promise<void> {
       return;
     }
 
-    if (coverPhotoElement && coverPhotoUrl) {
-      coverPhotoElement.style.backgroundImage = coverPhotoStyle;
+    if (coverPhotoElement instanceof HTMLImageElement && coverPhotoUrl) {
+      coverPhotoElement.src = coverPhotoUrl;
     } else {
       // ACP cover photo management
       if (!coverPhotoElement && coverPhotoUrl) {
@@ -78,8 +78,19 @@ async function editCoverPhoto(button: HTMLElement): Promise<void> {
   dialog.show(json.title);
 }
 
+function getCoverPhotoUrl(coverPhotoElement: HTMLElement | null): string | undefined {
+  if (coverPhotoElement instanceof HTMLImageElement) {
+    return coverPhotoElement.src;
+  } else {
+    return coverPhotoElement?.style.backgroundImage;
+  }
+}
+
 function getCoverPhotoElement(): HTMLElement | null {
-  return document.querySelector<HTMLElement>(".userProfileCoverPhoto") ?? document.getElementById("coverPhotoPreview");
+  return (
+    document.querySelector<HTMLElement>(".userProfileHeader__coverPhotoImage") ??
+    document.getElementById("coverPhotoPreview")
+  );
 }
 
 export function setup(): void {

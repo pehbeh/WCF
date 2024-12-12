@@ -19,7 +19,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/PromiseMutex", 
         const dialog = (0, Dialog_1.dialogFactory)().fromHtml(json.dialog).withoutControls();
         const coverPhotoElement = getCoverPhotoElement();
         const coverPhotoNotice = document.getElementById("coverPhotoNotice");
-        const oldCoverPhoto = coverPhotoElement?.style.backgroundImage;
+        const oldCoverPhoto = getCoverPhotoUrl(coverPhotoElement);
         dialog.addEventListener("afterClose", () => {
             const file = dialog.querySelector("woltlab-core-file");
             const coverPhotoUrl = file?.link ?? defaultCoverPhoto ?? "";
@@ -31,8 +31,8 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/PromiseMutex", 
                 // nothing changed
                 return;
             }
-            if (coverPhotoElement && coverPhotoUrl) {
-                coverPhotoElement.style.backgroundImage = coverPhotoStyle;
+            if (coverPhotoElement instanceof HTMLImageElement && coverPhotoUrl) {
+                coverPhotoElement.src = coverPhotoUrl;
             }
             else {
                 // ACP cover photo management
@@ -52,8 +52,17 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/PromiseMutex", 
         });
         dialog.show(json.title);
     }
+    function getCoverPhotoUrl(coverPhotoElement) {
+        if (coverPhotoElement instanceof HTMLImageElement) {
+            return coverPhotoElement.src;
+        }
+        else {
+            return coverPhotoElement?.style.backgroundImage;
+        }
+    }
     function getCoverPhotoElement() {
-        return document.querySelector(".userProfileCoverPhoto") ?? document.getElementById("coverPhotoPreview");
+        return (document.querySelector(".userProfileHeader__coverPhotoImage") ??
+            document.getElementById("coverPhotoPreview"));
     }
     function setup() {
         (0, Selector_1.wheneverFirstSeen)("[data-edit-cover-photo]", (button) => {
