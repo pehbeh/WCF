@@ -22,11 +22,11 @@ class UserEditor implements AjaxCallbackObject, DialogCallbackObject {
   private readonly header: HTMLElement;
 
   constructor() {
-    this.header = document.querySelector(".userProfileUser") as HTMLElement;
+    this.header = document.querySelector(".userProfileHeader") as HTMLElement;
 
     ["ban", "disableAvatar", "disableCoverPhoto", "disableSignature", "enable"].forEach((action) => {
       const button = document.querySelector(
-        ".userProfileButtonMenu .jsButtonUser" + StringUtil.ucfirst(action),
+        ".userProfileHeader__managementOptions .jsButtonUser" + StringUtil.ucfirst(action),
       ) as HTMLElement;
 
       // The button is missing if the current user lacks the permission.
@@ -125,14 +125,14 @@ class UserEditor implements AjaxCallbackObject, DialogCallbackObject {
       case "ban":
       case "unban": {
         this.header.dataset.banned = data.actionName === "ban" ? "true" : "false";
-        button = document.querySelector(".userProfileButtonMenu .jsButtonUserBan") as HTMLElement;
+        button = document.querySelector(".userProfileHeader__managementOptions .jsButtonUserBan") as HTMLElement;
         button.textContent = Language.get("wcf.user." + (data.actionName === "ban" ? "unban" : "ban"));
 
-        const contentTitle = this.header.querySelector(".contentTitle") as HTMLElement;
+        const contentTitle = this.header.querySelector(".userProfileHeader__username") as HTMLElement;
         let banIcon = contentTitle.querySelector(".jsUserBanned") as HTMLElement;
         if (data.actionName === "ban") {
           banIcon = document.createElement("span");
-          banIcon.innerHTML = '<fa-icon size="24" name="lock"></fa-icon>';
+          banIcon.innerHTML = '<fa-icon size="16" name="lock"></fa-icon>';
           banIcon.classList.add("jsUserBanned", "jsTooltip");
           banIcon.title = data.returnValues;
           contentTitle.appendChild(banIcon);
@@ -145,7 +145,9 @@ class UserEditor implements AjaxCallbackObject, DialogCallbackObject {
       case "disableAvatar":
       case "enableAvatar":
         this.header.dataset.disableAvatar = data.actionName === "disableAvatar" ? "true" : "false";
-        button = document.querySelector(".userProfileButtonMenu .jsButtonUserDisableAvatar") as HTMLElement;
+        button = document.querySelector(
+          ".userProfileHeader__managementOptions .jsButtonUserDisableAvatar",
+        ) as HTMLElement;
         button.textContent = Language.get(
           "wcf.user." + (data.actionName === "disableAvatar" ? "enable" : "disable") + "Avatar",
         );
@@ -154,7 +156,9 @@ class UserEditor implements AjaxCallbackObject, DialogCallbackObject {
       case "disableCoverPhoto":
       case "enableCoverPhoto":
         this.header.dataset.disableCoverPhoto = data.actionName === "disableCoverPhoto" ? "true" : "false";
-        button = document.querySelector(".userProfileButtonMenu .jsButtonUserDisableCoverPhoto") as HTMLElement;
+        button = document.querySelector(
+          ".userProfileHeader__managementOptions .jsButtonUserDisableCoverPhoto",
+        ) as HTMLElement;
         button.textContent = Language.get(
           "wcf.user." + (data.actionName === "disableCoverPhoto" ? "enable" : "disable") + "CoverPhoto",
         );
@@ -163,7 +167,9 @@ class UserEditor implements AjaxCallbackObject, DialogCallbackObject {
       case "disableSignature":
       case "enableSignature":
         this.header.dataset.disableSignature = data.actionName === "disableSignature" ? "true" : "false";
-        button = document.querySelector(".userProfileButtonMenu .jsButtonUserDisableSignature") as HTMLElement;
+        button = document.querySelector(
+          ".userProfileHeader__managementOptions .jsButtonUserDisableSignature",
+        ) as HTMLElement;
         button.textContent = Language.get(
           "wcf.user." + (data.actionName === "disableSignature" ? "enable" : "disable") + "Signature",
         );
@@ -172,7 +178,7 @@ class UserEditor implements AjaxCallbackObject, DialogCallbackObject {
       case "enable":
       case "disable":
         this.header.dataset.isDisabled = data.actionName === "disable" ? "true" : "false";
-        button = document.querySelector(".userProfileButtonMenu .jsButtonUserEnable") as HTMLElement;
+        button = document.querySelector(".userProfileHeader__managementOptions .jsButtonUserEnable") as HTMLElement;
         button.textContent = Language.get("wcf.acp.user." + (data.actionName === "enable" ? "disable" : "enable"));
         break;
     }

@@ -2,7 +2,8 @@
 	<div class="
 		recentActivityListItem
 		{if $event->isIgnoredContent()}ignoredUserContent{/if}
-		{if !$event->getDescription()}recentActivityListItem--compact{/if}
+		{if $event->getDescription()}recentActivityListItem--withDescription{/if}
+		{if $event->getImage()}recentActivityListItem--withImage{/if}
 	">
 		<div class="recentActivityListItem__avatar">
 			{user object=$event->getUserProfile() type='avatar48' ariaHidden='true' tabindex='-1'}
@@ -19,6 +20,12 @@
 		{if $event->getDescription()}
 			<div class="recentActivityListItem__description{if !$event->isRawHtml()} htmlContent{/if}">
 				{unsafe:$event->getDescription()}
+			</div>
+		{/if}
+
+		{if $event->getImage()}
+			<div class="recentActivityListItem__image">
+				{unsafe:$event->getImage()->toHtml()}
 			</div>
 		{/if}
 

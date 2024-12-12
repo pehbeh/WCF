@@ -1,7 +1,7 @@
 <div id="acpDashboardSortableContainer" class="sortableListContainer">
 	<ul class="sortableList" id="{$field->getPrefixedId()}_list">
 		{foreach from=$field->getNestedOptions() item=__fieldNestedOption}
-			<li{if $__fieldNestedOption[depth] > 0} style="padding-left: {$__fieldNestedOption[depth]*20}px"{/if}>
+			<li class="sortableNode"{if $__fieldNestedOption[depth] > 0} style="padding-left: {$__fieldNestedOption[depth]*20}px"{/if}>
 				<span class="sortableHandle">
 					{icon name='arrows-up-down'}
 				</span>
@@ -24,16 +24,10 @@
 </div>
 
 <script data-relocate="true">
-	$(() => {
-		new window.WCF.Sortable.List(
-			'acpDashboardSortableContainer',
-			'',
-			0,
-			{
-				handle: '.sortableHandle'
-			},
-			true,
-			{},
-		);
+	require(['WoltLabSuite/Core/Ui/Sortable/List'], (SortableList) => {
+		new SortableList({
+			containerId: 'acpDashboardSortableContainer',
+			isSimpleSorting: true,
+		});
 	});
 </script>

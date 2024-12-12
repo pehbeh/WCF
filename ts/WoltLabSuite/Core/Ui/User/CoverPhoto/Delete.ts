@@ -58,8 +58,8 @@ class UiUserCoverPhotoDelete implements AjaxCallbackObject {
   }
 
   _ajaxSuccess(data: AjaxResponse): void {
-    const photo = document.querySelector(".userProfileCoverPhoto") as HTMLElement;
-    photo.style.setProperty("background-image", `url(${data.returnValues.url})`, "");
+    const photo = document.querySelector<HTMLImageElement>(".userProfileHeader__coverPhotoImage")!;
+    photo.src = data.returnValues.url;
 
     DomUtil.hide(this.button.parentElement!);
 

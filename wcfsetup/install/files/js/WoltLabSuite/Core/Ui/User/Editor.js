@@ -21,9 +21,9 @@ define(["require", "exports", "tslib", "../../Ajax", "../../Core", "../../Dom/Ut
         actionName = "";
         header;
         constructor() {
-            this.header = document.querySelector(".userProfileUser");
+            this.header = document.querySelector(".userProfileHeader");
             ["ban", "disableAvatar", "disableCoverPhoto", "disableSignature", "enable"].forEach((action) => {
-                const button = document.querySelector(".userProfileButtonMenu .jsButtonUser" + StringUtil.ucfirst(action));
+                const button = document.querySelector(".userProfileHeader__managementOptions .jsButtonUser" + StringUtil.ucfirst(action));
                 // The button is missing if the current user lacks the permission.
                 if (button) {
                     button.dataset.action = action;
@@ -106,13 +106,13 @@ define(["require", "exports", "tslib", "../../Ajax", "../../Core", "../../Dom/Ut
                 case "ban":
                 case "unban": {
                     this.header.dataset.banned = data.actionName === "ban" ? "true" : "false";
-                    button = document.querySelector(".userProfileButtonMenu .jsButtonUserBan");
+                    button = document.querySelector(".userProfileHeader__managementOptions .jsButtonUserBan");
                     button.textContent = Language.get("wcf.user." + (data.actionName === "ban" ? "unban" : "ban"));
-                    const contentTitle = this.header.querySelector(".contentTitle");
+                    const contentTitle = this.header.querySelector(".userProfileHeader__username");
                     let banIcon = contentTitle.querySelector(".jsUserBanned");
                     if (data.actionName === "ban") {
                         banIcon = document.createElement("span");
-                        banIcon.innerHTML = '<fa-icon size="24" name="lock"></fa-icon>';
+                        banIcon.innerHTML = '<fa-icon size="16" name="lock"></fa-icon>';
                         banIcon.classList.add("jsUserBanned", "jsTooltip");
                         banIcon.title = data.returnValues;
                         contentTitle.appendChild(banIcon);
@@ -125,25 +125,25 @@ define(["require", "exports", "tslib", "../../Ajax", "../../Core", "../../Dom/Ut
                 case "disableAvatar":
                 case "enableAvatar":
                     this.header.dataset.disableAvatar = data.actionName === "disableAvatar" ? "true" : "false";
-                    button = document.querySelector(".userProfileButtonMenu .jsButtonUserDisableAvatar");
+                    button = document.querySelector(".userProfileHeader__managementOptions .jsButtonUserDisableAvatar");
                     button.textContent = Language.get("wcf.user." + (data.actionName === "disableAvatar" ? "enable" : "disable") + "Avatar");
                     break;
                 case "disableCoverPhoto":
                 case "enableCoverPhoto":
                     this.header.dataset.disableCoverPhoto = data.actionName === "disableCoverPhoto" ? "true" : "false";
-                    button = document.querySelector(".userProfileButtonMenu .jsButtonUserDisableCoverPhoto");
+                    button = document.querySelector(".userProfileHeader__managementOptions .jsButtonUserDisableCoverPhoto");
                     button.textContent = Language.get("wcf.user." + (data.actionName === "disableCoverPhoto" ? "enable" : "disable") + "CoverPhoto");
                     break;
                 case "disableSignature":
                 case "enableSignature":
                     this.header.dataset.disableSignature = data.actionName === "disableSignature" ? "true" : "false";
-                    button = document.querySelector(".userProfileButtonMenu .jsButtonUserDisableSignature");
+                    button = document.querySelector(".userProfileHeader__managementOptions .jsButtonUserDisableSignature");
                     button.textContent = Language.get("wcf.user." + (data.actionName === "disableSignature" ? "enable" : "disable") + "Signature");
                     break;
                 case "enable":
                 case "disable":
                     this.header.dataset.isDisabled = data.actionName === "disable" ? "true" : "false";
-                    button = document.querySelector(".userProfileButtonMenu .jsButtonUserEnable");
+                    button = document.querySelector(".userProfileHeader__managementOptions .jsButtonUserEnable");
                     button.textContent = Language.get("wcf.acp.user." + (data.actionName === "enable" ? "disable" : "enable"));
                     break;
             }

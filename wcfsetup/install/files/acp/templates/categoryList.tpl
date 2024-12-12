@@ -8,58 +8,11 @@
 			{/if}
 			
 			{if $objectType->getProcessor()->canEditCategory()}
-				var sortableNodes = $('.sortableNode');
-				sortableNodes.each(function(index, node) {
-					$(node).wcfIdentify();
-				});
-			
 				require(['WoltLabSuite/Core/Ui/Sortable/List'], function (UiSortableList) {
 					new UiSortableList({
 						containerId: 'categoryList',
 						className: 'wcf\\data\\category\\CategoryAction',
-						options: {
-							{if $objectType->getProcessor()->getMaximumNestingLevel() != -1}
-								/**
-								 * Updates the sortable nodes after a sorting is started with
-								 * regard to their possibility to have child the currently sorted
-								 * category as a child category.
-								 */
-								start: function(event, ui) {
-									var sortedListItem = $(ui.item);
-									var itemNestingLevel = sortedListItem.find('.sortableList:has(.sortableNode)').length;
-									
-									sortableNodes.each(function(index, node) {
-										node = $(node);
-										
-										if (node.attr('id') != sortedListItem.attr('id')) {
-											if (node.parents('.sortableList').length + itemNestingLevel >= {@$objectType->getProcessor()->getMaximumNestingLevel() + 1}) {
-												node.addClass('sortableNoNesting');
-											}
-											else if (node.hasClass('sortableNoNesting')) {
-												node.removeClass('sortableNoNesting');
-											}
-										}
-									});
-								},
-								
-								/**
-								 * Updates the sortable nodes after a sorting is completed with
-								 * regard to their possibility to have child categories.
-								 */
-								stop: function(event, ui) {
-									sortableNodes.each(function(index, node) {
-										node = $(node);
-										
-										if (node.parents('.sortableList').length == {@$objectType->getProcessor()->getMaximumNestingLevel() + 1}) {
-											node.addClass('sortableNoNesting');
-										}
-										else if (node.hasClass('sortableNoNesting')) {
-											node.removeClass('sortableNoNesting');
-										}
-									});
-								}
-							{/if}
-						}
+						maxNestingLevel: {if $objectType->getProcessor()->getMaximumNestingLevel() == -1}undefined{else}{$objectType->getProcessor()->getMaximumNestingLevel()}{/if},
 					});
 				});
 			{/if}

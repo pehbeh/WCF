@@ -3,10 +3,13 @@
 namespace wcf\data\attachment;
 
 use wcf\data\DatabaseObject;
-use wcf\data\file\File;
 use wcf\data\ILinkableObject;
 use wcf\data\IThumbnailFile;
+use wcf\data\file\File;
+use wcf\data\file\thumbnail\FileThumbnail;
 use wcf\data\object\type\ObjectTypeCache;
+use wcf\system\file\processor\IImageDataProvider;
+use wcf\system\file\processor\ImageData;
 use wcf\system\cache\runtime\FileRuntimeCache;
 use wcf\system\request\IRouteController;
 use wcf\system\request\LinkHandler;
@@ -48,7 +51,7 @@ use wcf\util\FileUtil;
  * @property-read int|null $thumbnailID
  * @property-read int|null $tinyThumbnailID
  */
-class Attachment extends DatabaseObject implements ILinkableObject, IRouteController, IThumbnailFile
+class Attachment extends DatabaseObject implements ILinkableObject, IRouteController, IThumbnailFile, IImageDataProvider
 {
     /**
      * indicates if the attachment is embedded
@@ -104,7 +107,7 @@ class Attachment extends DatabaseObject implements ILinkableObject, IRouteContro
      */
     public function canViewPreview()
     {
-        return $this->getPermission('canViewPreview');
+        return $this->canDownload() || $this->getPermission('canViewPreview');
     }
 
     /**
@@ -211,11 +214,13 @@ class Attachment extends DatabaseObject implements ILinkableObject, IRouteContro
      */
     public function migrateStorage()
     {
-        foreach ([
-            $this->getLocation(),
-            $this->getThumbnailLocation(),
-            $this->getThumbnailLocation('tiny'),
-        ] as $location) {
+        foreach (
+            [
+                $this->getLocation(),
+                $this->getThumbnailLocation(),
+                $this->getThumbnailLocation('tiny'),
+            ] as $location
+        ) {
             if (!\str_ends_with($location, '.bin')) {
                 \rename($location, $location . '.bin');
             }
@@ -472,5 +477,48 @@ class Attachment extends DatabaseObject implements ILinkableObject, IRouteContro
                 'width' => ATTACHMENT_THUMBNAIL_WIDTH,
             ],
         ];
+    }
+
+    #[\Override]
+    public function getImageData(?int $minWidth = null, ?int $minHeight = null): ?ImageData
+    {
+        if (!$this->getFile()) {
+            return null;
+        }
+
+        if (!$this->getFile()->isImage()) {
+            return null;
+        }
+
+        if ($minWidth !== null || $minHeight !== null) {
+            if ($this->canViewPreview()) {
+                $thumbnails = $this->getFile()->getThumbnails();
+                usort($thumbnails, fn(FileThumbnail $a, FileThumbnail $b) => $a->width <=> $b->width);
+
+                foreach ($thumbnails as $thumbnail) {
+                    if ($minWidth !== null && $minWidth > $thumbnail->width) {
+                        continue;
+                    }
+                    if ($minHeight !== null && $minHeight > $thumbnail->height) {
+                        continue;
+                    }
+
+                    return new ImageData($thumbnail->getLink(), $thumbnail->width, $thumbnail->height);
+                }
+            }
+
+            if ($minWidth !== null && $minWidth > $this->width) {
+                return null;
+            }
+            if ($minHeight !== null && $minHeight > $this->height) {
+                return null;
+            }
+        }
+
+        if (!$this->canDownload()) {
+            return null;
+        }
+
+        return new ImageData($this->getLink(), $this->width, $this->height);
     }
 }

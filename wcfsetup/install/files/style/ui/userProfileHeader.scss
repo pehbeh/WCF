@@ -1,0 +1,152 @@
+body[data-page-identifier="com.woltlab.wcf.User"] .contentInteraction:first-child {
+	margin-top: 0;
+}
+
+body[data-page-identifier="com.woltlab.wcf.User"] .userProfileContent:first-child {
+	margin-top: 0;
+}
+
+.userProfileHeader {
+	flex: 1 1 auto;
+	background-color: var(--wcfContentBackground);
+	border: 1px solid var(--wcfContentBorderInner);
+	border-radius: var(--wcfBorderRadius);
+	box-shadow: var(--wcfBoxShadowCard);
+	margin-bottom: 30px;
+	overflow: hidden;
+}
+
+.userProfileHeader__coverPhotoContainer {
+	position: relative;
+}
+
+.userProfileHeader__manageButtons {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	display: flex;
+	gap: 5px;
+}
+
+.userProfileHeader__coverPhoto {
+	height: 250px;
+}
+
+.userProfileHeader__coverPhotoImage {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+	object-position: center center;
+}
+
+.userProfileHeader__content {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 10px;
+	padding: 10px 20px;
+}
+
+.userProfileHeader__avatar {
+	position: relative;
+	flex: 0 0 128px;
+	align-self: flex-end;
+
+	@include screen-sm-down {
+		flex-basis: 64px;
+	}
+}
+
+.userProfileHeader__avatarBorder {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	border: 3px solid var(--wcfContentBackground);
+	width: 100%;
+	aspect-ratio: 1;
+	border-radius: 50%;
+}
+
+.userProfileHeader__avatarEditLink {
+	display: block;
+}
+
+.userProfileHeader__avatar .userAvatarImage {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.userProfileHeader__title {
+	margin-inline-end: 10px;
+	flex: 0 0 auto;
+}
+
+.userProfileHeader__username {
+	font-size: var(--wcfFontSizeTitle);
+	font-weight: 600;
+	line-height: 1.05;
+}
+
+.userProfileHeader__stats {
+	display: flex;
+	flex-wrap: wrap;
+	white-space: nowrap;
+	gap: 5px;
+	overflow: hidden;
+
+	@include screen-sm-down {
+		flex: 1 1 100%;
+		order: 1;
+	}
+}
+
+.userProfileHeader__statItem {
+	flex: 0 0 auto;
+	padding: 10px 20px;
+	display: flex;
+	flex-direction: column;
+	background-color: var(--wcfSidebarBackground);
+	border-radius: 5px;
+	text-align: center;
+	font-size: 12px;
+	color: inherit;
+}
+
+.userProfileHeader__statItem:hover {
+	color: inherit;
+}
+
+.userProfileHeader__statTitle {
+	color: var(--wcfContentDimmedText);
+}
+
+.userProfileHeader__onlineIndicator {
+	background-color: rgba(0, 153, 0, 1);
+	border: 2px solid var(--wcfContentBackground);
+	border-radius: 50%;
+	bottom: 0;
+	height: 24px;
+	position: absolute;
+	right: 6px;
+	width: 24px;
+
+	@include screen-sm-down {
+		height: 12px;
+		width: 12px;
+	}
+}
+
+.userProfileHeader__buttons {
+	margin-inline-start: auto;
+	display: flex;
+	gap: 5px;
+	flex: 0 0 auto;
+}
+
+.userProfileHeader__button {
+	display: flex;
+}

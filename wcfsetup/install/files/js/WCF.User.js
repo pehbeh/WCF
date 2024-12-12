@@ -126,6 +126,8 @@ WCF.User.Profile.ActivityPointList = {
 
 /**
  * Provides methods to load tab menu content upon request.
+ * 
+ * @deprecated 6.2 Handled by `WoltLabSuite/Core/Controller/User/Profile`.
  */
 WCF.User.Profile.TabMenu = Class.extend({
 	/**
