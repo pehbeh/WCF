@@ -89,18 +89,21 @@ abstract class ImageCropper {
     };
 
     window.addEventListener("resize", resize, { passive: true });
-    this.dialog.addEventListener(
-      "afterClose",
-      () => {
-        window.removeEventListener("resize", resize);
-      },
-      {
-        once: true,
-      },
-    );
 
     return new Promise<File>((resolve, reject) => {
+      let callReject = true;
+      this.dialog!.addEventListener("afterClose", () => {
+        window.removeEventListener("resize", resize);
+
+        // If the dialog is closed without confirming, reject the promise to trigger a cancel event.
+        if (callReject) {
+          reject();
+        }
+      });
+
       this.dialog!.addEventListener("primary", () => {
+        callReject = false;
+
         void this.getCanvas()
           .then((canvas) => {
             this.resizer

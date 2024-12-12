@@ -67,13 +67,17 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
                 this.centerSelection();
             };
             window.addEventListener("resize", resize, { passive: true });
-            this.dialog.addEventListener("afterClose", () => {
-                window.removeEventListener("resize", resize);
-            }, {
-                once: true,
-            });
             return new Promise((resolve, reject) => {
+                let callReject = true;
+                this.dialog.addEventListener("afterClose", () => {
+                    window.removeEventListener("resize", resize);
+                    // If the dialog is closed without confirming, reject the promise to trigger a cancel event.
+                    if (callReject) {
+                        reject();
+                    }
+                });
                 this.dialog.addEventListener("primary", () => {
+                    callReject = false;
                     void this.getCanvas()
                         .then((canvas) => {
                         this.resizer

@@ -110,6 +110,8 @@ final class UserAvatarAction implements RequestHandlerInterface
                 ->required()
                 ->singleFileUpload()
                 ->bigPreview()
+                ->simpleReplace()
+                ->hideDeleteButton()
                 ->addDependency(
                     ValueFormFieldDependency::create('avatarType')
                         ->fieldId('avatarType')

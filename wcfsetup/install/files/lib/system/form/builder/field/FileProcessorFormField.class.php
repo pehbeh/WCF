@@ -45,6 +45,8 @@ final class FileProcessorFormField extends AbstractFormField
     private array $files = [];
     private bool $singleFileUpload = false;
     private bool $bigPreview = false;
+    private bool $simpleReplace = false;
+    private bool $hideDeleteButton = false;
     private array $actionButtons = [];
 
     #[\Override]
@@ -79,6 +81,7 @@ final class FileProcessorFormField extends AbstractFormField
             ),
             'maxUploads' => $this->getFileProcessor()->getMaximumCount($this->context),
             'actionButtons' => $this->actionButtons,
+            'simpleReplace' => $this->simpleReplace,
         ];
     }
 
@@ -133,6 +136,12 @@ final class FileProcessorFormField extends AbstractFormField
         if (!$singleFileUpload && $this->bigPreview) {
             throw new \InvalidArgumentException(
                 "Single file upload can't be disabled if the big preview is enabled for the field '{$this->getId()}'."
+            );
+        }
+
+        if (!$singleFileUpload && $this->simpleReplace) {
+            throw new \InvalidArgumentException(
+                "Single file upload can't be disabled if the simple replace is enabled for the field '{$this->getId()}'."
             );
         }
 
@@ -301,5 +310,49 @@ final class FileProcessorFormField extends AbstractFormField
         $this->bigPreview = $bigPreview;
 
         return $this;
+    }
+
+    /**
+     * Returns whether the simple replace is enabled.
+     */
+    public function isSimpleReplace(): bool
+    {
+        return $this->simpleReplace;
+    }
+
+    /**
+     * Sets whether the simple replace is enabled.
+     * Simple replace can only be enabled if single file upload is true.
+     * If enabled, there is no replace button and the existing file is replaced when a new file is uploaded.
+     */
+    public function simpleReplace(bool $simpleReplace = true): self
+    {
+        if ($simpleReplace && !$this->singleFileUpload) {
+            throw new \InvalidArgumentException(
+                "Simple replace can only be enabled for single file uploads for the field '{$this->getId()}'."
+            );
+        }
+
+        $this->simpleReplace = $simpleReplace;
+
+        return $this;
+    }
+
+    /**
+     * Sets whether the delete button should be hidden.
+     */
+    public function hideDeleteButton(bool $hideDeleteButton = true): self
+    {
+        $this->hideDeleteButton = $hideDeleteButton;
+
+        return $this;
+    }
+
+    /**
+     * Returns whether the delete button is hidden.
+     */
+    public function isHideDeleteButton(): bool
+    {
+        return $this->hideDeleteButton;
     }
 }

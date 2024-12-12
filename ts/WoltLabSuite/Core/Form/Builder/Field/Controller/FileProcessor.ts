@@ -35,6 +35,8 @@ export class FileProcessor {
   readonly #fileInput: HTMLInputElement;
   readonly #useBigPreview: boolean;
   readonly #singleFileUpload: boolean;
+  readonly #simpleReplace: boolean;
+  readonly #hideDeleteButton: boolean;
   readonly #extraButtons: ExtraButton[];
   #uploadResolve: undefined | (() => void);
 
@@ -42,11 +44,15 @@ export class FileProcessor {
     fieldId: string,
     singleFileUpload: boolean = false,
     useBigPreview: boolean = false,
+    simpleReplace: boolean = false,
+    hideDeleteButton: boolean = false,
     extraButtons: ExtraButton[] = [],
   ) {
     this.#fieldId = fieldId;
     this.#useBigPreview = useBigPreview;
     this.#singleFileUpload = singleFileUpload;
+    this.#simpleReplace = simpleReplace;
+    this.#hideDeleteButton = hideDeleteButton;
     this.#extraButtons = extraButtons;
 
     this.#container = document.getElementById(fieldId + "Container")!;
@@ -55,6 +61,18 @@ export class FileProcessor {
     }
 
     this.#uploadButton = this.#container.querySelector("woltlab-core-file-upload") as WoltlabCoreFileUploadElement;
+
+    if (this.#simpleReplace) {
+      this.#uploadButton.addEventListener("shouldUpload", () => {
+        const file = this.#uploadButton.parentElement!.querySelector("woltlab-core-file");
+        if (!file) {
+          return;
+        }
+
+        this.#simpleFileReplace(file);
+      });
+    }
+
     this.#uploadButton.addEventListener("uploadStart", (event: CustomEvent<WoltlabCoreFileElement>) => {
       if (this.#uploadResolve !== undefined) {
         this.#uploadResolve();
@@ -80,12 +98,14 @@ export class FileProcessor {
     buttons.classList.add("buttonList");
     buttons.classList.add(this.classPrefix + "item__buttons");
 
-    let listItem = document.createElement("li");
-    listItem.append(this.getDeleteButton(element));
-    buttons.append(listItem);
+    if (!this.#hideDeleteButton) {
+      const listItem = document.createElement("li");
+      listItem.append(this.getDeleteButton(element));
+      buttons.append(listItem);
+    }
 
-    if (this.#singleFileUpload) {
-      listItem = document.createElement("li");
+    if (this.#singleFileUpload && !this.#simpleReplace) {
+      const listItem = document.createElement("li");
       listItem.append(this.getReplaceButton(element));
       buttons.append(listItem);
     }
@@ -116,6 +136,45 @@ export class FileProcessor {
     });
 
     container.append(buttons);
+  }
+
+  protected getReplaceButton(element: WoltlabCoreFileElement): HTMLButtonElement {
+    const replaceButton = document.createElement("button");
+    replaceButton.type = "button";
+    replaceButton.classList.add("button", "small");
+    replaceButton.textContent = getPhrase("wcf.global.button.replace");
+    replaceButton.addEventListener("click", () => {
+      const oldContext = this.#startReplaceFile(element);
+
+      clearPreviousErrors(this.#uploadButton);
+
+      const changeEventListener = () => {
+        this.#fileInput.removeEventListener("cancel", cancelEventListener);
+
+        // Wait until the upload starts,
+        // the request to the server is not synchronized with the end of the `change` event.
+        // Otherwise, we would swap the context too soon.
+        void new Promise<void>((resolve) => {
+          this.#uploadResolve = resolve;
+        }).then(() => {
+          this.#uploadResolve = undefined;
+          this.#uploadButton.dataset.context = oldContext;
+        });
+      };
+      const cancelEventListener = () => {
+        this.#uploadButton.dataset.context = oldContext;
+        this.#registerFile(this.#replaceElement!);
+        this.#replaceElement = undefined;
+        this.#fileInput.removeEventListener("change", changeEventListener);
+      };
+
+      this.#fileInput.addEventListener("cancel", cancelEventListener, { once: true });
+      this.#fileInput.addEventListener("change", changeEventListener, { once: true });
+
+      this.#fileInput.click();
+    });
+
+    return replaceButton;
   }
 
   #markElementUploadHasFailed(container: HTMLElement, element: WoltlabCoreFileElement, reason: unknown): void {
@@ -150,51 +209,39 @@ export class FileProcessor {
     return deleteButton;
   }
 
-  protected getReplaceButton(element: WoltlabCoreFileElement): HTMLButtonElement {
-    const replaceButton = document.createElement("button");
-    replaceButton.type = "button";
-    replaceButton.classList.add("button", "small");
-    replaceButton.textContent = getPhrase("wcf.global.button.replace");
-    replaceButton.addEventListener("click", () => {
-      // Add to context an extra attribute that the replace button is clicked.
-      // After the dialog is closed or the file is selected, the context will be reset to his old value.
-      // This is necessary as the serverside validation will otherwise fail.
-      const oldContext = this.#uploadButton.dataset.context!;
-      const context = JSON.parse(oldContext);
-      context.__replace = true;
-      this.#uploadButton.dataset.context = JSON.stringify(context);
+  #simpleFileReplace(oldFile: WoltlabCoreFileElement) {
+    const oldContext = this.#startReplaceFile(oldFile);
 
-      this.#replaceElement = element;
-      this.#unregisterFile(element);
+    const cropCancelledEvent = () => {
+      this.#uploadButton.dataset.context = oldContext;
+      this.#registerFile(this.#replaceElement!);
+      this.#replaceElement = undefined;
+    };
 
-      clearPreviousErrors(this.#uploadButton);
+    this.#uploadButton.addEventListener("cancel", cropCancelledEvent, { once: true });
 
-      const changeEventListener = () => {
-        this.#fileInput.removeEventListener("cancel", cancelEventListener);
-
-        // Wait until the upload starts,
-        // the request to the server is not synchronized with the end of the `change` event.
-        // Otherwise, we would swap the context too soon.
-        void new Promise<void>((resolve) => {
-          this.#uploadResolve = resolve;
-        }).then(() => {
-          this.#uploadResolve = undefined;
-          this.#uploadButton.dataset.context = oldContext;
-        });
-      };
-      const cancelEventListener = () => {
-        this.#uploadButton.dataset.context = oldContext;
-        this.#registerFile(this.#replaceElement!);
-        this.#replaceElement = undefined;
-        this.#fileInput.removeEventListener("change", changeEventListener);
-      };
-
-      this.#fileInput.addEventListener("cancel", cancelEventListener, { once: true });
-      this.#fileInput.addEventListener("change", changeEventListener, { once: true });
-      this.#fileInput.click();
+    void new Promise<void>((resolve) => {
+      this.#uploadResolve = resolve;
+    }).then(() => {
+      this.#uploadResolve = undefined;
+      this.#uploadButton.dataset.context = oldContext;
+      this.#fileInput.removeEventListener("cancel", cropCancelledEvent);
     });
+  }
 
-    return replaceButton;
+  #startReplaceFile(element: WoltlabCoreFileElement): string {
+    // Add to context an extra attribute that the replace button is clicked.
+    // After the dialog is closed or the file is selected, the context will be reset to his old value.
+    // This is necessary as the serverside validation will otherwise fail.
+    const oldContext = this.#uploadButton.dataset.context!;
+    const context = JSON.parse(oldContext);
+    context.__replace = true;
+    this.#uploadButton.dataset.context = JSON.stringify(context);
+
+    this.#replaceElement = element;
+    this.#unregisterFile(element);
+
+    return oldContext;
   }
 
   #unregisterFile(element: WoltlabCoreFileElement): void {
