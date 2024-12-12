@@ -11,6 +11,9 @@ interface AjaxResponse {
   isIgnoredUser: 1 | 0;
 }
 
+/**
+ * @deprecated 6.2 Use `WoltLabSuite/Core/Component/User/Ignore` instead.
+ */
 class UiUserProfileMenuItemIgnore extends UiUserProfileMenuItemAbstract {
   private readonly dialog: FormBuilderDialog;
 

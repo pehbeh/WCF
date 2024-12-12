@@ -8,49 +8,24 @@
 
 {event name='javascriptInclude'}
 <script data-relocate="true">
-	require(['WoltLabSuite/Core/Controller/Clipboard'], (ControllerClipboard) => {
-		ControllerClipboard.setup({
-			pageClassName: 'wcf\\acp\\page\\UserListPage',
-			hasMarkedItems: {if $hasMarkedItems}true{else}false{/if},
-		});
+	{jsphrase name='wcf.acp.user.banReason'}
+	{jsphrase name='wcf.acp.user.banReason.description'}
+	{jsphrase name='wcf.acp.user.ban.sure'}
+	{jsphrase name='wcf.acp.user.ban.expires'}
+	{jsphrase name='wcf.acp.user.ban.expires.description'}
+	{jsphrase name='wcf.acp.user.ban.neverExpires'}
+	{jsphrase name='wcf.acp.user.sendNewPassword.workerTitle'}
+	{jsphrase name='wcf.acp.worker.abort.confirmMessage'}
+	{jsphrase name='wcf.acp.content.removeContent'}
+	{jsphrase name='wcf.user.status.banned'}
+	{jsphrase name='wcf.user.status.isDisabled'}
+	{jsphrase name='wcf.acp.user.action.sendNewPassword.confirmMessage'}
+
+	require(['WoltLabSuite/Core/Acp/Controller/User/List'], ({ setup }) => {
+		setup({if $hasMarkedItems}true{else}false{/if});
 	});
-	
-	$(function() {
-		WCF.Language.addObject({
-			'wcf.acp.user.banReason': '{jslang}wcf.acp.user.banReason{/jslang}',
-			'wcf.acp.user.banReason.description': '{jslang}wcf.acp.user.banReason.description{/jslang}',
-			'wcf.acp.user.ban.sure': '{jslang}wcf.acp.user.ban.sure{/jslang}',
-			'wcf.acp.user.ban.expires': '{jslang}wcf.acp.user.ban.expires{/jslang}',
-			'wcf.acp.user.ban.expires.description': '{jslang}wcf.acp.user.ban.expires.description{/jslang}',
-			'wcf.acp.user.ban.neverExpires': '{jslang}wcf.acp.user.ban.neverExpires{/jslang}',
-			'wcf.acp.user.sendNewPassword.workerTitle': '{jslang}wcf.acp.user.sendNewPassword.workerTitle{/jslang}',
-			'wcf.acp.worker.abort.confirmMessage': '{jslang}wcf.acp.worker.abort.confirmMessage{/jslang}',
-			'wcf.acp.content.removeContent': '{jslang}wcf.acp.content.removeContent{/jslang}',
-			'wcf.user.status.banned': '{jslang}wcf.user.status.banned{/jslang}',
-			'wcf.user.status.isDisabled': '{jslang}wcf.user.status.isDisabled{/jslang}'
-		});
-		WCF.ACP.User.BanHandler.init();
 
-		{if $__wcf->session->getPermission('admin.user.canEnableUser')}
-			WCF.ACP.User.EnableHandler.init();
-		{/if}
-
-		{if $__wcf->session->getPermission('admin.user.canEditPassword')}
-			WCF.ACP.User.SendNewPasswordHandler.init();
-		{/if}
-
-		require(['Language', 'WoltLabSuite/Core/Acp/Ui/User/Editor', 'WoltLabSuite/Core/Acp/Ui/User/Content/Remove/Clipboard'], function (Language, AcpUiUserList, { AcpUserContentRemoveClipboard }) {
-			Language.addObject({
-				'wcf.acp.user.action.sendNewPassword.confirmMessage': '{jslang}wcf.acp.user.action.sendNewPassword.confirmMessage{/jslang}',
-			});
-
-			new AcpUiUserList();
-
-			new AcpUserContentRemoveClipboard();
-		});
-
-		{event name='javascriptInit'}
-	});
+	{event name='javascriptInit'}
 </script>
 
 <header class="contentHeader">

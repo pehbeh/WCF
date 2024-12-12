@@ -10,6 +10,9 @@
 import * as Ajax from "../../../../../Ajax";
 import { AjaxCallbackObject, AjaxCallbackSetup, ResponseData } from "../../../../../Ajax/Data";
 
+/**
+ * @deprecated 6.2 No longer in use.
+ */
 abstract class UiUserProfileMenuItemAbstract implements AjaxCallbackObject {
   protected readonly _button = document.createElement("a");
   protected _isActive: boolean;

@@ -2691,6 +2691,8 @@ WCF.Option = { };
 if (COMPILER_TARGET_DEFAULT) {
 	/**
 	 * Handles option selection.
+	 *
+	 * @deprecated 6.2 Use `WoltLabSuite/Core/Component/Option/Enable` instead.
 	 */
 	WCF.Option.Handler = Class.extend({
 		/**
@@ -5493,6 +5495,7 @@ if (COMPILER_TARGET_DEFAULT) {
 	 * @param        string                className
 	 * @param        integer                offset
 	 * @param        object                options
+	 * @deprecated 6.2 Use `WoltLabSuite/Core/Ui/Sortable/List` instead.
 	 */
 	WCF.Sortable.List = Class.extend({
 		/**
@@ -6609,6 +6612,8 @@ if (COMPILER_TARGET_DEFAULT) {
 	
 	/**
 	 * Handles selection of categories.
+	 *
+	 * @deprecated 6.2 Use `WoltLabSuite/Core/Component/Category/Flexible` instead.
 	 */
 	WCF.Category.FlexibleCategoryList = Class.extend({
 		/**

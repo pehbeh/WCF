@@ -145,10 +145,4 @@
 	</div>
 </form>
 
-<script data-relocate="true">
-	$(function() {
-		new WCF.Option.Handler();
-	});
-</script>
-
 {include file='footer' __disableAds=true}

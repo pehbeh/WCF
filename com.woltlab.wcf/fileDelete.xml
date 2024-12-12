@@ -26,6 +26,8 @@
 		<file>acp/images/wcfLogoWhite.svg</file>
 		<file>acp/install.php</file>
 		<file>acp/js/WCF.ACP.User.js</file>
+		<file>acp/js/WCF.ACP.Language.js</file>
+		<file>acp/js/WCF.ACP.Language.min.js</file>
 		<file>acp/js/wcombined.min.js</file>
 		<file>acp/post_install.php</file>
 		<file>acp/pre_update_com.woltlab.wcf_2.1.php</file>
