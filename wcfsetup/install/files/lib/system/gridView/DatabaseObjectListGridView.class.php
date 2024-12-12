@@ -18,16 +18,20 @@ abstract class DatabaseObjectListGridView extends AbstractGridView
 {
     protected DatabaseObjectList $objectList;
     private int $objectCount;
-    public int $counter = 0;
+    /**
+     * @var DatabaseObject[]
+     */
+    private array $objects;
 
     #[\Override]
     public function getRows(): array
     {
-        $this->getObjectList()->readObjects();
+        if (!isset($this->objects)) {
+            $this->getObjectList()->readObjects();
+            $this->objects = $this->getObjectList()->getObjects();
+        }
 
-        $this->counter++;
-
-        return $this->getObjectList()->getObjects();
+        return $this->objects;
     }
 
     #[\Override]
