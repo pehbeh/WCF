@@ -27,9 +27,3 @@
 	<button type="button" class="button buttonPrimary" accesskey="s" data-type="save">{lang}wcf.global.button.save{/lang}</button>
 	<button type="button" class="button" data-type="restore">{lang}wcf.global.button.cancel{/lang}</button>
 </div>
-
-<script data-relocate="true">
-	$(function() {
-		new WCF.Option.Handler();
-	});
-</script>

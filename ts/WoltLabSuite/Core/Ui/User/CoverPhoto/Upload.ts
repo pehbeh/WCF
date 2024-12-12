@@ -50,8 +50,8 @@ class UiUserCoverPhotoUpload extends Upload {
     this._target.innerHTML = "";
 
     if (data.returnValues.url) {
-      const photo = document.querySelector(".userProfileCoverPhoto") as HTMLElement;
-      photo.style.setProperty("background-image", `url(${data.returnValues.url})`, "");
+      const photo = document.querySelector<HTMLImageElement>(".userProfileHeader__coverPhotoImage")!;
+      photo.src = data.returnValues.url;
 
       UiDialog.close("userProfileCoverPhotoUpload");
       UiNotification.show();

@@ -74,6 +74,10 @@
 	{/hascontent}
 	
 	<section id="main" class="main" role="main"{if !$__mainItemScope|empty} {@$__mainItemScope}{/if}>
+		{if !$beforeMaincontent|empty}
+			{unsafe:$beforeMaincontent}
+		{/if}
+		
 		<div class="layoutBoundary">
 			{hascontent}
 				{if !$__sidebarLeftShow|isset}{assign var='__sidebarLeftShow' value='wcf.global.button.showSidebarLeft'|phrase}{/if}

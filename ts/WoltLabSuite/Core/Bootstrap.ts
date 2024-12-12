@@ -188,6 +188,9 @@ export function setup(options: BoostrapOptions): void {
     console.warn("The class `jsImageViewer` is deprecated. Use the attribute `data-fancybox` instead.");
     void import("./Component/Image/Viewer").then(({ setupLegacy }) => setupLegacy());
   });
+  whenFirstSeen(".jsEnablesOptions", () => {
+    void import("./Component/Option/Enable").then(({ setup }) => setup());
+  });
 
   // Move the reCAPTCHA widget overlay to the `pageOverlayContainer`
   // when widget form elements are placed in a dialog.

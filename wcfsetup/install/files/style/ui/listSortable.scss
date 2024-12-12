@@ -78,13 +78,20 @@
 	background-color: var(--wcfStatusWarningBackground);
 	border: 1px solid var(--wcfStatusWarningBorder);
 	color: var(--wcfStatusWarningText);
-	padding: 10px;
 
 	&.sortableInvalidTarget {
 		background-color: var(--wcfStatusErrorBackground);
 		border-color: var(--wcfStatusErrorBorder);
 		color: var(--wcfStatusErrorText);
 	}
+
+	.sortableNodeLabel, &:is(tr):hover > td {
+		background-color: transparent;
+	}
+}
+
+.table tr.sortablePlaceholder:hover > td {
+	background-color: transparent;
 }
 
 @include screen-xs {

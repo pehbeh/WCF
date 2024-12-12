@@ -6,6 +6,8 @@ use wcf\data\DatabaseObject;
 use wcf\data\ILinkableObject;
 use wcf\data\IThumbnailFile;
 use wcf\system\acl\simple\SimpleAclResolver;
+use wcf\system\file\processor\IImageDataProvider;
+use wcf\system\file\processor\ImageData;
 use wcf\system\request\IRouteController;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
@@ -53,7 +55,7 @@ use wcf\system\WCF;
  * @property-read   int $downloads      number of times the media file has been downloaded
  * @property-read   int $lastDownloadTime   timestamp at which the media file has been downloaded the last time
  */
-class Media extends DatabaseObject implements ILinkableObject, IRouteController, IThumbnailFile
+class Media extends DatabaseObject implements ILinkableObject, IRouteController, IThumbnailFile, IImageDataProvider
 {
     /**
      * i18n media data grouped by language id for all language
@@ -309,5 +311,39 @@ class Media extends DatabaseObject implements ILinkableObject, IRouteController,
     public static function getThumbnailSizes()
     {
         return static::$thumbnailSizes;
+    }
+
+    #[\Override]
+    public function getImageData(?int $minWidth = null, ?int $minHeight = null): ?ImageData
+    {
+        if (!$this->isImage) {
+            return null;
+        }
+
+        if (!$this->isAccessible()) {
+            return null;
+        }
+
+        if ($minWidth !== null || $minHeight !== null) {
+            foreach (\array_keys(self::$thumbnailSizes) as $size) {
+                if ($minWidth !== null && $minWidth > $this->getThumbnailWidth($size)) {
+                    continue;
+                }
+                if ($minHeight !== null && $minHeight > $this->getThumbnailHeight($size)) {
+                    continue;
+                }
+
+                return new ImageData($this->getThumbnailLink($size), $this->getThumbnailWidth($size), $this->getThumbnailHeight($size));
+            }
+
+            if ($minWidth !== null && $minWidth > $this->width) {
+                return null;
+            }
+            if ($minHeight !== null && $minHeight > $this->height) {
+                return null;
+            }
+        }
+
+        return new ImageData($this->getLink(), $this->width, $this->height);
     }
 }

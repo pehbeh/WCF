@@ -36,8 +36,8 @@ define(["require", "exports", "tslib", "../../../Dom/Util", "../../../Event/Hand
             // remove the upload progress
             this._target.innerHTML = "";
             if (data.returnValues.url) {
-                const photo = document.querySelector(".userProfileCoverPhoto");
-                photo.style.setProperty("background-image", `url(${data.returnValues.url})`, "");
+                const photo = document.querySelector(".userProfileHeader__coverPhotoImage");
+                photo.src = data.returnValues.url;
                 UiDialog.close("userProfileCoverPhotoUpload");
                 UiNotification.show();
                 EventHandler.fire("com.woltlab.wcf.user", "coverPhoto", {

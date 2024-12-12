@@ -1,11 +1,10 @@
 {include file='header' pageTitle="wcf.acp.language.item.list"}
 
-<script data-relocate="true" src="{@$__wcf->getPath()}acp/js/WCF.ACP.Language.js?v={@LAST_UPDATE_TIME}"></script>
 <script data-relocate="true">
-	$(function() {
-		WCF.Language.add('wcf.acp.language.item.delete.confirmMessage', '{jslang}wcf.acp.language.item.delete.confirmMessage{/jslang}');
-		
-		new WCF.ACP.Language.ItemList();
+	{jsphrase name='wcf.acp.language.item.delete.confirmMessage'}
+
+	require(['WoltLabSuite/Core/Acp/Ui/Language/ItemList'], ({ init }) => {
+		init();
 	});
 </script>
 

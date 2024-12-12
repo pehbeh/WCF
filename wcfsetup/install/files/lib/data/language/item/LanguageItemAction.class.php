@@ -112,6 +112,7 @@ class LanguageItemAction extends AbstractDatabaseObjectAction
 
         return [
             'languageItem' => $item->languageItem,
+            'isCustomLanguageItem' => $item->isCustomLanguageItem,
             'template' => WCF::getTPL()->fetch('languageItemEditDialog'),
         ];
     }

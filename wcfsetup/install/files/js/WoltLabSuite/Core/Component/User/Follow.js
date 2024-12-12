@@ -19,8 +19,13 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Ajax/Backend", "WoltLa
             })
                 .fetchAsResponse();
             button.dataset.following = "1";
-            button.dataset.tooltip = (0, Language_1.getPhrase)("wcf.user.button.unfollow");
-            button.querySelector("fa-icon")?.setIcon("circle-minus");
+            if (button.dataset.type === "button") {
+                button.textContent = (0, Language_1.getPhrase)("wcf.user.button.unfollow");
+            }
+            else {
+                button.dataset.tooltip = (0, Language_1.getPhrase)("wcf.user.button.unfollow");
+                button.querySelector("fa-icon")?.setIcon("circle-minus");
+            }
         }
         else {
             await (0, Backend_1.prepareRequest)(button.dataset.followUser)
@@ -29,8 +34,13 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Ajax/Backend", "WoltLa
             })
                 .fetchAsResponse();
             button.dataset.following = "0";
-            button.dataset.tooltip = (0, Language_1.getPhrase)("wcf.user.button.follow");
-            button.querySelector("fa-icon")?.setIcon("circle-plus");
+            if (button.dataset.type === "button") {
+                button.textContent = (0, Language_1.getPhrase)("wcf.user.button.follow");
+            }
+            else {
+                button.dataset.tooltip = (0, Language_1.getPhrase)("wcf.user.button.follow");
+                button.querySelector("fa-icon")?.setIcon("circle-plus");
+            }
         }
         UiNotification.show();
     }
