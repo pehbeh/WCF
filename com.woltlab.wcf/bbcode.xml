@@ -27,7 +27,6 @@
 		</bbcode>
 		<bbcode name="email">
 			<classname>wcf\system\bbcode\EmailBBCode</classname>
-			<sourcecode>1</sourcecode>
 			<attributes>
 				<attribute name="0">
 					<validationpattern><![CDATA[^[^\s]+@[^\s]+$]]></validationpattern>
