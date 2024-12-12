@@ -37,23 +37,7 @@ final class AttachmentFileProcessor extends AbstractFileProcessor
             return [];
         }
 
-        $extensions = $attachmentHandler->getAllowedExtensions();
-        if (\in_array('*', $extensions)) {
-            return $extensions;
-        }
-
-        // Check if auto scaling is enabled and is set to convert images which
-        // would yield WebP.
-        if (!\ATTACHMENT_IMAGE_AUTOSCALE || \ATTACHMENT_IMAGE_AUTOSCALE_FILE_TYPE === 'keep') {
-            return $extensions;
-        }
-
-        if (!\in_array('webp', $extensions)) {
-            $extensions[] = 'webp';
-        }
-
-        return $extensions;
-    }
+        return $attachmentHandler->getAllowedExtensions();    }
 
     #[\Override]
     public function canAdopt(File $file, array $context): bool
