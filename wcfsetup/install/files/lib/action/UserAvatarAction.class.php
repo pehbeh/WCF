@@ -112,6 +112,7 @@ final class UserAvatarAction implements RequestHandlerInterface
                 ->bigPreview()
                 ->simpleReplace()
                 ->hideDeleteButton()
+                ->thumbnailSize('128')
                 ->addDependency(
                     ValueFormFieldDependency::create('avatarType')
                         ->fieldId('avatarType')

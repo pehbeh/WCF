@@ -5,7 +5,7 @@
  * @since     6.1
  */
 
-import WoltlabCoreFileElement from "WoltLabSuite/Core/Component/File/woltlab-core-file";
+import WoltlabCoreFileElement, { Thumbnail } from "WoltLabSuite/Core/Component/File/woltlab-core-file";
 import { getPhrase } from "WoltLabSuite/Core/Language";
 import { deleteFile } from "WoltLabSuite/Core/Api/Files/DeleteFile";
 import DomChangeListener from "WoltLabSuite/Core/Dom/Change/Listener";
@@ -37,6 +37,7 @@ export class FileProcessor {
   readonly #singleFileUpload: boolean;
   readonly #simpleReplace: boolean;
   readonly #hideDeleteButton: boolean;
+  readonly #thumbnailSize?: string;
   readonly #extraButtons: ExtraButton[];
   #uploadResolve: undefined | (() => void);
 
@@ -46,6 +47,7 @@ export class FileProcessor {
     useBigPreview: boolean = false,
     simpleReplace: boolean = false,
     hideDeleteButton: boolean = false,
+    thumbnailSize?: string,
     extraButtons: ExtraButton[] = [],
   ) {
     this.#fieldId = fieldId;
@@ -54,6 +56,7 @@ export class FileProcessor {
     this.#simpleReplace = simpleReplace;
     this.#hideDeleteButton = hideDeleteButton;
     this.#extraButtons = extraButtons;
+    this.#thumbnailSize = thumbnailSize;
 
     this.#container = document.getElementById(fieldId + "Container")!;
     if (this.#container === null) {
@@ -306,17 +309,17 @@ export class FileProcessor {
 
   #fileInitializationCompleted(element: WoltlabCoreFileElement, container: HTMLElement): void {
     if (this.#useBigPreview) {
-      element.dataset.previewUrl = element.link!;
-      element.unbounded = true;
+      setThumbnail(
+        element,
+        element.thumbnails.find((thumbnail) => thumbnail.identifier === this.#thumbnailSize),
+        true,
+      );
     } else {
       if (element.isImage()) {
-        const thumbnail = element.thumbnails.find((thumbnail) => thumbnail.identifier === "tiny");
-        if (thumbnail !== undefined) {
-          element.thumbnail = thumbnail;
-        } else {
-          element.dataset.previewUrl = element.link!;
-          element.unbounded = false;
-        }
+        const thumbnailSize = this.#thumbnailSize ?? "tiny";
+
+        const thumbnail = element.thumbnails.find((thumbnail) => thumbnail.identifier === thumbnailSize);
+        setThumbnail(element, thumbnail);
 
         if (element.link !== undefined && element.filename !== undefined) {
           const filenameLink = document.createElement("a");
@@ -369,6 +372,16 @@ export class FileProcessor {
       ),
     );
   }
+}
+
+function setThumbnail(element: WoltlabCoreFileElement, thumbnail?: Thumbnail, unbounded: boolean = false) {
+  if (unbounded) {
+    element.dataset.previewUrl = thumbnail !== undefined ? thumbnail.link : element.link;
+  } else if (thumbnail !== undefined) {
+    element.thumbnail = thumbnail;
+  }
+
+  element.unbounded = unbounded;
 }
 
 export function getValues(fieldId: string): undefined | number | Set<number> {
