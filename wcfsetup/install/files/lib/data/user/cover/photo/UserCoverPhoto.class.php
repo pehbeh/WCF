@@ -9,8 +9,8 @@ use wcf\data\user\User;
 /**
  * Represents a user's cover photo.
  *
- * @author  Alexander Ebert
- * @copyright   2001-2019 WoltLab GmbH
+ * @author      Olaf Braun, Alexander Ebert
+ * @copyright   2001-2024 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 final class UserCoverPhoto implements IUserCoverPhoto
@@ -47,7 +47,7 @@ final class UserCoverPhoto implements IUserCoverPhoto
     #[\Override]
     public function getURL(?bool $forceWebP = null): string
     {
-        return $this->file->getLink();
+        return $this->file->getFullSizeImageSource();
     }
 
     #[\Override]
