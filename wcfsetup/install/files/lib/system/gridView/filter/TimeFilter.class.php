@@ -15,7 +15,7 @@ use wcf\system\WCF;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-class TimeFilter implements IGridViewFilter
+class TimeFilter extends AbstractFilter
 {
     #[\Override]
     public function getFormField(string $id, string $label): AbstractFormField
@@ -29,6 +29,7 @@ class TimeFilter implements IGridViewFilter
     #[\Override]
     public function applyFilter(DatabaseObjectList $list, string $id, string $value): void
     {
+        $columnName = $this->getDatabaseColumnName($list, $id);
         $timestamps = $this->getTimestamps($value);
 
         if (!$timestamps['from'] && !$timestamps['to']) {
@@ -36,9 +37,9 @@ class TimeFilter implements IGridViewFilter
         }
 
         if (!$timestamps['to']) {
-            $list->getConditionBuilder()->add("$id >= ?", [$timestamps['from']]);
+            $list->getConditionBuilder()->add("{$columnName} >= ?", [$timestamps['from']]);
         } else {
-            $list->getConditionBuilder()->add("$id BETWEEN ? AND ?", [$timestamps['from'], $timestamps['to']]);
+            $list->getConditionBuilder()->add("{$columnName} BETWEEN ? AND ?", [$timestamps['from'], $timestamps['to']]);
         }
     }
 

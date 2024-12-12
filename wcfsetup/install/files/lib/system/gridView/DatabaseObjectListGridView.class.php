@@ -18,11 +18,14 @@ abstract class DatabaseObjectListGridView extends AbstractGridView
 {
     protected DatabaseObjectList $objectList;
     private int $objectCount;
+    public int $counter = 0;
 
     #[\Override]
     public function getRows(): array
     {
         $this->getObjectList()->readObjects();
+
+        $this->counter++;
 
         return $this->getObjectList()->getObjects();
     }
@@ -55,11 +58,15 @@ abstract class DatabaseObjectListGridView extends AbstractGridView
         $this->objectList->sqlOffset = ($this->getPageNo() - 1) * $this->getRowsPerPage();
         if ($this->getSortField()) {
             $column = $this->getColumn($this->getSortField());
-            if ($column && $column->getSortById()) {
-                $this->objectList->sqlOrderBy = $column->getSortById() . ' ' . $this->getSortOrder();
+            if ($column && $column->getSortByDatabaseColumn()) {
+                $this->objectList->sqlOrderBy = $column->getSortByDatabaseColumn() . ' ' . $this->getSortOrder();
             } else {
-                $this->objectList->sqlOrderBy = $this->getSortField() . ' ' . $this->getSortOrder();
+                $this->objectList->sqlOrderBy = $this->objectList->getDatabaseTableAlias() .
+                    '.' . $this->getSortField() . ' ' . $this->getSortOrder();
             }
+
+            $this->objectList->sqlOrderBy .= ',' . $this->objectList->getDatabaseTableAlias() .
+                '.' . $this->objectList->getDatabaseTableIndexName() . ' ' . $this->getSortOrder();
         }
         $this->applyFilters();
         $this->fireInitializedEvent();

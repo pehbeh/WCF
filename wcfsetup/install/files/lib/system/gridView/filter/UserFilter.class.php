@@ -15,7 +15,7 @@ use wcf\system\form\builder\field\user\UserFormField;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-class UserFilter implements IGridViewFilter
+class UserFilter extends AbstractFilter
 {
     #[\Override]
     public function getFormField(string $id, string $label): AbstractFormField
@@ -28,7 +28,9 @@ class UserFilter implements IGridViewFilter
     #[\Override]
     public function applyFilter(DatabaseObjectList $list, string $id, string $value): void
     {
-        $list->getConditionBuilder()->add("{$id} = ?", [$value]);
+        $columnName = $this->getDatabaseColumnName($list, $id);
+
+        $list->getConditionBuilder()->add("{$columnName} = ?", [$value]);
     }
 
     #[\Override]

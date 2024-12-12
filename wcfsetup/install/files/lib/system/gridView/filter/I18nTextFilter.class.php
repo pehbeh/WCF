@@ -18,7 +18,9 @@ class I18nTextFilter extends TextFilter
     #[\Override]
     public function applyFilter(DatabaseObjectList $list, string $id, string $value): void
     {
-        $list->getConditionBuilder()->add("($id LIKE ? OR $id IN (SELECT languageItem FROM wcf1_language_item WHERE languageID = ? AND languageItemValue LIKE ?))", [
+        $columnName = $this->getDatabaseColumnName($list, $id);
+
+        $list->getConditionBuilder()->add("({$columnName} LIKE ? OR {$columnName} IN (SELECT languageItem FROM wcf1_language_item WHERE languageID = ? AND languageItemValue LIKE ?))", [
             '%' . WCF::getDB()->escapeLikeValue($value) . '%',
             WCF::getLanguage()->languageID,
             '%' . WCF::getDB()->escapeLikeValue($value) . '%'

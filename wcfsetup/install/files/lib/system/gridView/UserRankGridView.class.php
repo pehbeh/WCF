@@ -38,8 +38,7 @@ final class UserRankGridView extends DatabaseObjectListGridView
                 ->sortable(),
             GridViewColumn::for('rankTitle')
                 ->label('wcf.acp.user.rank.title')
-                ->sortable()
-                ->sortById('rankTitleI18n')
+                ->sortable(true, 'rankTitleI18n')
                 ->filter(new I18nTextFilter())
                 ->renderer([
                     new class extends TitleColumnRenderer {

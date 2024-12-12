@@ -4,24 +4,24 @@ namespace wcf\system\gridView\filter;
 
 use wcf\data\DatabaseObjectList;
 use wcf\system\form\builder\field\AbstractFormField;
-use wcf\system\form\builder\field\TextFormField;
-use wcf\system\WCF;
+use wcf\system\form\builder\field\CheckboxFormField;
 
 /**
- * Filter for text columns.
+ * Filter for boolean columns.
  *
  * @author      Marcel Werk
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-class TextFilter extends AbstractFilter
+class BooleanFilter extends AbstractFilter
 {
     #[\Override]
     public function getFormField(string $id, string $label): AbstractFormField
     {
-        return TextFormField::create($id)
-            ->label($label);
+        return CheckboxFormField::create($id)
+            ->label($label)
+            ->nullable();
     }
 
     #[\Override]
@@ -29,15 +29,18 @@ class TextFilter extends AbstractFilter
     {
         $columnName = $this->getDatabaseColumnName($list, $id);
 
-        $list->getConditionBuilder()->add(
-            "{$columnName} LIKE ?",
-            ['%' . WCF::getDB()->escapeLikeValue($value) . '%']
-        );
+        $list->getConditionBuilder()->add("{$columnName} = ?", [1]);
     }
 
     #[\Override]
     public function matches(string $filterValue, string $rowValue): bool
     {
-        return \str_contains(\mb_strtolower($rowValue), \mb_strtolower($filterValue));
+        return $rowValue == 1;
+    }
+
+    #[\Override]
+    public function renderValue(string $value): string
+    {
+        return '';
     }
 }

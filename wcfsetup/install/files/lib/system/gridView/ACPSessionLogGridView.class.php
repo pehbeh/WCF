@@ -2,6 +2,7 @@
 
 namespace wcf\system\gridView;
 
+use wcf\acp\form\UserEditForm;
 use wcf\acp\page\ACPSessionLogPage;
 use wcf\data\acp\session\log\ACPSessionLogList;
 use wcf\data\DatabaseObjectList;
@@ -15,7 +16,7 @@ use wcf\system\gridView\renderer\IpAddressColumnRenderer;
 use wcf\system\gridView\renderer\NumberColumnRenderer;
 use wcf\system\gridView\renderer\TimeColumnRenderer;
 use wcf\system\gridView\renderer\TruncatedTextColumnRenderer;
-use wcf\system\gridView\renderer\UserColumnRenderer;
+use wcf\system\gridView\renderer\UserLinkColumnRenderer;
 use wcf\system\WCF;
 
 /**
@@ -37,9 +38,8 @@ final class ACPSessionLogGridView extends DatabaseObjectListGridView
                 ->sortable(),
             GridViewColumn::for('userID')
                 ->label('wcf.user.username')
-                ->sortable()
-                ->sortById('username')
-                ->renderer(new UserColumnRenderer())
+                ->sortable(true, 'user_table.username')
+                ->renderer(new UserLinkColumnRenderer(UserEditForm::class))
                 ->filter(new UserFilter()),
             GridViewColumn::for('ipAddress')
                 ->label('wcf.user.ipAddress')
@@ -50,7 +50,7 @@ final class ACPSessionLogGridView extends DatabaseObjectListGridView
                 ->label('wcf.user.userAgent')
                 ->sortable()
                 ->valueEncoding(false)
-                ->renderer(new TruncatedTextColumnRenderer())
+                ->renderer(new TruncatedTextColumnRenderer(50))
                 ->filter(new TextFilter()),
             GridViewColumn::for('time')
                 ->label('wcf.acp.sessionLog.time')
@@ -64,7 +64,7 @@ final class ACPSessionLogGridView extends DatabaseObjectListGridView
                 ->filter(new TimeFilter()),
             GridViewColumn::for('accesses')
                 ->label('wcf.acp.sessionLog.actions')
-                ->sortable()
+                ->sortable(true, 'accesses')
                 ->renderer(new NumberColumnRenderer()),
         ]);
 
@@ -82,7 +82,18 @@ final class ACPSessionLogGridView extends DatabaseObjectListGridView
     #[\Override]
     protected function createObjectList(): DatabaseObjectList
     {
-        return new ACPSessionLogList();
+        $list = new ACPSessionLogList();
+        $list->sqlSelects .= "
+            user_table.username,
+            0 AS active,
+            (
+                SELECT  COUNT(*)
+                FROM    wcf1_acp_session_access_log
+                WHERE   sessionLogID = " . $list->getDatabaseTableAlias() . ".sessionLogID
+            ) AS accesses";
+        $list->sqlJoins = $list->sqlConditionJoins .= " JOIN wcf" . WCF_N . "_user user_table ON (user_table.userID = " . $list->getDatabaseTableAlias() . ".userID)";
+
+        return $list;
     }
 
     #[\Override]

@@ -27,7 +27,7 @@ final class GridViewColumn
     private string $label = '';
     private static DefaultColumnRenderer $defaultRenderer;
     private bool $sortable = false;
-    private string $sortById = '';
+    private string $sortByDatabaseColumn = '';
     private ?IGridViewFilter $filter = null;
     private bool $hidden = false;
     private bool $valueEncoding = true;
@@ -105,19 +105,10 @@ final class GridViewColumn
     /**
      * Sets the sortable state of this column.
      */
-    public function sortable(bool $sortable = true): static
+    public function sortable(bool $sortable = true, string $sortByDatabaseColumn = ''): static
     {
         $this->sortable = $sortable;
-
-        return $this;
-    }
-
-    /**
-     * Defines the ID by which this column is to be sorted.
-     */
-    public function sortById(string $id): static
-    {
-        $this->sortById = $id;
+        $this->sortByDatabaseColumn = $sortByDatabaseColumn;
 
         return $this;
     }
@@ -156,11 +147,11 @@ final class GridViewColumn
     }
 
     /**
-     * Returns the ID by which this column is to be sorted.
+     * Returns the name of the database column by which this column is to be sorted.
      */
-    public function getSortById(): string
+    public function getSortByDatabaseColumn(): string
     {
-        return $this->sortById;
+        return $this->sortByDatabaseColumn;
     }
 
     /**

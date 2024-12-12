@@ -16,7 +16,7 @@ use wcf\util\UserUtil;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-class IpAddressFilter implements IGridViewFilter
+class IpAddressFilter extends AbstractFilter
 {
     #[\Override]
     public function getFormField(string $id, string $label): AbstractFormField
@@ -28,8 +28,10 @@ class IpAddressFilter implements IGridViewFilter
     #[\Override]
     public function applyFilter(DatabaseObjectList $list, string $id, string $value): void
     {
+        $columnName = $this->getDatabaseColumnName($list, $id);
+
         $list->getConditionBuilder()->add(
-            "{$id} LIKE ?",
+            "{$columnName} LIKE ?",
             ['%' . WCF::getDB()->escapeLikeValue($this->convertIPv4To6($value)) . '%']
         );
     }
@@ -38,12 +40,6 @@ class IpAddressFilter implements IGridViewFilter
     public function matches(string $filterValue, string $rowValue): bool
     {
         return \str_contains($rowValue, $this->convertIPv4To6($filterValue));
-    }
-
-    #[\Override]
-    public function renderValue(string $value): string
-    {
-        return $value;
     }
 
     private function convertIPv4To6(string $value): string

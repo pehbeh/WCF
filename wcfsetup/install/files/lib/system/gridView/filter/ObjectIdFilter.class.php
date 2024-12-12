@@ -14,7 +14,7 @@ use wcf\system\form\builder\field\IntegerFormField;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-class ObjectIdFilter implements IGridViewFilter
+class ObjectIdFilter extends AbstractFilter
 {
     #[\Override]
     public function getFormField(string $id, string $label): AbstractFormField
@@ -28,18 +28,14 @@ class ObjectIdFilter implements IGridViewFilter
     #[\Override]
     public function applyFilter(DatabaseObjectList $list, string $id, string $value): void
     {
-        $list->getConditionBuilder()->add("$id = ?", [$value]);
+        $columnName = $this->getDatabaseColumnName($list, $id);
+
+        $list->getConditionBuilder()->add("{$columnName} = ?", [$value]);
     }
 
     #[\Override]
     public function matches(string $filterValue, string $rowValue): bool
     {
         return $filterValue == $rowValue;
-    }
-
-    #[\Override]
-    public function renderValue(string $value): string
-    {
-        return $value;
     }
 }

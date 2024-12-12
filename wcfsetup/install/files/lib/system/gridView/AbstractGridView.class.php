@@ -458,7 +458,9 @@ abstract class AbstractGridView
             throw new LogicException("No value for filter '" . $id . "' found.");
         }
 
-        return $column->getLabel() . ': ' . $column->getFilter()->renderValue($this->activeFilters[$id]);
+        $value = $column->getFilter()->renderValue($this->activeFilters[$id]);
+
+        return $column->getLabel() . ($value !== '' ? ': ' . $value : '');
     }
 
     /**

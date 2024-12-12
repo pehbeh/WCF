@@ -15,9 +15,12 @@ use wcf\system\WCF;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-class SelectFilter implements IGridViewFilter
+class SelectFilter extends AbstractFilter
 {
-    public function __construct(private readonly array $options) {}
+    public function __construct(private readonly array $options, string $databaseColumn = '')
+    {
+        parent::__construct($databaseColumn);
+    }
 
     #[\Override]
     public function getFormField(string $id, string $label): AbstractFormField
@@ -30,7 +33,9 @@ class SelectFilter implements IGridViewFilter
     #[\Override]
     public function applyFilter(DatabaseObjectList $list, string $id, string $value): void
     {
-        $list->getConditionBuilder()->add("$id = ?", [$value]);
+        $columnName = $this->getDatabaseColumnName($list, $id);
+
+        $list->getConditionBuilder()->add("{$columnName} = ?", [$value]);
     }
 
     #[\Override]

@@ -51,10 +51,9 @@ final class ModificationLogGridView extends DatabaseObjectListGridView
                 ->sortable(),
             GridViewColumn::for('userID')
                 ->label('wcf.user.username')
-                ->sortable()
-                ->sortById('username')
+                ->sortable(true, 'modification_log.username')
                 ->renderer(new UserLinkColumnRenderer())
-                ->filter(new TextFilter('username')),
+                ->filter(new TextFilter('modification_log.username')),
             GridViewColumn::for('action')
                 ->label('wcf.acp.modificationLog.action')
                 ->renderer([
