@@ -9,8 +9,8 @@ use wcf\util\StringUtil;
 /**
  * Wraps avatars to provide compatibility layers.
  *
- * @author  Tim Duesterhus
- * @copyright   2001-2021 WoltLab GmbH
+ * @author      Olaf Braun, Tim Duesterhus
+ * @copyright   2001-2024 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 final class AvatarDecorator implements IUserAvatar, ISafeFormatAvatar
@@ -62,7 +62,7 @@ final class AvatarDecorator implements IUserAvatar, ISafeFormatAvatar
                 return $thumbnail->getLink();
             }
 
-            return $this->avatar->getLink();
+            return $this->avatar->getFullSizeImageSource();
         } else {
             return $this->avatar->getURL();
         }
