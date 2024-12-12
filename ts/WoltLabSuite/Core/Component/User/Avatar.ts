@@ -12,16 +12,12 @@ import { promiseMutex } from "WoltLabSuite/Core/Helper/PromiseMutex";
 import { wheneverFirstSeen } from "WoltLabSuite/Core/Helper/Selector";
 import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
 import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
-import UiCloseOverlay from "WoltLabSuite/Core/Ui/CloseOverlay";
 
 interface Result {
   avatar: string;
 }
 
 async function editAvatar(button: HTMLElement): Promise<void> {
-  // If the user is editing their own avatar, the control panel is open and can overlay the dialog.
-  UiCloseOverlay.execute();
-
   const { ok, result } = await dialogFactory().usingFormBuilder().fromEndpoint<Result>(button.dataset.editAvatar!);
 
   if (ok) {
