@@ -190,6 +190,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/Selector", "Wol
                         void upload(element, resizedFile);
                     })
                         .catch((e) => {
+                        element.dispatchEvent(new CustomEvent("cancel"));
                         if (e === undefined) {
                             // User closed the dialog.
                             return;
