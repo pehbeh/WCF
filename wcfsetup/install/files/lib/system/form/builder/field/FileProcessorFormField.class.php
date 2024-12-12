@@ -47,6 +47,7 @@ final class FileProcessorFormField extends AbstractFormField
     private bool $bigPreview = false;
     private bool $simpleReplace = false;
     private bool $hideDeleteButton = false;
+    private ?string $thumbnailSize = null;
     private array $actionButtons = [];
 
     #[\Override]
@@ -354,5 +355,27 @@ final class FileProcessorFormField extends AbstractFormField
     public function isHideDeleteButton(): bool
     {
         return $this->hideDeleteButton;
+    }
+
+    /**
+     * Sets the thumbnail size for the preview.
+     *
+     * If no size is set:
+     * - And the big preview is enabled, the full size is used
+     * - Otherwise, the thumbnail size `tiny` is used
+     */
+    public function thumbnailSize(?string $thumbnailSize): self
+    {
+        $this->thumbnailSize = $thumbnailSize;
+
+        return $this;
+    }
+
+    /**
+     * Returns the thumbnail size for the preview.
+     */
+    public function getThumbnailSize(): ?string
+    {
+        return $this->thumbnailSize;
     }
 }

@@ -21,15 +21,17 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
         #singleFileUpload;
         #simpleReplace;
         #hideDeleteButton;
+        #thumbnailSize;
         #extraButtons;
         #uploadResolve;
-        constructor(fieldId, singleFileUpload = false, useBigPreview = false, simpleReplace = false, hideDeleteButton = false, extraButtons = []) {
+        constructor(fieldId, singleFileUpload = false, useBigPreview = false, simpleReplace = false, hideDeleteButton = false, thumbnailSize, extraButtons = []) {
             this.#fieldId = fieldId;
             this.#useBigPreview = useBigPreview;
             this.#singleFileUpload = singleFileUpload;
             this.#simpleReplace = simpleReplace;
             this.#hideDeleteButton = hideDeleteButton;
             this.#extraButtons = extraButtons;
+            this.#thumbnailSize = thumbnailSize;
             this.#container = document.getElementById(fieldId + "Container");
             if (this.#container === null) {
                 throw new Error("Unknown field with id '" + fieldId + "'");
@@ -243,19 +245,13 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
         }
         #fileInitializationCompleted(element, container) {
             if (this.#useBigPreview) {
-                element.dataset.previewUrl = element.link;
-                element.unbounded = true;
+                setThumbnail(element, element.thumbnails.find((thumbnail) => thumbnail.identifier === this.#thumbnailSize), true);
             }
             else {
                 if (element.isImage()) {
-                    const thumbnail = element.thumbnails.find((thumbnail) => thumbnail.identifier === "tiny");
-                    if (thumbnail !== undefined) {
-                        element.thumbnail = thumbnail;
-                    }
-                    else {
-                        element.dataset.previewUrl = element.link;
-                        element.unbounded = false;
-                    }
+                    const thumbnailSize = this.#thumbnailSize ?? "tiny";
+                    const thumbnail = element.thumbnails.find((thumbnail) => thumbnail.identifier === thumbnailSize);
+                    setThumbnail(element, thumbnail);
                     if (element.link !== undefined && element.filename !== undefined) {
                         const filenameLink = document.createElement("a");
                         filenameLink.href = element.link;
@@ -297,6 +293,15 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
         }
     }
     exports.FileProcessor = FileProcessor;
+    function setThumbnail(element, thumbnail, unbounded = false) {
+        if (unbounded) {
+            element.dataset.previewUrl = thumbnail !== undefined ? thumbnail.link : element.link;
+        }
+        else if (thumbnail !== undefined) {
+            element.thumbnail = thumbnail;
+        }
+        element.unbounded = unbounded;
+    }
     function getValues(fieldId) {
         const field = fileProcessors.get(fieldId);
         if (field === undefined) {
