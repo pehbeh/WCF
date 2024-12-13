@@ -684,29 +684,41 @@ simpleMatch:wcf.acp.option.blacklist_sfs_enable.simpleMatch]]></selectoptions>
 			</option>
 			<!-- /security.antispam.captcha -->
 			<!-- security.antispam.recaptcha -->
-			<option name="recaptcha_publickey">
+			<option name="recaptcha_publickey_v3">
 				<categoryname>security.antispam.recaptcha</categoryname>
 				<optiontype>text</optiontype>
 				<validationpattern>^[^/]*$</validationpattern>
 				<showorder>1</showorder>
 			</option>
-			<option name="recaptcha_privatekey">
+			<option name="recaptcha_privatekey_v3">
 				<categoryname>security.antispam.recaptcha</categoryname>
 				<optiontype>text</optiontype>
 				<validationpattern>^[^/]*$</validationpattern>
 				<showorder>2</showorder>
 			</option>
-			<option name="recaptcha_publickey_invisible">
+			<option name="recaptcha_publickey">
 				<categoryname>security.antispam.recaptcha</categoryname>
 				<optiontype>text</optiontype>
 				<validationpattern>^[^/]*$</validationpattern>
 				<showorder>3</showorder>
 			</option>
-			<option name="recaptcha_privatekey_invisible">
+			<option name="recaptcha_privatekey">
 				<categoryname>security.antispam.recaptcha</categoryname>
 				<optiontype>text</optiontype>
 				<validationpattern>^[^/]*$</validationpattern>
 				<showorder>4</showorder>
+			</option>
+			<option name="recaptcha_publickey_invisible">
+				<categoryname>security.antispam.recaptcha</categoryname>
+				<optiontype>text</optiontype>
+				<validationpattern>^[^/]*$</validationpattern>
+				<showorder>5</showorder>
+			</option>
+			<option name="recaptcha_privatekey_invisible">
+				<categoryname>security.antispam.recaptcha</categoryname>
+				<optiontype>text</optiontype>
+				<validationpattern>^[^/]*$</validationpattern>
+				<showorder>6</showorder>
 			</option>
 			<!-- /security.antispam.recaptcha -->
 			<!-- general.system.date -->
