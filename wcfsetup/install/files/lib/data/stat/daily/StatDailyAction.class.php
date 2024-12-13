@@ -78,7 +78,11 @@ class StatDailyAction extends AbstractDatabaseObjectAction
         $data = [];
         $conditionBuilder = new PreparedStatementConditionBuilder();
         $conditionBuilder->add('objectTypeID IN (?)', [$this->parameters['objectTypeIDs']]);
-        $conditionBuilder->add('date BETWEEN ? AND ?', [$this->parameters['startDate'], $this->parameters['endDate']]);
+        if ($this->parameters['endDate'] < $this->parameters['startDate']) {
+            $conditionBuilder->add('date BETWEEN ? AND ?', [$this->parameters['endDate'], $this->parameters['startDate']]);
+        } else {
+            $conditionBuilder->add('date BETWEEN ? AND ?', [$this->parameters['startDate'], $this->parameters['endDate']]);
+        }
 
         $limit = 0;
         if ($this->parameters['dateGrouping'] == 'yearly') {
