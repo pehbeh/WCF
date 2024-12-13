@@ -3406,6 +3406,9 @@ Erlaubte Dateiendungen: {', '|implode:$attachmentHandler->getFormattedAllowedExt
 	<category name="wcf.captcha.recaptchaV2">
 		<item name="wcf.captcha.recaptchaV2.error.recaptchaString.false"><![CDATA[Bitte {if LANGUAGE_USE_INFORMAL_VARIANT}bestätige{else}bestätigen Sie{/if}, dass {if LANGUAGE_USE_INFORMAL_VARIANT}du kein Roboter bist{else}Sie kein Roboter sind{/if}.]]></item>
 	</category>
+	<category name="wcf.captcha.recaptchaInvisible">
+		<item name="wcf.captcha.recaptchaInvisible.error.recaptchaString.false"><![CDATA[Die Überprüfung ist fehlgeschlagen. Bitte {if LANGUAGE_USE_INFORMAL_VARIANT}sende{else}senden Sie{/if} das Formular erneut ab.]]></item>
+	</category>
 	<category name="wcf.captcha.recaptchaV3">
 		<item name="wcf.captcha.recaptchaV3.error.recaptchaString.false"><![CDATA[Die Überprüfung ist fehlgeschlagen. Bitte {if LANGUAGE_USE_INFORMAL_VARIANT}sende{else}senden Sie{/if} das Formular erneut ab.]]></item>
 	</category>
