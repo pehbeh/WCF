@@ -7,7 +7,6 @@ use wcf\system\gridView\filter\IGridViewFilter;
 use wcf\system\gridView\renderer\DefaultColumnRenderer;
 use wcf\system\gridView\renderer\IColumnRenderer;
 use wcf\system\gridView\renderer\ILinkColumnRenderer;
-use wcf\system\gridView\renderer\TitleColumnRenderer;
 use wcf\system\WCF;
 
 /**
@@ -31,6 +30,7 @@ final class GridViewColumn
     private ?IGridViewFilter $filter = null;
     private bool $hidden = false;
     private bool $valueEncoding = true;
+    private bool $titleColumn = false;
 
     private function __construct(private readonly string $id) {}
 
@@ -63,16 +63,24 @@ final class GridViewColumn
      */
     public function getClasses(): string
     {
+        $classes = '';
+
         if ($this->getRenderers() === []) {
-            return self::getDefaultRenderer()->getClasses();
+            $classes = self::getDefaultRenderer()->getClasses();
+        } else {
+            $classes = \implode(' ', \array_map(
+                static function (IColumnRenderer $renderer) {
+                    return $renderer->getClasses();
+                },
+                $this->getRenderers()
+            ));
         }
 
-        return \implode(' ', \array_map(
-            static function (IColumnRenderer $renderer) {
-                return $renderer->getClasses();
-            },
-            $this->getRenderers()
-        ));
+        if ($this->isTitleColumn()) {
+            $classes .= ' gridView__column--title';
+        }
+
+        return $classes;
     }
 
     /**
@@ -185,17 +193,21 @@ final class GridViewColumn
     }
 
     /**
-     * Returns true if this column is a title column.
+     * Sets this column as the title column.
+     */
+    public function titleColumn(bool $titleColumn = true): static
+    {
+        $this->titleColumn = $titleColumn;
+
+        return $this;
+    }
+
+    /**
+     * Returns true if this column is the title column.
      */
     public function isTitleColumn(): bool
     {
-        foreach ($this->getRenderers() as $renderer) {
-            if ($renderer instanceof TitleColumnRenderer) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->titleColumn;
     }
 
     /**

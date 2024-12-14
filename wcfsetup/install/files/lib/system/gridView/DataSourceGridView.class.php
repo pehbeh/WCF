@@ -63,6 +63,7 @@ abstract class DataSourceGridView extends AbstractGridView
         if (!isset($this->dataSource)) {
             $this->dataSource = $this->loadDataSource();
             $this->applyFilters();
+            $this->validate();
             $this->fireInitializedEvent();
         }
 

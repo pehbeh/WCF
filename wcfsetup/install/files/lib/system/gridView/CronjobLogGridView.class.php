@@ -14,7 +14,6 @@ use wcf\system\gridView\filter\TimeFilter;
 use wcf\system\gridView\renderer\DefaultColumnRenderer;
 use wcf\system\gridView\renderer\NumberColumnRenderer;
 use wcf\system\gridView\renderer\TimeColumnRenderer;
-use wcf\system\gridView\renderer\TitleColumnRenderer;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 
@@ -40,9 +39,10 @@ final class CronjobLogGridView extends DatabaseObjectListGridView
             GridViewColumn::for('cronjobID')
                 ->label('wcf.acp.cronjob')
                 ->sortable()
+                ->titleColumn()
                 ->filter(new SelectFilter($availableCronjobs))
                 ->renderer([
-                    new class($availableCronjobs) extends TitleColumnRenderer {
+                    new class($availableCronjobs) extends DefaultColumnRenderer {
                         public function __construct(private readonly array $availableCronjobs) {}
 
                         public function render(mixed $value, mixed $context = null): string

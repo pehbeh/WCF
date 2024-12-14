@@ -501,6 +501,28 @@ abstract class AbstractGridView
     }
 
     /**
+     * Validates the configuration of this grid view.
+     */
+    protected function validate(): void
+    {
+        $titleColumn = null;
+
+        foreach ($this->getColumns() as $column) {
+            if ($column->isTitleColumn()) {
+                if ($titleColumn !== null) {
+                    throw new \InvalidArgumentException("More than one title column defined in grid view with id '{$this->getID()}'.");
+                }
+
+                $titleColumn = $column;
+            }
+        }
+
+        if ($titleColumn === null) {
+            throw new \InvalidArgumentException("Missing title column in grid view with id '{$this->getID()}'.");
+        }
+    }
+
+    /**
      * Returns the initialized event or null if there is no such event for this grid view.
      */
     protected function getInitializedEvent(): ?IPsr14Event

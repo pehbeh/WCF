@@ -8,7 +8,6 @@ use wcf\system\Regex;
 use wcf\system\gridView\filter\SelectFilter;
 use wcf\system\gridView\filter\TextFilter;
 use wcf\system\gridView\renderer\TimeColumnRenderer;
-use wcf\system\gridView\renderer\TitleColumnRenderer;
 use wcf\system\WCF;
 use wcf\util\DirectoryUtil;
 use wcf\util\ExceptionLogUtil;
@@ -31,7 +30,7 @@ final class ExceptionLogGridView extends DataSourceGridView
             GridViewColumn::for('message')
                 ->label('wcf.acp.exceptionLog.exception.message')
                 ->sortable()
-                ->renderer(new TitleColumnRenderer()),
+                ->titleColumn(),
             GridViewColumn::for('exceptionID')
                 ->label('wcf.acp.exceptionLog.search.exceptionID')
                 ->filter(new TextFilter())

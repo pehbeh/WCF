@@ -56,6 +56,7 @@ final class ModificationLogGridView extends DatabaseObjectListGridView
                 ->filter(new TextFilter('modification_log.username')),
             GridViewColumn::for('action')
                 ->label('wcf.acp.modificationLog.action')
+                ->titleColumn()
                 ->renderer([
                     new class extends DefaultColumnRenderer {
                         #[\Override]

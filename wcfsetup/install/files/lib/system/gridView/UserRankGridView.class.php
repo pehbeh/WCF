@@ -15,7 +15,6 @@ use wcf\system\gridView\filter\I18nTextFilter;
 use wcf\system\gridView\filter\SelectFilter;
 use wcf\system\gridView\renderer\DefaultColumnRenderer;
 use wcf\system\gridView\renderer\NumberColumnRenderer;
-use wcf\system\gridView\renderer\TitleColumnRenderer;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 
@@ -39,9 +38,10 @@ final class UserRankGridView extends DatabaseObjectListGridView
             GridViewColumn::for('rankTitle')
                 ->label('wcf.acp.user.rank.title')
                 ->sortable(true, 'rankTitleI18n')
+                ->titleColumn()
                 ->filter(new I18nTextFilter())
                 ->renderer([
-                    new class extends TitleColumnRenderer {
+                    new class extends DefaultColumnRenderer {
                         public function render(mixed $value, mixed $context = null): string
                         {
                             \assert($context instanceof UserRank);

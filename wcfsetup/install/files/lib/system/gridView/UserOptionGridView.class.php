@@ -13,7 +13,6 @@ use wcf\system\gridView\action\EditAction;
 use wcf\system\gridView\action\ToggleAction;
 use wcf\system\gridView\renderer\DefaultColumnRenderer;
 use wcf\system\gridView\renderer\NumberColumnRenderer;
-use wcf\system\gridView\renderer\TitleColumnRenderer;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 
@@ -37,8 +36,9 @@ final class UserOptionGridView extends DatabaseObjectListGridView
             GridViewColumn::for('optionName')
                 ->label('wcf.global.name')
                 ->sortable()
+                ->titleColumn()
                 ->renderer([
-                    new class extends TitleColumnRenderer {
+                    new class extends DefaultColumnRenderer {
                         public function render(mixed $value, mixed $context = null): string
                         {
                             \assert($context instanceof UserOption);
