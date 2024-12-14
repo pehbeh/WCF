@@ -39,6 +39,7 @@ final class ACPSessionLogGridView extends DatabaseObjectListGridView
             GridViewColumn::for('userID')
                 ->label('wcf.user.username')
                 ->sortable(true, 'user_table.username')
+                ->titleColumn()
                 ->renderer(new UserLinkColumnRenderer(UserEditForm::class))
                 ->filter(new UserFilter()),
             GridViewColumn::for('ipAddress')
@@ -91,7 +92,7 @@ final class ACPSessionLogGridView extends DatabaseObjectListGridView
                 FROM    wcf1_acp_session_access_log
                 WHERE   sessionLogID = " . $list->getDatabaseTableAlias() . ".sessionLogID
             ) AS accesses";
-        $list->sqlJoins = $list->sqlConditionJoins .= " JOIN wcf" . WCF_N . "_user user_table ON (user_table.userID = " . $list->getDatabaseTableAlias() . ".userID)";
+        $list->sqlJoins = $list->sqlConditionJoins .= " LEFT JOIN wcf" . WCF_N . "_user user_table ON (user_table.userID = " . $list->getDatabaseTableAlias() . ".userID)";
 
         return $list;
     }
