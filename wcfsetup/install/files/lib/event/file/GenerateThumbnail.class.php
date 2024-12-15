@@ -16,13 +16,29 @@ use wcf\system\file\processor\ThumbnailFormat;
  */
 final class GenerateThumbnail implements IPsr14Event
 {
-    /**
-     * The absolute path to the generated WebP image.
-     */
-    public ?string $filename = null;
+    private string $pathname;
 
     public function __construct(
         public readonly File $file,
         public readonly ThumbnailFormat $thumbnailFormat,
     ) {}
+
+    /**
+     * Sets the pathname of the generated image unless it has already been set
+     * in which case the call will throw an exception. You must check the result
+     * of `hasFile()` first.
+     */
+    public function setGeneratedFile(string $pathname): void
+    {
+        if (isset($this->pathname)) {
+            throw new \BadMethodCallException("Cannot set the generated file, a value has already been set.");
+        }
+
+        $this->pathname = $pathname;
+    }
+
+    public function getPathname(): ?string
+    {
+        return $this->pathname ?? null;
+    }
 }

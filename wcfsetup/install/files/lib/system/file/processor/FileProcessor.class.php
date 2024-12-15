@@ -165,7 +165,7 @@ final class FileProcessor extends SingletonFactory
         $event = new GenerateWebpVariant($file);
         EventHandler::getInstance()->fire($event);
 
-        $filename = $event->filename;
+        $filename = $event->getPathname();
         if ($filename === null) {
             $imageAdapter = ImageHandler::getInstance()->getAdapter();
             if (!$imageAdapter->checkMemoryLimit($file->width, $file->height, $file->mimeType)) {
@@ -263,7 +263,7 @@ final class FileProcessor extends SingletonFactory
             $event = new GenerateThumbnail($file, $format);
             EventHandler::getInstance()->fire($event);
 
-            $filename = $event->filename;
+            $filename = $event->getPathname();
             if ($filename === null) {
                 if ($imageAdapter === null) {
                     $imageAdapter = ImageHandler::getInstance()->getAdapter();
