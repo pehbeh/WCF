@@ -24,6 +24,15 @@ final class GenerateThumbnail implements IPsr14Event
     ) {}
 
     /**
+     * Returns true if a file has already been set and no further files are
+     * being accepted.
+     */
+    public function hasFile(): bool
+    {
+        return isset($this->pathname);
+    }
+
+    /**
      * Sets the pathname of the generated image unless it has already been set
      * in which case the call will throw an exception. You must check the result
      * of `hasFile()` first.
