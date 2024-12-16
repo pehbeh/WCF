@@ -103,7 +103,7 @@ const DomUtil = {
     styles = styles || window.getComputedStyle(element);
 
     let height = element.clientHeight;
-    height += ~~styles.paddingTop + ~~styles.paddingBottom;
+    height -= ~~styles.paddingTop + ~~styles.paddingBottom;
 
     return height;
   },
@@ -115,7 +115,7 @@ const DomUtil = {
     styles = styles || window.getComputedStyle(element);
 
     let width = element.clientWidth;
-    width += ~~styles.paddingLeft + ~~styles.paddingRight;
+    width -= ~~parseInt(styles.paddingLeft) + ~~parseInt(styles.paddingRight);
 
     return width;
   },

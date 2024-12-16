@@ -32,6 +32,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
         dialog;
         exif;
         orientation;
+        cropperCanvasRect;
         #cropper;
         constructor(element, file, configuration) {
             this.configuration = configuration;
@@ -57,43 +58,6 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
                     return this.image.height;
             }
         }
-        async showDialog() {
-            this.dialog = (0, Dialog_1.dialogFactory)().fromElement(this.image).asPrompt({
-                extra: this.getDialogExtra(),
-            });
-            this.dialog.show((0, Language_1.getPhrase)("wcf.upload.crop.image"));
-            this.createCropper();
-            const resize = () => {
-                this.centerSelection();
-            };
-            window.addEventListener("resize", resize, { passive: true });
-            this.dialog.addEventListener("afterClose", () => {
-                window.removeEventListener("resize", resize);
-            }, {
-                once: true,
-            });
-            return new Promise((resolve, reject) => {
-                this.dialog.addEventListener("primary", () => {
-                    void this.getCanvas()
-                        .then((canvas) => {
-                        this.resizer
-                            .saveFile({ exif: this.orientation ? undefined : this.exif, image: canvas }, this.file.name, this.file.type)
-                            .then((resizedFile) => {
-                            resolve(resizedFile);
-                        })
-                            .catch(() => {
-                            reject();
-                        });
-                    })
-                        .catch(() => {
-                        reject();
-                    });
-                });
-            });
-        }
-        getCanvas() {
-            return this.cropperSelection.$toCanvas();
-        }
         async loadImage() {
             const { image, exif } = await this.resizer.loadFile(this.file);
             this.image = image;
@@ -114,18 +78,56 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
                 }
             }
         }
+        async showDialog() {
+            this.dialog = (0, Dialog_1.dialogFactory)().fromElement(this.image).asPrompt({
+                extra: this.getDialogExtra(),
+            });
+            this.dialog.show((0, Language_1.getPhrase)("wcf.upload.crop.image"));
+            this.createCropper();
+            const resize = () => {
+                this.centerSelection();
+            };
+            window.addEventListener("resize", resize, { passive: true });
+            return new Promise((resolve, reject) => {
+                let callReject = true;
+                this.dialog.addEventListener("afterClose", () => {
+                    window.removeEventListener("resize", resize);
+                    // If the dialog is closed without confirming, reject the promise to trigger a cancel event.
+                    if (callReject) {
+                        reject();
+                    }
+                });
+                this.dialog.addEventListener("primary", () => {
+                    callReject = false;
+                    void this.getCanvas()
+                        .then((canvas) => {
+                        this.resizer
+                            .saveFile({ exif: this.orientation ? undefined : this.exif, image: canvas }, this.file.name, this.file.type)
+                            .then((resizedFile) => {
+                            resolve(resizedFile);
+                        })
+                            .catch(() => {
+                            reject();
+                        });
+                    })
+                        .catch(() => {
+                        reject();
+                    });
+                });
+            });
+        }
         getDialogExtra() {
             return undefined;
         }
-        setCropperStyle() {
-            this.cropperCanvas.style.aspectRatio = `${this.width}/${this.height}`;
-            if (this.width >= this.height) {
-                this.cropperCanvas.style.maxHeight = "100%";
-            }
-            else {
-                this.cropperCanvas.style.maxWidth = "100%";
-            }
-            this.cropperSelection.aspectRatio = this.configuration.aspectRatio;
+        getCanvas() {
+            // Calculate the size of the image in relation to the window size
+            const selectionRatio = Math.min(this.cropperCanvasRect.width / this.width, this.cropperCanvasRect.height / this.height);
+            const width = this.cropperSelection.width / selectionRatio;
+            const height = width / this.configuration.aspectRatio;
+            return this.cropperSelection.$toCanvas({
+                width: Math.max(Math.min(Math.floor(width), this.maxSize.width), this.minSize.width),
+                height: Math.max(Math.min(Math.ceil(height), this.maxSize.height), this.minSize.height),
+            });
         }
         createCropper() {
             this.#cropper = new cropperjs_1.default(this.image, {
@@ -154,88 +156,41 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
                     event.preventDefault();
                 }
             });
-        }
-        centerSelection() {
-            this.cropperImage.$center("contain");
-            this.cropperSelection.$center();
-            this.cropperSelection.scrollIntoView({ block: "center", inline: "center" });
-        }
-    }
-    class ExactImageCropper extends ImageCropper {
-        #size;
-        async showDialog() {
-            // The image already has the correct size, cropping is not necessary
-            if (this.width == this.#size.width &&
-                this.height == this.#size.height &&
-                this.image instanceof HTMLCanvasElement) {
-                return this.resizer.saveFile({ exif: this.orientation ? undefined : this.exif, image: this.image }, this.file.name, this.file.type);
-            }
-            return super.showDialog();
-        }
-        async loadImage() {
-            await super.loadImage();
-            const timeout = new Promise((resolve) => {
-                window.setTimeout(() => resolve(this.file), 10_000);
+            // Limit the selection to the min/max size
+            this.cropperSelection.addEventListener("change", (event) => {
+                const selection = event.detail;
+                this.cropperCanvasRect = this.cropperCanvas.getBoundingClientRect();
+                const selectionRatio = Math.min(this.cropperCanvasRect.width / this.width, this.cropperCanvasRect.height / this.height);
+                const minWidth = this.minSize.width * selectionRatio;
+                const maxWidth = this.cropperCanvasRect.width;
+                const minHeight = minWidth / this.configuration.aspectRatio;
+                const maxHeight = maxWidth / this.configuration.aspectRatio;
+                if (Math.round(selection.width) < minWidth ||
+                    Math.round(selection.height) < minHeight ||
+                    Math.round(selection.width) > maxWidth ||
+                    Math.round(selection.height) > maxHeight) {
+                    event.preventDefault();
+                }
             });
-            // resize image to the largest possible size
-            const sizes = this.configuration.sizes.filter((size) => {
-                return size.width <= this.width && size.height <= this.height;
-            });
-            if (sizes.length === 0) {
-                const smallestSize = this.configuration.sizes.length > 1 ? this.configuration.sizes[this.configuration.sizes.length - 1] : undefined;
-                throw new Error((0, Language_1.getPhrase)("wcf.upload.error.image.tooSmall", {
-                    width: smallestSize?.width,
-                    height: smallestSize?.height,
-                }));
-            }
-            this.#size = sizes[sizes.length - 1];
-            this.image = await this.resizer.resize(this.image, this.width >= this.height ? this.width : this.#size.width, this.height > this.width ? this.height : this.#size.height, this.resizer.quality, true, timeout);
-        }
-        getCropperTemplate() {
-            return `<cropper-canvas background>
-  <cropper-image rotatable></cropper-image>
-  <cropper-shade hidden></cropper-shade>
-  <cropper-selection movable outlined keyboard>
-    <cropper-grid role="grid" bordered covered></cropper-grid>
-    <cropper-crosshair centered></cropper-crosshair>
-    <cropper-handle action="move" theme-color="rgba(255, 255, 255, 0.35)"></cropper-handle>
-  </cropper-selection>
-</cropper-canvas>`;
         }
         setCropperStyle() {
-            super.setCropperStyle();
-            this.cropperSelection.width = this.#size.width;
-            this.cropperSelection.height = this.#size.height;
+            this.cropperCanvas.style.aspectRatio = `${this.width}/${this.height}`;
+            this.cropperSelection.aspectRatio = this.configuration.aspectRatio;
+        }
+        centerSelection() {
+            // Set to the maximum size
             this.cropperCanvas.style.width = `${this.width}px`;
             this.cropperCanvas.style.height = `${this.height}px`;
-            this.cropperSelection.style.removeProperty("aspectRatio");
-        }
-    }
-    class MinMaxImageCropper extends ImageCropper {
-        #cropperCanvasRect;
-        constructor(element, file, configuration) {
-            super(element, file, configuration);
-            if (configuration.sizes.length !== 2) {
-                throw new Error("MinMaxImageCropper requires exactly two sizes");
-            }
-        }
-        get minSize() {
-            return this.configuration.sizes[0];
-        }
-        get maxSize() {
-            return this.configuration.sizes[1];
-        }
-        getDialogExtra() {
-            return (0, Language_1.getPhrase)("wcf.global.button.reset");
-        }
-        async loadImage() {
-            await super.loadImage();
-            if (this.image.width < this.minSize.width || this.image.height < this.minSize.height) {
-                throw new Error((0, Language_1.getPhrase)("wcf.upload.error.image.tooSmall", {
-                    width: this.minSize.width,
-                    height: this.minSize.height,
-                }));
-            }
+            const dimension = Util_1.default.innerDimensions(this.cropperCanvas.parentElement);
+            const ratio = Math.min(dimension.width / this.width, dimension.height / this.height);
+            this.cropperCanvas.style.height = `${this.height * ratio}px`;
+            this.cropperCanvas.style.width = `${this.width * ratio}px`;
+            this.cropperImage.$center("contain");
+            this.cropperCanvasRect = this.cropperImage.getBoundingClientRect();
+            const selectionRatio = Math.min(this.cropperCanvasRect.width / this.maxSize.width, this.cropperCanvasRect.height / this.maxSize.height);
+            this.cropperSelection.$change(0, 0, this.maxSize.width * selectionRatio, this.maxSize.height * selectionRatio, this.configuration.aspectRatio, true);
+            this.cropperSelection.$center();
+            this.cropperSelection.scrollIntoView({ block: "center", inline: "center" });
         }
         getCropperTemplate() {
             return `<cropper-canvas background scale-step="0.0">
@@ -257,55 +212,78 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
   </cropper-selection>
 </cropper-canvas>`;
         }
+    }
+    class ExactImageCropper extends ImageCropper {
+        get minSize() {
+            return this.configuration.sizes[0];
+        }
+        get maxSize() {
+            return this.configuration.sizes[this.configuration.sizes.length - 1];
+        }
+        async showDialog() {
+            // The image already has the correct size, cropping is not necessary
+            if (this.configuration.sizes.filter((size) => {
+                return size.width == this.width && size.height == this.height;
+            }).length > 0 &&
+                this.image instanceof HTMLCanvasElement) {
+                return this.resizer.saveFile({ exif: this.orientation ? undefined : this.exif, image: this.image }, this.file.name, this.file.type);
+            }
+            return super.showDialog();
+        }
+        async loadImage() {
+            await super.loadImage();
+            const sizes = this.configuration.sizes
+                .filter((size) => {
+                return size.width <= this.width && size.height <= this.height;
+            })
+                .sort((a, b) => {
+                if (this.configuration.aspectRatio >= 1) {
+                    return a.width - b.width;
+                }
+                else {
+                    return a.height - b.height;
+                }
+            });
+            if (sizes.length === 0) {
+                const smallestSize = this.configuration.sizes.length > 1 ? this.configuration.sizes[this.configuration.sizes.length - 1] : undefined;
+                throw new Error((0, Language_1.getPhrase)("wcf.upload.error.image.tooSmall", {
+                    width: smallestSize?.width,
+                    height: smallestSize?.height,
+                }));
+            }
+            this.configuration.sizes = sizes;
+        }
+    }
+    class MinMaxImageCropper extends ImageCropper {
+        constructor(element, file, configuration) {
+            super(element, file, configuration);
+            if (configuration.sizes.length !== 2) {
+                throw new Error("MinMaxImageCropper requires exactly two sizes");
+            }
+        }
+        get minSize() {
+            return this.configuration.sizes[0];
+        }
+        get maxSize() {
+            return this.configuration.sizes[1];
+        }
+        getDialogExtra() {
+            return (0, Language_1.getPhrase)("wcf.global.button.reset");
+        }
+        async loadImage() {
+            await super.loadImage();
+            if (this.width < this.minSize.width || this.height < this.minSize.height) {
+                throw new Error((0, Language_1.getPhrase)("wcf.upload.error.image.tooSmall", {
+                    width: this.minSize.width,
+                    height: this.minSize.height,
+                }));
+            }
+        }
         createCropper() {
             super.createCropper();
             this.dialog.addEventListener("extra", () => {
                 this.centerSelection();
             });
-            // Limit the selection to the min/max size
-            this.cropperSelection.addEventListener("change", (event) => {
-                const selection = event.detail;
-                this.#cropperCanvasRect = this.cropperCanvas.getBoundingClientRect();
-                const maxImageWidth = Math.min(this.image.width, this.maxSize.width);
-                const maxImageHeight = Math.min(this.image.height, this.maxSize.height);
-                const selectionRatio = Math.min(this.#cropperCanvasRect.width / maxImageWidth, this.#cropperCanvasRect.height / maxImageHeight);
-                const minWidth = this.minSize.width * selectionRatio;
-                const maxWidth = this.maxSize.width * selectionRatio;
-                const minHeight = minWidth / this.configuration.aspectRatio;
-                const maxHeight = maxWidth / this.configuration.aspectRatio;
-                if (Math.round(selection.width) < minWidth ||
-                    Math.round(selection.height) < minHeight ||
-                    Math.round(selection.width) > maxWidth ||
-                    Math.round(selection.height) > maxHeight) {
-                    event.preventDefault();
-                }
-            });
-        }
-        getCanvas() {
-            // Calculate the size of the image in relation to the window size
-            const maxImageWidth = Math.min(this.image.width, this.maxSize.width);
-            const widthRatio = this.#cropperCanvasRect.width / maxImageWidth;
-            const width = this.cropperSelection.width / widthRatio;
-            const height = width / this.configuration.aspectRatio;
-            return this.cropperSelection.$toCanvas({
-                width: Math.max(Math.min(Math.ceil(width), this.maxSize.width), this.minSize.width),
-                height: Math.max(Math.min(Math.ceil(height), this.maxSize.height), this.minSize.height),
-            });
-        }
-        centerSelection() {
-            // Reset to get the maximum available height and width
-            this.cropperCanvas.style.height = "";
-            this.cropperCanvas.style.width = "";
-            const dimension = Util_1.default.innerDimensions(this.cropperCanvas.parentElement);
-            const ratio = Math.min(dimension.width / this.image.width, dimension.height / this.image.height);
-            this.cropperCanvas.style.height = `${this.image.height * ratio}px`;
-            this.cropperCanvas.style.width = `${this.image.width * ratio}px`;
-            this.cropperImage.$center("contain");
-            this.#cropperCanvasRect = this.cropperImage.getBoundingClientRect();
-            const selectionRatio = Math.min(this.#cropperCanvasRect.width / this.maxSize.width, this.#cropperCanvasRect.height / this.maxSize.height);
-            this.cropperSelection.$change(0, 0, this.maxSize.width * selectionRatio, this.maxSize.height * selectionRatio, this.configuration.aspectRatio, true);
-            this.cropperSelection.$center();
-            this.cropperSelection.scrollIntoView({ block: "center", inline: "center" });
         }
     }
     async function cropImage(element, file, configuration) {
