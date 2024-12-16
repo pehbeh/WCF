@@ -39,7 +39,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
             this.#uploadButton = this.#container.querySelector("woltlab-core-file-upload");
             if (this.#simpleReplace) {
                 this.#uploadButton.addEventListener("shouldUpload", () => {
-                    const file = this.#uploadButton.parentElement.querySelector("woltlab-core-file");
+                    const file = this.#uploadButton.parentElement.querySelector("woltlab-core-file[file-id]");
                     if (!file) {
                         return;
                     }
@@ -123,6 +123,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
                     this.#uploadButton.dataset.context = oldContext;
                     this.#registerFile(this.#replaceElement);
                     this.#replaceElement = undefined;
+                    this.#uploadResolve = undefined;
                     this.#fileInput.removeEventListener("change", changeEventListener);
                 };
                 this.#fileInput.addEventListener("cancel", cancelEventListener, { once: true });
@@ -163,6 +164,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
         #simpleFileReplace(oldFile) {
             const oldContext = this.#startReplaceFile(oldFile);
             const cropCancelledEvent = () => {
+                this.#uploadResolve = undefined;
                 this.#uploadButton.dataset.context = oldContext;
                 this.#registerFile(this.#replaceElement);
                 this.#replaceElement = undefined;

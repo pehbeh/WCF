@@ -67,7 +67,8 @@ export class FileProcessor {
 
     if (this.#simpleReplace) {
       this.#uploadButton.addEventListener("shouldUpload", () => {
-        const file = this.#uploadButton.parentElement!.querySelector("woltlab-core-file");
+        const file =
+          this.#uploadButton.parentElement!.querySelector<WoltlabCoreFileElement>("woltlab-core-file[file-id]");
         if (!file) {
           return;
         }
@@ -168,6 +169,7 @@ export class FileProcessor {
         this.#uploadButton.dataset.context = oldContext;
         this.#registerFile(this.#replaceElement!);
         this.#replaceElement = undefined;
+        this.#uploadResolve = undefined;
         this.#fileInput.removeEventListener("change", changeEventListener);
       };
 
@@ -216,6 +218,7 @@ export class FileProcessor {
     const oldContext = this.#startReplaceFile(oldFile);
 
     const cropCancelledEvent = () => {
+      this.#uploadResolve = undefined;
       this.#uploadButton.dataset.context = oldContext;
       this.#registerFile(this.#replaceElement!);
       this.#replaceElement = undefined;
