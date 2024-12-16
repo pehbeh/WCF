@@ -17,6 +17,7 @@ import {
 } from "WoltLabSuite/Core/Component/File/Helper";
 import { clearPreviousErrors } from "WoltLabSuite/Core/Component/File/Upload";
 import { innerError } from "WoltLabSuite/Core/Dom/Util";
+import { confirmationFactory } from "WoltLabSuite/Core/Component/Confirmation";
 
 type FileId = string;
 const fileProcessors = new Map<FileId, FileProcessor>();
@@ -130,6 +131,10 @@ export class FileProcessor {
     deleteButton.classList.add("button", "small");
     deleteButton.textContent = getPhrase("wcf.global.button.delete");
     deleteButton.addEventListener("click", async () => {
+      if (!(await confirmationFactory().delete())) {
+        return;
+      }
+
       const result = await deleteFile(element.fileId!);
       if (result.ok) {
         this.#unregisterFile(element);
