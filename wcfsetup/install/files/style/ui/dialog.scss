@@ -469,6 +469,9 @@ html[data-color-scheme="dark"] .dialog::backdrop {
 .dialog cropper-canvas {
 	margin-left: auto;
 	margin-right: auto;
+	max-height: 100%;
+	max-width: 100%;
+
 	/* overwrites the default values of `min-height: 100px` and `min-width: 200px` */
 	min-height: 1px;
 	min-width: 1px;
