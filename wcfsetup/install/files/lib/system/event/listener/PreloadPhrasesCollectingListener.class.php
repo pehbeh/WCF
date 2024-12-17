@@ -136,6 +136,8 @@ final class PreloadPhrasesCollectingListener
         $event->preload('wcf.message.share.permalink.html');
         $event->preload('wcf.message.share.socialMedia');
 
+        $event->preload('wcf.message.quote.showQuotes');
+
         $event->preload('wcf.moderation.report.reportContent');
 
         $event->preload('wcf.page.jumpTo');

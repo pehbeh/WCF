@@ -42,11 +42,10 @@
 			{/if}
 			{event name='tabMenuTabs'}
 
-			<li data-name="quote">
-				{* TODO change count *}
+			<li data-name="quotes" hidden>
 				<button type="button">
 					{icon name='quote-left'}
-					<span>{lang count=10}wcf.message.quote.showQuotes{/lang}</span>
+					<span>{lang}wcf.bbcode.quote{/lang}</span>
 				</button>
 			</li>
 		</ul>

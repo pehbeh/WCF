@@ -53,6 +53,27 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/Selector", "Wol
             this.#tabContainers[tabIndex].classList.add("active");
             this.#activeTabName = tabName;
         }
+        showTab(tabName, title) {
+            this.#tabs
+                .filter((element) => element.dataset.name === tabName)
+                .forEach((element) => {
+                element.hidden = false;
+                // Set new title
+                if (title) {
+                    element.querySelector("span").textContent = title;
+                }
+            });
+        }
+        hideTab(tabName) {
+            this.#tabs
+                .filter((element) => element.dataset.name === tabName)
+                .forEach((element) => {
+                element.hidden = true;
+                if (element.classList.contains("active")) {
+                    this.#closeAllTabs();
+                }
+            });
+        }
         setTabCounter(tabName, value) {
             const tab = this.#tabs.find((element) => element.dataset.name === tabName);
             if (tab === undefined) {
