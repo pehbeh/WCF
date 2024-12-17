@@ -20,8 +20,8 @@ use wcf\util\StringUtil;
 class LinkAction extends AbstractAction
 {
     public function __construct(
-        private readonly string $controllerClass,
-        private readonly string $languageItem,
+        protected readonly string $controllerClass,
+        protected readonly string|Closure $languageItem,
         ?Closure $isAvailableCallback = null
     ) {
         parent::__construct($isAvailableCallback);
@@ -36,12 +36,12 @@ class LinkAction extends AbstractAction
             ['object' => $row]
         );
 
-        return '<a href="' . StringUtil::encodeHTML($href) . '">' . WCF::getLanguage()->get($this->languageItem) . '</a>';
-    }
+        if (\is_string($this->languageItem)) {
+            $title = WCF::getLanguage()->get($this->languageItem);
+        } else {
+            $title = ($this->languageItem)($row);
+        }
 
-    #[\Override]
-    public function renderInitialization(AbstractGridView $gridView): ?string
-    {
-        return null;
+        return \sprintf('<a href="%s">%s</a>', StringUtil::encodeHTML($href), $title);
     }
 }

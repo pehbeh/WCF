@@ -3,6 +3,7 @@
 namespace wcf\system\gridView\action;
 
 use Closure;
+use wcf\system\gridView\AbstractGridView;
 
 /**
  * Provides an abstract implementation of a grid view action.
@@ -15,7 +16,7 @@ use Closure;
 abstract class AbstractAction implements IGridViewAction
 {
     public function __construct(
-        private readonly ?Closure $isAvailableCallback = null
+        protected readonly ?Closure $isAvailableCallback = null
     ) {}
 
     #[\Override]
@@ -32,5 +33,11 @@ abstract class AbstractAction implements IGridViewAction
     public function isQuickAction(): bool
     {
         return false;
+    }
+
+    #[\Override]
+    public function renderInitialization(AbstractGridView $gridView): ?string
+    {
+        return null;
     }
 }
