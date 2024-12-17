@@ -34,15 +34,6 @@ class DeleteAction extends AbstractAction
         \assert($row instanceof DatabaseObject);
 
         $label = WCF::getLanguage()->get('wcf.global.button.delete');
-
-        if (!$this->isAvailable($row)) {
-            return <<<HTML
-                <span>
-                    {$label}
-                </span>
-                HTML;
-        }
-
         $endpoint = StringUtil::encodeHTML(
             LinkHandler::getInstance()->getControllerLink(ApiAction::class, ['id' => 'rpc']) .
                 \sprintf($this->endpoint, $row->getObjectID())
