@@ -133,55 +133,56 @@ class LoginForm extends AbstractFormBuilderForm
     {
         $usernameFormField = $this->form->getNodeById('username');
         \assert($usernameFormField instanceof TextFormField);
-        $handleException = null;
+        $validationError = null;
 
         try {
             $this->user = UserAuthenticationFactory::getInstance()
                 ->getUserAuthentication()
                 ->loginManually($usernameFormField->getValue(), $passwordFormField->getValue());
         } catch (UserInputException $e) {
-            if (
-                \get_class(UserAuthenticationFactory::getInstance()->getUserAuthentication()) === DefaultUserAuthentication::class
-                && $e->getField() == 'username'
-            ) {
+            $validationError = $e;
+
+            if ($e->getField() === 'username') {
                 try {
-                    $this->user = EmailUserAuthentication::getInstance()
-                        ->loginManually($usernameFormField->getValue(), $passwordFormField->getValue());
-                } catch (UserInputException $e2) {
-                    if ($e2->getField() == 'username') {
-                        $handleException = $e;
-                    } else {
-                        $handleException = $e2;
+                    $user = $this->tryAuthenticationByEmail($usernameFormField->getValue(), $passwordFormField->getValue());
+                    if ($user !== null) {
+                        $this->user = $user;
+                        $validationError = null;
+                    }
+                } catch (UserInputException $emailException) {
+                    // The attempt to use the email address as login username is
+                    // only implicit, therefore we only use the inner exception
+                    // if the error is about an incorrect password.
+                    if ($emailException->getField() !== 'username') {
+                        $validationError = $emailException;
                     }
                 }
-            } else {
-                $handleException = $e;
             }
         }
 
-        if ($handleException !== null) {
-            if ($handleException->getField() == 'username') {
+        if ($validationError !== null) {
+            if ($validationError->getField() == 'username') {
                 $usernameFormField->addValidationError(
                     new FormFieldValidationError(
-                        $handleException->getType(),
-                        'wcf.user.username.error.' . $handleException->getType(),
+                        $validationError->getType(),
+                        'wcf.user.username.error.' . $validationError->getType(),
                         [
                             'username' => $usernameFormField->getValue(),
                         ]
                     )
                 );
-            } else if ($handleException->getField() == 'password') {
+            } else if ($validationError->getField() == 'password') {
                 $passwordFormField->addValidationError(
                     new FormFieldValidationError(
-                        $handleException->getType(),
-                        'wcf.user.password.error.' . $handleException->getType()
+                        $validationError->getType(),
+                        'wcf.user.password.error.' . $validationError->getType()
                     )
                 );
             } else {
                 throw new \LogicException('unreachable');
             }
 
-            $this->saveAuthenticationFailure($handleException->getField(), $usernameFormField->getValue());
+            $this->saveAuthenticationFailure($validationError->getField(), $usernameFormField->getValue());
         }
 
         if (RequestHandler::getInstance()->isACPRequest() && $this->user !== null) {
@@ -203,6 +204,20 @@ class LoginForm extends AbstractFormBuilderForm
             $this->form->invalid();
             $this->form->errorMessage('wcf.user.login.error.cookieRequired');
         }
+    }
+
+    protected function tryAuthenticationByEmail(
+        string $username,
+        #[\SensitiveParameter] string $password
+    ): ?User {
+        $defaultAuthentication = UserAuthenticationFactory::getInstance()->getUserAuthentication();
+        if (\get_class($defaultAuthentication) !== DefaultUserAuthentication::class) {
+            // The email fallback is only supported for the built-in
+            // authentication method.
+            return null;
+        }
+
+        return EmailUserAuthentication::getInstance()->loginManually($username, $password);
     }
 
     protected function saveAuthenticationFailure(string $errorField, string $username): void
