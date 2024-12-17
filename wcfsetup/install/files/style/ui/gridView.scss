@@ -85,6 +85,7 @@
 
 	&.gridView__column--digits,
 	&.gridView__column--id {
+		font-variant: tabular-nums;
 		text-align: right;
 		width: 1px;
 		white-space: nowrap;
@@ -96,8 +97,6 @@
 		width: 1px;
 		white-space: nowrap;
 		word-wrap: normal;
-
-		@include wcfFontSmall;
 	}
 
 	&.gridView__column-smallText {
