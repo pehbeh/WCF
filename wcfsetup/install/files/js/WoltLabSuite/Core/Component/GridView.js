@@ -1,4 +1,4 @@
-define(["require", "exports", "tslib", "../Api/Gridviews/GetRows", "../Dom/Change/Listener", "../Dom/Util", "../Helper/PromiseMutex", "../Ui/Dropdown/Simple", "./Dialog"], function (require, exports, tslib_1, GetRows_1, Listener_1, Util_1, PromiseMutex_1, Simple_1, Dialog_1) {
+define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridviews/GetRows", "../Dom/Change/Listener", "../Dom/Util", "../Helper/PromiseMutex", "../Ui/Dropdown/Simple", "./Dialog"], function (require, exports, tslib_1, GetRow_1, GetRows_1, Listener_1, Util_1, PromiseMutex_1, Simple_1, Dialog_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GridView = void 0;
@@ -38,6 +38,7 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRows", "../Dom/Chang
             this.#initSorting();
             this.#initActions();
             this.#initFilters();
+            this.#initEventListeners();
             window.addEventListener("popstate", () => {
                 this.#handlePopState();
             });
@@ -94,6 +95,11 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRows", "../Dom/Chang
             Listener_1.default.trigger();
             this.#renderFilters(response.filterLabels);
             this.#initActions();
+        }
+        async #refreshRow(row) {
+            const response = (await (0, GetRow_1.getRow)(this.#gridClassName, row.dataset.objectId)).unwrap();
+            row.replaceWith(Util_1.default.createFragmentFromHtml(response.template));
+            Listener_1.default.trigger();
         }
         #updateQueryString() {
             if (!this.#baseUrl) {
@@ -218,6 +224,11 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRows", "../Dom/Chang
                 }
             });
             this.#switchPage(pageNo, false);
+        }
+        #initEventListeners() {
+            this.#table.addEventListener("refresh", (event) => {
+                void this.#refreshRow(event.target);
+            });
         }
     }
     exports.GridView = GridView;

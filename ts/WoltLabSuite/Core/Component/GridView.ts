@@ -1,3 +1,4 @@
+import { getRow } from "../Api/Gridviews/GetRow";
 import { getRows } from "../Api/Gridviews/GetRows";
 import DomChangeListener from "../Dom/Change/Listener";
 import DomUtil from "../Dom/Util";
@@ -48,6 +49,7 @@ export class GridView {
     this.#initSorting();
     this.#initActions();
     this.#initFilters();
+    this.#initEventListeners();
 
     window.addEventListener("popstate", () => {
       this.#handlePopState();
@@ -127,6 +129,12 @@ export class GridView {
 
     this.#renderFilters(response.filterLabels);
     this.#initActions();
+  }
+
+  async #refreshRow(row: HTMLElement): Promise<void> {
+    const response = (await getRow(this.#gridClassName, row.dataset.objectId!)).unwrap();
+    row.replaceWith(DomUtil.createFragmentFromHtml(response.template));
+    DomChangeListener.trigger();
   }
 
   #updateQueryString(): void {
@@ -281,5 +289,11 @@ export class GridView {
     });
 
     this.#switchPage(pageNo, false);
+  }
+
+  #initEventListeners(): void {
+    this.#table.addEventListener("refresh", (event) => {
+      void this.#refreshRow(event.target as HTMLElement);
+    });
   }
 }

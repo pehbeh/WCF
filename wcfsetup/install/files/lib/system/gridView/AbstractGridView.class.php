@@ -38,6 +38,7 @@ abstract class AbstractGridView
     private string $sortOrder = 'ASC';
     private int $pageNo = 1;
     private array $activeFilters = [];
+    private string|int|null $objectIDFilter = null;
 
     /**
      * Adds a new column to the grid view.
@@ -485,6 +486,16 @@ abstract class AbstractGridView
     public function getObjectID(mixed $row): mixed
     {
         return '';
+    }
+
+    public function setObjectIDFilter(string|int|null $objectID): void
+    {
+        $this->objectIDFilter = $objectID;
+    }
+
+    public function getObjectIDFilter(): string|int|null
+    {
+        return $this->objectIDFilter;
     }
 
     /**

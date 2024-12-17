@@ -72,6 +72,12 @@ abstract class DatabaseObjectListGridView extends AbstractGridView
             $this->objectList->sqlOrderBy .= ',' . $this->objectList->getDatabaseTableAlias() .
                 '.' . $this->objectList->getDatabaseTableIndexName() . ' ' . $this->getSortOrder();
         }
+        if ($this->getObjectIDFilter() !== null) {
+            $this->objectList->getConditionBuilder()->add(
+                $this->objectList->getDatabaseTableAlias() . '.' . $this->objectList->getDatabaseTableIndexName() . ' = ?',
+                [$this->getObjectIDFilter()]
+            );
+        }
         $this->applyFilters();
         $this->validate();
         $this->fireInitializedEvent();
