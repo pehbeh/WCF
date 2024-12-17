@@ -41,6 +41,14 @@
 				</li>
 			{/if}
 			{event name='tabMenuTabs'}
+
+			<li data-name="quote">
+				{* TODO change count *}
+				<button type="button">
+					{icon name='quote-left'}
+					<span>{lang count=10}wcf.message.quote.showQuotes{/lang}</span>
+				</button>
+			</li>
 		</ul>
 	</nav>
 
@@ -53,4 +61,6 @@
 	{include file='__messageFormPoll'}
 
 	{event name='tabMenuContents'}
+
+	{include file='__messageFormQuote'}
 </div>
