@@ -18,17 +18,14 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
             if (this.#container === null) {
                 throw new Error(`The quotes container for '${editorId}' does not exist.`);
             }
-            window.addEventListener("storage", (event) => {
-                if (event.key !== exports.STORAGE_KEY) {
-                    return;
-                }
-                this.renderQuotes(event.newValue);
+            window.addEventListener("storage", () => {
+                this.renderQuotes();
             });
-            this.renderQuotes(window.localStorage.getItem(exports.STORAGE_KEY));
+            this.renderQuotes();
         }
-        renderQuotes(template) {
-            this.#container.innerHTML = template || "";
-            if (template) {
+        renderQuotes() {
+            this.#container.innerHTML = window.localStorage.getItem(exports.STORAGE_KEY) || "";
+            if (this.#container.hasChildNodes()) {
                 (0, MessageTabMenu_1.getTabMenu)(this.#editorId)?.showTab("quotes", (0, Language_1.getPhrase)("wcf.message.quote.showQuotes", {
                     count: this.#container.childElementCount,
                 }));

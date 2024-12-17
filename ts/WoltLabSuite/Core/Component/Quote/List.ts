@@ -28,21 +28,17 @@ class QuoteList {
       throw new Error(`The quotes container for '${editorId}' does not exist.`);
     }
 
-    window.addEventListener("storage", (event) => {
-      if (event.key !== STORAGE_KEY) {
-        return;
-      }
-
-      this.renderQuotes(event.newValue);
+    window.addEventListener("storage", () => {
+      this.renderQuotes();
     });
 
-    this.renderQuotes(window.localStorage.getItem(STORAGE_KEY));
+    this.renderQuotes();
   }
 
-  public renderQuotes(template: string | null): void {
-    this.#container.innerHTML = template || "";
+  public renderQuotes(): void {
+    this.#container.innerHTML = window.localStorage.getItem(STORAGE_KEY) || "";
 
-    if (template) {
+    if (this.#container.hasChildNodes()) {
       getTabMenu(this.#editorId)?.showTab(
         "quotes",
         getPhrase("wcf.message.quote.showQuotes", {
