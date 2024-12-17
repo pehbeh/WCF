@@ -2,6 +2,7 @@
 
 namespace wcf\page;
 
+use wcf\system\exception\PermissionDeniedException;
 use wcf\system\request\LinkHandler;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\WCF;
@@ -62,6 +63,9 @@ abstract class AbstractGridViewPage extends AbstractPage
     protected function initGridView(): void
     {
         $this->gridView = $this->createGridViewController();
+        if (!$this->gridView->isAccessible()) {
+            throw new PermissionDeniedException();
+        }
 
         if ($this->sortField) {
             $this->gridView->setSortField($this->sortField);
