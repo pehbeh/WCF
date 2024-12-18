@@ -222,10 +222,10 @@ abstract class ImageCropper {
       const maxHeight = maxWidth / this.configuration.aspectRatio;
 
       if (
-        Math.round(selection.width) < minWidth ||
-        Math.round(selection.height) < minHeight ||
-        Math.round(selection.width) > maxWidth ||
-        Math.round(selection.height) > maxHeight
+        selection.width < minWidth ||
+        selection.height < minHeight ||
+        selection.width > maxWidth ||
+        selection.height > maxHeight
       ) {
         event.preventDefault();
       }
@@ -260,8 +260,8 @@ abstract class ImageCropper {
     this.cropperSelection!.$change(
       0,
       0,
-      this.maxSize.width * selectionRatio,
-      this.maxSize.height * selectionRatio,
+      Math.min(this.cropperCanvasRect.width, this.maxSize.width * selectionRatio),
+      Math.min(this.cropperCanvasRect.height, this.maxSize.height * selectionRatio),
       this.configuration.aspectRatio,
       true,
     );
