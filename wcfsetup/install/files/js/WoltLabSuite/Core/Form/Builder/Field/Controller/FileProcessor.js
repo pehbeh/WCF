@@ -9,8 +9,11 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FileProcessor = void 0;
     exports.getValues = getValues;
+    exports.registerCallback = registerCallback;
+    exports.unregisterCallback = unregisterCallback;
     Listener_1 = tslib_1.__importDefault(Listener_1);
     const fileProcessors = new Map();
+    const callbacks = new Map();
     class FileProcessor {
         #container;
         #uploadButton;
@@ -145,6 +148,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
                 const result = await (0, DeleteFile_1.deleteFile)(element.fileId);
                 if (result.ok) {
                     this.#unregisterFile(element);
+                    notifyValueChange(this.#fieldId, this.values);
                 }
                 else {
                     let container = element;
@@ -282,6 +286,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
             input.value = element.fileId.toString();
             container.append(input);
             this.addButtons(container, element);
+            notifyValueChange(this.#fieldId, this.values);
         }
         get values() {
             if (this.#singleFileUpload) {
@@ -310,5 +315,25 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
             throw new Error("Unknown field with id '" + fieldId + "'");
         }
         return field.values;
+    }
+    /**
+     * Registers a callback that will be called when the value of the field changes.
+     *
+     * @since 6.2
+     */
+    function registerCallback(fieldId, callback) {
+        if (!callbacks.has(fieldId)) {
+            callbacks.set(fieldId, []);
+        }
+        callbacks.get(fieldId).push(callback);
+    }
+    /**
+     * @since 6.2
+     */
+    function unregisterCallback(fieldId, callback) {
+        callbacks.set(fieldId, callbacks.get(fieldId)?.filter((registeredCallback) => registeredCallback !== callback) ?? []);
+    }
+    function notifyValueChange(fieldId, values) {
+        callbacks.get(fieldId)?.forEach((callback) => callback(values));
     }
 });
