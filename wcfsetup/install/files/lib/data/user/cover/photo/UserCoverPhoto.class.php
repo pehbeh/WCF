@@ -51,6 +51,14 @@ final class UserCoverPhoto implements IUserCoverPhoto
     }
 
     #[\Override]
+    public function getThumbnailURL(string $size = 'small'): string
+    {
+        $thumbnail = $this->file->getThumbnail($size);
+
+        return $thumbnail ? $thumbnail->getLink() : $this->getURL();
+    }
+
+    #[\Override]
     public function getFilename(?bool $forceWebP = null): string
     {
         return $this->file->filename;

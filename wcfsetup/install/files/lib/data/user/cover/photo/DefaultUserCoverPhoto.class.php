@@ -50,4 +50,10 @@ class DefaultUserCoverPhoto implements IUserCoverPhoto
     {
         return null;
     }
+
+    #[\Override]
+    public function getThumbnailURL(string $size = 'small'): string
+    {
+        return $this->getURL();
+    }
 }
