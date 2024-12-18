@@ -57,7 +57,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
             });
             this.#fileInput = this.#uploadButton.querySelector('input[type="file"]');
             this.#container.querySelectorAll("woltlab-core-file").forEach((element) => {
-                this.#registerFile(element, element.parentElement);
+                this.#registerFile(element, element.parentElement, false);
             });
             fileProcessors.set(fieldId, this);
         }
@@ -124,7 +124,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
                 };
                 const cancelEventListener = () => {
                     this.#uploadButton.dataset.context = oldContext;
-                    this.#registerFile(this.#replaceElement);
+                    this.#registerFile(this.#replaceElement, null, false);
                     this.#replaceElement = undefined;
                     this.#uploadResolve = undefined;
                     this.#fileInput.removeEventListener("change", changeEventListener);
@@ -170,7 +170,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
             const cropCancelledEvent = () => {
                 this.#uploadResolve = undefined;
                 this.#uploadButton.dataset.context = oldContext;
-                this.#registerFile(this.#replaceElement);
+                this.#registerFile(this.#replaceElement, null, false);
                 this.#replaceElement = undefined;
             };
             this.#uploadButton.addEventListener("cancel", cropCancelledEvent, { once: true });
@@ -202,7 +202,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
                 element.parentElement.parentElement.remove();
             }
         }
-        #registerFile(element, container = null) {
+        #registerFile(element, container = null, notifyCallback = true) {
             if (container === null) {
                 if (this.#useBigPreview) {
                     container = this.#container.querySelector(".fileUpload__preview");
@@ -229,11 +229,11 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
                     void (0, DeleteFile_1.deleteFile)(this.#replaceElement.fileId);
                     this.#replaceElement = undefined;
                 }
-                this.#fileInitializationCompleted(element, container);
+                this.#fileInitializationCompleted(element, container, notifyCallback);
             })
                 .catch((reason) => {
                 if (this.#replaceElement !== undefined) {
-                    this.#registerFile(this.#replaceElement);
+                    this.#registerFile(this.#replaceElement, null, false);
                     this.#replaceElement = undefined;
                     if (this.#useBigPreview) {
                         // `this.#replaceElement` need a new container, otherwise the element will be marked as erroneous, too.
@@ -249,7 +249,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
                 (0, Helper_1.removeUploadProgress)(container);
             });
         }
-        #fileInitializationCompleted(element, container) {
+        #fileInitializationCompleted(element, container, notifyCallback = true) {
             if (this.#useBigPreview) {
                 setThumbnail(element, element.thumbnails.find((thumbnail) => thumbnail.identifier === this.#thumbnailSize), true);
             }
@@ -286,7 +286,9 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
             input.value = element.fileId.toString();
             container.append(input);
             this.addButtons(container, element);
-            notifyValueChange(this.#fieldId, this.values);
+            if (notifyCallback) {
+                notifyValueChange(this.#fieldId, this.values);
+            }
         }
         get values() {
             if (this.#singleFileUpload) {

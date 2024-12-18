@@ -88,7 +88,7 @@ export class FileProcessor {
     this.#fileInput = this.#uploadButton.querySelector<HTMLInputElement>('input[type="file"]')!;
 
     this.#container.querySelectorAll<WoltlabCoreFileElement>("woltlab-core-file").forEach((element) => {
-      this.#registerFile(element, element.parentElement);
+      this.#registerFile(element, element.parentElement, false);
     });
 
     fileProcessors.set(fieldId, this);
@@ -168,7 +168,7 @@ export class FileProcessor {
       };
       const cancelEventListener = () => {
         this.#uploadButton.dataset.context = oldContext;
-        this.#registerFile(this.#replaceElement!);
+        this.#registerFile(this.#replaceElement!, null, false);
         this.#replaceElement = undefined;
         this.#uploadResolve = undefined;
         this.#fileInput.removeEventListener("change", changeEventListener);
@@ -223,7 +223,7 @@ export class FileProcessor {
     const cropCancelledEvent = () => {
       this.#uploadResolve = undefined;
       this.#uploadButton.dataset.context = oldContext;
-      this.#registerFile(this.#replaceElement!);
+      this.#registerFile(this.#replaceElement!, null, false);
       this.#replaceElement = undefined;
     };
 
@@ -261,7 +261,11 @@ export class FileProcessor {
     }
   }
 
-  #registerFile(element: WoltlabCoreFileElement, container: HTMLElement | null = null): void {
+  #registerFile(
+    element: WoltlabCoreFileElement,
+    container: HTMLElement | null = null,
+    notifyCallback: boolean = true,
+  ): void {
     if (container === null) {
       if (this.#useBigPreview) {
         container = this.#container.querySelector(".fileUpload__preview");
@@ -290,11 +294,11 @@ export class FileProcessor {
           void deleteFile(this.#replaceElement.fileId!);
           this.#replaceElement = undefined;
         }
-        this.#fileInitializationCompleted(element, container!);
+        this.#fileInitializationCompleted(element, container!, notifyCallback);
       })
       .catch((reason) => {
         if (this.#replaceElement !== undefined) {
-          this.#registerFile(this.#replaceElement);
+          this.#registerFile(this.#replaceElement, null, false);
           this.#replaceElement = undefined;
 
           if (this.#useBigPreview) {
@@ -313,7 +317,11 @@ export class FileProcessor {
       });
   }
 
-  #fileInitializationCompleted(element: WoltlabCoreFileElement, container: HTMLElement): void {
+  #fileInitializationCompleted(
+    element: WoltlabCoreFileElement,
+    container: HTMLElement,
+    notifyCallback: boolean = true,
+  ): void {
     if (this.#useBigPreview) {
       setThumbnail(
         element,
@@ -361,7 +369,9 @@ export class FileProcessor {
 
     this.addButtons(container, element);
 
-    notifyValueChange(this.#fieldId, this.values);
+    if (notifyCallback) {
+      notifyValueChange(this.#fieldId, this.values);
+    }
   }
 
   get values(): undefined | number | Set<number> {
