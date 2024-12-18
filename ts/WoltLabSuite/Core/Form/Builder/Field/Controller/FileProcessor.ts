@@ -234,7 +234,7 @@ export class FileProcessor {
     }).then(() => {
       this.#uploadResolve = undefined;
       this.#uploadButton.dataset.context = oldContext;
-      this.#fileInput.removeEventListener("cancel", cropCancelledEvent);
+      this.#uploadButton.removeEventListener("cancel", cropCancelledEvent);
     });
   }
 
