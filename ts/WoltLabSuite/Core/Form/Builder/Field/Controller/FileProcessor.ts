@@ -20,6 +20,7 @@ import { innerError } from "WoltLabSuite/Core/Dom/Util";
 
 type FileId = string;
 const fileProcessors = new Map<FileId, FileProcessor>();
+const callbacks = new Map<FileId, ((values: undefined | number | Set<number>) => void)[]>();
 
 export interface ExtraButton {
   title: string;
@@ -197,6 +198,8 @@ export class FileProcessor {
       const result = await deleteFile(element.fileId!);
       if (result.ok) {
         this.#unregisterFile(element);
+
+        notifyValueChange(this.#fieldId, this.values);
       } else {
         let container: HTMLElement = element;
         if (!this.#useBigPreview) {
@@ -357,6 +360,8 @@ export class FileProcessor {
     container.append(input);
 
     this.addButtons(container, element);
+
+    notifyValueChange(this.#fieldId, this.values);
   }
 
   get values(): undefined | number | Set<number> {
@@ -394,4 +399,31 @@ export function getValues(fieldId: string): undefined | number | Set<number> {
   }
 
   return field.values;
+}
+
+/**
+ * Registers a callback that will be called when the value of the field changes.
+ *
+ * @since 6.2
+ */
+export function registerCallback(fieldId: string, callback: (values: undefined | number | Set<number>) => void): void {
+  if (!callbacks.has(fieldId)) {
+    callbacks.set(fieldId, []);
+  }
+
+  callbacks.get(fieldId)!.push(callback);
+}
+
+/**
+ * @since 6.2
+ */
+export function unregisterCallback(
+  fieldId: string,
+  callback: (values: undefined | number | Set<number>) => void,
+): void {
+  callbacks.set(fieldId, callbacks.get(fieldId)?.filter((registeredCallback) => registeredCallback !== callback) ?? []);
+}
+
+function notifyValueChange(fieldId: string, values: undefined | number | Set<number>): void {
+  callbacks.get(fieldId)?.forEach((callback) => callback(values));
 }
