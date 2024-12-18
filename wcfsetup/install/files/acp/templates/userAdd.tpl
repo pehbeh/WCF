@@ -726,7 +726,7 @@
 						<dt></dt>
 						<dd>
 							{if $userCoverPhoto}
-								<div id="coverPhotoPreview" style="background-image: url({$userCoverPhoto->getURL()})"></div>
+								<div id="coverPhotoPreview" data-object-id="{$userCoverPhoto->getObjectID()}" style="background-image: url({$userCoverPhoto->getURL()})"></div>
 							{else}
 								<woltlab-core-notice id="coverPhotoNotice" type="info">{lang}wcf.user.coverPhoto.noImage{/lang}</woltlab-core-notice>
 							{/if}

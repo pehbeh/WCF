@@ -44,4 +44,10 @@ class DefaultUserCoverPhoto implements IUserCoverPhoto
     {
         return StyleHandler::getInstance()->getStyle()->getCoverPhoto($forceWebP);
     }
+
+    #[\Override]
+    public function getObjectID(): ?int
+    {
+        return null;
+    }
 }

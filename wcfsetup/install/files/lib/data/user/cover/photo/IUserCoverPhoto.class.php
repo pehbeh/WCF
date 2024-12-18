@@ -30,4 +30,9 @@ interface IUserCoverPhoto
      * Returns the file name of this cover photo.
      */
     public function getFilename(?bool $forceWebP = null): string;
+
+    /**
+     * Returns the object ID of this cover photo.
+     */
+    public function getObjectID(): ?int;
 }

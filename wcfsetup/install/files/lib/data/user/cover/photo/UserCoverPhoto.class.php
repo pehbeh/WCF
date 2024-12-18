@@ -56,6 +56,12 @@ final class UserCoverPhoto implements IUserCoverPhoto
         return $this->file->filename;
     }
 
+    #[\Override]
+    public function getObjectID(): ?int
+    {
+        return $this->file->fileID;
+    }
+
     /**
      * Returns the minimum and maximum dimensions for cover photos.
      */
