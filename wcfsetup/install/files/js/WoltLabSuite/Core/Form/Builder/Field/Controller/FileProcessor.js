@@ -179,7 +179,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
             }).then(() => {
                 this.#uploadResolve = undefined;
                 this.#uploadButton.dataset.context = oldContext;
-                this.#fileInput.removeEventListener("cancel", cropCancelledEvent);
+                this.#uploadButton.removeEventListener("cancel", cropCancelledEvent);
             });
         }
         #startReplaceFile(element) {
