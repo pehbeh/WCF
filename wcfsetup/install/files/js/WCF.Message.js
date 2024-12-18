@@ -1062,6 +1062,8 @@ if (COMPILER_TARGET_DEFAULT) {
 	 * Manages stored quotes.
 	 *
 	 * @param        integer                count
+	 *
+	 * @deprecated 6.2
 	 */
 	WCF.Message.Quote.Manager = Class.extend({
 		/**
