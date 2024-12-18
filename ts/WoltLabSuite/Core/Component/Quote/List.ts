@@ -5,12 +5,15 @@
  * @copyright 2001-2024 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.2
+ * @woltlabExcludeBundle tiny
  */
+
 import * as Core from "WoltLabSuite/Core/Core";
 import { listenToCkeditor } from "WoltLabSuite/Core/Component/Ckeditor/Event";
 import type { CKEditor } from "WoltLabSuite/Core/Component/Ckeditor";
 import { getTabMenu } from "WoltLabSuite/Core/Component/Message/MessageTabMenu";
 import { getPhrase } from "WoltLabSuite/Core/Language";
+import { setActiveEditor } from "WoltLabSuite/Core/Component/Quote/Message";
 
 export const STORAGE_KEY = Core.getStoragePrefix() + "quotes";
 const quoteLists = new Map<string, QuoteList>();
@@ -68,6 +71,12 @@ export function setup(editorId: string): void {
   listenToCkeditor(editor).ready(({ ckeditor }) => {
     if (ckeditor.features.quoteBlock) {
       quoteLists.set(editorId, new QuoteList(editorId, ckeditor));
+
+      setActiveEditor(ckeditor, true);
+    } else {
+      setActiveEditor(ckeditor, false);
     }
+
+    //TODO handle active editor changed
   });
 }

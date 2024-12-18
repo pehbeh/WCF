@@ -1,4 +1,13 @@
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/Core/Component/Ckeditor/Event", "WoltLabSuite/Core/Component/Message/MessageTabMenu", "WoltLabSuite/Core/Language"], function (require, exports, tslib_1, Core, Event_1, MessageTabMenu_1, Language_1) {
+/**
+ * Handles quotes for CKEditor 5 message fields.
+ *
+ * @author Olaf Braun
+ * @copyright 2001-2024 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
+ * @woltlabExcludeBundle tiny
+ */
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/Core/Component/Ckeditor/Event", "WoltLabSuite/Core/Component/Message/MessageTabMenu", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Component/Quote/Message"], function (require, exports, tslib_1, Core, Event_1, MessageTabMenu_1, Language_1, Message_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.STORAGE_KEY = void 0;
@@ -49,7 +58,12 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         (0, Event_1.listenToCkeditor)(editor).ready(({ ckeditor }) => {
             if (ckeditor.features.quoteBlock) {
                 quoteLists.set(editorId, new QuoteList(editorId, ckeditor));
+                (0, Message_1.setActiveEditor)(ckeditor, true);
             }
+            else {
+                (0, Message_1.setActiveEditor)(ckeditor, false);
+            }
+            //TODO handle active editor changed
         });
     }
 });
