@@ -12,6 +12,8 @@ import { promiseMutex } from "WoltLabSuite/Core/Helper/PromiseMutex";
 import { wheneverFirstSeen } from "WoltLabSuite/Core/Helper/Selector";
 import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
 import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
+import { registerCallback } from "WoltLabSuite/Core/Form/Builder/Field/Controller/FileProcessor";
+import WoltlabCoreFile from "WoltLabSuite/Core/Component/File/woltlab-core-file";
 
 interface Result {
   avatar: string;
@@ -23,8 +25,13 @@ async function editAvatar(button: HTMLElement): Promise<void> {
   if (ok) {
     const avatarForm = document.getElementById("avatarForm");
     if (avatarForm) {
+      const img = avatarForm.querySelector<HTMLImageElement>("img.userAvatarImage")!;
+      if (img.src === result.avatar) {
+        return;
+      }
+
       // In the ACP, the form should not be reloaded after changing the avatar.
-      avatarForm.querySelector<HTMLImageElement>("img.userAvatarImage")!.src = result.avatar;
+      img.src = result.avatar;
       showNotification();
     } else {
       window.location.reload();
@@ -40,6 +47,22 @@ export function setup(): void {
       img.parentElement!.classList.add("userAvatar");
     },
   );
+
+  const avatarForm = document.getElementById("avatarForm");
+  if (avatarForm) {
+    registerCallback("wcf\\action\\UserAvatarAction_avatarFileID", (fileId: number | undefined) => {
+      if (!fileId) {
+        return;
+      }
+
+      const file = document.querySelector<WoltlabCoreFile>(
+        `#wcf\\\\action\\\\UserAvatarAction_avatarFileIDContainer woltlab-core-file[file-id="${fileId}"]`,
+      )!;
+
+      avatarForm.querySelector<HTMLImageElement>("img.userAvatarImage")!.src = file.link!;
+      showNotification();
+    });
+  }
 
   wheneverFirstSeen("[data-edit-avatar]", (button) => {
     button.addEventListener(

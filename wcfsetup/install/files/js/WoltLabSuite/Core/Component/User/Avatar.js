@@ -7,7 +7,7 @@
  * @since     6.2
  * @woltlabExcludeBundle all
  */
-define(["require", "exports", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Component/Dialog", "WoltLabSuite/Core/Ui/Notification"], function (require, exports, PromiseMutex_1, Selector_1, Dialog_1, Notification_1) {
+define(["require", "exports", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Component/Dialog", "WoltLabSuite/Core/Ui/Notification", "WoltLabSuite/Core/Form/Builder/Field/Controller/FileProcessor"], function (require, exports, PromiseMutex_1, Selector_1, Dialog_1, Notification_1, FileProcessor_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
@@ -16,8 +16,12 @@ define(["require", "exports", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabS
         if (ok) {
             const avatarForm = document.getElementById("avatarForm");
             if (avatarForm) {
+                const img = avatarForm.querySelector("img.userAvatarImage");
+                if (img.src === result.avatar) {
+                    return;
+                }
                 // In the ACP, the form should not be reloaded after changing the avatar.
-                avatarForm.querySelector("img.userAvatarImage").src = result.avatar;
+                img.src = result.avatar;
                 (0, Notification_1.show)();
             }
             else {
@@ -30,6 +34,17 @@ define(["require", "exports", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabS
             img.classList.add("userAvatarImage");
             img.parentElement.classList.add("userAvatar");
         });
+        const avatarForm = document.getElementById("avatarForm");
+        if (avatarForm) {
+            (0, FileProcessor_1.registerCallback)("wcf\\action\\UserAvatarAction_avatarFileID", (fileId) => {
+                if (!fileId) {
+                    return;
+                }
+                const file = document.querySelector(`#wcf\\\\action\\\\UserAvatarAction_avatarFileIDContainer woltlab-core-file[file-id="${fileId}"]`);
+                avatarForm.querySelector("img.userAvatarImage").src = file.link;
+                (0, Notification_1.show)();
+            });
+        }
         (0, Selector_1.wheneverFirstSeen)("[data-edit-avatar]", (button) => {
             button.addEventListener("click", (0, PromiseMutex_1.promiseMutex)(() => editAvatar(button)));
         });
