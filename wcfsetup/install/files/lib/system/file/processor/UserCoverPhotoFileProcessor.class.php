@@ -21,6 +21,8 @@ use wcf\util\FileUtil;
 final class UserCoverPhotoFileProcessor extends AbstractFileProcessor
 {
     private const SESSION_VARIABLE = 'wcf_user_cover_photo_processor_%d';
+    public const SMALL_THUMBNAIL_HEIGHT = 200;
+    public const SMALL_THUMBNAIL_WIDTH = 800;
 
     #[\Override]
     public function getObjectTypeName(): string
@@ -220,9 +222,9 @@ final class UserCoverPhotoFileProcessor extends AbstractFileProcessor
         return [
             new ThumbnailFormat(
                 'small',
-                UserCoverPhoto::MIN_HEIGHT,
-                UserCoverPhoto::MIN_WIDTH,
-                false,
+                self::SMALL_THUMBNAIL_HEIGHT,
+                self::SMALL_THUMBNAIL_WIDTH,
+                true,
             ),
         ];
     }
