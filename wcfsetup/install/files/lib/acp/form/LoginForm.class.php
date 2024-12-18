@@ -7,12 +7,19 @@ use wcf\data\user\authentication\failure\UserAuthenticationFailureAction;
 use wcf\data\user\User;
 use wcf\data\user\UserProfile;
 use wcf\event\user\authentication\UserLoggedIn;
-use wcf\form\AbstractCaptchaForm;
+use wcf\form\AbstractForm;
+use wcf\form\AbstractFormBuilderForm;
 use wcf\system\event\EventHandler;
 use wcf\system\exception\NamedUserException;
 use wcf\system\exception\UserInputException;
+use wcf\system\form\builder\field\CaptchaFormField;
+use wcf\system\form\builder\field\PasswordFormField;
+use wcf\system\form\builder\field\TextFormField;
+use wcf\system\form\builder\field\validation\FormFieldValidationError;
+use wcf\system\form\builder\field\validation\FormFieldValidator;
 use wcf\system\request\LinkHandler;
 use wcf\system\request\RequestHandler;
+use wcf\system\user\authentication\DefaultUserAuthentication;
 use wcf\system\user\authentication\EmailUserAuthentication;
 use wcf\system\user\authentication\LoginRedirect;
 use wcf\system\user\authentication\UserAuthenticationFactory;
@@ -28,31 +35,48 @@ use wcf\util\UserUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
-class LoginForm extends AbstractCaptchaForm
+class LoginForm extends AbstractFormBuilderForm
 {
-    /**
-     * given login username
-     * @var string
-     */
-    public $username = '';
+    protected bool $useCaptcha = false;
+    protected ?User $user = null;
 
-    /**
-     * given login password
-     * @var string
-     */
-    public $password = '';
+    #[\Override]
+    protected function createForm()
+    {
+        parent::createForm();
 
-    /**
-     * user object
-     * @var User
-     */
-    public $user;
+        $this->form->appendChildren([
+            TextFormField::create('username')
+                ->label('wcf.user.usernameOrEmail')
+                ->required()
+                ->autoFocus()
+                ->maximumLength(255),
+            PasswordFormField::create('password')
+                ->label('wcf.user.password')
+                ->required()
+                ->passwordStrengthMeter(false)
+                ->removeFieldClass('medium')
+                ->addFieldClass('long')
+                ->autocomplete("current-password")
+                ->addValidator(new FormFieldValidator(
+                    'passwordValidator',
+                    $this->validatePassword(...)
+                )),
+            CaptchaFormField::create()
+                ->available($this->useCaptcha)
+                ->objectType(CAPTCHA_TYPE)
+        ]);
+    }
 
-    /**
-     * @inheritDoc
-     */
-    public $useCaptcha = false;
+    #[\Override]
+    public function finalizeForm()
+    {
+        parent::finalizeForm();
 
+        $this->renameSubmitButton();
+    }
+
+    #[\Override]
     public function __run()
     {
         WCF::getTPL()->assign([
@@ -62,9 +86,7 @@ class LoginForm extends AbstractCaptchaForm
         return parent::__run();
     }
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function readParameters()
     {
         parent::readParameters();
@@ -107,120 +129,127 @@ class LoginForm extends AbstractCaptchaForm
         }
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function readFormParameters()
+    protected function validatePassword(PasswordFormField $passwordFormField): void
     {
-        parent::readFormParameters();
+        $usernameFormField = $this->form->getNodeById('username');
+        \assert($usernameFormField instanceof TextFormField);
+        $validationError = null;
 
-        if (isset($_POST['username'])) {
-            $this->username = StringUtil::trim($_POST['username']);
-        }
-        if (isset($_POST['password'])) {
-            $this->password = $_POST['password'];
-        }
-    }
-
-    /**
-     * Validates the user access data.
-     */
-    protected function validateUser()
-    {
         try {
             $this->user = UserAuthenticationFactory::getInstance()
                 ->getUserAuthentication()
-                ->loginManually($this->username, $this->password);
+                ->loginManually($usernameFormField->getValue(), $passwordFormField->getValue());
         } catch (UserInputException $e) {
-            if ($e->getField() == 'username') {
+            $validationError = $e;
+
+            if ($e->getField() === 'username') {
                 try {
-                    $this->user = EmailUserAuthentication::getInstance()
-                        ->loginManually($this->username, $this->password);
-                } catch (UserInputException $e2) {
-                    if ($e2->getField() == 'username') {
-                        throw $e;
+                    $user = $this->tryAuthenticationByEmail($usernameFormField->getValue(), $passwordFormField->getValue());
+                    if ($user !== null) {
+                        $this->user = $user;
+                        $validationError = null;
                     }
-                    throw $e2;
+                } catch (UserInputException $emailException) {
+                    // The attempt to use the email address as login username is
+                    // only implicit, therefore we only use the inner exception
+                    // if the error is about an incorrect password.
+                    if ($emailException->getField() !== 'username') {
+                        $validationError = $emailException;
+                    }
                 }
+            }
+        }
+
+        if ($validationError !== null) {
+            if ($validationError->getField() == 'username') {
+                $usernameFormField->addValidationError(
+                    new FormFieldValidationError(
+                        $validationError->getType(),
+                        'wcf.user.username.error.' . $validationError->getType(),
+                        [
+                            'username' => $usernameFormField->getValue(),
+                        ]
+                    )
+                );
+            } else if ($validationError->getField() == 'password') {
+                $passwordFormField->addValidationError(
+                    new FormFieldValidationError(
+                        $validationError->getType(),
+                        'wcf.user.password.error.' . $validationError->getType()
+                    )
+                );
             } else {
-                throw $e;
+                throw new \LogicException('unreachable');
             }
+
+            $this->saveAuthenticationFailure($validationError->getField(), $usernameFormField->getValue());
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function submit()
-    {
-        parent::submit();
-
-        // save authentication failure
-        if (ENABLE_USER_AUTHENTICATION_FAILURE) {
-            if ($this->errorField == 'username' || $this->errorField == 'password') {
-                $user = User::getUserByUsername($this->username);
-                if (!$user->userID) {
-                    $user = User::getUserByEmail($this->username);
-                }
-
-                $action = new UserAuthenticationFailureAction([], 'create', [
-                    'data' => [
-                        'environment' => RequestHandler::getInstance()->isACPRequest() ? 'admin' : 'user',
-                        'userID' => $user->userID ?: null,
-                        'username' => \mb_substr($this->username, 0, 100),
-                        'time' => TIME_NOW,
-                        'ipAddress' => UserUtil::getIpAddress(),
-                        'userAgent' => UserUtil::getUserAgent(),
-                        'validationError' => 'invalid' . \ucfirst($this->errorField),
-                    ],
-                ]);
-                $action->executeAction();
-
-                if ($this->captchaObjectType) {
-                    $this->captchaObjectType->getProcessor()->reset();
-                }
-            }
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function validate()
-    {
-        parent::validate();
-
-        if (!WCF::getSession()->hasValidCookie()) {
-            throw new UserInputException('cookie');
-        }
-
-        // error handling
-        if (empty($this->username)) {
-            throw new UserInputException('username');
-        }
-
-        if (empty($this->password)) {
-            throw new UserInputException('password');
-        }
-
-        $this->validateUser();
 
         if (RequestHandler::getInstance()->isACPRequest() && $this->user !== null) {
             $userProfile = new UserProfile($this->user);
             if (!$userProfile->getPermission('admin.general.canUseAcp')) {
-                throw new UserInputException('username', 'acpNotAuthorized');
+                $usernameFormField->addValidationError(
+                    new FormFieldValidationError(
+                        'acpNotAuthorized',
+                        'wcf.user.username.error.acpNotAuthorized',
+                        [
+                            'username' => $usernameFormField->getValue(),
+                        ]
+                    )
+                );
             }
+        }
+
+        if (!WCF::getSession()->hasValidCookie()) {
+            $this->form->invalid();
+            $this->form->errorMessage('wcf.user.login.error.cookieRequired');
         }
     }
 
-    /**
-     * @inheritDoc
-     */
+    protected function tryAuthenticationByEmail(
+        string $username,
+        #[\SensitiveParameter] string $password
+    ): ?User {
+        $defaultAuthentication = UserAuthenticationFactory::getInstance()->getUserAuthentication();
+        if (\get_class($defaultAuthentication) !== DefaultUserAuthentication::class) {
+            // The email fallback is only supported for the built-in
+            // authentication method.
+            return null;
+        }
+
+        return EmailUserAuthentication::getInstance()->loginManually($username, $password);
+    }
+
+    protected function saveAuthenticationFailure(string $errorField, string $username): void
+    {
+        if (!ENABLE_USER_AUTHENTICATION_FAILURE) {
+            return;
+        }
+
+        $user = User::getUserByUsername($username);
+        if (!$user->userID) {
+            $user = User::getUserByEmail($username);
+        }
+
+        $action = new UserAuthenticationFailureAction([], 'create', [
+            'data' => [
+                'environment' => RequestHandler::getInstance()->isACPRequest() ? 'admin' : 'user',
+                'userID' => $user->userID ?: null,
+                'username' => \mb_substr($username, 0, 100),
+                'time' => TIME_NOW,
+                'ipAddress' => UserUtil::getIpAddress(),
+                'userAgent' => UserUtil::getUserAgent(),
+                'validationError' => 'invalid' . \ucfirst($errorField),
+            ],
+        ]);
+        $action->executeAction();
+    }
+
+    #[\Override]
     public function save()
     {
-        parent::save();
+        AbstractForm::save();
 
-        // change user
         $needsMultifactor = WCF::getSession()->changeUserAfterMultifactorAuthentication($this->user);
         if (!$needsMultifactor) {
             WCF::getSession()->registerReauthentication();
@@ -237,7 +266,7 @@ class LoginForm extends AbstractCaptchaForm
     /**
      * Performs the redirect after successful authentication.
      */
-    protected function performRedirect(bool $needsMultifactor = false)
+    protected function performRedirect(bool $needsMultifactor = false): void
     {
         if ($needsMultifactor) {
             $url = LinkHandler::getInstance()->getLink('MultifactorAuthentication');
@@ -250,17 +279,8 @@ class LoginForm extends AbstractCaptchaForm
         exit;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function assignVariables()
+    private function renameSubmitButton(): void
     {
-        parent::assignVariables();
-
-        WCF::getTPL()->assign([
-            'username' => $this->username,
-            'password' => $this->password,
-            'loginController' => LinkHandler::getInstance()->getControllerLink(static::class),
-        ]);
+        $this->form->getButton('submitButton')->label('wcf.user.button.login');
     }
 }

@@ -4,6 +4,7 @@ namespace wcf\form;
 
 use wcf\event\user\authentication\UserLoggedIn;
 use wcf\system\event\EventHandler;
+use wcf\system\form\builder\TemplateFormNode;
 use wcf\system\WCF;
 
 /**
@@ -18,13 +19,22 @@ class LoginForm extends \wcf\acp\form\LoginForm
     const AVAILABLE_DURING_OFFLINE_MODE = true;
 
     #[\Override]
+    protected function createForm()
+    {
+        parent::createForm();
+
+        $this->form->appendChild(
+            TemplateFormNode::create('thirdPartySsoButtons')
+                ->templateName('thirdPartySsoButtons')
+        );
+    }
+
+    #[\Override]
     public function save()
     {
         AbstractForm::save();
 
-        // change user
         $needsMultifactor = WCF::getSession()->changeUserAfterMultifactorAuthentication($this->user);
-
         if (!$needsMultifactor) {
             EventHandler::getInstance()->fire(
                 new UserLoggedIn($this->user)
