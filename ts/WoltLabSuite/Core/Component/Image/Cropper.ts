@@ -319,6 +319,29 @@ class ExactImageCropper extends ImageCropper {
     return super.showDialog();
   }
 
+  protected getCanvas(): Promise<HTMLCanvasElement> {
+    // Calculate the size of the image in relation to the window size
+    const selectionRatio = Math.min(
+      this.cropperCanvasRect!.width / this.width,
+      this.cropperCanvasRect!.height / this.height,
+    );
+    const width = this.cropperSelection!.width / selectionRatio;
+    const height = width / this.configuration.aspectRatio;
+
+    const sizes = this.configuration.sizes
+      .filter((size) => {
+        return width >= size.width && height >= size.height;
+      })
+      .reverse();
+
+    const size = sizes.length > 0 ? sizes[0] : this.minSize;
+
+    return this.cropperSelection!.$toCanvas({
+      width: size.width,
+      height: size.height,
+    });
+  }
+
   public async loadImage(): Promise<void> {
     await super.loadImage();
 
