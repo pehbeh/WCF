@@ -74,6 +74,7 @@ final class UserCoverPhotoAction implements RequestHandlerInterface
                 ])
                 ->singleFileUpload()
                 ->bigPreview()
+                ->simpleReplace()
         ]);
 
         $form->markRequiredFields(false);
