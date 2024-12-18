@@ -213,4 +213,17 @@ final class UserCoverPhotoFileProcessor extends AbstractFileProcessor
             new ImageCropSize(UserCoverPhoto::MAX_WIDTH, UserCoverPhoto::MAX_HEIGHT)
         );
     }
+
+    #[\Override]
+    public function getThumbnailFormats(): array
+    {
+        return [
+            new ThumbnailFormat(
+                'small',
+                UserCoverPhoto::MIN_HEIGHT,
+                UserCoverPhoto::MIN_WIDTH,
+                false,
+            ),
+        ];
+    }
 }
