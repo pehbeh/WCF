@@ -3,7 +3,7 @@
 		<div class="userCard__header__background">
 			<img
 				class="userCard__header__background__image"
-				src="{$user->getCoverPhoto()->getURL()}"
+				src="{$user->getCoverPhoto()->getThumbnailURL()}"
 				loading="lazy">
 		</div>
 		<div class="userCard__header__avatar">
