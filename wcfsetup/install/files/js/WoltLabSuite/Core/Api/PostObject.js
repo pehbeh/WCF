@@ -11,9 +11,9 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "./Result"], fun
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.postObject = postObject;
-    async function postObject(endpoint) {
+    async function postObject(endpoint, payload) {
         try {
-            await (0, Backend_1.prepareRequest)(endpoint).post().fetchAsJson();
+            await (0, Backend_1.prepareRequest)(endpoint).post(payload).fetchAsJson();
         }
         catch (e) {
             return (0, Result_1.apiResultFromError)(e);

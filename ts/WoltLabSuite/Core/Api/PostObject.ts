@@ -11,9 +11,11 @@
 import { prepareRequest } from "WoltLabSuite/Core/Ajax/Backend";
 import { ApiResult, apiResultFromError, apiResultFromValue } from "./Result";
 
-export async function postObject(endpoint: string): Promise<ApiResult<[]>> {
+type Payload = Blob | FormData | Record<string, unknown>;
+
+export async function postObject(endpoint: string, payload?: Payload): Promise<ApiResult<[]>> {
   try {
-    await prepareRequest(endpoint).post().fetchAsJson();
+    await prepareRequest(endpoint).post(payload).fetchAsJson();
   } catch (e) {
     return apiResultFromError(e);
   }
