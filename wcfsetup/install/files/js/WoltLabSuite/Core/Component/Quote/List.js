@@ -58,12 +58,13 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         (0, Event_1.listenToCkeditor)(editor).ready(({ ckeditor }) => {
             if (ckeditor.features.quoteBlock) {
                 quoteLists.set(editorId, new QuoteList(editorId, ckeditor));
-                (0, Message_1.setActiveEditor)(ckeditor, true);
             }
-            else {
-                (0, Message_1.setActiveEditor)(ckeditor, false);
-            }
-            //TODO handle active editor changed
+            (0, Message_1.setActiveEditor)(ckeditor, ckeditor.features.quoteBlock);
+            ckeditor.focusTracker.on("change:isFocused", () => {
+                if (ckeditor.focusTracker.isFocused) {
+                    (0, Message_1.setActiveEditor)(ckeditor, ckeditor.features.quoteBlock);
+                }
+            });
         });
     }
 });

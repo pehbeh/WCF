@@ -71,12 +71,14 @@ export function setup(editorId: string): void {
   listenToCkeditor(editor).ready(({ ckeditor }) => {
     if (ckeditor.features.quoteBlock) {
       quoteLists.set(editorId, new QuoteList(editorId, ckeditor));
-
-      setActiveEditor(ckeditor, true);
-    } else {
-      setActiveEditor(ckeditor, false);
     }
 
-    //TODO handle active editor changed
+    setActiveEditor(ckeditor, ckeditor.features.quoteBlock);
+
+    ckeditor.focusTracker.on("change:isFocused", (_evt: unknown, _name: unknown, isFocused: boolean) => {
+      if (isFocused) {
+        setActiveEditor(ckeditor, ckeditor.features.quoteBlock);
+      }
+    });
   });
 }
