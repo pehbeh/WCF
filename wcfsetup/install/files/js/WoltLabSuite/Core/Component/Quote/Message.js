@@ -20,13 +20,14 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
     let timerSelectionChange = undefined;
     let isMouseDown = false;
     const copyQuote = document.createElement("div");
-    function registerContainer(containerSelector, messageBodySelector, objectType) {
+    function registerContainer(containerSelector, messageBodySelector, className, objectType) {
         (0, Selector_1.wheneverFirstSeen)(containerSelector, (container) => {
             const id = Util_1.default.identify(container);
             containers.set(id, {
                 element: container,
                 messageBodySelector: messageBodySelector,
                 objectType: objectType,
+                className: className,
                 objectId: ~~container.dataset.objectId,
             });
             if (container.classList.contains("jsInvalidQuoteTarget")) {
@@ -36,7 +37,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
             container.classList.add("jsQuoteMessageContainer");
             container.querySelector(".jsQuoteMessage")?.addEventListener("click", (0, PromiseMutex_1.promiseMutex)(async (event) => {
                 event.preventDefault();
-                await (0, Storage_1.saveFullQuote)(objectType, ~~container.dataset.objectId);
+                await (0, Storage_1.saveFullQuote)(objectType, className, ~~container.dataset.objectId);
                 //TODO insert into `activeEditor`
             }));
         });
@@ -51,21 +52,21 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
         buttonSaveQuote.type = "button";
         buttonSaveQuote.classList.add("jsQuoteManagerStore");
         buttonSaveQuote.textContent = (0, Language_1.getPhrase)("wcf.message.quote.quoteSelected");
-        buttonSaveQuote.addEventListener("click", () => {
-            (0, Storage_1.saveQuote)(selectedMessage.container.objectType, selectedMessage.container.objectId, selectedMessage.message);
+        buttonSaveQuote.addEventListener("click", (0, PromiseMutex_1.promiseMutex)(async () => {
+            await (0, Storage_1.saveQuote)(selectedMessage.container.objectType, selectedMessage.container.objectId, selectedMessage.container.className, selectedMessage.message);
             removeSelection();
-        });
+        }));
         copyQuote.appendChild(buttonSaveQuote);
         const buttonSaveAndInsertQuote = document.createElement("button");
         buttonSaveAndInsertQuote.type = "button";
         buttonSaveAndInsertQuote.hidden = true;
         buttonSaveAndInsertQuote.classList.add("jsQuoteManagerQuoteAndInsert");
         buttonSaveAndInsertQuote.textContent = (0, Language_1.getPhrase)("wcf.message.quote.quoteAndReply");
-        buttonSaveAndInsertQuote.addEventListener("click", () => {
-            (0, Storage_1.saveQuote)(selectedMessage.container.objectType, selectedMessage.container.objectId, selectedMessage.message);
+        buttonSaveAndInsertQuote.addEventListener("click", (0, PromiseMutex_1.promiseMutex)(async () => {
+            await (0, Storage_1.saveQuote)(selectedMessage.container.objectType, selectedMessage.container.objectId, selectedMessage.container.className, selectedMessage.message);
             //TODO insert into `activeEditor`
             removeSelection();
-        });
+        }));
         copyQuote.appendChild(buttonSaveAndInsertQuote);
         document.body.appendChild(copyQuote);
         document.addEventListener("mouseup", (event) => onMouseUp(event));

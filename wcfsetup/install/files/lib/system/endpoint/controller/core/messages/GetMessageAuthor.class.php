@@ -10,24 +10,22 @@ use wcf\http\Helper;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
 use wcf\system\endpoint\GetRequest;
 use wcf\system\endpoint\IController;
-use wcf\system\html\input\HtmlInputProcessor;
 
 /**
- * Renders a quote message.
+ * Returns information about the author of a message.
  *
  * @author    Olaf Braun
  * @copyright 2001-2024 WoltLab GmbH
  * @license   GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since     6.2
  */
-
-#[GetRequest('/core/messages/renderquote')]
-final class RenderQuote implements IController
+#[GetRequest('/core/messages/messageauthor')]
+final class GetMessageAuthor implements IController
 {
     #[\Override]
     public function __invoke(ServerRequestInterface $request, array $variables): ResponseInterface
     {
-        $parameters = Helper::mapApiParameters($request, GetRenderQuoteParameters::class);
+        $parameters = Helper::mapApiParameters($request, GetMessageAuthorParameters::class);
 
         $object = Helper::fetchObjectFromRequestParameter($parameters->objectID, $parameters->className);
         \assert($object instanceof IMessage);
@@ -42,36 +40,25 @@ final class RenderQuote implements IController
                 "avatar" => $userProfile->getAvatar()->getURL(),
                 "time" => $object->getTime(),
                 "link" => $object->getLink(),
-                "message" => $parameters->fullQuote ? $this->renderFullQuote($object) : ""
             ],
             200,
+            [
+                'cache-control' => [
+                    'max-age=300',
+                ],
+            ]
         );
-    }
-
-    private function renderFullQuote(IMessage $object): string
-    {
-        // TODO load embedded objects?
-
-        $htmlInputProcessor = new HtmlInputProcessor();
-        $htmlInputProcessor->processIntermediate($object->getMessage());
-
-        if (MESSAGE_MAX_QUOTE_DEPTH) {
-            $htmlInputProcessor->enforceQuoteDepth(MESSAGE_MAX_QUOTE_DEPTH - 1, true);
-        }
-
-        return $htmlInputProcessor->getHtml();
     }
 }
 
 /** @internal */
-final class GetRenderQuoteParameters
+final class GetMessageAuthorParameters
 {
     public function __construct(
         /** @var non-empty-string */
         public readonly string $className,
         /** @var positive-int */
         public readonly int $objectID,
-        public readonly bool $fullQuote = false,
     ) {
     }
 }

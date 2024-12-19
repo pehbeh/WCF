@@ -18,23 +18,16 @@ type Response = {
   time: number;
   link: string;
   avatar: string;
-  message: string;
 };
 
-export async function renderQuote(
-  objectType: string,
-  className: string,
-  objectID: number,
-): Promise<ApiResult<Response>> {
-  const url = new URL(window.WSC_RPC_API_URL + "core/messages/renderquote");
-  url.searchParams.set("objectType", objectType);
+export async function messageAuthor(className: string, objectID: number): Promise<ApiResult<Response>> {
+  const url = new URL(window.WSC_RPC_API_URL + "core/messages/messageauthor");
   url.searchParams.set("className", className);
-  url.searchParams.set("fullQuote", "true");
   url.searchParams.set("objectID", objectID.toString());
 
   let response: Response;
   try {
-    response = (await prepareRequest(url).get().fetchAsJson()) as Response;
+    response = (await prepareRequest(url).get().allowCaching().fetchAsJson()) as Response;
   } catch (e) {
     return apiResultFromError(e);
   }

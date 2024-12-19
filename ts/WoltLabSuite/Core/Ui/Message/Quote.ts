@@ -25,7 +25,12 @@ export class UiMessageQuote {
     messageContentSelector: string,
     supportDirectInsert: boolean,
   ) {
-    registerContainer(containerSelector, messageBodySelector, objectType);
+    // remove "Action" from className
+    if (className.endsWith("Action")) {
+      className = className.substring(0, className.length - 6);
+    }
+
+    registerContainer(containerSelector, messageBodySelector, className, objectType);
   }
 }
 

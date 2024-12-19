@@ -20,6 +20,7 @@ interface Container {
   element: HTMLElement;
   messageBodySelector: string;
   objectType: string;
+  className: string;
   objectId: number;
 }
 
@@ -37,13 +38,19 @@ let timerSelectionChange: number | undefined = undefined;
 let isMouseDown = false;
 const copyQuote = document.createElement("div");
 
-export function registerContainer(containerSelector: string, messageBodySelector: string, objectType: string): void {
+export function registerContainer(
+  containerSelector: string,
+  messageBodySelector: string,
+  className: string,
+  objectType: string,
+): void {
   wheneverFirstSeen(containerSelector, (container: HTMLElement) => {
     const id = DomUtil.identify(container);
     containers.set(id, {
       element: container,
       messageBodySelector: messageBodySelector,
       objectType: objectType,
+      className: className,
       objectId: ~~container.dataset.objectId!,
     });
 
@@ -59,7 +66,7 @@ export function registerContainer(containerSelector: string, messageBodySelector
       promiseMutex(async (event: MouseEvent) => {
         event.preventDefault();
 
-        await saveFullQuote(objectType, ~~container.dataset.objectId!);
+        await saveFullQuote(objectType, className, ~~container.dataset.objectId!);
         //TODO insert into `activeEditor`
       }),
     );
@@ -79,23 +86,39 @@ function setup() {
   buttonSaveQuote.type = "button";
   buttonSaveQuote.classList.add("jsQuoteManagerStore");
   buttonSaveQuote.textContent = getPhrase("wcf.message.quote.quoteSelected");
-  buttonSaveQuote.addEventListener("click", () => {
-    saveQuote(selectedMessage!.container.objectType, selectedMessage!.container.objectId, selectedMessage!.message);
+  buttonSaveQuote.addEventListener(
+    "click",
+    promiseMutex(async () => {
+      await saveQuote(
+        selectedMessage!.container.objectType,
+        selectedMessage!.container.objectId,
+        selectedMessage!.container.className,
+        selectedMessage!.message,
+      );
 
-    removeSelection();
-  });
+      removeSelection();
+    }),
+  );
   copyQuote.appendChild(buttonSaveQuote);
   const buttonSaveAndInsertQuote = document.createElement("button");
   buttonSaveAndInsertQuote.type = "button";
   buttonSaveAndInsertQuote.hidden = true;
   buttonSaveAndInsertQuote.classList.add("jsQuoteManagerQuoteAndInsert");
   buttonSaveAndInsertQuote.textContent = getPhrase("wcf.message.quote.quoteAndReply");
-  buttonSaveAndInsertQuote.addEventListener("click", () => {
-    saveQuote(selectedMessage!.container.objectType, selectedMessage!.container.objectId, selectedMessage!.message);
-    //TODO insert into `activeEditor`
+  buttonSaveAndInsertQuote.addEventListener(
+    "click",
+    promiseMutex(async () => {
+      await saveQuote(
+        selectedMessage!.container.objectType,
+        selectedMessage!.container.objectId,
+        selectedMessage!.container.className,
+        selectedMessage!.message,
+      );
+      //TODO insert into `activeEditor`
 
-    removeSelection();
-  });
+      removeSelection();
+    }),
+  );
   copyQuote.appendChild(buttonSaveAndInsertQuote);
 
   document.body.appendChild(copyQuote);
