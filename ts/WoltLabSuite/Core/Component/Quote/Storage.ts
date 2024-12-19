@@ -64,6 +64,36 @@ export async function saveFullQuote(objectType: string, objectClassName: string,
   );
 }
 
+export function getQuotes(): Map<string, Set<string>> {
+  return getStorage().quotes;
+}
+
+export function getMessage(objectType: string, objectId?: number): Message | undefined {
+  const key = objectId ? getKey(objectType, objectId) : objectType;
+
+  return getStorage().messages.get(key);
+}
+
+export function removeQuote(objectType: string, objectId: number, quote: string): void {
+  const storage = getStorage();
+
+  const key = getKey(objectType, objectId);
+  if (!storage.quotes.has(key)) {
+    return;
+  }
+
+  storage.quotes.get(key)!.delete(quote);
+
+  if (storage.quotes.get(key)!.size === 0) {
+    storage.quotes.delete(key);
+    storage.messages.delete(key);
+  }
+
+  saveStorage(storage);
+
+  refreshQuoteLists();
+}
+
 function storeQuote(objectType: string, message: Message, quote: string): void {
   const storage = getStorage();
 
@@ -77,16 +107,6 @@ function storeQuote(objectType: string, message: Message, quote: string): void {
   storage.quotes.get(key)!.add(quote);
 
   saveStorage(storage);
-}
-
-export function getQuotes(): Map<string, Set<string>> {
-  return getStorage().quotes;
-}
-
-export function getMessage(objectType: string, objectId?: number): Message | undefined {
-  const key = objectId ? getKey(objectType, objectId) : objectType;
-
-  return getStorage().messages.get(key);
 }
 
 function getStorage(): StorageData {

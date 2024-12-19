@@ -14,6 +14,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
     exports.saveFullQuote = saveFullQuote;
     exports.getQuotes = getQuotes;
     exports.getMessage = getMessage;
+    exports.removeQuote = removeQuote;
     Core = tslib_1.__importStar(Core);
     const STORAGE_KEY = Core.getStoragePrefix() + "quotes";
     async function saveQuote(objectType, objectId, objectClassName, message) {
@@ -41,6 +42,27 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
             avatar: result.value.avatar,
         }, result.value.message);
     }
+    function getQuotes() {
+        return getStorage().quotes;
+    }
+    function getMessage(objectType, objectId) {
+        const key = objectId ? getKey(objectType, objectId) : objectType;
+        return getStorage().messages.get(key);
+    }
+    function removeQuote(objectType, objectId, quote) {
+        const storage = getStorage();
+        const key = getKey(objectType, objectId);
+        if (!storage.quotes.has(key)) {
+            return;
+        }
+        storage.quotes.get(key).delete(quote);
+        if (storage.quotes.get(key).size === 0) {
+            storage.quotes.delete(key);
+            storage.messages.delete(key);
+        }
+        saveStorage(storage);
+        (0, List_1.refreshQuoteLists)();
+    }
     function storeQuote(objectType, message, quote) {
         const storage = getStorage();
         const key = getKey(objectType, message.objectID);
@@ -50,13 +72,6 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         storage.messages.set(key, message);
         storage.quotes.get(key).add(quote);
         saveStorage(storage);
-    }
-    function getQuotes() {
-        return getStorage().quotes;
-    }
-    function getMessage(objectType, objectId) {
-        const key = objectId ? getKey(objectType, objectId) : objectType;
-        return getStorage().messages.get(key);
     }
     function getStorage() {
         const data = window.localStorage.getItem(STORAGE_KEY);
