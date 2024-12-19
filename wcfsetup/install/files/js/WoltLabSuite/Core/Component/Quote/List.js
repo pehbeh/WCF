@@ -11,6 +11,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.getQuoteList = getQuoteList;
+    exports.refreshQuoteLists = refreshQuoteLists;
     exports.setup = setup;
     Util_1 = tslib_1.__importDefault(Util_1);
     const quoteLists = new Map();
@@ -66,9 +67,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
   </span>
   
   <div class="jsQuote">
-  <label for="quote_{@$quoteID}">
     ${quote}
-  </label>
   </div>
 </li>`)
                     .join("")}
@@ -91,6 +90,11 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
     }
     function getQuoteList(editorId) {
         return quoteLists.get(editorId);
+    }
+    function refreshQuoteLists() {
+        for (const quoteList of quoteLists.values()) {
+            quoteList.renderQuotes();
+        }
     }
     function setup(editorId) {
         if (quoteLists.has(editorId)) {

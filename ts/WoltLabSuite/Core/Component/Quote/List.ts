@@ -109,6 +109,12 @@ export function getQuoteList(editorId: string): QuoteList | undefined {
   return quoteLists.get(editorId);
 }
 
+export function refreshQuoteLists() {
+  for (const quoteList of quoteLists.values()) {
+    quoteList.renderQuotes();
+  }
+}
+
 export function setup(editorId: string): void {
   if (quoteLists.has(editorId)) {
     return;

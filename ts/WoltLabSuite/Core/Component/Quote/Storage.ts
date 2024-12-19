@@ -11,6 +11,7 @@
 import * as Core from "WoltLabSuite/Core/Core";
 import { renderQuote } from "WoltLabSuite/Core/Api/Messages/RenderQuote";
 import { messageAuthor } from "WoltLabSuite/Core/Api/Messages/Author";
+import { refreshQuoteLists } from "WoltLabSuite/Core/Component/Quote/List";
 
 interface Message {
   objectID: number;
@@ -37,6 +38,8 @@ export async function saveQuote(objectType: string, objectId: number, objectClas
   }
 
   storeQuote(objectType, result.value, message);
+
+  refreshQuoteLists();
 }
 
 export async function saveFullQuote(objectType: string, objectClassName: string, objectId: number) {
