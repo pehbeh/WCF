@@ -163,6 +163,10 @@ class Ckeditor {
   get sourceElement(): HTMLElement {
     return this.#editor.sourceElement!;
   }
+
+  get focusTracker(): CKEditor5.Utils.FocusTracker {
+    return this.#editor.ui.focusTracker;
+  }
 }
 
 function* findModelForRemoval(

@@ -125,6 +125,9 @@ define(["require", "exports", "tslib", "./Ckeditor/Attachment", "./Ckeditor/Medi
         get sourceElement() {
             return this.#editor.sourceElement;
         }
+        get focusTracker() {
+            return this.#editor.ui.focusTracker;
+        }
     }
     function* findModelForRemoval(element, model, attributes) {
         if (element.is("element", model)) {
