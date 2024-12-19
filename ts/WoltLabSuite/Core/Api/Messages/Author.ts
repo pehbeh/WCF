@@ -15,7 +15,8 @@ type Response = {
   objectID: number;
   authorID: number;
   author: string;
-  time: number;
+  time: string;
+  title: string;
   link: string;
   avatar: string;
 };

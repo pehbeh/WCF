@@ -13,7 +13,8 @@ import type { CKEditor } from "WoltLabSuite/Core/Component/Ckeditor";
 import { getTabMenu } from "WoltLabSuite/Core/Component/Message/MessageTabMenu";
 import { getPhrase } from "WoltLabSuite/Core/Language";
 import { setActiveEditor } from "WoltLabSuite/Core/Component/Quote/Message";
-import { getQuotes } from "WoltLabSuite/Core/Component/Quote/Storage";
+import { getQuotes, getMessage } from "WoltLabSuite/Core/Component/Quote/Storage";
+import DomUtil from "WoltLabSuite/Core/Dom/Util";
 
 const quoteLists = new Map<string, QuoteList>();
 
@@ -40,7 +41,54 @@ class QuoteList {
   public renderQuotes(): void {
     this.#container.innerHTML = "";
 
-    for (const [, quotes] of getQuotes()) {
+    for (const [key, quotes] of getQuotes()) {
+      const message = getMessage(key)!;
+
+      // TODO escape values
+      // TODO create web components???
+      this.#container.append(
+        DomUtil.createFragmentFromHtml(`<article class="message messageReduced jsInvalidQuoteTarget">
+  <div class="messageContent">
+    <header class="messageHeader">
+      <div class="box32 messageHeaderWrapper">
+        <!-- TODO load real avatar -->
+        <span><img src="${window.WCF_PATH}images/avatars/avatar-default.svg" alt="" class="userAvatarImage" style="width: 32px; height: 32px"></span>
+        <div class="messageHeaderBox">
+          <h2 class="messageTitle">
+            <a href="${message.link}">${message.title}</a>
+          </h2>
+          <ul class="messageHeaderMetaData">
+            <!-- TODO add link to author profile -->
+            <li><span class="username">${message.author}</span></li>
+            <li><span class="messagePublicationTime"><woltlab-core-date-time date="${message.time}">${message.time}</woltlab-core-date-time></span></li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    <div class="messageBody">
+      <div class="messageText">
+        <ul class="messageQuoteItemList">
+        ${Array.from(quotes)
+          .map(
+            (quote) => `<li>
+  <span>
+    <input type="checkbox" value="1" class="jsCheckbox">
+    <button type="button" class="jsTooltip jsInsertQuote" title="${getPhrase("wcf.message.quote.insertQuote")}">
+    </button>
+  </span>
+  
+  <div class="jsQuote">
+    ${quote}
+  </div>
+</li>`,
+          )
+          .join("")}
+        </ul>
+      </div>
+    </div>
+  </div>
+</article>`),
+      );
       // TODO render quotes
     }
 

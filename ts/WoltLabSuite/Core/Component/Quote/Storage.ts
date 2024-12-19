@@ -14,7 +14,8 @@ import { messageAuthor } from "WoltLabSuite/Core/Api/Messages/Author";
 
 interface Message {
   objectID: number;
-  time: number;
+  time: string;
+  title: string;
   link: string;
   authorID: number;
   author: string;
@@ -50,6 +51,7 @@ export async function saveFullQuote(objectType: string, objectClassName: string,
     {
       objectID: result.value.objectID,
       time: result.value.time,
+      title: result.value.title,
       link: result.value.link,
       authorID: result.value.authorID,
       author: result.value.author,
@@ -76,6 +78,12 @@ function storeQuote(objectType: string, message: Message, quote: string): void {
 
 export function getQuotes(): Map<string, Set<string>> {
   return getStorage().quotes;
+}
+
+export function getMessage(objectType: string, objectId?: number): Message | undefined {
+  const key = objectId ? getKey(objectType, objectId) : objectType;
+
+  return getStorage().messages.get(key);
 }
 
 function getStorage(): StorageData {

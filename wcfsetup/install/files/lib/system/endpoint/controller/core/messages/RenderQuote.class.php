@@ -40,7 +40,8 @@ final class RenderQuote implements IController
                 "authorID" => $userProfile->getUserID(),
                 "author" => $userProfile->getUsername(),
                 "avatar" => $userProfile->getAvatar()->getURL(),
-                "time" => $object->getTime(),
+                "time" => (new \DateTime('@' . $object->getTime()))->format("c"),
+                "title" => $object->getTitle(),
                 "link" => $object->getLink(),
                 "message" => $parameters->fullQuote ? $this->renderFullQuote($object) : ""
             ],
