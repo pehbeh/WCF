@@ -12,7 +12,7 @@ define(["require", "exports", "WoltLabSuite/Core/Component/Quote/Message"], func
          * Initializes the quote handler for given object type.
          */
         constructor(quoteManager, className, objectType, containerSelector, messageBodySelector, messageContentSelector, supportDirectInsert) {
-            (0, Message_1.registerContainer)(containerSelector, messageBodySelector);
+            (0, Message_1.registerContainer)(containerSelector, messageBodySelector, objectType);
         }
     }
     exports.UiMessageQuote = UiMessageQuote;

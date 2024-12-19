@@ -25,7 +25,7 @@ export class UiMessageQuote {
     messageContentSelector: string,
     supportDirectInsert: boolean,
   ) {
-    registerContainer(containerSelector, messageBodySelector);
+    registerContainer(containerSelector, messageBodySelector, objectType);
   }
 }
 

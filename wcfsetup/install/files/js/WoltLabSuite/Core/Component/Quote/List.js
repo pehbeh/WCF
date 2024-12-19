@@ -7,14 +7,11 @@
  * @since 6.2
  * @woltlabExcludeBundle tiny
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/Core/Component/Ckeditor/Event", "WoltLabSuite/Core/Component/Message/MessageTabMenu", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Component/Quote/Message"], function (require, exports, tslib_1, Core, Event_1, MessageTabMenu_1, Language_1, Message_1) {
+define(["require", "exports", "WoltLabSuite/Core/Component/Ckeditor/Event", "WoltLabSuite/Core/Component/Message/MessageTabMenu", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Component/Quote/Message", "WoltLabSuite/Core/Component/Quote/Storage"], function (require, exports, Event_1, MessageTabMenu_1, Language_1, Message_1, Storage_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.STORAGE_KEY = void 0;
     exports.getQuoteList = getQuoteList;
     exports.setup = setup;
-    Core = tslib_1.__importStar(Core);
-    exports.STORAGE_KEY = Core.getStoragePrefix() + "quotes";
     const quoteLists = new Map();
     class QuoteList {
         #container;
@@ -33,7 +30,10 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
             this.renderQuotes();
         }
         renderQuotes() {
-            this.#container.innerHTML = window.localStorage.getItem(exports.STORAGE_KEY) || "";
+            this.#container.innerHTML = "";
+            for (const [, quotes] of (0, Storage_1.getQuotes)()) {
+                // TODO render quotes
+            }
             if (this.#container.hasChildNodes()) {
                 (0, MessageTabMenu_1.getTabMenu)(this.#editorId)?.showTab("quotes", (0, Language_1.getPhrase)("wcf.message.quote.showQuotes", {
                     count: this.#container.childElementCount,
@@ -60,8 +60,8 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
                 quoteLists.set(editorId, new QuoteList(editorId, ckeditor));
             }
             (0, Message_1.setActiveEditor)(ckeditor, ckeditor.features.quoteBlock);
-            ckeditor.focusTracker.on("change:isFocused", () => {
-                if (ckeditor.focusTracker.isFocused) {
+            ckeditor.focusTracker.on("change:isFocused", (_evt, _name, isFocused) => {
+                if (isFocused) {
                     (0, Message_1.setActiveEditor)(ckeditor, ckeditor.features.quoteBlock);
                 }
             });

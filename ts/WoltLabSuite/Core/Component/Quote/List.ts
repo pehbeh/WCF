@@ -8,14 +8,13 @@
  * @woltlabExcludeBundle tiny
  */
 
-import * as Core from "WoltLabSuite/Core/Core";
 import { listenToCkeditor } from "WoltLabSuite/Core/Component/Ckeditor/Event";
 import type { CKEditor } from "WoltLabSuite/Core/Component/Ckeditor";
 import { getTabMenu } from "WoltLabSuite/Core/Component/Message/MessageTabMenu";
 import { getPhrase } from "WoltLabSuite/Core/Language";
 import { setActiveEditor } from "WoltLabSuite/Core/Component/Quote/Message";
+import { getQuotes } from "WoltLabSuite/Core/Component/Quote/Storage";
 
-export const STORAGE_KEY = Core.getStoragePrefix() + "quotes";
 const quoteLists = new Map<string, QuoteList>();
 
 class QuoteList {
@@ -39,7 +38,11 @@ class QuoteList {
   }
 
   public renderQuotes(): void {
-    this.#container.innerHTML = window.localStorage.getItem(STORAGE_KEY) || "";
+    this.#container.innerHTML = "";
+
+    for (const [, quotes] of getQuotes()) {
+      // TODO render quotes
+    }
 
     if (this.#container.hasChildNodes()) {
       getTabMenu(this.#editorId)?.showTab(

@@ -13,27 +13,38 @@ import { getPhrase } from "WoltLabSuite/Core/Language";
 import { wheneverFirstSeen } from "WoltLabSuite/Core/Helper/Selector";
 import { set as setAlignment } from "WoltLabSuite/Core/Ui/Alignment";
 import { CKEditor } from "WoltLabSuite/Core/Component/Ckeditor";
+import { saveQuote, saveFullQuote } from "WoltLabSuite/Core/Component/Quote/Storage";
+import { promiseMutex } from "WoltLabSuite/Core/Helper/PromiseMutex";
 
 interface Container {
   element: HTMLElement;
   messageBodySelector: string;
+  objectType: string;
+  objectId: number;
 }
+
+let selectedMessage:
+  | undefined
+  | {
+      message: string;
+      container: Container;
+    };
 
 const containers = new Map<string, Container>();
 let activeMessageId = "";
-let message = "";
 let activeEditor: CKEditor | undefined = undefined;
 let timerSelectionChange: number | undefined = undefined;
 let isMouseDown = false;
-let objectId: number | undefined = undefined;
 const copyQuote = document.createElement("div");
 
-export function registerContainer(containerSelector: string, messageBodySelector: string): void {
+export function registerContainer(containerSelector: string, messageBodySelector: string, objectType: string): void {
   wheneverFirstSeen(containerSelector, (container: HTMLElement) => {
     const id = DomUtil.identify(container);
     containers.set(id, {
       element: container,
       messageBodySelector: messageBodySelector,
+      objectType: objectType,
+      objectId: ~~container.dataset.objectId!,
     });
 
     if (container.classList.contains("jsInvalidQuoteTarget")) {
@@ -43,13 +54,19 @@ export function registerContainer(containerSelector: string, messageBodySelector
     container.addEventListener("mousedown", (event) => onMouseDown(event));
     container.classList.add("jsQuoteMessageContainer");
 
-    container.querySelector(".jsQuoteMessage")?.addEventListener("click", () => {
-      //TODO
-    });
+    container.querySelector(".jsQuoteMessage")?.addEventListener(
+      "click",
+      promiseMutex(async (event: MouseEvent) => {
+        event.preventDefault();
+
+        await saveFullQuote(objectType, ~~container.dataset.objectId!);
+        //TODO insert into `activeEditor`
+      }),
+    );
   });
 }
 
-export function setActiveEditor(editor: CKEditor, supportDirectInsert: boolean) {
+export function setActiveEditor(editor?: CKEditor, supportDirectInsert: boolean = false) {
   copyQuote.querySelector<HTMLButtonElement>(".jsQuoteManagerQuoteAndInsert")!.hidden = !supportDirectInsert;
 
   activeEditor = editor;
@@ -63,7 +80,9 @@ function setup() {
   buttonSaveQuote.classList.add("jsQuoteManagerStore");
   buttonSaveQuote.textContent = getPhrase("wcf.message.quote.quoteSelected");
   buttonSaveQuote.addEventListener("click", () => {
-    //TODO
+    saveQuote(selectedMessage!.container.objectType, selectedMessage!.container.objectId, selectedMessage!.message);
+
+    removeSelection();
   });
   copyQuote.appendChild(buttonSaveQuote);
   const buttonSaveAndInsertQuote = document.createElement("button");
@@ -72,7 +91,10 @@ function setup() {
   buttonSaveAndInsertQuote.classList.add("jsQuoteManagerQuoteAndInsert");
   buttonSaveAndInsertQuote.textContent = getPhrase("wcf.message.quote.quoteAndReply");
   buttonSaveAndInsertQuote.addEventListener("click", () => {
-    //TODO
+    saveQuote(selectedMessage!.container.objectType, selectedMessage!.container.objectId, selectedMessage!.message);
+    //TODO insert into `activeEditor`
+
+    removeSelection();
   });
   copyQuote.appendChild(buttonSaveAndInsertQuote);
 
@@ -386,8 +408,19 @@ function onMouseUp(event?: MouseEvent): void {
     const text = getSelectedText().trim();
     if (text !== "") {
       copyQuote.classList.add("active");
-      message = text;
-      objectId = ~~container.element.dataset.objectId!;
+      selectedMessage = {
+        message: text,
+        container: container,
+      };
     }
   }, 10);
+}
+
+function removeSelection(): void {
+  copyQuote.classList.remove("active");
+
+  const selection = window.getSelection()!;
+  if (selection.rangeCount) {
+    selection.removeAllRanges();
+  }
 }

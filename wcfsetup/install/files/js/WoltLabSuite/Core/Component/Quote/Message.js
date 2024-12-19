@@ -7,38 +7,41 @@
  * @since 6.2
  * @woltlabExcludeBundle tiny
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Ui/Alignment"], function (require, exports, tslib_1, Util_1, Language_1, Selector_1, Alignment_1) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Ui/Alignment", "WoltLabSuite/Core/Component/Quote/Storage", "WoltLabSuite/Core/Helper/PromiseMutex"], function (require, exports, tslib_1, Util_1, Language_1, Selector_1, Alignment_1, Storage_1, PromiseMutex_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.registerContainer = registerContainer;
     exports.setActiveEditor = setActiveEditor;
     Util_1 = tslib_1.__importDefault(Util_1);
+    let selectedMessage;
     const containers = new Map();
     let activeMessageId = "";
-    let message = "";
     let activeEditor = undefined;
     let timerSelectionChange = undefined;
     let isMouseDown = false;
-    let objectId = undefined;
     const copyQuote = document.createElement("div");
-    function registerContainer(containerSelector, messageBodySelector) {
+    function registerContainer(containerSelector, messageBodySelector, objectType) {
         (0, Selector_1.wheneverFirstSeen)(containerSelector, (container) => {
             const id = Util_1.default.identify(container);
             containers.set(id, {
                 element: container,
                 messageBodySelector: messageBodySelector,
+                objectType: objectType,
+                objectId: ~~container.dataset.objectId,
             });
             if (container.classList.contains("jsInvalidQuoteTarget")) {
                 return;
             }
             container.addEventListener("mousedown", (event) => onMouseDown(event));
             container.classList.add("jsQuoteMessageContainer");
-            container.querySelector(".jsQuoteMessage")?.addEventListener("click", () => {
-                //TODO
-            });
+            container.querySelector(".jsQuoteMessage")?.addEventListener("click", (0, PromiseMutex_1.promiseMutex)(async (event) => {
+                event.preventDefault();
+                await (0, Storage_1.saveFullQuote)(objectType, ~~container.dataset.objectId);
+                //TODO insert into `activeEditor`
+            }));
         });
     }
-    function setActiveEditor(editor, supportDirectInsert) {
+    function setActiveEditor(editor, supportDirectInsert = false) {
         copyQuote.querySelector(".jsQuoteManagerQuoteAndInsert").hidden = !supportDirectInsert;
         activeEditor = editor;
     }
@@ -49,7 +52,8 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
         buttonSaveQuote.classList.add("jsQuoteManagerStore");
         buttonSaveQuote.textContent = (0, Language_1.getPhrase)("wcf.message.quote.quoteSelected");
         buttonSaveQuote.addEventListener("click", () => {
-            //TODO
+            (0, Storage_1.saveQuote)(selectedMessage.container.objectType, selectedMessage.container.objectId, selectedMessage.message);
+            removeSelection();
         });
         copyQuote.appendChild(buttonSaveQuote);
         const buttonSaveAndInsertQuote = document.createElement("button");
@@ -58,7 +62,9 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
         buttonSaveAndInsertQuote.classList.add("jsQuoteManagerQuoteAndInsert");
         buttonSaveAndInsertQuote.textContent = (0, Language_1.getPhrase)("wcf.message.quote.quoteAndReply");
         buttonSaveAndInsertQuote.addEventListener("click", () => {
-            //TODO
+            (0, Storage_1.saveQuote)(selectedMessage.container.objectType, selectedMessage.container.objectId, selectedMessage.message);
+            //TODO insert into `activeEditor`
+            removeSelection();
         });
         copyQuote.appendChild(buttonSaveAndInsertQuote);
         document.body.appendChild(copyQuote);
@@ -303,9 +309,18 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
             const text = getSelectedText().trim();
             if (text !== "") {
                 copyQuote.classList.add("active");
-                message = text;
-                objectId = ~~container.element.dataset.objectId;
+                selectedMessage = {
+                    message: text,
+                    container: container,
+                };
             }
         }, 10);
+    }
+    function removeSelection() {
+        copyQuote.classList.remove("active");
+        const selection = window.getSelection();
+        if (selection.rangeCount) {
+            selection.removeAllRanges();
+        }
     }
 });
