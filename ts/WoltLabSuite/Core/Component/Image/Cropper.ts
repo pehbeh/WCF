@@ -200,35 +200,11 @@ abstract class ImageCropper {
 
     this.centerSelection();
 
-    // Limit the selection to the canvas boundaries
-    this.cropperSelection!.addEventListener("change", (event: CustomEvent) => {
-      // see https://fengyuanchen.github.io/cropperjs/v2/api/cropper-selection.html#limit-boundaries
-      const cropperCanvasRect = this.cropperCanvas!.getBoundingClientRect();
-      const selection = event.detail as Selection;
-
-      const maxSelection: Selection = {
-        x: 0,
-        y: 0,
-        width: cropperCanvasRect.width,
-        height: cropperCanvasRect.height,
-      };
-
-      if (!inSelection(selection, maxSelection)) {
-        event.preventDefault();
-
-        // Try to clamp the position to the boundaries.
-        this.cropperSelection!.$moveTo(
-          clampValue(selection.x, selection.width, maxSelection.width),
-          clampValue(selection.y, selection.height, maxSelection.height),
-        );
-      }
-    });
-
-    // Limit the selection to the min/max size
     this.cropperSelection!.addEventListener("change", (event: CustomEvent) => {
       const selection = event.detail as Selection;
       this.cropperCanvasRect = this.cropperCanvas!.getBoundingClientRect();
 
+      // Limit the selection to the min/max size.
       const selectionRatio = Math.min(
         this.cropperCanvasRect.width / this.width,
         this.cropperCanvasRect.height / this.height,
@@ -246,6 +222,33 @@ abstract class ImageCropper {
 
       if (width < minWidth || height < minHeight || width > maxWidth || height > maxHeight) {
         event.preventDefault();
+
+        // Stop the event handling here otherwise the following code would try
+        // to adjust the position on an invalid size that could potentially
+        // violate the boundaries.
+        return;
+      }
+
+      // Limit the selection to the canvas boundaries.
+      // see https://fengyuanchen.github.io/cropperjs/v2/api/cropper-selection.html#limit-boundaries
+      const maxSelection: Selection = {
+        x: 0,
+        y: 0,
+        width: this.cropperCanvasRect!.width,
+        height: this.cropperCanvasRect!.height,
+      };
+
+      if (!inSelection(selection, maxSelection)) {
+        event.preventDefault();
+
+        // Clamp the position to the boundaries of the canvas.
+        this.cropperSelection!.x = clampValue(selection.x, selection.width, maxSelection.width);
+        this.cropperSelection!.y = clampValue(selection.y, selection.height, maxSelection.height);
+
+        this.cropperSelection!.width = selection.width;
+        this.cropperSelection!.height = selection.height;
+
+        this.cropperSelection!.$render();
       }
     });
   }
