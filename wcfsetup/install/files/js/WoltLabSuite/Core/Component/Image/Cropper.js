@@ -20,6 +20,15 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
             Math.round(selection.x + selection.width) <= Math.round(maxSelection.x + maxSelection.width) &&
             Math.round(selection.y + selection.height) <= Math.round(maxSelection.y + maxSelection.height));
     }
+    function clampValue(position, length, availableLength) {
+        if (position < 0) {
+            return 0;
+        }
+        if (position + length > availableLength) {
+            return Math.floor(availableLength - length);
+        }
+        return Math.floor(position);
+    }
     class ImageCropper {
         configuration;
         file;
@@ -154,6 +163,8 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
                 };
                 if (!inSelection(selection, maxSelection)) {
                     event.preventDefault();
+                    // Try to clamp the position to the boundaries.
+                    this.cropperSelection.$moveTo(clampValue(selection.x, selection.width, maxSelection.width), clampValue(selection.y, selection.height, maxSelection.height));
                 }
             });
             // Limit the selection to the min/max size
@@ -161,14 +172,15 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
                 const selection = event.detail;
                 this.cropperCanvasRect = this.cropperCanvas.getBoundingClientRect();
                 const selectionRatio = Math.min(this.cropperCanvasRect.width / this.width, this.cropperCanvasRect.height / this.height);
-                const minWidth = this.minSize.width * selectionRatio;
-                const maxWidth = this.cropperCanvasRect.width;
-                const minHeight = minWidth / this.configuration.aspectRatio;
-                const maxHeight = maxWidth / this.configuration.aspectRatio;
-                if (selection.width < minWidth ||
-                    selection.height < minHeight ||
-                    selection.width > maxWidth ||
-                    selection.height > maxHeight) {
+                // Round all values to integers to avoid dealing with the wonderful world
+                // of IEEE 754 numbers.
+                const minWidth = Math.round(this.minSize.width * selectionRatio);
+                const maxWidth = Math.round(this.cropperCanvasRect.width);
+                const minHeight = Math.round(minWidth / this.configuration.aspectRatio);
+                const maxHeight = Math.round(maxWidth / this.configuration.aspectRatio);
+                const width = Math.round(selection.width);
+                const height = Math.round(selection.height);
+                if (width < minWidth || height < minHeight || width > maxWidth || height > maxHeight) {
                     event.preventDefault();
                 }
             });

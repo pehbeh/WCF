@@ -35,6 +35,18 @@ function inSelection(selection: Selection, maxSelection: Selection): boolean {
   );
 }
 
+function clampValue(position: number, length: number, availableLength: number): number {
+  if (position < 0) {
+    return 0;
+  }
+
+  if (position + length > availableLength) {
+    return Math.floor(availableLength - length);
+  }
+
+  return Math.floor(position);
+}
+
 abstract class ImageCropper {
   readonly configuration: CropperConfiguration;
   readonly file: File;
@@ -203,6 +215,12 @@ abstract class ImageCropper {
 
       if (!inSelection(selection, maxSelection)) {
         event.preventDefault();
+
+        // Try to clamp the position to the boundaries.
+        this.cropperSelection!.$moveTo(
+          clampValue(selection.x, selection.width, maxSelection.width),
+          clampValue(selection.y, selection.height, maxSelection.height),
+        );
       }
     });
 
@@ -216,17 +234,17 @@ abstract class ImageCropper {
         this.cropperCanvasRect.height / this.height,
       );
 
-      const minWidth = this.minSize.width * selectionRatio;
-      const maxWidth = this.cropperCanvasRect.width;
-      const minHeight = minWidth / this.configuration.aspectRatio;
-      const maxHeight = maxWidth / this.configuration.aspectRatio;
+      // Round all values to integers to avoid dealing with the wonderful world
+      // of IEEE 754 numbers.
+      const minWidth = Math.round(this.minSize.width * selectionRatio);
+      const maxWidth = Math.round(this.cropperCanvasRect.width);
+      const minHeight = Math.round(minWidth / this.configuration.aspectRatio);
+      const maxHeight = Math.round(maxWidth / this.configuration.aspectRatio);
 
-      if (
-        selection.width < minWidth ||
-        selection.height < minHeight ||
-        selection.width > maxWidth ||
-        selection.height > maxHeight
-      ) {
+      const width = Math.round(selection.width);
+      const height = Math.round(selection.height);
+
+      if (width < minWidth || height < minHeight || width > maxWidth || height > maxHeight) {
         event.preventDefault();
       }
     });
