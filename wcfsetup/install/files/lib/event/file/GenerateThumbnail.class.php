@@ -17,6 +17,7 @@ use wcf\system\file\processor\ThumbnailFormat;
 final class GenerateThumbnail implements IPsr14Event
 {
     private string $pathname;
+    private bool $sourceIsDamaged = false;
 
     public function __construct(
         public readonly File $file,
@@ -49,5 +50,19 @@ final class GenerateThumbnail implements IPsr14Event
     public function getPathname(): ?string
     {
         return $this->pathname ?? null;
+    }
+
+    /**
+     * Flags the source image as damaged which should stop further processing
+     * of this file.
+     */
+    public function markSourceAsDamaged(): void
+    {
+        $this->sourceIsDamaged = true;
+    }
+
+    public function sourceIsMarkedAsDamaged(): bool
+    {
+        return $this->sourceIsDamaged;
     }
 }

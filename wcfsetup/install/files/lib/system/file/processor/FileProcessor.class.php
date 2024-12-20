@@ -164,6 +164,9 @@ final class FileProcessor extends SingletonFactory
 
         $event = new GenerateWebpVariant($file);
         EventHandler::getInstance()->fire($event);
+        if ($event->sourceIsMarkedAsDamaged()) {
+            throw new DamagedImage($file->fileID);
+        }
 
         $filename = $event->getPathname();
         if ($filename === null) {
@@ -262,6 +265,9 @@ final class FileProcessor extends SingletonFactory
 
             $event = new GenerateThumbnail($file, $format);
             EventHandler::getInstance()->fire($event);
+            if ($event->sourceIsMarkedAsDamaged()) {
+                throw new DamagedImage($file->fileID);
+            }
 
             $filename = $event->getPathname();
             if ($filename === null) {
