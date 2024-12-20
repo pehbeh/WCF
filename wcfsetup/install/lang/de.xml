@@ -5131,7 +5131,7 @@ Sobald {if LANGUAGE_USE_INFORMAL_VARIANT}dein{else}Ihr{/if} Benutzerkonto freige
 		<item name="wcf.user.usersOnline.invisible"><![CDATA[ (unsichtbar)]]></item>
 		<item name="wcf.user.usersOnline.marking.legend"><![CDATA[Legende]]></item>
 		<item name="wcf.user.usersOnline.guests"><![CDATA[Gäste]]></item>
-		<item name="wcf.user.usersOnline.location"><![CDATA[Ort]]></item>
+		<item name="wcf.user.usersOnline.location"><![CDATA[Aufenthaltsort]]></item>
 		<item name="wcf.user.usersOnline.ipAddress"><![CDATA[IP-Adresse]]></item>
 		<item name="wcf.user.usersOnline.userAgent"><![CDATA[Browser]]></item>
 		<item name="wcf.user.usersOnline.lastActivity"><![CDATA[Letzte Aktivität]]></item>
