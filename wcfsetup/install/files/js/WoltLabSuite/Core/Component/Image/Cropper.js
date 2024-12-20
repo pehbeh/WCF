@@ -181,11 +181,9 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Image/Resizer", "WoltL
                 if (!inSelection(selection, maxSelection)) {
                     event.preventDefault();
                     // Clamp the position to the boundaries of the canvas.
-                    this.cropperSelection.x = clampValue(selection.x, selection.width, maxSelection.width);
-                    this.cropperSelection.y = clampValue(selection.y, selection.height, maxSelection.height);
-                    this.cropperSelection.width = selection.width;
-                    this.cropperSelection.height = selection.height;
-                    this.cropperSelection.$render();
+                    void this.cropperSelection.$nextTick().then(() => {
+                        this.cropperSelection.$change(clampValue(selection.x, selection.width, maxSelection.width), clampValue(selection.y, selection.height, maxSelection.height), selection.width, selection.height);
+                    });
                 }
             });
         }
