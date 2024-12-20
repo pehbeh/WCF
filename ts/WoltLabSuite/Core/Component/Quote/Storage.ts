@@ -18,7 +18,7 @@ interface Message {
   time: string;
   title: string;
   link: string;
-  authorID: number;
+  authorID: number | null;
   author: string;
   avatar: string;
 }

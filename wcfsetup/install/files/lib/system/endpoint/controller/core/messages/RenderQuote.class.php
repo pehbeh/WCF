@@ -7,6 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use wcf\data\IEmbeddedMessageObject;
 use wcf\data\IMessage;
+use wcf\data\user\UserProfile;
 use wcf\http\Helper;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
 use wcf\system\endpoint\GetRequest;
@@ -34,6 +35,9 @@ final class RenderQuote implements IController
         \assert($object instanceof IMessage);
 
         $userProfile = UserProfileRuntimeCache::getInstance()->getObject($object->getUserID());
+        if ($userProfile === null) {
+            $userProfile = UserProfile::getGuestUserProfile($object->getUsername());
+        }
 
         if ($object instanceof IEmbeddedMessageObject) {
             $object->loadEmbeddedObjects();

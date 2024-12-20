@@ -13,7 +13,7 @@ import { ApiResult, apiResultFromError, apiResultFromValue } from "../Result";
 
 type Response = {
   objectID: number;
-  authorID: number;
+  authorID: number | null;
   author: string;
   time: string;
   link: string;

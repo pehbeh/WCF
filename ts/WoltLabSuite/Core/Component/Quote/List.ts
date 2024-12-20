@@ -90,9 +90,9 @@ class QuoteList {
   </div>
 </article>`);
 
+      // TODO dont query the DOM
       fragment.querySelectorAll<HTMLButtonElement>(".jsInsertQuote").forEach((button) => {
         button.addEventListener("click", () => {
-          // TODO dont query the DOM
           // TODO use rawMessage to insert if available otherwise use message
           dispatchToCkeditor(this.#editor).insertQuote({
             author: message.author,
