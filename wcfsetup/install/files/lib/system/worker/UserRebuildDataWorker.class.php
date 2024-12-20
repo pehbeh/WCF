@@ -11,6 +11,7 @@ use wcf\data\user\cover\photo\IWebpUserCoverPhoto;
 use wcf\data\user\User;
 use wcf\data\user\UserEditor;
 use wcf\data\user\UserList;
+use wcf\data\user\UserProfile;
 use wcf\data\user\UserProfileAction;
 use wcf\data\user\UserProfileList;
 use wcf\system\bbcode\BBCodeHandler;
@@ -48,6 +49,7 @@ final class UserRebuildDataWorker extends AbstractLinearRebuildDataWorker
         parent::initObjectList();
 
         $this->objectList->sqlSelects = 'user_option_value.userOption' . User::getUserOptionID('aboutMe') . ' AS aboutMe';
+        $this->objectList->sqlSelects .= ',user_option_value.userOption' . User::getUserOptionID('canViewOnlineStatus') . ' AS canViewOnlineStatus';
         $this->objectList->sqlJoins = "
             LEFT JOIN   wcf" . WCF_N . "_user_option_value user_option_value
             ON          user_option_value.userID = user_table.userID";
@@ -73,6 +75,8 @@ final class UserRebuildDataWorker extends AbstractLinearRebuildDataWorker
             $action = new UserProfileAction($users, 'updateUserOnlineMarking');
             $action->executeAction();
         }
+
+        $this->updateUserOnlineStatus($users);
 
         if (!empty($userIDs)) {
             // update article counter
@@ -332,6 +336,30 @@ final class UserRebuildDataWorker extends AbstractLinearRebuildDataWorker
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * This method checks whether a user has restricted the visibility of their online status in the past,
+     * but has since lost the permission for it.
+     * In this case, the visibility of the online status is automatically set to default.
+     *
+     * @param UserEditor[] $users
+     */
+    private function updateUserOnlineStatus(array $users): void
+    {
+        foreach ($users as $user) {
+            if (!$user->canViewOnlineStatus) {
+                continue;
+            }
+            $userProfile = new UserProfile($user->getDecoratedObject());
+            if ($userProfile->getPermission('user.profile.canHideOnlineStatus')) {
+                continue;
+            }
+
+            $user->updateUserOptions([
+                User::getUserOptionID('canViewOnlineStatus') => 0,
+            ]);
         }
     }
 }
