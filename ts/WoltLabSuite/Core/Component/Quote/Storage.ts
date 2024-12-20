@@ -23,8 +23,13 @@ interface Message {
   avatar: string;
 }
 
+interface Quote {
+  message: string;
+  rawMessage?: string;
+}
+
 interface StorageData {
-  quotes: Map<string, Set<string>>;
+  quotes: Map<string, Set<Quote>>;
   messages: Map<string, Message>;
 }
 
@@ -37,7 +42,9 @@ export async function saveQuote(objectType: string, objectId: number, objectClas
     return;
   }
 
-  storeQuote(objectType, result.value, message);
+  storeQuote(objectType, result.value, {
+    message,
+  });
 
   refreshQuoteLists();
 }
@@ -60,11 +67,16 @@ export async function saveFullQuote(objectType: string, objectClassName: string,
       author: result.value.author,
       avatar: result.value.avatar,
     },
-    result.value.message,
+    {
+      message: result.value.message!,
+      rawMessage: result.value.rawMessage!,
+    },
   );
+
+  refreshQuoteLists();
 }
 
-export function getQuotes(): Map<string, Set<string>> {
+export function getQuotes(): Map<string, Set<Quote>> {
   return getStorage().quotes;
 }
 
@@ -74,7 +86,7 @@ export function getMessage(objectType: string, objectId?: number): Message | und
   return getStorage().messages.get(key);
 }
 
-export function removeQuote(objectType: string, objectId: number, quote: string): void {
+export function removeQuote(objectType: string, objectId: number, quote: Quote): void {
   const storage = getStorage();
 
   const key = getKey(objectType, objectId);
@@ -94,7 +106,7 @@ export function removeQuote(objectType: string, objectId: number, quote: string)
   refreshQuoteLists();
 }
 
-function storeQuote(objectType: string, message: Message, quote: string): void {
+function storeQuote(objectType: string, message: Message, quote: Quote): void {
   const storage = getStorage();
 
   const key = getKey(objectType, message.objectID);
@@ -104,7 +116,13 @@ function storeQuote(objectType: string, message: Message, quote: string): void {
 
   storage.messages.set(key, message);
 
-  storage.quotes.get(key)!.add(quote);
+  if (
+    !Array.from(storage.quotes.get(key)!)
+      .map((q) => q.message)
+      .includes(quote.message)
+  ) {
+    storage.quotes.get(key)!.add(quote);
+  }
 
   saveStorage(storage);
 }

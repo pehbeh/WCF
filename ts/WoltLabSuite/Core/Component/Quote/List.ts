@@ -8,8 +8,7 @@
  * @woltlabExcludeBundle tiny
  */
 
-import { listenToCkeditor } from "WoltLabSuite/Core/Component/Ckeditor/Event";
-import type { CKEditor } from "WoltLabSuite/Core/Component/Ckeditor";
+import { listenToCkeditor, dispatchToCkeditor } from "WoltLabSuite/Core/Component/Ckeditor/Event";
 import { getTabMenu } from "WoltLabSuite/Core/Component/Message/MessageTabMenu";
 import { getPhrase } from "WoltLabSuite/Core/Language";
 import { setActiveEditor } from "WoltLabSuite/Core/Component/Quote/Message";
@@ -20,10 +19,10 @@ const quoteLists = new Map<string, QuoteList>();
 
 class QuoteList {
   #container: HTMLElement;
-  #editor: CKEditor;
+  #editor: HTMLElement;
   #editorId: string;
 
-  constructor(editorId: string, editor: CKEditor) {
+  constructor(editorId: string, editor: HTMLElement) {
     this.#editorId = editorId;
     this.#editor = editor;
     this.#container = document.getElementById(`quotes_${editorId}`)!;
@@ -41,13 +40,14 @@ class QuoteList {
   public renderQuotes(): void {
     this.#container.innerHTML = "";
 
+    let quotesCount = 0;
     for (const [key, quotes] of getQuotes()) {
       const message = getMessage(key)!;
+      quotesCount += quotes.size;
 
       // TODO escape values
       // TODO create web components???
-      this.#container.append(
-        DomUtil.createFragmentFromHtml(`<article class="message messageReduced jsInvalidQuoteTarget">
+      const fragment = DomUtil.createFragmentFromHtml(`<article class="message messageReduced jsInvalidQuoteTarget">
   <div class="messageContent">
     <header class="messageHeader">
       <div class="box32 messageHeaderWrapper">
@@ -74,11 +74,12 @@ class QuoteList {
   <span>
     <input type="checkbox" value="1" class="jsCheckbox">
     <button type="button" class="jsTooltip jsInsertQuote" title="${getPhrase("wcf.message.quote.insertQuote")}">
+        <fa-icon name="plus"></fa-icon>
     </button>
   </span>
   
   <div class="jsQuote">
-    ${quote}
+    ${quote.message}
   </div>
 </li>`,
           )
@@ -87,16 +88,29 @@ class QuoteList {
       </div>
     </div>
   </div>
-</article>`),
-      );
-      // TODO render quotes
+</article>`);
+
+      fragment.querySelectorAll<HTMLButtonElement>(".jsInsertQuote").forEach((button) => {
+        button.addEventListener("click", () => {
+          // TODO dont query the DOM
+          // TODO use rawMessage to insert if available otherwise use message
+          dispatchToCkeditor(this.#editor).insertQuote({
+            author: message.author,
+            content: button.closest("li")!.querySelector(".jsQuote")!.innerHTML,
+            isText: false,
+            link: message.link,
+          });
+        });
+      });
+
+      this.#container.append(fragment);
     }
 
-    if (this.#container.hasChildNodes()) {
+    if (quotesCount > 0) {
       getTabMenu(this.#editorId)?.showTab(
         "quotes",
         getPhrase("wcf.message.quote.showQuotes", {
-          count: this.#container.childElementCount,
+          count: quotesCount,
         }),
       );
     } else {
@@ -127,7 +141,7 @@ export function setup(editorId: string): void {
 
   listenToCkeditor(editor).ready(({ ckeditor }) => {
     if (ckeditor.features.quoteBlock) {
-      quoteLists.set(editorId, new QuoteList(editorId, ckeditor));
+      quoteLists.set(editorId, new QuoteList(editorId, editor));
     }
 
     setActiveEditor(ckeditor, ckeditor.features.quoteBlock);

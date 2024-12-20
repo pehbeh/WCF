@@ -5,6 +5,7 @@ namespace wcf\system\endpoint\controller\core\messages;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use wcf\data\IEmbeddedMessageObject;
 use wcf\data\IMessage;
 use wcf\http\Helper;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
@@ -34,6 +35,10 @@ final class RenderQuote implements IController
 
         $userProfile = UserProfileRuntimeCache::getInstance()->getObject($object->getUserID());
 
+        if ($object instanceof IEmbeddedMessageObject) {
+            $object->loadEmbeddedObjects();
+        }
+
         return new JsonResponse(
             [
                 "objectID" => $object->getObjectID(),
@@ -43,7 +48,8 @@ final class RenderQuote implements IController
                 "time" => (new \DateTime('@' . $object->getTime()))->format("c"),
                 "title" => $object->getTitle(),
                 "link" => $object->getLink(),
-                "message" => $parameters->fullQuote ? $this->renderFullQuote($object) : ""
+                "rawMessage" => $parameters->fullQuote ? $this->renderFullQuote($object) : null,
+                "message" => $parameters->fullQuote ? $object->getFormattedMessage() : null
             ],
             200,
         );
@@ -51,8 +57,6 @@ final class RenderQuote implements IController
 
     private function renderFullQuote(IMessage $object): string
     {
-        // TODO load embedded objects?
-
         $htmlInputProcessor = new HtmlInputProcessor();
         $htmlInputProcessor->processIntermediate($object->getMessage());
 

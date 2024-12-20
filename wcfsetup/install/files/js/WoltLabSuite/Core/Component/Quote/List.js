@@ -33,11 +33,13 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
         }
         renderQuotes() {
             this.#container.innerHTML = "";
+            let quotesCount = 0;
             for (const [key, quotes] of (0, Storage_1.getQuotes)()) {
                 const message = (0, Storage_1.getMessage)(key);
+                quotesCount += quotes.size;
                 // TODO escape values
                 // TODO create web components???
-                this.#container.append(Util_1.default.createFragmentFromHtml(`<article class="message messageReduced jsInvalidQuoteTarget">
+                const fragment = Util_1.default.createFragmentFromHtml(`<article class="message messageReduced jsInvalidQuoteTarget">
   <div class="messageContent">
     <header class="messageHeader">
       <div class="box32 messageHeaderWrapper">
@@ -63,11 +65,12 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
   <span>
     <input type="checkbox" value="1" class="jsCheckbox">
     <button type="button" class="jsTooltip jsInsertQuote" title="${(0, Language_1.getPhrase)("wcf.message.quote.insertQuote")}">
+        <fa-icon name="plus"></fa-icon>
     </button>
   </span>
   
   <div class="jsQuote">
-    ${quote}
+    ${quote.message}
   </div>
 </li>`)
                     .join("")}
@@ -75,12 +78,24 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
       </div>
     </div>
   </div>
-</article>`));
-                // TODO render quotes
+</article>`);
+                fragment.querySelectorAll(".jsInsertQuote").forEach((button) => {
+                    button.addEventListener("click", () => {
+                        // TODO dont query the DOM
+                        // TODO use rawMessage to insert if available otherwise use message
+                        (0, Event_1.dispatchToCkeditor)(this.#editor).insertQuote({
+                            author: message.author,
+                            content: button.closest("li").querySelector(".jsQuote").innerHTML,
+                            isText: false,
+                            link: message.link,
+                        });
+                    });
+                });
+                this.#container.append(fragment);
             }
-            if (this.#container.hasChildNodes()) {
+            if (quotesCount > 0) {
                 (0, MessageTabMenu_1.getTabMenu)(this.#editorId)?.showTab("quotes", (0, Language_1.getPhrase)("wcf.message.quote.showQuotes", {
-                    count: this.#container.childElementCount,
+                    count: quotesCount,
                 }));
             }
             else {
@@ -106,7 +121,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
         }
         (0, Event_1.listenToCkeditor)(editor).ready(({ ckeditor }) => {
             if (ckeditor.features.quoteBlock) {
-                quoteLists.set(editorId, new QuoteList(editorId, ckeditor));
+                quoteLists.set(editorId, new QuoteList(editorId, editor));
             }
             (0, Message_1.setActiveEditor)(ckeditor, ckeditor.features.quoteBlock);
             ckeditor.focusTracker.on("change:isFocused", (_evt, _name, isFocused) => {

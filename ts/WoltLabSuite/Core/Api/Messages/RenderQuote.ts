@@ -19,7 +19,8 @@ type Response = {
   link: string;
   title: string;
   avatar: string;
-  message: string;
+  message: string | null;
+  rawMessage: string | null;
 };
 
 export async function renderQuote(

@@ -143,6 +143,7 @@ final class PreloadPhrasesCollectingListener
         $event->preload('wcf.message.quote.quoteAndReply');
         $event->preload('wcf.message.quote.removeAllQuotes');
         $event->preload('wcf.message.quote.showQuotes');
+        $event->preload('wcf.message.quote.insertQuote');
 
         $event->preload('wcf.moderation.report.reportContent');
 

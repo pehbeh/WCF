@@ -23,7 +23,9 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
             // TODO error handling
             return;
         }
-        storeQuote(objectType, result.value, message);
+        storeQuote(objectType, result.value, {
+            message,
+        });
         (0, List_1.refreshQuoteLists)();
     }
     async function saveFullQuote(objectType, objectClassName, objectId) {
@@ -40,7 +42,11 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
             authorID: result.value.authorID,
             author: result.value.author,
             avatar: result.value.avatar,
-        }, result.value.message);
+        }, {
+            message: result.value.message,
+            rawMessage: result.value.rawMessage,
+        });
+        (0, List_1.refreshQuoteLists)();
     }
     function getQuotes() {
         return getStorage().quotes;
@@ -70,7 +76,11 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
             storage.quotes.set(key, new Set());
         }
         storage.messages.set(key, message);
-        storage.quotes.get(key).add(quote);
+        if (!Array.from(storage.quotes.get(key))
+            .map((q) => q.message)
+            .includes(quote.message)) {
+            storage.quotes.get(key).add(quote);
+        }
         saveStorage(storage);
     }
     function getStorage() {
