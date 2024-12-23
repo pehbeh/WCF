@@ -349,7 +349,7 @@ final class UserRebuildDataWorker extends AbstractLinearRebuildDataWorker
     private function updateUserOnlineStatus(array $users): void
     {
         foreach ($users as $user) {
-            if (!$user->canViewOnlineStatus) {
+            if ($user->canViewOnlineStatus == UserProfile::ACCESS_EVERYONE) {
                 continue;
             }
             $userProfile = new UserProfile($user->getDecoratedObject());
@@ -358,7 +358,7 @@ final class UserRebuildDataWorker extends AbstractLinearRebuildDataWorker
             }
 
             $user->updateUserOptions([
-                User::getUserOptionID('canViewOnlineStatus') => 0,
+                User::getUserOptionID('canViewOnlineStatus') => UserProfile::ACCESS_EVERYONE,
             ]);
         }
     }
