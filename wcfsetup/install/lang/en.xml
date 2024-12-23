@@ -5278,7 +5278,7 @@ You also received a list of backup codes to use when your second factor becomes 
 		<item name="wcf.user.coverPhoto.delete"><![CDATA[Delete Cover Photo]]></item>
 		<item name="wcf.user.coverPhoto.delete.confirmMessage"><![CDATA[Do you really want to delete your cover photo? This will replace your current photo with the default image.]]></item>
 		<item name="wcf.user.coverPhoto.edit"><![CDATA[Edit Cover Photo]]></item>
-		<item name="wcf.user.coverPhoto.error.disabled"><![CDATA[The administrators {if $__wcf->user->coverPhotoHash}have blocked your cover photo and {/if}disallowed you from using a cover photo{if $__wcf->user->disableCoverPhotoReason}: {$__wcf->user->disableCoverPhotoReason}{/if}.]]></item>
+		<item name="wcf.user.coverPhoto.error.disabled"><![CDATA[The administrators {if $__wcf->user->coverPhotoFileID}have blocked your cover photo and {/if}disallowed you from using a cover photo{if $__wcf->user->disableCoverPhotoReason}: {$__wcf->user->disableCoverPhotoReason}{/if}.]]></item>
 		<item name="wcf.user.coverPhoto.noImage"><![CDATA[The user has not yet uploaded a cover photo.]]></item>
 		<item name="wcf.user.coverPhoto.upload"><![CDATA[Upload Cover Photo]]></item>
 		<item name="wcf.user.coverPhoto.upload.description"><![CDATA[Minimum image size: {$coverPhotoDimensions.min.width} × {$coverPhotoDimensions.min.height} pixels<br>
@@ -5295,6 +5295,7 @@ Allowed extensions: gif, jpg, jpeg, png, webp]]></item>
 		<item name="wcf.user.coverPhoto.upload.error.uploadFailed"><![CDATA[An unknown error occurred during the upload.]]></item>
 		<item name="wcf.user.coverPhoto.upload.error.invalidExtension"><![CDATA[The file extension is invalid.]]></item>
 		<item name="wcf.user.coverPhoto.upload.error.tooLarge"><![CDATA[The file is too big.]]></item>
+		<item name="wcf.user.coverPhoto.management"><![CDATA[Cover Photo Management]]></item>
 	</category>
 	<category name="wcf.user.notification">
 		<item name="wcf.user.notification.button.confirmed"><![CDATA[OK]]></item>

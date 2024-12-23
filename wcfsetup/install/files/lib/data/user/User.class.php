@@ -66,9 +66,7 @@ use wcf\util\UserUtil;
  * @property-read   string $notificationMailToken      token used for authenticating requests by the user to disable notification emails
  * @property-read   string $authData           data of the third party used for authentication
  * @property-read   int $likesReceived          cumulative result of likes (counting +1) the user's contents have received
- * @property-read       string $coverPhotoHash                 hash of the user's cover photo
- * @property-read   string $coverPhotoExtension        extension of the user's cover photo file
- * @property-read int $coverPhotoHasWebP is `1` if a webp variant of the cover photo and its thumbnail exists, otherwise `0`
+ * @property-read   int|null $coverPhotoFileID
  * @property-read       int $disableCoverPhoto              is `1` if the user's cover photo has been disabled, otherwise `0`
  * @property-read   string $disableCoverPhotoReason    reason why the user's cover photo is disabled
  * @property-read   int $disableCoverPhotoExpires   timestamp at which the user's cover photo will automatically be enabled again

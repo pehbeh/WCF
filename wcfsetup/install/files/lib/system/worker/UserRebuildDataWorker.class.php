@@ -6,19 +6,18 @@ use wcf\data\file\FileEditor;
 use wcf\data\reaction\type\ReactionTypeCache;
 use wcf\data\user\avatar\UserAvatarEditor;
 use wcf\data\user\avatar\UserAvatarList;
-use wcf\data\user\cover\photo\DefaultUserCoverPhoto;
-use wcf\data\user\cover\photo\IWebpUserCoverPhoto;
+use wcf\data\user\cover\photo\UserCoverPhoto;
 use wcf\data\user\User;
 use wcf\data\user\UserEditor;
 use wcf\data\user\UserList;
 use wcf\data\user\UserProfileAction;
-use wcf\data\user\UserProfileList;
 use wcf\system\bbcode\BBCodeHandler;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\exception\SystemException;
 use wcf\system\file\processor\UserAvatarFileProcessor;
 use wcf\system\html\input\HtmlInputProcessor;
 use wcf\system\image\ImageHandler;
+use wcf\system\user\command\SetCoverPhoto;
 use wcf\system\user\storage\UserStorageHandler;
 use wcf\system\WCF;
 
@@ -317,47 +316,29 @@ final class UserRebuildDataWorker extends AbstractLinearRebuildDataWorker
                 UserStorageHandler::getInstance()->reset($resetAvatarCache, 'avatar');
             }
 
-            // Create WebP variants of existing cover photos.
-            $userProfiles = new UserProfileList();
+            // Migrate old cover photos into the new file system.
+            $userProfiles = new UserList();
             $userProfiles->getConditionBuilder()->add("user_table.userID IN (?)", [$userIDs]);
             $userProfiles->getConditionBuilder()->add("user_table.coverPhotoHash IS NOT NULL");
-            $userProfiles->getConditionBuilder()->add("user_table.coverPhotoHasWebP = ?", [0]);
             $userProfiles->readObjects();
-            foreach ($userProfiles as $userProfile) {
-                $editor = new UserEditor($userProfile->getDecoratedObject());
-                $coverPhoto = $userProfile->getCoverPhoto(true);
-                if ($coverPhoto instanceof DefaultUserCoverPhoto) {
-                    // The default cover photo can be returned if the user has a
-                    // cover photo, but it has been disabled by an administrator.
-                    continue;
+            foreach ($userProfiles as $user) {
+                $file = FileEditor::createFromExistingFile(
+                    UserCoverPhoto::getLegacyLocation($user, false),
+                    $user->coverPhotoHash . '.' . $user->coverPhotoExtension,
+                    'com.woltlab.wcf.user.coverPhoto',
+                );
+
+                (new SetCoverPhoto($user, $file))();
+
+                // Delete the old cover photo files.
+                $oldCoverPhotoLocation = UserCoverPhoto::getLegacyLocation($user, false);
+                $oldCoverPhotoWebPLocation = UserCoverPhoto::getLegacyLocation($user, true);
+
+                if ($oldCoverPhotoLocation && \file_exists($oldCoverPhotoLocation)) {
+                    @\unlink($oldCoverPhotoLocation);
                 }
-
-                // If neither the regular, nor the WebP variant is readable then the
-                // cover photo is missing and we must clear the database information.
-                if (
-                    !\is_readable($coverPhoto->getLocation(false))
-                    && !\is_readable($coverPhoto->getLocation(true))
-                ) {
-                    $editor->update([
-                        'coverPhotoHash' => null,
-                        'coverPhotoExtension' => '',
-                    ]);
-
-                    continue;
-                }
-
-                if ($coverPhoto instanceof IWebpUserCoverPhoto) {
-                    $result = $coverPhoto->createWebpVariant();
-                    if ($result !== null) {
-                        $data['coverPhotoHasWebP'] = 1;
-
-                        // A fallback jpeg image was just created.
-                        if ($result === false) {
-                            $data['coverPhotoExtension'] = 'jpg';
-                        }
-
-                        $editor->update($data);
-                    }
+                if ($oldCoverPhotoWebPLocation && \file_exists($oldCoverPhotoWebPLocation)) {
+                    @\unlink($oldCoverPhotoWebPLocation);
                 }
             }
         }

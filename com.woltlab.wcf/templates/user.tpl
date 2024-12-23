@@ -115,44 +115,4 @@
 	<woltlab-core-notice type="info">{lang}wcf.user.profile.protected{/lang}</woltlab-core-notice>
 {/if}
 
-{if $user->userID == $__wcf->user->userID || $user->canEdit()}
-	{if $__wcf->getSession()->getPermission('user.profile.coverPhoto.canUploadCoverPhoto')}
-		<div id="userProfileCoverPhotoUpload" class="jsStaticDialogContent" data-title="{lang}wcf.user.coverPhoto.upload{/lang}">
-			{if $__wcf->user->disableCoverPhoto}
-				<woltlab-core-notice type="error">{lang}wcf.user.coverPhoto.error.disabled{/lang}</woltlab-core-notice>
-			{else}
-				<div id="coverPhotoUploadPreview"></div>
-				
-				{* placeholder for the upload button *}
-				<div id="coverPhotoUploadButtonContainer"></div>
-				<small>{lang}wcf.user.coverPhoto.upload.description{/lang}</small>
-			{/if}
-		</div>
-		<script data-relocate="true">
-			require(['Language', 'WoltLabSuite/Core/Ui/User/CoverPhoto/Upload'], function (Language, UiUserCoverPhotoUpload) {
-				Language.addObject({
-					'wcf.user.coverPhoto.delete.confirmMessage': '{jslang}wcf.user.coverPhoto.delete.confirmMessage{/jslang}',
-					'wcf.user.coverPhoto.upload.error.fileExtension': '{jslang}wcf.user.coverPhoto.upload.error.fileExtension{/jslang}',
-					'wcf.user.coverPhoto.upload.error.tooLarge': '{jslang}wcf.user.coverPhoto.upload.error.tooLarge{/jslang}',
-					'wcf.user.coverPhoto.upload.error.uploadFailed': '{jslang}wcf.user.coverPhoto.upload.error.uploadFailed{/jslang}',
-					'wcf.user.coverPhoto.upload.error.badImage': '{jslang}wcf.user.coverPhoto.upload.error.badImage{/jslang}'
-				});
-				
-				{if !$__wcf->user->disableCoverPhoto}
-					new UiUserCoverPhotoUpload({@$user->userID});
-				{/if}
-			});
-		</script>
-	{/if}
-	<script data-relocate="true">
-		require(['Language', 'WoltLabSuite/Core/Ui/User/CoverPhoto/Delete'], function (Language, UiUserCoverPhotoDelete) {
-			Language.addObject({
-				'wcf.user.coverPhoto.delete.confirmMessage': '{jslang}wcf.user.coverPhoto.delete.confirmMessage{/jslang}'
-			});
-			
-			UiUserCoverPhotoDelete.init({@$user->userID});
-		});
-	</script>
-{/if}
-
 {include file='footer'}

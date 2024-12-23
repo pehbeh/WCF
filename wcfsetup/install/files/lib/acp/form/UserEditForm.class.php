@@ -295,7 +295,7 @@ class UserEditForm extends UserAddForm
         }
 
         // get the user cover photo object
-        if ($this->user->coverPhotoHash) {
+        if ($this->user->coverPhotoFileID) {
             // If the editing user lacks the permissions to view the cover photo, the system
             // will try to load the default cover photo. However, the default cover photo depends
             // on the style, eventually triggering a change to the template group which will
@@ -458,15 +458,6 @@ class UserEditForm extends UserAddForm
             $data['data']['disableCoverPhoto'] = $this->disableCoverPhoto;
             $data['data']['disableCoverPhotoReason'] = $this->disableCoverPhotoReason;
             $data['data']['disableCoverPhotoExpires'] = $this->disableCoverPhotoExpires;
-
-            if ($this->deleteCoverPhoto) {
-                UserProfileRuntimeCache::getInstance()->getObject($this->userID)->getCoverPhoto()->delete();
-
-                $data['data']['coverPhotoHash'] = null;
-                $data['data']['coverPhotoExtension'] = '';
-
-                UserProfileRuntimeCache::getInstance()->removeObject($this->userID);
-            }
         }
 
         $this->objectAction = new UserAction([$this->userID], 'update', $data);

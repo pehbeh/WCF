@@ -1577,9 +1577,10 @@ CREATE TABLE wcf1_user (
 	authData VARCHAR(191) NOT NULL DEFAULT '',
 	likesReceived MEDIUMINT(7) NOT NULL DEFAULT 0,
 	trophyPoints INT(10) NOT NULL DEFAULT 0,
-	coverPhotoHash CHAR(40) DEFAULT NULL,
-	coverPhotoExtension VARCHAR(4) NOT NULL DEFAULT '',
-	coverPhotoHasWebP TINYINT(1) NOT NULL DEFAULT 0,
+	coverPhotoFileID INT(10) DEFAULT NULL,
+	coverPhotoHash CHAR(40) DEFAULT NULL, -- deprecated since 6.2
+	coverPhotoExtension VARCHAR(4) NOT NULL DEFAULT '', -- deprecated since 6.2
+	coverPhotoHasWebP TINYINT(1) NOT NULL DEFAULT 0, -- deprecated since 6.2
 	disableCoverPhoto TINYINT(1) NOT NULL DEFAULT 0,
 	disableCoverPhotoReason TEXT,
 	disableCoverPhotoExpires INT(10) NOT NULL DEFAULT 0,
@@ -2258,6 +2259,7 @@ ALTER TABLE wcf1_unfurl_url ADD FOREIGN KEY (imageID) REFERENCES wcf1_unfurl_url
 
 ALTER TABLE wcf1_user ADD FOREIGN KEY (avatarID) REFERENCES wcf1_user_avatar (avatarID) ON DELETE SET NULL;
 ALTER TABLE wcf1_user ADD FOREIGN KEY (avatarFileID) REFERENCES wcf1_file (fileID) ON DELETE SET NULL;
+ALTER TABLE wcf1_user ADD FOREIGN KEY (coverPhotoFileID) REFERENCES wcf1_file (fileID) ON DELETE SET NULL;
 ALTER TABLE wcf1_user ADD FOREIGN KEY (rankID) REFERENCES wcf1_user_rank (rankID) ON DELETE SET NULL;
 ALTER TABLE wcf1_user ADD FOREIGN KEY (userOnlineGroupID) REFERENCES wcf1_user_group (groupID) ON DELETE SET NULL;
 

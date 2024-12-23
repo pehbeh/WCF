@@ -159,6 +159,9 @@ define(["require", "exports", "tslib", "./Core", "./Date/Picker", "./Devtools", 
         (0, LazyLoader_1.whenFirstSeen)(".jsEnablesOptions", () => {
             void new Promise((resolve_14, reject_14) => { require(["./Component/Option/Enable"], resolve_14, reject_14); }).then(tslib_1.__importStar).then(({ setup }) => setup());
         });
+        (0, LazyLoader_1.whenFirstSeen)("[data-edit-cover-photo]", () => {
+            void new Promise((resolve_15, reject_15) => { require(["./Component/User/CoverPhoto"], resolve_15, reject_15); }).then(tslib_1.__importStar).then(({ setup }) => setup());
+        });
         // Move the reCAPTCHA widget overlay to the `pageOverlayContainer`
         // when widget form elements are placed in a dialog.
         const observer = new MutationObserver((mutations) => {

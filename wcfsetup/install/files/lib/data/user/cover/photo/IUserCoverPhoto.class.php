@@ -27,7 +27,21 @@ interface IUserCoverPhoto
     public function getURL(?bool $forceWebP = null): string;
 
     /**
+     * Returns the thumbnail of this cover photo.
+     *
+     * @since 6.2
+     */
+    public function getThumbnailURL(string $size = 'small'): string;
+
+    /**
      * Returns the file name of this cover photo.
      */
     public function getFilename(?bool $forceWebP = null): string;
+
+    /**
+     * Returns the object ID of this cover photo.
+     *
+     * @since 6.2
+     */
+    public function getObjectID(): ?int;
 }

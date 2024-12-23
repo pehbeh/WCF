@@ -423,14 +423,12 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
     public function getCoverPhoto($isACP = false)
     {
         if ($this->coverPhoto === null) {
-            if ($this->coverPhotoHash) {
+            if ($this->coverPhotoFileID) {
                 if ($isACP || !$this->disableCoverPhoto) {
                     if ($this->canSeeCoverPhoto()) {
                         $this->coverPhoto = new UserCoverPhoto(
                             $this->userID,
-                            $this->coverPhotoHash,
-                            $this->coverPhotoExtension,
-                            $this->coverPhotoHasWebP
+                            FileRuntimeCache::getInstance()->getObject($this->coverPhotoFileID)
                         );
                     }
                 }
@@ -1220,5 +1218,25 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
         }
 
         return WCF::getSession()->getPermission('user.profile.avatar.canUploadAvatar');
+    }
+
+    /**
+     * @since 6.2
+     */
+    public function canEditCoverPhoto(): bool
+    {
+        if ($this->canEdit() && WCF::getSession()->getPermission('admin.user.canDisableCoverPhoto')) {
+            return true;
+        }
+
+        if ($this->userID !== WCF::getUser()->userID) {
+            return false;
+        }
+
+        if ($this->disableCoverPhoto) {
+            return false;
+        }
+
+        return WCF::getSession()->getPermission('user.profile.coverPhoto.canUploadCoverPhoto');
     }
 }
