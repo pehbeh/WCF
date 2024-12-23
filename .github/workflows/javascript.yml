@@ -74,3 +74,9 @@ jobs:
     - name: "Check 'sortablejs'"
       run: |
         diff -wu wcfsetup/install/files/js/3rdParty/Sortable.min.js node_modules/sortablejs/Sortable.min.js
+    - name: "Check 'cropperjs'"
+      run: |
+        diff -wu wcfsetup/install/files/js/3rdParty/cropper.min.js node_modules/cropperjs/dist/cropper.min.js
+    - name: "Check 'exifreader'"
+      run: |
+        diff -wu wcfsetup/install/files/js/3rdParty/exif-reader.js node_modules/exifreader/dist/exif-reader.js

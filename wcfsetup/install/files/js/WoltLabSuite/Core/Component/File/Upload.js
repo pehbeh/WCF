@@ -1,4 +1,4 @@
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Api/Files/Upload", "WoltLabSuite/Core/Api/Files/Chunk/Chunk", "WoltLabSuite/Core/Api/Files/GenerateThumbnails", "WoltLabSuite/Core/Image/Resizer", "WoltLabSuite/Core/Dom/Util", "WoltLabSuite/Core/Language"], function (require, exports, tslib_1, Selector_1, Upload_1, Chunk_1, GenerateThumbnails_1, Resizer_1, Util_1, Language_1) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Api/Files/Upload", "WoltLabSuite/Core/Api/Files/Chunk/Chunk", "WoltLabSuite/Core/Api/Files/GenerateThumbnails", "WoltLabSuite/Core/Image/Resizer", "WoltLabSuite/Core/Dom/Util", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Component/Image/Cropper"], function (require, exports, tslib_1, Selector_1, Upload_1, Chunk_1, GenerateThumbnails_1, Resizer_1, Util_1, Language_1, Cropper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.clearPreviousErrors = clearPreviousErrors;
@@ -183,9 +183,27 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/Selector", "Wol
                 else if (!validateFileSize(element, file)) {
                     return;
                 }
-                void resizeImage(element, file).then((resizedFile) => {
-                    void upload(element, resizedFile);
-                });
+                if (element.dataset.cropperConfiguration) {
+                    const cropperConfiguration = JSON.parse(element.dataset.cropperConfiguration);
+                    void (0, Cropper_1.cropImage)(element, file, cropperConfiguration)
+                        .then((resizedFile) => {
+                        void upload(element, resizedFile);
+                    })
+                        .catch((e) => {
+                        if (e === undefined) {
+                            // User closed the dialog.
+                            return;
+                        }
+                        if (e instanceof Error) {
+                            (0, Util_1.innerError)(element, e.message);
+                        }
+                    });
+                }
+                else {
+                    void resizeImage(element, file).then((resizedFile) => {
+                        void upload(element, resizedFile);
+                    });
+                }
             });
             element.addEventListener("ckeditorDrop", (event) => {
                 const { file } = event.detail;

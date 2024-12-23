@@ -5566,6 +5566,7 @@ Benachrichtigungen auf <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phra
 	</category>
 	<category name="wcf.smiley"/>
 	<category name="wcf.upload">
+		<item name="wcf.upload.crop.image"><![CDATA[Bild zuschneiden]]></item>
 		<item name="wcf.upload.error.noImage"><![CDATA[Die hochgeladene Datei ist kein Bild.]]></item>
 		<item name="wcf.upload.error.reachedRemainingLimit"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Du hast{else}Sie haben{/if} zu viele Dateien ausgewählt. {if LANGUAGE_USE_INFORMAL_VARIANT}Du kannst{else}Sie können{/if} nur noch {#$maxFiles} weitere Datei{if $maxFiles != 1}en{/if} hochladen.]]></item>
 		<item name="wcf.upload.error.uploadFailed"><![CDATA[Beim Hochladen der Datei ist ein unbekannter Fehler aufgetreten.]]></item>
@@ -5574,6 +5575,7 @@ Benachrichtigungen auf <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phra
 		<item name="wcf.upload.error.fileSizeTooLarge"><![CDATA[Die Datei ist zu groß.]]></item>
 		<item name="wcf.upload.error.maximumCountReached"><![CDATA[Es {plural value=$maximumCount 1='darf nur eine Datei' other='dürfen nur # Dateien'} hochgeladen werden.]]></item>
 		<item name="wcf.upload.error.adopt"><![CDATA[Die Datei „{$filename}“ kann nicht zugewiesen werden.]]></item>
+		<item name="wcf.upload.error.image.tooSmall"><![CDATA[Das Bild ist zu klein. Es muss mindestens {$width} x {$height} Pixel groß sein.]]></item>
 		<item name="wcf.upload.error.delete.unknownError"><![CDATA[Beim Löschen der Datei ist ein unbekannter Fehler aufgetreten.]]></item>
 		<item name="wcf.upload.error.delete.permissionDenied"><![CDATA[Die Datei kann nicht gelöscht werden, {if LANGUAGE_USE_INFORMAL_VARIANT}verwende{else}verwenden Sie{/if} stattdessen <strong>Ersetzen</strong>, um die Datei zu ersetzen.]]></item>
 	</category>

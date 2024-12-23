@@ -90,4 +90,11 @@ abstract class AbstractFileProcessor implements IFileProcessor
     {
         // Do not track downloads.
     }
+
+    #[\Override]
+    public function getImageCropperConfiguration(): ?ImageCropperConfiguration
+    {
+        // Do not crop images.
+        return null;
+    }
 }

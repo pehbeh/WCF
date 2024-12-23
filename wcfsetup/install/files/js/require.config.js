@@ -19,6 +19,8 @@ requirejs.config({
 		"diff-match-patch": "3rdParty/diff-match-patch/diff_match_patch.min",
 		"emoji-picker-element": "3rdParty/emoji-picker-element.min",
 		sortablejs: "3rdParty/Sortable.min",
+		cropperjs: "3rdParty/cropper.min",
+		exifreader: "3rdParty/exif-reader",
 	},
 	packages: [
 		{

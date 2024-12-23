@@ -105,6 +105,8 @@ final class FileProcessor extends SingletonFactory
             $maximumSize = -1;
         }
 
+        $cropperConfiguration = $fileProcessor->getImageCropperConfiguration();
+
         return \sprintf(
             <<<'HTML'
                 <woltlab-core-file-upload
@@ -112,6 +114,7 @@ final class FileProcessor extends SingletonFactory
                     data-context="%s"
                     data-file-extensions="%s"
                     data-resize-configuration="%s"
+                    %s
                     data-maximum-count="%d"
                     data-maximum-size="%d"
                 ></woltlab-core-file-upload>
@@ -120,6 +123,8 @@ final class FileProcessor extends SingletonFactory
             StringUtil::encodeHTML(JSON::encode($context)),
             StringUtil::encodeHTML($allowedFileExtensions),
             StringUtil::encodeHTML(JSON::encode($fileProcessor->getResizeConfiguration())),
+            $cropperConfiguration === null ? ''
+                : 'data-cropper-configuration="' . StringUtil::encodeHTML(JSON::encode($cropperConfiguration)) . '"',
             $maximumCount,
             $maximumSize,
         );

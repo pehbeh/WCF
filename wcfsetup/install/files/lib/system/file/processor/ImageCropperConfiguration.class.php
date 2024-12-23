@@ -1,0 +1,92 @@
+<?php
+
+namespace wcf\system\file\processor;
+
+/**
+ * The configuration for the image cropper.
+ *
+ * @author      Olaf Braun
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
+final class ImageCropperConfiguration implements \JsonSerializable
+{
+    public readonly float $aspectRatio;
+
+    /**
+     * @var ImageCropSize[]
+     */
+    public readonly array $sizes;
+
+    private function __construct(
+        public readonly ImageCropperType $type,
+        ImageCropSize ...$sizes
+    ) {
+        if ($sizes === []) {
+            throw new \InvalidArgumentException('At least one size must be provided.');
+        }
+
+        $size = $sizes[0];
+        $this->aspectRatio = $size->aspectRatio();
+
+        foreach ($sizes as $size) {
+            if ($size->aspectRatio() !== $this->aspectRatio) {
+                throw new \InvalidArgumentException('All sizes must have the same aspect ratio.');
+            }
+        }
+
+        \usort($sizes, function (ImageCropSize $a, ImageCropSize $b) {
+            if ($a->width > $a->height) {
+                return $a->width <=> $b->width;
+            } else {
+                return $a->height <=> $b->height;
+            }
+        });
+        $this->sizes = $sizes;
+    }
+
+    #[\Override]
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'aspectRatio' => $this->aspectRatio,
+            'sizes' => $this->sizes,
+            'type' => $this->type->toString(),
+        ];
+    }
+
+    /**
+     * Creates an image cropper with minimum and maximum size with the same aspect ratio.
+     * The user can freely select, move and scale.
+     * However, the cropping area is limited to `$min` and `$max`.
+     */
+    public static function forMinMax(ImageCropSize $min, ImageCropSize $max): self
+    {
+        return new self(ImageCropperType::MinMax, $min, $max);
+    }
+
+    /**
+     * Creates an image cropper that reduces the image to a specific size
+     * and only allows the user to move the cropping area.
+     * The size is determined by `$sizes` and corresponds to the smallest side of the image that is the next smaller
+     * or equal size of `$sizes`. The aspect ratio of the uploaded image is retained.
+     *
+     * Example:
+     * `$sizes` is [128x128, 256x256]
+     * - Image is 100x200
+     *   - Image is rejected
+     * - Image is 200x150
+     *   - Uploaded image is 128x128
+     * - Image is 150x200
+     *   - Uploaded image is 128x128
+     * - Image is 300x300
+     *   - Uploaded can image is 128x128 or 256x256, depending on cropping selection from the user
+     * - Image is 256x256
+     *   - The image is uploaded directly without displaying the cropping dialog
+     */
+    public static function forExact(ImageCropSize ...$sizes): self
+    {
+        return new self(ImageCropperType::Exact, ...$sizes);
+    }
+}

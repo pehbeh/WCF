@@ -97,6 +97,42 @@ const DomUtil = {
   },
 
   /**
+   * Returns the inner height of an element including paddings.
+   */
+  innerHeight(element: HTMLElement, styles?: CSSStyleDeclaration): number {
+    styles = styles || window.getComputedStyle(element);
+
+    let height = element.clientHeight;
+    height -= ~~styles.paddingTop + ~~styles.paddingBottom;
+
+    return height;
+  },
+
+  /**
+   * Returns the inner width of an element including paddings.
+   */
+  innerWidth(element: HTMLElement, styles?: CSSStyleDeclaration): number {
+    styles = styles || window.getComputedStyle(element);
+
+    let width = element.clientWidth;
+    width -= ~~parseInt(styles.paddingLeft) + ~~parseInt(styles.paddingRight);
+
+    return width;
+  },
+
+  /**
+   * Returns the inner dimensions of an element including paddings.
+   */
+  innerDimensions(element: HTMLElement): Dimensions {
+    const styles = window.getComputedStyle(element);
+
+    return {
+      height: DomUtil.innerHeight(element, styles),
+      width: DomUtil.innerWidth(element, styles),
+    };
+  },
+
+  /**
    * Returns the outer height of an element including margins.
    */
   outerHeight(element: HTMLElement, styles?: CSSStyleDeclaration): number {

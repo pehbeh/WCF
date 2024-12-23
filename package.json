@@ -29,7 +29,9 @@
     "@woltlab/editor": "git+https://github.com/WoltLab/editor.git#54d7052a834e3b41e5fdacd8a17a4a4ea1b6e76c",
     "@woltlab/visual-dom-diff": "git+https://github.com/WoltLab/visual-dom-diff.git#e5b51fce3157d1eda310566fc1f86101341d1fea",
     "@woltlab/zxcvbn": "git+https://github.com/WoltLab/zxcvbn.git#5b582b24e437f1883ccad3c37dae7c3c5f1e7da3",
+    "cropperjs": "2.0.0-rc.2",
     "emoji-picker-element": "^1.23.0",
+    "exifreader": "^4.25.0",
     "focus-trap": "^7.6.1",
     "html-parsed-element": "^0.4.1",
     "perfect-scrollbar": "^1.5.6",
@@ -39,5 +41,15 @@
     "tabbable": "^6.2.0",
     "tslib": "^2.8.1",
     "webpack-cli": "^5.1.4"
+  },
+  "exifreader": {
+    "include": {
+      "jpeg": true,
+      "png": true,
+      "webp": true,
+      "exif": [
+        "Orientation"
+      ]
+    }
   }
 }

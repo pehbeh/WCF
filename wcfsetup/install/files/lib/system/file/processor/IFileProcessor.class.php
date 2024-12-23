@@ -156,4 +156,11 @@ interface IFileProcessor
      * file types that are served by the web server itself.
      */
     public function trackDownload(File $file): void;
+
+    /**
+     * Returns the image cropper configuration for this file processor.
+     *
+     * @since 6.2
+     */
+    public function getImageCropperConfiguration(): ?ImageCropperConfiguration;
 }
