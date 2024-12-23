@@ -111,7 +111,7 @@
 			WCF.recaptcha.queue.push({
 				bucket: 'recaptchaBucket{$recaptchaBucketID}'
 				{if $ajaxCaptcha|isset && $ajaxCaptcha}
-					, ajaxCaptcha: '{$captchaID}'
+					, ajaxCaptcha: '{unsafe:$captchaID|encodeJS}'
 				{/if}
 			});
 			
@@ -186,7 +186,7 @@
 			if (WCF.recaptcha.callbackCalled) setTimeout(recaptchaCallback, 1);
 			
 			{if $ajaxCaptcha|isset && $ajaxCaptcha}
-			WCF.System.Captcha.addCallback('{$captchaID}', function() {
+			WCF.System.Captcha.addCallback('{unsafe:$captchaID|encodeJS}', function() {
 				return {
 					'g-recaptcha-response': grecaptcha.getResponse(WCF.recaptcha.mapping['recaptchaBucket{$recaptchaBucketID}']),
 					'type': 'v2'
