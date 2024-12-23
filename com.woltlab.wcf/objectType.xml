@@ -1745,6 +1745,11 @@
 			<classname>wcf\system\file\processor\AttachmentFileProcessor</classname>
 		</type>
 		<type>
+			<name>com.woltlab.wcf.user.avatar</name>
+			<definitionname>com.woltlab.wcf.file</definitionname>
+			<classname>wcf\system\file\processor\UserAvatarFileProcessor</classname>
+		</type>
+		<type>
 			<name>com.woltlab.wcf.user.coverPhoto</name>
 			<definitionname>com.woltlab.wcf.file</definitionname>
 			<classname>wcf\system\file\processor\UserCoverPhotoFileProcessor</classname>

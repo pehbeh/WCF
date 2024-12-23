@@ -600,32 +600,23 @@
 				<section class="section avatarEdit">
 					<h2 class="sectionTitle">{lang}wcf.user.avatar{/lang}</h2>
 
-					<dl class="avatarType">
+					<dl>
 						<dt></dt>
 						<dd>
-							<label><input type="radio" name="avatarType" value="none"{if $avatarType == 'none'} checked{/if}> {lang}wcf.user.avatar.type.none{/lang}</label>
-						</dd>
-					</dl>
-
-					<dl class="avatarType jsOnly{if $errorType[customAvatar]|isset} formError{/if}" id="avatarUpload">
-						<dt>
 							{if $avatarType == 'custom' && $userAvatar !== null}
-								{@$userAvatar->getImageTag(96)}
+								<img src="{$userAvatar->getLink()}" alt="" class="userAvatarImage" height="96" width="96">
 							{else}
 								<img src="{@$__wcf->getPath()}images/avatars/avatar-default.svg" alt="" class="userAvatarImage" height="96" width="96">
 							{/if}
-						</dt>
+						</dd>
+					</dl>
+
+					<dl>
+						<dt></dt>
 						<dd>
-							<label><input type="radio" name="avatarType" value="custom"{if $avatarType == 'custom'} checked{/if}> {lang}wcf.user.avatar.type.custom{/lang}</label>
-
-							{* placeholder for upload button: *}
-							<div class="avatarUploadButtonContainer"></div>
-
-							{if $errorType[customAvatar]|isset}
-								<small class="innerError">
-									{if $errorType[customAvatar] == 'empty'}{lang}wcf.global.form.error.empty{/lang}{/if}
-								</small>
-							{/if}
+							<button type="button" class="button userAvatarManagement" data-edit-avatar="{link controller="UserAvatar" forceFrontend=true id=$user->userID}{/link}">
+								{lang}wcf.user.avatarManagement{/lang}
+							</button>
 						</dd>
 					</dl>
 
@@ -694,23 +685,6 @@
 						$('#disableAvatarNeverExpires').change();
 					</script>
 				{/if}
-
-				<script data-relocate="true" src="{@$__wcf->getPath()}js/WCF.Message.js?v={@LAST_UPDATE_TIME}"></script>
-				<script data-relocate="true" src="{@$__wcf->getPath()}js/WCF.User.js?v={@LAST_UPDATE_TIME}"></script>
-				<script data-relocate="true">
-					$(function() {
-						WCF.Language.addObject({
-							'wcf.user.avatar.upload.error.invalidExtension': '{jslang}wcf.user.avatar.upload.error.invalidExtension{/jslang}',
-							'wcf.user.avatar.upload.error.tooSmall': '{jslang}wcf.user.avatar.upload.error.tooSmall{/jslang}',
-							'wcf.user.avatar.upload.error.tooLarge': '{jslang}wcf.user.avatar.upload.error.tooLarge{/jslang}',
-							'wcf.user.avatar.upload.error.uploadFailed': '{jslang}wcf.user.avatar.upload.error.uploadFailed{/jslang}',
-							'wcf.user.avatar.upload.error.badImage': '{jslang}wcf.user.avatar.upload.error.badImage{/jslang}',
-							'wcf.user.avatar.upload.success': '{jslang}wcf.user.avatar.upload.success{/jslang}'
-						});
-
-						new WCF.User.Avatar.Upload({@$user->userID});
-					});
-				</script>
 
 				{event name='avatarFieldsets'}
 			</div>

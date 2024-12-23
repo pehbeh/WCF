@@ -16,6 +16,8 @@ use wcf\util\ImageUtil;
  * @method static UserAvatar  create(array $parameters = [])
  * @method      UserAvatar  getDecoratedObject()
  * @mixin       UserAvatar
+ *
+ * @deprecated 6.2
  */
 class UserAvatarEditor extends DatabaseObjectEditor
 {

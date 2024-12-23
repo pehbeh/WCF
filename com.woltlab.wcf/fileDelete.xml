@@ -1683,6 +1683,7 @@
 		<file>lib/data/user/option/IUserOptionOutput.class.php</file>
 		<file>lib/data/user/option/UserOptionOutput.class.php</file>
 		<file>lib/form/AbstractSecureForm.class.php</file>
+		<file>lib/form/AvatarEditForm.class.php</file>
 		<file>lib/form/Form.class.php</file>
 		<file>lib/form/MailForm.class.php</file>
 		<file>lib/form/MultifactorAuthenticationAbortForm.class.php</file>
@@ -3001,6 +3002,8 @@
 		<file>lib/system/template/plugin/TemplatePluginPrefilterIcon.class.php</file>
 		<file>lib/system/template/plugin/TemplatePluginPrefilterLang.class.php</file>
 		<file>lib/system/template/plugin/WordwrapModifierTemplatePlugin.class.php</file>
+		<file>lib/system/upload/AvatarUploadFileSaveStrategy.class.php</file>
+		<file>lib/system/upload/AvatarUploadFileValidationStrategy.class.php</file>
 		<file>lib/system/upload/UserCoverPhotoUploadFileSaveStrategy.class.php</file>
 		<file>lib/system/upload/UserCoverPhotoUploadFileValidationStrategy.class.php</file>
 		<file>lib/system/user/UserCollapsibleContentHandler.class.php</file>

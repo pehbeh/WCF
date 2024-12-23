@@ -19,6 +19,8 @@ use wcf\system\cache\runtime\FileRuntimeCache;
  */
 class UserProfileList extends UserList
 {
+    use TUserAvatarObjectList;
+
     /**
      * @inheritDoc
      */
@@ -39,13 +41,9 @@ class UserProfileList extends UserList
         if (!empty($this->sqlSelects)) {
             $this->sqlSelects .= ',';
         }
-        $this->sqlSelects .= "user_avatar.*";
-        $this->sqlJoins .= "
-            LEFT JOIN   wcf1_user_avatar user_avatar
-            ON          user_avatar.avatarID = user_table.avatarID";
 
         // get current location
-        $this->sqlSelects .= ", session.pageID, session.pageObjectID, session.lastActivityTime AS sessionLastActivityTime";
+        $this->sqlSelects .= "session.pageID, session.pageObjectID, session.lastActivityTime AS sessionLastActivityTime";
         $this->sqlJoins .= "
             LEFT JOIN   wcf1_session session
             ON          session.userID = user_table.userID";
@@ -61,6 +59,8 @@ class UserProfileList extends UserList
         }
 
         parent::readObjects();
+
+        $this->cacheAvatarFiles();
 
         $coverPhotoFileIDs = [];
         foreach ($this->objects as $object) {

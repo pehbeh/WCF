@@ -1558,6 +1558,7 @@ CREATE TABLE wcf1_user (
 	reactivationCode INT(10) NOT NULL DEFAULT 0,
 	registrationIpAddress VARCHAR(39) NOT NULL DEFAULT '',
 	avatarID INT(10),
+	avatarFileID INT(10) DEFAULT NULL,
 	disableAvatar TINYINT(1) NOT NULL DEFAULT 0,
 	disableAvatarReason TEXT,
 	disableAvatarExpires INT(10) NOT NULL DEFAULT 0,
@@ -2257,6 +2258,7 @@ ALTER TABLE wcf1_tracked_visit_type ADD FOREIGN KEY (userID) REFERENCES wcf1_use
 ALTER TABLE wcf1_unfurl_url ADD FOREIGN KEY (imageID) REFERENCES wcf1_unfurl_url_image (imageID) ON DELETE SET NULL;
 
 ALTER TABLE wcf1_user ADD FOREIGN KEY (avatarID) REFERENCES wcf1_user_avatar (avatarID) ON DELETE SET NULL;
+ALTER TABLE wcf1_user ADD FOREIGN KEY (avatarFileID) REFERENCES wcf1_file (fileID) ON DELETE SET NULL;
 ALTER TABLE wcf1_user ADD FOREIGN KEY (coverPhotoFileID) REFERENCES wcf1_file (fileID) ON DELETE SET NULL;
 ALTER TABLE wcf1_user ADD FOREIGN KEY (rankID) REFERENCES wcf1_user_rank (rankID) ON DELETE SET NULL;
 ALTER TABLE wcf1_user ADD FOREIGN KEY (userOnlineGroupID) REFERENCES wcf1_user_group (groupID) ON DELETE SET NULL;

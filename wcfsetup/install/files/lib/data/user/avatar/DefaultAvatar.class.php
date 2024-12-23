@@ -2,6 +2,7 @@
 
 namespace wcf\data\user\avatar;
 
+use wcf\system\file\processor\UserAvatarFileProcessor;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 
@@ -18,7 +19,7 @@ class DefaultAvatar implements IUserAvatar, ISafeFormatAvatar
      * image size
      * @var int
      */
-    public $size = UserAvatar::AVATAR_SIZE;
+    public $size = UserAvatarFileProcessor::AVATAR_SIZE;
 
     /**
      * content of the `src` attribute

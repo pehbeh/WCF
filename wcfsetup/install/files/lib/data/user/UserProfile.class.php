@@ -3,13 +3,13 @@
 namespace wcf\data\user;
 
 use wcf\data\DatabaseObjectDecorator;
+use wcf\data\file\File;
 use wcf\data\ITitledLinkObject;
 use wcf\data\trophy\Trophy;
 use wcf\data\trophy\TrophyCache;
 use wcf\data\user\avatar\AvatarDecorator;
 use wcf\data\user\avatar\DefaultAvatar;
 use wcf\data\user\avatar\IUserAvatar;
-use wcf\data\user\avatar\UserAvatar;
 use wcf\data\user\cover\photo\DefaultUserCoverPhoto;
 use wcf\data\user\cover\photo\IUserCoverPhoto;
 use wcf\data\user\cover\photo\UserCoverPhoto;
@@ -349,21 +349,18 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
         if ($this->avatar === null) {
             if (!$this->disableAvatar) {
                 if ($this->canSeeAvatar()) {
-                    if ($this->avatarID) {
-                        if (!$this->fileHash) {
-                            $data = UserStorageHandler::getInstance()->getField('avatar', $this->userID);
-                            if ($data === null) {
-                                $this->avatar = new UserAvatar($this->avatarID);
-                                UserStorageHandler::getInstance()->update(
-                                    $this->userID,
-                                    'avatar',
-                                    \serialize($this->avatar)
-                                );
-                            } else {
-                                $this->avatar = \unserialize($data);
-                            }
+                    if ($this->avatarFileID !== null) {
+                        $data = UserStorageHandler::getInstance()->getField('avatar', $this->userID);
+                        if ($data === null) {
+                            $this->avatar = FileRuntimeCache::getInstance()->getObject($this->avatarFileID);
+
+                            UserStorageHandler::getInstance()->update(
+                                $this->userID,
+                                'avatar',
+                                \serialize($this->avatar)
+                            );
                         } else {
-                            $this->avatar = new UserAvatar(null, $this->getDecoratedObject()->data);
+                            $this->avatar = \unserialize($data);
                         }
                     } else {
                         $parameters = ['avatar' => null];
@@ -392,6 +389,16 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
         }
 
         return $this->avatar;
+    }
+
+    /**
+     * Sets the user's avatar.
+     *
+     * @since 6.2
+     */
+    public function setFileAvatar(File $file): void
+    {
+        $this->avatar = new AvatarDecorator($file);
     }
 
     /**
@@ -1188,6 +1195,29 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
             && WCF::getSession()->getPermission('user.profile.trophy.canSeeTrophies')
             && $this->trophyPoints
             && ($this->isAccessible('canViewTrophies') || $this->userID == WCF::getSession()->userID);
+    }
+
+    /**
+     * @since 6.2
+     */
+    public function canEditAvatar(): bool
+    {
+        if (
+            WCF::getSession()->getPermission('admin.user.canEditUser')
+            && UserGroup::isAccessibleGroup($this->getGroupIDs())
+        ) {
+            return true;
+        }
+
+        if ($this->userID !== WCF::getUser()->userID) {
+            return false;
+        }
+
+        if ($this->disableAvatar) {
+            return false;
+        }
+
+        return WCF::getSession()->getPermission('user.profile.avatar.canUploadAvatar');
     }
 
     /**

@@ -15,11 +15,19 @@ use wcf\system\database\table\PartialDatabaseTable;
 return [
     PartialDatabaseTable::create('wcf1_user')
         ->columns([
+            IntDatabaseTableColumn::create('avatarFileID')
+                ->length(10)
+                ->defaultValue(null),
             IntDatabaseTableColumn::create('coverPhotoFileID')
                 ->length(10)
                 ->defaultValue(null),
         ])
         ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['avatarFileID'])
+                ->referencedTable('wcf1_file')
+                ->referencedColumns(['fileID'])
+                ->onDelete('SET NULL'),
             DatabaseTableForeignKey::create()
                 ->columns(['coverPhotoFileID'])
                 ->referencedTable('wcf1_file')

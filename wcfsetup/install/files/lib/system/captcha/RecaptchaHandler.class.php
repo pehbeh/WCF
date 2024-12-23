@@ -111,16 +111,14 @@ class RecaptchaHandler implements ICaptchaHandler
             throw new UserInputException('recaptchaString', 'false');
         }
 
-        $type = $this->challenge ?: 'v2';
+        $type = $this->challenge ?: 'v3';
 
-        if ($type === 'v2') {
-            $key = RECAPTCHA_PRIVATEKEY;
-        } elseif ($type === 'invisible') {
-            $key = RECAPTCHA_PRIVATEKEY_INVISIBLE;
-        } else {
-            // The bot modified the `recaptcha-type` form field.
-            throw new UserInputException('recaptchaString', 'false');
-        }
+        $key = match ($type) {
+            'v3' => RECAPTCHA_PRIVATEKEY_V3,
+            'v2' => RECAPTCHA_PRIVATEKEY,
+            'invisible' => RECAPTCHA_PRIVATEKEY_INVISIBLE,
+            default => throw new UserInputException('recaptchaString', 'false'),
+        };
 
         $request = new Request(
             'GET',
@@ -139,6 +137,11 @@ class RecaptchaHandler implements ICaptchaHandler
             $data = JSON::decode((string)$response->getBody());
 
             if ($data['success']) {
+                // reCaptcha v3 score ranges from 1.0(very likely a good interaction) and 0.0(very likely a bot),
+                // with 0.5 as the threshold for passing
+                if ($type === 'v3' && $data['score'] < 0.5) {
+                    throw new UserInputException('recaptchaString', 'false');
+                }
                 // yeah
             } else {
                 throw new UserInputException('recaptchaString', 'false');

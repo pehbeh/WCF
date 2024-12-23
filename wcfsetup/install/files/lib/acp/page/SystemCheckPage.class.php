@@ -86,9 +86,9 @@ class SystemCheckPage extends AbstractPage
 
     public $foreignKeys = [
         'wcf1_user' => [
-            'avatarID' => [
-                'referenceTable' => 'wcf1_user_avatar',
-                'referenceColumn' => 'avatarID',
+            'avatarFileID' => [
+                'referenceTable' => 'wcf1_file',
+                'referenceColumn' => 'fileID',
             ],
         ],
         'wcf1_comment' => [
