@@ -277,6 +277,8 @@ export function setup(): void {
             void upload(element, resizedFile);
           })
           .catch((e) => {
+            element.dispatchEvent(new CustomEvent("cancel"));
+
             if (e === undefined) {
               // User closed the dialog.
               return;

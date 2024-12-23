@@ -2,12 +2,8 @@
 
 namespace wcf\system\importer;
 
-use wcf\data\user\avatar\UserAvatar;
-use wcf\data\user\avatar\UserAvatarEditor;
-use wcf\system\exception\SystemException;
+use wcf\data\file\File;
 use wcf\system\WCF;
-use wcf\util\FileUtil;
-use wcf\util\ImageUtil;
 
 /**
  * Imports user avatars.
@@ -16,74 +12,41 @@ use wcf\util\ImageUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
-class UserAvatarImporter extends AbstractImporter
+class UserAvatarImporter extends AbstractFileImporter
 {
     /**
      * @inheritDoc
      */
-    protected $className = UserAvatar::class;
+    protected string $objectType = 'com.woltlab.wcf.user.avatar';
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function import($oldID, array $data, array $additionalData = [])
     {
-        // check file location
-        if (!\is_readable($additionalData['fileLocation'])) {
-            return 0;
-        }
-
-        // get image size
-        $imageData = @\getimagesize($additionalData['fileLocation']);
-        if ($imageData === false) {
-            return 0;
-        }
-        $data['width'] = $imageData[0];
-        $data['height'] = $imageData[1];
-        $data['avatarExtension'] = ImageUtil::getExtensionByMimeType($imageData['mime']);
-        $data['fileHash'] = \sha1_file($additionalData['fileLocation']);
-
-        // check image type
-        if ($imageData[2] != \IMAGETYPE_GIF && $imageData[2] != \IMAGETYPE_JPEG && $imageData[2] != \IMAGETYPE_PNG) {
-            return 0;
-        }
-
         // get user id
         $data['userID'] = ImportHandler::getInstance()->getNewID('com.woltlab.wcf.user', $data['userID']);
         if (!$data['userID']) {
             return 0;
         }
 
-        // save avatar
-        $avatar = UserAvatarEditor::create($data);
-
-        // check avatar directory
-        // and create subdirectory if necessary
-        $dir = \dirname($avatar->getLocation());
-        if (!@\file_exists($dir)) {
-            FileUtil::makePath($dir);
+        $file = $this->importFile($additionalData['fileLocation'], $data['avatarName']);
+        if ($file === null) {
+            return 0;
         }
 
-        // copy file
-        try {
-            if (!\copy($additionalData['fileLocation'], $avatar->getLocation())) {
-                throw new SystemException();
-            }
+        $sql = "UPDATE wcf1_user
+                SET    avatarFileID = ?
+                WHERE  userID = ?";
+        $statement = WCF::getDB()->prepare($sql);
+        $statement->execute([
+            $file->fileID,
+            $data['userID']
+        ]);
 
-            // update owner
-            $sql = "UPDATE  wcf1_user
-                    SET     avatarID = ?
-                    WHERE   userID = ?";
-            $statement = WCF::getDB()->prepare($sql);
-            $statement->execute([$avatar->avatarID, $data['userID']]);
+        return $file->fileID;
+    }
 
-            return $avatar->avatarID;
-        } catch (SystemException $e) {
-            // copy failed; delete avatar
-            $editor = new UserAvatarEditor($avatar);
-            $editor->delete();
-        }
-
-        return 0;
+    protected function isValidFile(File $file): bool
+    {
+        return $file->isImage();
     }
 }

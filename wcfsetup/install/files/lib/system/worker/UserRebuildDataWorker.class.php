@@ -2,8 +2,8 @@
 
 namespace wcf\system\worker;
 
+use wcf\data\file\FileEditor;
 use wcf\data\reaction\type\ReactionTypeCache;
-use wcf\data\user\avatar\UserAvatar;
 use wcf\data\user\avatar\UserAvatarEditor;
 use wcf\data\user\avatar\UserAvatarList;
 use wcf\data\user\cover\photo\DefaultUserCoverPhoto;
@@ -16,6 +16,7 @@ use wcf\data\user\UserProfileList;
 use wcf\system\bbcode\BBCodeHandler;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\exception\SystemException;
+use wcf\system\file\processor\UserAvatarFileProcessor;
 use wcf\system\html\input\HtmlInputProcessor;
 use wcf\system\image\ImageHandler;
 use wcf\system\user\storage\UserStorageHandler;
@@ -214,20 +215,14 @@ final class UserRebuildDataWorker extends AbstractLinearRebuildDataWorker
             // update old/imported avatars
             $avatarList = new UserAvatarList();
             $avatarList->getConditionBuilder()->add('user_avatar.userID IN (?)', [$userIDs]);
-            $avatarList->getConditionBuilder()->add(
-                '(
-                    (user_avatar.width <> ? OR user_avatar.height <> ?)
-                    OR (user_avatar.hasWebP = ? AND user_avatar.avatarExtension <> ?)
-                )',
-                [
-                    UserAvatar::AVATAR_SIZE,
-                    UserAvatar::AVATAR_SIZE,
-                    0,
-                    "gif",
-                ]
-            );
             $avatarList->readObjects();
             $resetAvatarCache = [];
+
+            $sql = "UPDATE wcf1_user 
+                    SET    avatarFileID = ?
+                    WHERE  userID = ?";
+            $avatarUpdateStatement = WCF::getDB()->prepare($sql);
+
             foreach ($avatarList as $avatar) {
                 $resetAvatarCache[] = $avatar->userID;
 
@@ -242,7 +237,11 @@ final class UserRebuildDataWorker extends AbstractLinearRebuildDataWorker
                 $height = $avatar->height;
                 if ($width != $height) {
                     // make avatar quadratic
-                    $width = $height = \min($width, $height, UserAvatar::AVATAR_SIZE);
+                    // minimum size is 128x128, maximum size is 256x256
+                    $width = $height = \min(
+                        \max($avatar->width, $avatar->height, UserAvatarFileProcessor::AVATAR_SIZE),
+                        UserAvatarFileProcessor::AVATAR_SIZE_2X
+                    );
                     $adapter = ImageHandler::getInstance()->getAdapter();
 
                     try {
@@ -259,7 +258,10 @@ final class UserRebuildDataWorker extends AbstractLinearRebuildDataWorker
                     $thumbnail = null;
                 }
 
-                if ($width != UserAvatar::AVATAR_SIZE || $height != UserAvatar::AVATAR_SIZE) {
+                if (
+                    $width != UserAvatarFileProcessor::AVATAR_SIZE
+                    && $width != UserAvatarFileProcessor::AVATAR_SIZE_2X
+                ) {
                     // resize avatar
                     $adapter = ImageHandler::getInstance()->getAdapter();
 
@@ -271,16 +273,42 @@ final class UserRebuildDataWorker extends AbstractLinearRebuildDataWorker
                         continue;
                     }
 
-                    $adapter->resize(0, 0, $width, $height, UserAvatar::AVATAR_SIZE, UserAvatar::AVATAR_SIZE);
+                    if ($width > UserAvatarFileProcessor::AVATAR_SIZE_2X) {
+                        $adapter->resize(
+                            0,
+                            0,
+                            $width,
+                            $height,
+                            UserAvatarFileProcessor::AVATAR_SIZE_2X,
+                            UserAvatarFileProcessor::AVATAR_SIZE_2X
+                        );
+                    } else {
+                        $adapter->resize(
+                            0,
+                            0,
+                            $width,
+                            $height,
+                            UserAvatarFileProcessor::AVATAR_SIZE,
+                            UserAvatarFileProcessor::AVATAR_SIZE
+                        );
+                    }
                     $adapter->writeImage($adapter->getImage(), $avatar->getLocation());
-                    $width = $height = UserAvatar::AVATAR_SIZE;
                 }
 
-                $editor->createAvatarVariant();
+                $file = FileEditor::createFromExistingFile(
+                    $avatar->getLocation(),
+                    $avatar->avatarName,
+                    'com.woltlab.wcf.user.avatar'
+                );
+                $editor->delete();
 
-                $editor->update([
-                    'width' => $width,
-                    'height' => $height,
+                if ($file === null) {
+                    continue;
+                }
+
+                $avatarUpdateStatement->execute([
+                    $file->fileID,
+                    $avatar->userID
                 ]);
             }
 

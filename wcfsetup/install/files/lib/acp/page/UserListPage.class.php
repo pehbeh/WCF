@@ -8,6 +8,7 @@ use wcf\data\user\User;
 use wcf\data\user\UserProfile;
 use wcf\page\SortablePage;
 use wcf\system\cache\builder\UserOptionCacheBuilder;
+use wcf\system\cache\runtime\FileRuntimeCache;
 use wcf\system\clipboard\ClipboardHandler;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\event\EventHandler;
@@ -285,16 +286,16 @@ class UserListPage extends SortablePage
             $statement->execute($conditions->getParameters());
             $userToGroups = $statement->fetchMap('userID', 'groupID', false);
 
-            $sql = "SELECT      user_avatar.*, option_value.*, user_table.*
+            $sql = "SELECT      option_value.*, user_table.*
                     FROM        wcf1_user user_table
                     LEFT JOIN   wcf1_user_option_value option_value
                     ON          option_value.userID = user_table.userID
-                    LEFT JOIN   wcf1_user_avatar user_avatar
-                    ON          user_avatar.avatarID = user_table.avatarID
                     " . $conditions . "
                     ORDER BY    " . (($this->sortField != 'email' && isset($this->options[$this->sortField])) ? 'option_value.userOption' . $this->options[$this->sortField]->optionID : 'user_table.' . $this->sortField) . " " . $this->sortOrder;
             $statement = WCF::getDB()->prepare($sql);
             $statement->execute($conditions->getParameters());
+
+            $avatarFileIDs = [];
             while ($row = $statement->fetchArray()) {
                 $groupIDs = ($userToGroups[$row['userID']] ?? []);
 
@@ -308,7 +309,13 @@ class UserListPage extends SortablePage
                 $row['isMarked'] = \intval(\in_array($row['userID'], $this->markedUsers));
 
                 $this->users[] = new UserProfile(new User(null, $row));
+
+                if ($row['avatarFileID'] !== null) {
+                    $avatarFileIDs[] = $row['avatarFileID'];
+                }
             }
+
+            FileRuntimeCache::getInstance()->cacheObjectIDs($avatarFileIDs);
 
             // get special columns
             foreach ($this->users as $user) {

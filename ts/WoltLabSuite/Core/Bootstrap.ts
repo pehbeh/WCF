@@ -160,6 +160,10 @@ export function setup(options: BoostrapOptions): void {
   whenFirstSeen(".messageTabMenu", () => {
     void import("./Component/Message/MessageTabMenu").then(({ setup }) => setup());
   });
+  whenFirstSeen("[data-edit-avatar]", () => {
+    void import("./Component/User/Avatar").then(({ setup }) => setup());
+  });
+
   whenFirstSeen("woltlab-core-pagination", () => {
     void import("./Ui/Pagination/JumpToPage").then(({ setup }) => setup());
   });

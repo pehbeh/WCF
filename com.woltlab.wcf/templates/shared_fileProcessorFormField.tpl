@@ -24,6 +24,9 @@
 			'{unsafe:$field->getPrefixedId()|encodeJS}',
 			{if $field->isSingleFileUpload()}true{else}false{/if},
 			{if $field->isBigPreview()}true{else}false{/if},
+			{if $field->isSimpleReplace()}true{else}false{/if},
+			{if $field->isHideDeleteButton()}true{else}false{/if},
+			{if $field->getThumbnailSize() === null}undefined{else}'{$field->getThumbnailSize()|encodeJS}'{/if},
 			[{implode from=$actionButtons item=actionButton}{
 				title: '{unsafe:$actionButton['title']|encodeJS}',
 				icon: {if $actionButton['icon'] === null}undefined{else}'{unsafe:$actionButton['icon']->toHtml()|encodeJS}'{/if},

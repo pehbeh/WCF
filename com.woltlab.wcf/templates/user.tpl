@@ -49,7 +49,7 @@
 					'wcf.user.activityPoint': '{jslang}wcf.user.activityPoint{/jslang}'
 				});
 			{/if}
-			
+
 			{if $user->canEdit() || ($__wcf->getUser()->userID == $user->userID && $user->canEditOwnProfile())}
 				WCF.Language.addObject({
 					'wcf.user.editProfile': '{jslang}wcf.user.editProfile{/jslang}'

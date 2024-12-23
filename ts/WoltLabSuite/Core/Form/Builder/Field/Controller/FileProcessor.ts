@@ -5,7 +5,7 @@
  * @since     6.1
  */
 
-import WoltlabCoreFileElement from "WoltLabSuite/Core/Component/File/woltlab-core-file";
+import WoltlabCoreFileElement, { Thumbnail } from "WoltLabSuite/Core/Component/File/woltlab-core-file";
 import { getPhrase } from "WoltLabSuite/Core/Language";
 import { deleteFile } from "WoltLabSuite/Core/Api/Files/DeleteFile";
 import DomChangeListener from "WoltLabSuite/Core/Dom/Change/Listener";
@@ -20,6 +20,7 @@ import { innerError } from "WoltLabSuite/Core/Dom/Util";
 
 type FileId = string;
 const fileProcessors = new Map<FileId, FileProcessor>();
+const callbacks = new Map<FileId, ((values: undefined | number | Set<number>) => void)[]>();
 
 export interface ExtraButton {
   title: string;
@@ -35,6 +36,9 @@ export class FileProcessor {
   readonly #fileInput: HTMLInputElement;
   readonly #useBigPreview: boolean;
   readonly #singleFileUpload: boolean;
+  readonly #simpleReplace: boolean;
+  readonly #hideDeleteButton: boolean;
+  readonly #thumbnailSize?: string;
   readonly #extraButtons: ExtraButton[];
   #uploadResolve: undefined | (() => void);
 
@@ -42,12 +46,18 @@ export class FileProcessor {
     fieldId: string,
     singleFileUpload: boolean = false,
     useBigPreview: boolean = false,
+    simpleReplace: boolean = false,
+    hideDeleteButton: boolean = false,
+    thumbnailSize?: string,
     extraButtons: ExtraButton[] = [],
   ) {
     this.#fieldId = fieldId;
     this.#useBigPreview = useBigPreview;
     this.#singleFileUpload = singleFileUpload;
+    this.#simpleReplace = simpleReplace;
+    this.#hideDeleteButton = hideDeleteButton;
     this.#extraButtons = extraButtons;
+    this.#thumbnailSize = thumbnailSize;
 
     this.#container = document.getElementById(fieldId + "Container")!;
     if (this.#container === null) {
@@ -55,6 +65,19 @@ export class FileProcessor {
     }
 
     this.#uploadButton = this.#container.querySelector("woltlab-core-file-upload") as WoltlabCoreFileUploadElement;
+
+    if (this.#simpleReplace) {
+      this.#uploadButton.addEventListener("shouldUpload", () => {
+        const file =
+          this.#uploadButton.parentElement!.querySelector<WoltlabCoreFileElement>("woltlab-core-file[file-id]");
+        if (!file) {
+          return;
+        }
+
+        this.#simpleFileReplace(file);
+      });
+    }
+
     this.#uploadButton.addEventListener("uploadStart", (event: CustomEvent<WoltlabCoreFileElement>) => {
       if (this.#uploadResolve !== undefined) {
         this.#uploadResolve();
@@ -65,7 +88,7 @@ export class FileProcessor {
     this.#fileInput = this.#uploadButton.querySelector<HTMLInputElement>('input[type="file"]')!;
 
     this.#container.querySelectorAll<WoltlabCoreFileElement>("woltlab-core-file").forEach((element) => {
-      this.#registerFile(element, element.parentElement);
+      this.#registerFile(element, element.parentElement, false);
     });
 
     fileProcessors.set(fieldId, this);
@@ -80,12 +103,14 @@ export class FileProcessor {
     buttons.classList.add("buttonList");
     buttons.classList.add(this.classPrefix + "item__buttons");
 
-    let listItem = document.createElement("li");
-    listItem.append(this.getDeleteButton(element));
-    buttons.append(listItem);
+    if (!this.#hideDeleteButton) {
+      const listItem = document.createElement("li");
+      listItem.append(this.getDeleteButton(element));
+      buttons.append(listItem);
+    }
 
-    if (this.#singleFileUpload) {
-      listItem = document.createElement("li");
+    if (this.#singleFileUpload && !this.#simpleReplace) {
+      const listItem = document.createElement("li");
       listItem.append(this.getReplaceButton(element));
       buttons.append(listItem);
     }
@@ -118,54 +143,13 @@ export class FileProcessor {
     container.append(buttons);
   }
 
-  #markElementUploadHasFailed(container: HTMLElement, element: WoltlabCoreFileElement, reason: unknown): void {
-    fileInitializationFailed(container, element, reason);
-
-    container.classList.add("innerError");
-  }
-
-  protected getDeleteButton(element: WoltlabCoreFileElement): HTMLButtonElement {
-    const deleteButton = document.createElement("button");
-    deleteButton.type = "button";
-    deleteButton.classList.add("button", "small");
-    deleteButton.textContent = getPhrase("wcf.global.button.delete");
-    deleteButton.addEventListener("click", async () => {
-      const result = await deleteFile(element.fileId!);
-      if (result.ok) {
-        this.#unregisterFile(element);
-      } else {
-        let container: HTMLElement = element;
-        if (!this.#useBigPreview) {
-          container = container.parentElement!;
-        }
-
-        if (result.error.code === "permission_denied") {
-          innerError(container, getPhrase("wcf.upload.error.delete.permissionDenied"), true);
-        } else {
-          innerError(container, result.error.message ?? getPhrase("wcf.upload.error.delete.unknownError"));
-        }
-      }
-    });
-
-    return deleteButton;
-  }
-
   protected getReplaceButton(element: WoltlabCoreFileElement): HTMLButtonElement {
     const replaceButton = document.createElement("button");
     replaceButton.type = "button";
     replaceButton.classList.add("button", "small");
     replaceButton.textContent = getPhrase("wcf.global.button.replace");
     replaceButton.addEventListener("click", () => {
-      // Add to context an extra attribute that the replace button is clicked.
-      // After the dialog is closed or the file is selected, the context will be reset to his old value.
-      // This is necessary as the serverside validation will otherwise fail.
-      const oldContext = this.#uploadButton.dataset.context!;
-      const context = JSON.parse(oldContext);
-      context.__replace = true;
-      this.#uploadButton.dataset.context = JSON.stringify(context);
-
-      this.#replaceElement = element;
-      this.#unregisterFile(element);
+      const oldContext = this.#startReplaceFile(element);
 
       clearPreviousErrors(this.#uploadButton);
 
@@ -184,17 +168,89 @@ export class FileProcessor {
       };
       const cancelEventListener = () => {
         this.#uploadButton.dataset.context = oldContext;
-        this.#registerFile(this.#replaceElement!);
+        this.#registerFile(this.#replaceElement!, null, false);
         this.#replaceElement = undefined;
+        this.#uploadResolve = undefined;
         this.#fileInput.removeEventListener("change", changeEventListener);
       };
 
       this.#fileInput.addEventListener("cancel", cancelEventListener, { once: true });
       this.#fileInput.addEventListener("change", changeEventListener, { once: true });
+
       this.#fileInput.click();
     });
 
     return replaceButton;
+  }
+
+  #markElementUploadHasFailed(container: HTMLElement, element: WoltlabCoreFileElement, reason: unknown): void {
+    fileInitializationFailed(container, element, reason);
+
+    container.classList.add("innerError");
+  }
+
+  protected getDeleteButton(element: WoltlabCoreFileElement): HTMLButtonElement {
+    const deleteButton = document.createElement("button");
+    deleteButton.type = "button";
+    deleteButton.classList.add("button", "small");
+    deleteButton.textContent = getPhrase("wcf.global.button.delete");
+    deleteButton.addEventListener("click", async () => {
+      const result = await deleteFile(element.fileId!);
+      if (result.ok) {
+        this.#unregisterFile(element);
+
+        notifyValueChange(this.#fieldId, this.values);
+      } else {
+        let container: HTMLElement = element;
+        if (!this.#useBigPreview) {
+          container = container.parentElement!;
+        }
+
+        if (result.error.code === "permission_denied") {
+          innerError(container, getPhrase("wcf.upload.error.delete.permissionDenied"), true);
+        } else {
+          innerError(container, result.error.message ?? getPhrase("wcf.upload.error.delete.unknownError"));
+        }
+      }
+    });
+
+    return deleteButton;
+  }
+
+  #simpleFileReplace(oldFile: WoltlabCoreFileElement) {
+    const oldContext = this.#startReplaceFile(oldFile);
+
+    const cropCancelledEvent = () => {
+      this.#uploadResolve = undefined;
+      this.#uploadButton.dataset.context = oldContext;
+      this.#registerFile(this.#replaceElement!, null, false);
+      this.#replaceElement = undefined;
+    };
+
+    this.#uploadButton.addEventListener("cancel", cropCancelledEvent, { once: true });
+
+    void new Promise<void>((resolve) => {
+      this.#uploadResolve = resolve;
+    }).then(() => {
+      this.#uploadResolve = undefined;
+      this.#uploadButton.dataset.context = oldContext;
+      this.#uploadButton.removeEventListener("cancel", cropCancelledEvent);
+    });
+  }
+
+  #startReplaceFile(element: WoltlabCoreFileElement): string {
+    // Add to context an extra attribute that the replace button is clicked.
+    // After the dialog is closed or the file is selected, the context will be reset to his old value.
+    // This is necessary as the serverside validation will otherwise fail.
+    const oldContext = this.#uploadButton.dataset.context!;
+    const context = JSON.parse(oldContext);
+    context.__replace = true;
+    this.#uploadButton.dataset.context = JSON.stringify(context);
+
+    this.#replaceElement = element;
+    this.#unregisterFile(element);
+
+    return oldContext;
   }
 
   #unregisterFile(element: WoltlabCoreFileElement): void {
@@ -205,7 +261,11 @@ export class FileProcessor {
     }
   }
 
-  #registerFile(element: WoltlabCoreFileElement, container: HTMLElement | null = null): void {
+  #registerFile(
+    element: WoltlabCoreFileElement,
+    container: HTMLElement | null = null,
+    notifyCallback: boolean = true,
+  ): void {
     if (container === null) {
       if (this.#useBigPreview) {
         container = this.#container.querySelector(".fileUpload__preview");
@@ -234,11 +294,11 @@ export class FileProcessor {
           void deleteFile(this.#replaceElement.fileId!);
           this.#replaceElement = undefined;
         }
-        this.#fileInitializationCompleted(element, container!);
+        this.#fileInitializationCompleted(element, container!, notifyCallback);
       })
       .catch((reason) => {
         if (this.#replaceElement !== undefined) {
-          this.#registerFile(this.#replaceElement);
+          this.#registerFile(this.#replaceElement, null, false);
           this.#replaceElement = undefined;
 
           if (this.#useBigPreview) {
@@ -257,19 +317,23 @@ export class FileProcessor {
       });
   }
 
-  #fileInitializationCompleted(element: WoltlabCoreFileElement, container: HTMLElement): void {
+  #fileInitializationCompleted(
+    element: WoltlabCoreFileElement,
+    container: HTMLElement,
+    notifyCallback: boolean = true,
+  ): void {
     if (this.#useBigPreview) {
-      element.dataset.previewUrl = element.link!;
-      element.unbounded = true;
+      setThumbnail(
+        element,
+        element.thumbnails.find((thumbnail) => thumbnail.identifier === this.#thumbnailSize),
+        true,
+      );
     } else {
       if (element.isImage()) {
-        const thumbnail = element.thumbnails.find((thumbnail) => thumbnail.identifier === "tiny");
-        if (thumbnail !== undefined) {
-          element.thumbnail = thumbnail;
-        } else {
-          element.dataset.previewUrl = element.link!;
-          element.unbounded = false;
-        }
+        const thumbnailSize = this.#thumbnailSize ?? "tiny";
+
+        const thumbnail = element.thumbnails.find((thumbnail) => thumbnail.identifier === thumbnailSize);
+        setThumbnail(element, thumbnail);
 
         if (element.link !== undefined && element.filename !== undefined) {
           const filenameLink = document.createElement("a");
@@ -304,6 +368,10 @@ export class FileProcessor {
     container.append(input);
 
     this.addButtons(container, element);
+
+    if (notifyCallback) {
+      notifyValueChange(this.#fieldId, this.values);
+    }
   }
 
   get values(): undefined | number | Set<number> {
@@ -324,6 +392,16 @@ export class FileProcessor {
   }
 }
 
+function setThumbnail(element: WoltlabCoreFileElement, thumbnail?: Thumbnail, unbounded: boolean = false) {
+  if (unbounded) {
+    element.dataset.previewUrl = thumbnail !== undefined ? thumbnail.link : element.link;
+  } else if (thumbnail !== undefined) {
+    element.thumbnail = thumbnail;
+  }
+
+  element.unbounded = unbounded;
+}
+
 export function getValues(fieldId: string): undefined | number | Set<number> {
   const field = fileProcessors.get(fieldId);
   if (field === undefined) {
@@ -331,4 +409,31 @@ export function getValues(fieldId: string): undefined | number | Set<number> {
   }
 
   return field.values;
+}
+
+/**
+ * Registers a callback that will be called when the value of the field changes.
+ *
+ * @since 6.2
+ */
+export function registerCallback(fieldId: string, callback: (values: undefined | number | Set<number>) => void): void {
+  if (!callbacks.has(fieldId)) {
+    callbacks.set(fieldId, []);
+  }
+
+  callbacks.get(fieldId)!.push(callback);
+}
+
+/**
+ * @since 6.2
+ */
+export function unregisterCallback(
+  fieldId: string,
+  callback: (values: undefined | number | Set<number>) => void,
+): void {
+  callbacks.set(fieldId, callbacks.get(fieldId)?.filter((registeredCallback) => registeredCallback !== callback) ?? []);
+}
+
+function notifyValueChange(fieldId: string, values: undefined | number | Set<number>): void {
+  callbacks.get(fieldId)?.forEach((callback) => callback(values));
 }

@@ -25,15 +25,13 @@ class UserFollowingList extends UserFollowerList
     {
         UserFollowList::__construct();
 
-        $this->sqlSelects .= "user_avatar.*, user_follow.followID, user_option_value.*";
+        $this->sqlSelects .= "user_follow.followID, user_option_value.*";
 
         $this->sqlJoins .= "
             LEFT JOIN   wcf1_user user_table
             ON          user_table.userID = user_follow.followUserID
             LEFT JOIN   wcf1_user_option_value user_option_value
-            ON          user_option_value.userID = user_table.userID
-            LEFT JOIN   wcf1_user_avatar user_avatar
-            ON          user_avatar.avatarID = user_table.avatarID";
+            ON          user_option_value.userID = user_table.userID";
 
         $this->sqlSelects .= ", user_table.*";
     }

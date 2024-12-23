@@ -39,6 +39,12 @@
 				</div>
 			{/if}
 
+			{if $view->user->canEditAvatar()}
+				<button type="button" data-edit-avatar="{link controller="UserAvatar" id=$view->user->userID}{/link}" class="button small">
+					{icon name='circle-user' type='solid'} {lang}wcf.user.avatar.edit{/lang}
+				</button>
+			{/if}
+
 			{if $view->canEditUser()}
 				<button type="button" class="jsButtonEditProfile button small">{icon name='pencil'} <span>{lang}wcf.user.editProfile{/lang}</span></button>
 			{/if}
@@ -51,7 +57,7 @@
 		<div class="userProfileHeader__avatar">
 			<div class="userProfileHeader__avatarBorder">
 				{if $view->user->userID == $__wcf->user->userID}
-					<a href="{link controller='AvatarEdit'}{/link}" class="userProfileHeader__avatarEditLink jsTooltip" title="{lang}wcf.user.avatar.edit{/lang}">{unsafe:$view->user->getAvatar()->getImageTag(128)}</a>
+					<button type="button" data-edit-avatar="{link controller="UserAvatar" id=$view->user->userID}{/link}" class="userProfileHeader__avatarEditLink jsTooltip" title="{lang}wcf.user.avatar.edit{/lang}">{unsafe:$view->user->getAvatar()->getImageTag(128)}</button>
 				{else}
 					{unsafe:$view->user->getAvatar()->getImageTag(128)}
 				{/if}

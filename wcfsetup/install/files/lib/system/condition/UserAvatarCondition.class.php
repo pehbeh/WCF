@@ -61,11 +61,11 @@ class UserAvatarCondition extends AbstractSelectCondition implements
 
         switch ($conditionData['userAvatar']) {
             case self::NO_AVATAR:
-                $objectList->getConditionBuilder()->add('user_table.avatarID IS NULL');
+                $objectList->getConditionBuilder()->add('user_table.avatarFileID IS NULL');
                 break;
 
             case self::AVATAR:
-                $objectList->getConditionBuilder()->add('user_table.avatarID IS NOT NULL');
+                $objectList->getConditionBuilder()->add('user_table.avatarFileID IS NOT NULL');
                 break;
 
             case self::GRAVATAR:
@@ -81,10 +81,10 @@ class UserAvatarCondition extends AbstractSelectCondition implements
     {
         switch ($condition->userAvatar) {
             case self::NO_AVATAR:
-                return !$user->avatarID;
+                return !$user->avatarFileID;
 
             case self::AVATAR:
-                return $user->avatarID != 0;
+                return $user->avatarFileID !== null;
 
             case self::GRAVATAR:
                 return false;
