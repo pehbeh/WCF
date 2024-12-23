@@ -65,10 +65,18 @@ class ArticleRssFeedPage extends AbstractRssFeedPage
         $feed = new RssFeed();
         $channel = $this->getDefaultChannel();
         if (isset($this->category)) {
-            $channel->title($this->category->getTitle());
+            $channel->title(\sprintf(
+                '%s - %s',
+                $this->category->getTitle(),
+                WCF::getLanguage()->get(\PAGE_TITLE)
+            ));
             $channel->description($this->category->getDecoratedObject()->getDescription());
         } else {
-            $channel->title(WCF::getLanguage()->get('wcf.article.articles'));
+            $channel->title(\sprintf(
+                '%s - %s',
+                WCF::getLanguage()->get('wcf.article.articles'),
+                WCF::getLanguage()->get(\PAGE_TITLE)
+            ));
         }
 
         if ($this->articles->valid()) {
