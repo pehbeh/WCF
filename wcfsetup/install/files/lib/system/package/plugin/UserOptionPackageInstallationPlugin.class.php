@@ -118,7 +118,7 @@ class UserOptionPackageInstallationPlugin extends AbstractOptionPackageInstallat
     {
         // default values
         $optionName = $optionType = $validationPattern = $outputClass = $selectOptions = $enableOptions = $permissions = $options = '';
-        $required = $editable = $visible = $searchable = $isDisabled = $askDuringRegistration = 0;
+        $editable = $visible = $isDisabled = 0;
         $defaultValue = $showOrder = null;
 
         // get values
@@ -134,20 +134,11 @@ class UserOptionPackageInstallationPlugin extends AbstractOptionPackageInstallat
         if (isset($option['validationpattern'])) {
             $validationPattern = $option['validationpattern'];
         }
-        if (isset($option['required'])) {
-            $required = \intval($option['required']);
-        }
-        if (isset($option['askduringregistration'])) {
-            $askDuringRegistration = \intval($option['askduringregistration']);
-        }
         if (isset($option['editable'])) {
             $editable = \intval($option['editable']);
         }
         if (isset($option['visible'])) {
             $visible = \intval($option['visible']);
-        }
-        if (isset($option['searchable'])) {
-            $searchable = \intval($option['searchable']);
         }
         if (isset($option['showorder'])) {
             $showOrder = \intval($option['showorder']);
@@ -200,18 +191,25 @@ class UserOptionPackageInstallationPlugin extends AbstractOptionPackageInstallat
             'validationPattern' => $validationPattern,
             'selectOptions' => $selectOptions,
             'enableOptions' => $enableOptions,
-            'required' => $required,
-            'askDuringRegistration' => $askDuringRegistration,
             'editable' => $editable,
             'visible' => $visible,
             'outputClass' => $outputClass,
-            'searchable' => $searchable,
             'showOrder' => $showOrder,
             'permissions' => $permissions,
             'options' => $options,
             'additionalData' => \serialize($additionalData),
             'originIsSystem' => 1,
         ];
+
+        if (isset($option['required'])) {
+            $data['required'] = \intval($option['required']);
+        }
+        if (isset($option['askduringregistration'])) {
+            $data['askDuringRegistration'] = \intval($option['askduringregistration']);
+        }
+        if (isset($option['searchable'])) {
+            $data['searchable'] = \intval($option['searchable']);
+        }
 
         // update option
         if (!empty($result['optionID']) && $this->installation->getAction() == 'update') {
