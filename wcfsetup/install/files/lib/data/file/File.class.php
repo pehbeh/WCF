@@ -82,7 +82,7 @@ class File extends DatabaseObject implements ILinkableObject
         );
     }
 
-    private function getRelativePath(): string
+    public function getRelativePath(): string
     {
         $folderA = \substr($this->fileHash, 0, 2);
         $folderB = \substr($this->fileHash, 2, 2);
