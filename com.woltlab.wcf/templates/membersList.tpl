@@ -59,7 +59,7 @@
 						{icon name='arrow-down-wide-short'}
 					{/if}
 				</a>
-				<span class="dropdown">
+				<div class="dropdown">
 					<span class="dropdownToggle">{lang}wcf.user.sortField.{$sortField}{/lang}</span>
 					
 					<ul class="dropdownMenu">
@@ -67,7 +67,7 @@
 							<li{if $_sortField === $sortField} class="active"{/if}><a rel="nofollow" href="{link controller='MembersList' id=$searchID}pageNo={@$pageNo}&sortField={$_sortField}&sortOrder={if $sortField === $_sortField}{if $sortOrder === 'DESC'}ASC{else}DESC{/if}{else}{$sortOrder}{/if}{if $letter}&letter={$letter}{/if}{/link}">{lang}wcf.user.sortField.{$_sortField}{/lang}</a></li>
 						{/foreach}
 					</ul>
-				</span>
+				</div>
 			</div>
 			
 			{hascontent}
