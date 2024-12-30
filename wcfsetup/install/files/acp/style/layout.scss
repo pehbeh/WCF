@@ -1055,11 +1055,6 @@ html[data-color-scheme="dark"] {
 	align-content: center;
 }
 
-.acpDashboardBox__usersAwaitingApproval__content {
-	display: flex;
-	flex-direction: column;
-}
-
 .acpDashboardBox__usersAwaitingApproval__link::after {
 	content: "";
 	inset: 0;
