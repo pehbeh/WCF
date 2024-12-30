@@ -1040,3 +1040,35 @@ html[data-color-scheme="dark"] {
 	margin-top: 20px;
 	text-align: center;
 }
+
+.acpDashboardBox__usersAwaitingApproval {
+	display: flex;
+	flex-direction: column;
+	row-gap: 10px;
+}
+
+.acpDashboardBox__usersAwaitingApproval__user {
+	position: relative;
+}
+
+.acpDashboardBox__usersAwaitingApproval__avatar {
+	align-content: center;
+}
+
+.acpDashboardBox__usersAwaitingApproval__content {
+	display: flex;
+	flex-direction: column;
+}
+
+.acpDashboardBox__usersAwaitingApproval__link::after {
+	content: "";
+	inset: 0;
+	position: absolute;
+}
+
+.acpDashboardBox__usersAwaitingApproval__meta {
+	color: var(--wcfContentDimmedText);
+	margin-top: -5px;
+
+	@include wcfFontSmall;
+}
