@@ -28,6 +28,7 @@ use wcf\http\middleware\EnforceAcpAuthentication;
 use wcf\http\middleware\EnforceCacheControlPrivate;
 use wcf\http\middleware\EnforceFrameOptions;
 use wcf\http\middleware\EnforceNoCacheForTemporaryRedirects;
+use wcf\http\middleware\HandleAccessToken;
 use wcf\http\middleware\HandleExceptions;
 use wcf\http\middleware\HandleStartupErrors;
 use wcf\http\middleware\HandleValinorMappingErrors;
@@ -141,6 +142,7 @@ final class RequestHandler extends SingletonFactory
                     new CheckHttpMethod(),
                     new Xsrf(),
                     new CheckSystemEnvironment(),
+                    new HandleAccessToken(),
                     new CheckUserBan(),
                     new EnforceAcpAuthentication(),
                     new CheckForEnterpriseNonOwnerAccess(),

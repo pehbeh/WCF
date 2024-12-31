@@ -2,6 +2,7 @@
 
 namespace wcf\page;
 
+use wcf\http\attribute\AllowAccessToken;
 use wcf\system\rssFeed\RssFeed;
 use wcf\system\rssFeed\RssFeedChannel;
 use wcf\system\WCF;
@@ -15,7 +16,8 @@ use wcf\util\ArrayUtil;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.1
  */
-abstract class AbstractRssFeedPage extends AbstractAuthedPage
+#[AllowAccessToken]
+abstract class AbstractRssFeedPage extends AbstractPage
 {
     /**
      * @inheritDoc
