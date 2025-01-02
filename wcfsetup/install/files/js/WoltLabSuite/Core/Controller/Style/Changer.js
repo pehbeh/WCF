@@ -75,7 +75,7 @@ define(["require", "exports", "tslib", "../../Ajax", "../../Language", "../../Ui
      */
     function setup() {
         if (!controllerStyleChanger) {
-            new ControllerStyleChanger();
+            controllerStyleChanger = new ControllerStyleChanger();
         }
     }
     /**
