@@ -95,6 +95,7 @@
 	max-height: var(--maxHeight);
 	max-width: var(--maxWidth);
 	opacity: 0;
+	overflow: hidden;
 	padding: var(--padding);
 	position: absolute;
 	transform: translateY(-20px);
@@ -113,4 +114,42 @@
 	.popoverContainer {
 		display: block;
 	}
+}
+
+.popover__layout {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.popover__header {
+	display: grid;
+	grid-template-areas:
+		"avatar title"
+		"avatar time";
+	grid-template-columns: min-content 1fr;
+	grid-template-rows: min-content 1fr;
+	column-gap: 10px;
+	margin-bottom: 10px;
+}
+
+.popover__avatar {
+	grid-area: avatar;
+}
+
+.popover__title {
+	grid-area: title;
+	font-weight: 600;
+	@include wcfFontHeadline;
+}
+
+.popover__title a,
+.popover__title a:hover {
+	color: inherit;
+}
+
+.popover__time {
+	color: var(--wcfContentDimmedText);
+	grid-area: time;
+	@include wcfFontSmall;
 }
