@@ -73,7 +73,7 @@ class CacheListPage extends AbstractPage
                 // set version
                 $this->cacheData['version'] = WCF_VERSION;
 
-                $this->readCacheFiles('data', WCF_DIR . 'cache');
+                $this->readCacheFiles('data', FileUtil::unifyDirSeparator(WCF_DIR . 'cache'));
                 break;
 
             case RedisCacheSource::class:
