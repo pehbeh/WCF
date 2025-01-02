@@ -42,7 +42,7 @@
 		</dl>
 		<script data-relocate="true">
 			require(['WoltLabSuite/Core/Component/Captcha/Recaptcha'], ({ Recaptcha }) => {
-				new Recaptcha('{$recaptchaType}', '{$recaptchaPublicKey|encodeJS}', 'recaptchaBucket{$recaptchaBucketID}'{if $ajaxCaptcha}, '{$captchaID|encodeJS}'{/if});
+				new Recaptcha('{$recaptchaType}', '{unsafe:$recaptchaPublicKey|encodeJS}', 'recaptchaBucket{$recaptchaBucketID}'{if $ajaxCaptcha}, '{unsafe:$captchaID|encodeJS}'{/if});
 			});
 		</script>
 	{/if}
