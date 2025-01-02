@@ -83,7 +83,7 @@
 /* @since 6.1 */
 .popoverContainer {
 	--padding: 20px;
-	--maxHeight: 300px;
+	--maxHeight: 400px;
 	--maxWidth: 500px;
 
 	background-color: var(--wcfContentContainerBackground);
@@ -152,4 +152,16 @@
 	color: var(--wcfContentDimmedText);
 	grid-area: time;
 	@include wcfFontSmall;
+}
+
+.popover__coverPhoto {
+	--remove-padding: calc(var(--padding) * -1);
+	margin: var(--remove-padding) var(--remove-padding) 10px;
+}
+
+.popover__coverPhoto__image {
+	object-fit: cover;
+	object-position: center center;
+	height: 150px;
+	width: 100%;
 }
