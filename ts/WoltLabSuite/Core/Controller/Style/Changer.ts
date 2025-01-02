@@ -81,7 +81,7 @@ let controllerStyleChanger: ControllerStyleChanger;
  */
 export function setup(): void {
   if (!controllerStyleChanger) {
-    new ControllerStyleChanger();
+    controllerStyleChanger = new ControllerStyleChanger();
   }
 }
 
