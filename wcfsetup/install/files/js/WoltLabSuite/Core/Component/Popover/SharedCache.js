@@ -12,21 +12,29 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend"], function (requi
     exports.SharedCache = void 0;
     class SharedCache {
         #data = new Map();
-        #endpoint;
+        #callback;
         constructor(endpoint) {
-            this.#endpoint = new URL(endpoint);
+            if (typeof endpoint === "string") {
+                this.#callback = async (objectId) => {
+                    const url = new URL(endpoint);
+                    url.searchParams.set("id", objectId.toString());
+                    const response = await (0, Backend_1.prepareRequest)(url).get().fetchAsResponse();
+                    if (!response?.ok) {
+                        return "";
+                    }
+                    return await response.text();
+                };
+            }
+            else {
+                this.#callback = endpoint;
+            }
         }
         async get(objectId) {
             let content = this.#data.get(objectId);
             if (content !== undefined) {
                 return content;
             }
-            this.#endpoint.searchParams.set("id", objectId.toString());
-            const response = await (0, Backend_1.prepareRequest)(this.#endpoint).get().fetchAsResponse();
-            if (!response?.ok) {
-                return "";
-            }
-            content = await response.text();
+            content = await this.#callback(objectId);
             this.#data.set(objectId, content);
             return content;
         }

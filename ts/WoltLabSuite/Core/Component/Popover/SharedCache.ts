@@ -13,10 +13,23 @@ type ObjectId = number;
 
 export class SharedCache {
   readonly #data = new Map<ObjectId, string>();
-  readonly #endpoint: URL;
+  readonly #callback: (objectId: number) => Promise<string>;
 
-  constructor(endpoint: string) {
-    this.#endpoint = new URL(endpoint);
+  constructor(endpoint: string | ((objectId: number) => Promise<string>)) {
+    if (typeof endpoint === "string") {
+      this.#callback = async (objectId: number) => {
+        const url = new URL(endpoint);
+        url.searchParams.set("id", objectId.toString());
+        const response = await prepareRequest(url).get().fetchAsResponse();
+        if (!response?.ok) {
+          return "";
+        }
+
+        return await response.text();
+      };
+    } else {
+      this.#callback = endpoint;
+    }
   }
 
   async get(objectId: ObjectId): Promise<string> {
@@ -25,14 +38,7 @@ export class SharedCache {
       return content;
     }
 
-    this.#endpoint.searchParams.set("id", objectId.toString());
-
-    const response = await prepareRequest(this.#endpoint).get().fetchAsResponse();
-    if (!response?.ok) {
-      return "";
-    }
-
-    content = await response.text();
+    content = await this.#callback(objectId);
     this.#data.set(objectId, content);
 
     return content;
