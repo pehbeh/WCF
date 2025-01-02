@@ -265,7 +265,7 @@ class Attachment extends DatabaseObject implements ILinkableObject, IRouteContro
         }
 
         $thumbnail = $file->getThumbnail($size !== 'tiny' ? '' : $size);
-        if ($this === null) {
+        if ($thumbnail === null) {
             return '';
         }
 
@@ -418,8 +418,8 @@ class Attachment extends DatabaseObject implements ILinkableObject, IRouteContro
             'filesize' => $file->fileSize,
             'fileType' => $file->mimeType,
             'isImage' => $file->isImage(),
-            'height' => $file->height,
-            'width' => $file->width,
+            'height' => $file->height ?: 0,
+            'width' => $file->width ?: 0,
             'thumbnailType' => $file->getThumbnail('')?->getMimeType() ?: '',
             'thumbnailWidth' => $file->getThumbnail('')?->width ?: 0,
             'thumbnailHeight' => $file->getThumbnail('')?->height ?: 0,

@@ -61,8 +61,6 @@ final class CheckForForceLogin implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-
-
         if (WCF::getUser()->pendingActivation()) {
             return $this->handlePendingActivation($request);
         }

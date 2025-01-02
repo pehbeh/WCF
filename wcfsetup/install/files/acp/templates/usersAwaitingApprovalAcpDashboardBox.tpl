@@ -1,14 +1,29 @@
-<ul>
+<ul class="acpDashboardBox__usersAwaitingApproval">
 	{foreach from=$users item='user'}
-		<li>
-			<div>
-				{@$user->getAvatar()->getImageTag(24)}
-			</div>
-			<div>
-				<a title="{lang}wcf.acp.user.edit{/lang}" href="{link controller='UserEdit' id=$user->userID}{/link}">{$user->username}</a>
+		<li class="acpDashboardBox__usersAwaitingApproval__user">
+			<div class="box24">
+				<div class="acpDashboardBox__usersAwaitingApproval__avatar">
+					{unsafe:$user->getAvatar()->getImageTag(24)}
+				</div>
+
+				<div>
+					<a href="{link controller='UserEdit' id=$user->userID}{/link}"
+						class="acpDashboardBox__usersAwaitingApproval__link" title="{lang}wcf.acp.user.edit{/lang}">
+						{$user->username}
+					</a>
+					<div class="acpDashboardBox__usersAwaitingApproval__meta">
+						{unsafe:$user->registrationDate|time}
+					</div>
+				</div>
 			</div>
 		</li>
 	{/foreach}
 </ul>
 
-<a href="{link controller='UserQuickSearch'}mode=pendingActivation{/link}" class="button small">More</a>
+{if $usersAwaitingApproval > $users|count}
+	<div class="acpDashboardBox__cta">
+		<a href="{link controller='UserQuickSearch' mode='pendingActivation'}{/link}" class="button small">
+			{lang}wcf.global.button.showAll{/lang}
+		</a>
+	</div>
+{/if}

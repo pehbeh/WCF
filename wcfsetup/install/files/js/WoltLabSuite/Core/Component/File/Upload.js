@@ -201,8 +201,12 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/Selector", "Wol
                     });
                 }
                 else {
-                    void resizeImage(element, file).then((resizedFile) => {
+                    void resizeImage(element, file)
+                        .then((resizedFile) => {
                         void upload(element, resizedFile);
+                    })
+                        .catch(() => {
+                        (0, Util_1.innerError)(element, (0, Language_1.getPhrase)("wcf.upload.error.damagedImageFile", { filename: file.name }));
                     });
                 }
             });

@@ -4,7 +4,7 @@
 			<img
 				class="userCard__header__background__image"
 				src="{$user->getCoverPhoto()->getThumbnailURL()}"
-				loading="lazy">
+				alt="">
 		</div>
 		<div class="userCard__header__avatar">
 			{user object=$user type='avatar64' ariaHidden='true' tabindex='-1'}
@@ -102,6 +102,27 @@
 		{/hascontent}
 
 		{event name='afterButtons'}
+
+		{hascontent}
+			<div class="userCard__details">
+				<dl class="plain dataList">
+					{content}
+						{event name='beforeDetails'}
+
+						{if $user->canViewOnlineStatus() && $user->getLastActivityTime()}
+							<dt>{lang}wcf.user.usersOnline.lastActivity{/lang}</dt>
+							<dd>{time time=$user->getLastActivityTime()}</dd>
+							{if $user->getCurrentLocation()}
+								<dt>{lang}wcf.user.usersOnline.location{/lang}</dt>
+								<dd>{unsafe:$user->getCurrentLocation()}</dd>
+							{/if}
+						{/if}
+
+						{event name='afterDetails'}
+					{/content}
+				</dl>
+			</div>
+		{/hascontent}
 	</div>
 
 	{hascontent}

@@ -28,6 +28,10 @@ class ExceptionMailerCronjob extends AbstractCronjob
     {
         parent::execute($cronjob);
 
+        if (\ENABLE_ENTERPRISE_MODE) {
+            return;
+        }
+
         $timestamp = RegistryHandler::getInstance()->get('com.woltlab.wcf', 'exceptionMailerTimestamp');
         $timestamp = \max($timestamp, TIME_NOW - 86400 * 3);
         for ($it = $timestamp; $it < TIME_NOW; $it += 86400) {

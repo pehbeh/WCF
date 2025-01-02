@@ -4,6 +4,7 @@ namespace wcf\page;
 
 use wcf\data\user\User;
 use wcf\system\exception\IllegalLinkException;
+use wcf\system\exception\PermissionDeniedException;
 use wcf\system\session\SessionHandler;
 use wcf\system\WCF;
 
@@ -14,9 +15,16 @@ use wcf\system\WCF;
  * @author  Tim Duesterhus
  * @copyright   2001-2020 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @deprecated 6.1 Use `AllowAccessToken` instead.
  */
 abstract class AbstractAuthedPage extends AbstractPage
 {
+    /**
+     * If “Force login” is active, this page is faked as available during offline mode
+     * in order to bypass the CheckForForceLogin middleware.
+     */
+    public const AVAILABLE_DURING_OFFLINE_MODE = \FORCE_LOGIN;
+
     /**
      * @inheritDoc
      */
@@ -24,8 +32,16 @@ abstract class AbstractAuthedPage extends AbstractPage
     {
         parent::readParameters();
 
+        if (\OFFLINE) {
+            throw new IllegalLinkException();
+        }
+
         // check security token
         $this->checkAccessToken();
+
+        if (\FORCE_LOGIN && !WCF::getUser()->userID) {
+            throw new PermissionDeniedException();
+        }
     }
 
     /**

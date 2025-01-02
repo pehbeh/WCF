@@ -1435,7 +1435,7 @@ Sie erreichen das Fehlerprotokoll unter: {link controller='ExceptionLogView' isE
 		<item name="wcf.acp.option.attachment_image_autoscale_quality"><![CDATA[Qualitätsstufe]]></item>
 		<item name="wcf.acp.option.attachment_image_autoscale_quality.description"><![CDATA[Bestimmt die Qualität des skalierten Bildes.]]></item>
 		<item name="wcf.acp.option.attachment_image_autoscale_file_type"><![CDATA[Dateityp]]></item>
-		<item name="wcf.acp.option.attachment_image_autoscale_file_type.jpeg"><![CDATA[JPEG (verlustbehaftet, erzeugt in der Regel kleine Dateien)]]></item>
+		<item name="wcf.acp.option.attachment_image_autoscale_file_type.jpeg"><![CDATA[WebP (verlustbehaftet, erzeugt kleine Dateien)]]></item>
 		<item name="wcf.acp.option.attachment_image_autoscale_file_type.keep"><![CDATA[Dateityp beibehalten]]></item>
 		<item name="wcf.acp.option.module_smiley"><![CDATA[Smileys]]></item>
 		<item name="wcf.acp.option.category.message.censorship"><![CDATA[Zensur-Funktion]]></item>
@@ -5136,7 +5136,7 @@ Sobald {if LANGUAGE_USE_INFORMAL_VARIANT}dein{else}Ihr{/if} Benutzerkonto freige
 		<item name="wcf.user.usersOnline.invisible"><![CDATA[ (unsichtbar)]]></item>
 		<item name="wcf.user.usersOnline.marking.legend"><![CDATA[Legende]]></item>
 		<item name="wcf.user.usersOnline.guests"><![CDATA[Gäste]]></item>
-		<item name="wcf.user.usersOnline.location"><![CDATA[Ort]]></item>
+		<item name="wcf.user.usersOnline.location"><![CDATA[Aufenthaltsort]]></item>
 		<item name="wcf.user.usersOnline.ipAddress"><![CDATA[IP-Adresse]]></item>
 		<item name="wcf.user.usersOnline.userAgent"><![CDATA[Browser]]></item>
 		<item name="wcf.user.usersOnline.lastActivity"><![CDATA[Letzte Aktivität]]></item>
@@ -5573,6 +5573,7 @@ Benachrichtigungen auf <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phra
 		<item name="wcf.upload.error.reachedRemainingLimit"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Du hast{else}Sie haben{/if} zu viele Dateien ausgewählt. {if LANGUAGE_USE_INFORMAL_VARIANT}Du kannst{else}Sie können{/if} nur noch {#$maxFiles} weitere Datei{if $maxFiles != 1}en{/if} hochladen.]]></item>
 		<item name="wcf.upload.error.uploadFailed"><![CDATA[Beim Hochladen der Datei ist ein unbekannter Fehler aufgetreten.]]></item>
 		
+		<item name="wcf.upload.error.damagedImageFile"><![CDATA[Die Grafikdatei „{$filename}“ ist beschädigt.]]></item>
 		<item name="wcf.upload.error.fileExtensionNotPermitted"><![CDATA[Der Dateityp von „{$filename}“ ist unzulässig.]]></item>
 		<item name="wcf.upload.error.fileSizeTooLarge"><![CDATA[Die Datei ist zu groß.]]></item>
 		<item name="wcf.upload.error.maximumCountReached"><![CDATA[Es {plural value=$maximumCount 1='darf nur eine Datei' other='dürfen nur # Dateien'} hochgeladen werden.]]></item>

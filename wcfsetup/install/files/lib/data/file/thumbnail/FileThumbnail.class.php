@@ -39,6 +39,11 @@ class FileThumbnail extends DatabaseObject implements ILinkableObject
         );
     }
 
+    public function getPathname(): string
+    {
+        return $this->getPath() . $this->getSourceFilename();
+    }
+
     public function getLink(): string
     {
         return \sprintf(

@@ -289,8 +289,12 @@ export function setup(): void {
             }
           });
       } else {
-        void resizeImage(element, file).then((resizedFile) => {
-          void upload(element, resizedFile);
+        void resizeImage(element, file)
+        .then((resizedFile) => {
+            void upload(element, resizedFile);
+          })
+        .catch(() => {
+          innerError(element, getPhrase("wcf.upload.error.damagedImageFile", { filename: file.name }));
         });
       }
     });

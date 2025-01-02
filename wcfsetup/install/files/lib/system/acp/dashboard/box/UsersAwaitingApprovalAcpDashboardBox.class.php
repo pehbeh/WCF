@@ -49,7 +49,7 @@ final class UsersAwaitingApprovalAcpDashboardBox extends AbstractAcpDashboardBox
         return WCF::getTPL()->fetch('usersAwaitingApprovalAcpDashboardBox', 'wcf', [
             'users' => $userList->getObjects(),
             'usersAwaitingApproval' => $this->getUsersAwaitingApproval(),
-        ]);
+        ], true);
     }
 
     #[\Override]
@@ -68,6 +68,7 @@ final class UsersAwaitingApprovalAcpDashboardBox extends AbstractAcpDashboardBox
             if (REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_USER) {
                 $this->userList->getConditionBuilder()->add('emailConfirmed IS NULL');
             }
+            $this->userList->sqlOrderBy = 'registrationDate DESC';
         }
 
         return $this->userList;

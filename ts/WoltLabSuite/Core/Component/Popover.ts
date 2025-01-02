@@ -67,6 +67,11 @@ class Popover {
         timer.stop();
 
         const objectId = this.#getObjectId();
+        if (objectId === undefined) {
+          console.error("Missing attribute `data-object-id` for element", this.#element);
+          return;
+        }
+
         void this.#cache.get(objectId).then((content) => {
           if (content === "") {
             return;
@@ -109,8 +114,13 @@ class Popover {
     this.#container?.setAttribute("aria-hidden", "true");
   }
 
-  #getObjectId(): number {
-    return parseInt(this.#element.dataset.objectId!);
+  #getObjectId(): number | undefined {
+    const objectId = parseInt(this.#element.dataset.objectId || "");
+    if (Number.isNaN(objectId) || objectId === 0) {
+      return undefined;
+    }
+
+    return objectId;
   }
 
   #getContainer(): HTMLElement {

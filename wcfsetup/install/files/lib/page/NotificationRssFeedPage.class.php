@@ -34,7 +34,11 @@ class NotificationRssFeedPage extends AbstractRssFeedPage
     {
         $feed = new RssFeed();
         $channel = $this->getDefaultChannel();
-        $channel->title(WCF::getLanguage()->get('wcf.user.menu.community.notification'));
+        $channel->title(\sprintf(
+            '%s - %s',
+            WCF::getLanguage()->get('wcf.user.menu.community.notification'),
+            WCF::getLanguage()->get(\PAGE_TITLE)
+        ));
         $feed->channel($channel);
 
         $notifications = UserNotificationHandler::getInstance()->getNotifications(20);

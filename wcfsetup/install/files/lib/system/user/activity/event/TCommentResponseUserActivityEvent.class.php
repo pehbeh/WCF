@@ -57,7 +57,7 @@ trait TCommentResponseUserActivityEvent
             $responseIDs[] = $event->objectID;
         }
 
-        $this->responses = ViewableCommentResponseRuntimeCache::getInstance()->getObjects($responseIDs);
+        $this->responses = \array_filter(ViewableCommentResponseRuntimeCache::getInstance()->getObjects($responseIDs));
 
         $commentIDs = [];
         foreach ($this->responses as $response) {
@@ -65,7 +65,7 @@ trait TCommentResponseUserActivityEvent
         }
 
         if (!empty($commentIDs)) {
-            $this->comments = ViewableCommentRuntimeCache::getInstance()->getObjects($commentIDs);
+            $this->comments = \array_filter(ViewableCommentRuntimeCache::getInstance()->getObjects($commentIDs));
         }
 
         $userIDs = [];
@@ -74,7 +74,7 @@ trait TCommentResponseUserActivityEvent
             $this->commentObjectIDs[] = $comment->objectID;
         }
         if (!empty($userIDs)) {
-            $this->commentAuthors = UserProfileRuntimeCache::getInstance()->getObjects($userIDs);
+            $this->commentAuthors = \array_filter(UserProfileRuntimeCache::getInstance()->getObjects($userIDs));
         }
     }
 }

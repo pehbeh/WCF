@@ -144,4 +144,18 @@ abstract class AbstractUserGroupsUserBulkProcessingAction extends AbstractUserBu
     {
         return true;
     }
+
+    #[\Override]
+    public function getAdditionalParameters(): array
+    {
+        return [
+            'userGroupIDs' => $this->userGroupIDs,
+        ];
+    }
+
+    #[\Override]
+    public function loadAdditionalParameters(array $data): void
+    {
+        $this->userGroupIDs = $data['userGroupIDs'] ?? 0;
+    }
 }

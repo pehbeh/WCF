@@ -23,6 +23,8 @@
 						<li><button type="button" class="button jsUninstallButton" data-object-id="{@$package->packageID}" data-confirm-message="{lang __encode=true}wcf.acp.package.uninstallation.confirm{/lang}" data-is-required="{if $package->isRequired()}true{else}false{/if}" data-is-application="{if $package->isApplication}true{else}false{/if}">{icon name='xmark'} <span>{lang}wcf.acp.package.button.uninstall{/lang}</span></button></li>
 					{/if}
 
+					<li><a href="{link controller='PackageList'}{/link}" class="button">{icon name='list'} <span>{lang}wcf.acp.menu.link.package.list{/lang}</span></a></li>
+
 					{event name='contentHeaderNavigation'}
 				{/content}
 			</ul>
@@ -206,14 +208,16 @@
 	{event name='tabMenuContents'}
 </div>
 
-<footer class="contentFooter">
-	<nav class="contentFooterNavigation">
-		<ul>
-			<li><a href="{link controller='PackageList'}{/link}" class="button">{icon name='list'} <span>{lang}wcf.acp.menu.link.package.list{/lang}</span></a></li>
-			
-			{event name='contentFooterNavigation'}
-		</ul>
-	</nav>
-</footer>
+{hascontent}
+	<footer class="contentFooter">
+		<nav class="contentFooterNavigation">
+			<ul>
+				{content}
+					{event name='contentFooterNavigation'}
+				{/content}
+			</ul>
+		</nav>
+	</footer>
+{/hascontent}
 
 {include file='footer'}

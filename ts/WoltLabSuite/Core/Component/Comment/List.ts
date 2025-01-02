@@ -352,11 +352,6 @@ class CommentList {
   async #loadCreatedComment(commentId: number): Promise<void> {
     const response = await renderComment(commentId);
     if (!response.ok) {
-      const validationError = response.error.getValidationError();
-      if (validationError === undefined) {
-        throw new Error("Unexpected validation error", { cause: response.error });
-      }
-
       return;
     }
 
@@ -374,11 +369,6 @@ class CommentList {
   async #loadCreatedResponse(commentId: number, responseId: number): Promise<void> {
     const response = await renderResponse(responseId);
     if (!response.ok) {
-      const validationError = response.error.getValidationError();
-      if (validationError === undefined) {
-        throw new Error("Unexpected validation error", { cause: response.error });
-      }
-
       return;
     }
 

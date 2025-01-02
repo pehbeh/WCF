@@ -18,10 +18,6 @@ use wcf\util\StringUtil;
 final class DomBBCodeParser extends SingletonFactory
 {
     /**
-     * @var array{uuid: string, metacodeMarker: \DOMElement}[]
-     */
-    private array $openTagIdentifiers = [];
-    /**
      * @var \DOMElement[]
      */
     private array $closingTags = [];
@@ -39,34 +35,76 @@ final class DomBBCodeParser extends SingletonFactory
     public static array $codeTagNames = ['kbd', 'pre'];
 
     /**
+     * @var list<\DOMElement|null>
+     */
+    private array $bbcodesByAppearance = [];
+
+    /**
      * Parses bbcodes in the given DOM document.
      */
     public function parse(\DOMDocument $document): void
     {
-        $this->openTagIdentifiers = $this->closingTags = $this->useTextNodes = [];
+        $this->closingTags = $this->useTextNodes = $this->bbcodesByAppearance = [];
         $this->document = $document;
         foreach ($document->getElementsByTagName('body')->item(0)->childNodes as $node) {
             $this->convertBBCodeToMetacodeMarker($node);
         }
 
-        // find correct closing tags
-        foreach ($this->closingTags as $node) {
-            $name = $node->getAttribute('data-name');
-            $node->removeAttribute('data-name');
-
-            if (!isset($this->openTagIdentifiers[$name]) || empty($this->openTagIdentifiers[$name])) {
-                $this->insertBBCode($node);
+        // Match the opening and closing tags by finding the closest possible
+        // match for each tag pair.
+        //
+        // [foo][foo][/foo][/bar] -> <foo2><foo1></foo1></foo2>
+        // [foo][foo][/foo] -> [foo]<foo1></foo1>
+        for ($i = 0, $length = \count($this->bbcodesByAppearance); $i < $length; $i++) {
+            $element = $this->bbcodesByAppearance[$i];
+            if ($element === null) {
                 continue;
             }
-            ['uuid' => $uuid] = \array_shift($this->openTagIdentifiers[$name]);
-            $node->setAttribute('data-uuid', $uuid);
+
+            // Ignore any opening tags in this loop, they will be matched with
+            // closing tags and any remainders will eventually be converted into
+            // their source representation.
+            if (!\in_array($element, $this->closingTags, true)) {
+                continue;
+            }
+
+            $name = $element->getAttribute('data-name');
+            $element->removeAttribute('data-name');
+
+            // Find the first matching opening tag that appeared before this.
+            for ($j = $i - 1; $j >= 0; $j--) {
+                $possibleOpeningTag = $this->bbcodesByAppearance[$j];
+                if ($possibleOpeningTag === null || \in_array($possibleOpeningTag, $this->closingTags, true)) {
+                    continue;
+                }
+
+                if ($possibleOpeningTag->getAttribute('data-name') === $name) {
+                    // Copy the UUID and to pair the tags.
+                    $element->setAttribute('data-uuid', $possibleOpeningTag->getAttribute('data-uuid'));
+
+                    // Set both elements to `null` to remove them from further
+                    // checks.
+                    $this->bbcodesByAppearance[$i] = null;
+                    $this->bbcodesByAppearance[$j] = null;
+
+                    // Important: This targets the outer loop!
+                    continue 2;
+                }
+            }
+
+            // We did not find any matching opening tag, consider this to be a
+            // stray tag and convert it back into its BBCode representation.
+            $this->insertBBCode($element);
+            $this->bbcodesByAppearance[$i] = null;
         }
 
-        // Insert raw BB-code text for each opening tag without a corresponding closing tag.
-        foreach ($this->openTagIdentifiers as $entries) {
-            foreach ($entries as ['metacodeMarker' => $node]) {
-                $this->insertBBCode($node);
-            }
+        // Any opening tag that has not been matched at this point must be
+        // converted into its BBCode representation.
+        $strayOpeningTags = \array_filter($this->bbcodesByAppearance);
+        foreach ($strayOpeningTags as $element) {
+            \assert($element !== null);
+
+            $this->insertBBCode($element);
         }
 
         // Get the text between the opening and closing tags
@@ -162,6 +200,8 @@ final class DomBBCodeParser extends SingletonFactory
             $node = $bbcodeNode->splitText(\mb_strlen($bbcodeTag));
 
             $bbcodeNode->parentNode->replaceChild($metaCodeMarker, $bbcodeNode);
+
+            $this->bbcodesByAppearance[] = $metaCodeMarker;
         }
     }
 
@@ -201,15 +241,7 @@ final class DomBBCodeParser extends SingletonFactory
                 return null;
             }
 
-            if (!isset($this->openTagIdentifiers[$name])) {
-                $this->openTagIdentifiers[$name] = [];
-            }
             $uuid = StringUtil::getUUID();
-            $this->openTagIdentifiers[$name][] = [
-                'uuid' => $uuid,
-                'metacodeMarker' => $metacodeMarker
-            ];
-
             $metacodeMarker->setAttribute('data-uuid', $uuid);
 
             foreach ($bbcode->getAttributes() as $attribute) {
@@ -243,9 +275,8 @@ final class DomBBCodeParser extends SingletonFactory
 
     private function insertBBCode(\DOMElement $node): void
     {
-        $node->parentNode->replaceChild(
-            $this->document->createTextNode(\base64_decode($node->getAttribute('data-source'))),
-            $node
-        );
+        \assert($node->childNodes->length === 0);
+
+        $node->replaceWith(\base64_decode($node->getAttribute('data-source')));
     }
 }

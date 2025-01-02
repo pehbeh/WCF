@@ -126,7 +126,17 @@ final class CaptchaFormField extends AbstractFormField implements IObjectTypeFor
             return $this;
         }
 
-        return $this->defaultObjectType($objectType);
+        $this->defaultObjectType($objectType);
+
+        if ($this->objectType !== null) {
+            $captchaHandler = $this->getObjectType()->getProcessor();
+            \assert($captchaHandler instanceof ICaptchaHandler);
+            if (!$captchaHandler->isAvailable()) {
+                $this->objectType = null;
+            }
+        }
+
+        return $this;
     }
 
     /**

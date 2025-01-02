@@ -257,10 +257,6 @@ define(["require", "exports", "tslib", "../../Dom/Change/Listener", "../../Dom/U
         async #loadCreatedComment(commentId) {
             const response = await (0, RenderComment_1.renderComment)(commentId);
             if (!response.ok) {
-                const validationError = response.error.getValidationError();
-                if (validationError === undefined) {
-                    throw new Error("Unexpected validation error", { cause: response.error });
-                }
                 return;
             }
             const referenceElement = this.#container.querySelector(".commentAdd").parentElement;
@@ -274,10 +270,6 @@ define(["require", "exports", "tslib", "../../Dom/Change/Listener", "../../Dom/U
         async #loadCreatedResponse(commentId, responseId) {
             const response = await (0, RenderResponse_1.renderResponse)(responseId);
             if (!response.ok) {
-                const validationError = response.error.getValidationError();
-                if (validationError === undefined) {
-                    throw new Error("Unexpected validation error", { cause: response.error });
-                }
                 return;
             }
             const item = this.#container.querySelector(`.commentList__item[data-comment-id="${commentId}"]`);

@@ -59,10 +59,10 @@ final class AttachMetacodeUpcast extends AbstractImageMetacodeUpcast
 
     private function isThumbnailWidth(Attachment $attachment, string|bool|int $width): bool
     {
-        if ($width === 'auto' || $width === false) {
+        if ($width === 'auto' || $width === false || $width === 'false') {
             return false;
         }
-        if ($width === true || $width === 0) {
+        if ($width === true || $width === 'true' || $width === 0) {
             return true;
         }
         return !($width > $attachment->thumbnailWidth);

@@ -37,8 +37,7 @@ final class AttachmentFileProcessor extends AbstractFileProcessor
             return [];
         }
 
-        return $attachmentHandler->getAllowedExtensions();
-    }
+        return $attachmentHandler->getAllowedExtensions();    }
 
     #[\Override]
     public function canAdopt(File $file, array $context): bool

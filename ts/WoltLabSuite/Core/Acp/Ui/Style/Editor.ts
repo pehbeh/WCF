@@ -61,7 +61,7 @@ function handleScss(isTainted: boolean): void {
 
   const refreshCodeMirror = (element: any): void => {
     element.codemirror.refresh();
-    element.codemirror.setCursor(element.codemirror.getCursor());
+    element.codemirror.setCursor(element.codemirror.getCursor(), undefined, { scroll: false });
   };
 
   if (isTainted) {

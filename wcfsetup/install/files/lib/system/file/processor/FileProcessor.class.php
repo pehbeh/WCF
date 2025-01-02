@@ -9,7 +9,10 @@ use wcf\data\file\thumbnail\FileThumbnailEditor;
 use wcf\data\file\thumbnail\FileThumbnailList;
 use wcf\data\object\type\ObjectType;
 use wcf\data\object\type\ObjectTypeCache;
+use wcf\event\file\GenerateThumbnail;
+use wcf\event\file\GenerateWebpVariant;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
+use wcf\system\event\EventHandler;
 use wcf\system\exception\SystemException;
 use wcf\system\file\processor\exception\DamagedImage;
 use wcf\system\image\adapter\exception\ImageNotProcessable;
@@ -164,20 +167,42 @@ final class FileProcessor extends SingletonFactory
             }
         }
 
-        $imageAdapter = ImageHandler::getInstance()->getAdapter();
-
-        try {
-            $imageAdapter->loadSingleFrameFromFile($file->getPathname());
-        } catch (SystemException | ImageNotReadable) {
+        $event = new GenerateWebpVariant($file);
+        EventHandler::getInstance()->fire($event);
+        if ($event->sourceIsMarkedAsDamaged()) {
             throw new DamagedImage($file->fileID);
-        } catch (ImageNotProcessable $e) {
-            logThrowable($e);
-
-            return;
         }
 
-        $filename = FileUtil::getTemporaryFilename(extension: 'webp');
-        $imageAdapter->saveImageAs($imageAdapter->getImage(), $filename, 'webp', 80);
+        $filename = $event->getPathname();
+        if ($filename === null) {
+            $imageAdapter = ImageHandler::getInstance()->getAdapter();
+            if (!$imageAdapter->checkMemoryLimit($file->width, $file->height, $file->mimeType)) {
+                return;
+            }
+
+            try {
+                $imageAdapter->loadSingleFrameFromFile($file->getPathname());
+            } catch (SystemException | ImageNotReadable) {
+                throw new DamagedImage($file->fileID);
+            } catch (ImageNotProcessable $e) {
+                logThrowable($e);
+
+                return;
+            }
+
+            $filename = FileUtil::getTemporaryFilename(extension: 'webp');
+
+            try {
+                $imageAdapter->saveImageAs($imageAdapter->getImage(), $filename, 'webp', 80);
+            } catch (\Throwable $e) {
+                // Ignore any errors trying to save the file unless in debug mode.
+                if (\ENABLE_DEBUG_MODE) {
+                    throw $e;
+                }
+
+                return;
+            }
+        }
 
         (new FileEditor($file))->update([
             'fileHashWebp' => \hash_file('sha256', $filename),
@@ -243,32 +268,44 @@ final class FileProcessor extends SingletonFactory
                 }
             }
 
-            if ($imageAdapter === null) {
-                $imageAdapter = ImageHandler::getInstance()->getAdapter();
+            $event = new GenerateThumbnail($file, $format);
+            EventHandler::getInstance()->fire($event);
+            if ($event->sourceIsMarkedAsDamaged()) {
+                throw new DamagedImage($file->fileID);
+            }
+
+            $filename = $event->getPathname();
+            if ($filename === null) {
+                if ($imageAdapter === null) {
+                    $imageAdapter = ImageHandler::getInstance()->getAdapter();
+                    if (!$imageAdapter->checkMemoryLimit($file->width, $file->height, $file->mimeType)) {
+                        return;
+                    }
+
+                    try {
+                        $imageAdapter->loadSingleFrameFromFile($file->getPathname());
+                    } catch (SystemException | ImageNotReadable $e) {
+                        throw new DamagedImage($file->fileID, $e);
+                    } catch (ImageNotProcessable $e) {
+                        logThrowable($e);
+
+                        return;
+                    }
+                }
+
+                \assert($imageAdapter instanceof ImageAdapter);
 
                 try {
-                    $imageAdapter->loadSingleFrameFromFile($file->getPathname());
-                } catch (SystemException | ImageNotReadable $e) {
-                    throw new DamagedImage($file->fileID, $e);
-                } catch (ImageNotProcessable $e) {
+                    $image = $imageAdapter->createThumbnail($format->width, $format->height, $format->retainDimensions);
+                } catch (\Throwable $e) {
                     logThrowable($e);
 
-                    return;
+                    continue;
                 }
+
+                $filename = FileUtil::getTemporaryFilename(extension: 'webp');
+                $imageAdapter->saveImageAs($image, $filename, 'webp', 80);
             }
-
-            \assert($imageAdapter instanceof ImageAdapter);
-
-            try {
-                $image = $imageAdapter->createThumbnail($format->width, $format->height, $format->retainDimensions);
-            } catch (\Throwable $e) {
-                logThrowable($e);
-
-                continue;
-            }
-
-            $filename = FileUtil::getTemporaryFilename(extension: 'webp');
-            $imageAdapter->saveImageAs($image, $filename, 'webp', 80);
 
             $fileThumbnail = FileThumbnailEditor::createFromTemporaryFile($file, $format, $filename);
             $processor->adoptThumbnail($fileThumbnail);

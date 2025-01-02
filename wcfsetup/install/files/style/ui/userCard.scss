@@ -138,6 +138,19 @@
 	}
 }
 
+.userCard__details {
+	@include wcfFontSmall;
+	margin-top: auto;
+	padding-top: 5px;
+}
+
+.userCard__details .dataList dd {
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
 .popoverContainer[data-identifier="com.woltlab.wcf.user"] {
 	--padding: 0;
 	--maxHeight: none;

@@ -476,7 +476,6 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
     {
         return WCF::getUser()->userID == $this->userID
             || WCF::getSession()->getPermission('admin.user.canViewInvisible')
-            || !$this->getPermission('user.profile.canHideOnlineStatus')
             || $this->isAccessible('canViewOnlineStatus');
     }
 

@@ -3,9 +3,7 @@
 namespace wcf\system\cronjob;
 
 use wcf\data\cronjob\Cronjob;
-use wcf\system\language\LanguageFactory;
 use wcf\system\package\PackageUpdateDispatcher;
-use wcf\system\WCF;
 
 /**
  * Fetches update package information.
@@ -23,7 +21,7 @@ class GetUpdateInfoCronjob extends AbstractCronjob
     {
         parent::execute($cronjob);
 
-        if (ENABLE_BENCHMARK) {
+        if (\ENABLE_BENCHMARK || \ENABLE_ENTERPRISE_MODE) {
             return;
         }
 
