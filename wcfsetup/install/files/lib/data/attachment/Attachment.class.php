@@ -260,7 +260,7 @@ class Attachment extends DatabaseObject implements ILinkableObject, IRouteContro
         }
 
         $thumbnail = $file->getThumbnail($size !== 'tiny' ? '' : $size);
-        if ($this === null) {
+        if ($thumbnail === null) {
             return '';
         }
 
