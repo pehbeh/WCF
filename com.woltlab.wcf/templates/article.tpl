@@ -272,7 +272,7 @@
 						<span class="articleNavigationArticleContent">
 							<span class="articleNavigationEntityName">{lang}wcf.article.previousArticle{/lang}</span>
 							<span class="articleNavigationArticleTitle">
-								<a href="{$previousArticle->getLink()}" rel="prev" class="articleNavigationArticleLink">
+								<a href="{$previousArticle->getLink()}" rel="prev" class="articleNavigationArticleLink articleLink" data-object-id="{$previousArticle->getObjectID()}">
 									{$previousArticle->getTitle()}
 								</a>
 							</span>
@@ -291,7 +291,7 @@
 						<span class="articleNavigationArticleContent">
 							<span class="articleNavigationEntityName">{lang}wcf.article.nextArticle{/lang}</span>
 							<span class="articleNavigationArticleTitle">
-								<a href="{$nextArticle->getLink()}" rel="next" class="articleNavigationArticleLink">
+								<a href="{$nextArticle->getLink()}" rel="next" class="articleNavigationArticleLink articleLink" data-object-id="{$nextArticle->getObjectID()}">
 									{$nextArticle->getTitle()}
 								</a>
 							</span>

@@ -5,7 +5,7 @@
  * @copyright  2001-2019 WoltLab GmbH
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
-define(["require", "exports", "tslib", "./BackgroundQueue", "./Bootstrap", "./Ui/User/Ignore", "./Ui/Page/Header/Menu", "./Ui/Message/UserConsent", "./Ui/Message/Share/Dialog", "./Ui/Message/Share/Providers", "./Ui/Feed/Dialog", "./User", "./Ui/Page/Menu/Main/Frontend", "./LazyLoader", "./Ajax/Backend", "./Notification/ServiceWorker"], function (require, exports, tslib_1, BackgroundQueue, Bootstrap, UiUserIgnore, UiPageHeaderMenu, UiMessageUserConsent, UiMessageShareDialog, Providers_1, UiFeedDialog, User_1, Frontend_1, LazyLoader_1, Backend_1, ServiceWorker_1) {
+define(["require", "exports", "tslib", "./BackgroundQueue", "./Bootstrap", "./Ui/User/Ignore", "./Ui/Page/Header/Menu", "./Ui/Message/UserConsent", "./Ui/Message/Share/Dialog", "./Ui/Message/Share/Providers", "./Ui/Feed/Dialog", "./User", "./Ui/Page/Menu/Main/Frontend", "./LazyLoader", "./Ajax/Backend", "./Notification/ServiceWorker", "./Api/Articles/GetArticlePopover"], function (require, exports, tslib_1, BackgroundQueue, Bootstrap, UiUserIgnore, UiPageHeaderMenu, UiMessageUserConsent, UiMessageShareDialog, Providers_1, UiFeedDialog, User_1, Frontend_1, LazyLoader_1, Backend_1, ServiceWorker_1, GetArticlePopover_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
@@ -35,6 +35,19 @@ define(["require", "exports", "tslib", "./BackgroundQueue", "./Bootstrap", "./Ui
             });
         });
     }
+    function setupArticlePopover() {
+        (0, LazyLoader_1.whenFirstSeen)(".articleLink", () => {
+            void new Promise((resolve_2, reject_2) => { require(["WoltLabSuite/Core/Component/Popover"], resolve_2, reject_2); }).then(tslib_1.__importStar).then(({ setupFor }) => {
+                setupFor({
+                    endpoint: async (objectId) => {
+                        return (await (0, GetArticlePopover_1.getArticlePopover)(objectId)).unwrap();
+                    },
+                    identifier: "com.woltlab.wcf.article",
+                    selector: ".articleLink",
+                });
+            });
+        });
+    }
     /**
      * Bootstraps general modules and frontend exclusive ones.
      */
@@ -48,11 +61,12 @@ define(["require", "exports", "tslib", "./BackgroundQueue", "./Bootstrap", "./Ui
         });
         UiPageHeaderMenu.init();
         if (options.styleChanger) {
-            void new Promise((resolve_2, reject_2) => { require(["./Controller/Style/Changer"], resolve_2, reject_2); }).then(tslib_1.__importStar).then((ControllerStyleChanger) => {
+            void new Promise((resolve_3, reject_3) => { require(["./Controller/Style/Changer"], resolve_3, reject_3); }).then(tslib_1.__importStar).then((ControllerStyleChanger) => {
                 ControllerStyleChanger.setup();
             });
         }
         setupUserPopover(options.endpointUserPopover);
+        setupArticlePopover();
         if (options.executeCronjobs !== undefined) {
             void (0, Backend_1.prepareRequest)(options.executeCronjobs)
                 .get()
@@ -82,22 +96,22 @@ define(["require", "exports", "tslib", "./BackgroundQueue", "./Bootstrap", "./Ui
             }
         }
         (0, LazyLoader_1.whenFirstSeen)("woltlab-core-reaction-summary", () => {
-            void new Promise((resolve_3, reject_3) => { require(["./Ui/Reaction/SummaryDetails"], resolve_3, reject_3); }).then(tslib_1.__importStar).then(({ setup }) => setup());
+            void new Promise((resolve_4, reject_4) => { require(["./Ui/Reaction/SummaryDetails"], resolve_4, reject_4); }).then(tslib_1.__importStar).then(({ setup }) => setup());
         });
         (0, LazyLoader_1.whenFirstSeen)("woltlab-core-comment", () => {
-            void new Promise((resolve_4, reject_4) => { require(["./Component/Comment/woltlab-core-comment"], resolve_4, reject_4); }).then(tslib_1.__importStar);
+            void new Promise((resolve_5, reject_5) => { require(["./Component/Comment/woltlab-core-comment"], resolve_5, reject_5); }).then(tslib_1.__importStar);
         });
         (0, LazyLoader_1.whenFirstSeen)("woltlab-core-comment-response", () => {
-            void new Promise((resolve_5, reject_5) => { require(["./Component/Comment/Response/woltlab-core-comment-response"], resolve_5, reject_5); }).then(tslib_1.__importStar);
+            void new Promise((resolve_6, reject_6) => { require(["./Component/Comment/Response/woltlab-core-comment-response"], resolve_6, reject_6); }).then(tslib_1.__importStar);
         });
         (0, LazyLoader_1.whenFirstSeen)("woltlab-core-emoji-picker", () => {
-            void new Promise((resolve_6, reject_6) => { require(["./Component/EmojiPicker/woltlab-core-emoji-picker"], resolve_6, reject_6); }).then(tslib_1.__importStar);
+            void new Promise((resolve_7, reject_7) => { require(["./Component/EmojiPicker/woltlab-core-emoji-picker"], resolve_7, reject_7); }).then(tslib_1.__importStar);
         });
         (0, LazyLoader_1.whenFirstSeen)("[data-follow-user]", () => {
-            void new Promise((resolve_7, reject_7) => { require(["./Component/User/Follow"], resolve_7, reject_7); }).then(tslib_1.__importStar).then(({ setup }) => setup());
+            void new Promise((resolve_8, reject_8) => { require(["./Component/User/Follow"], resolve_8, reject_8); }).then(tslib_1.__importStar).then(({ setup }) => setup());
         });
         (0, LazyLoader_1.whenFirstSeen)("[data-ignore-user]", () => {
-            void new Promise((resolve_8, reject_8) => { require(["./Component/User/Ignore"], resolve_8, reject_8); }).then(tslib_1.__importStar).then(({ setup }) => setup());
+            void new Promise((resolve_9, reject_9) => { require(["./Component/User/Ignore"], resolve_9, reject_9); }).then(tslib_1.__importStar).then(({ setup }) => setup());
         });
     }
 });

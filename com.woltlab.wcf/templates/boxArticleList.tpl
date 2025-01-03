@@ -5,7 +5,7 @@
 				<a href="{$boxArticle->getLink()}" aria-hidden="true" tabindex="-1">{unsafe:$boxArticle->getUserProfile()->getAvatar()->getImageTag(24)}</a>
 				
 				<div class="sidebarItemTitle">
-					<h3><a href="{$boxArticle->getLink()}">{$boxArticle->getTitle()}</a></h3>
+					<h3>{anchor object=$boxArticle class='articleLink' title=$boxArticle->getTitle()}</h3>
 					
 					<small>
 						{if $boxSortField == 'time'}
