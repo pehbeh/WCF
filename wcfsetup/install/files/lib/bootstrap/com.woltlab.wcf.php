@@ -116,33 +116,33 @@ return static function (): void {
     $eventHandler->register(
         \wcf\event\endpoint\ControllerCollecting::class,
         static function (\wcf\event\endpoint\ControllerCollecting $event) {
-            $event->register(new \wcf\system\endpoint\controller\core\articles\GetArticlePopover);
-            $event->register(new \wcf\system\endpoint\controller\core\files\DeleteFile);
-            $event->register(new \wcf\system\endpoint\controller\core\files\GenerateThumbnails);
-            $event->register(new \wcf\system\endpoint\controller\core\files\PrepareUpload);
-            $event->register(new \wcf\system\endpoint\controller\core\files\upload\SaveChunk);
-            $event->register(new \wcf\system\endpoint\controller\core\comments\CreateComment);
-            $event->register(new \wcf\system\endpoint\controller\core\comments\DeleteComment);
-            $event->register(new \wcf\system\endpoint\controller\core\comments\EditComment);
-            $event->register(new \wcf\system\endpoint\controller\core\comments\EnableComment);
-            $event->register(new \wcf\system\endpoint\controller\core\comments\RenderComments);
-            $event->register(new \wcf\system\endpoint\controller\core\comments\RenderComment);
-            $event->register(new \wcf\system\endpoint\controller\core\comments\UpdateComment);
-            $event->register(new \wcf\system\endpoint\controller\core\comments\responses\CreateResponse);
-            $event->register(new \wcf\system\endpoint\controller\core\comments\responses\DeleteResponse);
-            $event->register(new \wcf\system\endpoint\controller\core\comments\responses\EditResponse);
-            $event->register(new \wcf\system\endpoint\controller\core\comments\responses\EnableResponse);
-            $event->register(new \wcf\system\endpoint\controller\core\comments\responses\RenderResponse);
-            $event->register(new \wcf\system\endpoint\controller\core\comments\responses\RenderResponses);
-            $event->register(new \wcf\system\endpoint\controller\core\comments\responses\UpdateResponse);
-            $event->register(new \wcf\system\endpoint\controller\core\cronjobs\logs\ClearLogs);
-            $event->register(new \wcf\system\endpoint\controller\core\messages\GetMentionSuggestions);
-            $event->register(new \wcf\system\endpoint\controller\core\sessions\DeleteSession);
-            $event->register(new \wcf\system\endpoint\controller\core\versionTrackers\RevertVersion);
-            $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\ChangeJustifiedStatus);
-            $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\CloseReport);
-            $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\DeleteContent);
-            $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\EnableContent);
+            $event->register(new \wcf\system\endpoint\controller\core\articles\GetArticlePopover());
+            $event->register(new \wcf\system\endpoint\controller\core\files\DeleteFile());
+            $event->register(new \wcf\system\endpoint\controller\core\files\GenerateThumbnails());
+            $event->register(new \wcf\system\endpoint\controller\core\files\PrepareUpload());
+            $event->register(new \wcf\system\endpoint\controller\core\files\upload\SaveChunk());
+            $event->register(new \wcf\system\endpoint\controller\core\comments\CreateComment());
+            $event->register(new \wcf\system\endpoint\controller\core\comments\DeleteComment());
+            $event->register(new \wcf\system\endpoint\controller\core\comments\EditComment());
+            $event->register(new \wcf\system\endpoint\controller\core\comments\EnableComment());
+            $event->register(new \wcf\system\endpoint\controller\core\comments\RenderComments());
+            $event->register(new \wcf\system\endpoint\controller\core\comments\RenderComment());
+            $event->register(new \wcf\system\endpoint\controller\core\comments\UpdateComment());
+            $event->register(new \wcf\system\endpoint\controller\core\comments\responses\CreateResponse());
+            $event->register(new \wcf\system\endpoint\controller\core\comments\responses\DeleteResponse());
+            $event->register(new \wcf\system\endpoint\controller\core\comments\responses\EditResponse());
+            $event->register(new \wcf\system\endpoint\controller\core\comments\responses\EnableResponse());
+            $event->register(new \wcf\system\endpoint\controller\core\comments\responses\RenderResponse());
+            $event->register(new \wcf\system\endpoint\controller\core\comments\responses\RenderResponses());
+            $event->register(new \wcf\system\endpoint\controller\core\comments\responses\UpdateResponse());
+            $event->register(new \wcf\system\endpoint\controller\core\cronjobs\logs\ClearLogs());
+            $event->register(new \wcf\system\endpoint\controller\core\messages\GetMentionSuggestions());
+            $event->register(new \wcf\system\endpoint\controller\core\sessions\DeleteSession());
+            $event->register(new \wcf\system\endpoint\controller\core\versionTrackers\RevertVersion());
+            $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\ChangeJustifiedStatus());
+            $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\CloseReport());
+            $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\DeleteContent());
+            $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\EnableContent());
         }
     );
 
