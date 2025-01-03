@@ -19,6 +19,7 @@ import UiPageMenuMainFrontend from "./Ui/Page/Menu/Main/Frontend";
 import { whenFirstSeen } from "./LazyLoader";
 import { prepareRequest } from "./Ajax/Backend";
 import { setup as serviceWorkerSetup } from "./Notification/ServiceWorker";
+import { getArticlePopover } from "./Api/Articles/GetArticlePopover";
 
 interface BootstrapOptions {
   backgroundQueue: {
@@ -57,6 +58,20 @@ function setupUserPopover(endpoint: string): void {
   });
 }
 
+function setupArticlePopover(): void {
+  whenFirstSeen(".articleLink", () => {
+    void import("WoltLabSuite/Core/Component/Popover").then(({ setupFor }) => {
+      setupFor({
+        endpoint: async (objectId: number) => {
+          return (await getArticlePopover(objectId)).unwrap();
+        },
+        identifier: "com.woltlab.wcf.article",
+        selector: ".articleLink",
+      });
+    });
+  });
+}
+
 declare const COMPILER_TARGET_DEFAULT: boolean;
 
 /**
@@ -80,6 +95,7 @@ export function setup(options: BootstrapOptions): void {
   }
 
   setupUserPopover(options.endpointUserPopover);
+  setupArticlePopover();
 
   if (options.executeCronjobs !== undefined) {
     void prepareRequest(options.executeCronjobs)

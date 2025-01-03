@@ -7,6 +7,7 @@ use wcf\data\article\content\ArticleContent;
 use wcf\data\attachment\GroupedAttachmentList;
 use wcf\data\DatabaseObject;
 use wcf\data\ILinkableObject;
+use wcf\data\IPopoverObject;
 use wcf\data\IUserContent;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\data\user\UserProfile;
@@ -38,7 +39,7 @@ use wcf\system\WCF;
  * @property-read   int $isDeleted      is 1 if the article is in trash bin, otherwise 0
  * @property-read   int $hasLabels      is `1` if labels are assigned to the article
  */
-class Article extends DatabaseObject implements ILinkableObject, IUserContent
+class Article extends DatabaseObject implements ILinkableObject, IPopoverObject, IUserContent
 {
     /**
      * indicates that article is unpublished
@@ -442,5 +443,11 @@ class Article extends DatabaseObject implements ILinkableObject, IUserContent
         }
 
         return null;
+    }
+
+    #[\Override]
+    public function getPopoverLinkClass()
+    {
+        return 'articleLink';
     }
 }

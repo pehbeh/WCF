@@ -116,6 +116,7 @@ return static function (): void {
     $eventHandler->register(
         \wcf\event\endpoint\ControllerCollecting::class,
         static function (\wcf\event\endpoint\ControllerCollecting $event) {
+            $event->register(new \wcf\system\endpoint\controller\core\articles\GetArticlePopover);
             $event->register(new \wcf\system\endpoint\controller\core\files\DeleteFile);
             $event->register(new \wcf\system\endpoint\controller\core\files\GenerateThumbnails);
             $event->register(new \wcf\system\endpoint\controller\core\files\PrepareUpload);
