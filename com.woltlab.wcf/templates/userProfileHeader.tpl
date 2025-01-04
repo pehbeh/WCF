@@ -159,5 +159,32 @@
 
 			{event name='afterButtons'}
 		</div>
+
+		<div class="userProfileHeader__meta">
+			<dl class="plain userProfileHeader__meta__dataList">
+				{event name='beforeMeta'}
+
+				<dt>{icon name='calendar'} {lang}wcf.user.registrationDate{/lang}</dt>
+				<dd>{time time=$view->user->registrationDate type='plainDate'}</dd>
+				{if $view->user->getOldUsername()}
+					<dt>{icon name='scroll'} {lang}wcf.user.oldUsername{/lang}</dt>
+					<dd>{$view->user->getOldUsername()}</dd>
+				{/if}
+				{if $view->user->canViewOnlineStatus() && $view->user->getLastActivityTime()}
+					<dt>{icon name='clock'} {lang}wcf.user.usersOnline.lastActivity{/lang}</dt>
+					<dd>{time time=$view->user->getLastActivityTime()}</dd>
+					{if $user->getCurrentLocation()}
+						<dt>{icon name='location-arrow'} {lang}wcf.user.usersOnline.location{/lang}</dt>
+						<dd>{unsafe:$user->getCurrentLocation()}</dd>
+					{/if}
+				{/if}
+				{if $__wcf->session->getPermission('admin.user.canViewIpAddress') && $view->user->registrationIpAddress}
+					<dt>{icon name='network-wired'} {lang}wcf.user.registrationIpAddress{/lang}</dt>
+					<dd>{unsafe:$view->user->getRegistrationIpAddress()|ipSearch}</dd>
+				{/if}
+
+				{event name='afterMeta'}
+			</dl>
+		</div>
 	</div>
 </header>

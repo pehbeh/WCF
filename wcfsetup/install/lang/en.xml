@@ -5496,7 +5496,6 @@ your notifications on <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phras
 		<item name="wcf.user.profile.protected"><![CDATA[This member limits who may view their full profile.]]></item>
 		<item name="wcf.user.profile.management"><![CDATA[Management]]></item>
 		<item name="wcf.user.profile.title"><![CDATA[User profile of {$user->username}]]></item>
-		<item name="wcf.user.profile.miscInformation"><![CDATA[Miscellaneous Information]]></item>
 	</category>
 	<category name="wcf.user.objectWatch">
 		<item name="wcf.user.objectWatch.button.subscribe"><![CDATA[Subscribe]]></item>

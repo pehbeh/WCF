@@ -5494,7 +5494,6 @@ Benachrichtigungen auf <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phra
 		<item name="wcf.user.profile.protected"><![CDATA[Der Benutzer hat den Zugriff auf sein vollständiges Profil eingeschränkt.]]></item>
 		<item name="wcf.user.profile.management"><![CDATA[Verwaltung]]></item>
 		<item name="wcf.user.profile.title"><![CDATA[Benutzerprofil von {$user->username}]]></item>
-		<item name="wcf.user.profile.miscInformation"><![CDATA[Sonstige Informationen]]></item>
 	</category>
 	<category name="wcf.user.objectWatch">
 		<item name="wcf.user.objectWatch.button.subscribe"><![CDATA[Abonnieren]]></item>

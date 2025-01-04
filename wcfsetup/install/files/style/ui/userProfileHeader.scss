@@ -150,3 +150,41 @@ body[data-page-identifier="com.woltlab.wcf.User"] .userProfileContent:first-chil
 .userProfileHeader__button {
 	display: flex;
 }
+
+.userProfileHeader__meta {
+	flex: 1 0 calc(100% - 138px);
+	color: var(--wcfContentDimmedText);
+	margin-left: 138px;
+
+	@include screen-sm-down {
+		margin-left: 0;
+		flex-basis: 100%;
+	}
+}
+
+.userProfileHeader__meta__dataList {
+	@include wcfFontSmall;
+
+	> dt {
+		display: inline-block;
+		vertical-align: middle;
+
+		&:after {
+			content: ":";
+			padding-left: 1px;
+		}
+	}
+
+	> dd {
+		display: inline-block;
+		vertical-align: middle;
+
+		&:not(:last-of-type) {
+			margin-right: 10px;
+		}
+	}
+
+	fa-icon {
+		vertical-align: middle;
+	}
+}
