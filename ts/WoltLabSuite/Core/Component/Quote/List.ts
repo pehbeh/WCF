@@ -12,8 +12,9 @@ import { listenToCkeditor, dispatchToCkeditor } from "WoltLabSuite/Core/Componen
 import { getTabMenu } from "WoltLabSuite/Core/Component/Message/MessageTabMenu";
 import { getPhrase } from "WoltLabSuite/Core/Language";
 import { setActiveEditor } from "WoltLabSuite/Core/Component/Quote/Message";
-import { getQuotes, getMessage } from "WoltLabSuite/Core/Component/Quote/Storage";
+import { getQuotes, getMessage, removeQuote } from "WoltLabSuite/Core/Component/Quote/Storage";
 import DomUtil from "WoltLabSuite/Core/Dom/Util";
+import { escapeHTML } from "WoltLabSuite/Core/StringUtil";
 
 const quoteLists = new Map<string, QuoteList>();
 
@@ -43,67 +44,46 @@ class QuoteList {
     let quotesCount = 0;
     for (const [key, quotes] of getQuotes()) {
       const message = getMessage(key)!;
-      quotesCount += quotes.size;
+      quotesCount += quotes.length;
 
-      // TODO escape values
-      // TODO create web components???
-      const fragment = DomUtil.createFragmentFromHtml(`<article class="message messageReduced jsInvalidQuoteTarget">
-  <div class="messageContent">
-    <header class="messageHeader">
-      <div class="box32 messageHeaderWrapper">
-        <!-- TODO load real avatar -->
-        <span><img src="${window.WCF_PATH}images/avatars/avatar-default.svg" alt="" class="userAvatarImage" style="width: 32px; height: 32px"></span>
-        <div class="messageHeaderBox">
-          <h2 class="messageTitle">
-            <a href="${message.link}">${message.title}</a>
-          </h2>
-          <ul class="messageHeaderMetaData">
-            <!-- TODO add link to author profile -->
-            <li><span class="username">${message.author}</span></li>
-            <li><span class="messagePublicationTime"><woltlab-core-date-time date="${message.time}">${message.time}</woltlab-core-date-time></span></li>
-          </ul>
-        </div>
-      </div>
-    </header>
-    <div class="messageBody">
-      <div class="messageText">
-        <ul class="messageQuoteItemList">
-        ${Array.from(quotes)
-          .map(
-            (quote) => `<li>
-  <span>
-    <input type="checkbox" value="1" class="jsCheckbox">
-    <button type="button" class="jsTooltip jsInsertQuote" title="${getPhrase("wcf.message.quote.insertQuote")}">
-        <fa-icon name="plus"></fa-icon>
+      quotes.forEach((quote, index) => {
+        const fragment = DomUtil.createFragmentFromHtml(`
+<div class="quoteBox quoteBox--tabMenu">
+  <div class="quoteBoxIcon">
+    <img src="${escapeHTML(message.avatar)}" alt="" class="userAvatarImage" height="24" width="24">
+  </div>
+  <div class="quoteBoxTitle">
+    <a href="${escapeHTML(message.link)}" target="_blank">${escapeHTML(message.author)}</a>
+  </div>
+  <div class="quoteBoxButtons">
+    <button type="button" class="button small jsTooltip" title="${getPhrase("wcf.global.button.delete")}" data-action="delete">
+      <fa-icon name="times"></fa-icon>
     </button>
-  </span>
-  
-  <div class="jsQuote">
-    ${quote.message}
+    <button type="button" class="button buttonPrimary small jsTooltip" title="${getPhrase("wcf.message.quote.insertQuote")}" data-action="insert">
+      <fa-icon name="paste"></fa-icon>
+    </button>
   </div>
-</li>`,
-          )
-          .join("")}
-        </ul>
-      </div>
-    </div>
+  <div class="quoteBoxContent">
+    ${quote.rawMessage === undefined ? quote.message : quote.rawMessage}
   </div>
-</article>`);
+</div>
+        `);
 
-      // TODO dont query the DOM
-      fragment.querySelectorAll<HTMLButtonElement>(".jsInsertQuote").forEach((button) => {
-        button.addEventListener("click", () => {
-          // TODO use rawMessage to insert if available otherwise use message
+        fragment.querySelector('button[data-action="insert"]')!.addEventListener("click", () => {
           dispatchToCkeditor(this.#editor).insertQuote({
             author: message.author,
-            content: button.closest("li")!.querySelector(".jsQuote")!.innerHTML,
-            isText: false,
+            content: quote.rawMessage === undefined ? quote.message : quote.rawMessage,
+            isText: quote.rawMessage === undefined,
             link: message.link,
           });
         });
-      });
 
-      this.#container.append(fragment);
+        fragment.querySelector('button[data-action="delete"]')!.addEventListener("click", () => {
+          removeQuote(key, index);
+        });
+
+        this.#container.append(fragment);
+      });
     }
 
     if (quotesCount > 0) {

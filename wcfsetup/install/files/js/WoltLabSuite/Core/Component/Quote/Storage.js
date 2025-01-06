@@ -55,14 +55,13 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         const key = objectId ? getKey(objectType, objectId) : objectType;
         return getStorage().messages.get(key);
     }
-    function removeQuote(objectType, objectId, quote) {
+    function removeQuote(key, index) {
         const storage = getStorage();
-        const key = getKey(objectType, objectId);
         if (!storage.quotes.has(key)) {
             return;
         }
-        storage.quotes.get(key).delete(quote);
-        if (storage.quotes.get(key).size === 0) {
+        storage.quotes.get(key).splice(index, 1);
+        if (storage.quotes.get(key).length === 0) {
             storage.quotes.delete(key);
             storage.messages.delete(key);
         }
@@ -73,14 +72,10 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         const storage = getStorage();
         const key = getKey(objectType, message.objectID);
         if (!storage.quotes.has(key)) {
-            storage.quotes.set(key, new Set());
+            storage.quotes.set(key, []);
         }
         storage.messages.set(key, message);
-        if (!Array.from(storage.quotes.get(key))
-            .map((q) => q.message)
-            .includes(quote.message)) {
-            storage.quotes.get(key).add(quote);
-        }
+        storage.quotes.get(key).push(quote);
         saveStorage(storage);
     }
     function getStorage() {
@@ -94,11 +89,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         else {
             return JSON.parse(data, (key, value) => {
                 if (key === "quotes") {
-                    const result = new Map(value);
-                    for (const [key, setValue] of result) {
-                        result.set(key, new Set(setValue));
-                    }
-                    return result;
+                    return new Map(value);
                 }
                 else if (key === "messages") {
                     return new Map(value);
@@ -111,7 +102,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         return `${objectType}:${objectId}`;
     }
     function saveStorage(data) {
-        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data, (key, value) => {
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data, (_key, value) => {
             if (value instanceof Map) {
                 return Array.from(value.entries());
             }

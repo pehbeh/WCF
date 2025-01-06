@@ -7,7 +7,7 @@
  * @since 6.2
  * @woltlabExcludeBundle tiny
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Event", "WoltLabSuite/Core/Component/Message/MessageTabMenu", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Component/Quote/Message", "WoltLabSuite/Core/Component/Quote/Storage", "WoltLabSuite/Core/Dom/Util"], function (require, exports, tslib_1, Event_1, MessageTabMenu_1, Language_1, Message_1, Storage_1, Util_1) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Event", "WoltLabSuite/Core/Component/Message/MessageTabMenu", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Component/Quote/Message", "WoltLabSuite/Core/Component/Quote/Storage", "WoltLabSuite/Core/Dom/Util", "WoltLabSuite/Core/StringUtil"], function (require, exports, tslib_1, Event_1, MessageTabMenu_1, Language_1, Message_1, Storage_1, Util_1, StringUtil_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.getQuoteList = getQuoteList;
@@ -36,62 +36,42 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
             let quotesCount = 0;
             for (const [key, quotes] of (0, Storage_1.getQuotes)()) {
                 const message = (0, Storage_1.getMessage)(key);
-                quotesCount += quotes.size;
-                // TODO escape values
-                // TODO create web components???
-                const fragment = Util_1.default.createFragmentFromHtml(`<article class="message messageReduced jsInvalidQuoteTarget">
-  <div class="messageContent">
-    <header class="messageHeader">
-      <div class="box32 messageHeaderWrapper">
-        <!-- TODO load real avatar -->
-        <span><img src="${window.WCF_PATH}images/avatars/avatar-default.svg" alt="" class="userAvatarImage" style="width: 32px; height: 32px"></span>
-        <div class="messageHeaderBox">
-          <h2 class="messageTitle">
-            <a href="${message.link}">${message.title}</a>
-          </h2>
-          <ul class="messageHeaderMetaData">
-            <!-- TODO add link to author profile -->
-            <li><span class="username">${message.author}</span></li>
-            <li><span class="messagePublicationTime"><woltlab-core-date-time date="${message.time}">${message.time}</woltlab-core-date-time></span></li>
-          </ul>
-        </div>
-      </div>
-    </header>
-    <div class="messageBody">
-      <div class="messageText">
-        <ul class="messageQuoteItemList">
-        ${Array.from(quotes)
-                    .map((quote) => `<li>
-  <span>
-    <input type="checkbox" value="1" class="jsCheckbox">
-    <button type="button" class="jsTooltip jsInsertQuote" title="${(0, Language_1.getPhrase)("wcf.message.quote.insertQuote")}">
-        <fa-icon name="plus"></fa-icon>
+                quotesCount += quotes.length;
+                quotes.forEach((quote, index) => {
+                    const fragment = Util_1.default.createFragmentFromHtml(`
+<div class="quoteBox quoteBox--tabMenu">
+  <div class="quoteBoxIcon">
+    <img src="${(0, StringUtil_1.escapeHTML)(message.avatar)}" alt="" class="userAvatarImage" height="24" width="24">
+  </div>
+  <div class="quoteBoxTitle">
+    <a href="${(0, StringUtil_1.escapeHTML)(message.link)}" target="_blank">${(0, StringUtil_1.escapeHTML)(message.author)}</a>
+  </div>
+  <div class="quoteBoxButtons">
+    <button type="button" class="button small jsTooltip" title="${(0, Language_1.getPhrase)("wcf.global.button.delete")}" data-action="delete">
+      <fa-icon name="times"></fa-icon>
     </button>
-  </span>
-  
-  <div class="jsQuote">
-    ${quote.message}
+    <button type="button" class="button buttonPrimary small jsTooltip" title="${(0, Language_1.getPhrase)("wcf.message.quote.insertQuote")}" data-action="insert">
+      <fa-icon name="paste"></fa-icon>
+    </button>
   </div>
-</li>`)
-                    .join("")}
-        </ul>
-      </div>
-    </div>
+  <div class="quoteBoxContent">
+    ${quote.rawMessage === undefined ? quote.message : quote.rawMessage}
   </div>
-</article>`);
-                fragment.querySelectorAll(".jsInsertQuote").forEach((button) => {
-                    button.addEventListener("click", () => {
-                        // TODO dont query the DOM
-                        // TODO use rawMessage to insert if available otherwise use message
+</div>
+        `);
+                    fragment.querySelector('button[data-action="insert"]').addEventListener("click", () => {
                         (0, Event_1.dispatchToCkeditor)(this.#editor).insertQuote({
                             author: message.author,
-                            content: button.closest("li").querySelector(".jsQuote").innerHTML,
-                            isText: false,
+                            content: quote.rawMessage === undefined ? quote.message : quote.rawMessage,
+                            isText: quote.rawMessage === undefined,
                             link: message.link,
                         });
                     });
+                    fragment.querySelector('button[data-action="delete"]').addEventListener("click", () => {
+                        (0, Storage_1.removeQuote)(key, index);
+                    });
+                    this.#container.append(fragment);
                 });
-                this.#container.append(fragment);
             }
             if (quotesCount > 0) {
                 (0, MessageTabMenu_1.getTabMenu)(this.#editorId)?.showTab("quotes", (0, Language_1.getPhrase)("wcf.message.quote.showQuotes", {

@@ -29,7 +29,7 @@ interface Quote {
 }
 
 interface StorageData {
-  quotes: Map<string, Set<Quote>>;
+  quotes: Map<string, Quote[]>;
   messages: Map<string, Message>;
 }
 
@@ -76,7 +76,7 @@ export async function saveFullQuote(objectType: string, objectClassName: string,
   refreshQuoteLists();
 }
 
-export function getQuotes(): Map<string, Set<Quote>> {
+export function getQuotes(): Map<string, Quote[]> {
   return getStorage().quotes;
 }
 
@@ -86,17 +86,15 @@ export function getMessage(objectType: string, objectId?: number): Message | und
   return getStorage().messages.get(key);
 }
 
-export function removeQuote(objectType: string, objectId: number, quote: Quote): void {
+export function removeQuote(key: string, index: number): void {
   const storage = getStorage();
-
-  const key = getKey(objectType, objectId);
   if (!storage.quotes.has(key)) {
     return;
   }
 
-  storage.quotes.get(key)!.delete(quote);
+  storage.quotes.get(key)!.splice(index, 1);
 
-  if (storage.quotes.get(key)!.size === 0) {
+  if (storage.quotes.get(key)!.length === 0) {
     storage.quotes.delete(key);
     storage.messages.delete(key);
   }
@@ -111,18 +109,11 @@ function storeQuote(objectType: string, message: Message, quote: Quote): void {
 
   const key = getKey(objectType, message.objectID);
   if (!storage.quotes.has(key)) {
-    storage.quotes.set(key, new Set());
+    storage.quotes.set(key, []);
   }
 
   storage.messages.set(key, message);
-
-  if (
-    !Array.from(storage.quotes.get(key)!)
-      .map((q) => q.message)
-      .includes(quote.message)
-  ) {
-    storage.quotes.get(key)!.add(quote);
-  }
+  storage.quotes.get(key)!.push(quote);
 
   saveStorage(storage);
 }
@@ -137,11 +128,7 @@ function getStorage(): StorageData {
   } else {
     return JSON.parse(data, (key, value) => {
       if (key === "quotes") {
-        const result = new Map<string, Set<string>>(value);
-        for (const [key, setValue] of result) {
-          result.set(key, new Set(setValue));
-        }
-        return result;
+        return new Map<string, Quote[]>(value);
       } else if (key === "messages") {
         return new Map<string, Message>(value);
       }
@@ -158,7 +145,7 @@ function getKey(objectType: string, objectId: number): string {
 function saveStorage(data: StorageData) {
   window.localStorage.setItem(
     STORAGE_KEY,
-    JSON.stringify(data, (key, value) => {
+    JSON.stringify(data, (_key, value) => {
       if (value instanceof Map) {
         return Array.from(value.entries());
       } else if (value instanceof Set) {
