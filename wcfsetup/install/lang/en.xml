@@ -5560,7 +5560,7 @@ your notifications on <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phras
 	</category>
 	<category name="wcf.smiley"/>
 	<category name="wcf.upload">
-		<item name="wcf.upload.error.noImage"><![CDATA[The uploaded file is no image.]]></item>
+		<item name="wcf.upload.error.noImage"><![CDATA[The uploaded file is not an image.]]></item>
 		<item name="wcf.upload.error.reachedRemainingLimit"><![CDATA[You have selected too many files. You can only upload {#$maxFiles} more file{if $maxFiles != 1}s{/if}.]]></item>
 		<item name="wcf.upload.error.uploadFailed"><![CDATA[An unknown error occurred during the upload.]]></item>
 
@@ -5571,6 +5571,8 @@ your notifications on <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phras
 		<item name="wcf.upload.error.adopt"><![CDATA[The file “{$filename}” cannot be assigned.]]></item>
 		<item name="wcf.upload.error.delete.unknownError"><![CDATA[An unknown error occurred while deleting the file.]]></item>
 		<item name="wcf.upload.error.delete.permissionDenied"><![CDATA[The file cannot be deleted, use <strong>Replace</strong> instead to swap out the file.]]></item>
+		<item name="wcf.upload.validation.error.noImage"><![CDATA[The file is not an image.]]></item>
+		<item name="wcf.upload.validation.error.tooSmall"><![CDATA[The file is too small.]]></item>
 	</category>
 </import>
 <delete>
