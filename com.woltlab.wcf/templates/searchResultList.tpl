@@ -4,26 +4,16 @@
 			<li class="gridListItem gridListItemMessage">
 				<div class="gridListItemImage">
 					{if $customIcons[$message->getObjectTypeName()]|isset}
-						<div class="gridListItemLargeIcon">
-							{icon size=48 name=$customIcons[$message->getObjectTypeName()]}
-						</div>
-						<div class="gridListItemSmallIcon">
-							{icon size=32 name=$customIcons[$message->getObjectTypeName()]}
-						</div>
+						{icon size=48 name=$customIcons[$message->getObjectTypeName()]}
 					{elseif $message->getUserProfile()}
 						{user object=$message->getUserProfile() type='avatar48' ariaHidden='true' tabindex='-1'}
 					{else}
-						<div class="gridListItemLargeIcon">
-							{icon size=48 name='file'}
-						</div>
-						<div class="gridListItemSmallIcon">
-							{icon size=32 name='file'}
-						</div>
+						{icon size=48 name='file'}
 					{/if}
 				</div>
 				
 				<h3 class="gridListItemTitle">
-					<a href="{$message->getLink($query)}">{$message->getSubject()}</a>
+					<a href="{$message->getLink($query)}" class="gridListItemLink">{$message->getSubject()}</a>
 				</h3>
 
 				{hascontent}
