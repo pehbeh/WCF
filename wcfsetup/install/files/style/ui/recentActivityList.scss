@@ -49,20 +49,32 @@
 	}
 
 	@include screen-sm-down {
+		column-gap: 10px;
+		grid-template-areas:
+			"avatar title"
+			"time time";
+
+		&.recentActivityListItem--withDescription {
+			grid-template-areas:
+				"avatar title"
+				"description description"
+				"time time";
+		}
+
 		&.recentActivityListItem--withImage {
 			grid-template-areas:
 				"avatar title"
-				"avatar image"
-				"avatar time";
+				"image image"
+				"time time";
 			grid-template-rows: min-content min-content 1fr;
 		}
 
 		&.recentActivityListItem--withDescription.recentActivityListItem--withImage {
 			grid-template-areas:
 				"avatar title"
-				"avatar image"
-				"avatar description"
-				"avatar time";
+				"image image"
+				"description description"
+				"time time";
 			grid-template-rows: min-content min-content min-content 1fr;
 		}
 	}
@@ -88,6 +100,10 @@
 	color: var(--wcfContentDimmedText);
 
 	@include wcfFontSmall;
+
+	@include screen-sm-down {
+		text-align: right;
+	}
 }
 
 .recentActivityListItem__image {
