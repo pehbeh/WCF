@@ -65,6 +65,28 @@ class TabMenu {
     this.#activeTabName = tabName;
   }
 
+  setTabCounter(tabName: string, value: number): void {
+    const tab = this.#tabs.find((element) => element.dataset.name === tabName);
+    if (tab === undefined) {
+      throw new Error(`Unknown tab '${tabName}'.`);
+    }
+
+    let badgeUpdate = tab.querySelector(".badgeUpdate");
+    if (value === 0) {
+      badgeUpdate?.remove();
+
+      return;
+    }
+
+    if (badgeUpdate === null) {
+      badgeUpdate = document.createElement("span");
+      badgeUpdate.classList.add("badge", "badgeUpdate");
+      tab.querySelector("a, button")!.append(badgeUpdate);
+    }
+
+    badgeUpdate.textContent = value.toString();
+  }
+
   #init(): void {
     for (let i = 0; i < this.#tabs.length; i++) {
       const tab = this.#tabs[i];
@@ -142,9 +164,19 @@ function initTabMenu(tabMenu: HTMLElement): void {
 }
 
 export function getTabMenu(identifier: string): TabMenu | undefined {
+  setup();
+
   return tabMenus.get(identifier);
 }
 
+let initialized = false;
+
 export function setup(): void {
+  if (initialized) {
+    return;
+  }
+
+  initialized = true;
+
   wheneverFirstSeen(".messageTabMenu", (tabMenu) => initTabMenu(tabMenu));
 }

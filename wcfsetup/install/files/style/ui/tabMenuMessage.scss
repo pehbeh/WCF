@@ -108,12 +108,20 @@
 
 			> a,
 			> button {
+				align-items: center;
 				color: inherit;
-				display: block;
+				/* 0.2em matches the width of a space */
+				column-gap: 0.2em;
+				display: flex;
 				padding: 10px 20px;
 
 				@include userSelectNone;
 				@include wcfFontDefault;
+
+				.badgeUpdate {
+					font-variant: tabular-nums;
+					margin-left: 0.3em;
+				}
 
 				@include screen-md-up {
 					> .icon {
@@ -126,7 +134,7 @@
 						display: block;
 					}
 
-					> span:not(.icon) {
+					> span:not(.badgeUpdate) {
 						display: none;
 					}
 				}

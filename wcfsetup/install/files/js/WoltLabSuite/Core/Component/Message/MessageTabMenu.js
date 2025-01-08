@@ -53,6 +53,23 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/Selector", "Wol
             this.#tabContainers[tabIndex].classList.add("active");
             this.#activeTabName = tabName;
         }
+        setTabCounter(tabName, value) {
+            const tab = this.#tabs.find((element) => element.dataset.name === tabName);
+            if (tab === undefined) {
+                throw new Error(`Unknown tab '${tabName}'.`);
+            }
+            let badgeUpdate = tab.querySelector(".badgeUpdate");
+            if (value === 0) {
+                badgeUpdate?.remove();
+                return;
+            }
+            if (badgeUpdate === null) {
+                badgeUpdate = document.createElement("span");
+                badgeUpdate.classList.add("badge", "badgeUpdate");
+                tab.querySelector("a, button").append(badgeUpdate);
+            }
+            badgeUpdate.textContent = value.toString();
+        }
         #init() {
             for (let i = 0; i < this.#tabs.length; i++) {
                 const tab = this.#tabs[i];
@@ -114,9 +131,15 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/Selector", "Wol
         }
     }
     function getTabMenu(identifier) {
+        setup();
         return tabMenus.get(identifier);
     }
+    let initialized = false;
     function setup() {
+        if (initialized) {
+            return;
+        }
+        initialized = true;
         (0, Selector_1.wheneverFirstSeen)(".messageTabMenu", (tabMenu) => initTabMenu(tabMenu));
     }
 });

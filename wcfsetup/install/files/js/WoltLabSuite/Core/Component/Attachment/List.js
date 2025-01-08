@@ -10,6 +10,10 @@ define(["require", "exports", "./Entry", "../Ckeditor/Event", "../Message/Messag
         if (container === null) {
             throw new Error(`The attachments container for '${editorId}' does not exist.`);
         }
+        const tabMenu = (0, MessageTabMenu_1.getTabMenu)(editorId);
+        if (tabMenu === undefined) {
+            throw new Error("Unable to find the corresponding tab menu.");
+        }
         const editor = document.getElementById(editorId);
         if (editor === null) {
             throw new Error(`The editor element for '${editorId}' does not exist.`);
@@ -69,5 +73,19 @@ define(["require", "exports", "./Entry", "../Ckeditor/Event", "../Message/Messag
             });
             existingFiles.remove();
         }
+        const files = fileList.getElementsByTagName("woltlab-core-file");
+        const observer = new MutationObserver(() => {
+            let counter = 0;
+            for (const file of files) {
+                if (!file.isFailedUpload()) {
+                    counter++;
+                }
+            }
+            tabMenu.setTabCounter("attachments", counter);
+        });
+        observer.observe(fileList, {
+            childList: true,
+            subtree: true,
+        });
     }
 });
