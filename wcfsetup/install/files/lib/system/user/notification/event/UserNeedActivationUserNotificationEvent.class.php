@@ -3,6 +3,7 @@
 namespace wcf\system\user\notification\event;
 
 use wcf\data\user\UserProfile;
+use wcf\page\UserPage;
 use wcf\system\request\LinkHandler;
 use wcf\system\user\notification\object\UserRegistrationUserNotificationObject;
 
@@ -64,9 +65,8 @@ class UserNeedActivationUserNotificationEvent extends AbstractUserNotificationEv
     #[\Override]
     public function getLink(): string
     {
-        return LinkHandler::getInstance()->getLink('UserEdit', [
+        return LinkHandler::getInstance()->getControllerLink(UserPage::class, [
             'object' => $this->getUserNotificationObject(),
-            'isACP' => true,
         ]);
     }
 
