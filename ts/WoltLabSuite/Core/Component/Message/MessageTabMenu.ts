@@ -65,29 +65,26 @@ class TabMenu {
     this.#activeTabName = tabName;
   }
 
-  showTab(tabName: string, title?: string): void {
-    this.#tabs
-      .filter((element) => element.dataset.name === tabName)
-      .forEach((element) => {
-        element.hidden = false;
+  showTab(tabName: string): void {
+    const tab = this.#tabs.find((element) => element.dataset.name === tabName);
+    if (tab === undefined) {
+      return;
+    }
 
-        // Set new title
-        if (title) {
-          element.querySelector("span")!.textContent = title;
-        }
-      });
+    tab.hidden = false;
   }
 
   hideTab(tabName: string): void {
-    this.#tabs
-      .filter((element) => element.dataset.name === tabName)
-      .forEach((element) => {
-        element.hidden = true;
+    const tab = this.#tabs.find((element) => element.dataset.name === tabName);
+    if (tab === undefined) {
+      return;
+    }
 
-        if (element.classList.contains("active")) {
-          this.#closeAllTabs();
-        }
-      });
+    tab.hidden = false;
+
+    if (tab.classList.contains("active")) {
+      this.#closeAllTabs();
+    }
   }
 
   setTabCounter(tabName: string, value: number): void {

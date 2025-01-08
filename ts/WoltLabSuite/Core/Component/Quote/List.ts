@@ -86,15 +86,17 @@ class QuoteList {
       });
     }
 
+    const tabMenu = getTabMenu(this.#editorId);
+    if (tabMenu === undefined) {
+      throw new Error(`Could not find the tab menu for '${this.#editorId}'.`);
+    }
+
+    tabMenu.setTabCounter("quotes", quotesCount);
+
     if (quotesCount > 0) {
-      getTabMenu(this.#editorId)?.showTab(
-        "quotes",
-        getPhrase("wcf.message.quote.showQuotes", {
-          count: quotesCount,
-        }),
-      );
+      tabMenu.showTab("quotes");
     } else {
-      getTabMenu(this.#editorId)?.hideTab("quotes");
+      tabMenu.hideTab("quotes");
     }
   }
 }
