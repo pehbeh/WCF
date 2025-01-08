@@ -20,10 +20,8 @@
 	{/foreach}
 </ul>
 
-{if $usersAwaitingApproval > $users|count}
-	<div class="acpDashboardBox__cta">
-		<a href="{link controller='UserQuickSearch' mode='pendingActivation'}{/link}" class="button small">
-			{lang}wcf.global.button.showAll{/lang}
-		</a>
-	</div>
-{/if}
+<div class="acpDashboardBox__cta">
+	<a href="{link controller='UserQuickSearch' mode='pendingActivation'}{/link}" class="button small">
+		{lang}wcf.global.button.showAll{/lang}
+	</a>
+</div>
