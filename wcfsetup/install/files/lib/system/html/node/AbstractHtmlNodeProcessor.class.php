@@ -121,6 +121,16 @@ abstract class AbstractHtmlNodeProcessor implements IHtmlNodeProcessor
                     $obj = $data['object'];
                     $string = $obj->replaceTag($data['data']);
 
+                    if (!\is_string($string) && !\is_numeric($string)) {
+                        throw new \RuntimeException(
+                            \sprintf(
+                                "%s::replaceTag() returned %s but a string or number was expected.",
+                                \get_class($obj),
+                                \gettype($string),
+                            ),
+                        );
+                    }
+
                     if (!isset($data['data']['skipInnerContent']) || $data['data']['skipInnerContent'] !== true) {
                         if (\str_contains($string, '<!-- META_CODE_INNER_CONTENT -->')) {
                             return \str_replace('<!-- META_CODE_INNER_CONTENT -->', $matches['content'], $string);
