@@ -37,7 +37,7 @@
 							{/if}
 						</th>
 					{/foreach}
-					{if $view->hasActions()}
+					{if $view->hasInteractions()}
 						<th class="gridView__headerColumn gridView__actionColumn"></th>
 					{/if}
 				</td>
@@ -72,4 +72,6 @@
 		);
 	});
 </script>
-{unsafe:$view->renderActionInitialization()}
+{if $view->hasInteractions()}
+	{unsafe:$view->renderInteractionInitialization()}
+{/if}

@@ -4,7 +4,7 @@ namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
 use wcf\system\gridView\AbstractGridView;
-use wcf\system\gridView\ACPSessionLogGridView;
+use wcf\system\gridView\admin\ACPSessionLogGridView;
 
 /**
  * Shows a list of logged sessions.

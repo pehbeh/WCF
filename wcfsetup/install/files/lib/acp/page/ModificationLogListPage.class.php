@@ -4,7 +4,7 @@ namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
 use wcf\system\gridView\AbstractGridView;
-use wcf\system\gridView\ModificationLogGridView;
+use wcf\system\gridView\admin\ModificationLogGridView;
 
 /**
  * Shows a list of modification log items.

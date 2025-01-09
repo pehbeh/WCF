@@ -4,7 +4,7 @@ namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
 use wcf\system\gridView\AbstractGridView;
-use wcf\system\gridView\CronjobLogGridView;
+use wcf\system\gridView\admin\CronjobLogGridView;
 
 /**
  * Shows cronjob log information.

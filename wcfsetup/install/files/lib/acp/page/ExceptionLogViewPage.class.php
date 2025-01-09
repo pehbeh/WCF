@@ -4,7 +4,7 @@ namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
 use wcf\system\gridView\AbstractGridView;
-use wcf\system\gridView\ExceptionLogGridView;
+use wcf\system\gridView\admin\ExceptionLogGridView;
 use wcf\system\registry\RegistryHandler;
 
 /**

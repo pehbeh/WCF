@@ -4,9 +4,12 @@ namespace wcf\system\gridView;
 
 use LogicException;
 use wcf\action\GridViewFilterAction;
+use wcf\data\DatabaseObject;
 use wcf\event\IPsr14Event;
 use wcf\system\event\EventHandler;
-use wcf\system\gridView\action\IGridViewAction;
+use wcf\system\interaction\IInteraction;
+use wcf\system\interaction\IInteractionProvider;
+use wcf\system\interaction\InteractionContextMenuView;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
@@ -27,9 +30,9 @@ abstract class AbstractGridView
     private array $columns = [];
 
     /**
-     * @var IGridViewAction[]
+     * @var IInteraction[]
      */
-    private array $actions = [];
+    private array $quickInteractions = [];
 
     private GridViewRowLink $rowLink;
     private int $rowsPerPage = 20;
@@ -39,6 +42,8 @@ abstract class AbstractGridView
     private int $pageNo = 1;
     private array $activeFilters = [];
     private string|int|null $objectIDFilter = null;
+    private ?IInteractionProvider $interactionProvider = null;
+    private InteractionContextMenuView $interactionContextMenuView;
 
     /**
      * Adds a new column to the grid view.
@@ -156,65 +161,44 @@ abstract class AbstractGridView
     }
 
     /**
-     * Adds the given actions to the grid view.
-     * @param IGridViewAction[] $columns
+     * Sets the interaction provider that is used to render the interaction context menu.
      */
-    public function addActions(array $actions): void
+    public function setInteractionProvider(IInteractionProvider $provider): void
     {
-        foreach ($actions as $action) {
-            $this->addAction($action);
-        }
+        $this->interactionProvider = $provider;
     }
 
     /**
-     * Adds the given action to the grid view.
+     * Returns the interaction provider of the grid view.
      */
-    public function addAction(IGridViewAction $action): void
+    public function getInteractionProvider(): ?IInteractionProvider
     {
-        $this->actions[] = $action;
+        return $this->interactionProvider;
     }
 
     /**
-     * Returns all actions of the grid view.
-     * @return IGridViewAction[]
+     * Returns true, if this grid view has interactions.
      */
-    public function getActions(): array
+    public function hasInteractions(): bool
     {
-        return $this->actions;
+        return $this->interactionProvider !== null || $this->quickInteractions !== [];
     }
 
     /**
-     * Returns true, if this grid view has actions.
+     * Adds a quick interaction.
      */
-    public function hasActions(): bool
+    public function addQuickInteraction(IInteraction $interaction): void
     {
-        return $this->actions !== [];
+        $this->quickInteractions[] = $interaction;
     }
 
     /**
-     * Returns true, if this grid view has actions that should be displayed in the dropdown.
+     * Returns the quick interactions.
+     * @return IInteraction[]
      */
-    public function hasDropdownActions(): bool
+    public function getQuickInteractions(): array
     {
-        return $this->getDropdownActions() !== [];
-    }
-
-    /**
-     * Returns the actions that should be displayed in the dropdown.
-     * @return IGridViewAction[]
-     */
-    public function getDropdownActions(): array
-    {
-        return \array_filter($this->getActions(), fn($action) => !$action->isQuickAction());
-    }
-
-    /**
-     * Returns the quick actions.
-     * @return IGridViewAction[]
-     */
-    public function getQuickActions(): array
-    {
-        return \array_filter($this->getActions(), fn($action) => $action->isQuickAction());
+        return $this->quickInteractions;
     }
 
     /**
@@ -255,25 +239,67 @@ abstract class AbstractGridView
     }
 
     /**
-     * Renders the given action.
+     * Returns the view of the interaction context menu.
      */
-    public function renderAction(IGridViewAction $action, mixed $row): string
+    public function getInteractionContextMenuView(): InteractionContextMenuView
     {
-        return $action->render($row);
+        if ($this->interactionProvider === null) {
+            throw new \BadMethodCallException("Missing interaction provider.");
+        }
+
+        if (!isset($this->interactionContextMenuView)) {
+            $this->interactionContextMenuView = new InteractionContextMenuView($this->interactionProvider);
+        }
+
+        return $this->interactionContextMenuView;
     }
 
     /**
-     * Renders the initialization code for the actions of the grid view.
+     * Renders the initialization code for the interactions of the grid view.
      */
-    public function renderActionInitialization(): string
+    public function renderInteractionInitialization(): string
     {
-        return implode(
-            "\n",
-            \array_map(
-                fn($action) => $action->renderInitialization($this),
-                $this->getActions()
-            )
-        );
+        $code = '';
+        if ($this->interactionProvider !== null) {
+            $code = $this->getInteractionContextMenuView()->renderInitialization($this->getID() . '_table');
+        }
+
+        if ($this->quickInteractions !== []) {
+            $code .= "\n";
+            $code .= \implode("\n", \array_map(
+                fn($interaction) => $interaction->renderInitialization($this->getID() . '_table'),
+                $this->getQuickInteractions()
+            ));
+        }
+
+        return $code;
+    }
+
+    /**
+     * Renders the interactions for the given row.
+     */
+    public function renderInteractionContextMenuButton(mixed $row): string
+    {
+        if ($this->interactionProvider === null) {
+            return '';
+        }
+
+        \assert($row instanceof DatabaseObject);
+
+        return $this->getInteractionContextMenuView()->renderButton($row);
+    }
+
+    /**
+     * Renders the interactions for the given row.
+     */
+    public function renderQuickInteractions(mixed $row): string
+    {
+        \assert($row instanceof DatabaseObject);
+
+        return \implode("\n", \array_map(
+            static fn($interaction) => $interaction->render($row),
+            $this->getQuickInteractions()
+        ));
     }
 
     /**

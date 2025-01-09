@@ -3,6 +3,7 @@ import { getRows } from "../Api/Gridviews/GetRows";
 import DomChangeListener from "../Dom/Change/Listener";
 import DomUtil from "../Dom/Util";
 import { promiseMutex } from "../Helper/PromiseMutex";
+import { wheneverFirstSeen } from "../Helper/Selector";
 import UiDropdownSimple from "../Ui/Dropdown/Simple";
 import { dialogFactory } from "./Dialog";
 
@@ -47,7 +48,7 @@ export class GridView {
 
     this.#initPagination();
     this.#initSorting();
-    this.#initActions();
+    this.#initInteractions();
     this.#initFilters();
     this.#initEventListeners();
 
@@ -128,7 +129,6 @@ export class GridView {
     DomChangeListener.trigger();
 
     this.#renderFilters(response.filterLabels);
-    this.#initActions();
   }
 
   async #refreshRow(row: HTMLElement): Promise<void> {
@@ -166,18 +166,18 @@ export class GridView {
     window.history.pushState({}, document.title, url.toString());
   }
 
-  #initActions(): void {
-    this.#table.querySelectorAll<HTMLTableRowElement>("tbody tr").forEach((row) => {
-      row.querySelectorAll<HTMLElement>(".gridViewActions").forEach((element) => {
+  #initInteractions(): void {
+    wheneverFirstSeen(`#${this.#table.id} tbody tr`, (row) => {
+      row.querySelectorAll<HTMLElement>(".dropdownToggle").forEach((element) => {
         let dropdown = UiDropdownSimple.getDropdownMenu(element.dataset.target!);
         if (!dropdown) {
           dropdown = element.closest(".dropdown")!.querySelector<HTMLElement>(".dropdownMenu")!;
         }
 
-        dropdown?.querySelectorAll<HTMLButtonElement>("[data-action]").forEach((element) => {
+        dropdown?.querySelectorAll<HTMLButtonElement>("[data-interaction]").forEach((element) => {
           element.addEventListener("click", () => {
             row.dispatchEvent(
-              new CustomEvent("action", {
+              new CustomEvent("interaction", {
                 detail: element.dataset,
                 bubbles: true,
               }),
@@ -294,6 +294,10 @@ export class GridView {
   #initEventListeners(): void {
     this.#table.addEventListener("refresh", (event) => {
       void this.#refreshRow(event.target as HTMLElement);
+    });
+
+    this.#table.addEventListener("remove", (event) => {
+      (event.target as HTMLElement).remove();
     });
   }
 }

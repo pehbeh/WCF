@@ -1,4 +1,4 @@
-define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridviews/GetRows", "../Dom/Change/Listener", "../Dom/Util", "../Helper/PromiseMutex", "../Ui/Dropdown/Simple", "./Dialog"], function (require, exports, tslib_1, GetRow_1, GetRows_1, Listener_1, Util_1, PromiseMutex_1, Simple_1, Dialog_1) {
+define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridviews/GetRows", "../Dom/Change/Listener", "../Dom/Util", "../Helper/PromiseMutex", "../Helper/Selector", "../Ui/Dropdown/Simple", "./Dialog"], function (require, exports, tslib_1, GetRow_1, GetRows_1, Listener_1, Util_1, PromiseMutex_1, Selector_1, Simple_1, Dialog_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GridView = void 0;
@@ -36,7 +36,7 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
             this.#gridViewParameters = gridViewParameters;
             this.#initPagination();
             this.#initSorting();
-            this.#initActions();
+            this.#initInteractions();
             this.#initFilters();
             this.#initEventListeners();
             window.addEventListener("popstate", () => {
@@ -94,7 +94,6 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
             }
             Listener_1.default.trigger();
             this.#renderFilters(response.filterLabels);
-            this.#initActions();
         }
         async #refreshRow(row) {
             const response = (await (0, GetRow_1.getRow)(this.#gridClassName, row.dataset.objectId)).unwrap();
@@ -125,16 +124,16 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
             }
             window.history.pushState({}, document.title, url.toString());
         }
-        #initActions() {
-            this.#table.querySelectorAll("tbody tr").forEach((row) => {
-                row.querySelectorAll(".gridViewActions").forEach((element) => {
+        #initInteractions() {
+            (0, Selector_1.wheneverFirstSeen)(`#${this.#table.id} tbody tr`, (row) => {
+                row.querySelectorAll(".dropdownToggle").forEach((element) => {
                     let dropdown = Simple_1.default.getDropdownMenu(element.dataset.target);
                     if (!dropdown) {
                         dropdown = element.closest(".dropdown").querySelector(".dropdownMenu");
                     }
-                    dropdown?.querySelectorAll("[data-action]").forEach((element) => {
+                    dropdown?.querySelectorAll("[data-interaction]").forEach((element) => {
                         element.addEventListener("click", () => {
-                            row.dispatchEvent(new CustomEvent("action", {
+                            row.dispatchEvent(new CustomEvent("interaction", {
                                 detail: element.dataset,
                                 bubbles: true,
                             }));
@@ -228,6 +227,9 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
         #initEventListeners() {
             this.#table.addEventListener("refresh", (event) => {
                 void this.#refreshRow(event.target);
+            });
+            this.#table.addEventListener("remove", (event) => {
+                event.target.remove();
             });
         }
     }
