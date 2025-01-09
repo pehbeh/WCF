@@ -33,6 +33,7 @@
     "sebastian/diff": "^5.1.1",
     "symfony/polyfill-php82": "^1.31.0",
     "symfony/polyfill-php83": "^1.31",
+    "symfony/polyfill-php84": "^1.31",
     "willdurand/negotiation": "^3.1"
   },
   "replace": {
