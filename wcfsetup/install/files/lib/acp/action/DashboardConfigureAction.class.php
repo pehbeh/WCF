@@ -68,12 +68,19 @@ final class DashboardConfigureAction implements RequestHandlerInterface
             static::class,
             WCF::getLanguage()->get('wcf.acp.dashboard.configure')
         );
+
+        $boxOptions = $this->getBoxOptions();
+        $selectedBoxNames = \array_filter(
+            $this->getSelectedBoxNames(),
+            fn(string $boxName) => isset($boxOptions[$boxName])
+        );
+
         $form->appendChildren([
             $this->getConfigurationFormField()
                 ->id('boxes')
                 ->required()
-                ->options($this->getBoxOptions(), false, false)
-                ->value($this->getSelectedBoxNames()),
+                ->options($boxOptions, false, false)
+                ->value($selectedBoxNames),
         ]);
 
         $form->build();
