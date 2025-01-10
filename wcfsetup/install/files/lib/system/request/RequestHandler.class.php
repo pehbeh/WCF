@@ -38,6 +38,7 @@ use wcf\http\middleware\TriggerBackgroundQueue;
 use wcf\http\middleware\VaryAcceptLanguage;
 use wcf\http\middleware\Xsrf;
 use wcf\http\Pipeline;
+use wcf\http\SapiStreamEmitter;
 use wcf\http\StaticResponseHandler;
 use wcf\system\application\ApplicationHandler;
 use wcf\system\event\EventHandler;
@@ -178,7 +179,14 @@ final class RequestHandler extends SingletonFactory
                 $response = $pipeline->process($psrRequest, $builtRequest);
             }
 
-            $emitter = new SapiEmitter();
+            $responseSize = $response->getBody()->getSize();
+            if ($responseSize === null || $responseSize > 5 * 1_024 * 1_024) {
+                // Responses larger than 5 MB are output using 1 MB chunks.
+                $emitter = new SapiStreamEmitter(maxBufferLength: 1_024 * 1_024);
+            } else {
+                $emitter = new SapiEmitter();
+            }
+
             $emitter->emit($response);
         } catch (IllegalLinkException | PermissionDeniedException | InvalidSecurityTokenException $e) {
             throw new \LogicException(\sprintf(
