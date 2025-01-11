@@ -163,13 +163,10 @@ class ViewableModerationQueue extends DatabaseObjectDecorator implements ILinkab
 
     /**
      * Returns a viewable moderation queue entry.
-     *
-     * @param int $queueID
-     * @return  ViewableModerationQueue
      */
-    public static function getViewableModerationQueue($queueID)
+    public static function getViewableModerationQueue(int $queueID, ?User $target = null): ?ViewableModerationQueue
     {
-        $queueList = new ViewableModerationQueueList();
+        $queueList = new ViewableModerationQueueList($target);
         $queueList->getConditionBuilder()->add("moderation_queue.queueID = ?", [$queueID]);
         $queueList->sqlLimit = 1;
         $queueList->readObjects();

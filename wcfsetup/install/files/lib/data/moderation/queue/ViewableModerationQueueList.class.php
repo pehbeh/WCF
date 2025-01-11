@@ -2,6 +2,7 @@
 
 namespace wcf\data\moderation\queue;
 
+use wcf\data\user\User;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
 use wcf\system\moderation\queue\ModerationQueueManager;
 use wcf\system\WCF;
@@ -38,9 +39,13 @@ class ViewableModerationQueueList extends ModerationQueueList
     /**
      * @inheritDoc
      */
-    public function __construct()
+    public function __construct(?User $target = null)
     {
         parent::__construct();
+
+        if ($target === null) {
+            $target = WCF::getUser();
+        }
 
         $this->sqlSelects = "moderation_queue.*, assigned_user.username AS assignedUsername, user_table.username";
         $this->sqlConditionJoins = ", wcf" . WCF_N . "_moderation_queue moderation_queue";
@@ -51,7 +56,7 @@ class ViewableModerationQueueList extends ModerationQueueList
             LEFT JOIN   wcf" . WCF_N . "_user user_table
             ON          user_table.userID = moderation_queue.userID";
         $this->getConditionBuilder()->add("moderation_queue_to_user.queueID = moderation_queue.queueID");
-        $this->getConditionBuilder()->add("moderation_queue_to_user.userID = ?", [WCF::getUser()->userID]);
+        $this->getConditionBuilder()->add("moderation_queue_to_user.userID = ?", [$target->userID]);
         $this->getConditionBuilder()->add("moderation_queue_to_user.isAffected = ?", [1]);
     }
 

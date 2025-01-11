@@ -27,6 +27,7 @@ use wcf\system\event\EventHandler;
 use wcf\system\exception\SystemException;
 use wcf\system\request\LinkHandler;
 use wcf\system\SingletonFactory;
+use wcf\system\user\notification\event\IRecipientAwareUserNotificationEvent;
 use wcf\system\user\notification\event\IUserNotificationEvent;
 use wcf\system\user\notification\object\IUserNotificationObject;
 use wcf\system\user\notification\object\type\IUserNotificationObjectType;
@@ -761,6 +762,10 @@ class UserNotificationHandler extends SingletonFactory
 
         // recipient's language
         $event->setLanguage($user->getLanguage());
+
+        if ($event instanceof IRecipientAwareUserNotificationEvent) {
+            $event->setRecipient($user);
+        }
 
         // generate token if not present
         if (!$user->notificationMailToken) {
