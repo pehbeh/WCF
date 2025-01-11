@@ -18,15 +18,20 @@ WCF.ImageViewer = Class.extend({
 	 * Initializes the WCF.ImageViewer class.
 	 */
 	init: function() {
-		this._triggerElement = $('<span class="wcfImageViewerTriggerElement" />').data('disableSlideshow', true).hide().appendTo(document.body);
-		this._triggerElement.wcfImageViewer({
-			enableSlideshow: 0,
-			imageSelector: '.jsImageViewerEnabled',
-			staticViewer: true
+		require(["WoltLabSuite/Core/Helper/PageOverlay"], ({ getPageOverlayContainer }) => {
+			this._triggerElement = $('<span class="wcfImageViewerTriggerElement" />')
+				.data("disableSlideshow", true)
+				.hide()
+				.appendTo(getPageOverlayContainer());
+			this._triggerElement.wcfImageViewer({
+				enableSlideshow: 0,
+				imageSelector: ".jsImageViewerEnabled",
+				staticViewer: true,
+			});
+
+			WCF.DOMNodeInsertedHandler.addCallback("WCF.ImageViewer", $.proxy(this._domNodeInserted, this));
+			WCF.DOMNodeInsertedHandler.execute();
 		});
-		
-		WCF.DOMNodeInsertedHandler.addCallback('WCF.ImageViewer', $.proxy(this._domNodeInserted, this));
-		WCF.DOMNodeInsertedHandler.execute();
 	},
 	
 	/**
@@ -895,7 +900,11 @@ $.widget('ui.wcfImageViewer', {
 		
 		this._didInit = true;
 		
-		this._container = $('<div class="wcfImageViewer' + (this.options.staticViewer ? ' wcfImageViewerStatic' : '') + '" />').appendTo(document.body);
+		this._container = $(
+			'<div class="wcfImageViewer' +
+				(this.options.staticViewer ? " wcfImageViewerStatic" : "") +
+				'" />',
+		).appendTo(window.__wcf_bc_getPageOverlayContainer());
 		var $imageContainer = $('<div><img /><img /></div>').appendTo(this._container);
 		var $imageList = $('<footer><span class="wcfImageViewerButtonPrevious"><fa-icon size="24" name="angles-left"></fa-icon></span><div><ul /></div><span class="wcfImageViewerButtonNext"><fa-icon size="24" name="angles-right"></fa-icon></span></footer>').appendTo(this._container);
 		var $slideshowContainer = $('<ul />').appendTo($imageContainer);

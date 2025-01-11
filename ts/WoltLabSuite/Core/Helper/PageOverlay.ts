@@ -61,3 +61,5 @@ export function releasePageOverlayContainer(element: HTMLElement): void {
 export function getPageOverlayContainer(): HTMLElement {
   return container;
 }
+
+window.__wcf_bc_getPageOverlayContainer = getPageOverlayContainer;

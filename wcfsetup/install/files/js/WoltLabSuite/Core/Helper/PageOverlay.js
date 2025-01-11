@@ -57,4 +57,5 @@ define(["require", "exports"], function (require, exports) {
     function getPageOverlayContainer() {
         return container;
     }
+    window.__wcf_bc_getPageOverlayContainer = getPageOverlayContainer;
 });
