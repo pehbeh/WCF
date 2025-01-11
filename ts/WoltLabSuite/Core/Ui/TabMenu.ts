@@ -282,6 +282,10 @@ export function setup(): void {
   const hash = TabMenuSimple.getIdentifierFromHash();
   if (hash) {
     window.setTimeout(() => {
+      if (UiScroll.isCurrentlyScrolling()) {
+        return;
+      }
+
       // check if page was initially scrolled using a tab id
       const tabMenuContent = document.getElementById(hash);
       if (tabMenuContent && tabMenuContent.classList.contains("tabMenuContent")) {
