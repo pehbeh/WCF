@@ -289,18 +289,15 @@
 	--dialog-max-width: 80%;
 	--dialog-padding: 20px;
 
-	animation: 0.24s dialog;
 	background-color: transparent;
-	border-radius: var(--wcfBorderRadiusContainer);
 	border-width: 0;
-	box-shadow: var(--wcfBoxShadow);
 	display: flex;
 	flex-direction: column;
 	max-height: var(--dialog-max-height);
 	max-width: var(--dialog-max-width);
 	min-height: 0;
 	min-width: 500px;
-	overflow: hidden;
+	overflow: visible;
 	padding: 0;
 }
 
@@ -328,12 +325,19 @@ html[data-color-scheme="dark"] .dialog::backdrop {
 }
 
 .dialog__document {
+	animation: 0.24s dialog;
 	background-color: var(--wcfContentBackground);
 	border-radius: var(--wcfBorderRadiusContainer);
+	box-shadow: var(--wcfBoxShadow);
 	color: var(--wcfContentText);
 	display: flex;
 	flex-direction: column;
+	max-height: var(--dialog-max-height);
+	max-width: var(--dialog-max-width);
 	min-height: 0;
+	min-width: 500px;
+	min-height: 0;
+	overflow: hidden;
 	padding: var(--dialog-padding);
 }
 
