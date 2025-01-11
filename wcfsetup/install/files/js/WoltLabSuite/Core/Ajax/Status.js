@@ -5,7 +5,7 @@
  * @copyright  2001-2019 WoltLab GmbH
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", "../Helper/PageOverlay"], function (require, exports, PageOverlay_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.show = show;
@@ -21,7 +21,7 @@ define(["require", "exports"], function (require, exports) {
             const loadingIndicator = document.createElement("woltlab-core-loading-indicator");
             loadingIndicator.size = 48;
             this._overlay.append(loadingIndicator);
-            document.body.append(this._overlay);
+            (0, PageOverlay_1.getPageOverlayContainer)().append(this._overlay);
         }
         show() {
             this._activeRequests++;
