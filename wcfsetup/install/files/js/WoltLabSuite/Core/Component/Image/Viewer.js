@@ -31,7 +31,7 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
-define(["require", "exports", "@fancyapps/ui"], function (require, exports, ui_1) {
+define(["require", "exports", "@fancyapps/ui", "WoltLabSuite/Core/Helper/PageOverlay"], function (require, exports, ui_1, PageOverlay_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
@@ -58,6 +58,7 @@ define(["require", "exports", "@fancyapps/ui"], function (require, exports, ui_1
     async function getDefaultConfig() {
         return {
             l10n: await getLocalization(),
+            parentEl: (0, PageOverlay_1.getPageOverlayContainer)(),
             Html: {
                 videoAutoplay: false,
             },
