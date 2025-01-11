@@ -5580,6 +5580,8 @@ Benachrichtigungen auf <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phra
 		<item name="wcf.upload.error.image.tooSmall"><![CDATA[Das Bild ist zu klein. Es muss mindestens {$width} x {$height} Pixel groß sein.]]></item>
 		<item name="wcf.upload.error.delete.unknownError"><![CDATA[Beim Löschen der Datei ist ein unbekannter Fehler aufgetreten.]]></item>
 		<item name="wcf.upload.error.delete.permissionDenied"><![CDATA[Die Datei kann nicht gelöscht werden, {if LANGUAGE_USE_INFORMAL_VARIANT}verwende{else}verwenden Sie{/if} stattdessen <strong>Ersetzen</strong>, um die Datei zu ersetzen.]]></item>
+		<item name="wcf.upload.validation.error.noImage"><![CDATA[Die Datei ist kein Bild.]]></item>
+		<item name="wcf.upload.validation.error.tooSmall"><![CDATA[Die Datei ist zu klein.]]></item>
 	</category>
 </import>
 <delete>

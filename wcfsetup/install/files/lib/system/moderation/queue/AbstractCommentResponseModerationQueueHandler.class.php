@@ -161,8 +161,7 @@ class AbstractCommentResponseModerationQueueHandler extends AbstractCommentComme
     public function removeContent(ModerationQueue $queue, $message)
     {
         if ($this->isValid($queue->objectID)) {
-            $responseAction = new CommentResponseAction([$this->getResponse($queue->objectID)], 'delete');
-            $responseAction->executeAction();
+            (new \wcf\system\comment\response\command\DeleteResponses([$this->getResponse($queue->objectID)]))();
         }
     }
 
