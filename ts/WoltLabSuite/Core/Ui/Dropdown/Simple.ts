@@ -16,6 +16,7 @@ import { AllowFlip } from "../Alignment";
 import { NotificationAction, NotificationCallback } from "./Data";
 import { getPageOverlayContainer } from "../../Helper/PageOverlay";
 import { wheneverFirstSeen } from "../../Helper/Selector";
+import { platform } from "WoltLabSuite/Core/Environment";
 
 const _callbacks = new CallbackList();
 let _didInit = false;
@@ -81,6 +82,26 @@ function onScroll() {
  * Recalculates drop-down positions on page resize.
  */
 function onWindowResize() {
+  // iOS dynamically changes the behavior of `position: fixed` to be relative to
+  // the document whenever the virtual keyboard is visible.
+  if (platform() === "ios") {
+    const testElement = document.createElement("div");
+    testElement.style.setProperty("inset", "50px auto auto 50px");
+    testElement.style.setProperty("position", "fixed");
+    getPageOverlayContainer().append(testElement);
+
+    const { y } = testElement.getBoundingClientRect();
+    testElement.remove();
+
+    // The reported DOMRect will reflect the actual position of the element
+    // which will be different when `fixed` no longer means `fixed`.
+    if (y !== 50) {
+      document.documentElement.classList.add("iOS--virtualKeyboard");
+    } else {
+      document.documentElement.classList.remove("iOS--virtualKeyboard");
+    }
+  }
+
   _dropdowns.forEach((dropdown, containerId) => {
     if (!dropdown.classList.contains("dropdownOpen")) {
       return;
@@ -383,6 +404,7 @@ const UiDropdownSimple = {
 
     document.addEventListener("scroll", onScroll);
     window.addEventListener("resize", () => onWindowResize(), { passive: true });
+    window.visualViewport?.addEventListener("resize", () => onWindowResize(), { passive: true });
 
     // expose on window object for backward compatibility
     window.bc_wcfSimpleDropdown = this;

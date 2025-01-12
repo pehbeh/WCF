@@ -5,7 +5,7 @@
  * @copyright  2001-2019 WoltLab GmbH
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
-define(["require", "exports", "tslib", "../../CallbackList", "../../Core", "../../Dom/Traverse", "../../Dom/Util", "../Alignment", "../CloseOverlay", "../../Helper/PageOverlay", "../../Helper/Selector"], function (require, exports, tslib_1, CallbackList_1, Core, DomTraverse, Util_1, UiAlignment, CloseOverlay_1, PageOverlay_1, Selector_1) {
+define(["require", "exports", "tslib", "../../CallbackList", "../../Core", "../../Dom/Traverse", "../../Dom/Util", "../Alignment", "../CloseOverlay", "../../Helper/PageOverlay", "../../Helper/Selector", "WoltLabSuite/Core/Environment"], function (require, exports, tslib_1, CallbackList_1, Core, DomTraverse, Util_1, UiAlignment, CloseOverlay_1, PageOverlay_1, Selector_1, Environment_1) {
     "use strict";
     CallbackList_1 = tslib_1.__importDefault(CallbackList_1);
     Core = tslib_1.__importStar(Core);
@@ -78,6 +78,24 @@ define(["require", "exports", "tslib", "../../CallbackList", "../../Core", "../.
      * Recalculates drop-down positions on page resize.
      */
     function onWindowResize() {
+        // iOS dynamically changes the behavior of `position: fixed` to be relative to
+        // the document whenever the virtual keyboard is visible.
+        if ((0, Environment_1.platform)() === "ios") {
+            const testElement = document.createElement("div");
+            testElement.style.setProperty("inset", "50px auto auto 50px");
+            testElement.style.setProperty("position", "fixed");
+            (0, PageOverlay_1.getPageOverlayContainer)().append(testElement);
+            const { y } = testElement.getBoundingClientRect();
+            testElement.remove();
+            // The reported DOMRect will reflect the actual position of the element
+            // which will be different when `fixed` no longer means `fixed`.
+            if (y !== 50) {
+                document.documentElement.classList.add("iOS--virtualKeyboard");
+            }
+            else {
+                document.documentElement.classList.remove("iOS--virtualKeyboard");
+            }
+        }
         _dropdowns.forEach((dropdown, containerId) => {
             if (!dropdown.classList.contains("dropdownOpen")) {
                 return;
@@ -326,6 +344,7 @@ define(["require", "exports", "tslib", "../../CallbackList", "../../Core", "../.
             (0, Selector_1.wheneverFirstSeen)(".dropdownToggle", (button) => UiDropdownSimple.init(button, false));
             document.addEventListener("scroll", onScroll);
             window.addEventListener("resize", () => onWindowResize(), { passive: true });
+            window.visualViewport?.addEventListener("resize", () => onWindowResize(), { passive: true });
             // expose on window object for backward compatibility
             window.bc_wcfSimpleDropdown = this;
         },
