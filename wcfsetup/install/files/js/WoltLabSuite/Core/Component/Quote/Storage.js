@@ -55,13 +55,17 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         const key = objectId ? getKey(objectType, objectId) : objectType;
         return getStorage().messages.get(key);
     }
-    function removeQuote(key, index) {
+    function removeQuote(key, quote) {
         const storage = getStorage();
         if (!storage.quotes.has(key)) {
             return;
         }
-        storage.quotes.get(key).splice(index, 1);
-        if (storage.quotes.get(key).length === 0) {
+        storage.quotes.get(key).forEach((q) => {
+            if (JSON.stringify(q) === JSON.stringify(quote)) {
+                storage.quotes.get(key).delete(q);
+            }
+        });
+        if (storage.quotes.get(key).size === 0) {
             storage.quotes.delete(key);
             storage.messages.delete(key);
         }
@@ -72,10 +76,14 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         const storage = getStorage();
         const key = getKey(objectType, message.objectID);
         if (!storage.quotes.has(key)) {
-            storage.quotes.set(key, []);
+            storage.quotes.set(key, new Set());
         }
         storage.messages.set(key, message);
-        storage.quotes.get(key).push(quote);
+        if (!Array.from(storage.quotes.get(key))
+            .map((q) => q.message)
+            .includes(quote.message)) {
+            storage.quotes.get(key).add(quote);
+        }
         saveStorage(storage);
     }
     function getStorage() {
@@ -89,7 +97,11 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         else {
             return JSON.parse(data, (key, value) => {
                 if (key === "quotes") {
-                    return new Map(value);
+                    const result = new Map(value);
+                    for (const [key, setValue] of result) {
+                        result.set(key, new Set(setValue));
+                    }
+                    return result;
                 }
                 else if (key === "messages") {
                     return new Map(value);

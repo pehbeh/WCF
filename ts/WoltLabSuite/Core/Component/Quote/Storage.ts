@@ -29,7 +29,7 @@ interface Quote {
 }
 
 interface StorageData {
-  quotes: Map<string, Quote[]>;
+  quotes: Map<string, Set<Quote>>;
   messages: Map<string, Message>;
 }
 
@@ -76,7 +76,7 @@ export async function saveFullQuote(objectType: string, objectClassName: string,
   refreshQuoteLists();
 }
 
-export function getQuotes(): Map<string, Quote[]> {
+export function getQuotes(): Map<string, Set<Quote>> {
   return getStorage().quotes;
 }
 
@@ -86,15 +86,19 @@ export function getMessage(objectType: string, objectId?: number): Message | und
   return getStorage().messages.get(key);
 }
 
-export function removeQuote(key: string, index: number): void {
+export function removeQuote(key: string, quote: Quote): void {
   const storage = getStorage();
   if (!storage.quotes.has(key)) {
     return;
   }
 
-  storage.quotes.get(key)!.splice(index, 1);
+  storage.quotes.get(key)!.forEach((q) => {
+    if (JSON.stringify(q) === JSON.stringify(quote)) {
+      storage.quotes.get(key)!.delete(q);
+    }
+  });
 
-  if (storage.quotes.get(key)!.length === 0) {
+  if (storage.quotes.get(key)!.size === 0) {
     storage.quotes.delete(key);
     storage.messages.delete(key);
   }
@@ -109,11 +113,17 @@ function storeQuote(objectType: string, message: Message, quote: Quote): void {
 
   const key = getKey(objectType, message.objectID);
   if (!storage.quotes.has(key)) {
-    storage.quotes.set(key, []);
+    storage.quotes.set(key, new Set());
   }
 
   storage.messages.set(key, message);
-  storage.quotes.get(key)!.push(quote);
+  if (
+    !Array.from(storage.quotes.get(key)!)
+      .map((q) => q.message)
+      .includes(quote.message)
+  ) {
+    storage.quotes.get(key)!.add(quote);
+  }
 
   saveStorage(storage);
 }
@@ -128,7 +138,11 @@ function getStorage(): StorageData {
   } else {
     return JSON.parse(data, (key, value) => {
       if (key === "quotes") {
-        return new Map<string, Quote[]>(value);
+        const result = new Map<string, Set<string>>(value);
+        for (const [key, setValue] of result) {
+          result.set(key, new Set(setValue));
+        }
+        return result;
       } else if (key === "messages") {
         return new Map<string, Message>(value);
       }

@@ -44,9 +44,9 @@ class QuoteList {
     let quotesCount = 0;
     for (const [key, quotes] of getQuotes()) {
       const message = getMessage(key)!;
-      quotesCount += quotes.length;
+      quotesCount += quotes.size;
 
-      quotes.forEach((quote, index) => {
+      quotes.forEach((quote) => {
         const fragment = DomUtil.createFragmentFromHtml(`
 <div class="quoteBox quoteBox--tabMenu">
   <div class="quoteBoxIcon">
@@ -79,7 +79,7 @@ class QuoteList {
         });
 
         fragment.querySelector('button[data-action="delete"]')!.addEventListener("click", () => {
-          removeQuote(key, index);
+          removeQuote(key, quote);
         });
 
         this.#container.append(fragment);

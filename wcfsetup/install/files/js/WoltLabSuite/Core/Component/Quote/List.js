@@ -36,8 +36,8 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
             let quotesCount = 0;
             for (const [key, quotes] of (0, Storage_1.getQuotes)()) {
                 const message = (0, Storage_1.getMessage)(key);
-                quotesCount += quotes.length;
-                quotes.forEach((quote, index) => {
+                quotesCount += quotes.size;
+                quotes.forEach((quote) => {
                     const fragment = Util_1.default.createFragmentFromHtml(`
 <div class="quoteBox quoteBox--tabMenu">
   <div class="quoteBoxIcon">
@@ -68,7 +68,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
                         });
                     });
                     fragment.querySelector('button[data-action="delete"]').addEventListener("click", () => {
-                        (0, Storage_1.removeQuote)(key, index);
+                        (0, Storage_1.removeQuote)(key, quote);
                     });
                     this.#container.append(fragment);
                 });
