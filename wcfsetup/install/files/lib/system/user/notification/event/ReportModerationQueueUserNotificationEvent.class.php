@@ -4,6 +4,7 @@ namespace wcf\system\user\notification\event;
 
 use wcf\data\moderation\queue\ViewableModerationQueue;
 use wcf\data\object\type\ObjectTypeCache;
+use wcf\data\user\User;
 use wcf\data\user\UserProfile;
 use wcf\system\email\Email;
 use wcf\system\moderation\queue\IModerationQueueHandler;
@@ -22,12 +23,15 @@ use wcf\system\WCF;
  * @method  ModerationQueueUserNotificationObject    getUserNotificationObject()
  */
 final class ReportModerationQueueUserNotificationEvent extends AbstractUserNotificationEvent implements
+    IRecipientAwareUserNotificationEvent,
     ITestableUserNotificationEvent
 {
     use TTestableModerationQueueUserNotificationEvent;
     use TTestableUserNotificationEvent;
 
     private ?ViewableModerationQueue $viewableModerationQueue;
+    private User $recipient;
+
     #[\Override]
     public function getTitle(): string
     {
@@ -62,7 +66,7 @@ final class ReportModerationQueueUserNotificationEvent extends AbstractUserNotif
             'application' => 'wcf',
             'references' => [
                 '<com.woltlab.wcf.moderation.queue/'
-                . $this->getUserNotificationObject()->queueID . '@' . Email::getHost() . '>',
+                    . $this->getUserNotificationObject()->queueID . '@' . Email::getHost() . '>',
             ],
             'variables' => [
                 'author' => $this->author,
@@ -103,15 +107,27 @@ final class ReportModerationQueueUserNotificationEvent extends AbstractUserNotif
 
         return $processor->isAffectedUser(
             $this->getUserNotificationObject()->getDecoratedObject(),
-            WCF::getUser()->userID
+            $this->getRecipient()->userID
         );
+    }
+
+    #[\Override]
+    public function setRecipient(User $user): void
+    {
+        $this->recipient = $user;
+    }
+
+    private function getRecipient(): User
+    {
+        return $this->recipient ?? WCF::getUser();
     }
 
     private function getViewableModerationQueue(): ?ViewableModerationQueue
     {
         if (!isset($this->viewableModerationQueue)) {
             $this->viewableModerationQueue = ViewableModerationQueue::getViewableModerationQueue(
-                $this->getUserNotificationObject()->queueID
+                $this->getUserNotificationObject()->queueID,
+                $this->getRecipient(),
             );
         }
         return $this->viewableModerationQueue;
