@@ -15,6 +15,7 @@ import { set as setAlignment } from "WoltLabSuite/Core/Ui/Alignment";
 import { CKEditor } from "WoltLabSuite/Core/Component/Ckeditor";
 import { saveQuote, saveFullQuote } from "WoltLabSuite/Core/Component/Quote/Storage";
 import { promiseMutex } from "WoltLabSuite/Core/Helper/PromiseMutex";
+import { dispatchToCkeditor } from "WoltLabSuite/Core/Component/Ckeditor/Event";
 
 interface Container {
   element: HTMLElement;
@@ -66,8 +67,16 @@ export function registerContainer(
       promiseMutex(async (event: MouseEvent) => {
         event.preventDefault();
 
-        await saveFullQuote(objectType, className, ~~container.dataset.objectId!);
-        //TODO insert into `activeEditor`
+        const quoteMessage = await saveFullQuote(objectType, className, ~~container.dataset.objectId!);
+
+        if (activeEditor !== undefined) {
+          dispatchToCkeditor(activeEditor.sourceElement).insertQuote({
+            author: quoteMessage.author,
+            content: quoteMessage.rawMessage === undefined ? quoteMessage.message : quoteMessage.rawMessage,
+            isText: quoteMessage.rawMessage === undefined,
+            link: quoteMessage.link,
+          });
+        }
       }),
     );
   });
@@ -108,13 +117,21 @@ function setup() {
   buttonSaveAndInsertQuote.addEventListener(
     "click",
     promiseMutex(async () => {
-      await saveQuote(
+      const quoteMessage = await saveQuote(
         selectedMessage!.container.objectType,
         selectedMessage!.container.objectId,
         selectedMessage!.container.className,
         selectedMessage!.message,
       );
-      //TODO insert into `activeEditor`
+
+      if (activeEditor !== undefined) {
+        dispatchToCkeditor(activeEditor.sourceElement).insertQuote({
+          author: quoteMessage.author,
+          content: quoteMessage.rawMessage === undefined ? quoteMessage.message : quoteMessage.rawMessage,
+          isText: quoteMessage.rawMessage === undefined,
+          link: quoteMessage.link,
+        });
+      }
 
       removeSelection();
     }),

@@ -7,7 +7,7 @@
  * @since 6.2
  * @woltlabExcludeBundle tiny
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Ui/Alignment", "WoltLabSuite/Core/Component/Quote/Storage", "WoltLabSuite/Core/Helper/PromiseMutex"], function (require, exports, tslib_1, Util_1, Language_1, Selector_1, Alignment_1, Storage_1, PromiseMutex_1) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Ui/Alignment", "WoltLabSuite/Core/Component/Quote/Storage", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabSuite/Core/Component/Ckeditor/Event"], function (require, exports, tslib_1, Util_1, Language_1, Selector_1, Alignment_1, Storage_1, PromiseMutex_1, Event_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.registerContainer = registerContainer;
@@ -37,8 +37,15 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
             container.classList.add("jsQuoteMessageContainer");
             container.querySelector(".jsQuoteMessage")?.addEventListener("click", (0, PromiseMutex_1.promiseMutex)(async (event) => {
                 event.preventDefault();
-                await (0, Storage_1.saveFullQuote)(objectType, className, ~~container.dataset.objectId);
-                //TODO insert into `activeEditor`
+                const quoteMessage = await (0, Storage_1.saveFullQuote)(objectType, className, ~~container.dataset.objectId);
+                if (activeEditor !== undefined) {
+                    (0, Event_1.dispatchToCkeditor)(activeEditor.sourceElement).insertQuote({
+                        author: quoteMessage.author,
+                        content: quoteMessage.rawMessage === undefined ? quoteMessage.message : quoteMessage.rawMessage,
+                        isText: quoteMessage.rawMessage === undefined,
+                        link: quoteMessage.link,
+                    });
+                }
             }));
         });
     }
@@ -63,8 +70,15 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
         buttonSaveAndInsertQuote.classList.add("jsQuoteManagerQuoteAndInsert");
         buttonSaveAndInsertQuote.textContent = (0, Language_1.getPhrase)("wcf.message.quote.quoteAndReply");
         buttonSaveAndInsertQuote.addEventListener("click", (0, PromiseMutex_1.promiseMutex)(async () => {
-            await (0, Storage_1.saveQuote)(selectedMessage.container.objectType, selectedMessage.container.objectId, selectedMessage.container.className, selectedMessage.message);
-            //TODO insert into `activeEditor`
+            const quoteMessage = await (0, Storage_1.saveQuote)(selectedMessage.container.objectType, selectedMessage.container.objectId, selectedMessage.container.className, selectedMessage.message);
+            if (activeEditor !== undefined) {
+                (0, Event_1.dispatchToCkeditor)(activeEditor.sourceElement).insertQuote({
+                    author: quoteMessage.author,
+                    content: quoteMessage.rawMessage === undefined ? quoteMessage.message : quoteMessage.rawMessage,
+                    isText: quoteMessage.rawMessage === undefined,
+                    link: quoteMessage.link,
+                });
+            }
             removeSelection();
         }));
         copyQuote.appendChild(buttonSaveAndInsertQuote);

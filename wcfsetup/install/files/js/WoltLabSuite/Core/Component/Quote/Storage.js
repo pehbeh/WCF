@@ -20,21 +20,23 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
     async function saveQuote(objectType, objectId, objectClassName, message) {
         const result = await (0, Author_1.messageAuthor)(objectClassName, objectId);
         if (!result.ok) {
-            // TODO error handling
-            return;
+            throw new Error("Error fetching author data");
         }
         storeQuote(objectType, result.value, {
             message,
         });
         (0, List_1.refreshQuoteLists)();
+        return {
+            ...result.value,
+            message,
+        };
     }
     async function saveFullQuote(objectType, objectClassName, objectId) {
         const result = await (0, RenderQuote_1.renderQuote)(objectType, objectClassName, objectId);
         if (!result.ok) {
-            // TODO error handling
-            return;
+            throw new Error("Error fetching quote data");
         }
-        storeQuote(objectType, {
+        const message = {
             objectID: result.value.objectID,
             time: result.value.time,
             title: result.value.title,
@@ -42,11 +44,17 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
             authorID: result.value.authorID,
             author: result.value.author,
             avatar: result.value.avatar,
-        }, {
+        };
+        const quote = {
             message: result.value.message,
             rawMessage: result.value.rawMessage,
-        });
+        };
+        storeQuote(objectType, message, quote);
         (0, List_1.refreshQuoteLists)();
+        return {
+            ...message,
+            ...quote,
+        };
     }
     function getQuotes() {
         return getStorage().quotes;

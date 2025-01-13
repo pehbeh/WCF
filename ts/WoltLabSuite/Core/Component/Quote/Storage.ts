@@ -35,11 +35,15 @@ interface StorageData {
 
 const STORAGE_KEY = Core.getStoragePrefix() + "quotes";
 
-export async function saveQuote(objectType: string, objectId: number, objectClassName: string, message: string) {
+export async function saveQuote(
+  objectType: string,
+  objectId: number,
+  objectClassName: string,
+  message: string,
+): Promise<Message & Quote> {
   const result = await messageAuthor(objectClassName, objectId);
   if (!result.ok) {
-    // TODO error handling
-    return;
+    throw new Error("Error fetching author data");
   }
 
   storeQuote(objectType, result.value, {
@@ -47,33 +51,46 @@ export async function saveQuote(objectType: string, objectId: number, objectClas
   });
 
   refreshQuoteLists();
+
+  return {
+    ...result.value,
+    message,
+  };
 }
 
-export async function saveFullQuote(objectType: string, objectClassName: string, objectId: number) {
+export async function saveFullQuote(
+  objectType: string,
+  objectClassName: string,
+  objectId: number,
+): Promise<Message & Quote> {
   const result = await renderQuote(objectType, objectClassName, objectId);
   if (!result.ok) {
-    // TODO error handling
-    return;
+    throw new Error("Error fetching quote data");
   }
 
-  storeQuote(
-    objectType,
-    {
-      objectID: result.value.objectID,
-      time: result.value.time,
-      title: result.value.title,
-      link: result.value.link,
-      authorID: result.value.authorID,
-      author: result.value.author,
-      avatar: result.value.avatar,
-    },
-    {
-      message: result.value.message!,
-      rawMessage: result.value.rawMessage!,
-    },
-  );
+  const message = {
+    objectID: result.value.objectID,
+    time: result.value.time,
+    title: result.value.title,
+    link: result.value.link,
+    authorID: result.value.authorID,
+    author: result.value.author,
+    avatar: result.value.avatar,
+  };
+
+  const quote = {
+    message: result.value.message!,
+    rawMessage: result.value.rawMessage!,
+  };
+
+  storeQuote(objectType, message, quote);
 
   refreshQuoteLists();
+
+  return {
+    ...message,
+    ...quote,
+  };
 }
 
 export function getQuotes(): Map<string, Set<Quote>> {
