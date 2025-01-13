@@ -80,8 +80,8 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         }
         storage.messages.set(key, message);
         if (!Array.from(storage.quotes.get(key))
-            .map((q) => q.message)
-            .includes(quote.message)) {
+            .map((q) => JSON.stringify(q))
+            .includes(JSON.stringify(quote))) {
             storage.quotes.get(key).add(quote);
         }
         saveStorage(storage);
