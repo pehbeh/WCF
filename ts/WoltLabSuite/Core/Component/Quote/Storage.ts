@@ -164,13 +164,13 @@ function storeQuote(objectType: string, message: Message, quote: Quote): string 
 
   storage.messages.set(key, message);
 
-  const uuid = Core.getUuid();
   for (const [uuid, q] of storage.quotes.get(key)!) {
     if (JSON.stringify(q) === JSON.stringify(quote)) {
       return uuid;
     }
   }
 
+  const uuid = Core.getUuid();
   storage.quotes.get(key)!.set(uuid, quote);
 
   saveStorage(storage);

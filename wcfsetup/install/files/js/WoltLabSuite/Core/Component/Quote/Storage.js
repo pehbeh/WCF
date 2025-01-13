@@ -111,12 +111,12 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
             storage.quotes.set(key, new Map());
         }
         storage.messages.set(key, message);
-        const uuid = Core.getUuid();
         for (const [uuid, q] of storage.quotes.get(key)) {
             if (JSON.stringify(q) === JSON.stringify(quote)) {
                 return uuid;
             }
         }
+        const uuid = Core.getUuid();
         storage.quotes.get(key).set(uuid, quote);
         saveStorage(storage);
         return uuid;
