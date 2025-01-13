@@ -13,7 +13,7 @@ import { getPhrase } from "WoltLabSuite/Core/Language";
 import { wheneverFirstSeen } from "WoltLabSuite/Core/Helper/Selector";
 import { set as setAlignment } from "WoltLabSuite/Core/Ui/Alignment";
 import { CKEditor } from "WoltLabSuite/Core/Component/Ckeditor";
-import { saveQuote, saveFullQuote } from "WoltLabSuite/Core/Component/Quote/Storage";
+import { saveQuote, saveFullQuote, markQuoteAsUsed } from "WoltLabSuite/Core/Component/Quote/Storage";
 import { promiseMutex } from "WoltLabSuite/Core/Helper/PromiseMutex";
 import { dispatchToCkeditor } from "WoltLabSuite/Core/Component/Ckeditor/Event";
 
@@ -76,6 +76,8 @@ export function registerContainer(
             isText: quoteMessage.rawMessage === undefined,
             link: quoteMessage.link,
           });
+
+          markQuoteAsUsed(activeEditor.sourceElement.id, quoteMessage.uuid);
         }
       }),
     );
@@ -131,6 +133,8 @@ function setup() {
           isText: quoteMessage.rawMessage === undefined,
           link: quoteMessage.link,
         });
+
+        markQuoteAsUsed(activeEditor.sourceElement.id, quoteMessage.uuid);
       }
 
       removeSelection();

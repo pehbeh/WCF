@@ -45,6 +45,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
                         isText: quoteMessage.rawMessage === undefined,
                         link: quoteMessage.link,
                     });
+                    (0, Storage_1.markQuoteAsUsed)(activeEditor.sourceElement.id, quoteMessage.uuid);
                 }
             }));
         });
@@ -78,6 +79,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
                     isText: quoteMessage.rawMessage === undefined,
                     link: quoteMessage.link,
                 });
+                (0, Storage_1.markQuoteAsUsed)(activeEditor.sourceElement.id, quoteMessage.uuid);
             }
             removeSelection();
         }));

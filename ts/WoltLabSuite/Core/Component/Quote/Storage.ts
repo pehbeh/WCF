@@ -29,24 +29,25 @@ interface Quote {
 }
 
 interface StorageData {
-  quotes: Map<string, Set<Quote>>;
+  quotes: Map<string, Map<string, Quote>>;
   messages: Map<string, Message>;
 }
 
 const STORAGE_KEY = Core.getStoragePrefix() + "quotes";
+const usedQuotes = new Map<string, Set<string>>();
 
 export async function saveQuote(
   objectType: string,
   objectId: number,
   objectClassName: string,
   message: string,
-): Promise<Message & Quote> {
+): Promise<Message & Quote & { uuid: string }> {
   const result = await messageAuthor(objectClassName, objectId);
   if (!result.ok) {
     throw new Error("Error fetching author data");
   }
 
-  storeQuote(objectType, result.value, {
+  const uuid = storeQuote(objectType, result.value, {
     message,
   });
 
@@ -55,6 +56,7 @@ export async function saveQuote(
   return {
     ...result.value,
     message,
+    uuid,
   };
 }
 
@@ -62,7 +64,7 @@ export async function saveFullQuote(
   objectType: string,
   objectClassName: string,
   objectId: number,
-): Promise<Message & Quote> {
+): Promise<Message & Quote & { uuid: string }> {
   const result = await renderQuote(objectType, objectClassName, objectId);
   if (!result.ok) {
     throw new Error("Error fetching quote data");
@@ -83,17 +85,18 @@ export async function saveFullQuote(
     rawMessage: result.value.rawMessage!,
   };
 
-  storeQuote(objectType, message, quote);
+  const uuid = storeQuote(objectType, message, quote);
 
   refreshQuoteLists();
 
   return {
     ...message,
     ...quote,
+    uuid,
   };
 }
 
-export function getQuotes(): Map<string, Set<Quote>> {
+export function getQuotes(): Map<string, Map<string, Quote>> {
   return getStorage().quotes;
 }
 
@@ -103,17 +106,13 @@ export function getMessage(objectType: string, objectId?: number): Message | und
   return getStorage().messages.get(key);
 }
 
-export function removeQuote(key: string, quote: Quote): void {
+export function removeQuote(key: string, uuid: string): void {
   const storage = getStorage();
   if (!storage.quotes.has(key)) {
     return;
   }
 
-  storage.quotes.get(key)!.forEach((q) => {
-    if (JSON.stringify(q) === JSON.stringify(quote)) {
-      storage.quotes.get(key)!.delete(q);
-    }
-  });
+  storage.quotes.get(key)!.delete(uuid);
 
   if (storage.quotes.get(key)!.size === 0) {
     storage.quotes.delete(key);
@@ -125,24 +124,58 @@ export function removeQuote(key: string, quote: Quote): void {
   refreshQuoteLists();
 }
 
-function storeQuote(objectType: string, message: Message, quote: Quote): void {
+export function markQuoteAsUsed(editorId: string, uuid: string): void {
+  if (!usedQuotes.has(editorId)) {
+    usedQuotes.set(editorId, new Set());
+  }
+
+  usedQuotes.get(editorId)!.add(uuid);
+}
+
+export function clearQuotesForEditor(editorId: string): void {
+  const storage = getStorage();
+
+  usedQuotes.get(editorId)?.forEach((uuid) => {
+    for (const quotes of storage.quotes.values()) {
+      quotes.delete(uuid);
+    }
+  });
+
+  usedQuotes.delete(editorId);
+
+  for (const [key, quotes] of storage.quotes) {
+    if (quotes.size === 0) {
+      storage.quotes.delete(key);
+      storage.messages.delete(key);
+    }
+  }
+
+  saveStorage(storage);
+  refreshQuoteLists();
+}
+
+function storeQuote(objectType: string, message: Message, quote: Quote): string {
   const storage = getStorage();
 
   const key = getKey(objectType, message.objectID);
   if (!storage.quotes.has(key)) {
-    storage.quotes.set(key, new Set());
+    storage.quotes.set(key, new Map());
   }
 
   storage.messages.set(key, message);
-  if (
-    !Array.from(storage.quotes.get(key)!)
-      .map((q) => JSON.stringify(q))
-      .includes(JSON.stringify(quote))
-  ) {
-    storage.quotes.get(key)!.add(quote);
+
+  const uuid = Core.getUuid();
+  for (const [uuid, q] of storage.quotes.get(key)!) {
+    if (JSON.stringify(q) === JSON.stringify(quote)) {
+      return uuid;
+    }
   }
 
+  storage.quotes.get(key)!.set(uuid, quote);
+
   saveStorage(storage);
+
+  return uuid;
 }
 
 function getStorage(): StorageData {
@@ -155,10 +188,11 @@ function getStorage(): StorageData {
   } else {
     return JSON.parse(data, (key, value) => {
       if (key === "quotes") {
-        const result = new Map<string, Set<string>>(value);
-        for (const [key, setValue] of result) {
-          result.set(key, new Set(setValue));
+        const result = new Map<string, Map<string, Quote>>(value);
+        for (const [key, quotes] of result) {
+          result.set(key, new Map(quotes));
         }
+
         return result;
       } else if (key === "messages") {
         return new Map<string, Message>(value);
@@ -179,8 +213,6 @@ function saveStorage(data: StorageData) {
     JSON.stringify(data, (_key, value) => {
       if (value instanceof Map) {
         return Array.from(value.entries());
-      } else if (value instanceof Set) {
-        return Array.from(value);
       }
 
       return value;

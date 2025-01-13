@@ -15,20 +15,24 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
     exports.getQuotes = getQuotes;
     exports.getMessage = getMessage;
     exports.removeQuote = removeQuote;
+    exports.markQuoteAsUsed = markQuoteAsUsed;
+    exports.clearQuotesForEditor = clearQuotesForEditor;
     Core = tslib_1.__importStar(Core);
     const STORAGE_KEY = Core.getStoragePrefix() + "quotes";
+    const usedQuotes = new Map();
     async function saveQuote(objectType, objectId, objectClassName, message) {
         const result = await (0, Author_1.messageAuthor)(objectClassName, objectId);
         if (!result.ok) {
             throw new Error("Error fetching author data");
         }
-        storeQuote(objectType, result.value, {
+        const uuid = storeQuote(objectType, result.value, {
             message,
         });
         (0, List_1.refreshQuoteLists)();
         return {
             ...result.value,
             message,
+            uuid,
         };
     }
     async function saveFullQuote(objectType, objectClassName, objectId) {
@@ -49,11 +53,12 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
             message: result.value.message,
             rawMessage: result.value.rawMessage,
         };
-        storeQuote(objectType, message, quote);
+        const uuid = storeQuote(objectType, message, quote);
         (0, List_1.refreshQuoteLists)();
         return {
             ...message,
             ...quote,
+            uuid,
         };
     }
     function getQuotes() {
@@ -63,19 +68,38 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         const key = objectId ? getKey(objectType, objectId) : objectType;
         return getStorage().messages.get(key);
     }
-    function removeQuote(key, quote) {
+    function removeQuote(key, uuid) {
         const storage = getStorage();
         if (!storage.quotes.has(key)) {
             return;
         }
-        storage.quotes.get(key).forEach((q) => {
-            if (JSON.stringify(q) === JSON.stringify(quote)) {
-                storage.quotes.get(key).delete(q);
-            }
-        });
+        storage.quotes.get(key).delete(uuid);
         if (storage.quotes.get(key).size === 0) {
             storage.quotes.delete(key);
             storage.messages.delete(key);
+        }
+        saveStorage(storage);
+        (0, List_1.refreshQuoteLists)();
+    }
+    function markQuoteAsUsed(editorId, uuid) {
+        if (!usedQuotes.has(editorId)) {
+            usedQuotes.set(editorId, new Set());
+        }
+        usedQuotes.get(editorId).add(uuid);
+    }
+    function clearQuotesForEditor(editorId) {
+        const storage = getStorage();
+        usedQuotes.get(editorId)?.forEach((uuid) => {
+            for (const quotes of storage.quotes.values()) {
+                quotes.delete(uuid);
+            }
+        });
+        usedQuotes.delete(editorId);
+        for (const [key, quotes] of storage.quotes) {
+            if (quotes.size === 0) {
+                storage.quotes.delete(key);
+                storage.messages.delete(key);
+            }
         }
         saveStorage(storage);
         (0, List_1.refreshQuoteLists)();
@@ -84,15 +108,18 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         const storage = getStorage();
         const key = getKey(objectType, message.objectID);
         if (!storage.quotes.has(key)) {
-            storage.quotes.set(key, new Set());
+            storage.quotes.set(key, new Map());
         }
         storage.messages.set(key, message);
-        if (!Array.from(storage.quotes.get(key))
-            .map((q) => JSON.stringify(q))
-            .includes(JSON.stringify(quote))) {
-            storage.quotes.get(key).add(quote);
+        const uuid = Core.getUuid();
+        for (const [uuid, q] of storage.quotes.get(key)) {
+            if (JSON.stringify(q) === JSON.stringify(quote)) {
+                return uuid;
+            }
         }
+        storage.quotes.get(key).set(uuid, quote);
         saveStorage(storage);
+        return uuid;
     }
     function getStorage() {
         const data = window.localStorage.getItem(STORAGE_KEY);
@@ -106,8 +133,8 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
             return JSON.parse(data, (key, value) => {
                 if (key === "quotes") {
                     const result = new Map(value);
-                    for (const [key, setValue] of result) {
-                        result.set(key, new Set(setValue));
+                    for (const [key, quotes] of result) {
+                        result.set(key, new Map(quotes));
                     }
                     return result;
                 }
@@ -125,9 +152,6 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data, (_key, value) => {
             if (value instanceof Map) {
                 return Array.from(value.entries());
-            }
-            else if (value instanceof Set) {
-                return Array.from(value);
             }
             return value;
         }));

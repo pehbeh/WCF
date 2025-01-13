@@ -12,7 +12,7 @@ import { listenToCkeditor, dispatchToCkeditor } from "WoltLabSuite/Core/Componen
 import { getTabMenu } from "WoltLabSuite/Core/Component/Message/MessageTabMenu";
 import { getPhrase } from "WoltLabSuite/Core/Language";
 import { setActiveEditor } from "WoltLabSuite/Core/Component/Quote/Message";
-import { getQuotes, getMessage, removeQuote } from "WoltLabSuite/Core/Component/Quote/Storage";
+import { getQuotes, getMessage, removeQuote, markQuoteAsUsed } from "WoltLabSuite/Core/Component/Quote/Storage";
 import DomUtil from "WoltLabSuite/Core/Dom/Util";
 import { escapeHTML } from "WoltLabSuite/Core/StringUtil";
 
@@ -46,7 +46,7 @@ class QuoteList {
       const message = getMessage(key)!;
       quotesCount += quotes.size;
 
-      quotes.forEach((quote) => {
+      quotes.forEach((quote, uuid) => {
         const fragment = DomUtil.createFragmentFromHtml(`
 <div class="quoteBox quoteBox--tabMenu">
   <div class="quoteBoxIcon">
@@ -70,6 +70,8 @@ class QuoteList {
         `);
 
         fragment.querySelector('button[data-action="insert"]')!.addEventListener("click", () => {
+          markQuoteAsUsed(this.#editorId, uuid);
+
           dispatchToCkeditor(this.#editor).insertQuote({
             author: message.author,
             content: quote.rawMessage === undefined ? quote.message : quote.rawMessage,
@@ -79,7 +81,7 @@ class QuoteList {
         });
 
         fragment.querySelector('button[data-action="delete"]')!.addEventListener("click", () => {
-          removeQuote(key, quote);
+          removeQuote(key, uuid);
         });
 
         this.#container.append(fragment);
