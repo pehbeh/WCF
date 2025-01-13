@@ -80,7 +80,7 @@ class TabMenu {
       return;
     }
 
-    tab.hidden = false;
+    tab.hidden = true;
 
     if (tab.classList.contains("active")) {
       this.#closeAllTabs();

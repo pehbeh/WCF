@@ -65,7 +65,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/Selector", "Wol
             if (tab === undefined) {
                 return;
             }
-            tab.hidden = false;
+            tab.hidden = true;
             if (tab.classList.contains("active")) {
                 this.#closeAllTabs();
             }
