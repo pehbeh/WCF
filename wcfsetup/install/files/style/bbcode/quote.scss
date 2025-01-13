@@ -84,7 +84,7 @@
 	grid-template-areas:
 		"icon    title   buttons"
 		"content content content";
-	grid-template-columns: 24px auto min-content;
+	grid-template-columns: 24px auto minmax(0, min-content);
 	margin: 0;
 }
 
