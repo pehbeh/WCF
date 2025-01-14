@@ -136,10 +136,6 @@ final class WysiwygFormField extends AbstractFormField implements
      */
     public function getFieldHtml()
     {
-        if ($this->supportsQuotes()) {
-            MessageQuoteManager::getInstance()->assignVariables();
-        }
-
         /** @noinspection PhpUndefinedFieldInspection */
         $disallowedBBCodesPermission = $this->getObjectType()->disallowedBBCodesPermission;
         if ($disallowedBBCodesPermission === null) {
