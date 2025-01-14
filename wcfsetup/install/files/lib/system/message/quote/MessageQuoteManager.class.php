@@ -309,9 +309,9 @@ class MessageQuoteManager extends SingletonFactory
     }
 
     /**
-     * Removes quotes after saving current message.
+     * Store the quote uuids that should be removed in the next request.
      */
-    public function saved()
+    public function saved(): void
     {
         $this->updateSession();
     }
