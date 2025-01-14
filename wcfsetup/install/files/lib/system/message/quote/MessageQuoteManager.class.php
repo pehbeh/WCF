@@ -19,16 +19,10 @@ use wcf\util\ArrayUtil;
 class MessageQuoteManager extends SingletonFactory
 {
     /**
-     * message id for quoting
-     * @var int
-     */
-    protected $quoteMessageID = 0;
-
-    /**
      * list of quote ids to be removed
      * @var string[]
      */
-    protected $removeQuoteIDs = [];
+    protected array $removeQuoteIDs = [];
 
     /**
      * @inheritDoc
@@ -213,6 +207,7 @@ class MessageQuoteManager extends SingletonFactory
      * @param bool $renderAsString
      *
      * @return  array|string
+     * @deprecated 6.2
      */
     public function renderQuote(IMessage $message, $text, $renderAsString = true)
     {
@@ -286,18 +281,17 @@ class MessageQuoteManager extends SingletonFactory
 
     /**
      * Reads the quote message id.
+     *
+     * @deprecated 6.2
      */
     public function readParameters()
     {
-        if (isset($_REQUEST['quoteMessageID'])) {
-            $this->quoteMessageID = \intval($_REQUEST['quoteMessageID']);
-        }
     }
 
     /**
      * Reads a list of quote ids to remove.
      */
-    public function readFormParameters()
+    public function readFormParameters(): void
     {
         if (isset($_REQUEST['__removeQuoteIDs']) && \is_array($_REQUEST['__removeQuoteIDs'])) {
             $quoteIDs = ArrayUtil::trim($_REQUEST['__removeQuoteIDs']);
@@ -329,10 +323,11 @@ class MessageQuoteManager extends SingletonFactory
      * Returns quote message id.
      *
      * @return  int
+     * @deprecated 6.2
      */
     public function getQuoteMessageID()
     {
-        return $this->quoteMessageID;
+        return 0;
     }
 
     /**
