@@ -26,6 +26,9 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
             if (this.#container === null) {
                 throw new Error(`The quotes container for '${editorId}' does not exist.`);
             }
+            this.#editor.closest("form")?.addEventListener("submit", () => {
+                this.#formSubmitted();
+            });
             window.addEventListener("storage", () => {
                 this.renderQuotes();
             });
@@ -86,6 +89,12 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
             else {
                 tabMenu.hideTab("quotes");
             }
+        }
+        #formSubmitted() {
+            const formSubmit = this.#editor.closest("form").querySelector(".formSubmit");
+            (0, Storage_1.getUsedQuotes)(this.#editorId).forEach((uuid) => {
+                formSubmit.append(Util_1.default.createFragmentFromHtml(`<input type="hidden" name="__removeQuoteIDs[]" value="${uuid}">`));
+            });
         }
     }
     function getQuoteList(editorId) {

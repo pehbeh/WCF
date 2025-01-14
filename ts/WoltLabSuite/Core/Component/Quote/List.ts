@@ -37,6 +37,10 @@ class QuoteList {
       throw new Error(`The quotes container for '${editorId}' does not exist.`);
     }
 
+    this.#editor.closest("form")?.addEventListener("submit", () => {
+      this.#formSubmitted();
+    });
+
     window.addEventListener("storage", () => {
       this.renderQuotes();
     });
@@ -107,6 +111,16 @@ class QuoteList {
     } else {
       tabMenu.hideTab("quotes");
     }
+  }
+
+  #formSubmitted(): void {
+    const formSubmit = this.#editor.closest("form")!.querySelector(".formSubmit")!;
+
+    getUsedQuotes(this.#editorId).forEach((uuid) => {
+      formSubmit.append(
+        DomUtil.createFragmentFromHtml(`<input type="hidden" name="__removeQuoteIDs[]" value="${uuid}">`),
+      );
+    });
   }
 }
 
