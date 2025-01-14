@@ -13,7 +13,13 @@ import { getPhrase } from "WoltLabSuite/Core/Language";
 import { wheneverFirstSeen } from "WoltLabSuite/Core/Helper/Selector";
 import { set as setAlignment } from "WoltLabSuite/Core/Ui/Alignment";
 import { CKEditor } from "WoltLabSuite/Core/Component/Ckeditor";
-import { saveQuote, saveFullQuote, markQuoteAsUsed } from "WoltLabSuite/Core/Component/Quote/Storage";
+import {
+  saveQuote,
+  saveFullQuote,
+  markQuoteAsUsed,
+  isFullQuoted,
+  getKey,
+} from "WoltLabSuite/Core/Component/Quote/Storage";
 import { promiseMutex } from "WoltLabSuite/Core/Helper/PromiseMutex";
 import { dispatchToCkeditor } from "WoltLabSuite/Core/Component/Ckeditor/Event";
 
@@ -33,6 +39,7 @@ let selectedMessage:
     };
 
 const containers = new Map<string, Container>();
+const quoteMessageButtons = new Map<string, HTMLElement>();
 let activeMessageId = "";
 let activeEditor: CKEditor | undefined = undefined;
 let timerSelectionChange: number | undefined = undefined;
@@ -47,12 +54,14 @@ export function registerContainer(
 ): void {
   wheneverFirstSeen(containerSelector, (container: HTMLElement) => {
     const id = DomUtil.identify(container);
+    const objectId = ~~container.dataset.objectId!;
+
     containers.set(id, {
       element: container,
       messageBodySelector: messageBodySelector,
       objectType: objectType,
       className: className,
-      objectId: ~~container.dataset.objectId!,
+      objectId: objectId,
     });
 
     if (container.classList.contains("jsInvalidQuoteTarget")) {
@@ -62,7 +71,17 @@ export function registerContainer(
     container.addEventListener("mousedown", (event) => onMouseDown(event));
     container.classList.add("jsQuoteMessageContainer");
 
-    container.querySelector(".jsQuoteMessage")?.addEventListener(
+    const quoteMessage = container.querySelector(".jsQuoteMessage");
+    const quoteMessageButton = quoteMessage?.querySelector<HTMLElement>(".button");
+    if (quoteMessageButton) {
+      quoteMessageButtons.set(getKey(objectType, objectId), quoteMessageButton);
+
+      if (isFullQuoted(objectType, objectId)) {
+        quoteMessageButton.classList.add("active");
+      }
+    }
+
+    quoteMessage?.addEventListener(
       "click",
       promiseMutex(async (event: MouseEvent) => {
         event.preventDefault();
@@ -79,6 +98,8 @@ export function registerContainer(
 
           markQuoteAsUsed(activeEditor.sourceElement.id, quoteMessage.uuid);
         }
+
+        quoteMessageButton!.classList.add("active");
       }),
     );
   });
@@ -88,6 +109,10 @@ export function setActiveEditor(editor?: CKEditor, supportDirectInsert: boolean 
   copyQuote.querySelector<HTMLButtonElement>(".jsQuoteManagerQuoteAndInsert")!.hidden = !supportDirectInsert;
 
   activeEditor = editor;
+}
+
+export function removeQuoteStatus(key: string): void {
+  quoteMessageButtons.get(key)?.classList.remove("active");
 }
 
 function setup() {

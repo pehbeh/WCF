@@ -11,8 +11,14 @@
 import { listenToCkeditor, dispatchToCkeditor } from "WoltLabSuite/Core/Component/Ckeditor/Event";
 import { getTabMenu } from "WoltLabSuite/Core/Component/Message/MessageTabMenu";
 import { getPhrase } from "WoltLabSuite/Core/Language";
-import { setActiveEditor } from "WoltLabSuite/Core/Component/Quote/Message";
-import { getQuotes, getMessage, removeQuote, markQuoteAsUsed } from "WoltLabSuite/Core/Component/Quote/Storage";
+import { setActiveEditor, removeQuoteStatus } from "WoltLabSuite/Core/Component/Quote/Message";
+import {
+  getQuotes,
+  getMessage,
+  removeQuote,
+  markQuoteAsUsed,
+  getUsedQuotes,
+} from "WoltLabSuite/Core/Component/Quote/Storage";
 import DomUtil from "WoltLabSuite/Core/Dom/Util";
 import { escapeHTML } from "WoltLabSuite/Core/StringUtil";
 
@@ -82,6 +88,7 @@ class QuoteList {
 
         fragment.querySelector('button[data-action="delete"]')!.addEventListener("click", () => {
           removeQuote(key, uuid);
+          removeQuoteStatus(key);
         });
 
         this.#container.append(fragment);
@@ -128,7 +135,9 @@ export function setup(editorId: string): void {
       quoteLists.set(editorId, new QuoteList(editorId, editor));
     }
 
-    setActiveEditor(ckeditor, ckeditor.features.quoteBlock);
+    if (ckeditor.isVisible()) {
+      setActiveEditor(ckeditor, ckeditor.features.quoteBlock);
+    }
 
     ckeditor.focusTracker.on("change:isFocused", (_evt: unknown, _name: unknown, isFocused: boolean) => {
       if (isFocused) {

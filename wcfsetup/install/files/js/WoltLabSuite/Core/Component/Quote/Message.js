@@ -12,9 +12,11 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.registerContainer = registerContainer;
     exports.setActiveEditor = setActiveEditor;
+    exports.removeQuoteStatus = removeQuoteStatus;
     Util_1 = tslib_1.__importDefault(Util_1);
     let selectedMessage;
     const containers = new Map();
+    const quoteMessageButtons = new Map();
     let activeMessageId = "";
     let activeEditor = undefined;
     let timerSelectionChange = undefined;
@@ -23,19 +25,28 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
     function registerContainer(containerSelector, messageBodySelector, className, objectType) {
         (0, Selector_1.wheneverFirstSeen)(containerSelector, (container) => {
             const id = Util_1.default.identify(container);
+            const objectId = ~~container.dataset.objectId;
             containers.set(id, {
                 element: container,
                 messageBodySelector: messageBodySelector,
                 objectType: objectType,
                 className: className,
-                objectId: ~~container.dataset.objectId,
+                objectId: objectId,
             });
             if (container.classList.contains("jsInvalidQuoteTarget")) {
                 return;
             }
             container.addEventListener("mousedown", (event) => onMouseDown(event));
             container.classList.add("jsQuoteMessageContainer");
-            container.querySelector(".jsQuoteMessage")?.addEventListener("click", (0, PromiseMutex_1.promiseMutex)(async (event) => {
+            const quoteMessage = container.querySelector(".jsQuoteMessage");
+            const quoteMessageButton = quoteMessage?.querySelector(".button");
+            if (quoteMessageButton) {
+                quoteMessageButtons.set((0, Storage_1.getKey)(objectType, objectId), quoteMessageButton);
+                if ((0, Storage_1.isFullQuoted)(objectType, objectId)) {
+                    quoteMessageButton.classList.add("active");
+                }
+            }
+            quoteMessage?.addEventListener("click", (0, PromiseMutex_1.promiseMutex)(async (event) => {
                 event.preventDefault();
                 const quoteMessage = await (0, Storage_1.saveFullQuote)(objectType, className, ~~container.dataset.objectId);
                 if (activeEditor !== undefined) {
@@ -47,12 +58,16 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
                     });
                     (0, Storage_1.markQuoteAsUsed)(activeEditor.sourceElement.id, quoteMessage.uuid);
                 }
+                quoteMessageButton.classList.add("active");
             }));
         });
     }
     function setActiveEditor(editor, supportDirectInsert = false) {
         copyQuote.querySelector(".jsQuoteManagerQuoteAndInsert").hidden = !supportDirectInsert;
         activeEditor = editor;
+    }
+    function removeQuoteStatus(key) {
+        quoteMessageButtons.get(key)?.classList.remove("active");
     }
     function setup() {
         copyQuote.classList.add("balloonTooltip", "interactive", "quoteManagerCopy");

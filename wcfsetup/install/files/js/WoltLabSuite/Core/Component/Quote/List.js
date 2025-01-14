@@ -70,6 +70,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
                     });
                     fragment.querySelector('button[data-action="delete"]').addEventListener("click", () => {
                         (0, Storage_1.removeQuote)(key, uuid);
+                        (0, Message_1.removeQuoteStatus)(key);
                     });
                     this.#container.append(fragment);
                 });
@@ -107,7 +108,9 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
             if (ckeditor.features.quoteBlock) {
                 quoteLists.set(editorId, new QuoteList(editorId, editor));
             }
-            (0, Message_1.setActiveEditor)(ckeditor, ckeditor.features.quoteBlock);
+            if (ckeditor.isVisible()) {
+                (0, Message_1.setActiveEditor)(ckeditor, ckeditor.features.quoteBlock);
+            }
             ckeditor.focusTracker.on("change:isFocused", (_evt, _name, isFocused) => {
                 if (isFocused) {
                     (0, Message_1.setActiveEditor)(ckeditor, ckeditor.features.quoteBlock);

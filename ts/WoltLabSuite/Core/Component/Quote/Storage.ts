@@ -132,6 +132,10 @@ export function markQuoteAsUsed(editorId: string, uuid: string): void {
   usedQuotes.get(editorId)!.add(uuid);
 }
 
+export function getUsedQuotes(editorId: string): Set<string> {
+  return usedQuotes.get(editorId) ?? new Set();
+}
+
 export function clearQuotesForEditor(editorId: string): void {
   const storage = getStorage();
 
@@ -152,6 +156,24 @@ export function clearQuotesForEditor(editorId: string): void {
 
   saveStorage(storage);
   refreshQuoteLists();
+}
+
+export function isFullQuoted(objectType: string, objectId: number): boolean {
+  const key = getKey(objectType, objectId);
+  const storage = getStorage();
+  const quotes = storage.quotes.get(key);
+
+  if (quotes === undefined) {
+    return false;
+  }
+
+  return (
+    Array.from(quotes).filter(([, quote]) => {
+      if (quote.rawMessage !== undefined) {
+        return true;
+      }
+    }).length > 0
+  );
 }
 
 function storeQuote(objectType: string, message: Message, quote: Quote): string {
@@ -203,7 +225,7 @@ function getStorage(): StorageData {
   }
 }
 
-function getKey(objectType: string, objectId: number): string {
+export function getKey(objectType: string, objectId: number): string {
   return `${objectType}:${objectId}`;
 }
 

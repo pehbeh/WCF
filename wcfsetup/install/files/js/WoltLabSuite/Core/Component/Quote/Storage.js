@@ -16,7 +16,10 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
     exports.getMessage = getMessage;
     exports.removeQuote = removeQuote;
     exports.markQuoteAsUsed = markQuoteAsUsed;
+    exports.getUsedQuotes = getUsedQuotes;
     exports.clearQuotesForEditor = clearQuotesForEditor;
+    exports.isFullQuoted = isFullQuoted;
+    exports.getKey = getKey;
     Core = tslib_1.__importStar(Core);
     const STORAGE_KEY = Core.getStoragePrefix() + "quotes";
     const usedQuotes = new Map();
@@ -87,6 +90,9 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         }
         usedQuotes.get(editorId).add(uuid);
     }
+    function getUsedQuotes(editorId) {
+        return usedQuotes.get(editorId) ?? new Set();
+    }
     function clearQuotesForEditor(editorId) {
         const storage = getStorage();
         usedQuotes.get(editorId)?.forEach((uuid) => {
@@ -103,6 +109,19 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         }
         saveStorage(storage);
         (0, List_1.refreshQuoteLists)();
+    }
+    function isFullQuoted(objectType, objectId) {
+        const key = getKey(objectType, objectId);
+        const storage = getStorage();
+        const quotes = storage.quotes.get(key);
+        if (quotes === undefined) {
+            return false;
+        }
+        return (Array.from(quotes).filter(([, quote]) => {
+            if (quote.rawMessage !== undefined) {
+                return true;
+            }
+        }).length > 0);
     }
     function storeQuote(objectType, message, quote) {
         const storage = getStorage();
