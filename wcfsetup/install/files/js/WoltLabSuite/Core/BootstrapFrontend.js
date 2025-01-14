@@ -59,9 +59,12 @@ define(["require", "exports", "tslib", "./BackgroundQueue", "./Bootstrap", "./Ui
             enableMobileMenu: true,
             pageMenuMainProvider: new Frontend_1.default(),
         });
+        if (options.removeQuotes?.length) {
+            void new Promise((resolve_3, reject_3) => { require(["./Component/Quote/Storage"], resolve_3, reject_3); }).then(tslib_1.__importStar).then(({ removeQuotes }) => removeQuotes(options.removeQuotes));
+        }
         UiPageHeaderMenu.init();
         if (options.styleChanger) {
-            void new Promise((resolve_3, reject_3) => { require(["./Controller/Style/Changer"], resolve_3, reject_3); }).then(tslib_1.__importStar).then((ControllerStyleChanger) => {
+            void new Promise((resolve_4, reject_4) => { require(["./Controller/Style/Changer"], resolve_4, reject_4); }).then(tslib_1.__importStar).then((ControllerStyleChanger) => {
                 ControllerStyleChanger.setup();
             });
         }
@@ -96,22 +99,22 @@ define(["require", "exports", "tslib", "./BackgroundQueue", "./Bootstrap", "./Ui
             }
         }
         (0, LazyLoader_1.whenFirstSeen)("woltlab-core-reaction-summary", () => {
-            void new Promise((resolve_4, reject_4) => { require(["./Ui/Reaction/SummaryDetails"], resolve_4, reject_4); }).then(tslib_1.__importStar).then(({ setup }) => setup());
+            void new Promise((resolve_5, reject_5) => { require(["./Ui/Reaction/SummaryDetails"], resolve_5, reject_5); }).then(tslib_1.__importStar).then(({ setup }) => setup());
         });
         (0, LazyLoader_1.whenFirstSeen)("woltlab-core-comment", () => {
-            void new Promise((resolve_5, reject_5) => { require(["./Component/Comment/woltlab-core-comment"], resolve_5, reject_5); }).then(tslib_1.__importStar);
+            void new Promise((resolve_6, reject_6) => { require(["./Component/Comment/woltlab-core-comment"], resolve_6, reject_6); }).then(tslib_1.__importStar);
         });
         (0, LazyLoader_1.whenFirstSeen)("woltlab-core-comment-response", () => {
-            void new Promise((resolve_6, reject_6) => { require(["./Component/Comment/Response/woltlab-core-comment-response"], resolve_6, reject_6); }).then(tslib_1.__importStar);
+            void new Promise((resolve_7, reject_7) => { require(["./Component/Comment/Response/woltlab-core-comment-response"], resolve_7, reject_7); }).then(tslib_1.__importStar);
         });
         (0, LazyLoader_1.whenFirstSeen)("woltlab-core-emoji-picker", () => {
-            void new Promise((resolve_7, reject_7) => { require(["./Component/EmojiPicker/woltlab-core-emoji-picker"], resolve_7, reject_7); }).then(tslib_1.__importStar);
+            void new Promise((resolve_8, reject_8) => { require(["./Component/EmojiPicker/woltlab-core-emoji-picker"], resolve_8, reject_8); }).then(tslib_1.__importStar);
         });
         (0, LazyLoader_1.whenFirstSeen)("[data-follow-user]", () => {
-            void new Promise((resolve_8, reject_8) => { require(["./Component/User/Follow"], resolve_8, reject_8); }).then(tslib_1.__importStar).then(({ setup }) => setup());
+            void new Promise((resolve_9, reject_9) => { require(["./Component/User/Follow"], resolve_9, reject_9); }).then(tslib_1.__importStar).then(({ setup }) => setup());
         });
         (0, LazyLoader_1.whenFirstSeen)("[data-ignore-user]", () => {
-            void new Promise((resolve_9, reject_9) => { require(["./Component/User/Ignore"], resolve_9, reject_9); }).then(tslib_1.__importStar).then(({ setup }) => setup());
+            void new Promise((resolve_10, reject_10) => { require(["./Component/User/Ignore"], resolve_10, reject_10); }).then(tslib_1.__importStar).then(({ setup }) => setup());
         });
     }
 });

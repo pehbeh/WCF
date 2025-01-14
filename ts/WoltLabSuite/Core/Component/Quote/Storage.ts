@@ -12,6 +12,7 @@ import * as Core from "WoltLabSuite/Core/Core";
 import { renderQuote } from "WoltLabSuite/Core/Api/Messages/RenderQuote";
 import { messageAuthor } from "WoltLabSuite/Core/Api/Messages/Author";
 import { refreshQuoteLists } from "WoltLabSuite/Core/Component/Quote/List";
+import { resetRemovalQuotes } from "WoltLabSuite/Core/Api/Messages/ResetRemovalQuotes";
 
 interface Message {
   objectID: number;
@@ -104,6 +105,21 @@ export function getMessage(objectType: string, objectId?: number): Message | und
   const key = objectId ? getKey(objectType, objectId) : objectType;
 
   return getStorage().messages.get(key);
+}
+
+export function removeQuotes(uuids: string[]): void {
+  const storage = getStorage();
+
+  for (const uuid of uuids) {
+    for (const quotes of storage.quotes.values()) {
+      quotes.delete(uuid);
+    }
+  }
+
+  saveStorage(storage);
+  refreshQuoteLists();
+
+  void resetRemovalQuotes();
 }
 
 export function removeQuote(key: string, uuid: string): void {

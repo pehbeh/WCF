@@ -7,13 +7,14 @@
  * @since 6.2
  * @woltlabExcludeBundle tiny
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/Core/Api/Messages/RenderQuote", "WoltLabSuite/Core/Api/Messages/Author", "WoltLabSuite/Core/Component/Quote/List"], function (require, exports, tslib_1, Core, RenderQuote_1, Author_1, List_1) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/Core/Api/Messages/RenderQuote", "WoltLabSuite/Core/Api/Messages/Author", "WoltLabSuite/Core/Component/Quote/List", "WoltLabSuite/Core/Api/Messages/ResetRemovalQuotes"], function (require, exports, tslib_1, Core, RenderQuote_1, Author_1, List_1, ResetRemovalQuotes_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.saveQuote = saveQuote;
     exports.saveFullQuote = saveFullQuote;
     exports.getQuotes = getQuotes;
     exports.getMessage = getMessage;
+    exports.removeQuotes = removeQuotes;
     exports.removeQuote = removeQuote;
     exports.markQuoteAsUsed = markQuoteAsUsed;
     exports.getUsedQuotes = getUsedQuotes;
@@ -70,6 +71,17 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
     function getMessage(objectType, objectId) {
         const key = objectId ? getKey(objectType, objectId) : objectType;
         return getStorage().messages.get(key);
+    }
+    function removeQuotes(uuids) {
+        const storage = getStorage();
+        for (const uuid of uuids) {
+            for (const quotes of storage.quotes.values()) {
+                quotes.delete(uuid);
+            }
+        }
+        saveStorage(storage);
+        (0, List_1.refreshQuoteLists)();
+        void (0, ResetRemovalQuotes_1.resetRemovalQuotes)();
     }
     function removeQuote(key, uuid) {
         const storage = getStorage();

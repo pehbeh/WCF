@@ -101,7 +101,8 @@ window.addEventListener('pageshow', function(event) {
 					{event name='javascriptShareButtonProviders'}
 				],
 			{/if}
-			styleChanger: {if $__wcf->getStyleHandler()->showStyleChanger()}true{else}false{/if}
+			styleChanger: {if $__wcf->getStyleHandler()->showStyleChanger()}true{else}false{/if},
+			{if $__wcf->user->userID}removeQuotes: [{implode from=$__wcf->getMessageQuoteManager()->getRemoveQuoteIDs() item=uuid}'{$uuid|encodeJS}'{/implode}],{/if}
 		});
 	});
 </script>

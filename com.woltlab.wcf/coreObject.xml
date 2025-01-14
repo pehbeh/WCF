@@ -55,6 +55,9 @@
 		<coreobject>
 			<objectname>wcf\system\file\upload\UploadHandler</objectname>
 		</coreobject>
+		<coreobject>
+			<objectname>wcf\system\message\quote\MessageQuoteManager</objectname>
+		</coreobject>
 	</import>
 	<delete>
 		<coreobject name="wcf\system\user\authentication\UserAuthenticationFactory"/>

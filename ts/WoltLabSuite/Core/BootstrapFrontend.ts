@@ -37,6 +37,7 @@ interface BootstrapOptions {
   executeCronjobs: string | undefined;
   shareButtonProviders?: ShareProvider[];
   styleChanger: boolean;
+  removeQuotes?: string[];
 }
 
 /**
@@ -86,6 +87,11 @@ export function setup(options: BootstrapOptions): void {
     enableMobileMenu: true,
     pageMenuMainProvider: new UiPageMenuMainFrontend(),
   });
+
+  if (options.removeQuotes?.length) {
+    void import("./Component/Quote/Storage").then(({ removeQuotes }) => removeQuotes(options.removeQuotes!));
+  }
+
   UiPageHeaderMenu.init();
 
   if (options.styleChanger) {
