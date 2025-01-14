@@ -100,6 +100,7 @@ export function registerContainer(
           markQuoteAsUsed(activeEditor.sourceElement.id, quoteMessage.uuid);
         } else {
           // Check if the href is a valid URL and navigate to it.
+          // Don't use the `quoteMessageButton.href` property directly, as it might be a relative URL.
           try {
             const url = new URL(quoteMessageButton!.getAttribute("href")!);
             window.location.href = url.href;
