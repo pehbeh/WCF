@@ -13,6 +13,7 @@ import { renderQuote } from "WoltLabSuite/Core/Api/Messages/RenderQuote";
 import { messageAuthor } from "WoltLabSuite/Core/Api/Messages/Author";
 import { refreshQuoteLists } from "WoltLabSuite/Core/Component/Quote/List";
 import { resetRemovalQuotes } from "WoltLabSuite/Core/Api/Messages/ResetRemovalQuotes";
+import { removeQuoteStatus } from "WoltLabSuite/Core/Component/Quote/Message";
 
 interface Message {
   objectID: number;
@@ -116,6 +117,13 @@ export function removeQuotes(uuids: string[]): void {
     }
   }
 
+  for (const [key, quotes] of storage.quotes) {
+    if (quotes.size === 0) {
+      storage.quotes.delete(key);
+      storage.messages.delete(key);
+    }
+  }
+
   saveStorage(storage);
   refreshQuoteLists();
 
@@ -154,9 +162,15 @@ export function getUsedQuotes(editorId: string): Set<string> {
 
 export function clearQuotesForEditor(editorId: string): void {
   const storage = getStorage();
+  const fullQuotes: string[] = [];
 
   usedQuotes.get(editorId)?.forEach((uuid) => {
-    for (const quotes of storage.quotes.values()) {
+    for (const [key, quotes] of storage.quotes) {
+      const quote = quotes.get(uuid);
+      if (quote?.rawMessage !== undefined) {
+        fullQuotes.push(key);
+      }
+
       quotes.delete(uuid);
     }
   });
@@ -172,6 +186,10 @@ export function clearQuotesForEditor(editorId: string): void {
 
   saveStorage(storage);
   refreshQuoteLists();
+
+  fullQuotes.forEach((key) => {
+    removeQuoteStatus(key);
+  });
 }
 
 export function isFullQuoted(objectType: string, objectId: number): boolean {

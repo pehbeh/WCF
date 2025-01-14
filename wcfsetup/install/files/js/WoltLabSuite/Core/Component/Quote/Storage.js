@@ -7,7 +7,7 @@
  * @since 6.2
  * @woltlabExcludeBundle tiny
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/Core/Api/Messages/RenderQuote", "WoltLabSuite/Core/Api/Messages/Author", "WoltLabSuite/Core/Component/Quote/List", "WoltLabSuite/Core/Api/Messages/ResetRemovalQuotes"], function (require, exports, tslib_1, Core, RenderQuote_1, Author_1, List_1, ResetRemovalQuotes_1) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/Core/Api/Messages/RenderQuote", "WoltLabSuite/Core/Api/Messages/Author", "WoltLabSuite/Core/Component/Quote/List", "WoltLabSuite/Core/Api/Messages/ResetRemovalQuotes", "WoltLabSuite/Core/Component/Quote/Message"], function (require, exports, tslib_1, Core, RenderQuote_1, Author_1, List_1, ResetRemovalQuotes_1, Message_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.saveQuote = saveQuote;
@@ -79,6 +79,12 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
                 quotes.delete(uuid);
             }
         }
+        for (const [key, quotes] of storage.quotes) {
+            if (quotes.size === 0) {
+                storage.quotes.delete(key);
+                storage.messages.delete(key);
+            }
+        }
         saveStorage(storage);
         (0, List_1.refreshQuoteLists)();
         void (0, ResetRemovalQuotes_1.resetRemovalQuotes)();
@@ -107,8 +113,13 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
     }
     function clearQuotesForEditor(editorId) {
         const storage = getStorage();
+        const fullQuotes = [];
         usedQuotes.get(editorId)?.forEach((uuid) => {
-            for (const quotes of storage.quotes.values()) {
+            for (const [key, quotes] of storage.quotes) {
+                const quote = quotes.get(uuid);
+                if (quote?.rawMessage !== undefined) {
+                    fullQuotes.push(key);
+                }
                 quotes.delete(uuid);
             }
         });
@@ -121,6 +132,9 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         }
         saveStorage(storage);
         (0, List_1.refreshQuoteLists)();
+        fullQuotes.forEach((key) => {
+            (0, Message_1.removeQuoteStatus)(key);
+        });
     }
     function isFullQuoted(objectType, objectId) {
         const key = getKey(objectType, objectId);
