@@ -307,7 +307,9 @@ define(["require", "exports", "tslib", "../../Ajax", "../../Core", "../../Event/
             }
             else {
                 (0, Storage_1.clearQuotesForEditor)(this._textarea.id);
-                (0, Message_1.setActiveEditor)();
+                if (!this._getCKEditor().isVisible()) {
+                    (0, Message_1.setActiveEditor)();
+                }
                 this._insertMessage(data);
                 if (!User_1.default.userId) {
                     Dialog_1.default.close(data.returnValues.guestDialogID);

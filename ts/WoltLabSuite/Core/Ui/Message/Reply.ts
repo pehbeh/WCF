@@ -389,7 +389,9 @@ class UiMessageReply {
       this._guestDialogId = guestDialogId;
     } else {
       clearQuotesForEditor(this._textarea.id);
-      setActiveEditor();
+      if (!this._getCKEditor().isVisible()) {
+        setActiveEditor();
+      }
 
       this._insertMessage(data);
 
