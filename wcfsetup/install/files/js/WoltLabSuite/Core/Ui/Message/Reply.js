@@ -6,7 +6,7 @@
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @woltlabExcludeBundle tiny
  */
-define(["require", "exports", "tslib", "../../Ajax", "../../Core", "../../Event/Handler", "../../Language", "../../Dom/Change/Listener", "../../Dom/Util", "../Dialog", "../Notification", "../../User", "../../Controller/Captcha", "../Scroll", "../../Component/Ckeditor", "WoltLabSuite/Core/Component/Ckeditor/Event", "WoltLabSuite/Core/Component/Quote/Storage"], function (require, exports, tslib_1, Ajax, Core, EventHandler, Language, Listener_1, Util_1, Dialog_1, UiNotification, User_1, Captcha_1, UiScroll, Ckeditor_1, Event_1, Storage_1) {
+define(["require", "exports", "tslib", "../../Ajax", "../../Core", "../../Event/Handler", "../../Language", "../../Dom/Change/Listener", "../../Dom/Util", "../Dialog", "../Notification", "../../User", "../../Controller/Captcha", "../Scroll", "../../Component/Ckeditor", "WoltLabSuite/Core/Component/Ckeditor/Event", "WoltLabSuite/Core/Component/Quote/Storage", "WoltLabSuite/Core/Component/Quote/Message"], function (require, exports, tslib_1, Ajax, Core, EventHandler, Language, Listener_1, Util_1, Dialog_1, UiNotification, User_1, Captcha_1, UiScroll, Ckeditor_1, Event_1, Storage_1, Message_1) {
     "use strict";
     Ajax = tslib_1.__importStar(Ajax);
     Core = tslib_1.__importStar(Core);
@@ -307,6 +307,7 @@ define(["require", "exports", "tslib", "../../Ajax", "../../Core", "../../Event/
             }
             else {
                 (0, Storage_1.clearQuotesForEditor)(this._textarea.id);
+                (0, Message_1.setActiveEditor)();
                 this._insertMessage(data);
                 if (!User_1.default.userId) {
                     Dialog_1.default.close(data.returnValues.guestDialogID);
