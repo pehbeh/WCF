@@ -4,11 +4,13 @@
 			{user object=$event->getUserProfile() type='avatar24' ariaHidden='true' tabindex='-1'}
 			
 			<div class="sidebarItemTitle">
-				<h3>
-					{user object=$event->getUserProfile()}
-					<small class="separatorLeft">{@$event->time|time}</small>
-				</h3>
-				<small>{@$event->getTitle()}</small>
+				{if $event->getLink()}
+					<a href="{$event->getLink()}" class="recentActivityListItem__link">{unsafe:$event->getTitle()}</a>
+				{else}
+					{unsafe:$event->getTitle()}
+				{/if}
+
+				<p><small>{time time=$event->time}</small></p>
 			</div>
 		</li>
 	{/foreach}
