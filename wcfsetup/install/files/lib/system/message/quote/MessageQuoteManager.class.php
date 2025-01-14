@@ -213,7 +213,6 @@ class MessageQuoteManager extends SingletonFactory
      * @param bool $renderAsString
      *
      * @return  array|string
-     * @deprecated 6.2
      */
     public function renderQuote(IMessage $message, $text, $renderAsString = true)
     {
