@@ -49,6 +49,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
             quoteMessage?.addEventListener("click", (0, PromiseMutex_1.promiseMutex)(async (event) => {
                 event.preventDefault();
                 const quoteMessage = await (0, Storage_1.saveFullQuote)(objectType, className, ~~container.dataset.objectId);
+                quoteMessageButton.classList.add("active");
                 if (activeEditor !== undefined) {
                     (0, Event_1.dispatchToCkeditor)(activeEditor.sourceElement).insertQuote({
                         author: quoteMessage.author,
@@ -58,7 +59,16 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
                     });
                     (0, Storage_1.markQuoteAsUsed)(activeEditor.sourceElement.id, quoteMessage.uuid);
                 }
-                quoteMessageButton.classList.add("active");
+                else {
+                    // Check if the href is a valid URL and navigate to it.
+                    try {
+                        const url = new URL(quoteMessageButton.getAttribute("href"));
+                        window.location.href = url.href;
+                    }
+                    catch {
+                        // Ignore any errors
+                    }
+                }
             }));
         });
     }

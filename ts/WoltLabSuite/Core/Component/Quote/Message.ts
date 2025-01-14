@@ -72,7 +72,7 @@ export function registerContainer(
     container.classList.add("jsQuoteMessageContainer");
 
     const quoteMessage = container.querySelector(".jsQuoteMessage");
-    const quoteMessageButton = quoteMessage?.querySelector<HTMLElement>(".button");
+    const quoteMessageButton = quoteMessage?.querySelector<HTMLAnchorElement>(".button");
     if (quoteMessageButton) {
       quoteMessageButtons.set(getKey(objectType, objectId), quoteMessageButton);
 
@@ -87,6 +87,7 @@ export function registerContainer(
         event.preventDefault();
 
         const quoteMessage = await saveFullQuote(objectType, className, ~~container.dataset.objectId!);
+        quoteMessageButton!.classList.add("active");
 
         if (activeEditor !== undefined) {
           dispatchToCkeditor(activeEditor.sourceElement).insertQuote({
@@ -97,9 +98,15 @@ export function registerContainer(
           });
 
           markQuoteAsUsed(activeEditor.sourceElement.id, quoteMessage.uuid);
+        } else {
+          // Check if the href is a valid URL and navigate to it.
+          try {
+            const url = new URL(quoteMessageButton!.getAttribute("href")!);
+            window.location.href = url.href;
+          } catch {
+            // Ignore any errors
+          }
         }
-
-        quoteMessageButton!.classList.add("active");
       }),
     );
   });
