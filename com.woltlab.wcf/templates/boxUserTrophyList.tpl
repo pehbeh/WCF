@@ -1,21 +1,30 @@
 {if $boxPosition == 'sidebarLeft' || $boxPosition == 'sidebarRight'}
-	<ul class="sidebarItemList">
+	<ol class="sidebarList">
 		{foreach from=$boxUserTrophyList item=boxUserTrophy}
-			<li class="box32">
-				<div>{@$boxUserTrophy->getTrophy()->renderTrophy(32)}</div>
+			<li class="sidebarListItem">
+				<div class="sidebarListItem__avatar">
+					{unsafe:$boxUserTrophy->getTrophy()->renderTrophy(32)}
+				</div>
 
-				<div class="sidebarItemTitle">
-					<h3>
-						<a href="{$boxUserTrophy->getTrophy()->getLink()}">{$boxUserTrophy->getTrophy()->getTitle()}</a>
+				<div class="sidebarListItem__content">
+					<h3 class="sidebarListItem__title">
+						<a href="{$boxUserTrophy->getTrophy()->getLink()}" class="sidebarListItem__link">
+							{$boxUserTrophy->getTrophy()->getTitle()}
+						</a>
 					</h3>
-					<small>
-						{user object=$boxUserTrophy->getUserProfile()}
-						<span class="separatorLeft">{@$boxUserTrophy->time|time}</span>
-					</small>
+				</div>
+
+				<div class="sidebarListItem__meta">
+					<div class="sidebarListItem__meta__author">
+						{user object=$boxUserTrophy->getUserProfile() tabindex='-1'}
+					</div>
+					<div class="sidebarListItem__meta__time">
+						{time time=$boxUserTrophy->time}
+					</div>
 				</div>
 			</li>
 		{/foreach}
-	</ul>
+	</ol>
 {else}
 	<ol class="containerBoxList trophyCategoryList tripleColumned">
 		{foreach from=$boxUserTrophyList item=boxUserTrophy}

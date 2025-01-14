@@ -4849,7 +4849,6 @@ not register with us.]]></item>
 		<item name="wcf.user.panel.showAll"><![CDATA[Display All]]></item>
 		<item name="wcf.user.boxList.description.activityPoints"><![CDATA[{#$boxUser->activityPoints} Point{if $boxUser->activityPoints != 1}s{/if}]]></item>
 		<item name="wcf.user.boxList.description.likesReceived"><![CDATA[{#$boxUser->likesReceived} Like{if $boxUser->likesReceived != 1}s{/if}]]></item>
-		<item name="wcf.user.boxList.description.registrationDate"><![CDATA[{@$boxUser->registrationDate|time}]]></item>
 		<item name="wcf.user.mostOnlineUsers"><![CDATA[Most Online Users]]></item>
 		<item name="wcf.user.sortField.activityPoints"><![CDATA[Points]]></item>
 		<item name="wcf.user.sortField.likesReceived"><![CDATA[Reactions Received]]></item>

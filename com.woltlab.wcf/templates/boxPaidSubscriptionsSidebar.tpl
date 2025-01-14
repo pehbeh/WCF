@@ -1,21 +1,30 @@
-<ul class="sidebarItemList">
+<ol class="sidebarList">
 	{foreach from=$subscriptions item=subscription}
-		<li>
-			<div class="sidebarItemTitle">
-				<h3>{$subscription->getTitle()}</h3>
-				<small>{lang}wcf.paidSubscription.formattedCost{/lang}</small>
+		<li class="sidebarListItem">
+			<div class="sidebarListItem__content">
+				<h3 class="sidebarListItem__title">
+					{$subscription->getTitle()}
+				</h3>
+				
+				<div class="sidebarListItem__description">
+					{lang}wcf.paidSubscription.formattedCost{/lang}
+				</div>
 			</div>
-			
-			{if !PAID_SUBSCRIPTION_ENABLE_TOS_CONFIRMATION && $__wcf->user->canPurchasePaidSubscriptions()}
-				<ul class="buttonList">
-					{foreach from=$subscription->getPurchaseButtons() item=button}
-						<li>{@$button}</li>
-					{/foreach}
-				</ul>
-			{/if}
+
+			<div class="sidebarListItem__meta">
+				<div class="sidebarListItem__meta__buttons">
+					{if !PAID_SUBSCRIPTION_ENABLE_TOS_CONFIRMATION && $__wcf->user->canPurchasePaidSubscriptions()}
+						<ul class="buttonList">
+							{foreach from=$subscription->getPurchaseButtons() item=button}
+								<li>{@$button}</li>
+							{/foreach}
+						</ul>
+					{/if}
+				</div>
+			</div>
 		</li>
 	{/foreach}
-</ul>
+</ol>
 
 {if PAID_SUBSCRIPTION_ENABLE_TOS_CONFIRMATION && $__wcf->user->canPurchasePaidSubscriptions()}
 	<a class="button small more" href="{link controller='PaidSubscriptionList'}{/link}">{lang}wcf.paidSubscription.button.moreInformation{/lang}</a>

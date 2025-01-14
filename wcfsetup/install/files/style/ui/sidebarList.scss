@@ -1,0 +1,70 @@
+.sidebarList {
+	display: flex;
+	gap: 10px;
+	flex-direction: column;
+}
+
+.sidebarListItem {
+	display: grid;
+	grid-template-areas:
+		"avatar content"
+		"avatar meta";
+	grid-template-columns: min-content 1fr;
+	grid-template-rows: 1fr min-content;
+	column-gap: 10px;
+	row-gap: 5px;
+	position: relative;
+}
+
+.sidebarListItem__avatar {
+	grid-area: avatar;
+}
+
+.sidebarListItem__content {
+	grid-area: content;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.sidebarListItem__meta {
+	grid-area: meta;
+
+	@include wcfFontSmall;
+}
+
+.sidebarListItem__meta__time {
+	color: var(--wcfContentDimmedText);
+}
+
+a.sidebarListItem__link {
+	color: inherit;
+
+	&::before {
+		content: "";
+		inset: 0;
+		position: absolute;
+	}
+
+	&:hover,
+	&:focus {
+		color: inherit;
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
+}
+
+.sidebarListItem__meta a {
+	color: inherit;
+
+	&:hover,
+	&:focus {
+		color: inherit;
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
+}
+
+.sidebarListItem__description {
+	@include wcfFontSmall;
+}

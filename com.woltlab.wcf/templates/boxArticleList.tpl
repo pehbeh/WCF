@@ -1,26 +1,40 @@
 {if $boxPosition == 'sidebarLeft' || $boxPosition == 'sidebarRight'}
-	<ul class="sidebarItemList">
+	<ul class="sidebarList">
 		{foreach from=$boxArticleList item=boxArticle}
-			<li class="box24 sidebarItem">
-				<a href="{$boxArticle->getLink()}" aria-hidden="true" tabindex="-1">{unsafe:$boxArticle->getUserProfile()->getAvatar()->getImageTag(24)}</a>
+			<li class="sidebarListItem">
+				<div class="sidebarListItem__avatar">
+					{user object=$boxArticle->getUserProfile() type='avatar24' ariaHidden='true' tabindex='-1'}
+				</div>
 				
-				<div class="sidebarItemTitle">
-					<h3>{anchor object=$boxArticle class='articleLink' title=$boxArticle->getTitle()}</h3>
-					
-					<small>
-						{if $boxSortField == 'time'}
+				<div class="sidebarListItem__content">
+					<h3 class="sidebarListItem__title">
+						{anchor object=$boxArticle class='articleLink sidebarListItem__link' title=$boxArticle->getTitle()}
+					</h3>
+				</div>
+
+				<div class="sidebarListItem__meta">
+					{if $boxSortField == 'time'}
+						<div class="sidebarListItem__meta__author">
 							{user object=$boxArticle->getUserProfile() tabindex='-1'}
-							<span class="separatorLeft">{time time=$boxArticle->time}</span>
-						{elseif $boxSortField == 'views'}
+						</div>
+						<div class="sidebarListItem__meta__time">
+							{time time=$boxArticle->time}
+						</div>
+					{elseif $boxSortField == 'views'}
+						<div class="sidebarListItem__meta__views">
 							{lang article=$boxArticle}wcf.article.articleViews{/lang}
-						{elseif $boxSortField == 'comments'}
+						</div>
+					{elseif $boxSortField == 'comments'}
+						<div class="sidebarListItem__meta__comments">
 							{$boxArticle->getDiscussionProvider()->getDiscussionCountPhrase()}
-						{elseif $boxSortField == 'cumulativeLikes'}
+						</div>
+					{elseif $boxSortField == 'cumulativeLikes'}
+						<div class="sidebarListItem__meta__reactions">
 							{if MODULE_LIKE && $__wcf->getSession()->getPermission('user.like.canViewLike') && $boxArticle->cachedReactions}
 								{include file='shared_topReaction' cachedReactions=$boxArticle->cachedReactions render='full'}
 							{/if}
-						{/if}
-					</small>
+						</div>
+					{/if}
 				</div>
 			</li>
 		{/foreach}

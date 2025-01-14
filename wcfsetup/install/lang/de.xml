@@ -4847,7 +4847,6 @@ sich{/if} nicht bei uns registriert {if LANGUAGE_USE_INFORMAL_VARIANT}hast{else}
 		<item name="wcf.user.panel.showAll"><![CDATA[Alle anzeigen]]></item>
 		<item name="wcf.user.boxList.description.activityPoints"><![CDATA[{#$boxUser->activityPoints} Punkt{if $boxUser->activityPoints != 1}e{/if}]]></item>
 		<item name="wcf.user.boxList.description.likesReceived"><![CDATA[{#$boxUser->likesReceived} Like{if $boxUser->likesReceived != 1}s{/if}]]></item>
-		<item name="wcf.user.boxList.description.registrationDate"><![CDATA[{@$boxUser->registrationDate|time}]]></item>
 		<item name="wcf.user.mostOnlineUsers"><![CDATA[Meiste Benutzer online]]></item>
 		<item name="wcf.user.sortField.activityPoints"><![CDATA[Punkte]]></item>
 		<item name="wcf.user.sortField.likesReceived"><![CDATA[Erhaltene Reaktionen]]></item>
