@@ -2,7 +2,7 @@
 	{foreach from=$eventList item=event}
 		<li class="sidebarListItem{if $__wcf->getUserProfileHandler()->isIgnoredUser($event->getUserProfile()->userID, 2)} ignoredUserContent{/if}">
 			<div class="sidebarListItem__avatar">
-				{user object=$event->getUserProfile() type='avatar24' ariaHidden='true' tabindex='-1'}
+				{user object=$event->getUserProfile() type='avatar32' ariaHidden='true' tabindex='-1'}
 			</div>
 
 			<div class="sidebarListItem__content">

@@ -2,7 +2,7 @@
 	{foreach from=$boxCommentList item=boxComment}
 		<li class="sidebarListItem">
 			<div class="sidebarListItem__avatar">
-				{user object=$boxComment->getUserProfile() type='avatar24' ariaHidden='true' tabindex='-1'}
+				{user object=$boxComment->getUserProfile() type='avatar32' ariaHidden='true' tabindex='-1'}
 			</div>
 
 			<div class="sidebarListItem__content">

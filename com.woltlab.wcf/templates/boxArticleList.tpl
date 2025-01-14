@@ -3,7 +3,7 @@
 		{foreach from=$boxArticleList item=boxArticle}
 			<li class="sidebarListItem">
 				<div class="sidebarListItem__avatar">
-					{user object=$boxArticle->getUserProfile() type='avatar24' ariaHidden='true' tabindex='-1'}
+					{user object=$boxArticle->getUserProfile() type='avatar32' ariaHidden='true' tabindex='-1'}
 				</div>
 				
 				<div class="sidebarListItem__content">
