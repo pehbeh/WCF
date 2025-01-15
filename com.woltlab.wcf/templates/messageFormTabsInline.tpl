@@ -65,5 +65,5 @@
 
 	{event name='tabMenuContents'}
 
-	{include file='__messageFormQuoteInline'}
+	{include file='__messageFormQuote'}
 </div>
