@@ -480,9 +480,9 @@ class WysiwygFormContainer extends FormContainer
             ->supportMentions($this->supportMentions)
             ->supportQuotes($this->supportQuotes);
         if ($this->quoteData !== null) {
-            $this->wysiwygField->quoteData(
+            $this->wysiwygField->quoteSetting(
                 $this->quoteData['objectType'],
-                $this->quoteData['actionClass'],
+                $this->quoteData['objectClass'],
                 $this->quoteData['selectors']
             );
         }
@@ -567,18 +567,41 @@ class WysiwygFormContainer extends FormContainer
      * @param string $objectType name of the relevant `com.woltlab.wcf.message.quote` object type
      * @param string $actionClass action class implementing `wcf\data\IMessageQuoteAction`
      * @param string[] $selectors selectors for the quotable content (required keys: `container`, `messageBody`, and `messageContent`)
+     *
      * @return  static
+     *
+     * @deprecated 6.2 use `quoteSetting()` instead
      */
     public function quoteData($objectType, $actionClass, array $selectors = [])
     {
+        // Remove the `Action` suffix from the action class
+        $objectClass = \substr($actionClass, 0, -6);
+
+        return $this->quoteSetting($objectType, $objectClass, $selectors);
+    }
+
+    /**
+     * Sets the data required for advanced quote support for when quotable content is present
+     * on the active page and returns this container.
+     *
+     * Calling this method automatically enables quote support for this container.
+     *
+     * @param string   $objectType  name of the relevant `com.woltlab.wcf.message.quote` object type
+     * @param string   $objectClass message object class implementing `wcf\data\IMessage`
+     * @param string[] $selectors   selectors for the quotable content (required keys: `container`and `messageBody`)
+     *
+     * @return  static
+     */
+    public function quoteSetting(string $objectType, string $objectClass, array $selectors = []): static
+    {
         if ($this->wysiwygField !== null) {
-            $this->wysiwygField->quoteData($objectType, $actionClass, $selectors);
+            $this->wysiwygField->quoteSetting($objectType, $objectClass, $selectors);
         } else {
             $this->supportQuotes();
 
             // the parameters are validated by `WysiwygFormField`
             $this->quoteData = [
-                'actionClass' => $actionClass,
+                'actionClass' => $objectClass,
                 'objectType' => $objectType,
                 'selectors' => $selectors,
             ];

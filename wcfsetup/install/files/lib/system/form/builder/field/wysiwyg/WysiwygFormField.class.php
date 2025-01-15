@@ -2,7 +2,7 @@
 
 namespace wcf\system\form\builder\field\wysiwyg;
 
-use wcf\data\IMessageQuoteAction;
+use wcf\data\IMessage;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\system\bbcode\BBCodeHandler;
 use wcf\system\form\builder\data\processor\CustomFormDataProcessor;
@@ -246,11 +246,35 @@ final class WysiwygFormField extends AbstractFormField implements
      * @param string $objectType name of the relevant `com.woltlab.wcf.message.quote` object type
      * @param string $actionClass action class implementing `wcf\data\IMessageQuoteAction`
      * @param string[] $selectors selectors for the quotable content (required keys: `container`, `messageBody`, and `messageContent`)
+     *
      * @return  static
      *
      * @throws  \InvalidArgumentException   if any of the given arguments is invalid
+     *
+     * @deprecated 6.2 use `quoteSetting()` instead
      */
     public function quoteData($objectType, $actionClass, array $selectors = [])
+    {
+        // Remove the `Action` suffix from the action class
+        $objectClass = \substr($actionClass, 0, -6);
+
+        return $this->quoteSetting($objectType, $objectClass, $selectors);
+    }
+
+    /**
+     * Sets the data required for advanced quote support for when quotable content is present
+     * on the active page and returns this field.
+     *
+     * Calling this method automatically enables quote support for this field.
+     *
+     * @param string   $objectType  name of the relevant `com.woltlab.wcf.message.quote` object type
+     * @param string   $objectClass message object class implementing `wcf\data\IMessage`
+     * @param string[] $selectors   selectors for the quotable content (required keys: `container` and `messageBody``)
+     *
+     * @return  static
+     * @since   6.2
+     */
+    public function quoteSetting(string $objectType, string $objectClass, array $selectors = []): static
     {
         if (
             ObjectTypeCache::getInstance()->getObjectTypeByName(
@@ -263,17 +287,17 @@ final class WysiwygFormField extends AbstractFormField implements
             );
         }
 
-        if (!\class_exists($actionClass)) {
-            throw new \InvalidArgumentException("Unknown class '{$actionClass}' for field '{$this->getId()}'.");
+        if (!\class_exists($objectClass)) {
+            throw new \InvalidArgumentException("Unknown class '{$objectClass}' for field '{$this->getId()}'.");
         }
-        if (!\is_subclass_of($actionClass, IMessageQuoteAction::class)) {
+        if (!\is_subclass_of($objectClass, IMessage::class)) {
             throw new \InvalidArgumentException(
-                "'{$actionClass}' does not implement '" . IMessageQuoteAction::class . "' for field '{$this->getId()}'."
+                "'{$objectClass}' does not implement '" . IMessage::class . "' for field '{$this->getId()}'."
             );
         }
 
         if (!empty($selectors)) {
-            foreach (['container', 'messageBody', 'messageContent'] as $selector) {
+            foreach (['container', 'messageBody'] as $selector) {
                 if (!isset($selectors[$selector])) {
                     throw new \InvalidArgumentException("Missing selector '{$selector}' for field '{$this->getId()}'.");
                 }
@@ -283,7 +307,7 @@ final class WysiwygFormField extends AbstractFormField implements
         $this->supportQuotes();
 
         $this->quoteData = [
-            'actionClass' => $actionClass,
+            'objectClass' => $objectClass,
             'objectType' => $objectType,
             'selectors' => $selectors,
         ];
@@ -350,8 +374,6 @@ final class WysiwygFormField extends AbstractFormField implements
         if (!$this->supportsQuotes()) {
             // unset previously set quote data
             $this->quoteData = null;
-        } else {
-            MessageQuoteManager::getInstance()->readParameters();
         }
 
         return $this;
