@@ -103,16 +103,6 @@ final class WysiwygFormField extends AbstractFormField implements
     }
 
     /**
-     * @inheritDoc
-     */
-    public function cleanup(): static
-    {
-        MessageQuoteManager::getInstance()->saved();
-
-        return $this;
-    }
-
-    /**
      * Returns the identifier used to autosave the field value. If autosave is disabled,
      * an empty string is returned.
      *
@@ -215,6 +205,10 @@ final class WysiwygFormField extends AbstractFormField implements
             function (IFormDocument $document, array $parameters) {
                 if ($this->checkDependencies()) {
                     $parameters[$this->getObjectProperty() . '_htmlInputProcessor'] = $this->htmlInputProcessor;
+                }
+
+                if ($this->supportQuotes) {
+                    MessageQuoteManager::getInstance()->saved();
                 }
 
                 return $parameters;
