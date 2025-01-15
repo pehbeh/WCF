@@ -11,7 +11,7 @@ define(["require", "exports", "WoltLabSuite/Core/Component/Quote/Message"], func
         /**
          * Initializes the quote handler for given object type.
          */
-        constructor(quoteManager, className, objectType, containerSelector, messageBodySelector, messageContentSelector, supportDirectInsert) {
+        constructor(_quoteManager, className, objectType, containerSelector, messageBodySelector, _messageContentSelector, _supportDirectInsert) {
             // remove "Action" from className
             if (className.endsWith("Action")) {
                 className = className.substring(0, className.length - 6);

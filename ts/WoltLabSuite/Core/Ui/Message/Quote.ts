@@ -17,13 +17,13 @@ export class UiMessageQuote {
    * Initializes the quote handler for given object type.
    */
   constructor(
-    quoteManager: WCFMessageQuoteManager,
+    _quoteManager: WCFMessageQuoteManager,
     className: string,
     objectType: string,
     containerSelector: string,
     messageBodySelector: string,
-    messageContentSelector: string,
-    supportDirectInsert: boolean,
+    _messageContentSelector: string,
+    _supportDirectInsert: boolean,
   ) {
     // remove "Action" from className
     if (className.endsWith("Action")) {
