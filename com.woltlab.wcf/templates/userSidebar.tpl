@@ -4,17 +4,17 @@
 			<h2 class="boxTitle">{lang}wcf.user.trophy.trophyPoints{/lang} <span class="badge">{#$user->trophyPoints}</span></h2>
 			
 			<div class="boxContent">
-				<ol class="sidebarItemList">
+				<ol class="sidebarList">
 					{foreach from=$user->getSpecialTrophies() item=trophy}
-						<li class="sidebarItemListEntry">
-							<span class="sidebarItemListEntryIcon">
-								{unsafe:$trophy->renderTrophy(24)}
-							</span>
+						<li class="sidebarListItem">
+							<div class="sidebarListItem__avatar">
+								{unsafe:$trophy->renderTrophy(32)}
+							</div>
 
-							<div class="sidebarItemListEntryContent">
-								<a href="{unsafe:$trophy->getLink()}" class="sidebarItemListEntryLink">
-									{$trophy}
-								</a>
+							<div class="sidebarListItem__content">
+								<h3 class="sidebarListItem__title">
+									<a href="{$trophy->getLink()}" class="sidebarListItem__link">{$trophy}</a>
+								</h3>
 							</div>
 						</li>
 					{/foreach}
