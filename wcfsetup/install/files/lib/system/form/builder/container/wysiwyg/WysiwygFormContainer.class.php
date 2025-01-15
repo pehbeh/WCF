@@ -577,6 +577,7 @@ class WysiwygFormContainer extends FormContainer
      */
     public function quoteData($objectType, $actionClass, array $selectors = [])
     {
+        return $this;
     }
 
     /**
