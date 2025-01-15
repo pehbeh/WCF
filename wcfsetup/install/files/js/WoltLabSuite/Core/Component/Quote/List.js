@@ -19,10 +19,10 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
         #container;
         #editor;
         #editorId;
-        constructor(editorId, editor) {
+        constructor(editorId, editor, containerId) {
             this.#editorId = editorId;
             this.#editor = editor;
-            this.#container = document.getElementById(`quotes_${editorId}`);
+            this.#container = document.getElementById(containerId ? containerId : `quotes_${editorId}`);
             if (this.#container === null) {
                 throw new Error(`The quotes container for '${editorId}' does not exist.`);
             }
@@ -105,7 +105,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
             quoteList.renderQuotes();
         }
     }
-    function setup(editorId) {
+    function setup(editorId, containerId) {
         if (quoteLists.has(editorId)) {
             return;
         }
@@ -115,7 +115,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
         }
         (0, Event_1.listenToCkeditor)(editor).ready(({ ckeditor }) => {
             if (ckeditor.features.quoteBlock) {
-                quoteLists.set(editorId, new QuoteList(editorId, editor));
+                quoteLists.set(editorId, new QuoteList(editorId, editor, containerId));
             }
             if (ckeditor.isVisible()) {
                 (0, Message_1.setActiveEditor)(ckeditor, ckeditor.features.quoteBlock);

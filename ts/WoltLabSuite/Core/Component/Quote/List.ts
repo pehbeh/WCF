@@ -29,10 +29,10 @@ class QuoteList {
   #editor: HTMLElement;
   #editorId: string;
 
-  constructor(editorId: string, editor: HTMLElement) {
+  constructor(editorId: string, editor: HTMLElement, containerId?: string) {
     this.#editorId = editorId;
     this.#editor = editor;
-    this.#container = document.getElementById(`quotes_${editorId}`)!;
+    this.#container = document.getElementById(containerId ? containerId : `quotes_${editorId}`)!;
     if (this.#container === null) {
       throw new Error(`The quotes container for '${editorId}' does not exist.`);
     }
@@ -134,7 +134,7 @@ export function refreshQuoteLists() {
   }
 }
 
-export function setup(editorId: string): void {
+export function setup(editorId: string, containerId?: string): void {
   if (quoteLists.has(editorId)) {
     return;
   }
@@ -146,7 +146,7 @@ export function setup(editorId: string): void {
 
   listenToCkeditor(editor).ready(({ ckeditor }) => {
     if (ckeditor.features.quoteBlock) {
-      quoteLists.set(editorId, new QuoteList(editorId, editor));
+      quoteLists.set(editorId, new QuoteList(editorId, editor, containerId));
     }
 
     if (ckeditor.isVisible()) {

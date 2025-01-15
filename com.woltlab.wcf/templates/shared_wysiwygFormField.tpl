@@ -14,26 +14,3 @@
 *}>{$field->getValue()}</textarea>
 
 {include file='shared_wysiwyg' wysiwygSelector=$field->getPrefixedId()}
-
-{if $field->supportsQuotes()}
-	<script data-relocate="true">
-		// Bootstrap for window.__wcf_bc_eventHandler
-		require(['WoltLabSuite/Core/Bootstrap'], function(Bootstrap) {
-			{include file='shared_messageQuoteManager' wysiwygSelector=$field->getPrefixedId() supportPaste=true}
-			
-			{if $field->getQuoteData() !== null}
-				var quoteHandler = new WCF.Message.Quote.Handler(
-					$quoteManager,
-					'{$field->getQuoteData('actionClass')|encodeJS}',
-					'{$field->getQuoteData('objectType')}',
-					'{$field->getQuoteData('selectors')[container]}',
-					'{$field->getQuoteData('selectors')[messageBody]}',
-					'{$field->getQuoteData('selectors')[messageContent]}',
-					true
-				);
-				
-				elData(elById('{@$field->getPrefixedId()|encodeJS}'), 'quote-handler', quoteHandler);
-			{/if}
-		});
-	</script>
-{/if}

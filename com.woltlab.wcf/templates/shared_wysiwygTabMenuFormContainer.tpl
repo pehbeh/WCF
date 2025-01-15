@@ -6,7 +6,7 @@
 		<ul>
 			{foreach from=$container item='child'}
 				{if $child->isAvailable()}
-					<li data-name="{$child->getPrefixedId()|rawurlencode}Container"{if !$child->checkDependencies()} hidden{/if}>
+					<li data-name="{$child->getName()}"{if !$child->checkDependencies()} hidden{/if}>
 						<button type="button">
 							{if $child->getIcon()}{icon name=$child->getIcon()}{/if}
 							<span>{@$child->getLabel()}</span>

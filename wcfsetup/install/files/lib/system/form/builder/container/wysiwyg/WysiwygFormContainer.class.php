@@ -85,12 +85,6 @@ class WysiwygFormContainer extends FormContainer
     protected $pollContainer;
 
     /**
-     * quote-related data used to create the JavaScript quote manager
-     * @var null|array
-     */
-    protected $quoteData;
-
-    /**
      * `true` if the wysiwyg field has to be filled out and `false` otherwise
      * @var bool
      */
@@ -137,6 +131,8 @@ class WysiwygFormContainer extends FormContainer
      * @var WysiwygFormField
      */
     protected $wysiwygField;
+
+    protected WysiwygQuoteFormContainer $quoteContainer;
 
     /**
      * @inheritDoc
@@ -478,13 +474,6 @@ class WysiwygFormContainer extends FormContainer
             ->required($this->isRequired())
             ->supportMentions($this->supportMentions)
             ->supportQuotes($this->supportQuotes);
-        if ($this->quoteData !== null) {
-            $this->wysiwygField->quoteSetting(
-                $this->quoteData['objectType'],
-                $this->quoteData['objectClass'],
-                $this->quoteData['selectors']
-            );
-        }
         $this->smiliesContainer = WysiwygSmileyFormContainer::create($this->wysiwygId . 'SmiliesTab')
             ->wysiwygId($this->getWysiwygId())
             ->label('wcf.message.smilies')
@@ -499,6 +488,10 @@ class WysiwygFormContainer extends FormContainer
             $this->pollContainer->objectType($this->pollObjectType);
         }
 
+        $this->quoteContainer = WysiwygQuoteFormContainer::create($this->wysiwygId . 'QuoteContainer')
+            ->wysiwygId($this->getWysiwygId())
+            ->available($this->supportQuotes);
+
         $this->appendChildren([
             $this->wysiwygField,
             WysiwygTabMenuFormContainer::create($this->wysiwygId . 'Tabs')
@@ -511,7 +504,9 @@ class WysiwygFormContainer extends FormContainer
                     WysiwygTabFormContainer::create($this->wysiwygId . 'AttachmentsTab')
                         ->addClass('formAttachmentContent')
                         ->label('wcf.attachment.attachments')
-                        ->setIcon('paperclip')
+                        ->name("attachments")
+                        ->icon('paperclip')
+                        ->wysiwygId($this->getWysiwygId())
                         ->appendChild(
                             FormContainer::create($this->wysiwygId . 'AttachmentsContainer')
                                 ->appendChild($this->attachmentField)
@@ -519,13 +514,19 @@ class WysiwygFormContainer extends FormContainer
 
                     WysiwygTabFormContainer::create($this->wysiwygId . 'SettingsTab')
                         ->label('wcf.message.settings')
-                        ->setIcon('gear')
+                        ->icon('gear')
+                        ->name('settings')
+                        ->wysiwygId($this->getWysiwygId())
                         ->appendChild($this->settingsContainer),
 
                     WysiwygTabFormContainer::create($this->wysiwygId . 'PollTab')
                         ->label('wcf.poll.management')
-                        ->setIcon('chart-bar')
+                        ->icon('chart-bar')
+                        ->name('poll')
+                        ->wysiwygId($this->getWysiwygId())
                         ->appendChild($this->pollContainer),
+
+                    $this->quoteContainer,
                 ]),
         ]);
 
@@ -572,44 +573,10 @@ class WysiwygFormContainer extends FormContainer
      *
      * @return  static
      *
-     * @deprecated 6.2 use `quoteSetting()` instead
+     * @deprecated 6.2
      */
     public function quoteData($objectType, $actionClass, array $selectors = [])
     {
-        // Remove the `Action` suffix from the action class
-        $objectClass = \substr($actionClass, 0, -6);
-
-        return $this->quoteSetting($objectType, $objectClass, $selectors);
-    }
-
-    /**
-     * Sets the data required for advanced quote support for when quotable content is present
-     * on the active page and returns this container.
-     *
-     * Calling this method automatically enables quote support for this container.
-     *
-     * @param string   $objectType  name of the relevant `com.woltlab.wcf.message.quote` object type
-     * @param string   $objectClass message object class implementing `wcf\data\IMessage`
-     * @param string[] $selectors   selectors for the quotable content (required keys: `container`and `messageBody`)
-     *
-     * @return  static
-     */
-    public function quoteSetting(string $objectType, string $objectClass, array $selectors = []): static
-    {
-        if ($this->wysiwygField !== null) {
-            $this->wysiwygField->quoteSetting($objectType, $objectClass, $selectors);
-        } else {
-            $this->supportQuotes();
-
-            // the parameters are validated by `WysiwygFormField`
-            $this->quoteData = [
-                'actionClass' => $objectClass,
-                'objectType' => $objectType,
-                'selectors' => $selectors,
-            ];
-        }
-
-        return $this;
     }
 
     /**
@@ -671,11 +638,13 @@ class WysiwygFormContainer extends FormContainer
      */
     public function supportQuotes($supportQuotes = true)
     {
-        if ($this->wysiwygField !== null) {
-            $this->wysiwygField->supportQuotes($supportQuotes);
-        } else {
-            $this->supportQuotes = $supportQuotes;
+        $this->supportQuotes = $supportQuotes;
+
+        if (isset($this->quoteContainer)) {
+            $this->quoteContainer->available($supportQuotes);
         }
+
+        $this->wysiwygField?->supportQuotes($supportQuotes);
 
         return $this;
     }

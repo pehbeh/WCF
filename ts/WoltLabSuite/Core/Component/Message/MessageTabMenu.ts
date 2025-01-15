@@ -87,6 +87,15 @@ class TabMenu {
     }
   }
 
+  isHiddenTab(tabName: string): boolean {
+    const tab = this.#tabs.find((element) => element.dataset.name === tabName);
+    if (tab === undefined) {
+      return true;
+    }
+
+    return tab.hidden;
+  }
+
   setTabCounter(tabName: string, value: number): void {
     const tab = this.#tabs.find((element) => element.dataset.name === tabName);
     if (tab === undefined) {

@@ -70,6 +70,13 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/Selector", "Wol
                 this.#closeAllTabs();
             }
         }
+        isHiddenTab(tabName) {
+            const tab = this.#tabs.find((element) => element.dataset.name === tabName);
+            if (tab === undefined) {
+                return true;
+            }
+            return tab.hidden;
+        }
         setTabCounter(tabName, value) {
             const tab = this.#tabs.find((element) => element.dataset.name === tabName);
             if (tab === undefined) {

@@ -18,7 +18,7 @@ use wcf\util\StringUtil;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.2
  */
-class WysiwygSmileyFormContainer extends TabTabMenuFormContainer
+class WysiwygSmileyFormContainer extends TabTabMenuFormContainer implements IWysiwygTabFormContainer
 {
     use TWysiwygFormNode;
 
@@ -77,11 +77,15 @@ class WysiwygSmileyFormContainer extends TabTabMenuFormContainer
         }
     }
 
-    /**
-     * @see WysiwygTabFormContainer::getIcon()
-     */
+    #[\Override]
     public function getIcon(): string
     {
         return 'face-smile';
+    }
+
+    #[\Override]
+    public function getName(): string
+    {
+        return 'smilies';
     }
 }
