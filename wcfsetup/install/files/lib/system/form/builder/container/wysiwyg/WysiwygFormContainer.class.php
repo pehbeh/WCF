@@ -8,7 +8,6 @@ use wcf\system\attachment\AttachmentHandler;
 use wcf\system\event\EventHandler;
 use wcf\system\form\builder\button\wysiwyg\WysiwygPreviewFormButton;
 use wcf\system\form\builder\container\FormContainer;
-use wcf\system\form\builder\container\TabFormContainer;
 use wcf\system\form\builder\field\TMaximumLengthFormField;
 use wcf\system\form\builder\field\TMinimumLengthFormField;
 use wcf\system\form\builder\field\wysiwyg\WysiwygAttachmentFormField;
@@ -509,20 +508,23 @@ class WysiwygFormContainer extends FormContainer
                 ->appendChildren([
                     $this->smiliesContainer,
 
-                    TabFormContainer::create($this->wysiwygId . 'AttachmentsTab')
+                    WysiwygTabFormContainer::create($this->wysiwygId . 'AttachmentsTab')
                         ->addClass('formAttachmentContent')
                         ->label('wcf.attachment.attachments')
+                        ->setIcon('paperclip')
                         ->appendChild(
                             FormContainer::create($this->wysiwygId . 'AttachmentsContainer')
                                 ->appendChild($this->attachmentField)
                         ),
 
-                    TabFormContainer::create($this->wysiwygId . 'SettingsTab')
+                    WysiwygTabFormContainer::create($this->wysiwygId . 'SettingsTab')
                         ->label('wcf.message.settings')
+                        ->setIcon('gear')
                         ->appendChild($this->settingsContainer),
 
-                    TabFormContainer::create($this->wysiwygId . 'PollTab')
+                    WysiwygTabFormContainer::create($this->wysiwygId . 'PollTab')
                         ->label('wcf.poll.management')
+                        ->setIcon('chart-bar')
                         ->appendChild($this->pollContainer),
                 ]),
         ]);

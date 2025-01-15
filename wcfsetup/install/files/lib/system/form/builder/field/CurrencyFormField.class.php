@@ -23,7 +23,7 @@ class CurrencyFormField extends AbstractNumericFormField
             return 0;
         }
 
-        return \floor($this->getValue() * 100);
+        return \round($this->getValue() * 100);
     }
 
     #[\Override]

@@ -1,6 +1,7 @@
 import { Fancybox } from "@fancyapps/ui";
 import { userSlideType } from "@fancyapps/ui/types/Carousel/types";
 import { OptionsType } from "@fancyapps/ui/types/Fancybox/options";
+import { getPageOverlayContainer } from "WoltLabSuite/Core/Helper/PageOverlay";
 
 const LOCALES = ["cs", "de", "en", "es", "fr", "it", "lv", "pl", "sk"];
 
@@ -26,6 +27,7 @@ export async function createFancybox(userSlides?: Array<userSlideType>): Promise
 async function getDefaultConfig(): Promise<Partial<OptionsType>> {
   return {
     l10n: await getLocalization(),
+    parentEl: getPageOverlayContainer(),
     Html: {
       videoAutoplay: false,
     },

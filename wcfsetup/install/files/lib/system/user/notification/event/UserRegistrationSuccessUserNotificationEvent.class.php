@@ -3,6 +3,7 @@
 namespace wcf\system\user\notification\event;
 
 use wcf\data\user\UserProfile;
+use wcf\page\UserPage;
 use wcf\system\request\LinkHandler;
 use wcf\system\user\notification\object\UserRegistrationUserNotificationObject;
 
@@ -55,7 +56,7 @@ class UserRegistrationSuccessUserNotificationEvent extends AbstractUserNotificat
             'application' => 'wcf',
             'variables' => [
                 'notification' => $this->notification,
-	            'username' => $this->getUserNotificationObject()->username,
+                'username' => $this->getUserNotificationObject()->username,
                 'userNotificationObject' => $this->getUserNotificationObject(),
             ],
         ];
@@ -64,9 +65,8 @@ class UserRegistrationSuccessUserNotificationEvent extends AbstractUserNotificat
     #[\Override]
     public function getLink(): string
     {
-        return LinkHandler::getInstance()->getLink('UserEdit', [
+        return LinkHandler::getInstance()->getControllerLink(UserPage::class, [
             'object' => $this->getUserNotificationObject(),
-            'isACP' => true,
         ]);
     }
 

@@ -6,6 +6,8 @@
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 
+import { getPageOverlayContainer } from "../Helper/PageOverlay";
+
 class AjaxStatus {
   private _activeRequests = 0;
   private readonly _overlay: Element;
@@ -20,7 +22,7 @@ class AjaxStatus {
     loadingIndicator.size = 48;
     this._overlay.append(loadingIndicator);
 
-    document.body.append(this._overlay);
+    getPageOverlayContainer().append(this._overlay);
   }
 
   show(): void {

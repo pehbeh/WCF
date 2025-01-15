@@ -5,8 +5,8 @@
 		<packagedescription>Free CMS and web-framework, designed for awesome websites and communities.</packagedescription>
 		<packagedescription language="de">Freies CMS und Web-Framework, das eindrucksvolle Websites und Communities ermöglicht.</packagedescription>
 		<isapplication>1</isapplication>
-		<version>6.1.3 dev 2</version>
-		<date>2024-12-31</date>
+		<version>6.1.3</version>
+		<date>2025-01-06</date>
 	</packageinformation>
 
 	<authorinformation>
@@ -109,5 +109,11 @@ tar cvf com.woltlab.wcf/files_pre_check.tar -C wcfsetup/install/files/ \
 		<instruction type="acpTemplate">acptemplates_update.tar</instruction>
 		<instruction type="file">files_update.tar</instruction>
 		<instruction type="template">templates_update.tar</instruction>
+	</instructions>
+	<instructions type="update" fromversion="6.1.3 dev 2">
+		<instruction type="file">files_update.tar</instruction>
+	</instructions>
+	<instructions type="update" fromversion="6.1.3 dev 3">
+		<instruction type="file">files_update.tar</instruction>
 	</instructions>
 </package>

@@ -76,4 +76,12 @@ class WysiwygSmileyFormContainer extends TabTabMenuFormContainer
             $this->addClass('messageTabMenu');
         }
     }
+
+    /**
+     * @see WysiwygTabFormContainer::getIcon()
+     */
+    public function getIcon(): string
+    {
+        return 'face-smile';
+    }
 }
