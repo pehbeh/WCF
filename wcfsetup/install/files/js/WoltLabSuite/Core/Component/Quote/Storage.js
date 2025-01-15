@@ -168,27 +168,28 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
     }
     function getStorage() {
         const data = window.localStorage.getItem(STORAGE_KEY);
-        if (data === null) {
+        return parseJson(data);
+    }
+    function parseJson(data) {
+        if (!data) {
             return {
                 quotes: new Map(),
                 messages: new Map(),
             };
         }
-        else {
-            return JSON.parse(data, (key, value) => {
-                if (key === "quotes") {
-                    const result = new Map(value);
-                    for (const [key, quotes] of result) {
-                        result.set(key, new Map(quotes));
-                    }
-                    return result;
+        return JSON.parse(data, (key, value) => {
+            if (key === "quotes") {
+                const result = new Map(value);
+                for (const [key, quotes] of result) {
+                    result.set(key, new Map(quotes));
                 }
-                else if (key === "messages") {
-                    return new Map(value);
-                }
-                return value;
-            });
-        }
+                return result;
+            }
+            else if (key === "messages") {
+                return new Map(value);
+            }
+            return value;
+        });
     }
     function getKey(objectType, objectId) {
         return `${objectType}:${objectId}`;
@@ -201,4 +202,17 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
             return value;
         }));
     }
+    window.addEventListener("storage", (event) => {
+        (0, List_1.refreshQuoteLists)();
+        const oldValue = parseJson(event.oldValue);
+        const newValue = parseJson(event.newValue);
+        // Update the quote status if the quote was removed in another tab
+        for (const [key, quotes] of oldValue.quotes) {
+            for (const [, quote] of quotes) {
+                if (quote.rawMessage !== undefined && !newValue.quotes.has(key)) {
+                    (0, Message_1.removeQuoteStatus)(key);
+                }
+            }
+        }
+    });
 });

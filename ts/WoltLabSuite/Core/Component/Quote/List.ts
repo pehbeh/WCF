@@ -41,10 +41,6 @@ class QuoteList {
       this.#formSubmitted();
     });
 
-    window.addEventListener("storage", () => {
-      this.renderQuotes();
-    });
-
     this.renderQuotes();
   }
 

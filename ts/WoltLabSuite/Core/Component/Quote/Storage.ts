@@ -236,27 +236,32 @@ function storeQuote(objectType: string, message: Message, quote: Quote): string 
 
 function getStorage(): StorageData {
   const data = window.localStorage.getItem(STORAGE_KEY);
-  if (data === null) {
+
+  return parseJson(data);
+}
+
+function parseJson(data: string | null): StorageData {
+  if (!data) {
     return {
       quotes: new Map(),
       messages: new Map(),
     };
-  } else {
-    return JSON.parse(data, (key, value) => {
-      if (key === "quotes") {
-        const result = new Map<string, Map<string, Quote>>(value);
-        for (const [key, quotes] of result) {
-          result.set(key, new Map(quotes));
-        }
+  }
 
-        return result;
-      } else if (key === "messages") {
-        return new Map<string, Message>(value);
+  return JSON.parse(data, (key, value) => {
+    if (key === "quotes") {
+      const result = new Map<string, Map<string, Quote>>(value);
+      for (const [key, quotes] of result) {
+        result.set(key, new Map(quotes));
       }
 
-      return value;
-    });
-  }
+      return result;
+    } else if (key === "messages") {
+      return new Map<string, Message>(value);
+    }
+
+    return value;
+  });
 }
 
 export function getKey(objectType: string, objectId: number): string {
@@ -275,3 +280,19 @@ function saveStorage(data: StorageData) {
     }),
   );
 }
+
+window.addEventListener("storage", (event) => {
+  refreshQuoteLists();
+
+  const oldValue = parseJson(event.oldValue);
+  const newValue = parseJson(event.newValue);
+
+  // Update the quote status if the quote was removed in another tab
+  for (const [key, quotes] of oldValue.quotes) {
+    for (const [, quote] of quotes) {
+      if (quote.rawMessage !== undefined && !newValue.quotes.has(key)) {
+        removeQuoteStatus(key);
+      }
+    }
+  }
+});

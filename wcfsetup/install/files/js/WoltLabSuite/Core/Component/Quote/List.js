@@ -29,9 +29,6 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
             this.#editor.closest("form")?.addEventListener("submit", () => {
                 this.#formSubmitted();
             });
-            window.addEventListener("storage", () => {
-                this.renderQuotes();
-            });
             this.renderQuotes();
         }
         renderQuotes() {
