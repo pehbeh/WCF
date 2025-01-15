@@ -236,6 +236,7 @@ final class WysiwygFormField extends AbstractFormField implements
      */
     public function quoteData($objectType, $actionClass, array $selectors = [])
     {
+        return $this;
     }
 
     /**
