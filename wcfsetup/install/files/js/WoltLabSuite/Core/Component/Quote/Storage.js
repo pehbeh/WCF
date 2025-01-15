@@ -157,7 +157,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         }
         storage.messages.set(key, message);
         for (const [uuid, q] of storage.quotes.get(key)) {
-            if (JSON.stringify(q) === JSON.stringify(quote)) {
+            if ((q.rawMessage !== undefined && q.rawMessage === quote.rawMessage) || q.message === quote.message) {
                 return uuid;
             }
         }
