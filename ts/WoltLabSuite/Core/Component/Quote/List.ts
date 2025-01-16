@@ -114,7 +114,9 @@ class QuoteList {
 
     getUsedQuotes(this.#editorId).forEach((uuid) => {
       formSubmit.append(
-        DomUtil.createFragmentFromHtml(`<input type="hidden" name="__removeQuoteIDs[]" value="${uuid}">`),
+        DomUtil.createFragmentFromHtml(
+          `<input type="hidden" name="__removeQuoteIDs[${escapeHTML(this.#editorId)}][]" value="${escapeHTML(uuid)}">`,
+        ),
       );
     });
   }

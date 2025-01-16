@@ -38,6 +38,7 @@ interface BootstrapOptions {
   shareButtonProviders?: ShareProvider[];
   styleChanger: boolean;
   removeQuotes?: string[];
+  usedQuotes?: Map<string, string[]>;
 }
 
 /**
@@ -90,6 +91,15 @@ export function setup(options: BootstrapOptions): void {
 
   if (options.removeQuotes?.length) {
     void import("./Component/Quote/Storage").then(({ removeQuotes }) => removeQuotes(options.removeQuotes!));
+  }
+  if (options.usedQuotes?.size) {
+    void import("./Component/Quote/Storage").then(({ markQuoteAsUsed }) => {
+      options.usedQuotes!.forEach((uuids, editorId) => {
+        for (const uuid of uuids) {
+          markQuoteAsUsed(editorId, uuid);
+        }
+      });
+    });
   }
 
   UiPageHeaderMenu.init();

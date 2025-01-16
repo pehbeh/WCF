@@ -25,6 +25,13 @@ class MessageQuoteManager extends SingletonFactory
     protected array $removeQuoteIDs = [];
 
     /**
+     * list of quote that was used in the current request
+     *
+     * @var array<string, string[]>
+     */
+    protected array $usedQuotes = [];
+
+    /**
      * @inheritDoc
      */
     protected function init()
@@ -295,9 +302,14 @@ class MessageQuoteManager extends SingletonFactory
     {
         if (isset($_REQUEST['__removeQuoteIDs']) && \is_array($_REQUEST['__removeQuoteIDs'])) {
             $quoteIDs = ArrayUtil::trim($_REQUEST['__removeQuoteIDs']);
+            foreach ($quoteIDs as $editorID => $uuids) {
+                if (!\is_string($editorID) || !\is_array($uuids)) {
+                    unset($quoteIDs[$editorID]);
+                }
+            }
 
             if (!empty($quoteIDs)) {
-                $this->removeQuoteIDs = \array_merge($this->removeQuoteIDs, $quoteIDs);
+                $this->usedQuotes = \array_merge($this->usedQuotes, $quoteIDs);
             }
         }
     }
@@ -307,6 +319,12 @@ class MessageQuoteManager extends SingletonFactory
      */
     public function saved(): void
     {
+        foreach ($this->usedQuotes as $quoteIDs) {
+            $this->removeQuoteIDs = \array_merge($this->removeQuoteIDs, $quoteIDs);
+        }
+
+        $this->usedQuotes = [];
+
         $this->updateSession();
     }
 
@@ -363,6 +381,20 @@ class MessageQuoteManager extends SingletonFactory
     public function getRemoveQuoteIDs(): array
     {
         return $this->removeQuoteIDs;
+    }
+
+    /**
+     * Returns the list of quote uuids that are used in the current request,
+     * but the creation of the message wasn't successful.
+     * This means that these others are only marked as having been used
+     * and only deleted when the message has been successfully saved.
+     *
+     * @return  array<string, string[]>
+     * @since 6.2
+     */
+    public function getUsedQuotes(): array
+    {
+        return $this->usedQuotes;
     }
 
     /**
