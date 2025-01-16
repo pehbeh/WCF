@@ -10,7 +10,7 @@
 
 .recentActivityListItem {
 	display: grid;
-	column-gap: 15px;
+	column-gap: 10px;
 	row-gap: 5px;
 	position: relative;
 	grid-template-areas:
@@ -49,7 +49,6 @@
 	}
 
 	@include screen-sm-down {
-		column-gap: 10px;
 		grid-template-areas:
 			"avatar title"
 			"time time";
@@ -133,6 +132,8 @@
 	&:hover,
 	&:focus {
 		color: inherit;
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
 	}
 }
 

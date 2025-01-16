@@ -5,26 +5,14 @@
 }
 
 .gridListItem {
-	--padding: 10px;
-
 	border-radius: 5px;
 	display: grid;
-	padding: var(--padding);
 	position: relative;
 
-	&:not(:first-child)::before {
-		border-top: 1px solid var(--wcfContentBorderInner);
-		content: "";
-		left: 0;
-		pointer-events: none;
-		position: absolute;
-		right: 0;
-		top: -11px;
+	&:not(:last-child) {
+		padding-bottom: 20px;
+		border-bottom: 1px solid var(--wcfContentBorderInner);
 	}
-}
-
-html:not(.touch) .gridListItem:hover {
-	background-color: var(--wcfTabularBoxBackgroundActive);
 }
 
 .gridListItemMessage {
@@ -81,14 +69,12 @@ html:not(.touch) .gridListItem:hover {
 	&:hover,
 	&:focus {
 		color: inherit;
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
 	}
 }
 
 @include screen-xs {
-	.gridListItem {
-		padding: var(--padding) 0;
-	}
-
 	.gridListItemMessage {
 		grid-template-areas:
 			"image   title"
