@@ -2,6 +2,7 @@ define(["require", "exports", "tslib", "../Dom/Util"], function (require, export
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.element = element;
+    exports.isCurrentlyScrolling = isCurrentlyScrolling;
     Util_1 = tslib_1.__importDefault(Util_1);
     let _callbacks = [];
     let _offset = null;
@@ -88,5 +89,8 @@ define(["require", "exports", "tslib", "../Dom/Util"], function (require, export
                 onScroll();
             }
         }, 100);
+    }
+    function isCurrentlyScrolling() {
+        return _targetElement !== undefined;
     }
 });

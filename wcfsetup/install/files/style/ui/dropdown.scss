@@ -54,6 +54,10 @@
 	}
 }
 
+.iOS.iOS--virtualKeyboard .dropdownMenu.dropdownOpen {
+	position: absolute !important;
+}
+
 @include screen-md-down {
 	/* iOS WebKit fails to calculate absolute positions when the documentElement is
 	   set to `overflow: hidden`, causing the site to implicitly scroll. Elements

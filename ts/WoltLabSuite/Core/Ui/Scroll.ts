@@ -100,3 +100,7 @@ export function element(element: HTMLElement, callback?: Callback, behavior: Scr
     }
   }, 100);
 }
+
+export function isCurrentlyScrolling(): boolean {
+  return _targetElement !== undefined;
+}
