@@ -60,6 +60,8 @@ class UserOptionEditForm extends UserOptionAddForm
      */
     public function readFormParameters()
     {
+        $this->optionType = $this->userOption->optionType;
+
         parent::readFormParameters();
 
         $this->optionType = $this->userOption->optionType;
@@ -68,9 +70,7 @@ class UserOptionEditForm extends UserOptionAddForm
     /**
      * @inheritDoc
      */
-    protected function setDefaultOutputClass()
-    {
-    }
+    protected function setDefaultOutputClass() {}
 
     /**
      * @inheritDoc
