@@ -2,6 +2,8 @@
 
 namespace wcf\util;
 
+use wcf\system\image\WebPDecoder;
+
 /**
  * Provides exif-related functions.
  *
@@ -84,14 +86,20 @@ final class ExifUtil
      */
     public static function getExifData($filename)
     {
-        if (\function_exists('exif_read_data')) {
-            $exifData = @\exif_read_data($filename, '', true);
-            if ($exifData !== false) {
-                return $exifData;
-            }
+        if (!\function_exists('exif_read_data')) {
+            return [];
         }
 
-        return [];
+        if (FileUtil::getMimeType($filename) === 'image/webp') {
+            return WebPDecoder::extractExifData($filename);
+        }
+
+        $exifData = @\exif_read_data($filename, '', true);
+        if ($exifData === false) {
+            return [];
+        }
+
+        return $exifData;
     }
 
     /**
