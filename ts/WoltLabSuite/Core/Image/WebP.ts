@@ -93,6 +93,11 @@ class WebP {
   }
 
   exportWithExif(exif: Exif): Uint8Array {
+    // The EXIF might originate from a JPEG thus we need to strip the header.
+    if (exif[0] === 0xff && exif[1] === 0xe1 && exif[2] === 0xc3 && exif[3] === 0xef) {
+      exif = exif.slice(10);
+    }
+
     const iccp = this.#getChunk(ChunkHeader.ICCP);
     const anim = this.#getChunk(ChunkHeader.ANIM);
 
