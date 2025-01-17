@@ -7,6 +7,8 @@
  * @woltlabExcludeBundle tiny
  */
 
+import { parseWebPFromBuffer } from "./WebP";
+
 const Tag = {
   SOI: 0xd8, // Start of image
   APP0: 0xe0, // JFIF tag
@@ -68,6 +70,20 @@ async function blobToUint8(blob: Blob | File): Promise<Uint8Array> {
 
     reader.readAsArrayBuffer(blob);
   });
+}
+
+export async function getExifBytesFromWebp(blob: Blob | File): Promise<Exif> {
+  if (!((blob as any) instanceof Blob) && !(blob instanceof File)) {
+    throw new TypeError("The argument must be a Blob or a File");
+  }
+
+  const webp = parseWebPFromBuffer(await blob.arrayBuffer());
+  const exif = webp?.getExifData();
+  if (exif === undefined) {
+    return new Uint8Array(0);
+  }
+
+  return exif;
 }
 
 /**
@@ -157,8 +173,28 @@ export async function removeExifData(blob: Blob | File): Promise<Blob> {
   return new Blob([result], { type: blob.type });
 }
 
+export async function setWebpExifData(blob: Blob, exif: Exif): Promise<Blob> {
+  const webp = parseWebPFromBuffer(await blob.arrayBuffer());
+  if (webp === undefined) {
+    return blob;
+  }
+
+  let webpWithExif: Uint8Array;
+  try {
+    webpWithExif = webp.exportWithExif(exif);
+  } catch (e) {
+    if (window.ENABLE_DEBUG_MODE) {
+      console.error(e);
+    }
+
+    throw e;
+  }
+
+  return new Blob([webpWithExif], { type: blob.type });
+}
+
 /**
- * Overrides the APP1 (EXIF / XMP) sections of a JPEG blob with the given data.
+ * Overrides the APP1 (EXIF / XMP) sections of a JPEG or WebP blob with the given data.
  */
 export async function setExifData(blob: Blob, exif: Exif): Promise<Blob> {
   blob = await removeExifData(blob);

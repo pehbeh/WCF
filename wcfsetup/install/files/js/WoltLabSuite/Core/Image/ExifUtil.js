@@ -6,11 +6,13 @@
  * @license	GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @woltlabExcludeBundle tiny
  */
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", "./WebP"], function (require, exports, WebP_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    exports.getExifBytesFromWebp = getExifBytesFromWebp;
     exports.getExifBytesFromJpeg = getExifBytesFromJpeg;
     exports.removeExifData = removeExifData;
+    exports.setWebpExifData = setWebpExifData;
     exports.setExifData = setExifData;
     const Tag = {
         SOI: 0xd8, // Start of image
@@ -65,6 +67,17 @@ define(["require", "exports"], function (require, exports) {
             });
             reader.readAsArrayBuffer(blob);
         });
+    }
+    async function getExifBytesFromWebp(blob) {
+        if (!(blob instanceof Blob) && !(blob instanceof File)) {
+            throw new TypeError("The argument must be a Blob or a File");
+        }
+        const webp = (0, WebP_1.parseWebPFromBuffer)(await blob.arrayBuffer());
+        const exif = webp?.getExifData();
+        if (exif === undefined) {
+            return new Uint8Array(0);
+        }
+        return exif;
     }
     /**
      * Extracts the EXIF / XMP sections of a JPEG blob.
@@ -139,8 +152,25 @@ define(["require", "exports"], function (require, exports) {
         }
         return new Blob([result], { type: blob.type });
     }
+    async function setWebpExifData(blob, exif) {
+        const webp = (0, WebP_1.parseWebPFromBuffer)(await blob.arrayBuffer());
+        if (webp === undefined) {
+            return blob;
+        }
+        let webpWithExif;
+        try {
+            webpWithExif = webp.exportWithExif(exif);
+        }
+        catch (e) {
+            if (window.ENABLE_DEBUG_MODE) {
+                console.error(e);
+            }
+            throw e;
+        }
+        return new Blob([webpWithExif], { type: blob.type });
+    }
     /**
-     * Overrides the APP1 (EXIF / XMP) sections of a JPEG blob with the given data.
+     * Overrides the APP1 (EXIF / XMP) sections of a JPEG or WebP blob with the given data.
      */
     async function setExifData(blob, exif) {
         blob = await removeExifData(blob);

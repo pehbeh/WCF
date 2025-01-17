@@ -67,8 +67,13 @@ define(["require", "exports", "tslib", "../FileUtil", "./ExifUtil", "pica"], fun
         async saveFile(data, fileName, fileType = this.fileType, quality = this.quality) {
             const basename = /(.+)(\..+?)$/.exec(fileName);
             let blob = await pica.toBlob(data.image, fileType, quality);
-            if (fileType === "image/jpeg" && typeof data.exif !== "undefined") {
-                blob = await ExifUtil.setExifData(blob, data.exif);
+            if (typeof data.exif !== "undefined") {
+                if (fileType === "image/jpeg") {
+                    blob = await ExifUtil.setExifData(blob, data.exif);
+                }
+                else if (fileType === "image/webp") {
+                    blob = await ExifUtil.setWebpExifData(blob, data.exif);
+                }
             }
             return FileUtil.blobToFile(blob, basename[1]);
         }
@@ -83,6 +88,9 @@ define(["require", "exports", "tslib", "../FileUtil", "./ExifUtil", "pica"], fun
                 exifBytes = ExifUtil.getExifBytesFromJpeg(file);
                 // Strip EXIF data
                 fileData = await ExifUtil.removeExifData(fileData);
+            }
+            else if (file.type === "image/webp") {
+                exifBytes = ExifUtil.getExifBytesFromWebp(file);
             }
             const imageLoader = new Promise((resolve, reject) => {
                 const reader = new FileReader();
