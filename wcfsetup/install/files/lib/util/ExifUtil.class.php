@@ -252,9 +252,12 @@ final class ExifUtil
         $orientation = self::ORIENTATION_ORIGINAL;
         if (isset($exifData['IFD0']['Orientation'])) {
             $orientation = \intval($exifData['IFD0']['Orientation']);
-            if ($orientation < self::ORIENTATION_ORIGINAL || $orientation > self::ORIENTATION_270_ROTATE) {
-                $orientation = self::ORIENTATION_ORIGINAL;
-            }
+        } else if (isset($exifData['Orientation'])) {
+            $orientation = \intval($exifData['Orientation']);
+        }
+
+        if ($orientation < self::ORIENTATION_ORIGINAL || $orientation > self::ORIENTATION_270_ROTATE) {
+            $orientation = self::ORIENTATION_ORIGINAL;
         }
 
         return $orientation;
