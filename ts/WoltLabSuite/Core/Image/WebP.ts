@@ -98,19 +98,19 @@ class WebP {
       exif = exif.slice(10);
     }
 
-    const iccp = this.#getChunk(ChunkHeader.ICCP);
-    const anim = this.#getChunk(ChunkHeader.ANIM);
+    const iccp = this.#chunks.find(([header]) => header === ChunkHeader.ICCP);
+    const anim = this.#chunks.find(([header]) => header === ChunkHeader.ANIM);
 
     const imageData: Chunk[] = [];
     let hasAlpha = false;
     if (anim === undefined) {
-      const alpha = this.#getChunk(ChunkHeader.ALPH);
+      const alpha = this.#chunks.find(([header]) => header === ChunkHeader.ALPH);
       if (alpha !== undefined) {
         imageData.push(alpha);
         hasAlpha = true;
       }
 
-      const bitstream = this.#getChunk(ChunkHeader.VP8) || this.#getChunk(ChunkHeader.VP8L);
+      const bitstream = this.#chunks.find(([header]) => header === ChunkHeader.VP8 || header === ChunkHeader.VP8L);
       if (bitstream === undefined) {
         throw new Error("Still image does not contain any bitstream subchunks.");
       }
@@ -118,7 +118,7 @@ class WebP {
       imageData.push(bitstream);
     } else {
       imageData.push(anim);
-      const frames = this.#chunks.filter((chunk) => chunk[0] === ChunkHeader.ANMF);
+      const frames = this.#chunks.filter(([header]) => header === ChunkHeader.ANMF);
       if (frames.length === 0) {
         throw new Error("Animated image contains no frames.");
       }
@@ -128,8 +128,8 @@ class WebP {
       }
     }
 
-    const xmp = this.#getChunk(ChunkHeader.XMP);
-    const unknownChunks = this.#chunks.filter((chunk) => typeof chunk[0] === "number");
+    const xmp = this.#chunks.find(([header]) => header === ChunkHeader.XMP);
+    const unknownChunks = this.#chunks.filter(([header]) => typeof header === "number");
 
     // Calculate the size of the total image by summing up the chunks and the
     // size of the exif data.
@@ -329,16 +329,6 @@ class WebP {
     }
 
     return dataView.getUint32(0);
-  }
-
-  #getChunk(requestedChunk: ChunkHeader): Chunk | undefined {
-    for (const chunk of this.#chunks) {
-      if (chunk[0] === requestedChunk) {
-        return chunk;
-      }
-    }
-
-    return undefined;
   }
 }
 

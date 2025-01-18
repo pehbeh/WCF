@@ -64,17 +64,17 @@ define(["require", "exports"], function (require, exports) {
             if (exif[0] === 0xff && exif[1] === 0xe1 && exif[2] === 0xc3 && exif[3] === 0xef) {
                 exif = exif.slice(10);
             }
-            const iccp = this.#getChunk("ICCP" /* ChunkHeader.ICCP */);
-            const anim = this.#getChunk("ANIM" /* ChunkHeader.ANIM */);
+            const iccp = this.#chunks.find(([header]) => header === "ICCP" /* ChunkHeader.ICCP */);
+            const anim = this.#chunks.find(([header]) => header === "ANIM" /* ChunkHeader.ANIM */);
             const imageData = [];
             let hasAlpha = false;
             if (anim === undefined) {
-                const alpha = this.#getChunk("ALPH" /* ChunkHeader.ALPH */);
+                const alpha = this.#chunks.find(([header]) => header === "ALPH" /* ChunkHeader.ALPH */);
                 if (alpha !== undefined) {
                     imageData.push(alpha);
                     hasAlpha = true;
                 }
-                const bitstream = this.#getChunk("VP8 " /* ChunkHeader.VP8 */) || this.#getChunk("VP8L" /* ChunkHeader.VP8L */);
+                const bitstream = this.#chunks.find(([header]) => header === "VP8 " /* ChunkHeader.VP8 */ || header === "VP8L" /* ChunkHeader.VP8L */);
                 if (bitstream === undefined) {
                     throw new Error("Still image does not contain any bitstream subchunks.");
                 }
@@ -82,7 +82,7 @@ define(["require", "exports"], function (require, exports) {
             }
             else {
                 imageData.push(anim);
-                const frames = this.#chunks.filter((chunk) => chunk[0] === "ANMF" /* ChunkHeader.ANMF */);
+                const frames = this.#chunks.filter(([header]) => header === "ANMF" /* ChunkHeader.ANMF */);
                 if (frames.length === 0) {
                     throw new Error("Animated image contains no frames.");
                 }
@@ -90,8 +90,8 @@ define(["require", "exports"], function (require, exports) {
                     imageData.push(chunk);
                 }
             }
-            const xmp = this.#getChunk("XMP " /* ChunkHeader.XMP */);
-            const unknownChunks = this.#chunks.filter((chunk) => typeof chunk[0] === "number");
+            const xmp = this.#chunks.find(([header]) => header === "XMP " /* ChunkHeader.XMP */);
+            const unknownChunks = this.#chunks.filter(([header]) => typeof header === "number");
             // Calculate the size of the total image by summing up the chunks and the
             // size of the exif data.
             // The `RIFF` header as well as the length itself is not part of the length
@@ -219,14 +219,6 @@ define(["require", "exports"], function (require, exports) {
                 dataView.setUint8(i, value.charCodeAt(i));
             }
             return dataView.getUint32(0);
-        }
-        #getChunk(requestedChunk) {
-            for (const chunk of this.#chunks) {
-                if (chunk[0] === requestedChunk) {
-                    return chunk;
-                }
-            }
-            return undefined;
         }
     }
     function parseVp8x(buffer, dataView) {
