@@ -265,23 +265,23 @@ class WebP {
 
     // https://developers.google.com/speed/webp/docs/riff_container#extended_file_format
     if (iccProfile) {
-      result = result | (1 << (8 - 3));
+      result |= 0b00100000;
     }
 
     if (alpha) {
-      result = result | (1 << (8 - 4));
+      result |= 0b00010000;
     }
 
     if (exif) {
-      result = result | (1 << (8 - 5));
+      result |= 0b00001000;
     }
 
     if (xmp) {
-      result = result | (1 << (8 - 6));
+      result |= 0b00000100;
     }
 
     if (animation) {
-      result = result | (1 << (8 - 7));
+      result |= 0b00000010;
     }
 
     return result;
@@ -337,16 +337,10 @@ function parseVp8x(buffer: ArrayBuffer, dataView: DataView): WebP {
     throw new Error("A VP8X encoded WebP must be larger than 30 bytes.");
   }
 
-  //const flags = dataView.getUint8(20);
-  // The first two bits are reserved.
-  /*
-  const iccProfile = ((1 << (8 - 3)) & flags) > 0;
-  const alpha = ((1 << (8 - 4)) & flags) > 0;
-  const exif = ((1 << (8 - 5)) & flags) > 0;
-  const xmp = ((1 << (8 - 6)) & flags) > 0;
-  const animation = ((1 << (8 - 7)) & flags) > 0;
-  */
-  // The last bit is reserved.
+  // If we reach this point, then we have already consumed the first 20 bytes of
+  // the buffer. (offset = 20)
+
+  // The next 8 bits contain the flags. (offset + 1 = 21)
 
   // The next 24 bits are reserved. (offset + 3 = 24)
 

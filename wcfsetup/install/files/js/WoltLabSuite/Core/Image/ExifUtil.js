@@ -157,9 +157,9 @@ define(["require", "exports", "./WebP"], function (require, exports, WebP_1) {
         if (webp === undefined) {
             return blob;
         }
-        let webpWithExif;
         try {
-            webpWithExif = webp.exportWithExif(exif);
+            const webpWithExif = webp.exportWithExif(exif);
+            return new Blob([webpWithExif], { type: blob.type });
         }
         catch (e) {
             if (window.ENABLE_DEBUG_MODE) {
@@ -167,7 +167,6 @@ define(["require", "exports", "./WebP"], function (require, exports, WebP_1) {
             }
             throw e;
         }
-        return new Blob([webpWithExif], { type: blob.type });
     }
     /**
      * Overrides the APP1 (EXIF / XMP) sections of a JPEG or WebP blob with the given data.

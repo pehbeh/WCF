@@ -179,9 +179,10 @@ export async function setWebpExifData(blob: Blob, exif: Exif): Promise<Blob> {
     return blob;
   }
 
-  let webpWithExif: Uint8Array;
   try {
-    webpWithExif = webp.exportWithExif(exif);
+    const webpWithExif = webp.exportWithExif(exif);
+
+    return new Blob([webpWithExif], { type: blob.type });
   } catch (e) {
     if (window.ENABLE_DEBUG_MODE) {
       console.error(e);
@@ -189,8 +190,6 @@ export async function setWebpExifData(blob: Blob, exif: Exif): Promise<Blob> {
 
     throw e;
   }
-
-  return new Blob([webpWithExif], { type: blob.type });
 }
 
 /**
