@@ -52,7 +52,7 @@ final class UnfurlUrlRebuildDataWorker extends AbstractLinearRebuildDataWorker
         $deleteFileIDs = [];
 
         foreach ($this->getObjectList() as $unfurlUrl) {
-            if (!$unfurlUrl->isStored && $unfurlUrl->imageID !== null) {
+            if (!$unfurlUrl->isStored || $unfurlUrl->imageID === null) {
                 continue;
             }
 
