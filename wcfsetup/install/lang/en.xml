@@ -1742,6 +1742,8 @@ The database is carefully maintained, but there will be always be a margin of er
 		<item name="wcf.acp.option.category.message.general.unfurl"><![CDATA[Rich Embeds]]></item>
 		<item name="wcf.acp.option.module_url_unfurling"><![CDATA[Enable rich embeds]]></item>
 		<item name="wcf.acp.option.module_url_unfurling.description"><![CDATA[Creates a preview with title, description and image for external links in messages.]]></item>
+		<item name="wcf.acp.option.url_unfurling_no_images"><![CDATA[Don't load images from external links]]></item>
+		<item name="wcf.acp.option.url_unfurling_no_images.description"><![CDATA[Don't save images under <kbd>og:images</kbd> and display them in rich embeds.]]></item>
 		<item name="wcf.acp.option.category.message.general.formatting"><![CDATA[Text Format]]></item>
 		<item name="wcf.acp.option.formatting_remove_color"><![CDATA[Remove font color]]></item>
 		<item name="wcf.acp.option.formatting_remove_color.description"><![CDATA[Prevents the use of different font colors and removes them when displaying existing messages.]]></item>
