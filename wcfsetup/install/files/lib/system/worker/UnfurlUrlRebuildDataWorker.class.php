@@ -58,8 +58,7 @@ final class UnfurlUrlRebuildDataWorker extends AbstractLinearRebuildDataWorker
 
             if (URL_UNFURLING_NO_IMAGES) {
                 // delete stored images
-
-                if ($unfurlUrl->fileID) {
+                if ($unfurlUrl->fileID !== null) {
                     $deleteFileIDs[] = $unfurlUrl->fileID;
                 } else {
                     $fileLocation = $this->getOldFileLocation($unfurlUrl);
