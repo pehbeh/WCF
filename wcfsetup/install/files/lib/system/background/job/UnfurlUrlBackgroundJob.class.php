@@ -5,8 +5,14 @@ namespace wcf\system\background\job;
 use BadMethodCallException;
 use LogicException;
 use Psr\Http\Message\ResponseInterface;
+use wcf\data\file\File;
+use wcf\data\file\FileEditor;
 use wcf\data\unfurl\url\UnfurlUrl;
 use wcf\data\unfurl\url\UnfurlUrlAction;
+use wcf\system\exception\SystemException;
+use wcf\system\image\adapter\exception\ImageNotProcessable;
+use wcf\system\image\adapter\exception\ImageNotReadable;
+use wcf\system\image\ImageHandler;
 use wcf\system\message\unfurl\exception\DownloadFailed;
 use wcf\system\message\unfurl\exception\ParsingFailed;
 use wcf\system\message\unfurl\exception\UrlInaccessible;
@@ -16,6 +22,8 @@ use wcf\util\FileUtil;
 use wcf\util\ImageUtil;
 use wcf\util\StringUtil;
 use wcf\util\Url;
+
+use function wcf\functions\exception\logThrowable;
 
 /**
  * Represents a background job to get information for an url.
@@ -83,7 +91,7 @@ final class UnfurlUrlBackgroundJob extends AbstractBackgroundJob
             $imageData = [];
             $imageID = null;
             $imageUrl = $unfurlResponse->getImageUrl();
-            if ($imageUrl) {
+            if (!URL_UNFURLING_NO_IMAGES && $imageUrl) {
                 if (
                     \strpos($imageUrl, '\\') === false
                     && \strpos($imageUrl, "'") === false
@@ -144,21 +152,20 @@ final class UnfurlUrlBackgroundJob extends AbstractBackgroundJob
             if (!$this->validateImage($imageData)) {
                 return [];
             }
+            $file = $this->createFile(
+                $imageData,
+                \pathinfo($unfurlResponse->getImageUrl(), PATHINFO_FILENAME),
+                $image
+            );
 
-            $imageSaveData = [
+            return [
                 'imageUrl' => $unfurlResponse->getImageUrl(),
                 'imageUrlHash' => \sha1($unfurlResponse->getImageUrl()),
-                'width' => $imageData[0],
-                'height' => $imageData[1],
+                'fileID' => $file?->fileID,
+                'isStored' => $file !== null ? 1 : 0,
+                'width' => $file?->width ?? $imageData[0],
+                'height' => $file?->height ?? $imageData[1],
             ];
-
-            if (!(MODULE_IMAGE_PROXY || IMAGE_ALLOW_EXTERNAL_SOURCE)) {
-                $this->saveImage($imageData, $image, $imageSaveData['imageUrlHash']);
-                $imageSaveData['imageExtension'] = $this->getImageExtension($imageData);
-                $imageSaveData['isStored'] = 1;
-            }
-
-            return $imageSaveData;
         } catch (UrlInaccessible | DownloadFailed $e) {
             return [];
         }
@@ -218,19 +225,46 @@ final class UnfurlUrlBackgroundJob extends AbstractBackgroundJob
         return true;
     }
 
-    private function saveImage(array $imageData, string $image, string $imageHash): string
+    private function createFile(array $imageData, string $filenameWithOutExtension, string $image): ?File
     {
-        $path = WCF_DIR . UnfurlUrl::IMAGE_DIR . \substr($imageHash, 0, 2) . '/';
+        $imageAdapter = ImageHandler::getInstance()->getAdapter();
+        if (!$imageAdapter->checkMemoryLimit($imageData[0], $imageData[1], $imageData['mime'])) {
+            return null;
+        }
 
-        FileUtil::makePath($path);
+        $tmp = FileUtil::getTemporaryFilename(extension: $this->getImageExtension($imageData));
+        \file_put_contents($tmp, $image);
+        $webpFile = FileUtil::getTemporaryFilename(extension: 'webp');
 
-        $extension = $this->getImageExtension($imageData);
+        try {
+            $imageAdapter->loadFile($tmp);
+            $thumbnail = $imageAdapter->createThumbnail(UnfurlUrl::THUMBNAIL_WIDTH, UnfurlUrl::THUMBNAIL_HEIGHT);
+            $imageAdapter->saveImageAs($thumbnail, $webpFile, 'webp', 80);
 
-        $fileLocation = $path . $imageHash . '.' . $extension;
+            return FileEditor::createFromExistingFile(
+                $webpFile,
+                $filenameWithOutExtension . ".webp",
+                'com.woltlab.wcf.unfurl'
+            );
+        } catch (SystemException | ImageNotReadable $e) {
+            return null;
+        } catch (ImageNotProcessable $e) {
+            logThrowable($e);
 
-        \file_put_contents($fileLocation, $image);
+            return null;
+        } catch (\Throwable $e) {
+            logThrowable($e);
+            // Ignore any errors trying to save the file unless in debug mode.
+            if (\ENABLE_DEBUG_MODE) {
+                throw $e;
+            }
 
-        return $imageHash;
+            return null;
+        } finally {
+            // Clean up temporary files
+            @\unlink($tmp);
+            @\unlink($webpFile);
+        }
     }
 
     private function getImageExtension(array $imageData): ?string

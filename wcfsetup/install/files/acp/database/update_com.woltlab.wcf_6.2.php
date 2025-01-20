@@ -34,4 +34,17 @@ return [
                 ->referencedColumns(['fileID'])
                 ->onDelete('SET NULL'),
         ]),
+    PartialDatabaseTable::create('wcf1_unfurl_url_image')
+        ->columns([
+            IntDatabaseTableColumn::create('fileID')
+                ->length(10)
+                ->defaultValue(null),
+        ])
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['fileID'])
+                ->referencedTable('wcf1_file')
+                ->referencedColumns(['fileID'])
+                ->onDelete('SET NULL'),
+        ])
 ];

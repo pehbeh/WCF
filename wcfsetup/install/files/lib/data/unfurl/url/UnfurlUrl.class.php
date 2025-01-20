@@ -4,6 +4,7 @@ namespace wcf\data\unfurl\url;
 
 use wcf\action\ImageProxyAction;
 use wcf\data\DatabaseObject;
+use wcf\system\cache\runtime\FileRuntimeCache;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\CryptoUtil;
@@ -32,6 +33,7 @@ use wcf\util\Url;
  * @property-read int $imageID
  * @property-read int $isStored
  * @property-read string $status
+ * @property-read int|null $fileID
  */
 class UnfurlUrl extends DatabaseObject
 {
@@ -47,7 +49,12 @@ class UnfurlUrl extends DatabaseObject
 
     public const STATUS_REJECTED = "REJECTED";
 
+    /**
+     * @deprecated 6.2
+     */
     public const IMAGE_DIR = "images/unfurlUrl/";
+    public const THUMBNAIL_WIDTH = 800;
+    public const THUMBNAIL_HEIGHT = 400;
 
     /**
      * @inheritDoc
@@ -104,10 +111,9 @@ class UnfurlUrl extends DatabaseObject
     public function getImageUrl(): ?string
     {
         if ($this->isStored) {
-            $imageFolder = self::IMAGE_DIR . \substr($this->imageUrlHash, 0, 2) . "/";
-            $imageName = $this->imageUrlHash . '.' . $this->imageExtension;
+            $file = FileRuntimeCache::getInstance()->getObject($this->fileID);
 
-            return WCF::getPath() . $imageFolder . $imageName;
+            return $file?->getFullSizeImageSource();
         } elseif (!empty($this->imageUrl)) {
             if (MODULE_IMAGE_PROXY) {
                 $key = CryptoUtil::createSignedString($this->imageUrl);

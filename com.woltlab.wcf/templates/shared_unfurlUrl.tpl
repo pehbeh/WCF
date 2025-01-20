@@ -7,7 +7,7 @@
 				*}{if $object->hasCoverImage()} unfurlUrlCardCoverImage{/if}{*
 				*}{if $object->hasSquaredImage()} unfurlUrlCardSquaredImage{/if}{*
 			*}">
-				{if !$object->getImageUrl()|empty}
+				{if !URL_UNFURLING_NO_IMAGES && !$object->getImageUrl()|empty}
 					<img src="{$object->getImageUrl()}" height="{$object->height}" width="{$object->width}" class="unfurlUrlImage" alt="" loading="lazy">
 				{/if}
 				<div class="unfurlUrlInformation">
