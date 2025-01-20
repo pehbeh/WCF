@@ -2,6 +2,7 @@
 
 namespace wcf\system\worker;
 
+use wcf\data\file\FileEditor;
 use wcf\data\unfurl\url\UnfurlUrl;
 use wcf\data\unfurl\url\UnfurlUrlEditor;
 use wcf\data\unfurl\url\UnfurlUrlList;
@@ -42,32 +43,58 @@ final class UnfurlUrlRebuildDataWorker extends AbstractLinearRebuildDataWorker
                 SET    isStored = ?,
                        fileID = ?
                 WHERE  imageID = ?";
-        $statement = WCF::getDB()->prepare($sql);
+        $updateStatement = WCF::getDB()->prepare($sql);
+
+        $sql = "DELETE FROM wcf1_unfurl_url_image
+                WHERE       imageID = ?";
+        $deleteStatement = WCF::getDB()->prepare($sql);
+
+        $deleteFileIDs = [];
 
         foreach ($this->getObjectList() as $unfurlUrl) {
-            if (!$unfurlUrl->imageID || !$unfurlUrl->isStored || $unfurlUrl->fileID !== null) {
+            if (!$unfurlUrl->isStored && $unfurlUrl->imageID !== null) {
                 continue;
             }
 
-            $fileLocation = \sprintf(
-                '%s%s%s/%s.%s',
-                WCF_DIR,
-                UnfurlUrl::IMAGE_DIR,
-                \substr($unfurlUrl->imageUrlHash, 0, 2),
-                $unfurlUrl->imageUrlHash,
-                $unfurlUrl->imageExtension
-            );
+            if (URL_UNFURLING_NO_IMAGES) {
+                // delete stored images
 
-            $file = UnfurlUrlEditor::createWebpThumbnail(
-                $fileLocation,
-                \pathinfo($unfurlUrl->imageUrl, PATHINFO_FILENAME)
-            );
+                if ($unfurlUrl->fileID) {
+                    $deleteFileIDs[] = $unfurlUrl->fileID;
+                } else {
+                    $fileLocation = $this->getOldFileLocation($unfurlUrl);
+                    @\unlink($fileLocation);
+                }
 
-            $statement->execute([
-                $file !== null ? 1 : 0,
-                $file?->fileID,
-                $unfurlUrl->imageID,
-            ]);
+                $deleteStatement->execute([$unfurlUrl->imageID]);
+            } elseif ($unfurlUrl->fileID !== null) {
+                $file = UnfurlUrlEditor::createWebpThumbnail(
+                    $this->getOldFileLocation($unfurlUrl),
+                    \pathinfo($unfurlUrl->imageUrl, PATHINFO_FILENAME)
+                );
+
+                $updateStatement->execute([
+                    $file !== null ? 1 : 0,
+                    $file?->fileID,
+                    $unfurlUrl->imageID,
+                ]);
+            }
         }
+
+        if ($deleteFileIDs !== []) {
+            FileEditor::deleteAll($deleteFileIDs);
+        }
+    }
+
+    private function getOldFileLocation(UnfurlUrl $unfurlUrl): string
+    {
+        return \sprintf(
+            '%s%s%s/%s.%s',
+            WCF_DIR,
+            UnfurlUrl::IMAGE_DIR,
+            \substr($unfurlUrl->imageUrlHash, 0, 2),
+            $unfurlUrl->imageUrlHash,
+            $unfurlUrl->imageExtension
+        );
     }
 }
