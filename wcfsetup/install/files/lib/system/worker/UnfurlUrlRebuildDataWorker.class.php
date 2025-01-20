@@ -67,10 +67,14 @@ final class UnfurlUrlRebuildDataWorker extends AbstractLinearRebuildDataWorker
 
                 $deleteStatement->execute([$unfurlUrl->imageID]);
             } elseif ($unfurlUrl->fileID !== null) {
+                $fileLocation = $this->getOldFileLocation($unfurlUrl);
+
                 $file = UnfurlUrlEditor::createWebpThumbnail(
-                    $this->getOldFileLocation($unfurlUrl),
+                    $fileLocation,
                     \pathinfo($unfurlUrl->imageUrl, PATHINFO_FILENAME)
                 );
+
+                @\unlink($fileLocation);
 
                 $updateStatement->execute([
                     $file !== null ? 1 : 0,
