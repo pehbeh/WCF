@@ -110,7 +110,7 @@ class UnfurlUrl extends DatabaseObject
      */
     public function getImageUrl(): ?string
     {
-        if ($this->isStored) {
+        if ($this->isStored && $this->fileID) {
             $file = FileRuntimeCache::getInstance()->getObject($this->fileID);
 
             return $file?->getFullSizeImageSource();
