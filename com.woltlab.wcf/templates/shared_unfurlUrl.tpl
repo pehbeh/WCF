@@ -4,8 +4,8 @@
 	{else}
 		<div class="unfurlUrlCardContainer">
 			<div class="unfurlUrlCard{*
-				*}{if $object->hasCoverImage()} unfurlUrlCardCoverImage{/if}{*
-				*}{if $object->hasSquaredImage()} unfurlUrlCardSquaredImage{/if}{*
+				*}{if !URL_UNFURLING_NO_IMAGES && $object->hasCoverImage()} unfurlUrlCardCoverImage{/if}{*
+				*}{if !URL_UNFURLING_NO_IMAGES && $object->hasSquaredImage()} unfurlUrlCardSquaredImage{/if}{*
 			*}">
 				{if !URL_UNFURLING_NO_IMAGES && !$object->getImageUrl()|empty}
 					<img src="{$object->getImageUrl()}" height="{$object->height}" width="{$object->width}" class="unfurlUrlImage" alt="" loading="lazy">
