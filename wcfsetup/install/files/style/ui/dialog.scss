@@ -285,8 +285,8 @@
 }
 
 .dialog {
-	--dialog-max-height: 80%;
-	--dialog-max-width: 80%;
+	--dialog-max-height: 80vh;
+	--dialog-max-width: 80vw;
 	--dialog-padding: 20px;
 
 	background-color: transparent;
@@ -332,11 +332,10 @@ html[data-color-scheme="dark"] .dialog::backdrop {
 	color: var(--wcfContentText);
 	display: flex;
 	flex-direction: column;
-	max-height: var(--dialog-max-height);
-	max-width: var(--dialog-max-width);
+	max-height: calc(var(--dialog-max-height) - (2 * var(--dialog-padding)));
+	max-width: calc(var(--dialog-max-width) - (2 * var(--dialog-padding)));
 	min-height: 0;
 	min-width: 500px;
-	min-height: 0;
 	overflow: hidden;
 	padding: var(--dialog-padding);
 }
