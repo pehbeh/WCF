@@ -46,6 +46,9 @@ define(["require", "exports", "tslib", "./Filter", "./Selection", "./Sorting"], 
         getActiveFilters() {
             return this.#filter.getActiveFilters();
         }
+        getSelectedIds() {
+            return this.#selection.getSelectedIds();
+        }
         updateFromResponse(cause, count, filterLabels) {
             this.#filter.setFilterLabels(filterLabels);
             this.#pagination.count = count;

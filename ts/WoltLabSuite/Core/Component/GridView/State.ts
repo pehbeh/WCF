@@ -68,6 +68,10 @@ export class State extends EventTarget {
     return this.#filter.getActiveFilters();
   }
 
+  getSelectedIds(): number[] {
+    return this.#selection.getSelectedIds();
+  }
+
   updateFromResponse(cause: StateChangeCause, count: number, filterLabels: ArrayLike<string>): void {
     this.#filter.setFilterLabels(filterLabels);
     this.#pagination.count = count;
