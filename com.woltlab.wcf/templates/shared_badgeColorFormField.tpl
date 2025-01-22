@@ -38,11 +38,13 @@
 			);
 		});
 	{/if}
-	const customInput = document.querySelector('#{unsafe:$field->getPrefixedId()|encodeJS}Container .labelSelection__custom__input');
-	const customRadioInput = document.querySelector('#{unsafe:$field->getPrefixedId()|encodeJS}Container .custom > .labelSelection__label > input[type="radio"]');
-	if (customInput && customRadioInput) {
-		customInput.addEventListener("focus", () => {
-			customRadioInput.checked = true;
-		});
+	{
+		const customInput = document.querySelector('#{unsafe:$field->getPrefixedId()|encodeJS}Container .labelSelection__custom__input');
+		const customRadioInput = document.querySelector('#{unsafe:$field->getPrefixedId()|encodeJS}Container .custom > .labelSelection__label > input[type="radio"]');
+		if (customInput && customRadioInput) {
+			customInput.addEventListener("focus", () => {
+				customRadioInput.checked = true;
+			});
+		}
 	}
 </script>
