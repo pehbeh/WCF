@@ -12,7 +12,7 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "../Result"], fu
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.renderQuote = renderQuote;
     async function renderQuote(objectType, className, objectID) {
-	  const url = new URL(window.WSC_RPC_API_URL + "core/messages/render-quote");
+        const url = new URL(window.WSC_RPC_API_URL + "core/messages/render-quote");
         url.searchParams.set("objectType", objectType);
         url.searchParams.set("className", className);
         url.searchParams.set("fullQuote", "true");

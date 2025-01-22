@@ -12,7 +12,7 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "../Result"], fu
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.messageAuthor = messageAuthor;
     async function messageAuthor(className, objectID) {
-        const url = new URL(window.WSC_RPC_API_URL + "core/messages/messageauthor");
+        const url = new URL(window.WSC_RPC_API_URL + "core/messages/message-author");
         url.searchParams.set("className", className);
         url.searchParams.set("objectID", objectID.toString());
         let response;
