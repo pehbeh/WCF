@@ -2,25 +2,22 @@ import { getRow } from "../Api/Gridviews/GetRow";
 import { getRows } from "../Api/Gridviews/GetRows";
 import DomChangeListener from "../Dom/Change/Listener";
 import DomUtil from "../Dom/Util";
-import { promiseMutex } from "../Helper/PromiseMutex";
 import { wheneverFirstSeen } from "../Helper/Selector";
 import UiDropdownSimple from "../Ui/Dropdown/Simple";
-import { dialogFactory } from "./Dialog";
+import Filter from "./GridView/Filter";
 
 export class GridView {
+  readonly #filter: Filter;
   readonly #gridClassName: string;
   readonly #table: HTMLTableElement;
   readonly #pagination: WoltlabCorePaginationElement;
   readonly #baseUrl: string;
-  readonly #filterButton: HTMLButtonElement;
-  readonly #filterPills: HTMLElement;
   readonly #noItemsNotice: HTMLElement;
   #pageNo: number;
   #sortField: string;
   #sortOrder: string;
   #defaultSortField: string;
   #defaultSortOrder: string;
-  #filters: Map<string, string>;
   #gridViewParameters?: Map<string, string>;
 
   constructor(
@@ -35,8 +32,6 @@ export class GridView {
     this.#gridClassName = gridClassName;
     this.#table = document.getElementById(`${gridId}_table`) as HTMLTableElement;
     this.#pagination = document.getElementById(`${gridId}_pagination`) as WoltlabCorePaginationElement;
-    this.#filterButton = document.getElementById(`${gridId}_filterButton`) as HTMLButtonElement;
-    this.#filterPills = document.getElementById(`${gridId}_filters`) as HTMLElement;
     this.#noItemsNotice = document.getElementById(`${gridId}_noItemsNotice`) as HTMLElement;
     this.#pageNo = pageNo;
     this.#baseUrl = baseUrl;
@@ -49,9 +44,8 @@ export class GridView {
     this.#initPagination();
     this.#initSorting();
     this.#initInteractions();
-    this.#initFilters();
+    this.#filter = this.#setupFilter(gridId);
     this.#initEventListeners();
-    this.#initSelectCheckboxes();
 
     window.addEventListener("popstate", () => {
       this.#handlePopState();
@@ -113,7 +107,7 @@ export class GridView {
         this.#pageNo,
         this.#sortField,
         this.#sortOrder,
-        this.#filters,
+        this.#filter.getActiveFilters(),
         this.#gridViewParameters,
       )
     ).unwrap();
@@ -129,7 +123,7 @@ export class GridView {
 
     DomChangeListener.trigger();
 
-    this.#renderFilters(response.filterLabels);
+    this.#filter.setFilterLabels(response.filterLabels);
   }
 
   async #refreshRow(row: HTMLElement): Promise<void> {
@@ -153,11 +147,10 @@ export class GridView {
       parameters.push(["sortField", this.#sortField]);
       parameters.push(["sortOrder", this.#sortOrder]);
     }
-    if (this.#filters) {
-      this.#filters.forEach((value, key) => {
-        parameters.push([`filters[${key}]`, value]);
-      });
-    }
+
+    this.#filter.getActiveFilters().forEach((value, key) => {
+      parameters.push([`filters[${key}]`, value]);
+    });
 
     if (parameters.length > 0) {
       url.search += url.search !== "" ? "&" : "?";
@@ -189,84 +182,11 @@ export class GridView {
     });
   }
 
-  #initFilters(): void {
-    if (!this.#filterButton) {
-      return;
-    }
-
-    this.#filterButton.addEventListener(
-      "click",
-      promiseMutex(() => this.#showFilterDialog()),
-    );
-
-    if (!this.#filterPills) {
-      return;
-    }
-
-    const filterButtons = this.#filterPills.querySelectorAll<HTMLButtonElement>("[data-filter]");
-    if (!filterButtons.length) {
-      return;
-    }
-
-    this.#filters = new Map<string, string>();
-    filterButtons.forEach((button) => {
-      this.#filters.set(button.dataset.filter!, button.dataset.filterValue!);
-      button.addEventListener("click", () => {
-        this.#removeFilter(button.dataset.filter!);
-      });
-    });
-  }
-
-  async #showFilterDialog(): Promise<void> {
-    const url = new URL(this.#filterButton.dataset.endpoint!);
-    if (this.#filters) {
-      this.#filters.forEach((value, key) => {
-        url.searchParams.set(`filters[${key}]`, value);
-      });
-    }
-
-    const { ok, result } = await dialogFactory().usingFormBuilder().fromEndpoint(url.toString());
-
-    if (ok) {
-      this.#filters = new Map(Object.entries(result as ArrayLike<string>));
-      this.#switchPage(1);
-    }
-  }
-
-  #renderFilters(labels: ArrayLike<string>): void {
-    if (!this.#filterPills) {
-      return;
-    }
-    this.#filterPills.innerHTML = "";
-    if (!this.#filters) {
-      return;
-    }
-
-    this.#filters.forEach((value, key) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.classList.add("button", "small");
-      const icon = document.createElement("fa-icon");
-      icon.setIcon("circle-xmark");
-      button.append(icon, labels[key]);
-      button.addEventListener("click", () => {
-        this.#removeFilter(key);
-      });
-
-      this.#filterPills.append(button);
-    });
-  }
-
-  #removeFilter(filter: string): void {
-    this.#filters.delete(filter);
-    this.#switchPage(1);
-  }
-
   #handlePopState(): void {
     let pageNo = 1;
     this.#sortField = this.#defaultSortField;
     this.#sortOrder = this.#defaultSortOrder;
-    this.#filters = new Map<string, string>();
+    this.#filter.resetFilters();
 
     const url = new URL(window.location.href);
     url.searchParams.forEach((value, key) => {
@@ -285,7 +205,7 @@ export class GridView {
 
       const matches = key.match(/^filters\[([a-z0-9_]+)\]$/i);
       if (matches) {
-        this.#filters.set(matches[1], value);
+        this.#filter.setFilter(matches[1], value);
       }
     });
 
@@ -300,5 +220,14 @@ export class GridView {
     this.#table.addEventListener("remove", (event) => {
       (event.target as HTMLElement).remove();
     });
+  }
+
+  #setupFilter(gridId: string): Filter {
+    const filter = new Filter(gridId);
+    filter.addEventListener("switchPage", (event) => {
+      this.#switchPage(event.detail.pageNo);
+    });
+
+    return filter;
   }
 }
