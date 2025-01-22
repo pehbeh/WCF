@@ -60,7 +60,7 @@ final class BadgeColorFormField extends RadioButtonFormField implements IPattern
         if ($this->getDocument()->hasRequestData($this->getPrefixedId())) {
             $this->value = StringUtil::trim($this->getDocument()->getRequestData($this->getPrefixedId()));
 
-            if ($this->value === 'custom') {
+            if ($this->supportsCustomClassName() && $this->value === 'custom') {
                 $this->customClassName = StringUtil::trim(
                     $this->getDocument()->getRequestData($this->getPrefixedId() . 'customCssClassName')
                 );
@@ -73,7 +73,7 @@ final class BadgeColorFormField extends RadioButtonFormField implements IPattern
     #[\Override]
     public function validate()
     {
-        if ($this->getValue() === 'custom') {
+        if ($this->supportsCustomClassName() && $this->getValue() === 'custom') {
             if (!Regex::compile($this->getPattern())->match($this->customClassName)) {
                 $this->addValidationError(
                     new FormFieldValidationError(
@@ -90,7 +90,7 @@ final class BadgeColorFormField extends RadioButtonFormField implements IPattern
     #[\Override]
     public function value($value)
     {
-        if (!\in_array($value, self::AVAILABLE_CSS_CLASSNAMES)) {
+        if ($this->supportsCustomClassName() && !\in_array($value, self::AVAILABLE_CSS_CLASSNAMES)) {
             parent::value('custom');
             $this->customClassName = $value;
         } else {
@@ -143,11 +143,34 @@ final class BadgeColorFormField extends RadioButtonFormField implements IPattern
 
     public function hasCustomClassName(): bool
     {
-        return $this->value === 'custom';
+        return $this->supportsCustomClassName() && $this->value === 'custom';
     }
 
     public function getCustomClassName(): string
     {
         return $this->customClassName;
+    }
+
+    /**
+     * Sets whether the custom class name is supported.
+     */
+    public function supportCustomClassName(bool $supportCustomClassName = true): self
+    {
+        if ($supportCustomClassName) {
+            $classNames[] = self::AVAILABLE_CSS_CLASSNAMES;
+        } else {
+            $classNames = \array_filter(self::AVAILABLE_CSS_CLASSNAMES, fn($className) => $className !== 'custom');
+        }
+
+        return $this
+            ->options(\array_combine($classNames, $classNames));
+    }
+
+    /**
+     * Returns whether the custom class name is supported.
+     */
+    public function supportsCustomClassName(): bool
+    {
+        return \in_array('custom', $this->options);
     }
 }
