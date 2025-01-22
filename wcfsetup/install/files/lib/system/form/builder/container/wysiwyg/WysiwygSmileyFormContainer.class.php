@@ -8,6 +8,7 @@ use wcf\system\form\builder\container\TabFormContainer;
 use wcf\system\form\builder\container\TabTabMenuFormContainer;
 use wcf\system\form\builder\TWysiwygFormNode;
 use wcf\system\form\builder\wysiwyg\WysiwygSmileyFormNode;
+use wcf\system\style\FontAwesomeIcon;
 use wcf\util\StringUtil;
 
 /**
@@ -78,9 +79,9 @@ class WysiwygSmileyFormContainer extends TabTabMenuFormContainer implements IWys
     }
 
     #[\Override]
-    public function getIcon(): string
+    public function getIcon(): ?FontAwesomeIcon
     {
-        return 'face-smile';
+        return FontAwesomeIcon::fromValues('face-smile');
     }
 
     #[\Override]

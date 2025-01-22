@@ -3,6 +3,7 @@
 namespace wcf\system\form\builder\container\wysiwyg;
 
 use wcf\system\form\builder\container\IFormContainer;
+use wcf\system\style\FontAwesomeIcon;
 
 /**
  * Represents a container that is a tab of a wysiwyg tab menu.
@@ -17,7 +18,7 @@ interface IWysiwygTabFormContainer extends IFormContainer
     /**
      * Gets the icon associated with the tab.
      */
-    public function getIcon(): ?string;
+    public function getIcon(): ?FontAwesomeIcon;
 
     /**
      * Gets the name associated with the tab.

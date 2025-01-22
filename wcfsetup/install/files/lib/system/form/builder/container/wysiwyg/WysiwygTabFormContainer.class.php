@@ -4,6 +4,7 @@ namespace wcf\system\form\builder\container\wysiwyg;
 
 use wcf\system\form\builder\container\TabFormContainer;
 use wcf\system\form\builder\TWysiwygFormNode;
+use wcf\system\style\FontAwesomeIcon;
 
 /**
  * Represents a container that is a tab of a wysiwyg tab menu.
@@ -22,11 +23,11 @@ class WysiwygTabFormContainer extends TabFormContainer implements IWysiwygTabFor
      */
     protected $templateName = 'shared_wysiwygTabFormContainer';
 
-    protected ?string $icon = null;
+    protected ?FontAwesomeIcon $icon = null;
     protected string $name = '';
 
     #[\Override]
-    public function getIcon(): ?string
+    public function getIcon(): ?FontAwesomeIcon
     {
         return $this->icon;
     }
@@ -34,7 +35,7 @@ class WysiwygTabFormContainer extends TabFormContainer implements IWysiwygTabFor
     /**
      * Sets the icon associated with the tab.
      */
-    public function icon(?string $icon): static
+    public function icon(?FontAwesomeIcon $icon): static
     {
         $this->icon = $icon;
 

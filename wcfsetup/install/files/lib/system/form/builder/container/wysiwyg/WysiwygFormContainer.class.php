@@ -14,6 +14,7 @@ use wcf\system\form\builder\field\wysiwyg\WysiwygAttachmentFormField;
 use wcf\system\form\builder\field\wysiwyg\WysiwygFormField;
 use wcf\system\form\builder\IFormChildNode;
 use wcf\system\form\builder\TWysiwygFormNode;
+use wcf\system\style\FontAwesomeIcon;
 
 /**
  * Represents the whole container with a WYSIWYG editor and the associated tab menu below it with
@@ -505,7 +506,7 @@ class WysiwygFormContainer extends FormContainer
                         ->addClass('formAttachmentContent')
                         ->label('wcf.attachment.attachments')
                         ->name("attachments")
-                        ->icon('paperclip')
+                        ->icon(FontAwesomeIcon::fromValues('paperclip'))
                         ->wysiwygId($this->getWysiwygId())
                         ->appendChild(
                             FormContainer::create($this->wysiwygId . 'AttachmentsContainer')
@@ -514,14 +515,14 @@ class WysiwygFormContainer extends FormContainer
 
                     WysiwygTabFormContainer::create($this->wysiwygId . 'SettingsTab')
                         ->label('wcf.message.settings')
-                        ->icon('gear')
+                        ->icon(FontAwesomeIcon::fromValues('gear'))
                         ->name('settings')
                         ->wysiwygId($this->getWysiwygId())
                         ->appendChild($this->settingsContainer),
 
                     WysiwygTabFormContainer::create($this->wysiwygId . 'PollTab')
                         ->label('wcf.poll.management')
-                        ->icon('chart-bar')
+                        ->icon(FontAwesomeIcon::fromValues('chart-bar'))
                         ->name('poll')
                         ->wysiwygId($this->getWysiwygId())
                         ->appendChild($this->pollContainer),

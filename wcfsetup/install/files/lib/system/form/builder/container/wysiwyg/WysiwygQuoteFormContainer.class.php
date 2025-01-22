@@ -2,6 +2,8 @@
 
 namespace wcf\system\form\builder\container\wysiwyg;
 
+use wcf\system\style\FontAwesomeIcon;
+
 /**
  * Represents the form container for the quote-related fields below a WYSIWYG editor.
  *
@@ -16,7 +18,7 @@ class WysiwygQuoteFormContainer extends WysiwygTabFormContainer
 
     public function __construct()
     {
-        $this->icon('quote-left')
+        $this->icon(FontAwesomeIcon::fromValues('quote-left'))
             ->name('quotes')
             ->label('wcf.bbcode.quote');
     }

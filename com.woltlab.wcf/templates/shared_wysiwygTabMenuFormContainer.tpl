@@ -8,7 +8,7 @@
 				{if $child->isAvailable()}
 					<li data-name="{$child->getName()}"{if !$child->checkDependencies()} hidden{/if}>
 						<button type="button">
-							{if $child->getIcon()}{icon name=$child->getIcon()}{/if}
+							{if $child->getIcon()}{unsafe:$child->getIcon()->toHtml()}{/if}
 							<span>{@$child->getLabel()}</span>
 						</button>
 					</li>
