@@ -1,0 +1,96 @@
+define(["require", "exports", "tslib", "./Filter", "./Sorting"], function (require, exports, tslib_1, Filter_1, Sorting_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.State = void 0;
+    Filter_1 = tslib_1.__importDefault(Filter_1);
+    Sorting_1 = tslib_1.__importDefault(Sorting_1);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+    class State extends EventTarget {
+        #baseUrl;
+        #filter;
+        #pagination;
+        #sorting;
+        #pageNo;
+        constructor(gridId, table, pageNo, baseUrl, sortField, sortOrder) {
+            super();
+            this.#baseUrl = baseUrl;
+            this.#pageNo = pageNo;
+            this.#pagination = document.getElementById(`${gridId}_pagination`);
+            this.#pagination.addEventListener("switchPage", (event) => {
+                void this.#switchPage(event.detail, 2 /* UpdateCause.Pagination */);
+            });
+            this.#filter = new Filter_1.default(gridId);
+            this.#filter.addEventListener("change", () => {
+                this.#switchPage(1, 0 /* UpdateCause.Change */);
+            });
+            this.#sorting = new Sorting_1.default(table, sortField, sortOrder);
+            this.#sorting.addEventListener("change", () => {
+                this.#switchPage(1, 0 /* UpdateCause.Change */);
+            });
+            window.addEventListener("popstate", () => {
+                this.#handlePopState();
+            });
+        }
+        getPageNo() {
+            return this.#pageNo;
+        }
+        getSortField() {
+            return this.#sorting.getSortField();
+        }
+        getSortOrder() {
+            return this.#sorting.getSortOrder();
+        }
+        getActiveFilters() {
+            return this.#filter.getActiveFilters();
+        }
+        updateFromResponse(source, count, filterLabels) {
+            this.#filter.setFilterLabels(filterLabels);
+            this.#pagination.count = count;
+            if (source === 0 /* UpdateCause.Change */ || source === 2 /* UpdateCause.Pagination */) {
+                this.#updateQueryString();
+            }
+        }
+        #switchPage(pageNo, source) {
+            this.#pagination.page = pageNo;
+            this.#pageNo = pageNo;
+            this.dispatchEvent(new CustomEvent("change", { detail: { source } }));
+        }
+        #updateQueryString() {
+            if (!this.#baseUrl) {
+                return;
+            }
+            const url = new URL(this.#baseUrl);
+            const parameters = [];
+            if (this.#pageNo > 1) {
+                parameters.push(["pageNo", this.#pageNo.toString()]);
+            }
+            for (const parameter of this.#sorting.getQueryParameters()) {
+                parameters.push(parameter);
+            }
+            for (const parameter of this.#filter.getQueryParameters()) {
+                parameters.push(parameter);
+            }
+            if (parameters.length > 0) {
+                url.search += url.search !== "" ? "&" : "?";
+                url.search += new URLSearchParams(parameters).toString();
+            }
+            window.history.pushState({}, document.title, url.toString());
+        }
+        #handlePopState() {
+            let pageNo = 1;
+            const { searchParams } = new URL(window.location.href);
+            const value = searchParams.get("pageNo");
+            if (value !== null) {
+                pageNo = parseInt(value);
+                if (Number.isNaN(pageNo) || pageNo < 1) {
+                    pageNo = 1;
+                }
+            }
+            this.#filter.updateFromSearchParams(searchParams);
+            this.#sorting.updateFromSearchParams(searchParams);
+            this.#switchPage(pageNo, 1 /* UpdateCause.History */);
+        }
+    }
+    exports.State = State;
+    exports.default = State;
+});

@@ -1,86 +1,37 @@
-define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridviews/GetRows", "../Dom/Change/Listener", "../Dom/Util", "../Helper/Selector", "../Ui/Dropdown/Simple", "./GridView/Filter", "./GridView/Sorting"], function (require, exports, tslib_1, GetRow_1, GetRows_1, Listener_1, Util_1, Selector_1, Simple_1, Filter_1, Sorting_1) {
+define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridviews/GetRows", "../Dom/Change/Listener", "../Dom/Util", "../Helper/Selector", "../Ui/Dropdown/Simple", "./GridView/State"], function (require, exports, tslib_1, GetRow_1, GetRows_1, Listener_1, Util_1, Selector_1, Simple_1, State_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GridView = void 0;
     Listener_1 = tslib_1.__importDefault(Listener_1);
     Util_1 = tslib_1.__importDefault(Util_1);
     Simple_1 = tslib_1.__importDefault(Simple_1);
-    Filter_1 = tslib_1.__importDefault(Filter_1);
-    Sorting_1 = tslib_1.__importDefault(Sorting_1);
     class GridView {
-        #filter;
         #gridClassName;
         #table;
-        #pagination;
-        #sorting;
-        #baseUrl;
+        #state;
         #noItemsNotice;
-        #pageNo;
         #gridViewParameters;
         constructor(gridId, gridClassName, pageNo, baseUrl = "", sortField = "", sortOrder = "ASC", gridViewParameters) {
             this.#gridClassName = gridClassName;
             this.#table = document.getElementById(`${gridId}_table`);
-            this.#pagination = document.getElementById(`${gridId}_pagination`);
             this.#noItemsNotice = document.getElementById(`${gridId}_noItemsNotice`);
-            this.#pageNo = pageNo;
-            this.#baseUrl = baseUrl;
             this.#gridViewParameters = gridViewParameters;
-            this.#initPagination();
             this.#initInteractions();
-            this.#filter = this.#setupFilter(gridId);
-            this.#sorting = this.#setupSorting(sortField, sortOrder);
+            this.#state = this.#setupState(gridId, pageNo, baseUrl, sortField, sortOrder);
             this.#initEventListeners();
-            window.addEventListener("popstate", () => {
-                this.#handlePopState();
-            });
         }
-        #initPagination() {
-            this.#pagination.addEventListener("switchPage", (event) => {
-                void this.#switchPage(event.detail);
-            });
-        }
-        #switchPage(pageNo, updateQueryString = true) {
-            this.#pagination.page = pageNo;
-            this.#pageNo = pageNo;
-            void this.#loadRows(updateQueryString);
-        }
-        async #loadRows(updateQueryString = true) {
-            const response = (await (0, GetRows_1.getRows)(this.#gridClassName, this.#pageNo, this.#sorting.getSortField(), this.#sorting.getSortOrder(), this.#filter.getActiveFilters(), this.#gridViewParameters)).unwrap();
+        async #loadRows(source) {
+            const response = (await (0, GetRows_1.getRows)(this.#gridClassName, this.#state.getPageNo(), this.#state.getSortField(), this.#state.getSortOrder(), this.#state.getActiveFilters(), this.#gridViewParameters)).unwrap();
             Util_1.default.setInnerHtml(this.#table.querySelector("tbody"), response.template);
             this.#table.hidden = response.totalRows == 0;
             this.#noItemsNotice.hidden = response.totalRows != 0;
-            this.#pagination.count = response.pages;
-            if (updateQueryString) {
-                this.#updateQueryString();
-            }
+            this.#state.updateFromResponse(source, response.pages, response.filterLabels);
             Listener_1.default.trigger();
-            this.#filter.setFilterLabels(response.filterLabels);
         }
         async #refreshRow(row) {
             const response = (await (0, GetRow_1.getRow)(this.#gridClassName, row.dataset.objectId)).unwrap();
             row.replaceWith(Util_1.default.createFragmentFromHtml(response.template));
             Listener_1.default.trigger();
-        }
-        #updateQueryString() {
-            if (!this.#baseUrl) {
-                return;
-            }
-            const url = new URL(this.#baseUrl);
-            const parameters = [];
-            if (this.#pageNo > 1) {
-                parameters.push(["pageNo", this.#pageNo.toString()]);
-            }
-            for (const parameter of this.#sorting.getQueryParameters()) {
-                parameters.push(parameter);
-            }
-            for (const parameter of this.#filter.getQueryParameters()) {
-                parameters.push(parameter);
-            }
-            if (parameters.length > 0) {
-                url.search += url.search !== "" ? "&" : "?";
-                url.search += new URLSearchParams(parameters).toString();
-            }
-            window.history.pushState({}, document.title, url.toString());
         }
         #initInteractions() {
             (0, Selector_1.wheneverFirstSeen)(`#${this.#table.id} tbody tr`, (row) => {
@@ -100,19 +51,6 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
                 });
             });
         }
-        #handlePopState() {
-            let pageNo = 1;
-            const url = new URL(window.location.href);
-            url.searchParams.forEach((value, key) => {
-                if (key === "pageNo") {
-                    pageNo = parseInt(value, 10);
-                    return;
-                }
-            });
-            this.#filter.updateFromSearchParams(url.searchParams);
-            this.#sorting.updateFromSearchParams(url.searchParams);
-            this.#switchPage(pageNo, false);
-        }
         #initEventListeners() {
             this.#table.addEventListener("refresh", (event) => {
                 void this.#refreshRow(event.target);
@@ -121,19 +59,12 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
                 event.target.remove();
             });
         }
-        #setupFilter(gridId) {
-            const filter = new Filter_1.default(gridId);
-            filter.addEventListener("switchPage", (event) => {
-                this.#switchPage(event.detail.pageNo);
+        #setupState(gridId, pageNo, baseUrl, sortField, sortOrder) {
+            const state = new State_1.State(gridId, this.#table, pageNo, baseUrl, sortField, sortOrder);
+            state.addEventListener("change", (event) => {
+                void this.#loadRows(event.detail.source);
             });
-            return filter;
-        }
-        #setupSorting(sortField, sortOrder) {
-            const sorting = new Sorting_1.default(this.#table, sortField, sortOrder);
-            sorting.addEventListener("switchPage", (event) => {
-                this.#switchPage(event.detail.pageNo);
-            });
-            return sorting;
+            return state;
         }
     }
     exports.GridView = GridView;

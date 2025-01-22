@@ -61,8 +61,8 @@ define(["require", "exports"], function (require, exports) {
                 this.#sortField = sortField;
                 this.#sortOrder = "ASC";
             }
-            this.dispatchEvent(new CustomEvent("switchPage", { detail: { pageNo: 1 } }));
             this.#renderActiveSorting();
+            this.dispatchEvent(new CustomEvent("change"));
         }
         #renderActiveSorting() {
             this.#table.querySelectorAll('th[data-sortable="1"]').forEach((element) => {

@@ -4,18 +4,14 @@ import DomChangeListener from "../Dom/Change/Listener";
 import DomUtil from "../Dom/Util";
 import { wheneverFirstSeen } from "../Helper/Selector";
 import UiDropdownSimple from "../Ui/Dropdown/Simple";
-import Filter from "./GridView/Filter";
-import Sorting from "./GridView/Sorting";
+import { State, UpdateCause } from "./GridView/State";
 
 export class GridView {
-  readonly #filter: Filter;
   readonly #gridClassName: string;
   readonly #table: HTMLTableElement;
-  readonly #pagination: WoltlabCorePaginationElement;
-  readonly #sorting: Sorting;
-  readonly #baseUrl: string;
+  readonly #state: State;
+
   readonly #noItemsNotice: HTMLElement;
-  #pageNo: number;
 
   #gridViewParameters?: Map<string, string>;
 
@@ -30,45 +26,23 @@ export class GridView {
   ) {
     this.#gridClassName = gridClassName;
     this.#table = document.getElementById(`${gridId}_table`) as HTMLTableElement;
-    this.#pagination = document.getElementById(`${gridId}_pagination`) as WoltlabCorePaginationElement;
     this.#noItemsNotice = document.getElementById(`${gridId}_noItemsNotice`) as HTMLElement;
-    this.#pageNo = pageNo;
-    this.#baseUrl = baseUrl;
 
     this.#gridViewParameters = gridViewParameters;
 
-    this.#initPagination();
     this.#initInteractions();
-    this.#filter = this.#setupFilter(gridId);
-    this.#sorting = this.#setupSorting(sortField, sortOrder);
+    this.#state = this.#setupState(gridId, pageNo, baseUrl, sortField, sortOrder);
     this.#initEventListeners();
-
-    window.addEventListener("popstate", () => {
-      this.#handlePopState();
-    });
   }
 
-  #initPagination(): void {
-    this.#pagination.addEventListener("switchPage", (event: CustomEvent) => {
-      void this.#switchPage(event.detail);
-    });
-  }
-
-  #switchPage(pageNo: number, updateQueryString: boolean = true): void {
-    this.#pagination.page = pageNo;
-    this.#pageNo = pageNo;
-
-    void this.#loadRows(updateQueryString);
-  }
-
-  async #loadRows(updateQueryString: boolean = true): Promise<void> {
+  async #loadRows(source: UpdateCause): Promise<void> {
     const response = (
       await getRows(
         this.#gridClassName,
-        this.#pageNo,
-        this.#sorting.getSortField(),
-        this.#sorting.getSortOrder(),
-        this.#filter.getActiveFilters(),
+        this.#state.getPageNo(),
+        this.#state.getSortField(),
+        this.#state.getSortOrder(),
+        this.#state.getActiveFilters(),
         this.#gridViewParameters,
       )
     ).unwrap();
@@ -76,49 +50,15 @@ export class GridView {
 
     this.#table.hidden = response.totalRows == 0;
     this.#noItemsNotice.hidden = response.totalRows != 0;
-    this.#pagination.count = response.pages;
-
-    if (updateQueryString) {
-      this.#updateQueryString();
-    }
+    this.#state.updateFromResponse(source, response.pages, response.filterLabels);
 
     DomChangeListener.trigger();
-
-    this.#filter.setFilterLabels(response.filterLabels);
   }
 
   async #refreshRow(row: HTMLElement): Promise<void> {
     const response = (await getRow(this.#gridClassName, row.dataset.objectId!)).unwrap();
     row.replaceWith(DomUtil.createFragmentFromHtml(response.template));
     DomChangeListener.trigger();
-  }
-
-  #updateQueryString(): void {
-    if (!this.#baseUrl) {
-      return;
-    }
-
-    const url = new URL(this.#baseUrl);
-
-    const parameters: [string, string][] = [];
-    if (this.#pageNo > 1) {
-      parameters.push(["pageNo", this.#pageNo.toString()]);
-    }
-
-    for (const parameter of this.#sorting.getQueryParameters()) {
-      parameters.push(parameter);
-    }
-
-    for (const parameter of this.#filter.getQueryParameters()) {
-      parameters.push(parameter);
-    }
-
-    if (parameters.length > 0) {
-      url.search += url.search !== "" ? "&" : "?";
-      url.search += new URLSearchParams(parameters).toString();
-    }
-
-    window.history.pushState({}, document.title, url.toString());
   }
 
   #initInteractions(): void {
@@ -143,23 +83,6 @@ export class GridView {
     });
   }
 
-  #handlePopState(): void {
-    let pageNo = 1;
-
-    const url = new URL(window.location.href);
-    url.searchParams.forEach((value, key) => {
-      if (key === "pageNo") {
-        pageNo = parseInt(value, 10);
-        return;
-      }
-    });
-
-    this.#filter.updateFromSearchParams(url.searchParams);
-    this.#sorting.updateFromSearchParams(url.searchParams);
-
-    this.#switchPage(pageNo, false);
-  }
-
   #initEventListeners(): void {
     this.#table.addEventListener("refresh", (event) => {
       void this.#refreshRow(event.target as HTMLElement);
@@ -170,21 +93,12 @@ export class GridView {
     });
   }
 
-  #setupFilter(gridId: string): Filter {
-    const filter = new Filter(gridId);
-    filter.addEventListener("switchPage", (event) => {
-      this.#switchPage(event.detail.pageNo);
+  #setupState(gridId: string, pageNo: number, baseUrl: string, sortField: string, sortOrder: string): State {
+    const state = new State(gridId, this.#table, pageNo, baseUrl, sortField, sortOrder);
+    state.addEventListener("change", (event) => {
+      void this.#loadRows(event.detail.source);
     });
 
-    return filter;
-  }
-
-  #setupSorting(sortField: string, sortOrder: string): Sorting {
-    const sorting = new Sorting(this.#table, sortField, sortOrder);
-    sorting.addEventListener("switchPage", (event) => {
-      this.#switchPage(event.detail.pageNo);
-    });
-
-    return sorting;
+    return state;
   }
 }

@@ -67,8 +67,9 @@ export class Sorting extends EventTarget {
       this.#sortOrder = "ASC";
     }
 
-    this.dispatchEvent(new CustomEvent("switchPage", { detail: { pageNo: 1 } }));
     this.#renderActiveSorting();
+
+    this.dispatchEvent(new CustomEvent("change"));
   }
 
   #renderActiveSorting(): void {
@@ -83,7 +84,7 @@ export class Sorting extends EventTarget {
 }
 
 interface SortingEventMap {
-  switchPage: CustomEvent<{ pageNo: number }>;
+  change: CustomEvent<void>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging

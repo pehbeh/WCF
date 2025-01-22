@@ -102,19 +102,19 @@ export class Filter extends EventTarget {
     if (ok) {
       this.#filters = new Map(Object.entries(result as ArrayLike<string>));
 
-      this.dispatchEvent(new CustomEvent("switchPage", { detail: { pageNo: 1 } }));
+      this.dispatchEvent(new CustomEvent("change"));
     }
   }
 
   #removeFilter(filter: string): void {
     this.#filters.delete(filter);
 
-    this.dispatchEvent(new CustomEvent("switchPage", { detail: { pageNo: 1 } }));
+    this.dispatchEvent(new CustomEvent("change"));
   }
 }
 
 interface FilterEventMap {
-  switchPage: CustomEvent<{ pageNo: number }>;
+  change: CustomEvent<void>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
