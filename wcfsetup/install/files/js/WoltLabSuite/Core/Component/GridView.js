@@ -1,31 +1,28 @@
-define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridviews/GetRows", "../Dom/Change/Listener", "../Dom/Util", "../Helper/PromiseMutex", "../Helper/Selector", "../Ui/Dropdown/Simple", "./Dialog"], function (require, exports, tslib_1, GetRow_1, GetRows_1, Listener_1, Util_1, PromiseMutex_1, Selector_1, Simple_1, Dialog_1) {
+define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridviews/GetRows", "../Dom/Change/Listener", "../Dom/Util", "../Helper/Selector", "../Ui/Dropdown/Simple", "./GridView/Filter"], function (require, exports, tslib_1, GetRow_1, GetRows_1, Listener_1, Util_1, Selector_1, Simple_1, Filter_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GridView = void 0;
     Listener_1 = tslib_1.__importDefault(Listener_1);
     Util_1 = tslib_1.__importDefault(Util_1);
     Simple_1 = tslib_1.__importDefault(Simple_1);
+    Filter_1 = tslib_1.__importDefault(Filter_1);
     class GridView {
+        #filter;
         #gridClassName;
         #table;
         #pagination;
         #baseUrl;
-        #filterButton;
-        #filterPills;
         #noItemsNotice;
         #pageNo;
         #sortField;
         #sortOrder;
         #defaultSortField;
         #defaultSortOrder;
-        #filters;
         #gridViewParameters;
         constructor(gridId, gridClassName, pageNo, baseUrl = "", sortField = "", sortOrder = "ASC", gridViewParameters) {
             this.#gridClassName = gridClassName;
             this.#table = document.getElementById(`${gridId}_table`);
             this.#pagination = document.getElementById(`${gridId}_pagination`);
-            this.#filterButton = document.getElementById(`${gridId}_filterButton`);
-            this.#filterPills = document.getElementById(`${gridId}_filters`);
             this.#noItemsNotice = document.getElementById(`${gridId}_noItemsNotice`);
             this.#pageNo = pageNo;
             this.#baseUrl = baseUrl;
@@ -37,7 +34,7 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
             this.#initPagination();
             this.#initSorting();
             this.#initInteractions();
-            this.#initFilters();
+            this.#filter = this.#setupFilter(gridId);
             this.#initEventListeners();
             window.addEventListener("popstate", () => {
                 this.#handlePopState();
@@ -84,7 +81,7 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
             void this.#loadRows(updateQueryString);
         }
         async #loadRows(updateQueryString = true) {
-            const response = (await (0, GetRows_1.getRows)(this.#gridClassName, this.#pageNo, this.#sortField, this.#sortOrder, this.#filters, this.#gridViewParameters)).unwrap();
+            const response = (await (0, GetRows_1.getRows)(this.#gridClassName, this.#pageNo, this.#sortField, this.#sortOrder, this.#filter.getActiveFilters(), this.#gridViewParameters)).unwrap();
             Util_1.default.setInnerHtml(this.#table.querySelector("tbody"), response.template);
             this.#table.hidden = response.totalRows == 0;
             this.#noItemsNotice.hidden = response.totalRows != 0;
@@ -93,7 +90,7 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
                 this.#updateQueryString();
             }
             Listener_1.default.trigger();
-            this.#renderFilters(response.filterLabels);
+            this.#filter.setFilterLabels(response.filterLabels);
         }
         async #refreshRow(row) {
             const response = (await (0, GetRow_1.getRow)(this.#gridClassName, row.dataset.objectId)).unwrap();
@@ -113,11 +110,9 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
                 parameters.push(["sortField", this.#sortField]);
                 parameters.push(["sortOrder", this.#sortOrder]);
             }
-            if (this.#filters) {
-                this.#filters.forEach((value, key) => {
-                    parameters.push([`filters[${key}]`, value]);
-                });
-            }
+            this.#filter.getActiveFilters().forEach((value, key) => {
+                parameters.push([`filters[${key}]`, value]);
+            });
             if (parameters.length > 0) {
                 url.search += url.search !== "" ? "&" : "?";
                 url.search += new URLSearchParams(parameters).toString();
@@ -142,69 +137,11 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
                 });
             });
         }
-        #initFilters() {
-            if (!this.#filterButton) {
-                return;
-            }
-            this.#filterButton.addEventListener("click", (0, PromiseMutex_1.promiseMutex)(() => this.#showFilterDialog()));
-            if (!this.#filterPills) {
-                return;
-            }
-            const filterButtons = this.#filterPills.querySelectorAll("[data-filter]");
-            if (!filterButtons.length) {
-                return;
-            }
-            this.#filters = new Map();
-            filterButtons.forEach((button) => {
-                this.#filters.set(button.dataset.filter, button.dataset.filterValue);
-                button.addEventListener("click", () => {
-                    this.#removeFilter(button.dataset.filter);
-                });
-            });
-        }
-        async #showFilterDialog() {
-            const url = new URL(this.#filterButton.dataset.endpoint);
-            if (this.#filters) {
-                this.#filters.forEach((value, key) => {
-                    url.searchParams.set(`filters[${key}]`, value);
-                });
-            }
-            const { ok, result } = await (0, Dialog_1.dialogFactory)().usingFormBuilder().fromEndpoint(url.toString());
-            if (ok) {
-                this.#filters = new Map(Object.entries(result));
-                this.#switchPage(1);
-            }
-        }
-        #renderFilters(labels) {
-            if (!this.#filterPills) {
-                return;
-            }
-            this.#filterPills.innerHTML = "";
-            if (!this.#filters) {
-                return;
-            }
-            this.#filters.forEach((value, key) => {
-                const button = document.createElement("button");
-                button.type = "button";
-                button.classList.add("button", "small");
-                const icon = document.createElement("fa-icon");
-                icon.setIcon("circle-xmark");
-                button.append(icon, labels[key]);
-                button.addEventListener("click", () => {
-                    this.#removeFilter(key);
-                });
-                this.#filterPills.append(button);
-            });
-        }
-        #removeFilter(filter) {
-            this.#filters.delete(filter);
-            this.#switchPage(1);
-        }
         #handlePopState() {
             let pageNo = 1;
             this.#sortField = this.#defaultSortField;
             this.#sortOrder = this.#defaultSortOrder;
-            this.#filters = new Map();
+            this.#filter.resetFilters();
             const url = new URL(window.location.href);
             url.searchParams.forEach((value, key) => {
                 if (key === "pageNo") {
@@ -219,7 +156,7 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
                 }
                 const matches = key.match(/^filters\[([a-z0-9_]+)\]$/i);
                 if (matches) {
-                    this.#filters.set(matches[1], value);
+                    this.#filter.setFilter(matches[1], value);
                 }
             });
             this.#switchPage(pageNo, false);
@@ -231,6 +168,13 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
             this.#table.addEventListener("remove", (event) => {
                 event.target.remove();
             });
+        }
+        #setupFilter(gridId) {
+            const filter = new Filter_1.default(gridId);
+            filter.addEventListener("switchPage", (event) => {
+                this.#switchPage(event.detail.pageNo);
+            });
+            return filter;
         }
     }
     exports.GridView = GridView;
