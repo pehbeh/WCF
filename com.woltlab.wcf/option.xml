@@ -1022,14 +1022,14 @@ XING</selectoptions>
 			<option name="module_url_unfurling">
 				<categoryname>message.general.unfurl</categoryname>
 				<optiontype>boolean</optiontype>
-				<enableoptions>url_unfurling_load_images</enableoptions>
+				<enableoptions>url_unfurling_save_images</enableoptions>
 				<defaultvalue>1</defaultvalue>
 				<showorder>1</showorder>
 			</option>
-			<option name="url_unfurling_no_images">
+			<option name="url_unfurling_save_images">
 				<categoryname>message.general.unfurl</categoryname>
 				<optiontype>boolean</optiontype>
-				<defaultvalue>0</defaultvalue>
+				<defaultvalue>1</defaultvalue>
 				<showorder>2</showorder>
 			</option>
 			<!-- /message.general.unfurl -->
