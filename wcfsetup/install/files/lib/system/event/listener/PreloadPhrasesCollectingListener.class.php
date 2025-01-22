@@ -136,13 +136,8 @@ final class PreloadPhrasesCollectingListener
         $event->preload('wcf.message.share.permalink.html');
         $event->preload('wcf.message.share.socialMedia');
 
-        $event->preload('wcf.message.quote.insertAllQuotes');
-        $event->preload('wcf.message.quote.insertSelectedQuotes');
-        $event->preload('wcf.message.quote.manageQuotes');
         $event->preload('wcf.message.quote.quoteSelected');
         $event->preload('wcf.message.quote.quoteAndReply');
-        $event->preload('wcf.message.quote.removeAllQuotes');
-        $event->preload('wcf.message.quote.showQuotes');
         $event->preload('wcf.message.quote.insertQuote');
 
         $event->preload('wcf.moderation.report.reportContent');
