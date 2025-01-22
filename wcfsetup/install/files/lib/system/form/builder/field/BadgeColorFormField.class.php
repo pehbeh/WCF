@@ -20,6 +20,7 @@ final class BadgeColorFormField extends RadioButtonFormField implements IPattern
 {
     use TPatternFormField;
 
+    public const CUSTOM_CSS_CLASSNAME = 'custom';
     public const AVAILABLE_CSS_CLASSNAMES = [
         'yellow',
         'orange',
@@ -32,7 +33,7 @@ final class BadgeColorFormField extends RadioButtonFormField implements IPattern
         'black',
 
         'none', /* not a real value */
-        'custom', /* not a real value */
+        BadgeColorFormField::CUSTOM_CSS_CLASSNAME, /* not a real value */
     ];
 
     /**
@@ -60,7 +61,7 @@ final class BadgeColorFormField extends RadioButtonFormField implements IPattern
         if ($this->getDocument()->hasRequestData($this->getPrefixedId())) {
             $this->value = StringUtil::trim($this->getDocument()->getRequestData($this->getPrefixedId()));
 
-            if ($this->supportsCustomClassName() && $this->value === 'custom') {
+            if ($this->supportsCustomClassName() && $this->value === BadgeColorFormField::CUSTOM_CSS_CLASSNAME) {
                 $this->customClassName = StringUtil::trim(
                     $this->getDocument()->getRequestData($this->getPrefixedId() . 'customCssClassName')
                 );
@@ -73,7 +74,7 @@ final class BadgeColorFormField extends RadioButtonFormField implements IPattern
     #[\Override]
     public function validate()
     {
-        if ($this->supportsCustomClassName() && $this->getValue() === 'custom') {
+        if ($this->supportsCustomClassName() && $this->getValue() === BadgeColorFormField::CUSTOM_CSS_CLASSNAME) {
             if (!Regex::compile($this->getPattern())->match($this->customClassName)) {
                 $this->addValidationError(
                     new FormFieldValidationError(
@@ -91,7 +92,7 @@ final class BadgeColorFormField extends RadioButtonFormField implements IPattern
     public function value($value)
     {
         if ($this->supportsCustomClassName() && !\in_array($value, self::AVAILABLE_CSS_CLASSNAMES)) {
-            parent::value('custom');
+            parent::value(BadgeColorFormField::CUSTOM_CSS_CLASSNAME);
             $this->customClassName = $value;
         } else {
             parent::value($value);
@@ -143,7 +144,7 @@ final class BadgeColorFormField extends RadioButtonFormField implements IPattern
 
     public function hasCustomClassName(): bool
     {
-        return $this->supportsCustomClassName() && $this->value === 'custom';
+        return $this->supportsCustomClassName() && $this->value === BadgeColorFormField::CUSTOM_CSS_CLASSNAME;
     }
 
     public function getCustomClassName(): string
@@ -156,10 +157,19 @@ final class BadgeColorFormField extends RadioButtonFormField implements IPattern
      */
     public function supportCustomClassName(bool $supportCustomClassName = true): self
     {
+        $classNames = \array_keys($this->options);
+
         if ($supportCustomClassName) {
-            $classNames[] = self::AVAILABLE_CSS_CLASSNAMES;
+            // already supported
+            if ($this->supportsCustomClassName()) {
+                return $this;
+            }
+
+            $classNames[] = BadgeColorFormField::CUSTOM_CSS_CLASSNAME;
         } else {
-            $classNames = \array_filter(self::AVAILABLE_CSS_CLASSNAMES, fn($className) => $className !== 'custom');
+            $classNames = \array_filter($classNames, function ($className) {
+                return $className !== BadgeColorFormField::CUSTOM_CSS_CLASSNAME;
+            });
         }
 
         return $this
@@ -171,6 +181,6 @@ final class BadgeColorFormField extends RadioButtonFormField implements IPattern
      */
     public function supportsCustomClassName(): bool
     {
-        return \in_array('custom', $this->options);
+        return \in_array(BadgeColorFormField::CUSTOM_CSS_CLASSNAME, $this->options);
     }
 }
