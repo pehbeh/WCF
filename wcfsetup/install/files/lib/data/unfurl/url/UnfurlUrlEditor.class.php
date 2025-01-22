@@ -32,9 +32,9 @@ class UnfurlUrlEditor extends DatabaseObjectEditor
     public static $baseClass = UnfurlUrl::class;
 
     /**
-     * Creates a webp thumbnail for the given file.
+     * Creates a webp thumbnail for the given file and saves it base64 encoded in a new `.bin` file.
      */
-    public static function createWebpThumbnail(string $file, string $originalFile): ?File
+    public static function saveUnfurlImage(string $file, string $originalFile): ?File
     {
         $imageData = \getimagesize($file);
 
@@ -43,6 +43,7 @@ class UnfurlUrlEditor extends DatabaseObjectEditor
             return null;
         }
         $webpFile = FileUtil::getTemporaryFilename(extension: 'webp');
+        $binFile = FileUtil::getTemporaryFilename(extension: 'bin');
 
         try {
             $imageAdapter->loadFile($file);
@@ -52,9 +53,12 @@ class UnfurlUrlEditor extends DatabaseObjectEditor
             // Clean up the thumbnail
             $thumbnail = null;
 
+            // Save the webp file as a base64 encoded binary file
+            \file_put_contents($binFile, \base64_encode(\file_get_contents($webpFile)));
+
             return FileEditor::createFromExistingFile(
-                $webpFile,
-                \pathinfo($originalFile, \PATHINFO_BASENAME) . ".webp",
+                $binFile,
+                \pathinfo($originalFile, \PATHINFO_BASENAME) . ".bin",
                 'com.woltlab.wcf.unfurl'
             );
         } catch (SystemException | ImageNotReadable $e) {
@@ -74,6 +78,7 @@ class UnfurlUrlEditor extends DatabaseObjectEditor
         } finally {
             // Clean up temporary files
             @\unlink($webpFile);
+            @\unlink($binFile);
         }
     }
 }

@@ -56,7 +56,7 @@ final class UnfurlUrlRebuildDataWorker extends AbstractLinearRebuildDataWorker
                 continue;
             }
 
-            if (URL_UNFURLING_NO_IMAGES) {
+            if (!URL_UNFURLING_SAVE_IMAGES) {
                 // delete stored images
                 if ($unfurlUrl->fileID !== null) {
                     $deleteFileIDs[] = $unfurlUrl->fileID;
@@ -69,7 +69,7 @@ final class UnfurlUrlRebuildDataWorker extends AbstractLinearRebuildDataWorker
             } elseif ($unfurlUrl->fileID !== null) {
                 $fileLocation = $this->getOldFileLocation($unfurlUrl);
 
-                $file = UnfurlUrlEditor::createWebpThumbnail(
+                $file = UnfurlUrlEditor::saveUnfurlImage(
                     $fileLocation,
                     \pathinfo($unfurlUrl->imageUrl, PATHINFO_FILENAME)
                 );

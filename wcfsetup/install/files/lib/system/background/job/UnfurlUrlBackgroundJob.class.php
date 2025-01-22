@@ -157,8 +157,8 @@ final class UnfurlUrlBackgroundJob extends AbstractBackgroundJob
                 'imageUrlHash' => \sha1($unfurlResponse->getImageUrl()),
                 'fileID' => $file?->fileID,
                 'isStored' => $file !== null ? 1 : 0,
-                'width' => $file?->width ?? $imageData[0],
-                'height' => $file?->height ?? $imageData[1],
+                'width' => $imageData[0],
+                'height' => $imageData[1],
             ];
         } catch (UrlInaccessible | DownloadFailed $e) {
             return [];
@@ -225,7 +225,7 @@ final class UnfurlUrlBackgroundJob extends AbstractBackgroundJob
         $tmp = FileUtil::getTemporaryFilename(extension: $extension);
         \file_put_contents($tmp, $image);
 
-        $file = UnfurlUrlEditor::createWebpThumbnail(
+        $file = UnfurlUrlEditor::saveUnfurlImage(
             $tmp,
             \sprintf(
                 "%s.%s",

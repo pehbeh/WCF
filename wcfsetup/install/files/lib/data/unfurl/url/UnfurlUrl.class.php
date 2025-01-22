@@ -110,10 +110,10 @@ class UnfurlUrl extends DatabaseObject
      */
     public function getImageUrl(): ?string
     {
-        if ($this->isStored && $this->fileID) {
+        if (URL_UNFURLING_SAVE_IMAGES && $this->isStored && $this->fileID !== null) {
             $file = FileRuntimeCache::getInstance()->getObject($this->fileID);
 
-            return $file?->getFullSizeImageSource();
+            return 'data:image/webp;base64, ' . \file_get_contents($file->getPathname());
         } elseif (!empty($this->imageUrl)) {
             if (MODULE_IMAGE_PROXY) {
                 $key = CryptoUtil::createSignedString($this->imageUrl);
@@ -129,14 +129,25 @@ class UnfurlUrl extends DatabaseObject
         return null;
     }
 
+    public function hasImageUrl(): bool
+    {
+        if (URL_UNFURLING_SAVE_IMAGES && $this->isStored && $this->fileID !== null) {
+            return true;
+        } elseif (!empty($this->imageUrl)) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function hasCoverImage(): bool
     {
-        return $this->getImageType() === self::IMAGE_COVER && !empty($this->getImageUrl());
+        return $this->getImageType() === self::IMAGE_COVER && $this->hasImageUrl();
     }
 
     public function hasSquaredImage(): bool
     {
-        return $this->getImageType() === self::IMAGE_SQUARED && !empty($this->getImageUrl());
+        return $this->getImageType() === self::IMAGE_SQUARED && $this->hasImageUrl();
     }
 
     public function isPlainUrl(): bool
