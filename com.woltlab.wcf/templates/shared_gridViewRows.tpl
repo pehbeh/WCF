@@ -1,6 +1,11 @@
 
 {foreach from=$view->getRows() item='row'}
 	<tr class="gridView__row" data-object-id="{$view->getObjectID($row)}">
+		{if true}
+			<td class="gridView__column gridView__selectColumn">
+				<input type="checkbox" class="gridView__selectRow" aria-label="todo: select row">
+			</td>
+		{/if}
 		{foreach from=$view->getVisibleColumns() item='column'}
 			<td class="gridView__column {$column->getClasses()}">
 				{unsafe:$view->renderColumn($column, $row)}

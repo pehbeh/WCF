@@ -22,6 +22,11 @@
 		<table class="gridView__table" id="{$view->getID()}_table"{if !$view->countRows()} hidden{/if}>
 			<thead>
 				<tr class="gridView__headerRow">
+					{if true}
+						<th class="gridView__headerColumn gridView__selectColumn">
+							<input type="checkbox" class="gridView__selectAllRows" aria-label="todo: select all rows">
+						</th>
+					{/if}
 					{foreach from=$view->getVisibleColumns() item='column'}
 						<th
 							class="gridView__headerColumn {$column->getClasses()}"
@@ -50,6 +55,10 @@
 
 	<div class="gridView__pagination">
 		<woltlab-core-pagination id="{$view->getID()}_pagination" page="{$view->getPageNo()}" count="{$view->countPages()}"></woltlab-core-pagination>
+	</div>
+
+	<div class="gridView__selectionBar">
+
 	</div>
 
 	<woltlab-core-notice type="info" id="{$view->getID()}_noItemsNotice"{if $view->countRows()} hidden{/if}>{lang}wcf.global.noItems{/lang}</woltlab-core-notice>

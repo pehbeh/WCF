@@ -51,6 +51,7 @@ export class GridView {
     this.#initInteractions();
     this.#initFilters();
     this.#initEventListeners();
+    this.#initSelectCheckboxes();
 
     window.addEventListener("popstate", () => {
       this.#handlePopState();
