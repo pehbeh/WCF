@@ -35,7 +35,7 @@ abstract class AbstractGridView
     private array $quickInteractions = [];
 
     private GridViewRowLink $rowLink;
-    private int $rowsPerPage = 20;
+    private int $rowsPerPage = 3;
     private string $baseUrl = '';
     private string $sortField = '';
     private string $sortOrder = 'ASC';

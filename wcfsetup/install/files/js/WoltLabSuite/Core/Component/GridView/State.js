@@ -1,14 +1,16 @@
-define(["require", "exports", "tslib", "./Filter", "./Sorting"], function (require, exports, tslib_1, Filter_1, Sorting_1) {
+define(["require", "exports", "tslib", "./Filter", "./Selection", "./Sorting"], function (require, exports, tslib_1, Filter_1, Selection_1, Sorting_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.State = void 0;
     Filter_1 = tslib_1.__importDefault(Filter_1);
+    Selection_1 = tslib_1.__importDefault(Selection_1);
     Sorting_1 = tslib_1.__importDefault(Sorting_1);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
     class State extends EventTarget {
         #baseUrl;
         #filter;
         #pagination;
+        #selection;
         #sorting;
         #pageNo;
         constructor(gridId, table, pageNo, baseUrl, sortField, sortOrder) {
@@ -27,6 +29,7 @@ define(["require", "exports", "tslib", "./Filter", "./Sorting"], function (requi
             this.#sorting.addEventListener("change", () => {
                 this.#switchPage(1, 0 /* StateChangeCause.Change */);
             });
+            this.#selection = new Selection_1.default(table);
             window.addEventListener("popstate", () => {
                 this.#handlePopState();
             });
@@ -46,6 +49,7 @@ define(["require", "exports", "tslib", "./Filter", "./Sorting"], function (requi
         updateFromResponse(cause, count, filterLabels) {
             this.#filter.setFilterLabels(filterLabels);
             this.#pagination.count = count;
+            this.#selection.refresh();
             if (cause === 0 /* StateChangeCause.Change */ || cause === 2 /* StateChangeCause.Pagination */) {
                 this.#updateQueryString();
             }

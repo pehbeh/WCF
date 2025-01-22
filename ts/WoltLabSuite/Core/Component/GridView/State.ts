@@ -1,4 +1,5 @@
 import Filter from "./Filter";
+import Selection from "./Selection";
 import Sorting from "./Sorting";
 
 export const enum StateChangeCause {
@@ -12,6 +13,7 @@ export class State extends EventTarget {
   readonly #baseUrl: string;
   readonly #filter: Filter;
   readonly #pagination: WoltlabCorePaginationElement;
+  readonly #selection: Selection;
   readonly #sorting: Sorting;
   #pageNo: number;
 
@@ -43,6 +45,8 @@ export class State extends EventTarget {
       this.#switchPage(1, StateChangeCause.Change);
     });
 
+    this.#selection = new Selection(table);
+
     window.addEventListener("popstate", () => {
       this.#handlePopState();
     });
@@ -67,6 +71,7 @@ export class State extends EventTarget {
   updateFromResponse(cause: StateChangeCause, count: number, filterLabels: ArrayLike<string>): void {
     this.#filter.setFilterLabels(filterLabels);
     this.#pagination.count = count;
+    this.#selection.refresh();
 
     if (cause === StateChangeCause.Change || cause === StateChangeCause.Pagination) {
       this.#updateQueryString();
