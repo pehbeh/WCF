@@ -32,15 +32,26 @@ define(["require", "exports"], function (require, exports) {
         getSortOrder() {
             return this.#sortOrder;
         }
-        resetSorting() {
+        getQueryParameters() {
+            if (this.#sortField === "") {
+                return [];
+            }
+            return [
+                ["sortField", this.#sortField],
+                ["sortOrder", this.#sortOrder],
+            ];
+        }
+        updateFromSearchParams(params) {
             this.#sortField = this.#defaultSortField;
             this.#sortOrder = this.#defaultSortOrder;
-        }
-        setSortField(sortField) {
-            this.#sortField = sortField;
-        }
-        setSortOrder(sortOrder) {
-            this.#sortOrder = sortOrder;
+            params.forEach((value, key) => {
+                if (key === "sortField") {
+                    this.#sortField = value;
+                }
+                else if (key === "sortOrder") {
+                    this.#sortOrder = value;
+                }
+            });
         }
         #sort(sortField) {
             if (this.#sortField == sortField && this.#sortOrder == "ASC") {

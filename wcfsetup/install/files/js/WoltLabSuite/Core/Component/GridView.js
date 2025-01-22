@@ -26,7 +26,6 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
             this.#baseUrl = baseUrl;
             this.#gridViewParameters = gridViewParameters;
             this.#initPagination();
-            this.#initSorting();
             this.#initInteractions();
             this.#filter = this.#setupFilter(gridId);
             this.#sorting = this.#setupSorting(sortField, sortOrder);
@@ -40,7 +39,6 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
                 void this.#switchPage(event.detail);
             });
         }
-        #initSorting() { }
         #switchPage(pageNo, updateQueryString = true) {
             this.#pagination.page = pageNo;
             this.#pageNo = pageNo;
@@ -72,9 +70,8 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
             if (this.#pageNo > 1) {
                 parameters.push(["pageNo", this.#pageNo.toString()]);
             }
-            if (this.#sorting.getSortField()) {
-                parameters.push(["sortField", this.#sorting.getSortField()]);
-                parameters.push(["sortOrder", this.#sorting.getSortOrder()]);
+            for (const parameter of this.#sorting.getQueryParameters()) {
+                parameters.push(parameter);
             }
             this.#filter.getActiveFilters().forEach((value, key) => {
                 parameters.push([`filters[${key}]`, value]);
@@ -105,7 +102,6 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
         }
         #handlePopState() {
             let pageNo = 1;
-            this.#sorting.resetSorting();
             this.#filter.resetFilters();
             const url = new URL(window.location.href);
             url.searchParams.forEach((value, key) => {
@@ -113,17 +109,12 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
                     pageNo = parseInt(value, 10);
                     return;
                 }
-                if (key === "sortField") {
-                    this.#sorting.setSortField(value);
-                }
-                if (key === "sortOrder") {
-                    this.#sorting.setSortOrder(value);
-                }
                 const matches = key.match(/^filters\[([a-z0-9_]+)\]$/i);
                 if (matches) {
                     this.#filter.setFilter(matches[1], value);
                 }
             });
+            this.#sorting.updateFromSearchParams(url.searchParams);
             this.#switchPage(pageNo, false);
         }
         #initEventListeners() {

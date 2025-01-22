@@ -35,17 +35,28 @@ export class Sorting extends EventTarget {
     return this.#sortOrder;
   }
 
-  resetSorting(): void {
+  getQueryParameters(): [string, string][] {
+    if (this.#sortField === "") {
+      return [];
+    }
+
+    return [
+      ["sortField", this.#sortField],
+      ["sortOrder", this.#sortOrder],
+    ];
+  }
+
+  updateFromSearchParams(params: URLSearchParams): void {
     this.#sortField = this.#defaultSortField;
     this.#sortOrder = this.#defaultSortOrder;
-  }
 
-  setSortField(sortField: string): void {
-    this.#sortField = sortField;
-  }
-
-  setSortOrder(sortOrder: string): void {
-    this.#sortOrder = sortOrder;
+    params.forEach((value, key) => {
+      if (key === "sortField") {
+        this.#sortField = value;
+      } else if (key === "sortOrder") {
+        this.#sortOrder = value;
+      }
+    });
   }
 
   #sort(sortField: string): void {
