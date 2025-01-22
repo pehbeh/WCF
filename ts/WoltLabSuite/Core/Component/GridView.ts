@@ -4,7 +4,7 @@ import DomChangeListener from "../Dom/Change/Listener";
 import DomUtil from "../Dom/Util";
 import { wheneverFirstSeen } from "../Helper/Selector";
 import UiDropdownSimple from "../Ui/Dropdown/Simple";
-import { State, UpdateCause } from "./GridView/State";
+import { State, StateChangeCause } from "./GridView/State";
 
 export class GridView {
   readonly #gridClassName: string;
@@ -35,7 +35,7 @@ export class GridView {
     this.#initEventListeners();
   }
 
-  async #loadRows(source: UpdateCause): Promise<void> {
+  async #loadRows(cause: StateChangeCause): Promise<void> {
     const response = (
       await getRows(
         this.#gridClassName,
@@ -50,7 +50,7 @@ export class GridView {
 
     this.#table.hidden = response.totalRows == 0;
     this.#noItemsNotice.hidden = response.totalRows != 0;
-    this.#state.updateFromResponse(source, response.pages, response.filterLabels);
+    this.#state.updateFromResponse(cause, response.pages, response.filterLabels);
 
     DomChangeListener.trigger();
   }

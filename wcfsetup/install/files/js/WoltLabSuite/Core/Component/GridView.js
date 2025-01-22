@@ -20,12 +20,12 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
             this.#state = this.#setupState(gridId, pageNo, baseUrl, sortField, sortOrder);
             this.#initEventListeners();
         }
-        async #loadRows(source) {
+        async #loadRows(cause) {
             const response = (await (0, GetRows_1.getRows)(this.#gridClassName, this.#state.getPageNo(), this.#state.getSortField(), this.#state.getSortOrder(), this.#state.getActiveFilters(), this.#gridViewParameters)).unwrap();
             Util_1.default.setInnerHtml(this.#table.querySelector("tbody"), response.template);
             this.#table.hidden = response.totalRows == 0;
             this.#noItemsNotice.hidden = response.totalRows != 0;
-            this.#state.updateFromResponse(source, response.pages, response.filterLabels);
+            this.#state.updateFromResponse(cause, response.pages, response.filterLabels);
             Listener_1.default.trigger();
         }
         async #refreshRow(row) {

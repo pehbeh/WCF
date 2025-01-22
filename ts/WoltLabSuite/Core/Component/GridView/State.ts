@@ -1,7 +1,7 @@
 import Filter from "./Filter";
 import Sorting from "./Sorting";
 
-export const enum UpdateCause {
+export const enum StateChangeCause {
   Change,
   History,
   Pagination,
@@ -30,17 +30,17 @@ export class State extends EventTarget {
 
     this.#pagination = document.getElementById(`${gridId}_pagination`) as WoltlabCorePaginationElement;
     this.#pagination.addEventListener("switchPage", (event: CustomEvent) => {
-      void this.#switchPage(event.detail, UpdateCause.Pagination);
+      void this.#switchPage(event.detail, StateChangeCause.Pagination);
     });
 
     this.#filter = new Filter(gridId);
     this.#filter.addEventListener("change", () => {
-      this.#switchPage(1, UpdateCause.Change);
+      this.#switchPage(1, StateChangeCause.Change);
     });
 
     this.#sorting = new Sorting(table, sortField, sortOrder);
     this.#sorting.addEventListener("change", () => {
-      this.#switchPage(1, UpdateCause.Change);
+      this.#switchPage(1, StateChangeCause.Change);
     });
 
     window.addEventListener("popstate", () => {
@@ -64,16 +64,16 @@ export class State extends EventTarget {
     return this.#filter.getActiveFilters();
   }
 
-  updateFromResponse(source: UpdateCause, count: number, filterLabels: ArrayLike<string>): void {
+  updateFromResponse(cause: StateChangeCause, count: number, filterLabels: ArrayLike<string>): void {
     this.#filter.setFilterLabels(filterLabels);
     this.#pagination.count = count;
 
-    if (source === UpdateCause.Change || source === UpdateCause.Pagination) {
+    if (cause === StateChangeCause.Change || cause === StateChangeCause.Pagination) {
       this.#updateQueryString();
     }
   }
 
-  #switchPage(pageNo: number, source: UpdateCause): void {
+  #switchPage(pageNo: number, source: StateChangeCause): void {
     this.#pagination.page = pageNo;
     this.#pageNo = pageNo;
 
@@ -123,12 +123,12 @@ export class State extends EventTarget {
     this.#filter.updateFromSearchParams(searchParams);
     this.#sorting.updateFromSearchParams(searchParams);
 
-    this.#switchPage(pageNo, UpdateCause.History);
+    this.#switchPage(pageNo, StateChangeCause.History);
   }
 }
 
 interface StateEventMap {
-  change: CustomEvent<{ source: UpdateCause }>;
+  change: CustomEvent<{ source: StateChangeCause }>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging

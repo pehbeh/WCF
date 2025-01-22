@@ -17,15 +17,15 @@ define(["require", "exports", "tslib", "./Filter", "./Sorting"], function (requi
             this.#pageNo = pageNo;
             this.#pagination = document.getElementById(`${gridId}_pagination`);
             this.#pagination.addEventListener("switchPage", (event) => {
-                void this.#switchPage(event.detail, 2 /* UpdateCause.Pagination */);
+                void this.#switchPage(event.detail, 2 /* StateChangeCause.Pagination */);
             });
             this.#filter = new Filter_1.default(gridId);
             this.#filter.addEventListener("change", () => {
-                this.#switchPage(1, 0 /* UpdateCause.Change */);
+                this.#switchPage(1, 0 /* StateChangeCause.Change */);
             });
             this.#sorting = new Sorting_1.default(table, sortField, sortOrder);
             this.#sorting.addEventListener("change", () => {
-                this.#switchPage(1, 0 /* UpdateCause.Change */);
+                this.#switchPage(1, 0 /* StateChangeCause.Change */);
             });
             window.addEventListener("popstate", () => {
                 this.#handlePopState();
@@ -43,10 +43,10 @@ define(["require", "exports", "tslib", "./Filter", "./Sorting"], function (requi
         getActiveFilters() {
             return this.#filter.getActiveFilters();
         }
-        updateFromResponse(source, count, filterLabels) {
+        updateFromResponse(cause, count, filterLabels) {
             this.#filter.setFilterLabels(filterLabels);
             this.#pagination.count = count;
-            if (source === 0 /* UpdateCause.Change */ || source === 2 /* UpdateCause.Pagination */) {
+            if (cause === 0 /* StateChangeCause.Change */ || cause === 2 /* StateChangeCause.Pagination */) {
                 this.#updateQueryString();
             }
         }
@@ -88,7 +88,7 @@ define(["require", "exports", "tslib", "./Filter", "./Sorting"], function (requi
             }
             this.#filter.updateFromSearchParams(searchParams);
             this.#sorting.updateFromSearchParams(searchParams);
-            this.#switchPage(pageNo, 1 /* UpdateCause.History */);
+            this.#switchPage(pageNo, 1 /* StateChangeCause.History */);
         }
     }
     exports.State = State;
