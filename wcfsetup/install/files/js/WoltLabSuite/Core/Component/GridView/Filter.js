@@ -13,14 +13,24 @@ define(["require", "exports", "../../Helper/PromiseMutex", "../Dialog"], functio
             this.#filterPills = document.getElementById(`${gridId}_filters`);
             this.#setupEventListeners();
         }
-        resetFilters() {
-            this.#filters.clear();
-        }
-        setFilter(key, value) {
-            this.#filters.set(key, value);
-        }
         getActiveFilters() {
             return new Map(this.#filters);
+        }
+        getQueryParameters() {
+            const parameters = [];
+            for (const [key, value] of this.#filters.entries()) {
+                parameters.push([`filters[${key}]`, value]);
+            }
+            return parameters;
+        }
+        updateFromSearchParams(params) {
+            this.#filters.clear();
+            params.forEach((value, key) => {
+                const matches = key.match(/^filters\[([a-z0-9_]+)\]$/i);
+                if (matches) {
+                    this.#filters.set(matches[1], value);
+                }
+            });
         }
         setFilterLabels(labels) {
             if (this.#filterPills === null) {

@@ -16,16 +16,29 @@ export class Filter extends EventTarget {
     this.#setupEventListeners();
   }
 
-  resetFilters(): void {
-    this.#filters.clear();
-  }
-
-  setFilter(key: string, value: string): void {
-    this.#filters.set(key, value);
-  }
-
   getActiveFilters(): Map<string, string> {
     return new Map(this.#filters);
+  }
+
+  getQueryParameters(): [string, string][] {
+    const parameters: [string, string][] = [];
+
+    for (const [key, value] of this.#filters.entries()) {
+      parameters.push([`filters[${key}]`, value]);
+    }
+
+    return parameters;
+  }
+
+  updateFromSearchParams(params: URLSearchParams): void {
+    this.#filters.clear();
+
+    params.forEach((value, key) => {
+      const matches = key.match(/^filters\[([a-z0-9_]+)\]$/i);
+      if (matches) {
+        this.#filters.set(matches[1], value);
+      }
+    });
   }
 
   setFilterLabels(labels: ArrayLike<string>): void {

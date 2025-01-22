@@ -73,9 +73,9 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
             for (const parameter of this.#sorting.getQueryParameters()) {
                 parameters.push(parameter);
             }
-            this.#filter.getActiveFilters().forEach((value, key) => {
-                parameters.push([`filters[${key}]`, value]);
-            });
+            for (const parameter of this.#filter.getQueryParameters()) {
+                parameters.push(parameter);
+            }
             if (parameters.length > 0) {
                 url.search += url.search !== "" ? "&" : "?";
                 url.search += new URLSearchParams(parameters).toString();
@@ -102,18 +102,14 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
         }
         #handlePopState() {
             let pageNo = 1;
-            this.#filter.resetFilters();
             const url = new URL(window.location.href);
             url.searchParams.forEach((value, key) => {
                 if (key === "pageNo") {
                     pageNo = parseInt(value, 10);
                     return;
                 }
-                const matches = key.match(/^filters\[([a-z0-9_]+)\]$/i);
-                if (matches) {
-                    this.#filter.setFilter(matches[1], value);
-                }
             });
+            this.#filter.updateFromSearchParams(url.searchParams);
             this.#sorting.updateFromSearchParams(url.searchParams);
             this.#switchPage(pageNo, false);
         }
