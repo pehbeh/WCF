@@ -332,8 +332,8 @@ html[data-color-scheme="dark"] .dialog::backdrop {
 	color: var(--wcfContentText);
 	display: flex;
 	flex-direction: column;
-	max-height: calc(var(--dialog-max-height) - (2 * var(--dialog-padding)));
-	max-width: calc(var(--dialog-max-width) - (2 * var(--dialog-padding)));
+	max-height: var(--dialog-max-height);
+	max-width: var(--dialog-max-width);
 	min-height: 0;
 	min-width: 500px;
 	overflow: hidden;
