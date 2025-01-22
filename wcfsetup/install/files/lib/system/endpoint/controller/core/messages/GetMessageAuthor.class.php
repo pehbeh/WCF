@@ -19,7 +19,7 @@ use wcf\system\endpoint\IController;
  * @license   GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since     6.2
  */
-#[GetRequest('/core/messages/messageauthor')]
+#[GetRequest('/core/messages/message-author')]
 final class GetMessageAuthor implements IController
 {
     #[\Override]
