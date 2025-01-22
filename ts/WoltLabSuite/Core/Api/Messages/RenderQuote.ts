@@ -28,7 +28,7 @@ export async function renderQuote(
   className: string,
   objectID: number,
 ): Promise<ApiResult<Response>> {
-  const url = new URL(window.WSC_RPC_API_URL + "core/messages/renderquote");
+  const url = new URL(window.WSC_RPC_API_URL + "core/messages/render-quote");
   url.searchParams.set("objectType", objectType);
   url.searchParams.set("className", className);
   url.searchParams.set("fullQuote", "true");

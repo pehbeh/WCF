@@ -22,8 +22,7 @@ use wcf\system\html\input\HtmlInputProcessor;
  * @license   GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since     6.2
  */
-
-#[GetRequest('/core/messages/renderquote')]
+#[GetRequest('/core/messages/render-quote')]
 final class RenderQuote implements IController
 {
     #[\Override]
