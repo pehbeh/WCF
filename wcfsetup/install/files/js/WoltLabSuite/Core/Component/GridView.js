@@ -1,4 +1,4 @@
-define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridviews/GetRows", "../Dom/Change/Listener", "../Dom/Util", "../Helper/Selector", "../Ui/Dropdown/Simple", "./GridView/Filter"], function (require, exports, tslib_1, GetRow_1, GetRows_1, Listener_1, Util_1, Selector_1, Simple_1, Filter_1) {
+define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridviews/GetRows", "../Dom/Change/Listener", "../Dom/Util", "../Helper/Selector", "../Ui/Dropdown/Simple", "./GridView/Filter", "./GridView/Sorting"], function (require, exports, tslib_1, GetRow_1, GetRows_1, Listener_1, Util_1, Selector_1, Simple_1, Filter_1, Sorting_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GridView = void 0;
@@ -6,18 +6,16 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
     Util_1 = tslib_1.__importDefault(Util_1);
     Simple_1 = tslib_1.__importDefault(Simple_1);
     Filter_1 = tslib_1.__importDefault(Filter_1);
+    Sorting_1 = tslib_1.__importDefault(Sorting_1);
     class GridView {
         #filter;
         #gridClassName;
         #table;
         #pagination;
+        #sorting;
         #baseUrl;
         #noItemsNotice;
         #pageNo;
-        #sortField;
-        #sortOrder;
-        #defaultSortField;
-        #defaultSortOrder;
         #gridViewParameters;
         constructor(gridId, gridClassName, pageNo, baseUrl = "", sortField = "", sortOrder = "ASC", gridViewParameters) {
             this.#gridClassName = gridClassName;
@@ -26,15 +24,12 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
             this.#noItemsNotice = document.getElementById(`${gridId}_noItemsNotice`);
             this.#pageNo = pageNo;
             this.#baseUrl = baseUrl;
-            this.#sortField = sortField;
-            this.#defaultSortField = sortField;
-            this.#sortOrder = sortOrder;
-            this.#defaultSortOrder = sortOrder;
             this.#gridViewParameters = gridViewParameters;
             this.#initPagination();
             this.#initSorting();
             this.#initInteractions();
             this.#filter = this.#setupFilter(gridId);
+            this.#sorting = this.#setupSorting(sortField, sortOrder);
             this.#initEventListeners();
             window.addEventListener("popstate", () => {
                 this.#handlePopState();
@@ -45,43 +40,14 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
                 void this.#switchPage(event.detail);
             });
         }
-        #initSorting() {
-            this.#table
-                .querySelectorAll('.gridView__headerColumn[data-sortable="1"]')
-                .forEach((element) => {
-                const button = element.querySelector(".gridView__headerColumn__button");
-                button?.addEventListener("click", () => {
-                    this.#sort(element.dataset.id);
-                });
-            });
-            this.#renderActiveSorting();
-        }
-        #sort(sortField) {
-            if (this.#sortField == sortField && this.#sortOrder == "ASC") {
-                this.#sortOrder = "DESC";
-            }
-            else {
-                this.#sortField = sortField;
-                this.#sortOrder = "ASC";
-            }
-            this.#switchPage(1);
-            this.#renderActiveSorting();
-        }
-        #renderActiveSorting() {
-            this.#table.querySelectorAll('th[data-sortable="1"]').forEach((element) => {
-                element.classList.remove("active", "ASC", "DESC");
-                if (element.dataset.id == this.#sortField) {
-                    element.classList.add("active", this.#sortOrder);
-                }
-            });
-        }
+        #initSorting() { }
         #switchPage(pageNo, updateQueryString = true) {
             this.#pagination.page = pageNo;
             this.#pageNo = pageNo;
             void this.#loadRows(updateQueryString);
         }
         async #loadRows(updateQueryString = true) {
-            const response = (await (0, GetRows_1.getRows)(this.#gridClassName, this.#pageNo, this.#sortField, this.#sortOrder, this.#filter.getActiveFilters(), this.#gridViewParameters)).unwrap();
+            const response = (await (0, GetRows_1.getRows)(this.#gridClassName, this.#pageNo, this.#sorting.getSortField(), this.#sorting.getSortOrder(), this.#filter.getActiveFilters(), this.#gridViewParameters)).unwrap();
             Util_1.default.setInnerHtml(this.#table.querySelector("tbody"), response.template);
             this.#table.hidden = response.totalRows == 0;
             this.#noItemsNotice.hidden = response.totalRows != 0;
@@ -106,9 +72,9 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
             if (this.#pageNo > 1) {
                 parameters.push(["pageNo", this.#pageNo.toString()]);
             }
-            if (this.#sortField) {
-                parameters.push(["sortField", this.#sortField]);
-                parameters.push(["sortOrder", this.#sortOrder]);
+            if (this.#sorting.getSortField()) {
+                parameters.push(["sortField", this.#sorting.getSortField()]);
+                parameters.push(["sortOrder", this.#sorting.getSortOrder()]);
             }
             this.#filter.getActiveFilters().forEach((value, key) => {
                 parameters.push([`filters[${key}]`, value]);
@@ -139,8 +105,7 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
         }
         #handlePopState() {
             let pageNo = 1;
-            this.#sortField = this.#defaultSortField;
-            this.#sortOrder = this.#defaultSortOrder;
+            this.#sorting.resetSorting();
             this.#filter.resetFilters();
             const url = new URL(window.location.href);
             url.searchParams.forEach((value, key) => {
@@ -149,10 +114,10 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
                     return;
                 }
                 if (key === "sortField") {
-                    this.#sortField = value;
+                    this.#sorting.setSortField(value);
                 }
                 if (key === "sortOrder") {
-                    this.#sortOrder = value;
+                    this.#sorting.setSortOrder(value);
                 }
                 const matches = key.match(/^filters\[([a-z0-9_]+)\]$/i);
                 if (matches) {
@@ -175,6 +140,13 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
                 this.#switchPage(event.detail.pageNo);
             });
             return filter;
+        }
+        #setupSorting(sortField, sortOrder) {
+            const sorting = new Sorting_1.default(this.#table, sortField, sortOrder);
+            sorting.addEventListener("switchPage", (event) => {
+                this.#switchPage(event.detail.pageNo);
+            });
+            return sorting;
         }
     }
     exports.GridView = GridView;

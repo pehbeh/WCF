@@ -5,19 +5,18 @@ import DomUtil from "../Dom/Util";
 import { wheneverFirstSeen } from "../Helper/Selector";
 import UiDropdownSimple from "../Ui/Dropdown/Simple";
 import Filter from "./GridView/Filter";
+import Sorting from "./GridView/Sorting";
 
 export class GridView {
   readonly #filter: Filter;
   readonly #gridClassName: string;
   readonly #table: HTMLTableElement;
   readonly #pagination: WoltlabCorePaginationElement;
+  readonly #sorting: Sorting;
   readonly #baseUrl: string;
   readonly #noItemsNotice: HTMLElement;
   #pageNo: number;
-  #sortField: string;
-  #sortOrder: string;
-  #defaultSortField: string;
-  #defaultSortOrder: string;
+
   #gridViewParameters?: Map<string, string>;
 
   constructor(
@@ -35,16 +34,14 @@ export class GridView {
     this.#noItemsNotice = document.getElementById(`${gridId}_noItemsNotice`) as HTMLElement;
     this.#pageNo = pageNo;
     this.#baseUrl = baseUrl;
-    this.#sortField = sortField;
-    this.#defaultSortField = sortField;
-    this.#sortOrder = sortOrder;
-    this.#defaultSortOrder = sortOrder;
+
     this.#gridViewParameters = gridViewParameters;
 
     this.#initPagination();
     this.#initSorting();
     this.#initInteractions();
     this.#filter = this.#setupFilter(gridId);
+    this.#sorting = this.#setupSorting(sortField, sortOrder);
     this.#initEventListeners();
 
     window.addEventListener("popstate", () => {
@@ -58,40 +55,7 @@ export class GridView {
     });
   }
 
-  #initSorting(): void {
-    this.#table
-      .querySelectorAll<HTMLTableCellElement>('.gridView__headerColumn[data-sortable="1"]')
-      .forEach((element) => {
-        const button = element.querySelector<HTMLButtonElement>(".gridView__headerColumn__button");
-        button?.addEventListener("click", () => {
-          this.#sort(element.dataset.id!);
-        });
-      });
-
-    this.#renderActiveSorting();
-  }
-
-  #sort(sortField: string): void {
-    if (this.#sortField == sortField && this.#sortOrder == "ASC") {
-      this.#sortOrder = "DESC";
-    } else {
-      this.#sortField = sortField;
-      this.#sortOrder = "ASC";
-    }
-
-    this.#switchPage(1);
-    this.#renderActiveSorting();
-  }
-
-  #renderActiveSorting(): void {
-    this.#table.querySelectorAll<HTMLTableCellElement>('th[data-sortable="1"]').forEach((element) => {
-      element.classList.remove("active", "ASC", "DESC");
-
-      if (element.dataset.id == this.#sortField) {
-        element.classList.add("active", this.#sortOrder);
-      }
-    });
-  }
+  #initSorting(): void {}
 
   #switchPage(pageNo: number, updateQueryString: boolean = true): void {
     this.#pagination.page = pageNo;
@@ -105,8 +69,8 @@ export class GridView {
       await getRows(
         this.#gridClassName,
         this.#pageNo,
-        this.#sortField,
-        this.#sortOrder,
+        this.#sorting.getSortField(),
+        this.#sorting.getSortOrder(),
         this.#filter.getActiveFilters(),
         this.#gridViewParameters,
       )
@@ -143,9 +107,9 @@ export class GridView {
     if (this.#pageNo > 1) {
       parameters.push(["pageNo", this.#pageNo.toString()]);
     }
-    if (this.#sortField) {
-      parameters.push(["sortField", this.#sortField]);
-      parameters.push(["sortOrder", this.#sortOrder]);
+    if (this.#sorting.getSortField()) {
+      parameters.push(["sortField", this.#sorting.getSortField()]);
+      parameters.push(["sortOrder", this.#sorting.getSortOrder()]);
     }
 
     this.#filter.getActiveFilters().forEach((value, key) => {
@@ -184,8 +148,7 @@ export class GridView {
 
   #handlePopState(): void {
     let pageNo = 1;
-    this.#sortField = this.#defaultSortField;
-    this.#sortOrder = this.#defaultSortOrder;
+    this.#sorting.resetSorting();
     this.#filter.resetFilters();
 
     const url = new URL(window.location.href);
@@ -196,11 +159,11 @@ export class GridView {
       }
 
       if (key === "sortField") {
-        this.#sortField = value;
+        this.#sorting.setSortField(value);
       }
 
       if (key === "sortOrder") {
-        this.#sortOrder = value;
+        this.#sorting.setSortOrder(value);
       }
 
       const matches = key.match(/^filters\[([a-z0-9_]+)\]$/i);
@@ -229,5 +192,14 @@ export class GridView {
     });
 
     return filter;
+  }
+
+  #setupSorting(sortField: string, sortOrder: string): Sorting {
+    const sorting = new Sorting(this.#table, sortField, sortOrder);
+    sorting.addEventListener("switchPage", (event) => {
+      this.#switchPage(event.detail.pageNo);
+    });
+
+    return sorting;
   }
 }

@@ -1,0 +1,67 @@
+define(["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.Sorting = void 0;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+    class Sorting extends EventTarget {
+        #defaultSortField;
+        #defaultSortOrder;
+        #sortField;
+        #sortOrder;
+        #table;
+        constructor(table, sortField, sortOrder) {
+            super();
+            this.#sortField = sortField;
+            this.#defaultSortField = sortField;
+            this.#sortOrder = sortOrder;
+            this.#defaultSortOrder = sortOrder;
+            this.#table = table;
+            this.#table
+                .querySelectorAll('.gridView__headerColumn[data-sortable="1"]')
+                .forEach((element) => {
+                const button = element.querySelector(".gridView__headerColumn__button");
+                button?.addEventListener("click", () => {
+                    this.#sort(element.dataset.id);
+                });
+            });
+            this.#renderActiveSorting();
+        }
+        getSortField() {
+            return this.#sortField;
+        }
+        getSortOrder() {
+            return this.#sortOrder;
+        }
+        resetSorting() {
+            this.#sortField = this.#defaultSortField;
+            this.#sortOrder = this.#defaultSortOrder;
+        }
+        setSortField(sortField) {
+            this.#sortField = sortField;
+        }
+        setSortOrder(sortOrder) {
+            this.#sortOrder = sortOrder;
+        }
+        #sort(sortField) {
+            if (this.#sortField == sortField && this.#sortOrder == "ASC") {
+                this.#sortOrder = "DESC";
+            }
+            else {
+                this.#sortField = sortField;
+                this.#sortOrder = "ASC";
+            }
+            this.dispatchEvent(new CustomEvent("switchPage", { detail: { pageNo: 1 } }));
+            this.#renderActiveSorting();
+        }
+        #renderActiveSorting() {
+            this.#table.querySelectorAll('th[data-sortable="1"]').forEach((element) => {
+                element.classList.remove("active", "ASC", "DESC");
+                if (element.dataset.id == this.#sortField) {
+                    element.classList.add("active", this.#sortOrder);
+                }
+            });
+        }
+    }
+    exports.Sorting = Sorting;
+    exports.default = Sorting;
+});
