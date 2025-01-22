@@ -4192,16 +4192,10 @@ Allowed extensions: gif, jpg, jpeg, png, webp]]></item>
 		<item name="wcf.message.autosave.saved"><![CDATA[Draft saved]]></item>
 		<item name="wcf.message.bbcode.code.copy"><![CDATA[Copy Contents]]></item>
 		<item name="wcf.message.bbcode.code.copy.success"><![CDATA[The contents have been successfully copied.]]></item>
-		<item name="wcf.message.quote.insertAllQuotes"><![CDATA[Insert All Quotes]]></item>
 		<item name="wcf.message.quote.insertQuote"><![CDATA[Insert Quote]]></item>
-		<item name="wcf.message.quote.insertSelectedQuotes"><![CDATA[Insert Marked Quotes]]></item>
-		<item name="wcf.message.quote.manageQuotes"><![CDATA[Manage Quotes]]></item>
 		<item name="wcf.message.quote.quoteSelected"><![CDATA[Save Quote]]></item>
 		<item name="wcf.message.quote.quoteAndReply"><![CDATA[Insert Quote]]></item>
-		<item name="wcf.message.quote.showQuotes"><![CDATA[{if $count == 1}One Quote{else}{#$count} Quotes{/if}]]></item>
 		<item name="wcf.message.quote.quoteMessage"><![CDATA[Quote]]></item>
-		<item name="wcf.message.quote.removeAllQuotes"><![CDATA[Remove All Quotes]]></item>
-		<item name="wcf.message.quote.removeSelectedQuotes"><![CDATA[Removed Marked Quotes]]></item>
 		<item name="wcf.message.settings"><![CDATA[Settings]]></item>
 		<item name="wcf.message.share"><![CDATA[Share]]></item>
 		<item name="wcf.message.share.facebook"><![CDATA[Facebook]]></item>
@@ -7487,5 +7481,11 @@ your notifications on <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phras
 	<item name="wcf.user.notification.userRegistration.message.stacked"/>
 	<item name="wcf.user.notification.userRegistration.mail.plaintext"/>
 	<item name="wcf.user.notification.userRegistration.mail.html"/>
+	<item name="wcf.message.quote.insertAllQuotes"/>
+	<item name="wcf.message.quote.insertSelectedQuotes"/>
+	<item name="wcf.message.quote.manageQuotes"/>
+	<item name="wcf.message.quote.showQuotes"/>
+	<item name="wcf.message.quote.removeSelectedQuotes"/>
+	<item name="wcf.message.quote.removeAllQuotes"/>
 </delete>
 </language>

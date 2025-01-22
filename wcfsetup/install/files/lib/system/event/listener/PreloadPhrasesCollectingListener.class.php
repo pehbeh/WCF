@@ -138,6 +138,7 @@ final class PreloadPhrasesCollectingListener
 
         $event->preload('wcf.message.quote.quoteSelected');
         $event->preload('wcf.message.quote.quoteAndReply');
+        $event->preload('wcf.message.quote.quoteMessage');
         $event->preload('wcf.message.quote.insertQuote');
 
         $event->preload('wcf.moderation.report.reportContent');
