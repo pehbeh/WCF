@@ -285,8 +285,8 @@
 }
 
 .dialog {
-	--dialog-max-height: 80%;
-	--dialog-max-width: 80%;
+	--dialog-max-height: 80vh;
+	--dialog-max-width: 80vw;
 	--dialog-padding: 20px;
 
 	background-color: transparent;
@@ -336,7 +336,6 @@ html[data-color-scheme="dark"] .dialog::backdrop {
 	max-width: var(--dialog-max-width);
 	min-height: 0;
 	min-width: 500px;
-	min-height: 0;
 	overflow: hidden;
 	padding: var(--dialog-padding);
 }
@@ -464,8 +463,12 @@ html[data-color-scheme="dark"] .dialog::backdrop {
 
 @include screen-xs {
 	.dialog {
-		--dialog-max-height: calc(100% - 20px);
-		--dialog-max-width: calc(100% - 20px);
+		--dialog-max-height: calc(100vh - 20px);
+		--dialog-max-width: calc(100vw - 20px);
+		min-width: 0;
+	}
+
+	.dialog__document {
 		min-width: 0;
 	}
 }
