@@ -1742,6 +1742,8 @@ The database is carefully maintained, but there will be always be a margin of er
 		<item name="wcf.acp.option.category.message.general.unfurl"><![CDATA[Rich Embeds]]></item>
 		<item name="wcf.acp.option.module_url_unfurling"><![CDATA[Enable rich embeds]]></item>
 		<item name="wcf.acp.option.module_url_unfurling.description"><![CDATA[Creates a preview with title, description and image for external links in messages.]]></item>
+		<item name="wcf.acp.option.url_unfurling_save_images"><![CDATA[Load images from external links]]></item>
+		<item name="wcf.acp.option.url_unfurling_save_images.description"><![CDATA[Save images under <kbd>og:images</kbd> and display them in rich embeds.]]></item>
 		<item name="wcf.acp.option.category.message.general.formatting"><![CDATA[Text Format]]></item>
 		<item name="wcf.acp.option.formatting_remove_color"><![CDATA[Remove font color]]></item>
 		<item name="wcf.acp.option.formatting_remove_color.description"><![CDATA[Prevents the use of different font colors and removes them when displaying existing messages.]]></item>
@@ -2619,6 +2621,8 @@ If you have <strong>already bought the licenses for the listed apps</strong>, th
 		<item name="wcf.acp.rebuildData.wcf_system_worker_UserActivityPointUpdateEventsWorker.description"><![CDATA[Recalculates points per activity.]]></item>
 		<item name="wcf.acp.rebuildData.wcf_system_worker_UserActivityPointItemsRebuildDataWorker"><![CDATA[Rebuild Point Activities]]></item>
 		<item name="wcf.acp.rebuildData.wcf_system_worker_UserActivityPointItemsRebuildDataWorker.description"><![CDATA[Recalculates the number of activities for which users get points and rebuilds user ranks.]]></item>
+		<item name="wcf.acp.rebuildData.wcf_system_worker_UnfurlUrlRebuildDataWorker"><![CDATA[Update rich embeds]]></item>
+		<item name="wcf.acp.rebuildData.wcf_system_worker_UnfurlUrlRebuildDataWorker.description"><![CDATA[Creates new rich embeds images]]></item>
 		<item name="wcf.acp.rebuildData.offline"><![CDATA[It is strongly recommended to enable the maintenance mode while performing a data rebuild.]]></item>
 		<item name="wcf.acp.rebuildData.rebuildAll"><![CDATA[Rebuild All]]></item>
 	</category>

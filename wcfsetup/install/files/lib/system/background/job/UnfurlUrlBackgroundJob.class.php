@@ -5,8 +5,10 @@ namespace wcf\system\background\job;
 use BadMethodCallException;
 use LogicException;
 use Psr\Http\Message\ResponseInterface;
+use wcf\data\file\File;
 use wcf\data\unfurl\url\UnfurlUrl;
 use wcf\data\unfurl\url\UnfurlUrlAction;
+use wcf\data\unfurl\url\UnfurlUrlEditor;
 use wcf\system\message\unfurl\exception\DownloadFailed;
 use wcf\system\message\unfurl\exception\ParsingFailed;
 use wcf\system\message\unfurl\exception\UrlInaccessible;
@@ -83,7 +85,7 @@ final class UnfurlUrlBackgroundJob extends AbstractBackgroundJob
             $imageData = [];
             $imageID = null;
             $imageUrl = $unfurlResponse->getImageUrl();
-            if ($imageUrl) {
+            if (URL_UNFURLING_SAVE_IMAGES && $imageUrl) {
                 if (
                     \strpos($imageUrl, '\\') === false
                     && \strpos($imageUrl, "'") === false
@@ -144,21 +146,20 @@ final class UnfurlUrlBackgroundJob extends AbstractBackgroundJob
             if (!$this->validateImage($imageData)) {
                 return [];
             }
+            $file = $this->createFile(
+                $imageData,
+                \pathinfo($unfurlResponse->getImageUrl(), PATHINFO_FILENAME),
+                $image
+            );
 
-            $imageSaveData = [
+            return [
                 'imageUrl' => $unfurlResponse->getImageUrl(),
                 'imageUrlHash' => \sha1($unfurlResponse->getImageUrl()),
+                'fileID' => $file?->fileID,
+                'isStored' => $file !== null ? 1 : 0,
                 'width' => $imageData[0],
                 'height' => $imageData[1],
             ];
-
-            if (!(MODULE_IMAGE_PROXY || IMAGE_ALLOW_EXTERNAL_SOURCE)) {
-                $this->saveImage($imageData, $image, $imageSaveData['imageUrlHash']);
-                $imageSaveData['imageExtension'] = $this->getImageExtension($imageData);
-                $imageSaveData['isStored'] = 1;
-            }
-
-            return $imageSaveData;
         } catch (UrlInaccessible | DownloadFailed $e) {
             return [];
         }
@@ -218,19 +219,25 @@ final class UnfurlUrlBackgroundJob extends AbstractBackgroundJob
         return true;
     }
 
-    private function saveImage(array $imageData, string $image, string $imageHash): string
+    private function createFile(array $imageData, string $originalFile, string $image): ?File
     {
-        $path = WCF_DIR . UnfurlUrl::IMAGE_DIR . \substr($imageHash, 0, 2) . '/';
-
-        FileUtil::makePath($path);
-
         $extension = $this->getImageExtension($imageData);
+        $tmp = FileUtil::getTemporaryFilename(extension: $extension);
+        \file_put_contents($tmp, $image);
 
-        $fileLocation = $path . $imageHash . '.' . $extension;
+        $file = UnfurlUrlEditor::saveUnfurlImage(
+            $tmp,
+            \sprintf(
+                "%s.%s",
+                $originalFile,
+                $extension
+            )
+        );
 
-        \file_put_contents($fileLocation, $image);
+        // Clean up temporary files
+        @\unlink($tmp);
 
-        return $imageHash;
+        return $file;
     }
 
     private function getImageExtension(array $imageData): ?string

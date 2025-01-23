@@ -1759,6 +1759,8 @@ Die Datenbestände werden sorgfältig gepflegt, aber es ist nicht ausgeschlossen
 		<item name="wcf.acp.option.category.message.general.unfurl"><![CDATA[Rich Embeds]]></item>
 		<item name="wcf.acp.option.module_url_unfurling"><![CDATA[Rich Embeds aktivieren]]></item>
 		<item name="wcf.acp.option.module_url_unfurling.description"><![CDATA[Erzeugt eine Vorschau mit Titel, Beschreibung und Bild für externe Links in Nachrichten.]]></item>
+		<item name="wcf.acp.option.url_unfurling_save_images"><![CDATA[Bilder von externen Links laden]]></item>
+		<item name="wcf.acp.option.url_unfurling_save_images.description"><![CDATA[Bilder unter <kbd>og:images</kbd> zwischen speichern und in Rich Embeds anzeigen.]]></item>
 		<item name="wcf.acp.option.category.message.general.formatting"><![CDATA[Textformatierung]]></item>
 		<item name="wcf.acp.option.formatting_remove_color"><![CDATA[Schriftfarbe entfernen]]></item>
 		<item name="wcf.acp.option.formatting_remove_color.description"><![CDATA[Verhindert die Verwendung von abweichenden Schriftfarben und entfernt diese bei der Anzeige bereits bestehender Nachrichten.]]></item>
@@ -2690,6 +2692,8 @@ Abschnitte dürfen nicht leer sein und nur folgende Zeichen enthalten: <kbd>[a-z
 		<item name="wcf.acp.rebuildData.wcf_system_worker_UserActivityPointUpdateEventsWorker.description"><![CDATA[Berechnet Punkte pro Aktivität neu]]></item>
 		<item name="wcf.acp.rebuildData.wcf_system_worker_UserActivityPointItemsRebuildDataWorker"><![CDATA[Punkte-Aktivitäten aktualisieren]]></item>
 		<item name="wcf.acp.rebuildData.wcf_system_worker_UserActivityPointItemsRebuildDataWorker.description"><![CDATA[Berechnet Anzahl an Aktivitäten neu, für die Benutzer Punkte erhalten; aktualisiert Benutzerränge]]></item>
+		<item name="wcf.acp.rebuildData.wcf_system_worker_UnfurlUrlRebuildDataWorker"><![CDATA[Rich Embeds aktualisieren]]></item>
+		<item name="wcf.acp.rebuildData.wcf_system_worker_UnfurlUrlRebuildDataWorker.description"><![CDATA[Erstellt Rich Embeds Bilder neu]]></item>
 		<item name="wcf.acp.rebuildData.offline"><![CDATA[Es wird dringend empfohlen, während der Aktualisierung der Anzeigen den Wartungsmodus zu aktivieren.]]></item>
 		<item name="wcf.acp.rebuildData.rebuildAll"><![CDATA[Alle aktualisieren]]></item>
 	</category>

@@ -90,6 +90,7 @@ return static function (): void {
             $event->register(\wcf\system\worker\CommentResponseRebuildDataWorker::class, 121);
             $event->register(\wcf\system\worker\AttachmentRebuildDataWorker::class, 450);
             $event->register(\wcf\system\worker\MediaRebuildDataWorker::class, 450);
+            $event->register(\wcf\system\worker\UnfurlUrlRebuildDataWorker::class, 450);
             $event->register(\wcf\system\worker\FileRebuildDataWorker::class, 475);
             $event->register(\wcf\system\worker\SitemapRebuildWorker::class, 500);
             $event->register(\wcf\system\worker\StatDailyRebuildDataWorker::class, 800);
