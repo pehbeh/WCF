@@ -6,7 +6,7 @@
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.0
  */
-define(["require", "exports", "tslib", "../../Ui/Scroll", "../../Ui/Notification", "../../Language", "../../Event/Handler", "../../Dom/Util", "../Ckeditor", "../Ckeditor/Event", "WoltLabSuite/Core/Api/Comments/CreateComment", "../GuestTokenDialog", "WoltLabSuite/Core/User"], function (require, exports, tslib_1, UiScroll, UiNotification, Language_1, EventHandler, Util_1, Ckeditor_1, Event_1, CreateComment_1, GuestTokenDialog_1, User_1) {
+define(["require", "exports", "tslib", "../../Ui/Scroll", "../../Ui/Notification", "../../Language", "../../Event/Handler", "../../Dom/Util", "../Ckeditor", "../Ckeditor/Event", "WoltLabSuite/Core/Api/Comments/CreateComment", "../GuestTokenDialog", "WoltLabSuite/Core/User", "WoltLabSuite/Core/Component/Quote/Storage", "WoltLabSuite/Core/Component/Quote/Message"], function (require, exports, tslib_1, UiScroll, UiNotification, Language_1, EventHandler, Util_1, Ckeditor_1, Event_1, CreateComment_1, GuestTokenDialog_1, User_1, Storage_1, Message_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CommentAdd = void 0;
@@ -149,6 +149,8 @@ define(["require", "exports", "tslib", "../../Ui/Scroll", "../../Ui/Notification
          */
         #reset() {
             this.#getEditor().reset();
+            (0, Storage_1.clearQuotesForEditor)(this.#getEditor().sourceElement.id);
+            (0, Message_1.setActiveEditor)();
             if (document.activeElement instanceof HTMLElement) {
                 document.activeElement.blur();
             }

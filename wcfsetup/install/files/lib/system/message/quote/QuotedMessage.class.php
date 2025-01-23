@@ -21,6 +21,8 @@ use wcf\data\IMessage;
  * @method  int     getUserID()
  * @method  string      getUsername()
  * @method  bool        isVisible()
+ *
+ * @deprecated 6.2
  */
 class QuotedMessage implements \Countable, \Iterator
 {

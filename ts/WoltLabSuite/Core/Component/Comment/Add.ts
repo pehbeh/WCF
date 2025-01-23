@@ -17,6 +17,8 @@ import { listenToCkeditor } from "../Ckeditor/Event";
 import { createComment } from "WoltLabSuite/Core/Api/Comments/CreateComment";
 import { getGuestToken } from "../GuestTokenDialog";
 import User from "WoltLabSuite/Core/User";
+import { clearQuotesForEditor } from "WoltLabSuite/Core/Component/Quote/Storage";
+import { setActiveEditor } from "WoltLabSuite/Core/Component/Quote/Message";
 
 type CallbackInsertComment = (commentId: number) => void;
 
@@ -180,6 +182,8 @@ export class CommentAdd {
    */
   #reset(): void {
     this.#getEditor().reset();
+    clearQuotesForEditor(this.#getEditor().sourceElement.id);
+    setActiveEditor();
 
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur();

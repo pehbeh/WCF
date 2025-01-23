@@ -44,6 +44,13 @@
 				</li>
 			{/if}
 			{event name='tabMenuTabs'}
+
+			<li data-name="quotes" hidden>
+				<button type="button">
+					{icon name='quote-left'}
+					<span>{lang}wcf.bbcode.quote{/lang}</span>
+				</button>
+			</li>
 		</ul>
 	</nav>
 
@@ -57,4 +64,6 @@
 	{include file='__messageFormPollInline'}
 
 	{event name='tabMenuContents'}
+
+	{include file='__messageFormQuote'}
 </div>

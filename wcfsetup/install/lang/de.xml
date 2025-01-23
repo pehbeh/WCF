@@ -4250,16 +4250,10 @@ Erlaubte Dateiendungen: gif, jpg, jpeg, png, webp]]></item>
 		<item name="wcf.message.autosave.saved"><![CDATA[Entwurf gespeichert]]></item>
 		<item name="wcf.message.bbcode.code.copy"><![CDATA[Inhalt kopieren]]></item>
 		<item name="wcf.message.bbcode.code.copy.success"><![CDATA[Der Inhalt wurde erfolgreich kopiert.]]></item>
-		<item name="wcf.message.quote.insertAllQuotes"><![CDATA[Alle Zitate einfügen]]></item>
 		<item name="wcf.message.quote.insertQuote"><![CDATA[Zitat einfügen]]></item>
-		<item name="wcf.message.quote.insertSelectedQuotes"><![CDATA[Markierte Zitate einfügen]]></item>
-		<item name="wcf.message.quote.manageQuotes"><![CDATA[Zitate verwalten]]></item>
 		<item name="wcf.message.quote.quoteSelected"><![CDATA[Zitat speichern]]></item>
 		<item name="wcf.message.quote.quoteAndReply"><![CDATA[Zitat einfügen]]></item>
-		<item name="wcf.message.quote.showQuotes"><![CDATA[{if $count == 1}Ein Zitat{else}{#$count} Zitate{/if}]]></item>
 		<item name="wcf.message.quote.quoteMessage"><![CDATA[Zitieren]]></item>
-		<item name="wcf.message.quote.removeAllQuotes"><![CDATA[Alle Zitate entfernen]]></item>
-		<item name="wcf.message.quote.removeSelectedQuotes"><![CDATA[Markierte Zitate entfernen]]></item>
 		<item name="wcf.message.settings"><![CDATA[Einstellungen]]></item>
 		<item name="wcf.message.share"><![CDATA[Teilen]]></item>
 		<item name="wcf.message.share.facebook"><![CDATA[Facebook]]></item>
@@ -7599,5 +7593,11 @@ Benachrichtigungen auf <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phra
 	<item name="wcf.user.notification.userRegistration.message.stacked"/>
 	<item name="wcf.user.notification.userRegistration.mail.plaintext"/>
 	<item name="wcf.user.notification.userRegistration.mail.html"/>
+	<item name="wcf.message.quote.insertAllQuotes"/>
+	<item name="wcf.message.quote.insertSelectedQuotes"/>
+	<item name="wcf.message.quote.manageQuotes"/>
+	<item name="wcf.message.quote.showQuotes"/>
+	<item name="wcf.message.quote.removeSelectedQuotes"/>
+	<item name="wcf.message.quote.removeAllQuotes"/>
 </delete>
 </language>

@@ -8,6 +8,7 @@ use wcf\system\form\builder\container\TabFormContainer;
 use wcf\system\form\builder\container\TabTabMenuFormContainer;
 use wcf\system\form\builder\TWysiwygFormNode;
 use wcf\system\form\builder\wysiwyg\WysiwygSmileyFormNode;
+use wcf\system\style\FontAwesomeIcon;
 use wcf\util\StringUtil;
 
 /**
@@ -18,7 +19,7 @@ use wcf\util\StringUtil;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.2
  */
-class WysiwygSmileyFormContainer extends TabTabMenuFormContainer
+class WysiwygSmileyFormContainer extends TabTabMenuFormContainer implements IWysiwygTabFormContainer
 {
     use TWysiwygFormNode;
 
@@ -75,5 +76,17 @@ class WysiwygSmileyFormContainer extends TabTabMenuFormContainer
         if (\count($this->children()) > 1) {
             $this->addClass('messageTabMenu');
         }
+    }
+
+    #[\Override]
+    public function getIcon(): ?FontAwesomeIcon
+    {
+        return FontAwesomeIcon::fromValues('face-smile');
+    }
+
+    #[\Override]
+    public function getName(): string
+    {
+        return 'smilies';
     }
 }

@@ -22,6 +22,8 @@ import * as UiScroll from "../Scroll";
 
 import { CKEditor, getCkeditor } from "../../Component/Ckeditor";
 import { dispatchToCkeditor } from "WoltLabSuite/Core/Component/Ckeditor/Event";
+import { clearQuotesForEditor } from "WoltLabSuite/Core/Component/Quote/Storage";
+import { setActiveEditor } from "WoltLabSuite/Core/Component/Quote/Message";
 
 interface MessageReplyOptions {
   ajax: {
@@ -386,6 +388,11 @@ class UiMessageReply {
 
       this._guestDialogId = guestDialogId;
     } else {
+      clearQuotesForEditor(this._textarea.id);
+      if (!this._getCKEditor().isVisible()) {
+        setActiveEditor();
+      }
+
       this._insertMessage(data);
 
       if (!User.userId) {

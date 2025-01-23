@@ -8,13 +8,13 @@ use wcf\system\attachment\AttachmentHandler;
 use wcf\system\event\EventHandler;
 use wcf\system\form\builder\button\wysiwyg\WysiwygPreviewFormButton;
 use wcf\system\form\builder\container\FormContainer;
-use wcf\system\form\builder\container\TabFormContainer;
 use wcf\system\form\builder\field\TMaximumLengthFormField;
 use wcf\system\form\builder\field\TMinimumLengthFormField;
 use wcf\system\form\builder\field\wysiwyg\WysiwygAttachmentFormField;
 use wcf\system\form\builder\field\wysiwyg\WysiwygFormField;
 use wcf\system\form\builder\IFormChildNode;
 use wcf\system\form\builder\TWysiwygFormNode;
+use wcf\system\style\FontAwesomeIcon;
 
 /**
  * Represents the whole container with a WYSIWYG editor and the associated tab menu below it with
@@ -86,12 +86,6 @@ class WysiwygFormContainer extends FormContainer
     protected $pollContainer;
 
     /**
-     * quote-related data used to create the JavaScript quote manager
-     * @var null|array
-     */
-    protected $quoteData;
-
-    /**
      * `true` if the wysiwyg field has to be filled out and `false` otherwise
      * @var bool
      */
@@ -138,6 +132,8 @@ class WysiwygFormContainer extends FormContainer
      * @var WysiwygFormField
      */
     protected $wysiwygField;
+
+    protected WysiwygQuoteFormContainer $quoteContainer;
 
     /**
      * @inheritDoc
@@ -479,13 +475,6 @@ class WysiwygFormContainer extends FormContainer
             ->required($this->isRequired())
             ->supportMentions($this->supportMentions)
             ->supportQuotes($this->supportQuotes);
-        if ($this->quoteData !== null) {
-            $this->wysiwygField->quoteData(
-                $this->quoteData['objectType'],
-                $this->quoteData['actionClass'],
-                $this->quoteData['selectors']
-            );
-        }
         $this->smiliesContainer = WysiwygSmileyFormContainer::create($this->wysiwygId . 'SmiliesTab')
             ->wysiwygId($this->getWysiwygId())
             ->label('wcf.message.smilies')
@@ -500,6 +489,10 @@ class WysiwygFormContainer extends FormContainer
             $this->pollContainer->objectType($this->pollObjectType);
         }
 
+        $this->quoteContainer = WysiwygQuoteFormContainer::create($this->wysiwygId . 'QuoteContainer')
+            ->wysiwygId($this->getWysiwygId())
+            ->available($this->supportQuotes);
+
         $this->appendChildren([
             $this->wysiwygField,
             WysiwygTabMenuFormContainer::create($this->wysiwygId . 'Tabs')
@@ -509,21 +502,32 @@ class WysiwygFormContainer extends FormContainer
                 ->appendChildren([
                     $this->smiliesContainer,
 
-                    TabFormContainer::create($this->wysiwygId . 'AttachmentsTab')
+                    WysiwygTabFormContainer::create($this->wysiwygId . 'AttachmentsTab')
                         ->addClass('formAttachmentContent')
                         ->label('wcf.attachment.attachments')
+                        ->name("attachments")
+                        ->icon(FontAwesomeIcon::fromValues('paperclip'))
+                        ->wysiwygId($this->getWysiwygId())
                         ->appendChild(
                             FormContainer::create($this->wysiwygId . 'AttachmentsContainer')
                                 ->appendChild($this->attachmentField)
                         ),
 
-                    TabFormContainer::create($this->wysiwygId . 'SettingsTab')
+                    WysiwygTabFormContainer::create($this->wysiwygId . 'SettingsTab')
                         ->label('wcf.message.settings')
+                        ->icon(FontAwesomeIcon::fromValues('gear'))
+                        ->name('settings')
+                        ->wysiwygId($this->getWysiwygId())
                         ->appendChild($this->settingsContainer),
 
-                    TabFormContainer::create($this->wysiwygId . 'PollTab')
+                    WysiwygTabFormContainer::create($this->wysiwygId . 'PollTab')
                         ->label('wcf.poll.management')
+                        ->icon(FontAwesomeIcon::fromValues('chart-bar'))
+                        ->name('poll')
+                        ->wysiwygId($this->getWysiwygId())
                         ->appendChild($this->pollContainer),
+
+                    $this->quoteContainer,
                 ]),
         ]);
 
@@ -567,23 +571,13 @@ class WysiwygFormContainer extends FormContainer
      * @param string $objectType name of the relevant `com.woltlab.wcf.message.quote` object type
      * @param string $actionClass action class implementing `wcf\data\IMessageQuoteAction`
      * @param string[] $selectors selectors for the quotable content (required keys: `container`, `messageBody`, and `messageContent`)
+     *
      * @return  static
+     *
+     * @deprecated 6.2
      */
     public function quoteData($objectType, $actionClass, array $selectors = [])
     {
-        if ($this->wysiwygField !== null) {
-            $this->wysiwygField->quoteData($objectType, $actionClass, $selectors);
-        } else {
-            $this->supportQuotes();
-
-            // the parameters are validated by `WysiwygFormField`
-            $this->quoteData = [
-                'actionClass' => $actionClass,
-                'objectType' => $objectType,
-                'selectors' => $selectors,
-            ];
-        }
-
         return $this;
     }
 
@@ -646,11 +640,13 @@ class WysiwygFormContainer extends FormContainer
      */
     public function supportQuotes($supportQuotes = true)
     {
-        if ($this->wysiwygField !== null) {
-            $this->wysiwygField->supportQuotes($supportQuotes);
-        } else {
-            $this->supportQuotes = $supportQuotes;
+        $this->supportQuotes = $supportQuotes;
+
+        if (isset($this->quoteContainer)) {
+            $this->quoteContainer->available($supportQuotes);
         }
+
+        $this->wysiwygField?->supportQuotes($supportQuotes);
 
         return $this;
     }

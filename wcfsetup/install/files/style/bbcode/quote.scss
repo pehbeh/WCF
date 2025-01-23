@@ -8,7 +8,7 @@
 	display: grid;
 	font-style: normal;
 	grid-template-areas:
-		"icon title"
+		"icon    title"
 		"content content";
 	grid-template-columns: 24px auto;
 	margin: 2em 0 1em 0;
@@ -77,5 +77,40 @@
 
 	> :last-child {
 		margin-bottom: 0 !important;
+	}
+}
+
+.quoteBox.quoteBox--tabMenu {
+	grid-template-areas:
+		"icon    title   buttons"
+		"content content content";
+	grid-template-columns: 24px auto minmax(0, min-content);
+	margin: 0;
+}
+
+.quoteBox.quoteBox--tabMenu + .quoteBox.quoteBox--tabMenu {
+	margin-top: 10px;
+}
+
+.quoteBoxButtons {
+	align-self: center;
+	column-gap: 5px;
+	display: flex;
+	grid-area: buttons;
+	white-space: nowrap;
+}
+
+.quoteBox.quoteBox--tabMenu :is(.quoteBoxIcon, .quoteBoxTitle) {
+	align-self: center;
+}
+
+.quoteBox.quoteBox--tabMenu .quoteBoxContent {
+	pointer-events: none !important;
+}
+
+@include screen-xs {
+	.messageTabMenu:not(.messageTabMenuContent) > .messageTabMenuContent.messageTabMenuContent--quotes.active {
+		padding-left: 10px;
+		padding-right: 10px;
 	}
 }

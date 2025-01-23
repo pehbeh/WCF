@@ -138,6 +138,9 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\comments\responses\UpdateResponse());
             $event->register(new \wcf\system\endpoint\controller\core\cronjobs\logs\ClearLogs());
             $event->register(new \wcf\system\endpoint\controller\core\messages\GetMentionSuggestions());
+            $event->register(new \wcf\system\endpoint\controller\core\messages\RenderQuote());
+            $event->register(new \wcf\system\endpoint\controller\core\messages\GetMessageAuthor());
+            $event->register(new \wcf\system\endpoint\controller\core\messages\ResetRemovalQuotes());
             $event->register(new \wcf\system\endpoint\controller\core\sessions\DeleteSession());
             $event->register(new \wcf\system\endpoint\controller\core\versionTrackers\RevertVersion());
             $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\ChangeJustifiedStatus());
