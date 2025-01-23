@@ -46,7 +46,18 @@ define(["require", "exports", "WoltLabSuite/Core/Core", "WoltLabSuite/Core/Helpe
             if (forceValue === undefined) {
                 if (this.#markAll !== null) {
                     const markedCheckboxes = checkboxes.filter((checkbox) => checkbox.checked).length;
-                    this.#markAll.indeterminate = markedCheckboxes > 0 && markedCheckboxes !== checkboxes.length;
+                    if (markedCheckboxes === 0) {
+                        this.#markAll.checked = false;
+                        this.#markAll.indeterminate = false;
+                    }
+                    else if (markedCheckboxes === checkboxes.length) {
+                        this.#markAll.checked = true;
+                        this.#markAll.indeterminate = false;
+                    }
+                    else {
+                        this.#markAll.checked = false;
+                        this.#markAll.indeterminate = markedCheckboxes > 0 && markedCheckboxes !== checkboxes.length;
+                    }
                 }
             }
             else {
