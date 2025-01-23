@@ -27,6 +27,7 @@ import {
   ItemData,
   MessageInlineEditorOptions,
 } from "./InlineEditor/Data";
+import { clearQuotesForEditor } from "WoltLabSuite/Core/Component/Quote/Storage";
 
 interface ElementData {
   button: HTMLAnchorElement;
@@ -412,10 +413,6 @@ class UiMessageInlineEditor implements AjaxCallbackObject {
     DomUtil.hide(elementData.messageFooter);
 
     window.setTimeout(() => {
-      if (this._options.quoteManager) {
-        this._options.quoteManager.setAlternativeEditor(id);
-      }
-
       UiScroll.element(activeElement, undefined, "instant");
     }, 250);
   }
@@ -443,10 +440,6 @@ class UiMessageInlineEditor implements AjaxCallbackObject {
     }
 
     this._activeElement = null;
-
-    if (this._options.quoteManager) {
-      this._options.quoteManager.clearAlternativeEditor();
-    }
   }
 
   /**
@@ -462,7 +455,6 @@ class UiMessageInlineEditor implements AjaxCallbackObject {
         message: ckeditor.getHtml(),
       },
       objectID: this._getObjectId(this._activeElement!),
-      removeQuoteIDs: this._options.quoteManager ? this._options.quoteManager.getQuotesMarkedForRemoval() : [],
     };
 
     // add any available settings
@@ -594,11 +586,6 @@ class UiMessageInlineEditor implements AjaxCallbackObject {
     this._updateHistory(this._getHash(this._getObjectId(activeElement)));
 
     UiNotification.show();
-
-    if (this._options.quoteManager) {
-      this._options.quoteManager.clearAlternativeEditor();
-      this._options.quoteManager.countQuotes();
-    }
   }
 
   /**
@@ -698,6 +685,8 @@ class UiMessageInlineEditor implements AjaxCallbackObject {
         break;
 
       case "save":
+        clearQuotesForEditor(this._getEditorId());
+
         this._showMessage(data as AjaxResponseMessage);
         break;
     }

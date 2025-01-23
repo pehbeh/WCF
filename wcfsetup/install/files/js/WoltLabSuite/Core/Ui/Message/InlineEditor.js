@@ -5,7 +5,7 @@
  * @copyright  2001-2021 WoltLab GmbH
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Event", "../../Ajax", "../../Component/Ckeditor", "../../Core", "../../Dom/Change/Listener", "../../Dom/Util", "../../Event/Handler", "../../Language", "../Dropdown/Reusable", "../Notification", "../Screen", "../Scroll"], function (require, exports, tslib_1, Event_1, Ajax, Ckeditor_1, Core, Listener_1, Util_1, EventHandler, Language, UiDropdownReusable, UiNotification, UiScreen, UiScroll) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Event", "../../Ajax", "../../Component/Ckeditor", "../../Core", "../../Dom/Change/Listener", "../../Dom/Util", "../../Event/Handler", "../../Language", "../Dropdown/Reusable", "../Notification", "../Screen", "../Scroll", "WoltLabSuite/Core/Component/Quote/Storage"], function (require, exports, tslib_1, Event_1, Ajax, Ckeditor_1, Core, Listener_1, Util_1, EventHandler, Language, UiDropdownReusable, UiNotification, UiScreen, UiScroll, Storage_1) {
     "use strict";
     Ajax = tslib_1.__importStar(Ajax);
     Core = tslib_1.__importStar(Core);
@@ -318,9 +318,6 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
             Util_1.default.hide(elementData.messageHeader);
             Util_1.default.hide(elementData.messageFooter);
             window.setTimeout(() => {
-                if (this._options.quoteManager) {
-                    this._options.quoteManager.setAlternativeEditor(id);
-                }
                 UiScroll.element(activeElement, undefined, "instant");
             }, 250);
         }
@@ -342,9 +339,6 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
                 parent.classList.remove("disableAnchorFixedHeader");
             }
             this._activeElement = null;
-            if (this._options.quoteManager) {
-                this._options.quoteManager.clearAlternativeEditor();
-            }
         }
         /**
          * Saves the editor message.
@@ -358,7 +352,6 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
                     message: ckeditor.getHtml(),
                 },
                 objectID: this._getObjectId(this._activeElement),
-                removeQuoteIDs: this._options.quoteManager ? this._options.quoteManager.getQuotesMarkedForRemoval() : [],
             };
             // add any available settings
             const settingsContainer = document.getElementById(`settings_${id}`);
@@ -464,10 +457,6 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
             this._restoreMessage();
             this._updateHistory(this._getHash(this._getObjectId(activeElement)));
             UiNotification.show();
-            if (this._options.quoteManager) {
-                this._options.quoteManager.clearAlternativeEditor();
-                this._options.quoteManager.countQuotes();
-            }
         }
         /**
          * Hides the editor from view.
@@ -548,6 +537,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
                     this._showEditor(data);
                     break;
                 case "save":
+                    (0, Storage_1.clearQuotesForEditor)(this._getEditorId());
                     this._showMessage(data);
                     break;
             }
