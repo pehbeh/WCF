@@ -1,5 +1,6 @@
 import { getRow } from "../Api/Gridviews/GetRow";
 import { getRows } from "../Api/Gridviews/GetRows";
+import { getBulkContextMenuOptions } from "../Api/Interactions/GetBulkContextMenuOptions";
 import DomChangeListener from "../Dom/Change/Listener";
 import DomUtil from "../Dom/Util";
 import { wheneverFirstSeen } from "../Helper/Selector";
@@ -10,9 +11,8 @@ export class GridView {
   readonly #gridClassName: string;
   readonly #table: HTMLTableElement;
   readonly #state: State;
-
   readonly #noItemsNotice: HTMLElement;
-
+  readonly #bulkInteractionProviderClassName: string;
   #gridViewParameters?: Map<string, string>;
 
   constructor(
@@ -22,12 +22,13 @@ export class GridView {
     baseUrl: string = "",
     sortField = "",
     sortOrder = "ASC",
+    bulkInteractionProviderClassName: string,
     gridViewParameters?: Map<string, string>,
   ) {
     this.#gridClassName = gridClassName;
     this.#table = document.getElementById(`${gridId}_table`) as HTMLTableElement;
     this.#noItemsNotice = document.getElementById(`${gridId}_noItemsNotice`) as HTMLElement;
-
+    this.#bulkInteractionProviderClassName = bulkInteractionProviderClassName;
     this.#gridViewParameters = gridViewParameters;
 
     this.#initInteractions();
@@ -98,7 +99,15 @@ export class GridView {
     state.addEventListener("change", (event) => {
       void this.#loadRows(event.detail.source);
     });
+    state.addEventListener("getBulkInteractions", (event) => {
+      void this.#loadBulkInteractions(event.detail.objectIds);
+    });
 
     return state;
+  }
+
+  async #loadBulkInteractions(objectIds: number[]): Promise<void> {
+    const response = await getBulkContextMenuOptions(this.#bulkInteractionProviderClassName, objectIds);
+    this.#state.setBulkInteractionContextMenuOptions(response.unwrap().template);
   }
 }

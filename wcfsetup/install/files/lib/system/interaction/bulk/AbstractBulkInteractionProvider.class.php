@@ -1,20 +1,22 @@
 <?php
 
-namespace wcf\system\interaction;
+namespace wcf\system\interaction\bulk;
+
+use wcf\system\interaction\Divider;
 
 /**
- * Provides an abstract implementation of a provider that provides interactions
- * that can be applied to a specific type of DatabaseObject.
+ * Provides an abstract implementation of a provider that provides bulk interactions
+ * that can be applied to a specific type of DatabaseObjects.
  *
  * @author      Marcel Werk
- * @copyright   2001-2024 WoltLab GmbH
+ * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-abstract class AbstractInteractionProvider implements IInteractionProvider
+abstract class AbstractBulkInteractionProvider implements IBulkInteractionProvider
 {
     /**
-     * @var (IInteraction|Divider)[]
+     * @var (IBulkInteraction|Divider)[]
      */
     private array $interactions = [];
 
@@ -25,7 +27,7 @@ abstract class AbstractInteractionProvider implements IInteractionProvider
     }
 
     #[\Override]
-    public function addInteraction(IInteraction|Divider $interaction): void
+    public function addInteraction(IBulkInteraction|Divider $interaction): void
     {
         $this->interactions[] = $interaction;
     }
@@ -39,12 +41,12 @@ abstract class AbstractInteractionProvider implements IInteractionProvider
     }
 
     #[\Override]
-    public function addInteractionBefore(IInteraction|Divider $interaction, string $beforeID): void
+    public function addInteractionBefore(IBulkInteraction|Divider $interaction, string $beforeID): void
     {
         $position = -1;
 
         foreach ($this->getInteractions() as $key => $existingInteraction) {
-            if ($existingInteraction instanceof IInteraction && $existingInteraction->getIdentifier() === $beforeID) {
+            if ($existingInteraction instanceof IBulkInteraction && $existingInteraction->getIdentifier() === $beforeID) {
                 $position = $key;
                 break;
             }
@@ -60,12 +62,12 @@ abstract class AbstractInteractionProvider implements IInteractionProvider
     }
 
     #[\Override]
-    public function addInteractionAfter(IInteraction|Divider $interaction, string $afterID): void
+    public function addInteractionAfter(IBulkInteraction|Divider $interaction, string $afterID): void
     {
         $position = -1;
 
         foreach ($this->getInteractions() as $key => $existingInteraction) {
-            if ($existingInteraction instanceof IInteraction && $existingInteraction->getIdentifier() === $afterID) {
+            if ($existingInteraction instanceof IBulkInteraction && $existingInteraction->getIdentifier() === $afterID) {
                 $position = $key;
                 break;
             }

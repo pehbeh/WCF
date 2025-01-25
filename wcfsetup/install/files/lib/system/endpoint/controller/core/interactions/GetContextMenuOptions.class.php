@@ -12,7 +12,6 @@ use wcf\system\endpoint\IController;
 use wcf\system\exception\UserInputException;
 use wcf\system\interaction\IInteractionProvider;
 use wcf\system\interaction\InteractionContextMenuView;
-use wcf\system\interaction\StandaloneInteractionContextMenuView;
 
 /**
  * Retrieves the options for an interaction context menu.

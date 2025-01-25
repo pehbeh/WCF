@@ -22,9 +22,9 @@
 		<table class="gridView__table" id="{$view->getID()}_table"{if !$view->countRows()} hidden{/if}>
 			<thead>
 				<tr class="gridView__headerRow">
-					{if true}
+					{if $view->hasBulkInteractions()}
 						<th class="gridView__headerColumn gridView__selectColumn">
-							<input type="checkbox" class="gridView__selectAllRows" aria-label="todo: select all rows">
+							<input type="checkbox" class="gridView__selectAllRows" aria-label="{lang}wcf.clipboard.item.markAll{/lang}">
 						</th>
 					{/if}
 					{foreach from=$view->getVisibleColumns() item='column'}
@@ -57,9 +57,18 @@
 		<woltlab-core-pagination id="{$view->getID()}_pagination" page="{$view->getPageNo()}" count="{$view->countPages()}"></woltlab-core-pagination>
 	</div>
 
-	<div class="gridView__selectionBar">
-
-	</div>
+	{if $view->hasBulkInteractions()}
+		<div id="{$view->getID()}_selectionBar" class="gridView__selectionBar dropdown" hidden>
+			<button type="button" id="{$view->getID()}_bulkInteractionButton" class="button gridView__bulkInteractionButton dropdownToggle">3 Entries Selected</button>
+			<ul class="dropdownMenu">
+				<li class="disabled"><span>Lädt ...</span></li>
+				<li class="dropdownDivider"></li>
+				<li>
+					<button type="button" id="{$view->getID()}_resetSelectionButton">{lang}wcf.clipboard.item.unmarkAll{/lang}</button>
+				</li>
+			</ul>
+		</div>
+	{/if}
 
 	<woltlab-core-notice type="info" id="{$view->getID()}_noItemsNotice"{if $view->countRows()} hidden{/if}>{lang}wcf.global.noItems{/lang}</woltlab-core-notice>
 </div>
@@ -73,14 +82,18 @@
 			'{unsafe:$view->getBaseUrl()|encodeJS}',
 			'{unsafe:$view->getSortField()|encodeJS}',
 			'{unsafe:$view->getSortOrder()|encodeJS}',
+			'{unsafe:$view->getBulkInteractionProviderClassName()|encodeJS}',
 			new Map([
 				{foreach from=$view->getParameters() key='name' item='value'}
 					['{unsafe:$name|encodeJs}', '{unsafe:$value|encodeJs}'],
 				{/foreach}
-			])
+			]),
 		);
 	});
 </script>
 {if $view->hasInteractions()}
 	{unsafe:$view->renderInteractionInitialization()}
+{/if}
+{if $view->hasBulkInteractions()}
+	{unsafe:$view->renderBulkInteractionInitialization()}
 {/if}

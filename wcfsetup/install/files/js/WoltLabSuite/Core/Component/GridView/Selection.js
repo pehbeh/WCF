@@ -2,14 +2,27 @@ define(["require", "exports", "WoltLabSuite/Core/Core", "WoltLabSuite/Core/Helpe
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Selection = void 0;
-    class Selection {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+    class Selection extends EventTarget {
         #markAll = null;
         #table;
-        constructor(table) {
+        #selectionBar = null;
+        #bulkInteractionButton = null;
+        #bulkInteractionContextMenuOptions = null;
+        constructor(gridId, table) {
+            super();
             this.#table = table;
             this.#markAll = this.#table.querySelector(".gridView__selectAllRows");
             this.#markAll?.addEventListener("change", () => {
                 this.#change(this.#markAll.checked);
+            });
+            this.#selectionBar = document.getElementById(`${gridId}_selectionBar`);
+            this.#bulkInteractionButton = document.getElementById(`${gridId}_bulkInteractionButton`);
+            this.#bulkInteractionButton?.addEventListener("click", () => {
+                this.#showBulkInteractionMenu();
+            });
+            document.getElementById(`${gridId}_resetSelectionButton`)?.addEventListener("click", () => {
+                this.#resetSelection();
             });
             (0, Selector_1.wheneverFirstSeen)(`#${this.#table.id} .gridView__selectRow`, (checkbox) => {
                 checkbox.addEventListener("change", () => {
@@ -68,6 +81,8 @@ define(["require", "exports", "WoltLabSuite/Core/Core", "WoltLabSuite/Core/Helpe
             if (!skipStorage) {
                 this.#saveSelection(checkboxes);
             }
+            this.#bulkInteractionContextMenuOptions = null;
+            this.#updateSelectionBar();
         }
         #saveSelection(checkboxes) {
             const selection = new Map();
@@ -110,6 +125,41 @@ define(["require", "exports", "WoltLabSuite/Core/Core", "WoltLabSuite/Core/Helpe
         }
         #getStorageKey() {
             return (0, Core_1.getStoragePrefix)() + `gridView-${this.#table.id}-selection`;
+        }
+        #updateSelectionBar() {
+            const selectedIds = this.getSelectedIds();
+            if (!this.#selectionBar) {
+                return;
+            }
+            if (selectedIds.length === 0) {
+                this.#selectionBar.hidden = true;
+                return;
+            }
+            this.#selectionBar.hidden = false;
+            this.#bulkInteractionButton.textContent = `${selectedIds.length} selected`;
+        }
+        #showBulkInteractionMenu() {
+            if (this.#bulkInteractionContextMenuOptions === null) {
+                this.#loadBulkInteractionMenu();
+                return;
+            }
+        }
+        #loadBulkInteractionMenu() {
+            this.dispatchEvent(new CustomEvent("getBulkInteractions", { detail: { objectIds: this.getSelectedIds() } }));
+        }
+        setBulkInteractionContextMenuOptions(options) {
+            this.#bulkInteractionContextMenuOptions = options;
+        }
+        #resetSelection() {
+            if (this.#markAll !== null) {
+                this.#markAll.checked = false;
+                this.#markAll.indeterminate = false;
+            }
+            this.#table
+                .querySelectorAll(".gridView__selectRow")
+                .forEach((checkbox) => (checkbox.checked = false));
+            window.localStorage.removeItem(this.#getStorageKey());
+            this.#updateSelectionBar();
         }
     }
     exports.Selection = Selection;

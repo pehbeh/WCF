@@ -1,9 +1,9 @@
 
 {foreach from=$view->getRows() item='row'}
 	<tr class="gridView__row" data-object-id="{$view->getObjectID($row)}">
-		{if true}
+		{if $view->hasBulkInteractions()}
 			<td class="gridView__column gridView__selectColumn">
-				<input type="checkbox" class="gridView__selectRow" aria-label="todo: select row">
+				<input type="checkbox" class="gridView__selectRow" aria-label="{lang}wcf.clipboard.item.mark{/lang}">
 			</td>
 		{/if}
 		{foreach from=$view->getVisibleColumns() item='column'}

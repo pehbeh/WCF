@@ -45,7 +45,10 @@ export class State extends EventTarget {
       this.#switchPage(1, StateChangeCause.Change);
     });
 
-    this.#selection = new Selection(table);
+    this.#selection = new Selection(gridId, table);
+    this.#selection.addEventListener("getBulkInteractions", (event) => {
+      this.dispatchEvent(new CustomEvent("getBulkInteractions", { detail: { objectIds: event.detail.objectIds } }));
+    });
 
     window.addEventListener("popstate", () => {
       this.#handlePopState();
@@ -134,10 +137,15 @@ export class State extends EventTarget {
 
     this.#switchPage(pageNo, StateChangeCause.History);
   }
+
+  setBulkInteractionContextMenuOptions(options: string): void {
+    this.#selection.setBulkInteractionContextMenuOptions(options);
+  }
 }
 
 interface StateEventMap {
   change: CustomEvent<{ source: StateChangeCause }>;
+  getBulkInteractions: CustomEvent<{ objectIds: number[] }>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging

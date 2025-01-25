@@ -14,6 +14,7 @@ use wcf\system\gridView\GridViewRowLink;
 use wcf\system\gridView\renderer\DefaultColumnRenderer;
 use wcf\system\gridView\renderer\NumberColumnRenderer;
 use wcf\system\interaction\admin\UserOptionInteractions;
+use wcf\system\interaction\bulk\admin\UserOptionBulkInteractions;
 use wcf\system\interaction\Divider;
 use wcf\system\interaction\EditInteraction;
 use wcf\system\interaction\ToggleInteraction;
@@ -81,6 +82,7 @@ final class UserOptionGridView extends DatabaseObjectListGridView
             new EditInteraction(UserOptionEditForm::class)
         ]);
         $this->setInteractionProvider($provider);
+        $this->setBulkInteractionProvider(new UserOptionBulkInteractions());
         $this->addQuickInteraction(
             new ToggleInteraction('enable', 'core/users/options/%s/enable', 'core/users/options/%s/disable')
         );

@@ -7,6 +7,8 @@ use wcf\action\GridViewFilterAction;
 use wcf\data\DatabaseObject;
 use wcf\event\IPsr14Event;
 use wcf\system\event\EventHandler;
+use wcf\system\interaction\bulk\IBulkInteraction;
+use wcf\system\interaction\bulk\IBulkInteractionProvider;
 use wcf\system\interaction\IInteraction;
 use wcf\system\interaction\IInteractionProvider;
 use wcf\system\interaction\InteractionContextMenuView;
@@ -43,6 +45,7 @@ abstract class AbstractGridView
     private array $activeFilters = [];
     private string|int|null $objectIDFilter = null;
     private ?IInteractionProvider $interactionProvider = null;
+    private ?IBulkInteractionProvider $bulkInteractionProvider = null;
     private InteractionContextMenuView $interactionContextMenuView;
 
     /**
@@ -177,6 +180,31 @@ abstract class AbstractGridView
     }
 
     /**
+     * Sets the bulk interaction provider for this grid view.
+     */
+    public function setBulkInteractionProvider(IBulkInteractionProvider $provider): void
+    {
+        $this->bulkInteractionProvider = $provider;
+    }
+
+    /**
+     * Returns the bulk interaction provider of the grid view.
+     */
+    public function getBulkInteractionProvider(): ?IBulkInteractionProvider
+    {
+        return $this->bulkInteractionProvider;
+    }
+
+    public function getBulkInteractionProviderClassName(): string
+    {
+        if (!$this->hasBulkInteractions()) {
+            return '';
+        }
+
+        return \get_class($this->getBulkInteractionProvider());
+    }
+
+    /**
      * Returns true, if this grid view has interactions.
      */
     public function hasInteractions(): bool
@@ -190,6 +218,15 @@ abstract class AbstractGridView
     public function addQuickInteraction(IInteraction $interaction): void
     {
         $this->quickInteractions[] = $interaction;
+    }
+
+    /**
+     * Returns true if this grid view has bulk interactions.
+     */
+    public function hasBulkInteractions(): bool
+    {
+        return $this->getBulkInteractionProvider() !== null
+            && $this->getBulkInteractionProvider()->getInteractions() !== [];
     }
 
     /**
@@ -273,6 +310,21 @@ abstract class AbstractGridView
         }
 
         return $code;
+    }
+
+    /**
+     * Renders the initialization code for the bulk interactions of the grid view.
+     */
+    public function renderBulkInteractionInitialization(): string
+    {
+        if (!$this->hasBulkInteractions()) {
+            return '';
+        }
+
+        return \implode("\n", \array_map(
+            fn($interaction) => $interaction->renderInitialization($this->getID() . '_table'),
+            $this->getBulkInteractionProvider()->getInteractions()
+        ));
     }
 
     /**

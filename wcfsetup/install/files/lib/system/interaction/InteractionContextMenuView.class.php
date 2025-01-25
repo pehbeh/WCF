@@ -70,6 +70,10 @@ class InteractionContextMenuView
         return $this->provider->getInteractions();
     }
 
+    /**
+     * @param (IInteraction|Divider)[] $interactions
+     * @return (IInteraction|Divider)[]
+     */
     private function removeObsoleteDividers(array $interactions): array
     {
         $previousElementIsDivider = true;

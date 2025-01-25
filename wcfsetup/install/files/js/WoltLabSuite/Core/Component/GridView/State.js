@@ -29,7 +29,10 @@ define(["require", "exports", "tslib", "./Filter", "./Selection", "./Sorting"], 
             this.#sorting.addEventListener("change", () => {
                 this.#switchPage(1, 0 /* StateChangeCause.Change */);
             });
-            this.#selection = new Selection_1.default(table);
+            this.#selection = new Selection_1.default(gridId, table);
+            this.#selection.addEventListener("getBulkInteractions", (event) => {
+                this.dispatchEvent(new CustomEvent("getBulkInteractions", { detail: { objectIds: event.detail.objectIds } }));
+            });
             window.addEventListener("popstate", () => {
                 this.#handlePopState();
             });
@@ -96,6 +99,9 @@ define(["require", "exports", "tslib", "./Filter", "./Selection", "./Sorting"], 
             this.#filter.updateFromSearchParams(searchParams);
             this.#sorting.updateFromSearchParams(searchParams);
             this.#switchPage(pageNo, 1 /* StateChangeCause.History */);
+        }
+        setBulkInteractionContextMenuOptions(options) {
+            this.#selection.setBulkInteractionContextMenuOptions(options);
         }
     }
     exports.State = State;

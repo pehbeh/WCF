@@ -1,4 +1,4 @@
-define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridviews/GetRows", "../Dom/Change/Listener", "../Dom/Util", "../Helper/Selector", "../Ui/Dropdown/Simple", "./GridView/State"], function (require, exports, tslib_1, GetRow_1, GetRows_1, Listener_1, Util_1, Selector_1, Simple_1, State_1) {
+define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridviews/GetRows", "../Api/Interactions/GetBulkContextMenuOptions", "../Dom/Change/Listener", "../Dom/Util", "../Helper/Selector", "../Ui/Dropdown/Simple", "./GridView/State"], function (require, exports, tslib_1, GetRow_1, GetRows_1, GetBulkContextMenuOptions_1, Listener_1, Util_1, Selector_1, Simple_1, State_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GridView = void 0;
@@ -10,11 +10,13 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
         #table;
         #state;
         #noItemsNotice;
+        #bulkInteractionProviderClassName;
         #gridViewParameters;
-        constructor(gridId, gridClassName, pageNo, baseUrl = "", sortField = "", sortOrder = "ASC", gridViewParameters) {
+        constructor(gridId, gridClassName, pageNo, baseUrl = "", sortField = "", sortOrder = "ASC", bulkInteractionProviderClassName, gridViewParameters) {
             this.#gridClassName = gridClassName;
             this.#table = document.getElementById(`${gridId}_table`);
             this.#noItemsNotice = document.getElementById(`${gridId}_noItemsNotice`);
+            this.#bulkInteractionProviderClassName = bulkInteractionProviderClassName;
             this.#gridViewParameters = gridViewParameters;
             this.#initInteractions();
             this.#state = this.#setupState(gridId, pageNo, baseUrl, sortField, sortOrder);
@@ -64,7 +66,14 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
             state.addEventListener("change", (event) => {
                 void this.#loadRows(event.detail.source);
             });
+            state.addEventListener("getBulkInteractions", (event) => {
+                void this.#loadBulkInteractions(event.detail.objectIds);
+            });
             return state;
+        }
+        async #loadBulkInteractions(objectIds) {
+            const response = await (0, GetBulkContextMenuOptions_1.getBulkContextMenuOptions)(this.#bulkInteractionProviderClassName, objectIds);
+            this.#state.setBulkInteractionContextMenuOptions(response.unwrap().template);
         }
     }
     exports.GridView = GridView;
