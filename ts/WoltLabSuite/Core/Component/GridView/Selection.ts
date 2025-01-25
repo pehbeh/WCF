@@ -1,5 +1,7 @@
 import { getStoragePrefix } from "WoltLabSuite/Core/Core";
+import DomUtil from "WoltLabSuite/Core/Dom/Util";
 import { wheneverFirstSeen } from "WoltLabSuite/Core/Helper/Selector";
+import { getDropdownMenu } from "WoltLabSuite/Core/Ui/Dropdown/Simple";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class Selection extends EventTarget {
@@ -7,7 +9,7 @@ export class Selection extends EventTarget {
   readonly #table: HTMLTableElement;
   readonly #selectionBar: HTMLElement | null = null;
   readonly #bulkInteractionButton: HTMLButtonElement | null = null;
-  #bulkInteractionContextMenuOptions: string | null = null;
+  #bulkInteractionsPlaceholder: HTMLLIElement | null = null;
 
   constructor(gridId: string, table: HTMLTableElement) {
     super();
@@ -91,8 +93,7 @@ export class Selection extends EventTarget {
       this.#saveSelection(checkboxes);
     }
 
-    this.#bulkInteractionContextMenuOptions = null;
-
+    this.#rebuildBulkInteractions();
     this.#updateSelectionBar();
   }
 
@@ -166,18 +167,52 @@ export class Selection extends EventTarget {
   }
 
   #showBulkInteractionMenu(): void {
-    if (this.#bulkInteractionContextMenuOptions === null) {
-      this.#loadBulkInteractionMenu();
+    if (this.#bulkInteractionsPlaceholder !== null) {
       return;
     }
-  }
 
-  #loadBulkInteractionMenu(): void {
     this.dispatchEvent(new CustomEvent("getBulkInteractions", { detail: { objectIds: this.getSelectedIds() } }));
   }
 
   setBulkInteractionContextMenuOptions(options: string): void {
-    this.#bulkInteractionContextMenuOptions = options;
+    const fragment = DomUtil.createFragmentFromHtml(options);
+    this.#rebuildBulkInteractions(fragment);
+  }
+
+  #rebuildBulkInteractions(fragment?: DocumentFragment): void {
+    if (fragment === undefined && this.#bulkInteractionsPlaceholder === null) {
+      // The call was made before the menu was shown for the first time.
+      return;
+    }
+
+    const menu = getDropdownMenu(this.#bulkInteractionButton!.parentElement!.id);
+    if (menu === undefined) {
+      throw new Error("Could not find the dropdown menu for " + this.#bulkInteractionButton!.id);
+    }
+
+    const dividers = Array.from(menu.querySelectorAll<HTMLElement>(".dropdownDivider"));
+    const lastDivider = dividers[dividers.length - 1];
+    lastDivider.hidden = false;
+
+    if (fragment === undefined) {
+      while (lastDivider.previousElementSibling !== null) {
+        lastDivider.previousElementSibling.remove();
+      }
+
+      menu.prepend(this.#bulkInteractionsPlaceholder!);
+      this.#bulkInteractionsPlaceholder = null;
+    } else {
+      if (this.#bulkInteractionsPlaceholder === null) {
+        this.#bulkInteractionsPlaceholder = lastDivider.previousElementSibling as HTMLLIElement;
+        this.#bulkInteractionsPlaceholder.remove();
+      }
+
+      menu.prepend(fragment);
+
+      if (lastDivider.previousElementSibling === null) {
+        lastDivider.hidden = true;
+      }
+    }
   }
 
   #resetSelection(): void {
