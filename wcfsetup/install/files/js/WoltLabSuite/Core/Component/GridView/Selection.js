@@ -10,6 +10,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         #selectionBar = null;
         #bulkInteractionButton = null;
         #bulkInteractionsPlaceholder = null;
+        #bulkInteractionsLoadingDelay = undefined;
         constructor(gridId, table) {
             super();
             this.#table = table;
@@ -144,6 +145,14 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
                 return;
             }
             this.dispatchEvent(new CustomEvent("getBulkInteractions", { detail: { objectIds: this.getSelectedIds() } }));
+            if (this.#bulkInteractionsLoadingDelay !== undefined) {
+                window.clearTimeout(this.#bulkInteractionsLoadingDelay);
+            }
+            // Delays the display of the available actions to prevent flicker and to
+            // smooth out the UX.
+            this.#bulkInteractionsLoadingDelay = window.setTimeout(() => {
+                this.#bulkInteractionsLoadingDelay = undefined;
+            }, 200);
         }
         setBulkInteractionContextMenuOptions(options) {
             const fragment = Util_1.default.createFragmentFromHtml(options);
@@ -154,13 +163,20 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
                 // The call was made before the menu was shown for the first time.
                 return;
             }
-            const menu = (0, Simple_1.getDropdownMenu)(this.#bulkInteractionButton.parentElement.id);
+            if (this.#bulkInteractionsLoadingDelay !== undefined && fragment !== undefined) {
+                // The server has already replied but the delay isn't over yet.
+                window.setTimeout(() => {
+                    this.#rebuildBulkInteractions(fragment);
+                }, 20);
+                return;
+            }
+            const menuId = this.#bulkInteractionButton.parentElement.id;
+            const menu = (0, Simple_1.getDropdownMenu)(menuId);
             if (menu === undefined) {
                 throw new Error("Could not find the dropdown menu for " + this.#bulkInteractionButton.id);
             }
             const dividers = Array.from(menu.querySelectorAll(".dropdownDivider"));
             const lastDivider = dividers[dividers.length - 1];
-            lastDivider.hidden = false;
             if (fragment === undefined) {
                 while (lastDivider.previousElementSibling !== null) {
                     lastDivider.previousElementSibling.remove();
@@ -174,10 +190,8 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
                     this.#bulkInteractionsPlaceholder.remove();
                 }
                 menu.prepend(fragment);
-                if (lastDivider.previousElementSibling === null) {
-                    lastDivider.hidden = true;
-                }
             }
+            (0, Simple_1.setAlignmentById)(menuId);
         }
         #resetSelection() {
             if (this.#markAll !== null) {

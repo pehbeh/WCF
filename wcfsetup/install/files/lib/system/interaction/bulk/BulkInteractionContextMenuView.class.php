@@ -32,6 +32,10 @@ class BulkInteractionContextMenuView
             }
         }
 
+        if ($html === '') {
+            $html = '<li class="disabled"><span>TODO: Keine Aktionen verfügbar</span></li>';
+        }
+
         return $html;
     }
 

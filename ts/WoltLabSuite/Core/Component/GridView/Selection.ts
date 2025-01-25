@@ -1,7 +1,7 @@
 import { getStoragePrefix } from "WoltLabSuite/Core/Core";
 import DomUtil from "WoltLabSuite/Core/Dom/Util";
 import { wheneverFirstSeen } from "WoltLabSuite/Core/Helper/Selector";
-import { getDropdownMenu } from "WoltLabSuite/Core/Ui/Dropdown/Simple";
+import { getDropdownMenu, setAlignmentById } from "WoltLabSuite/Core/Ui/Dropdown/Simple";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class Selection extends EventTarget {
@@ -10,6 +10,7 @@ export class Selection extends EventTarget {
   readonly #selectionBar: HTMLElement | null = null;
   readonly #bulkInteractionButton: HTMLButtonElement | null = null;
   #bulkInteractionsPlaceholder: HTMLLIElement | null = null;
+  #bulkInteractionsLoadingDelay: number | undefined = undefined;
 
   constructor(gridId: string, table: HTMLTableElement) {
     super();
@@ -172,6 +173,16 @@ export class Selection extends EventTarget {
     }
 
     this.dispatchEvent(new CustomEvent("getBulkInteractions", { detail: { objectIds: this.getSelectedIds() } }));
+
+    if (this.#bulkInteractionsLoadingDelay !== undefined) {
+      window.clearTimeout(this.#bulkInteractionsLoadingDelay);
+    }
+
+    // Delays the display of the available actions to prevent flicker and to
+    // smooth out the UX.
+    this.#bulkInteractionsLoadingDelay = window.setTimeout(() => {
+      this.#bulkInteractionsLoadingDelay = undefined;
+    }, 200);
   }
 
   setBulkInteractionContextMenuOptions(options: string): void {
@@ -185,14 +196,23 @@ export class Selection extends EventTarget {
       return;
     }
 
-    const menu = getDropdownMenu(this.#bulkInteractionButton!.parentElement!.id);
+    if (this.#bulkInteractionsLoadingDelay !== undefined && fragment !== undefined) {
+      // The server has already replied but the delay isn't over yet.
+      window.setTimeout(() => {
+        this.#rebuildBulkInteractions(fragment);
+      }, 20);
+
+      return;
+    }
+
+    const menuId = this.#bulkInteractionButton!.parentElement!.id;
+    const menu = getDropdownMenu(menuId);
     if (menu === undefined) {
       throw new Error("Could not find the dropdown menu for " + this.#bulkInteractionButton!.id);
     }
 
     const dividers = Array.from(menu.querySelectorAll<HTMLElement>(".dropdownDivider"));
     const lastDivider = dividers[dividers.length - 1];
-    lastDivider.hidden = false;
 
     if (fragment === undefined) {
       while (lastDivider.previousElementSibling !== null) {
@@ -208,11 +228,9 @@ export class Selection extends EventTarget {
       }
 
       menu.prepend(fragment);
-
-      if (lastDivider.previousElementSibling === null) {
-        lastDivider.hidden = true;
-      }
     }
+
+    setAlignmentById(menuId);
   }
 
   #resetSelection(): void {
