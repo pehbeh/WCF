@@ -1,7 +1,7 @@
 import { getStoragePrefix } from "WoltLabSuite/Core/Core";
 import DomUtil from "WoltLabSuite/Core/Dom/Util";
 import { wheneverFirstSeen } from "WoltLabSuite/Core/Helper/Selector";
-import { getDropdownMenu, setAlignmentById } from "WoltLabSuite/Core/Ui/Dropdown/Simple";
+import UiDropdownSimple, { getDropdownMenu, setAlignmentById } from "WoltLabSuite/Core/Ui/Dropdown/Simple";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class Selection extends EventTarget {
@@ -228,6 +228,8 @@ export class Selection extends EventTarget {
       }
 
       menu.prepend(fragment);
+
+      this.#initBulkInteractions();
     }
 
     setAlignmentById(menuId);
@@ -246,6 +248,23 @@ export class Selection extends EventTarget {
     window.localStorage.removeItem(this.#getStorageKey());
 
     this.#updateSelectionBar();
+  }
+
+  #initBulkInteractions(): void {
+    if (!this.#bulkInteractionButton) {
+      return;
+    }
+
+    const dropdown = UiDropdownSimple.getDropdownMenu(this.#bulkInteractionButton.dataset.target!);
+    dropdown?.querySelectorAll<HTMLButtonElement>("[data-bulk-interaction]").forEach((element) => {
+      element.addEventListener("click", () => {
+        this.#table.dispatchEvent(
+          new CustomEvent("bulk-interaction", {
+            detail: element.dataset,
+          }),
+        );
+      });
+    });
   }
 }
 

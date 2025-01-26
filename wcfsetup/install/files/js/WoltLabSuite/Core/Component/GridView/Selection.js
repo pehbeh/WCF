@@ -3,6 +3,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Selection = void 0;
     Util_1 = tslib_1.__importDefault(Util_1);
+    Simple_1 = tslib_1.__importStar(Simple_1);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
     class Selection extends EventTarget {
         #markAll = null;
@@ -190,6 +191,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
                     this.#bulkInteractionsPlaceholder.remove();
                 }
                 menu.prepend(fragment);
+                this.#initBulkInteractions();
             }
             (0, Simple_1.setAlignmentById)(menuId);
         }
@@ -203,6 +205,19 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
                 .forEach((checkbox) => (checkbox.checked = false));
             window.localStorage.removeItem(this.#getStorageKey());
             this.#updateSelectionBar();
+        }
+        #initBulkInteractions() {
+            if (!this.#bulkInteractionButton) {
+                return;
+            }
+            const dropdown = Simple_1.default.getDropdownMenu(this.#bulkInteractionButton.dataset.target);
+            dropdown?.querySelectorAll("[data-bulk-interaction]").forEach((element) => {
+                element.addEventListener("click", () => {
+                    this.#table.dispatchEvent(new CustomEvent("bulk-interaction", {
+                        detail: element.dataset,
+                    }));
+                });
+            });
         }
     }
     exports.Selection = Selection;

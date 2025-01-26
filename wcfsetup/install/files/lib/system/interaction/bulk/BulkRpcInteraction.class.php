@@ -2,8 +2,10 @@
 
 namespace wcf\system\interaction\bulk;
 
+use wcf\action\ApiAction;
 use wcf\data\DatabaseObject;
 use wcf\system\interaction\InteractionConfirmationType;
+use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\JSON;
 use wcf\util\StringUtil;
@@ -33,15 +35,14 @@ class BulkRpcInteraction extends AbstractBulkInteraction
     public function render(array $objects): string
     {
         $identifier = StringUtil::encodeJS($this->getIdentifier());
-        $label = WCF::getLanguage()->get($this->languageItem);
-        if (\count($objects) > 1) {
-            $label .= ' ( ' . \count($objects) . ' )';
-        }
+        $label = WCF::getLanguage()->get($this->languageItem) . ' (' . \count($objects) . ')';
         $confirmationMessage = WCF::getLanguage()->get($this->confirmationMessage);
-        $endpoint = StringUtil::encodeHTML($this->endpoint);
+        $endpoint = StringUtil::encodeHTML(
+            LinkHandler::getInstance()->getControllerLink(ApiAction::class, ['id' => 'rpc']) . $this->endpoint
+        );
         $objectIDs = StringUtil::encodeHTML(
             JSON::encode(
-                \array_map(fn(DatabaseObject $object) => $object->getObjectID(), $objects)
+                \array_values(\array_map(fn(DatabaseObject $object) => $object->getObjectID(), $objects))
             )
         );
 
