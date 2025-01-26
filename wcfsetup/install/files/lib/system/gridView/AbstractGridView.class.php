@@ -5,9 +5,9 @@ namespace wcf\system\gridView;
 use LogicException;
 use wcf\action\GridViewFilterAction;
 use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectList;
 use wcf\event\IPsr14Event;
 use wcf\system\event\EventHandler;
-use wcf\system\interaction\bulk\IBulkInteraction;
 use wcf\system\interaction\bulk\IBulkInteractionProvider;
 use wcf\system\interaction\IInteraction;
 use wcf\system\interaction\IInteractionProvider;
@@ -36,6 +36,13 @@ abstract class AbstractGridView
      */
     private array $quickInteractions = [];
 
+    /**
+     * @var DatabaseObject[]
+     */
+    protected array $objects;
+
+    protected int $objectCount;
+    protected DatabaseObjectList $objectList;
     private GridViewRowLink $rowLink;
     private int $rowsPerPage = 20;
     private string $baseUrl = '';
@@ -259,7 +266,7 @@ abstract class AbstractGridView
     /**
      * Renders the given grid view column.
      */
-    public function renderColumn(GridViewColumn $column, mixed $row): string
+    public function renderColumn(GridViewColumn $column, DatabaseObject $row): string
     {
         $value = $this->getData($row, $column->getID());
         if ($column->encodeValue()) {
@@ -330,13 +337,11 @@ abstract class AbstractGridView
     /**
      * Renders the interactions for the given row.
      */
-    public function renderInteractionContextMenuButton(mixed $row): string
+    public function renderInteractionContextMenuButton(DatabaseObject $row): string
     {
         if ($this->interactionProvider === null) {
             return '';
         }
-
-        \assert($row instanceof DatabaseObject);
 
         return $this->getInteractionContextMenuView()->renderButton($row);
     }
@@ -344,10 +349,8 @@ abstract class AbstractGridView
     /**
      * Renders the interactions for the given row.
      */
-    public function renderQuickInteractions(mixed $row): string
+    public function renderQuickInteractions(DatabaseObject $row): string
     {
-        \assert($row instanceof DatabaseObject);
-
         return \implode("\n", \array_map(
             static fn($interaction) => $interaction->render($row),
             $this->getQuickInteractions()
@@ -357,9 +360,9 @@ abstract class AbstractGridView
     /**
      * Returns the row data for the given identifier.
      */
-    protected function getData(mixed $row, string $identifer): mixed
+    protected function getData(DatabaseObject $row, string $identifer): mixed
     {
-        return $row[$identifer] ?? '';
+        return $row->__get($identifer);
     }
 
     /**
@@ -561,9 +564,9 @@ abstract class AbstractGridView
     /**
      * Returns the id for the given row.
      */
-    public function getObjectID(mixed $row): mixed
+    public function getObjectID(DatabaseObject $row): string|int
     {
-        return '';
+        return $row->getObjectID();
     }
 
     public function setObjectIDFilter(string|int|null $objectID): void
@@ -636,10 +639,88 @@ abstract class AbstractGridView
     /**
      * Returns the rows for the active page.
      */
-    public abstract function getRows(): array;
+    public function getRows(): array
+    {
+        if (!isset($this->objects)) {
+            $this->getObjectList()->readObjects();
+            $this->objects = $this->getObjectList()->getObjects();
+        }
+
+        return $this->objects;
+    }
 
     /**
      * Returns the total number of rows.
      */
-    public abstract function countRows(): int;
+    public function countRows(): int
+    {
+        if (!isset($this->objectCount)) {
+            $this->objectCount = $this->getObjectList()->countObjects();
+        }
+
+        return $this->objectCount;
+    }
+
+    /**
+     * Returns the database object list.
+     */
+    public function getObjectList(): DatabaseObjectList
+    {
+        if (!isset($this->objectList)) {
+            $this->initObjectList();
+        }
+
+        return $this->objectList;
+    }
+
+    /**
+     * Initializes the database object list.
+     */
+    protected function initObjectList(): void
+    {
+        $this->objectList = $this->createObjectList();
+        $this->objectList->sqlLimit = $this->getRowsPerPage();
+        $this->objectList->sqlOffset = ($this->getPageNo() - 1) * $this->getRowsPerPage();
+        if ($this->getSortField()) {
+            $column = $this->getColumn($this->getSortField());
+            if ($column && $column->getSortByDatabaseColumn()) {
+                $this->objectList->sqlOrderBy = $column->getSortByDatabaseColumn() . ' ' . $this->getSortOrder();
+            } else {
+                $this->objectList->sqlOrderBy = $this->objectList->getDatabaseTableAlias() .
+                    '.' . $this->getSortField() . ' ' . $this->getSortOrder();
+            }
+
+            $this->objectList->sqlOrderBy .= ',' . $this->objectList->getDatabaseTableAlias() .
+                '.' . $this->objectList->getDatabaseTableIndexName() . ' ' . $this->getSortOrder();
+        }
+        if ($this->getObjectIDFilter() !== null) {
+            $this->objectList->getConditionBuilder()->add(
+                $this->objectList->getDatabaseTableAlias() . '.' . $this->objectList->getDatabaseTableIndexName() . ' = ?',
+                [$this->getObjectIDFilter()]
+            );
+        }
+        $this->applyFilters();
+        $this->validate();
+        $this->fireInitializedEvent();
+    }
+
+    /**
+     * Applies the active filters.
+     */
+    protected function applyFilters(): void
+    {
+        foreach ($this->getActiveFilters() as $key => $value) {
+            $column = $this->getColumn($key);
+            if (!$column) {
+                throw new LogicException("Unknown column '" . $key . "'");
+            }
+
+            $column->getFilter()->applyFilter($this->getObjectList(), $column->getID(), $value);
+        }
+    }
+
+    /**
+     * Creates the database object list of this grid view.
+     */
+    protected abstract function createObjectList(): DatabaseObjectList;
 }

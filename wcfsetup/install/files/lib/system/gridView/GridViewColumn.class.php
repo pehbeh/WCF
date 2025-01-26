@@ -2,6 +2,7 @@
 
 namespace wcf\system\gridView;
 
+use wcf\data\DatabaseObject;
 use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\gridView\filter\IGridViewFilter;
 use wcf\system\gridView\renderer\DefaultColumnRenderer;
@@ -45,14 +46,14 @@ final class GridViewColumn
     /**
      * Renders the column with the given value.
      */
-    public function render(mixed $value, mixed $context = null): string
+    public function render(mixed $value, DatabaseObject $row): string
     {
         if ($this->getRenderers() === []) {
-            return self::getDefaultRenderer()->render($value, $context);
+            return self::getDefaultRenderer()->render($value, $row);
         }
 
         foreach ($this->getRenderers() as $renderer) {
-            $value = $renderer->render($value, $context);
+            $value = $renderer->render($value, $row);
         }
 
         return $value;

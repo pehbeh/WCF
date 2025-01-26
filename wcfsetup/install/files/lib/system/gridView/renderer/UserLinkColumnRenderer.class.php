@@ -2,6 +2,7 @@
 
 namespace wcf\system\gridView\renderer;
 
+use wcf\data\DatabaseObject;
 use wcf\system\cache\runtime\AbstractRuntimeCache;
 use wcf\system\cache\runtime\UserRuntimeCache;
 use wcf\util\StringUtil;
@@ -32,18 +33,14 @@ class UserLinkColumnRenderer extends ObjectLinkColumnRenderer
     }
 
     #[\Override]
-    public function render(mixed $value, mixed $context = null): string
+    public function render(mixed $value, DatabaseObject $row): string
     {
         if ($value) {
-            return parent::render($value);
+            return parent::render($value, $row);
         }
 
         if ($this->fallbackValue) {
-            if (\is_array($context)) {
-                return StringUtil::encodeHTML($context[$this->fallbackValue] ?? '');
-            } else {
-                return StringUtil::encodeHTML($context->{$this->fallbackValue} ?? '');
-            }
+            return StringUtil::encodeHTML($row->{$this->fallbackValue} ?? '');
         }
 
         return '';

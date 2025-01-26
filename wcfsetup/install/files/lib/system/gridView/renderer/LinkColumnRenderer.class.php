@@ -24,12 +24,11 @@ class LinkColumnRenderer extends DefaultColumnRenderer implements ILinkColumnRen
     ) {}
 
     #[\Override]
-    public function render(mixed $value, mixed $context = null): string
+    public function render(mixed $value, DatabaseObject $row): string
     {
-        \assert($context instanceof DatabaseObject);
         $href = LinkHandler::getInstance()->getControllerLink(
             $this->controllerClass,
-            \array_merge($this->parameters, ['object' => $context])
+            \array_merge($this->parameters, ['object' => $row])
         );
 
         return '<a href="' . StringUtil::encodeHTML($href) . '"'

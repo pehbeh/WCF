@@ -34,10 +34,4 @@ class TextFilter extends AbstractFilter
             ['%' . WCF::getDB()->escapeLikeValue($value) . '%']
         );
     }
-
-    #[\Override]
-    public function matches(string $filterValue, string $rowValue): bool
-    {
-        return \str_contains(\mb_strtolower($rowValue), \mb_strtolower($filterValue));
-    }
 }

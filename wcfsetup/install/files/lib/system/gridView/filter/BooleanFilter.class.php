@@ -33,12 +33,6 @@ class BooleanFilter extends AbstractFilter
     }
 
     #[\Override]
-    public function matches(string $filterValue, string $rowValue): bool
-    {
-        return $rowValue == 1;
-    }
-
-    #[\Override]
     public function renderValue(string $value): string
     {
         return '';

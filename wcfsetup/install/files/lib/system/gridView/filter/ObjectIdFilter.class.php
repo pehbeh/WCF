@@ -32,10 +32,4 @@ class ObjectIdFilter extends AbstractFilter
 
         $list->getConditionBuilder()->add("{$columnName} = ?", [$value]);
     }
-
-    #[\Override]
-    public function matches(string $filterValue, string $rowValue): bool
-    {
-        return $filterValue == $rowValue;
-    }
 }

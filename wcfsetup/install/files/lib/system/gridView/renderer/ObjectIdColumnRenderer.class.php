@@ -2,6 +2,8 @@
 
 namespace wcf\system\gridView\renderer;
 
+use wcf\data\DatabaseObject;
+
 /**
  * Formats the content of a column as an object id.
  *
@@ -13,7 +15,7 @@ namespace wcf\system\gridView\renderer;
 class ObjectIdColumnRenderer extends AbstractColumnRenderer
 {
     #[\Override]
-    public function render(mixed $value, mixed $context = null): string
+    public function render(mixed $value, DatabaseObject $row): string
     {
         return \intval($value);
     }

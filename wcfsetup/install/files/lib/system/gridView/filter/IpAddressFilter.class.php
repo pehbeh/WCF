@@ -36,12 +36,6 @@ class IpAddressFilter extends AbstractFilter
         );
     }
 
-    #[\Override]
-    public function matches(string $filterValue, string $rowValue): bool
-    {
-        return \str_contains($rowValue, $this->convertIPv4To6($filterValue));
-    }
-
     private function convertIPv4To6(string $value): string
     {
         return UserUtil::convertIPv4To6($value);

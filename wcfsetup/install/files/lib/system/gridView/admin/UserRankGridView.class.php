@@ -9,13 +9,14 @@ use wcf\data\user\rank\I18nUserRankList;
 use wcf\data\user\rank\UserRank;
 use wcf\event\gridView\admin\UserRankGridViewInitialized;
 use wcf\event\IPsr14Event;
-use wcf\system\gridView\DatabaseObjectListGridView;
+use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\I18nTextFilter;
 use wcf\system\gridView\filter\SelectFilter;
 use wcf\system\gridView\GridViewColumn;
 use wcf\system\gridView\GridViewRowLink;
 use wcf\system\gridView\renderer\DefaultColumnRenderer;
 use wcf\system\gridView\renderer\NumberColumnRenderer;
+use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\interaction\admin\UserRankInteractions;
 use wcf\system\interaction\Divider;
 use wcf\system\interaction\EditInteraction;
@@ -30,14 +31,14 @@ use wcf\util\StringUtil;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-final class UserRankGridView extends DatabaseObjectListGridView
+final class UserRankGridView extends AbstractGridView
 {
     public function __construct()
     {
         $this->addColumns([
             GridViewColumn::for('rankID')
                 ->label('wcf.global.objectID')
-                ->renderer(new NumberColumnRenderer())
+                ->renderer(new ObjectIdColumnRenderer())
                 ->sortable(),
             GridViewColumn::for('rankTitle')
                 ->label('wcf.acp.user.rank.title')

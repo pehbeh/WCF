@@ -44,22 +44,6 @@ class TimeFilter extends AbstractFilter
     }
 
     #[\Override]
-    public function matches(string $filterValue, string $rowValue): bool
-    {
-        $timestamps = $this->getTimestamps($filterValue);
-
-        if (!$timestamps['from'] && !$timestamps['to']) {
-            return true;
-        }
-
-        if (!$timestamps['to']) {
-            return $rowValue >= $timestamps['from'];
-        } else {
-            return $rowValue >= $timestamps['from'] && $rowValue <= $timestamps['to'];
-        }
-    }
-
-    #[\Override]
     public function renderValue(string $value): string
     {
         $values = explode(';', $value);

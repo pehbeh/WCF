@@ -2,6 +2,7 @@
 
 namespace wcf\system\gridView\renderer;
 
+use wcf\data\DatabaseObject;
 use wcf\system\cache\runtime\UserRuntimeCache;
 use wcf\util\StringUtil;
 
@@ -20,15 +21,11 @@ class UserColumnRenderer extends DefaultColumnRenderer
     ) {}
 
     #[\Override]
-    public function render(mixed $value, mixed $context = null): string
+    public function render(mixed $value, DatabaseObject $row): string
     {
         if (!$value) {
             if ($this->fallbackValue) {
-                if (\is_array($context)) {
-                    return StringUtil::encodeHTML($context[$this->fallbackValue] ?? '');
-                } else {
-                    return StringUtil::encodeHTML($context->{$this->fallbackValue} ?? '');
-                }
+                return StringUtil::encodeHTML($row->{$this->fallbackValue} ?? '');
             }
 
             return '';
@@ -43,7 +40,7 @@ class UserColumnRenderer extends DefaultColumnRenderer
     }
 
     #[\Override]
-    public function prepare(mixed $value, mixed $context = null): void
+    public function prepare(mixed $value, DatabaseObject $row): void
     {
         if (!$value) {
             return;

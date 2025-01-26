@@ -8,7 +8,7 @@ use wcf\data\acp\session\log\ACPSessionLogList;
 use wcf\data\DatabaseObjectList;
 use wcf\event\gridView\admin\ACPSessionLogGridViewInitialized;
 use wcf\event\IPsr14Event;
-use wcf\system\gridView\DatabaseObjectListGridView;
+use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\IpAddressFilter;
 use wcf\system\gridView\filter\TextFilter;
 use wcf\system\gridView\filter\TimeFilter;
@@ -17,6 +17,7 @@ use wcf\system\gridView\GridViewColumn;
 use wcf\system\gridView\GridViewRowLink;
 use wcf\system\gridView\renderer\IpAddressColumnRenderer;
 use wcf\system\gridView\renderer\NumberColumnRenderer;
+use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\gridView\renderer\TimeColumnRenderer;
 use wcf\system\gridView\renderer\TruncatedTextColumnRenderer;
 use wcf\system\gridView\renderer\UserLinkColumnRenderer;
@@ -30,14 +31,14 @@ use wcf\system\WCF;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-final class ACPSessionLogGridView extends DatabaseObjectListGridView
+final class ACPSessionLogGridView extends AbstractGridView
 {
     public function __construct()
     {
         $this->addColumns([
             GridViewColumn::for('sessionLogID')
                 ->label('wcf.global.objectID')
-                ->renderer(new NumberColumnRenderer())
+                ->renderer(new ObjectIdColumnRenderer())
                 ->sortable(),
             GridViewColumn::for('userID')
                 ->label('wcf.user.username')

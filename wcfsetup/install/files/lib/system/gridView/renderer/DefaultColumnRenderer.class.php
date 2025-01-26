@@ -2,6 +2,7 @@
 
 namespace wcf\system\gridView\renderer;
 
+use wcf\data\DatabaseObject;
 use wcf\util\StringUtil;
 
 /**
@@ -16,7 +17,7 @@ use wcf\util\StringUtil;
 class DefaultColumnRenderer extends AbstractColumnRenderer
 {
     #[\Override]
-    public function render(mixed $value, mixed $context = null): string
+    public function render(mixed $value, DatabaseObject $row): string
     {
         return $value;
     }

@@ -8,11 +8,12 @@ use wcf\data\user\option\UserOption;
 use wcf\data\user\option\UserOptionList;
 use wcf\event\gridView\admin\UserOptionGridViewInitialized;
 use wcf\event\IPsr14Event;
-use wcf\system\gridView\DatabaseObjectListGridView;
+use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\GridViewColumn;
 use wcf\system\gridView\GridViewRowLink;
 use wcf\system\gridView\renderer\DefaultColumnRenderer;
 use wcf\system\gridView\renderer\NumberColumnRenderer;
+use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\interaction\admin\UserOptionInteractions;
 use wcf\system\interaction\bulk\admin\UserOptionBulkInteractions;
 use wcf\system\interaction\Divider;
@@ -29,14 +30,14 @@ use wcf\util\StringUtil;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-final class UserOptionGridView extends DatabaseObjectListGridView
+final class UserOptionGridView extends AbstractGridView
 {
     public function __construct()
     {
         $this->addColumns([
             GridViewColumn::for('optionID')
                 ->label('wcf.global.objectID')
-                ->renderer(new NumberColumnRenderer())
+                ->renderer(new ObjectIdColumnRenderer())
                 ->sortable(),
             GridViewColumn::for('optionName')
                 ->label('wcf.global.name')

@@ -2,6 +2,7 @@
 
 namespace wcf\system\gridView\renderer;
 
+use wcf\data\DatabaseObject;
 use wcf\util\StringUtil;
 
 /**
@@ -20,7 +21,7 @@ class TruncatedTextColumnRenderer extends DefaultColumnRenderer
     ) {}
 
     #[\Override]
-    public function render(mixed $value, mixed $context = null): string
+    public function render(mixed $value, DatabaseObject $row): string
     {
         if (!$value) {
             return '';

@@ -2,6 +2,7 @@
 
 namespace wcf\system\gridView\renderer;
 
+use wcf\data\DatabaseObject;
 use wcf\system\WCF;
 
 /**
@@ -15,7 +16,7 @@ use wcf\system\WCF;
 class TimeColumnRenderer extends AbstractColumnRenderer
 {
     #[\Override]
-    public function render(mixed $value, mixed $context = null): string
+    public function render(mixed $value, DatabaseObject $row): string
     {
         $timestamp = \intval($value);
         if (!$timestamp) {

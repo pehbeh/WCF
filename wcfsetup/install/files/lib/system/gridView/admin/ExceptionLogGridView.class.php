@@ -2,9 +2,11 @@
 
 namespace wcf\system\gridView\admin;
 
+use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectList;
 use wcf\event\gridView\admin\ExceptionLogGridViewInitialized;
 use wcf\event\IPsr14Event;
-use wcf\system\gridView\DataSourceGridView;
+use wcf\system\gridView\AbstractGridView;
 use wcf\system\Regex;
 use wcf\system\gridView\filter\SelectFilter;
 use wcf\system\gridView\filter\TextFilter;
@@ -23,7 +25,7 @@ use wcf\util\ExceptionLogUtil;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-final class ExceptionLogGridView extends DataSourceGridView
+final class ExceptionLogGridView extends AbstractGridView
 {
     private array $availableLogFiles;
 
@@ -66,12 +68,6 @@ final class ExceptionLogGridView extends DataSourceGridView
     }
 
     #[\Override]
-    public function getObjectID(mixed $row): mixed
-    {
-        return $row['exceptionID'];
-    }
-
-    #[\Override]
     protected function loadDataSource(): array
     {
         if (!empty($this->getActiveFilters()['exceptionID'])) {
@@ -101,12 +97,12 @@ final class ExceptionLogGridView extends DataSourceGridView
 
                 $parsed = ExceptionLogUtil::parseException($val);
 
-                $parsedExceptions[$key] = [
+                $parsedExceptions[$key] = $this->createObject([
                     'exceptionID' => $key,
                     'message' => $parsed['message'],
                     'date' => $parsed['date'],
                     'logFile' => $logFile,
-                ];
+                ]);
             }
 
             return $parsedExceptions;
@@ -118,18 +114,65 @@ final class ExceptionLogGridView extends DataSourceGridView
             foreach ($exceptions as $key => $val) {
                 $parsed = ExceptionLogUtil::parseException($val);
 
-                $parsedExceptions[$key] = [
+                $parsedExceptions[$key] = $this->createObject([
                     'exceptionID' => $key,
                     'message' => $parsed['message'],
                     'date' => $parsed['date'],
                     'logFile' => $this->getActiveFilters()['logFile'],
-                ];
+                ]);
             }
 
             return $parsedExceptions;
         }
 
         return [];
+    }
+
+    private function createObject(array $data): DatabaseObject
+    {
+        return new class(null, $data) extends DatabaseObject {
+            protected static $databaseTableIndexName = 'exceptionID';
+        };
+    }
+
+    #[\Override]
+    public function getRows(): array
+    {
+        if (!isset($this->objects)) {
+            $this->getObjectList();
+        }
+
+        return $this->objects;
+    }
+
+    #[\Override]
+    public function countRows(): int
+    {
+        if (!isset($this->objectCount)) {
+            $this->getObjectList();
+        }
+
+        return $this->objectCount;
+    }
+
+    #[\Override]
+    protected function initObjectList(): void
+    {
+        $this->objectList = $this->createObjectList();
+
+        $objects = $this->loadDataSource();
+        $this->objectCount = \count($objects);
+        \uasort($objects, function (DatabaseObject $a, DatabaseObject $b) {
+            if ($this->getSortOrder() === 'ASC') {
+                return \strcmp($a->__get($this->getSortField()), $b->__get($this->getSortField()));
+            } else {
+                return \strcmp($b->__get($this->getSortField()), $a->__get($this->getSortField()));
+            }
+        });
+        $this->objects = \array_slice($objects, ($this->getPageNo() - 1) * $this->getRowsPerPage(), $this->getRowsPerPage());
+
+        $this->validate();
+        $this->fireInitializedEvent();
     }
 
     #[\Override]
@@ -161,5 +204,11 @@ final class ExceptionLogGridView extends DataSourceGridView
     protected function getInitializedEvent(): ?IPsr14Event
     {
         return new ExceptionLogGridViewInitialized($this);
+    }
+
+    #[\Override]
+    protected function createObjectList(): DatabaseObjectList
+    {
+        return new class extends DatabaseObjectList {};
     }
 }

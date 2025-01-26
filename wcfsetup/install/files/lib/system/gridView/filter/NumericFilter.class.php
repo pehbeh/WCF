@@ -50,22 +50,6 @@ class NumericFilter extends AbstractFilter
     }
 
     #[\Override]
-    public function matches(string $filterValue, string $rowValue): bool
-    {
-        $values = $this->parseValue($filterValue);
-
-        if (!$values['from'] && !$values['to']) {
-            return true;
-        }
-
-        if (!$values['to']) {
-            return $rowValue >= $values['from'];
-        } else {
-            return $rowValue >= $values['from'] && $rowValue <= $values['to'];
-        }
-    }
-
-    #[\Override]
     public function renderValue(string $value): string
     {
         $values = $this->parseValue($value);

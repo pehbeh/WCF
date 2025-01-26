@@ -3,6 +3,7 @@
 namespace wcf\system\gridView\renderer;
 
 use BadMethodCallException;
+use wcf\data\DatabaseObject;
 use wcf\data\ILinkableObject;
 use wcf\data\ITitledObject;
 use wcf\system\cache\runtime\AbstractRuntimeCache;
@@ -30,7 +31,7 @@ abstract class ObjectLinkColumnRenderer extends DefaultColumnRenderer implements
     protected abstract function getRuntimeCache(): AbstractRuntimeCache;
 
     #[\Override]
-    public function render(mixed $value, mixed $context = null): string
+    public function render(mixed $value, DatabaseObject $row): string
     {
         if (!$value) {
             return '';
@@ -69,7 +70,7 @@ abstract class ObjectLinkColumnRenderer extends DefaultColumnRenderer implements
     }
 
     #[\Override]
-    public function prepare(mixed $value, mixed $context = null): void
+    public function prepare(mixed $value, DatabaseObject $row): void
     {
         if (!$value) {
             return;

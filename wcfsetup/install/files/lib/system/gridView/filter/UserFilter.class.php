@@ -34,12 +34,6 @@ class UserFilter extends AbstractFilter
     }
 
     #[\Override]
-    public function matches(string $filterValue, string $rowValue): bool
-    {
-        return $rowValue == $filterValue;
-    }
-
-    #[\Override]
     public function renderValue(string $value): string
     {
         $user = UserRuntimeCache::getInstance()->getObject($value);

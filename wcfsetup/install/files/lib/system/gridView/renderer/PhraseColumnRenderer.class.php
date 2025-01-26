@@ -2,8 +2,8 @@
 
 namespace wcf\system\gridView\renderer;
 
+use wcf\data\DatabaseObject;
 use wcf\system\WCF;
-use wcf\util\StringUtil;
 
 /**
  * Formats the content of a column as a phrase.
@@ -16,7 +16,7 @@ use wcf\util\StringUtil;
 class PhraseColumnRenderer extends DefaultColumnRenderer
 {
     #[\Override]
-    public function render(mixed $value, mixed $context = null): string
+    public function render(mixed $value, DatabaseObject $row): string
     {
         return WCF::getLanguage()->get($value);
     }

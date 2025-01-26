@@ -9,12 +9,12 @@ use wcf\data\cronjob\log\CronjobLogList;
 use wcf\data\DatabaseObjectList;
 use wcf\event\gridView\admin\CronjobLogGridViewInitialized;
 use wcf\event\IPsr14Event;
-use wcf\system\gridView\DatabaseObjectListGridView;
+use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\SelectFilter;
 use wcf\system\gridView\filter\TimeFilter;
 use wcf\system\gridView\GridViewColumn;
 use wcf\system\gridView\renderer\DefaultColumnRenderer;
-use wcf\system\gridView\renderer\NumberColumnRenderer;
+use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\gridView\renderer\TimeColumnRenderer;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
@@ -27,7 +27,7 @@ use wcf\util\StringUtil;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-final class CronjobLogGridView extends DatabaseObjectListGridView
+final class CronjobLogGridView extends AbstractGridView
 {
     public function __construct()
     {
@@ -36,7 +36,7 @@ final class CronjobLogGridView extends DatabaseObjectListGridView
         $this->addColumns([
             GridViewColumn::for('cronjobLogID')
                 ->label('wcf.global.objectID')
-                ->renderer(new NumberColumnRenderer())
+                ->renderer(new ObjectIdColumnRenderer())
                 ->sortable(),
             GridViewColumn::for('cronjobID')
                 ->label('wcf.acp.cronjob')

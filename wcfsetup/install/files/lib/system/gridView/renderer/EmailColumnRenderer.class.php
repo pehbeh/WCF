@@ -2,7 +2,7 @@
 
 namespace wcf\system\gridView\renderer;
 
-use wcf\util\StringUtil;
+use wcf\data\DatabaseObject;
 
 /**
  * Formats the content of a column as an email address.
@@ -15,7 +15,7 @@ use wcf\util\StringUtil;
 class EmailColumnRenderer extends AbstractColumnRenderer implements ILinkColumnRenderer
 {
     #[\Override]
-    public function render(mixed $value, mixed $context = null): string
+    public function render(mixed $value, DatabaseObject $row): string
     {
         return \sprintf('<a href="mailto:%s">%s</a>', $value, $value);
     }

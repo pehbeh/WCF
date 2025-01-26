@@ -26,11 +26,6 @@ interface IGridViewFilter
     public function applyFilter(DatabaseObjectList $list, string $id, string $value): void;
 
     /**
-     * Returns true if the given filter value matches the row.
-     */
-    public function matches(string $filterValue, string $rowValue): bool;
-
-    /**
      * Renders the filter value in a human readable format.
      */
     public function renderValue(string $value): string;

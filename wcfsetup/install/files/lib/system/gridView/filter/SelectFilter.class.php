@@ -39,12 +39,6 @@ class SelectFilter extends AbstractFilter
     }
 
     #[\Override]
-    public function matches(string $filterValue, string $rowValue): bool
-    {
-        return $filterValue === $rowValue;
-    }
-
-    #[\Override]
     public function renderValue(string $value): string
     {
         return WCF::getLanguage()->get($this->options[$value]);

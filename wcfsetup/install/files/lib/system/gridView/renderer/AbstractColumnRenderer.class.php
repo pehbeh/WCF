@@ -2,6 +2,8 @@
 
 namespace wcf\system\gridView\renderer;
 
+use wcf\data\DatabaseObject;
+
 /**
  * Provides an abstract implementation of a column renderer.
  *
@@ -19,5 +21,5 @@ abstract class AbstractColumnRenderer implements IColumnRenderer
     }
 
     #[\Override]
-    public function prepare(mixed $value, mixed $context = null): void {}
+    public function prepare(mixed $value, DatabaseObject $row): void {}
 }

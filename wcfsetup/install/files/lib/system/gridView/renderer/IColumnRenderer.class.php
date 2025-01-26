@@ -2,6 +2,8 @@
 
 namespace wcf\system\gridView\renderer;
 
+use wcf\data\DatabaseObject;
+
 /**
  * Represents a column renderer of a grid view.
  *
@@ -15,7 +17,7 @@ interface IColumnRenderer
     /**
      * Renders the content of a column with the given value.
      */
-    public function render(mixed $value, mixed $context = null): string;
+    public function render(mixed $value, DatabaseObject $row): string;
 
     /**
      * Returns the css classes of a column.
@@ -25,5 +27,5 @@ interface IColumnRenderer
     /**
      * Is called after the grid view data has been loaded and allows additional data to be loaded or cached.
      */
-    public function prepare(mixed $value, mixed $context = null): void;
+    public function prepare(mixed $value, DatabaseObject $row): void;
 }

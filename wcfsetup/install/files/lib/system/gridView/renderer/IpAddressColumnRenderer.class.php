@@ -2,7 +2,7 @@
 
 namespace wcf\system\gridView\renderer;
 
-use wcf\util\StringUtil;
+use wcf\data\DatabaseObject;
 use wcf\util\UserUtil;
 
 /**
@@ -16,7 +16,7 @@ use wcf\util\UserUtil;
 class IpAddressColumnRenderer extends DefaultColumnRenderer
 {
     #[\Override]
-    public function render(mixed $value, mixed $context = null): string
+    public function render(mixed $value, DatabaseObject $row): string
     {
         if (!$value) {
             return '';

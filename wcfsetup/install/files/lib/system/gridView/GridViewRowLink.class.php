@@ -25,14 +25,13 @@ class GridViewRowLink
     /**
      * Renders the row link.
      */
-    public function render(mixed $value, mixed $context = null, bool $isPrimaryColumn = false): string
+    public function render(mixed $value, DatabaseObject $row, bool $isPrimaryColumn = false): string
     {
         $href = '';
         if ($this->controllerClass) {
-            \assert($context instanceof DatabaseObject);
             $href = LinkHandler::getInstance()->getControllerLink(
                 $this->controllerClass,
-                \array_merge($this->parameters, ['object' => $context])
+                \array_merge($this->parameters, ['object' => $row])
             );
         }
 
