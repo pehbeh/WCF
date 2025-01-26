@@ -126,6 +126,21 @@
 	animation-timeline: scroll(inline);
 }
 
+.gridView__selectColumn {
+	position: sticky;
+	left: 0;
+	z-index: 1;
+}
+
+.gridView__selectColumn::after {
+	content: "";
+	display: block;
+	inset: 0;
+	position: absolute;
+	animation: auto linear 0s 1 normal none running gridView__selectColumn__dropShadow;
+	animation-timeline: scroll(inline);
+}
+
 .gridView__filterBar {
 	display: flex;
 	flex-direction: row;
@@ -174,5 +189,17 @@
 	}
 	99% {
 		filter: none;
+	}
+}
+
+@keyframes gridView__selectColumn__dropShadow {
+	0% {
+		box-shadow: none;
+	}
+	5% {
+		box-shadow: rgba(0, 0, 0, 0.08) 0px 10px 16px 2px;
+	}
+	100% {
+		box-shadow: rgba(0, 0, 0, 0.08) 0px 10px 16px 2px;
 	}
 }
