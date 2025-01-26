@@ -129,6 +129,7 @@
 .gridView__selectColumn {
 	position: sticky;
 	left: 0;
+	width: 1px;
 	z-index: 1;
 }
 
@@ -139,6 +140,7 @@
 	position: absolute;
 	animation: auto linear 0s 1 normal none running gridView__selectColumn__dropShadow;
 	animation-timeline: scroll(inline);
+	z-index: -1;
 }
 
 .gridView__filterBar {
