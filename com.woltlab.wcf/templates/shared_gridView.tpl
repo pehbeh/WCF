@@ -61,7 +61,7 @@
 		<div id="{$view->getID()}_selectionBar" class="gridView__selectionBar dropdown" hidden>
 			<button type="button" id="{$view->getID()}_bulkInteractionButton" class="button gridView__bulkInteractionButton dropdownToggle">3 Entries Selected</button>
 			<ul class="dropdownMenu">
-				<li class="disabled"><span>Lädt ...</span></li>
+				<li class="disabled"><span>{lang}wcf.global.loading{/lang}</span></li>
 				<li class="dropdownDivider"></li>
 				<li>
 					<button type="button" id="{$view->getID()}_resetSelectionButton">{lang}wcf.clipboard.item.unmarkAll{/lang}</button>
