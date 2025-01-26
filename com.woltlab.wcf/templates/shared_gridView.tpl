@@ -59,7 +59,7 @@
 
 	{if $view->hasBulkInteractions()}
 		<div id="{$view->getID()}_selectionBar" class="gridView__selectionBar dropdown" hidden>
-			<button type="button" id="{$view->getID()}_bulkInteractionButton" class="button gridView__bulkInteractionButton dropdownToggle">3 Entries Selected</button>
+			<button type="button" id="{$view->getID()}_bulkInteractionButton" class="button gridView__bulkInteractionButton dropdownToggle"></button>
 			<ul class="dropdownMenu">
 				<li class="disabled"><span>{lang}wcf.global.loading{/lang}</span></li>
 				<li class="dropdownDivider"></li>
@@ -75,6 +75,8 @@
 
 <script data-relocate="true">
 	require(['WoltLabSuite/Core/Component/GridView'], ({ GridView }) => {
+		WoltLabLanguage.registerPhrase("wcf.clipboard.button.numberOfSelectedItems", '{jslang __literal=true}wcf.clipboard.button.numberOfSelectedItems{/jslang}');
+		
 		new GridView(
 			'{unsafe:$view->getID()|encodeJs}',
 			'{unsafe:$view->getClassName()|encodeJS}',

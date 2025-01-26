@@ -1,4 +1,4 @@
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/Core/Dom/Util", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Ui/Dropdown/Simple"], function (require, exports, tslib_1, Core_1, Util_1, Selector_1, Simple_1) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/Core/Dom/Util", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Ui/Dropdown/Simple"], function (require, exports, tslib_1, Core_1, Util_1, Selector_1, Language_1, Simple_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Selection = void 0;
@@ -139,7 +139,9 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
                 return;
             }
             this.#selectionBar.hidden = false;
-            this.#bulkInteractionButton.textContent = `${selectedIds.length} selected`;
+            this.#bulkInteractionButton.textContent = (0, Language_1.getPhrase)("wcf.clipboard.button.numberOfSelectedItems", {
+                numberOfSelectedItems: selectedIds.length,
+            });
         }
         #showBulkInteractionMenu() {
             if (this.#bulkInteractionsPlaceholder !== null) {

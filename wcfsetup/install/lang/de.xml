@@ -3457,6 +3457,8 @@ Erlaubte Dateiendungen: {', '|implode:$attachmentHandler->getFormattedAllowedExt
 		<item name="wcf.clipboard.item.unmarkAll"><![CDATA[Demarkieren]]></item>
 		<item name="wcf.clipboard.item.markAll"><![CDATA[Alle Elemente markieren]]></item>
 		<item name="wcf.clipboard.item.mark"><![CDATA[Element markieren]]></item>
+		<item name="wcf.clipboard.button.numberOfSelectedItems"><![CDATA[{#$numberOfSelectedItems} ausgewählt]]></item>
+		<item name="wcf.clipboard.button.noInteractionsAvailable"><![CDATA[Keine Aktionen verfügbar]]></item>
 		<item name="wcf.clipboard.item.com.woltlab.wcf.article.delete"><![CDATA[Endgültig löschen ({#$count})]]></item>
 		<item name="wcf.clipboard.item.com.woltlab.wcf.article.delete.confirmMessage"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Willst du{else}Wollen Sie{/if} wirklich {if $count == 1}einen{else}{#$count}{/if} Artikel löschen?]]></item>
 		<item name="wcf.clipboard.item.com.woltlab.wcf.article.publish"><![CDATA[Veröffentlichen ({#$count})]]></item>

@@ -1,6 +1,7 @@
 import { getStoragePrefix } from "WoltLabSuite/Core/Core";
 import DomUtil from "WoltLabSuite/Core/Dom/Util";
 import { wheneverFirstSeen } from "WoltLabSuite/Core/Helper/Selector";
+import { getPhrase } from "WoltLabSuite/Core/Language";
 import UiDropdownSimple, { getDropdownMenu, setAlignmentById } from "WoltLabSuite/Core/Ui/Dropdown/Simple";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -164,7 +165,9 @@ export class Selection extends EventTarget {
     }
 
     this.#selectionBar.hidden = false;
-    this.#bulkInteractionButton!.textContent = `${selectedIds.length} selected`;
+    this.#bulkInteractionButton!.textContent = getPhrase("wcf.clipboard.button.numberOfSelectedItems", {
+      numberOfSelectedItems: selectedIds.length,
+    });
   }
 
   #showBulkInteractionMenu(): void {

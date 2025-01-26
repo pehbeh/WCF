@@ -4,6 +4,7 @@ namespace wcf\system\interaction\bulk;
 
 use wcf\data\DatabaseObject;
 use wcf\system\interaction\Divider;
+use wcf\system\WCF;
 
 class BulkInteractionContextMenuView
 {
@@ -33,7 +34,9 @@ class BulkInteractionContextMenuView
         }
 
         if ($html === '') {
-            $html = '<li class="disabled"><span>TODO: Keine Aktionen verfügbar</span></li>';
+            $html = '<li class="disabled"><span>'
+                . WCF::getLanguage()->get('wcf.clipboard.button.noInteractionsAvailable')
+                . '</span></li>';
         }
 
         return $html;
