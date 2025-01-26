@@ -92,6 +92,10 @@ export class GridView {
     this.#table.addEventListener("remove", (event) => {
       (event.target as HTMLElement).remove();
     });
+
+    this.#table.addEventListener("reset-selection", () => {
+      this.#state.resetSelection();
+    });
   }
 
   #setupState(gridId: string, pageNo: number, baseUrl: string, sortField: string, sortOrder: string): State {

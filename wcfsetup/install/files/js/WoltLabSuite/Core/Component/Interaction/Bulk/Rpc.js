@@ -50,6 +50,7 @@ define(["require", "exports", "WoltLabSuite/Core/Api/DeleteObject", "WoltLabSuit
             // TODO: This shows a generic success message and should be replaced with a more specific message.
             (0, Notification_1.show)();
         }
+        container.dispatchEvent(new CustomEvent("reset-selection"));
     }
     function setup(identifier, container) {
         container.addEventListener("bulk-interaction", (event) => {

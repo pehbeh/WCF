@@ -60,6 +60,9 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
             this.#table.addEventListener("remove", (event) => {
                 event.target.remove();
             });
+            this.#table.addEventListener("reset-selection", () => {
+                this.#state.resetSelection();
+            });
         }
         #setupState(gridId, pageNo, baseUrl, sortField, sortOrder) {
             const state = new State_1.State(gridId, this.#table, pageNo, baseUrl, sortField, sortOrder);

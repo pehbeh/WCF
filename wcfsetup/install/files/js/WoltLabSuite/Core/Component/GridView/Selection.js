@@ -25,7 +25,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
                 this.#showBulkInteractionMenu();
             });
             document.getElementById(`${gridId}_resetSelectionButton`)?.addEventListener("click", () => {
-                this.#resetSelection();
+                this.resetSelection();
             });
             (0, Selector_1.wheneverFirstSeen)(`#${this.#table.id} .gridView__selectRow`, (checkbox) => {
                 checkbox.addEventListener("change", () => {
@@ -195,7 +195,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
             }
             (0, Simple_1.setAlignmentById)(menuId);
         }
-        #resetSelection() {
+        resetSelection() {
             if (this.#markAll !== null) {
                 this.#markAll.checked = false;
                 this.#markAll.indeterminate = false;

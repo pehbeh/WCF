@@ -141,6 +141,10 @@ export class State extends EventTarget {
   setBulkInteractionContextMenuOptions(options: string): void {
     this.#selection.setBulkInteractionContextMenuOptions(options);
   }
+
+  resetSelection(): void {
+    this.#selection.resetSelection();
+  }
 }
 
 interface StateEventMap {

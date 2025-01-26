@@ -103,6 +103,9 @@ define(["require", "exports", "tslib", "./Filter", "./Selection", "./Sorting"], 
         setBulkInteractionContextMenuOptions(options) {
             this.#selection.setBulkInteractionContextMenuOptions(options);
         }
+        resetSelection() {
+            this.#selection.resetSelection();
+        }
     }
     exports.State = State;
     exports.default = State;

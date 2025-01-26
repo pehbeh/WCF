@@ -67,6 +67,8 @@ async function handleRpcInteraction(
     // TODO: This shows a generic success message and should be replaced with a more specific message.
     showNotification();
   }
+
+  container.dispatchEvent(new CustomEvent("reset-selection"));
 }
 
 export function setup(identifier: string, container: HTMLElement): void {

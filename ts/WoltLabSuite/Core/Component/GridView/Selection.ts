@@ -29,7 +29,7 @@ export class Selection extends EventTarget {
     });
 
     document.getElementById(`${gridId}_resetSelectionButton`)?.addEventListener("click", () => {
-      this.#resetSelection();
+      this.resetSelection();
     });
 
     wheneverFirstSeen(`#${this.#table.id} .gridView__selectRow`, (checkbox: HTMLInputElement) => {
@@ -235,7 +235,7 @@ export class Selection extends EventTarget {
     setAlignmentById(menuId);
   }
 
-  #resetSelection(): void {
+  resetSelection(): void {
     if (this.#markAll !== null) {
       this.#markAll.checked = false;
       this.#markAll.indeterminate = false;
