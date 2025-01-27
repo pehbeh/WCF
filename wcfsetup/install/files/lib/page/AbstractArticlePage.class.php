@@ -105,7 +105,12 @@ abstract class AbstractArticlePage extends AbstractPage
         }
 
         // update interface language
-        if (!WCF::getUser()->userID && $this->article->isMultilingual && $this->articleContent->languageID != WCF::getLanguage()->languageID) {
+        if (
+            !WCF::getUser()->userID
+            && $this->article->isMultilingual
+            && $this->articleContent->languageID !== null
+            && $this->articleContent->languageID != WCF::getLanguage()->languageID
+        ) {
             WCF::setLanguage($this->articleContent->languageID);
         }
     }
