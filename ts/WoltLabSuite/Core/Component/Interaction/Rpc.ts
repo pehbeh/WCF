@@ -1,3 +1,12 @@
+/**
+ * Handles interactions that call a RPC endpoint.
+ *
+ * @author Marcel Werk
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
+ */
+
 import { deleteObject } from "WoltLabSuite/Core/Api/DeleteObject";
 import { postObject } from "WoltLabSuite/Core/Api/PostObject";
 import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";

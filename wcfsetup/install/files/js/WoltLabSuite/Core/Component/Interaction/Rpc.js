@@ -1,3 +1,11 @@
+/**
+ * Handles interactions that call a RPC endpoint.
+ *
+ * @author Marcel Werk
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
+ */
 define(["require", "exports", "WoltLabSuite/Core/Api/DeleteObject", "WoltLabSuite/Core/Api/PostObject", "WoltLabSuite/Core/Ui/Notification", "./Confirmation"], function (require, exports, DeleteObject_1, PostObject_1, Notification_1, Confirmation_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });

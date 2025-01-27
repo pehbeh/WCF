@@ -1,3 +1,12 @@
+/**
+ * Handles the state of a grid view.
+ *
+ * @author Marcel Werk
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
+ */
+
 import Filter from "./Filter";
 import Selection from "./Selection";
 import Sorting from "./Sorting";

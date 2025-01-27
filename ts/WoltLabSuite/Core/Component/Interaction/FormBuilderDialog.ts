@@ -1,3 +1,12 @@
+/**
+ * Handles interactions that open a form builder dialog.
+ *
+ * @author Marcel Werk
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
+ */
+
 import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
 

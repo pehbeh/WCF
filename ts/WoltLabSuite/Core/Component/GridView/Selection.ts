@@ -1,3 +1,12 @@
+/**
+ * Handles the selection of grid view rows.
+ *
+ * @author Marcel Werk
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
+ */
+
 import { getStoragePrefix } from "WoltLabSuite/Core/Core";
 import DomUtil from "WoltLabSuite/Core/Dom/Util";
 import { wheneverFirstSeen } from "WoltLabSuite/Core/Helper/Selector";

@@ -1,3 +1,11 @@
+/**
+ * Handles interactions that open a form builder dialog.
+ *
+ * @author Marcel Werk
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
+ */
 define(["require", "exports", "WoltLabSuite/Core/Ui/Notification", "WoltLabSuite/Core/Component/Dialog"], function (require, exports, Notification_1, Dialog_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });

@@ -569,11 +569,17 @@ abstract class AbstractGridView
         return $row->getObjectID();
     }
 
+    /**
+     * Filters the grid view by the given object id.
+     */
     public function setObjectIDFilter(string|int|null $objectID): void
     {
         $this->objectIDFilter = $objectID;
     }
 
+    /**
+     * Returns the object id by which the grid view is filtered.
+     */
     public function getObjectIDFilter(): string|int|null
     {
         return $this->objectIDFilter;

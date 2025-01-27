@@ -1,3 +1,12 @@
+/**
+ * Handles the sorting of grid view rows.
+ *
+ * @author Marcel Werk
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
+ */
+
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class Sorting extends EventTarget {
   #defaultSortField: string;

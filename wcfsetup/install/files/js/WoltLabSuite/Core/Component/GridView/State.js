@@ -1,3 +1,11 @@
+/**
+ * Handles the state of a grid view.
+ *
+ * @author Marcel Werk
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
+ */
 define(["require", "exports", "tslib", "./Filter", "./Selection", "./Sorting"], function (require, exports, tslib_1, Filter_1, Selection_1, Sorting_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });

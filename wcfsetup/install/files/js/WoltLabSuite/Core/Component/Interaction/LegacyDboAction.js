@@ -1,5 +1,5 @@
 /**
- * Handles execution of DBO actions within grid views.
+ * Handles interactions that call legacy DBO actions.
  *
  * @author Marcel Werk
  * @copyright 2001-2024 WoltLab GmbH

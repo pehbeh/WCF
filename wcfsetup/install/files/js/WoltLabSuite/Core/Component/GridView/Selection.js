@@ -1,3 +1,11 @@
+/**
+ * Handles the selection of grid view rows.
+ *
+ * @author Marcel Werk
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
+ */
 define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/Core/Dom/Util", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Ui/Dropdown/Simple"], function (require, exports, tslib_1, Core_1, Util_1, Selector_1, Language_1, Simple_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });

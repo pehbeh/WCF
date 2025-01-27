@@ -1,3 +1,11 @@
+/**
+ * Provides the program logic for grid views.
+ *
+ * @author Marcel Werk
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
+ */
 define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridviews/GetRows", "../Api/Interactions/GetBulkContextMenuOptions", "../Dom/Change/Listener", "../Dom/Util", "../Helper/Selector", "../Ui/Dropdown/Simple", "./GridView/State"], function (require, exports, tslib_1, GetRow_1, GetRows_1, GetBulkContextMenuOptions_1, Listener_1, Util_1, Selector_1, Simple_1, State_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });

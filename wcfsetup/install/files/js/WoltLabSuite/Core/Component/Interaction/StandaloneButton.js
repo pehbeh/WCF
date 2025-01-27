@@ -1,3 +1,11 @@
+/**
+ * Represents a button that provides a context menu with interactions.
+ *
+ * @author Marcel Werk
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
+ */
 define(["require", "exports", "tslib", "WoltLabSuite/Core/Api/Interactions/GetContextMenuOptions", "WoltLabSuite/Core/Ui/Dropdown/Simple"], function (require, exports, tslib_1, GetContextMenuOptions_1, Simple_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });

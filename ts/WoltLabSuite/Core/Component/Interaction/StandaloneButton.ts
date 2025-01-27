@@ -1,3 +1,12 @@
+/**
+ * Represents a button that provides a context menu with interactions.
+ *
+ * @author Marcel Werk
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
+ */
+
 import { getContextMenuOptions } from "WoltLabSuite/Core/Api/Interactions/GetContextMenuOptions";
 import UiDropdownSimple from "WoltLabSuite/Core/Ui/Dropdown/Simple";
 
