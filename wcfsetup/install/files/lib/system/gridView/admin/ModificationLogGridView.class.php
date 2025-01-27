@@ -62,10 +62,10 @@ final class ModificationLogGridView extends AbstractGridView
                 ->renderer([
                     new class extends DefaultColumnRenderer {
                         #[\Override]
-                        public function render(mixed $value, mixed $context = null): string
+                        public function render(mixed $value, DatabaseObject $row): string
                         {
-                            \assert($context instanceof DatabaseObjectDecorator);
-                            $log = $context->getDecoratedObject();
+                            \assert($row instanceof DatabaseObjectDecorator);
+                            $log = $row->getDecoratedObject();
                             \assert($log instanceof ModificationLog);
                             $objectType = ObjectTypeCache::getInstance()->getObjectType($log->objectTypeID);
                             if (!$objectType) {
@@ -115,12 +115,6 @@ final class ModificationLogGridView extends AbstractGridView
                         }
 
                         #[\Override]
-                        public function matches(string $filterValue, string $rowValue): bool
-                        {
-                            throw new LogicException('unreachable');
-                        }
-
-                        #[\Override]
                         public function renderValue(string $value): string
                         {
                             if (\is_numeric($value)) {
@@ -136,17 +130,17 @@ final class ModificationLogGridView extends AbstractGridView
                 ->renderer([
                     new class extends DefaultColumnRenderer implements ILinkColumnRenderer {
                         #[\Override]
-                        public function render(mixed $value, mixed $context = null): string
+                        public function render(mixed $value, DatabaseObject $row): string
                         {
-                            \assert($context instanceof IViewableModificationLog);
-                            if ($context->getAffectedObject() === null) {
+                            \assert($row instanceof IViewableModificationLog);
+                            if ($row->getAffectedObject() === null) {
                                 return WCF::getLanguage()->get('wcf.acp.modificationLog.affectedObject.unknown');
                             }
 
                             return \sprintf(
                                 '<a href="%s">%s</a>',
-                                StringUtil::encodeHTML($context->getAffectedObject()->getLink()),
-                                StringUtil::encodeHTML($context->getAffectedObject()->getTitle())
+                                StringUtil::encodeHTML($row->getAffectedObject()->getLink()),
+                                StringUtil::encodeHTML($row->getAffectedObject()->getTitle())
                             );
                         }
                     },

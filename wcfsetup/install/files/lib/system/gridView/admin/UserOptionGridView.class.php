@@ -3,6 +3,7 @@
 namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\UserOptionEditForm;
+use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\data\user\option\UserOption;
 use wcf\data\user\option\UserOptionList;
@@ -45,11 +46,11 @@ final class UserOptionGridView extends AbstractGridView
                 ->titleColumn()
                 ->renderer([
                     new class extends DefaultColumnRenderer {
-                        public function render(mixed $value, mixed $context = null): string
+                        public function render(mixed $value, DatabaseObject $row): string
                         {
-                            \assert($context instanceof UserOption);
+                            \assert($row instanceof UserOption);
 
-                            return StringUtil::encodeHTML($context->getTitle());
+                            return StringUtil::encodeHTML($row->getTitle());
                         }
                     }
                 ]),
@@ -58,12 +59,12 @@ final class UserOptionGridView extends AbstractGridView
                 ->sortable()
                 ->renderer([
                     new class extends DefaultColumnRenderer {
-                        public function render(mixed $value, mixed $context = null): string
+                        public function render(mixed $value, DatabaseObject $row): string
                         {
-                            \assert($context instanceof UserOption);
+                            \assert($row instanceof UserOption);
 
                             return StringUtil::encodeHTML(
-                                WCF::getLanguage()->get('wcf.user.option.category.' . $context->categoryName)
+                                WCF::getLanguage()->get('wcf.user.option.category.' . $row->categoryName)
                             );
                         }
                     }

@@ -6,6 +6,7 @@ use wcf\data\cronjob\Cronjob;
 use wcf\data\cronjob\I18nCronjobList;
 use wcf\data\cronjob\log\CronjobLog;
 use wcf\data\cronjob\log\CronjobLogList;
+use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\event\gridView\admin\CronjobLogGridViewInitialized;
 use wcf\event\IPsr14Event;
@@ -47,7 +48,7 @@ final class CronjobLogGridView extends AbstractGridView
                     new class($availableCronjobs) extends DefaultColumnRenderer {
                         public function __construct(private readonly array $availableCronjobs) {}
 
-                        public function render(mixed $value, mixed $context = null): string
+                        public function render(mixed $value, DatabaseObject $row): string
                         {
                             return $this->availableCronjobs[$value];
                         }
@@ -67,18 +68,18 @@ final class CronjobLogGridView extends AbstractGridView
                 ]))
                 ->renderer([
                     new class extends DefaultColumnRenderer {
-                        public function render(mixed $value, mixed $context = null): string
+                        public function render(mixed $value, DatabaseObject $row): string
                         {
-                            \assert($context instanceof CronjobLog);
+                            \assert($row instanceof CronjobLog);
 
-                            if ($context->success) {
+                            if ($row->success) {
                                 return '<span class="badge green">' . WCF::getLanguage()->get('wcf.acp.cronjob.log.success') . '</span>';
                             }
-                            if ($context->error) {
+                            if ($row->error) {
                                 $label = WCF::getLanguage()->get('wcf.acp.cronjob.log.error');
-                                $buttonId = 'cronjobLogErrorButton' . $context->cronjobLogID;
-                                $id = 'cronjobLogError' . $context->cronjobLogID;
-                                $error = StringUtil::encodeHTML($context->error);
+                                $buttonId = 'cronjobLogErrorButton' . $row->cronjobLogID;
+                                $id = 'cronjobLogError' . $row->cronjobLogID;
+                                $error = StringUtil::encodeHTML($row->error);
                                 $dialogTitle = StringUtil::encodeJS(WCF::getLanguage()->get('wcf.acp.cronjob.log.error.details'));
 
                                 return <<<HTML

@@ -3,6 +3,7 @@
 namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\UserRankEditForm;
+use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\data\user\group\UserGroup;
 use wcf\data\user\rank\I18nUserRankList;
@@ -47,12 +48,12 @@ final class UserRankGridView extends AbstractGridView
                 ->filter(new I18nTextFilter())
                 ->renderer([
                     new class extends DefaultColumnRenderer {
-                        public function render(mixed $value, mixed $context = null): string
+                        public function render(mixed $value, DatabaseObject $row): string
                         {
-                            \assert($context instanceof UserRank);
+                            \assert($row instanceof UserRank);
 
-                            return '<span class="badge label' . ($context->cssClassName ? ' ' . $context->cssClassName : '') . '">'
-                                . StringUtil::encodeHTML($context->getTitle())
+                            return '<span class="badge label' . ($row->cssClassName ? ' ' . $row->cssClassName : '') . '">'
+                                . StringUtil::encodeHTML($row->getTitle())
                                 . '<span>';
                         }
                     }
@@ -62,11 +63,11 @@ final class UserRankGridView extends AbstractGridView
                 ->sortable()
                 ->renderer([
                     new class extends DefaultColumnRenderer {
-                        public function render(mixed $value, mixed $context = null): string
+                        public function render(mixed $value, DatabaseObject $row): string
                         {
-                            \assert($context instanceof UserRank);
+                            \assert($row instanceof UserRank);
 
-                            return $context->rankImage ? $context->getImage() : '';
+                            return $row->rankImage ? $row->getImage() : '';
                         }
                     },
                 ]),
@@ -76,7 +77,7 @@ final class UserRankGridView extends AbstractGridView
                 ->filter(new SelectFilter($this->getAvailableUserGroups()))
                 ->renderer([
                     new class extends DefaultColumnRenderer {
-                        public function render(mixed $value, mixed $context = null): string
+                        public function render(mixed $value, DatabaseObject $row): string
                         {
                             return StringUtil::encodeHTML(UserGroup::getGroupByID($value)->getName());
                         }
@@ -87,7 +88,7 @@ final class UserRankGridView extends AbstractGridView
                 ->sortable()
                 ->renderer([
                     new class extends DefaultColumnRenderer {
-                        public function render(mixed $value, mixed $context = null): string
+                        public function render(mixed $value, DatabaseObject $row): string
                         {
                             if (!$value) {
                                 return '';
