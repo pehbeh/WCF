@@ -19,6 +19,7 @@ use wcf\system\gridView\renderer\DefaultColumnRenderer;
 use wcf\system\gridView\renderer\NumberColumnRenderer;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\interaction\admin\UserRankInteractions;
+use wcf\system\interaction\bulk\admin\UserRankBulkInteractions;
 use wcf\system\interaction\Divider;
 use wcf\system\interaction\EditInteraction;
 use wcf\system\WCF;
@@ -114,6 +115,7 @@ final class UserRankGridView extends AbstractGridView
             new EditInteraction(UserRankEditForm::class)
         ]);
         $this->setInteractionProvider($provider);
+        $this->setBulkInteractionProvider(new UserRankBulkInteractions());
         $this->addRowLink(new GridViewRowLink(UserRankEditForm::class));
         $this->setSortField('rankTitle');
     }
