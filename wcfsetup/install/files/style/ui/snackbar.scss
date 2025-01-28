@@ -1,0 +1,53 @@
+.snackbarContainer {
+	position: fixed;
+	left: 20px;
+	bottom: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.snackbar {
+	color: #fff;
+	background-color: rgb(50, 50, 50);
+	display: flex;
+	user-select: none;
+	box-shadow:
+		rgba(0, 0, 0, 0.2) 0px 3px 5px -1px,
+		rgba(0, 0, 0, 0.14) 0px 6px 10px 0px,
+		rgba(0, 0, 0, 0.12) 0px 1px 18px 0px;
+	border-radius: 4px;
+	gap: 10px;
+	overflow: hidden;
+	min-width: 200px;
+}
+
+.snackbar__icon {
+	border-right: 2px solid transparent;
+	display: flex;
+	align-items: center;
+	width: 36px;
+	text-align: center;
+	justify-content: center;
+}
+
+.snackbar__icon--success {
+	background-color: var(--wcfStatusSuccessBackground);
+	border-color: var(--wcfStatusSuccessBorder);
+	color: var(--wcfStatusSuccessText);
+}
+
+.snackbar__icon--progress {
+	background-color: var(--wcfStatusInfoBackground);
+	border-color: var(--wcfStatusInfoBorder);
+	color: var(--wcfStatusInfoText);
+}
+
+.snackbar__message {
+	padding: 5px 0;
+	flex: 1 0 auto;
+}
+
+.snackbar__dismissButton {
+	padding-right: 5px;
+}
