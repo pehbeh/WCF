@@ -5,6 +5,7 @@ namespace wcf\system\endpoint\controller\core\messages;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use wcf\data\DatabaseObject;
 use wcf\data\IEmbeddedMessageObject;
 use wcf\data\IMessage;
 use wcf\data\user\UserProfile;
@@ -31,7 +32,7 @@ final class RenderQuote implements IController
         $parameters = Helper::mapApiParameters($request, GetRenderQuoteParameters::class);
 
         $object = Helper::fetchObjectFromRequestParameter($parameters->objectID, $parameters->className);
-        \assert($object instanceof IMessage);
+        \assert($object instanceof IMessage && $object instanceof DatabaseObject);
 
         $userProfile = UserProfileRuntimeCache::getInstance()->getObject($object->getUserID());
         if ($userProfile === null) {
@@ -80,6 +81,5 @@ final class GetRenderQuoteParameters
         /** @var positive-int */
         public readonly int $objectID,
         public readonly bool $fullQuote = false,
-    ) {
-    }
+    ) {}
 }
