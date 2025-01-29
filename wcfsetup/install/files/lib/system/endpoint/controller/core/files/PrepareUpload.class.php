@@ -17,6 +17,14 @@ use wcf\system\file\processor\FileProcessor;
 use wcf\system\file\processor\FileProcessorPreflightResult;
 use wcf\util\JSON;
 
+/**
+ * Prepares the upload of a file.
+ *
+ * @author      Alexander Ebert
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.1
+ */
 #[PostRequest('/core/files/upload')]
 final class PrepareUpload implements IController
 {
@@ -102,6 +110,5 @@ final class PostUploadParameters
 
         /** @var non-empty-string */
         public readonly string $context,
-    ) {
-    }
+    ) {}
 }
