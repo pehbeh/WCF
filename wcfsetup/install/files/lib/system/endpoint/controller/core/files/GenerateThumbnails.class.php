@@ -20,7 +20,7 @@ use wcf\system\file\processor\FileProcessor;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.1
  */
-#[PostRequest('/core/files/{id:\d+}/generatethumbnails')]
+#[PostRequest('/core/files/{id:\d+}/generate-thumbnails')]
 final class GenerateThumbnails implements IController
 {
     public function __invoke(ServerRequestInterface $request, array $variables): ResponseInterface
