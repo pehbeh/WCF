@@ -13,7 +13,6 @@ use wcf\system\endpoint\IController;
 use wcf\system\endpoint\PostRequest;
 use wcf\system\exception\PermissionDeniedException;
 use wcf\system\moderation\queue\AbstractModerationQueueManager;
-use wcf\system\moderation\queue\ModerationQueueManager;
 
 /**
  * API endpoint for the deletion of the content associated with a moderation queue entry.
