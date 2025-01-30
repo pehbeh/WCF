@@ -9,7 +9,6 @@ use wcf\data\TDatabaseObjectToggle;
 use wcf\data\user\UserAction;
 use wcf\system\cache\builder\StyleCacheBuilder;
 use wcf\system\exception\PermissionDeniedException;
-use wcf\system\exception\UserInputException;
 use wcf\system\image\ImageHandler;
 use wcf\system\language\LanguageFactory;
 use wcf\system\Regex;
@@ -57,7 +56,7 @@ class StyleAction extends AbstractDatabaseObjectAction implements IToggleAction
     /**
      * @inheritDoc
      */
-    protected $requireACP = ['copy', 'delete', 'markAsTainted', 'setAsDefault', 'toggle', 'update', 'upload'];
+    protected $requireACP = ['copy', 'delete', 'markAsTainted', 'update', 'upload'];
 
     /**
      * style object
@@ -489,36 +488,6 @@ BROWSERCONFIG;
     }
 
     /**
-     * Validates parameters to assign a new default style.
-     */
-    public function validateSetAsDefault()
-    {
-        if (!WCF::getSession()->getPermission('admin.style.canManageStyle')) {
-            throw new PermissionDeniedException();
-        }
-
-        if (empty($this->objects)) {
-            $this->readObjects();
-            if (empty($this->objects)) {
-                throw new UserInputException('objectIDs');
-            }
-        }
-
-        if (\count($this->objects) > 1) {
-            throw new UserInputException('objectIDs');
-        }
-    }
-
-    /**
-     * Sets a style as new default style.
-     */
-    public function setAsDefault()
-    {
-        $styleEditor = \current($this->objects);
-        $styleEditor->setAsDefault();
-    }
-
-    /**
      * Validates parameters to copy a style.
      */
     public function validateCopy()
@@ -661,20 +630,6 @@ BROWSERCONFIG;
         return [
             'redirectURL' => LinkHandler::getInstance()->getLink('StyleEdit', ['id' => $newStyle->styleID]),
         ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function validateToggle()
-    {
-        parent::validateUpdate();
-
-        foreach ($this->getObjects() as $style) {
-            if ($style->isDefault) {
-                throw new UserInputException('objectIDs');
-            }
-        }
     }
 
     /**
