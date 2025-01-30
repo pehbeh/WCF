@@ -2,6 +2,7 @@
 
 namespace wcf\system\interaction\bulk\admin;
 
+use wcf\acp\action\ArticleCategoryAction;
 use wcf\data\article\AccessibleArticleList;
 use wcf\data\article\Article;
 use wcf\data\article\ViewableArticle;
@@ -9,6 +10,7 @@ use wcf\event\interaction\bulk\admin\ArticleBulkInteractionCollecting;
 use wcf\system\event\EventHandler;
 use wcf\system\interaction\bulk\AbstractBulkInteractionProvider;
 use wcf\system\interaction\bulk\BulkDeleteInteraction;
+use wcf\system\interaction\bulk\BulkFormBuilderDialogInteraction;
 use wcf\system\interaction\bulk\BulkRestoreInteraction;
 use wcf\system\interaction\bulk\BulkRpcInteraction;
 use wcf\system\interaction\bulk\BulkTrashInteraction;
@@ -76,6 +78,11 @@ final class ArticleBulkInteractions extends AbstractBulkInteractionProvider
                     return $article->publicationStatus === Article::PUBLISHED;
                 }
             ),
+            new BulkFormBuilderDialogInteraction(
+                'setCategory',
+                ArticleCategoryAction::class,
+                'wcf.article.button.setCategory'
+            )
         ]);
 
         EventHandler::getInstance()->fire(

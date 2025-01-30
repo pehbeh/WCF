@@ -3338,6 +3338,7 @@ freigeschaltet. {if LANGUAGE_USE_INFORMAL_VARIANT}Du kannst{else}Sie können{/if
 		<item name="wcf.article.category.delete.sure"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Willst du{else}Wollen Sie{/if} diese Kategorie wirklich löschen? Alle sich in dieser Kategorie befindlichen Unterkategorien werden in die Elternkategorie dieser Kategorie verschoben und Artikel, die sich in dieser Kategorie befinden, werden gelöscht.]]></item>
 		<item name="wcf.article.button.publish"><![CDATA[Veröffentlichen]]></item>
 		<item name="wcf.article.button.unpublish"><![CDATA[Veröffentlichung zurückziehen]]></item>
+		<item name="wcf.article.button.setCategory"><![CDATA[Kategorie ändern]]></item>
 	</category>
 	<category name="wcf.attachment">
 		<item name="wcf.attachment.file.info"><![CDATA[{@$attachment->filesize|filesize} – {plural value=$attachment->downloads 1="1 Download" other="# Downloads"}]]></item>
