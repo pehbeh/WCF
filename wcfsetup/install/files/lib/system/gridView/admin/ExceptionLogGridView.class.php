@@ -67,7 +67,6 @@ final class ExceptionLogGridView extends AbstractGridView
         return WCF::getSession()->getPermission('admin.management.canViewLog');
     }
 
-    #[\Override]
     protected function loadDataSource(): array
     {
         if (!empty($this->getActiveFilters()['exceptionID'])) {
