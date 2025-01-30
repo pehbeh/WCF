@@ -502,7 +502,7 @@ abstract class AbstractGridView
     {
         return LinkHandler::getInstance()->getControllerLink(
             GridViewFilterAction::class,
-            ['gridView' => \get_class($this)]
+            ['gridView' => \get_class($this), 'gridViewParameters' => $this->getParameters()]
         );
     }
 

@@ -14,10 +14,19 @@ type Response = {
   template: string;
 };
 
-export async function getRow(gridViewClass: string, objectId: string | number): Promise<ApiResult<Response>> {
+export async function getRow(
+  gridViewClass: string,
+  objectId: string | number,
+  gridViewParameters?: Map<string, string>,
+): Promise<ApiResult<Response>> {
   const url = new URL(`${window.WSC_RPC_API_URL}core/grid-views/row`);
   url.searchParams.set("gridView", gridViewClass);
   url.searchParams.set("objectID", objectId.toString());
+  if (gridViewParameters) {
+    gridViewParameters.forEach((value, key) => {
+      url.searchParams.set(`gridViewParameters[${key}]`, value);
+    });
+  }
 
   let response: Response;
   try {
