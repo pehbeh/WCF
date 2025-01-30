@@ -7,6 +7,7 @@
  */
 
 import { prepareRequest } from "WoltLabSuite/Core/Ajax/Backend";
+import { updateLastRequestTimestamp } from "WoltLabSuite/Core/Notification/Handler";
 
 let _serviceWorker: ServiceWorker | null = null;
 
@@ -24,6 +25,15 @@ class ServiceWorker {
       scope: "/",
     });
     this.#serviceWorkerRegistration = window.navigator.serviceWorker.ready;
+
+    window.navigator.serviceWorker.addEventListener("message", (event) => {
+      // Validate that this is a message from our service worker
+      if (!(event.source instanceof window.ServiceWorker) || event.source.scriptURL !== this.#serviceWorkerJsUrl) {
+        return;
+      }
+
+      updateLastRequestTimestamp(event.data.time);
+    });
   }
 
   async register(): Promise<void> {
