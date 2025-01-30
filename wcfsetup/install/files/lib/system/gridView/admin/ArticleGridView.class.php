@@ -1,0 +1,157 @@
+<?php
+
+namespace wcf\system\gridView\admin;
+
+use wcf\acp\form\ArticleEditForm;
+use wcf\data\article\AccessibleArticleList;
+use wcf\data\category\CategoryNodeTree;
+use wcf\data\DatabaseObjectList;
+use wcf\event\gridView\admin\ArticleGridViewInitialized;
+use wcf\event\IPsr14Event;
+use wcf\system\gridView\AbstractGridView;
+use wcf\system\gridView\filter\BooleanFilter;
+use wcf\system\gridView\filter\CategoryFilter;
+use wcf\system\gridView\filter\SelectFilter;
+use wcf\system\gridView\filter\TextFilter;
+use wcf\system\gridView\filter\TimeFilter;
+use wcf\system\gridView\filter\UserFilter;
+use wcf\system\gridView\GridViewColumn;
+use wcf\system\gridView\GridViewRowLink;
+use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
+use wcf\system\gridView\renderer\TimeColumnRenderer;
+use wcf\system\interaction\admin\ArticleInteractions;
+use wcf\system\interaction\bulk\admin\ArticleBulkInteractions;
+use wcf\system\interaction\Divider;
+use wcf\system\interaction\EditInteraction;
+use wcf\system\WCF;
+
+/**
+ * Grid view for the list of articles.
+ *
+ * @author      Olaf Braun
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
+final class ArticleGridView extends AbstractGridView
+{
+    public function __construct()
+    {
+        $this->addColumns([
+            GridViewColumn::for('articleID')
+                ->label('wcf.global.objectID')
+                ->renderer(new ObjectIdColumnRenderer())
+                ->sortable(),
+            GridViewColumn::for('categoryID')
+                ->label('wcf.acp.article.category')
+                ->filter(new CategoryFilter((new CategoryNodeTree('com.woltlab.wcf.article.category'))->getIterator()))
+                ->hidden(),
+            GridViewColumn::for('title')
+                ->label('wcf.global.title')
+                ->sortable(sortByDatabaseColumn: 'articleContent.title')
+                ->filter($this->getArticleContentFilter())
+                ->titleColumn(),
+            GridViewColumn::for('content')
+                ->label('wcf.acp.article.content')
+                ->filter($this->getArticleContentFilter())
+                ->hidden(),
+            GridViewColumn::for('views')
+                ->label('wcf.acp.article.views')
+                ->sortable(),
+            GridViewColumn::for('userID')
+                ->label('wcf.user.username')
+                ->hidden()
+                ->filter(new UserFilter()),
+            GridViewColumn::for('publicationStatus')
+                ->label('wcf.acp.article.publicationStatus')
+                ->filter(
+                    new SelectFilter([
+                        0 => 'wcf.acp.article.publicationStatus.unpublished',
+                        1 => 'wcf.acp.article.publicationStatus.published',
+                        2 => 'wcf.acp.article.publicationStatus.delayed',
+                    ])
+                )
+                ->hidden(),
+            GridViewColumn::for('time')
+                ->label('wcf.acp.sessionLog.time')
+                ->sortable()
+                ->renderer(new TimeColumnRenderer())
+                ->filter(new TimeFilter()),
+            GridViewColumn::for('isDeleted')
+                ->label('wcf.acp.article.isDeleted')
+                ->filter(new BooleanFilter())
+                ->hidden(),
+        ]);
+
+        $provider = new ArticleInteractions();
+        $provider->addInteractions([
+            new Divider(),
+            new EditInteraction(ArticleEditForm::class)
+        ]);
+        $this->setInteractionProvider($provider);
+        $this->setBulkInteractionProvider(new ArticleBulkInteractions());
+
+        $this->setSortField('time');
+        $this->setSortOrder('DESC');
+        $this->addRowLink(new GridViewRowLink(ArticleEditForm::class));
+    }
+
+    private function getArticleContentFilter(): TextFilter
+    {
+        return new class() extends TextFilter {
+            #[\Override]
+            public function applyFilter(DatabaseObjectList $list, string $id, string $value): void
+            {
+                $list->getConditionBuilder()->add(
+                    "article.articleID IN (
+                                  SELECT  articleID
+                                  FROM    wcf1_article_content
+                                  WHERE   {$id} LIKE ?
+                              )",
+                    ['%' . WCF::getDB()->escapeLikeValue($value) . '%']
+                );
+            }
+        };
+    }
+
+    #[\Override]
+    public function isAccessible(): bool
+    {
+        return \MODULE_ARTICLE
+            && (
+                WCF::getSession()->getPermission('admin.content.article.canManageArticle')
+                || WCF::getSession()->getPermission('admin.content.article.canManageOwnArticles')
+                || WCF::getSession()->getPermission('admin.content.article.canContributeArticle')
+            );
+    }
+
+    #[\Override]
+    protected function createObjectList(): DatabaseObjectList
+    {
+        $list = new AccessibleArticleList();
+        $join = ' LEFT JOIN wcf1_article_content articleContent 
+                        ON (
+                                articleContent.articleID = article.articleID
+                            AND (
+                                   articleContent.languageID IS NULL
+                                OR articleContent.languageID = ' . WCF::getLanguage()->languageID . '
+                            )
+                        )';
+        $list->sqlJoins .= $join;
+        $list->sqlConditionJoins .= $join;
+
+        if (!empty($list->sqlSelects)) {
+            $list->sqlSelects .= ', ';
+        }
+
+        $list->sqlSelects .= "articleContent.title, articleContent.content";
+
+        return $list;
+    }
+
+    #[\Override]
+    protected function getInitializedEvent(): ?IPsr14Event
+    {
+        return new ArticleGridViewInitialized($this);
+    }
+}
