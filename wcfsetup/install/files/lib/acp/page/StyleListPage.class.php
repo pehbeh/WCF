@@ -2,19 +2,20 @@
 
 namespace wcf\acp\page;
 
-use wcf\data\style\StyleList;
-use wcf\page\MultipleLinkPage;
+use wcf\page\AbstractGridViewPage;
+use wcf\system\gridView\AbstractGridView;
+use wcf\system\gridView\admin\StyleGridView;
 
 /**
  * Shows the style list page.
  *
- * @author  Alexander Ebert
- * @copyright   2001-2019 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @author      Alexander Ebert
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    StyleList $objectList
+ * @property    UserRankGridView    $gridView
  */
-class StyleListPage extends MultipleLinkPage
+class StyleListPage  extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -26,32 +27,9 @@ class StyleListPage extends MultipleLinkPage
      */
     public $neededPermissions = ['admin.style.canManageStyle'];
 
-    /**
-     * @inheritDoc
-     */
-    public $objectListClassName = StyleList::class;
-
-    /**
-     * @inheritDoc
-     */
-    public $sortField = 'style.isDefault DESC, style.styleName';
-
-    /**
-     * @inheritDoc
-     */
-    public $sortOrder = 'ASC';
-
-    /**
-     * @inheritDoc
-     */
-    public function initObjectList()
+    #[\Override]
+    protected function createGridViewController(): AbstractGridView
     {
-        parent::initObjectList();
-
-        $this->objectList->sqlSelects = "(
-            SELECT  COUNT(*)
-            FROM    wcf1_user
-            WHERE   styleID = style.styleID
-        ) AS users";
+        return new StyleGridView();
     }
 }
