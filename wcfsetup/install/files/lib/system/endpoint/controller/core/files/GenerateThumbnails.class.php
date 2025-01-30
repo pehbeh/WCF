@@ -12,7 +12,15 @@ use wcf\system\endpoint\IController;
 use wcf\system\endpoint\PostRequest;
 use wcf\system\file\processor\FileProcessor;
 
-#[PostRequest('/core/files/{id:\d+}/generatethumbnails')]
+/**
+ * Generates a thumbnail for a file.
+ *
+ * @author      Alexander Ebert
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.1
+ */
+#[PostRequest('/core/files/{id:\d+}/generate-thumbnails')]
 final class GenerateThumbnails implements IController
 {
     public function __invoke(ServerRequestInterface $request, array $variables): ResponseInterface

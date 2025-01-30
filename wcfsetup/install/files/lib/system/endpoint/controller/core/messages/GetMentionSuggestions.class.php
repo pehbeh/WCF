@@ -21,7 +21,7 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.1
  */
-#[GetRequest('/core/messages/mentionsuggestions')]
+#[GetRequest('/core/messages/mention-suggestions')]
 final class GetMentionSuggestions implements IController
 {
     #[\Override]
@@ -94,7 +94,7 @@ final class GetMentionSuggestions implements IController
         $collator = new \Collator(WCF::getLanguage()->getLocale());
         \usort(
             $userGroups,
-            static fn (UserGroup $a, UserGroup $b) => $collator->compare($a->getName(), $b->getName())
+            static fn(UserGroup $a, UserGroup $b) => $collator->compare($a->getName(), $b->getName())
         );
 
         return $userGroups;
@@ -107,6 +107,5 @@ final class GetMentionSuggestionsParameters
     public function __construct(
         /** @var non-empty-string */
         public readonly string $query,
-    ) {
-    }
+    ) {}
 }

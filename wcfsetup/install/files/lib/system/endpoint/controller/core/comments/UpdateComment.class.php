@@ -9,7 +9,6 @@ use wcf\data\comment\Comment;
 use wcf\event\message\MessageSpamChecking;
 use wcf\http\Helper;
 use wcf\system\comment\CommentHandler;
-use wcf\system\comment\manager\ICommentManager;
 use wcf\system\endpoint\IController;
 use wcf\system\endpoint\PostRequest;
 use wcf\system\event\EventHandler;
@@ -74,6 +73,5 @@ final class UpdateCommentParameters
     public function __construct(
         /** @var non-empty-string */
         public readonly string $message,
-    ) {
-    }
+    ) {}
 }

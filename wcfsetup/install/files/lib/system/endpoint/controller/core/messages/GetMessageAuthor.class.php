@@ -5,6 +5,7 @@ namespace wcf\system\endpoint\controller\core\messages;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use wcf\data\DatabaseObject;
 use wcf\data\IMessage;
 use wcf\http\Helper;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
@@ -28,7 +29,7 @@ final class GetMessageAuthor implements IController
         $parameters = Helper::mapApiParameters($request, GetMessageAuthorParameters::class);
 
         $object = Helper::fetchObjectFromRequestParameter($parameters->objectID, $parameters->className);
-        \assert($object instanceof IMessage);
+        \assert($object instanceof IMessage && $object instanceof DatabaseObject);
 
         $userProfile = UserProfileRuntimeCache::getInstance()->getObject($object->getUserID());
 
@@ -60,6 +61,5 @@ final class GetMessageAuthorParameters
         public readonly string $className,
         /** @var positive-int */
         public readonly int $objectID,
-    ) {
-    }
+    ) {}
 }

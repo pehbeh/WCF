@@ -12,6 +12,14 @@ use wcf\system\endpoint\DeleteRequest;
 use wcf\system\endpoint\IController;
 use wcf\system\exception\PermissionDeniedException;
 
+/**
+ * Deletes a file.
+ *
+ * @author      Alexander Ebert
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.1
+ */
 #[DeleteRequest('/core/files/{id}')]
 final class DeleteFile implements IController
 {

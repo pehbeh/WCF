@@ -15,6 +15,14 @@ use wcf\system\exception\UserInputException;
 use wcf\system\file\processor\FileProcessor;
 use wcf\system\io\File;
 
+/**
+ * Reads a chunk of a file upload.
+ *
+ * @author      Alexander Ebert
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.1
+ */
 #[PostRequest('/core/files/upload/{identifier}/chunk/{sequenceNo:\d+}')]
 final class SaveChunk implements IController
 {
