@@ -1,0 +1,11 @@
+parameters:
+    level: 1
+    paths:
+        - wcfsetup/install/files
+    excludePaths:
+        analyse:
+            - wcfsetup/install/files/lib/system/api/
+    scanFiles:
+        - constants.php
+    ignoreErrors:
+        - identifier: new.static

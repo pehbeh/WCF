@@ -15,6 +15,7 @@
 \define('RELATIVE_WCF_DIR', '');
 \define('TMP_DIR', '');
 \define('WCF_N', 1);
+\define('TIME_NOW', 0);
 \define('WCF_OPTION_INC_PHP_SUCCESS', true);
 
 // option constants

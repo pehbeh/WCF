@@ -10,6 +10,7 @@ use wcf\data\package\PackageEditor;
 use wcf\data\page\Page;
 use wcf\system\application\ApplicationHandler;
 use wcf\system\application\IApplication;
+use wcf\system\benchmark\Benchmark;
 use wcf\system\box\BoxHandler;
 use wcf\system\cache\builder\CoreObjectCacheBuilder;
 use wcf\system\cache\builder\PackageUpdateCacheBuilder;
@@ -98,6 +99,8 @@ if (!\defined('NO_IMPORTS')) {
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @method static Benchmark getBenchmark()
  */
 class WCF
 {
