@@ -12,6 +12,8 @@ use wcf\system\gridView\filter\SelectFilter;
 use wcf\system\gridView\filter\TimeFilter;
 use wcf\system\gridView\GridViewColumn;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
+use wcf\system\gridView\renderer\TimeColumnRenderer;
+use wcf\system\gridView\renderer\TruncatedTextColumnRenderer;
 use wcf\system\WCF;
 
 /**
@@ -38,6 +40,7 @@ final class ACPSessionGridView extends AbstractGridView
             GridViewColumn::for('time')
                 ->label('wcf.acp.sessionLog.time')
                 ->sortable()
+                ->renderer(new TimeColumnRenderer())
                 ->filter(new TimeFilter()),
             GridViewColumn::for('className')
                 ->label('wcf.acp.sessionLog.className')
@@ -45,6 +48,7 @@ final class ACPSessionGridView extends AbstractGridView
             GridViewColumn::for('requestURI')
                 ->label('wcf.acp.sessionLog.requestURI')
                 ->titleColumn()
+                ->renderer(new TruncatedTextColumnRenderer())
                 ->sortable(),
             GridViewColumn::for('requestMethod')
                 ->label('wcf.acp.sessionLog.requestMethod')
