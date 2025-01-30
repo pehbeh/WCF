@@ -351,9 +351,14 @@ abstract class AbstractGridView
      */
     public function renderQuickInteractions(DatabaseObject $row): string
     {
+        $availableInteractions = \array_filter(
+            $this->getQuickInteractions(),
+            static fn($interaction) => $interaction->isAvailable($row)
+        );
+
         return \implode("\n", \array_map(
             static fn($interaction) => $interaction->render($row),
-            $this->getQuickInteractions()
+            $availableInteractions
         ));
     }
 
