@@ -3939,6 +3939,8 @@ WCF.System.ObjectStore = {
 
 /**
  * Stores captcha callbacks used for captchas in AJAX contexts.
+ * 
+ * @deprecated 6.2 Use `WoltLabSuite/Core/Controller/Captcha` instead.
  */
 WCF.System.Captcha = {
 	/**
