@@ -3,8 +3,11 @@
 namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\ArticleEditForm;
+use wcf\acp\form\UserEditForm;
 use wcf\data\article\AccessibleArticleList;
+use wcf\data\article\ViewableArticle;
 use wcf\data\category\CategoryNodeTree;
+use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\event\gridView\admin\ArticleGridViewInitialized;
 use wcf\event\IPsr14Event;
@@ -17,13 +20,17 @@ use wcf\system\gridView\filter\TimeFilter;
 use wcf\system\gridView\filter\UserFilter;
 use wcf\system\gridView\GridViewColumn;
 use wcf\system\gridView\GridViewRowLink;
+use wcf\system\gridView\renderer\DefaultColumnRenderer;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\gridView\renderer\TimeColumnRenderer;
+use wcf\system\gridView\renderer\UserLinkColumnRenderer;
 use wcf\system\interaction\admin\ArticleInteractions;
 use wcf\system\interaction\bulk\admin\ArticleBulkInteractions;
 use wcf\system\interaction\Divider;
 use wcf\system\interaction\EditInteraction;
+use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
+use wcf\util\StringUtil;
 
 /**
  * Grid view for the list of articles.
@@ -50,17 +57,99 @@ final class ArticleGridView extends AbstractGridView
                 ->label('wcf.global.title')
                 ->sortable(sortByDatabaseColumn: 'articleContent.title')
                 ->filter($this->getArticleContentFilter())
+                ->renderer([
+                    new class extends DefaultColumnRenderer {
+                        public function render(mixed $value, DatabaseObject $row): string
+                        {
+                            \assert($row instanceof ViewableArticle);
+
+                            if ($row->getTeaserImage()) {
+                                $teaserImage = $row->getTeaserImage()->getElementTag(48);
+                            } else {
+                                $teaserImage = \sprintf(
+                                    '<img src="%s" style="width: 48px; height: 48px" alt="">',
+                                    WCF::getPath() . 'images/placeholderTiny.png'
+                                );
+                            }
+                            $labels = '';
+                            if ($row->hasLabels()) {
+                                $labels = '<ul class="labelList" style="float: right; padding-left: 7px;">';
+                                foreach ($row->getLabels() as $label) {
+                                    $labels .= '<li>' . $label->render() . '</li>';
+                                }
+                                $labels .= '</ul>';
+                            }
+                            $badges = '';
+                            if ($row->isDeleted) {
+                                $badges .= \sprintf(
+                                    '<span class="badge label red jsIconDeleted">%s</span>',
+                                    WCF::getLanguage()->get('wcf.message.status.deleted')
+                                );
+                            }
+                            if ($row->publicationStatus == 0) {
+                                $badges .= \sprintf(
+                                    '<span class="badge jsUnpublishedArticle">%s</span>',
+                                    WCF::getLanguage()->get('wcf.acp.article.publicationStatus.unpublished')
+                                );
+                            }
+                            if ($row->publicationStatus == 2) {
+                                $badges .= \sprintf(
+                                    '<span class="badge" title="%s">%s</span>',
+                                    $row->publicationDate->format('H:i'),
+                                    WCF::getLanguage()->get('wcf.acp.article.publicationStatus.delayed')
+                                );
+                            }
+
+                            $category = "";
+                            if ($row->categoryID) {
+                                $category = \sprintf(
+                                    '<li class="jsArticleCategory">%s</li>',
+                                    StringUtil::encodeHTML($row->getCategory()->getTitle())
+                                );
+                            }
+
+                            $editLink = LinkHandler::getInstance()->getControllerLink(
+                                ArticleEditForm::class,
+                                ['id' => $row->articleID]
+                            );
+                            $editTitle = StringUtil::encodeHTML(
+                                WCF::getLanguage()->getDynamicVariable(
+                                    'wcf.acp.article.edit',
+                                    ['article' => $row]
+                                )
+                            );
+                            $articleTitle = StringUtil::encodeHTML($row->title);
+
+                            return <<<HTML
+<div class="box48">
+	<span>
+		{$teaserImage}
+	</span>
+
+	<div class="containerHeadline">
+		{$labels}
+
+		<h3>
+			{$badges}
+			<a href="{$editLink}" title="{$editTitle}" class="jsTooltip">{$articleTitle}</a>
+		</h3>
+		<ul class="inlineList dotSeparated">
+			{$category}
+		</ul>
+	</div>
+</div>
+HTML;
+                        }
+                    },
+                ])
                 ->titleColumn(),
             GridViewColumn::for('content')
                 ->label('wcf.acp.article.content')
                 ->filter($this->getArticleContentFilter())
                 ->hidden(),
-            GridViewColumn::for('views')
-                ->label('wcf.acp.article.views')
-                ->sortable(),
             GridViewColumn::for('userID')
                 ->label('wcf.user.username')
-                ->hidden()
+                ->renderer(new UserLinkColumnRenderer(UserEditForm::class))
                 ->filter(new UserFilter()),
             GridViewColumn::for('publicationStatus')
                 ->label('wcf.acp.article.publicationStatus')
@@ -72,6 +161,9 @@ final class ArticleGridView extends AbstractGridView
                     ])
                 )
                 ->hidden(),
+            GridViewColumn::for('views')
+                ->label('wcf.acp.article.views')
+                ->sortable(),
             GridViewColumn::for('time')
                 ->label('wcf.acp.sessionLog.time')
                 ->sortable()
@@ -144,7 +236,7 @@ final class ArticleGridView extends AbstractGridView
             $list->sqlSelects .= ', ';
         }
 
-        $list->sqlSelects .= "articleContent.title, articleContent.content";
+        $list->sqlSelects .= "articleContent.title";
 
         return $list;
     }
