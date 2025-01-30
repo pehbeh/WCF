@@ -39,7 +39,7 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
             Listener_1.default.trigger();
         }
         async #refreshRow(row) {
-            const response = (await (0, GetRow_1.getRow)(this.#gridClassName, row.dataset.objectId)).unwrap();
+            const response = (await (0, GetRow_1.getRow)(this.#gridClassName, row.dataset.objectId, this.#gridViewParameters)).unwrap();
             row.replaceWith(Util_1.default.createFragmentFromHtml(response.template));
             Listener_1.default.trigger();
         }

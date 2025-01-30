@@ -32,7 +32,8 @@ final class GridViewFilterAction implements RequestHandlerInterface
             <<<'EOT'
                 array {
                     gridView: string,
-                    filters: string[]
+                    filters: string[],
+                    gridViewParameters: string[]
                 }
                 EOT
         );
@@ -41,7 +42,7 @@ final class GridViewFilterAction implements RequestHandlerInterface
             throw new UserInputException('gridView', 'invalid');
         }
 
-        $view = new $parameters['gridView'];
+        $view = new $parameters['gridView'](...$parameters['gridViewParameters']);
         \assert($view instanceof AbstractGridView);
 
         if (!$view->isAccessible()) {
