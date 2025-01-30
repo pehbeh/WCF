@@ -11,8 +11,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use wcf\data\file\File;
+use wcf\event\file\DownloadStarting;
 use wcf\http\ContentDisposition;
 use wcf\http\Helper;
+use wcf\system\event\EventHandler;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\exception\PermissionDeniedException;
 use wcf\system\Regex;
@@ -54,6 +56,7 @@ final class FileDownloadAction implements RequestHandlerInterface
         }
 
         $processor->trackDownload($file);
+        EventHandler::getInstance()->fire(new DownloadStarting($file));
 
         $filename = $file->getPathname();
         $response = new Response(
@@ -131,7 +134,7 @@ final class FileDownloadAction implements RequestHandlerInterface
         );
 
         $httpIfNoneMatch = \array_map(
-            static fn ($tag) => \preg_replace('~^W/~', '', $tag),
+            static fn($tag) => \preg_replace('~^W/~', '', $tag),
             Header::splitList($request->getHeaderLine('if-none-match'))
         );
         if (\in_array($eTag, $httpIfNoneMatch, true)) {
