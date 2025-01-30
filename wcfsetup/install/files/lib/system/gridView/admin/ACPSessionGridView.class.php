@@ -36,7 +36,8 @@ final class ACPSessionGridView extends AbstractGridView
             GridViewColumn::for('ipAddress')
                 ->label('wcf.user.ipAddress')
                 ->sortable()
-                ->filter(new NumericFilter()),
+                ->renderer(new IpAddressColumnRenderer())
+                ->filter(new IpAddressFilter()),
             GridViewColumn::for('time')
                 ->label('wcf.acp.sessionLog.time')
                 ->sortable()
@@ -72,6 +73,7 @@ final class ACPSessionGridView extends AbstractGridView
         return WCF::getSession()->getPermission('admin.management.canViewLog');
     }
 
+    #[\Override]
     public function getParameters(): array
     {
         return [
