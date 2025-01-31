@@ -53,7 +53,7 @@ final class ArticleGridView extends AbstractGridView
                 ->renderer(new ObjectIdColumnRenderer())
                 ->sortable(),
             GridViewColumn::for('categoryID')
-                ->label('wcf.acp.article.category')
+                ->label('wcf.global.category')
                 ->filter(new CategoryFilter((new CategoryNodeTree('com.woltlab.wcf.article.category'))->getIterator()))
                 ->hidden(),
             GridViewColumn::for('title')
@@ -229,7 +229,7 @@ HTML;
     protected function createObjectList(): DatabaseObjectList
     {
         $list = new AccessibleArticleList();
-        $join = ' LEFT JOIN wcf1_article_content articleContent 
+        $join = ' LEFT JOIN wcf1_article_content articleContent
                         ON (
                                 articleContent.articleID = article.articleID
                             AND (
