@@ -21,6 +21,7 @@ use wcf\system\gridView\GridViewRowLink;
 use wcf\system\gridView\renderer\AbstractColumnRenderer;
 use wcf\system\gridView\renderer\FilesizeColumnRenderer;
 use wcf\system\gridView\renderer\ILinkColumnRenderer;
+use wcf\system\gridView\renderer\NumberColumnRenderer;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\gridView\renderer\TimeColumnRenderer;
 use wcf\system\gridView\renderer\TruncatedTextColumnRenderer;
@@ -126,6 +127,7 @@ final class AttachmentGridView extends AbstractGridView
             GridViewColumn::for('downloads')
                 ->label('wcf.attachment.downloads')
                 ->filter(new NumericFilter())
+                ->renderer(new NumberColumnRenderer())
                 ->sortable(),
             GridViewColumn::for('filesize')
                 ->label('wcf.attachment.filesize')

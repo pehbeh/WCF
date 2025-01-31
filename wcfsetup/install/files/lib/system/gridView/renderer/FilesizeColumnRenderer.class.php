@@ -29,6 +29,6 @@ class FilesizeColumnRenderer extends AbstractColumnRenderer
     #[\Override]
     public function getClasses(): string
     {
-        return 'gridView__column--filesize';
+        return 'gridView__column--digits';
     }
 }
