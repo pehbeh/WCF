@@ -156,6 +156,9 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\users\ranks\DeleteUserRank());
             $event->register(new \wcf\system\endpoint\controller\core\interactions\GetBulkContextMenuOptions());
             $event->register(new \wcf\system\endpoint\controller\core\interactions\GetContextMenuOptions());
+            $event->register(new \wcf\system\endpoint\controller\core\bbcodes\media\providers\DeleteProvider());
+            $event->register(new \wcf\system\endpoint\controller\core\bbcodes\media\providers\DisableProvider());
+            $event->register(new \wcf\system\endpoint\controller\core\bbcodes\media\providers\EnableProvider());
         }
     );
 
