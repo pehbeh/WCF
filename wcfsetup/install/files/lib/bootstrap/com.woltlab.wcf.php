@@ -159,6 +159,7 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\cronjobs\EnableCronjob());
             $event->register(new \wcf\system\endpoint\controller\core\cronjobs\DisableCronjob());
             $event->register(new \wcf\system\endpoint\controller\core\cronjobs\DeleteCronjob());
+            $event->register(new \wcf\system\endpoint\controller\core\cronjobs\ExecuteCronjob());
         }
     );
 

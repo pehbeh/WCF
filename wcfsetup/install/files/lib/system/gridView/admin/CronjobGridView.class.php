@@ -21,6 +21,7 @@ use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\gridView\renderer\PhraseColumnRenderer;
 use wcf\system\gridView\renderer\TimeColumnRenderer;
 use wcf\system\interaction\admin\CronjobInteractions;
+use wcf\system\interaction\bulk\admin\CronjobBulkInteractions;
 use wcf\system\interaction\Divider;
 use wcf\system\interaction\EditInteraction;
 use wcf\system\interaction\ToggleInteraction;
@@ -113,6 +114,7 @@ final class CronjobGridView extends AbstractGridView
             )
         );
         $this->setInteractionProvider($interaction);
+        $this->setBulkInteractionProvider(new CronjobBulkInteractions());
 
         $this->addRowLink(new GridViewRowLink(CronjobEditForm::class));
         $this->setSortField('description');

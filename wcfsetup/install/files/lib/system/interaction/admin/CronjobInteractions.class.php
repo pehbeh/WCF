@@ -7,6 +7,7 @@ use wcf\event\interaction\admin\CronjobInteractionCollecting;
 use wcf\system\event\EventHandler;
 use wcf\system\interaction\AbstractInteractionProvider;
 use wcf\system\interaction\DeleteInteraction;
+use wcf\system\interaction\RpcInteraction;
 
 /**
  * Interaction provider for cronjobs.
@@ -22,6 +23,7 @@ final class CronjobInteractions extends AbstractInteractionProvider
     {
         $this->addInteractions([
             new DeleteInteraction('core/cronjobs/%s', static fn(Cronjob $cronjob) => $cronjob->isDeletable()),
+            new RpcInteraction('execute', 'core/cronjobs/%s/execute', 'wcf.acp.cronjob.execute')
         ]);
 
         EventHandler::getInstance()->fire(
