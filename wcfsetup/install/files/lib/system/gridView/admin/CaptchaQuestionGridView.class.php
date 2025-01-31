@@ -14,6 +14,7 @@ use wcf\system\gridView\GridViewColumn;
 use wcf\system\gridView\GridViewRowLink;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\interaction\admin\CaptchaQuestionInteractions;
+use wcf\system\interaction\bulk\admin\CaptchaQuestionBulkInteractions;
 use wcf\system\interaction\ToggleInteraction;
 use wcf\system\WCF;
 
@@ -55,6 +56,7 @@ final class CaptchaQuestionGridView extends AbstractGridView
 
         $interaction = new CaptchaQuestionInteractions();
         $this->setInteractionProvider($interaction);
+        $this->setBulkInteractionProvider(new CaptchaQuestionBulkInteractions());
 
         $this->addQuickInteraction(
             new ToggleInteraction('enable', 'core/captchas/questions/%s/enable', 'core/captchas/questions/%s/disable')
