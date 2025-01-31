@@ -11,6 +11,7 @@ use wcf\http\Helper;
 use wcf\system\endpoint\DeleteRequest;
 use wcf\system\endpoint\IController;
 use wcf\system\exception\PermissionDeniedException;
+use wcf\system\WCF;
 
 /**
  * API endpoint for deleting an attachment.
@@ -37,7 +38,7 @@ final class DeleteAttachment implements IController
 
     private function assertAttachmentBeDeleted(Attachment $attachment): void
     {
-        if (!$attachment->canDelete()) {
+        if (!WCF::getSession()->getPermission("admin.attachment.canManageAttachment") || !$attachment->canDelete()) {
             throw new PermissionDeniedException();
         }
     }
