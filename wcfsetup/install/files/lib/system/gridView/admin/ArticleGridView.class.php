@@ -63,14 +63,6 @@ final class ArticleGridView extends AbstractGridView
                         {
                             \assert($row instanceof ViewableArticle);
 
-                            if ($row->getTeaserImage()) {
-                                $teaserImage = $row->getTeaserImage()->getElementTag(48);
-                            } else {
-                                $teaserImage = \sprintf(
-                                    '<img src="%s" style="width: 48px; height: 48px" alt="">',
-                                    WCF::getPath() . 'images/placeholderTiny.png'
-                                );
-                            }
                             $labels = '';
                             if ($row->hasLabels()) {
                                 $labels = '<ul class="labelList" style="float: right; padding-left: 7px;">';
@@ -113,11 +105,6 @@ final class ArticleGridView extends AbstractGridView
                             $articleTitle = StringUtil::encodeHTML($row->title);
 
                             return <<<HTML
-<div class="box48">
-	<span>
-		{$teaserImage}
-	</span>
-
 	<div class="containerHeadline">
 		{$labels}
 
@@ -126,7 +113,6 @@ final class ArticleGridView extends AbstractGridView
 			<a href="{$editLink}" title="{$editTitle}" class="jsTooltip">{$articleTitle}</a>
 		</h3>
 	</div>
-</div>
 HTML;
                         }
                     },
