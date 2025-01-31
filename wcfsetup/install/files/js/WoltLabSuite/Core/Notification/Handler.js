@@ -12,6 +12,7 @@ define(["require", "exports", "tslib", "../Ajax", "../Core", "../Event/Handler",
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
     exports.enableNotifications = enableNotifications;
+    exports.updateLastRequestTimestamp = updateLastRequestTimestamp;
     exports.poll = poll;
     Ajax = tslib_1.__importStar(Ajax);
     Core = tslib_1.__importStar(Core);
@@ -155,6 +156,8 @@ define(["require", "exports", "tslib", "../Ajax", "../Core", "../Event/Handler",
                 this.prepareNextRequest();
             }
             this.lastRequestTimestamp = data.returnValues.lastRequestTimestamp;
+            // Update the last read time for the service worker
+            (0, ServiceWorker_1.updateNotificationLastReadTime)(this.lastRequestTimestamp);
             EventHandler.fire("com.woltlab.wcf.notification", "afterPoll", pollData);
             this.showNotification(pollData);
         }
@@ -205,6 +208,9 @@ define(["require", "exports", "tslib", "../Ajax", "../Core", "../Event/Handler",
                 silent: !window.ENABLE_DEBUG_MODE,
             };
         }
+        updateLastRequestTimestamp(timestamp) {
+            this.lastRequestTimestamp = Math.max(timestamp, this.lastRequestTimestamp);
+        }
     }
     let notificationHandler;
     /**
@@ -217,6 +223,9 @@ define(["require", "exports", "tslib", "../Ajax", "../Core", "../Event/Handler",
     }
     function enableNotifications() {
         notificationHandler.enableNotifications();
+    }
+    function updateLastRequestTimestamp(timestamp) {
+        notificationHandler?.updateLastRequestTimestamp(timestamp);
     }
     function poll() {
         notificationHandler?.dispatchRequest();

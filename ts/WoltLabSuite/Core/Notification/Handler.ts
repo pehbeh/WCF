@@ -12,7 +12,7 @@ import * as Ajax from "../Ajax";
 import { AjaxCallbackSetup } from "../Ajax/Data";
 import * as Core from "../Core";
 import * as EventHandler from "../Event/Handler";
-import { serviceWorkerSupported } from "./ServiceWorker";
+import { serviceWorkerSupported, updateNotificationLastReadTime } from "./ServiceWorker";
 import { updateCounter } from "WoltLabSuite/Core/Ui/User/Menu/Manager";
 
 interface NotificationHandlerOptions {
@@ -206,6 +206,9 @@ class NotificationHandler {
 
     this.lastRequestTimestamp = data.returnValues.lastRequestTimestamp;
 
+    // Update the last read time for the service worker
+    updateNotificationLastReadTime(this.lastRequestTimestamp);
+
     EventHandler.fire("com.woltlab.wcf.notification", "afterPoll", pollData);
 
     this.showNotification(pollData);
@@ -264,6 +267,10 @@ class NotificationHandler {
       silent: !window.ENABLE_DEBUG_MODE,
     };
   }
+
+  updateLastRequestTimestamp(timestamp: number): void {
+    this.lastRequestTimestamp = Math.max(timestamp, this.lastRequestTimestamp);
+  }
 }
 
 let notificationHandler: NotificationHandler;
@@ -279,6 +286,10 @@ export function setup(options: NotificationHandlerOptions): void {
 
 export function enableNotifications(): void {
   notificationHandler!.enableNotifications();
+}
+
+export function updateLastRequestTimestamp(timestamp: number): void {
+  notificationHandler?.updateLastRequestTimestamp(timestamp);
 }
 
 export function poll(): void {
