@@ -21,6 +21,8 @@ use wcf\system\gridView\renderer\AbstractColumnRenderer;
 use wcf\system\gridView\renderer\FilesizeColumnRenderer;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\gridView\renderer\TimeColumnRenderer;
+use wcf\system\interaction\admin\AttachmentInteractions;
+use wcf\system\interaction\bulk\admin\AttachmentBulkInteractions;
 use wcf\system\request\LinkHandler;
 use wcf\system\style\FontAwesomeIcon;
 use wcf\system\WCF;
@@ -147,6 +149,9 @@ HTML;
                 ->sortable(),
         ]);
 
+        $interaction = new AttachmentInteractions();
+        $this->setInteractionProvider($interaction);
+        $this->setBulkInteractionProvider(new AttachmentBulkInteractions());
 
         $this->setSortOrder('DESC');
         $this->setSortField('uploadTime');
