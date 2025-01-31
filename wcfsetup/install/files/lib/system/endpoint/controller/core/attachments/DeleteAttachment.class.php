@@ -7,6 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use wcf\data\attachment\Attachment;
 use wcf\data\attachment\AttachmentAction;
+use wcf\data\object\type\ObjectTypeCache;
 use wcf\http\Helper;
 use wcf\system\endpoint\DeleteRequest;
 use wcf\system\endpoint\IController;
@@ -39,6 +40,10 @@ final class DeleteAttachment implements IController
     private function assertAttachmentBeDeleted(Attachment $attachment): void
     {
         if (!WCF::getSession()->getPermission("admin.attachment.canManageAttachment") || !$attachment->canDelete()) {
+            throw new PermissionDeniedException();
+        }
+
+        if (ObjectTypeCache::getInstance()->getObjectType($attachment->objectTypeID)->private) {
             throw new PermissionDeniedException();
         }
     }
