@@ -156,6 +156,9 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\users\ranks\DeleteUserRank());
             $event->register(new \wcf\system\endpoint\controller\core\interactions\GetBulkContextMenuOptions());
             $event->register(new \wcf\system\endpoint\controller\core\interactions\GetContextMenuOptions());
+            $event->register(new \wcf\system\endpoint\controller\core\captchas\questions\EnableQuestion());
+            $event->register(new \wcf\system\endpoint\controller\core\captchas\questions\DisableQuestion());
+            $event->register(new \wcf\system\endpoint\controller\core\captchas\questions\DeleteQuestion());
         }
     );
 

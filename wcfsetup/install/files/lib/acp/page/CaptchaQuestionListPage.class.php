@@ -2,19 +2,20 @@
 
 namespace wcf\acp\page;
 
-use wcf\data\captcha\question\CaptchaQuestionList;
-use wcf\page\MultipleLinkPage;
+use wcf\page\AbstractGridViewPage;
+use wcf\system\gridView\AbstractGridView;
+use wcf\system\gridView\admin\CaptchaQuestionGridView;
 
 /**
  * Lists the available captcha questions.
  *
- * @author  Matthias Schmidt
- * @copyright   2001-2019 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @author      Olaf Braun, Matthias Schmidt
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    CaptchaQuestionList $objectList
+ * @property    CaptchaQuestionGridView $gridView
  */
-class CaptchaQuestionListPage extends MultipleLinkPage
+class CaptchaQuestionListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -26,18 +27,9 @@ class CaptchaQuestionListPage extends MultipleLinkPage
      */
     public $neededPermissions = ['admin.captcha.canManageCaptchaQuestion'];
 
-    /**
-     * @inheritDoc
-     */
-    public $objectListClassName = CaptchaQuestionList::class;
-
-    /**
-     * @inheritDoc
-     */
-    public $sortField = 'questionID';
-
-    /**
-     * @inheritDoc
-     */
-    public $sortOrder = 'ASC';
+    #[\Override]
+    protected function createGridViewController(): AbstractGridView
+    {
+        return new CaptchaQuestionGridView();
+    }
 }
