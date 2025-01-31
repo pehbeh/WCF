@@ -156,6 +156,9 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\users\ranks\DeleteUserRank());
             $event->register(new \wcf\system\endpoint\controller\core\interactions\GetBulkContextMenuOptions());
             $event->register(new \wcf\system\endpoint\controller\core\interactions\GetContextMenuOptions());
+            $event->register(new \wcf\system\endpoint\controller\core\cronjobs\EnableCronjob());
+            $event->register(new \wcf\system\endpoint\controller\core\cronjobs\DisableCronjob());
+            $event->register(new \wcf\system\endpoint\controller\core\cronjobs\DeleteCronjob());
         }
     );
 

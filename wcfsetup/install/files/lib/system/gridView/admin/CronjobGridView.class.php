@@ -2,7 +2,7 @@
 
 namespace wcf\system\gridView\admin;
 
-use wcf\acp\form\UserRankEditForm;
+use wcf\acp\form\CronjobEditForm;
 use wcf\data\cronjob\Cronjob;
 use wcf\data\cronjob\I18nCronjobList;
 use wcf\data\DatabaseObject;
@@ -20,6 +20,10 @@ use wcf\system\gridView\renderer\AbstractColumnRenderer;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\gridView\renderer\PhraseColumnRenderer;
 use wcf\system\gridView\renderer\TimeColumnRenderer;
+use wcf\system\interaction\admin\CronjobInteractions;
+use wcf\system\interaction\Divider;
+use wcf\system\interaction\EditInteraction;
+use wcf\system\interaction\ToggleInteraction;
 use wcf\system\WCF;
 
 /**
@@ -48,7 +52,7 @@ final class CronjobGridView extends AbstractGridView
                         {
                             \assert($row instanceof Cronjob);
 
-                            return $row->getExpression();
+                            return \sprintf('<kbd>%s</kbd>', $row->getExpression());
                         }
                     }
                 ),
@@ -94,7 +98,23 @@ final class CronjobGridView extends AbstractGridView
                 ->sortable(),
         ]);
 
-        $this->addRowLink(new GridViewRowLink(UserRankEditForm::class));
+        $interaction = new CronjobInteractions();
+        $interaction->addInteractions([
+            new Divider(),
+            new EditInteraction(CronjobEditForm::class, static fn(Cronjob $cronjob) => $cronjob->isEditable()),
+        ]);
+
+        $this->addQuickInteraction(
+            new ToggleInteraction(
+                'enable',
+                'core/cronjobs/%s/enable',
+                'core/cronjobs/%s/disable',
+                isAvailableCallback: static fn(Cronjob $cronjob) => $cronjob->canBeDisabled()
+            )
+        );
+        $this->setInteractionProvider($interaction);
+
+        $this->addRowLink(new GridViewRowLink(CronjobEditForm::class));
         $this->setSortField('description');
     }
 
