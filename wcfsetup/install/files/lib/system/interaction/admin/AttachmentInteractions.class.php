@@ -12,7 +12,7 @@ use wcf\system\interaction\DeleteInteraction;
  * Interaction provider for attachments.
  *
  * @author      Olaf Braun
- * @copyright   2001-2024 WoltLab GmbH
+ * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
