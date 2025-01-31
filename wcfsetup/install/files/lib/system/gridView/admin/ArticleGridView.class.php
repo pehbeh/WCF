@@ -21,6 +21,7 @@ use wcf\system\gridView\filter\TimeFilter;
 use wcf\system\gridView\filter\UserFilter;
 use wcf\system\gridView\GridViewColumn;
 use wcf\system\gridView\GridViewRowLink;
+use wcf\system\gridView\renderer\CategoryColumnRenderer;
 use wcf\system\gridView\renderer\DefaultColumnRenderer;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\gridView\renderer\TimeColumnRenderer;
@@ -52,10 +53,6 @@ final class ArticleGridView extends AbstractGridView
                 ->label('wcf.global.objectID')
                 ->renderer(new ObjectIdColumnRenderer())
                 ->sortable(),
-            GridViewColumn::for('categoryID')
-                ->label('wcf.global.category')
-                ->filter(new CategoryFilter((new CategoryNodeTree('com.woltlab.wcf.article.category'))->getIterator()))
-                ->hidden(),
             GridViewColumn::for('title')
                 ->label('wcf.global.title')
                 ->sortable(sortByDatabaseColumn: 'articleContent.title')
@@ -103,14 +100,6 @@ final class ArticleGridView extends AbstractGridView
                                 );
                             }
 
-                            $category = "";
-                            if ($row->categoryID) {
-                                $category = \sprintf(
-                                    '<li class="jsArticleCategory">%s</li>',
-                                    StringUtil::encodeHTML($row->getCategory()->getTitle())
-                                );
-                            }
-
                             $editLink = LinkHandler::getInstance()->getControllerLink(
                                 ArticleEditForm::class,
                                 ['id' => $row->articleID]
@@ -136,9 +125,6 @@ final class ArticleGridView extends AbstractGridView
 			{$badges}
 			<a href="{$editLink}" title="{$editTitle}" class="jsTooltip">{$articleTitle}</a>
 		</h3>
-		<ul class="inlineList dotSeparated">
-			{$category}
-		</ul>
 	</div>
 </div>
 HTML;
@@ -154,6 +140,11 @@ HTML;
                 ->label('wcf.user.username')
                 ->renderer(new UserLinkColumnRenderer(UserEditForm::class))
                 ->filter(new UserFilter()),
+            GridViewColumn::for('categoryID')
+                ->label('wcf.global.category')
+                ->sortable()
+                ->renderer(new CategoryColumnRenderer())
+                ->filter(new CategoryFilter((new CategoryNodeTree('com.woltlab.wcf.article.category'))->getIterator())),
             GridViewColumn::for('publicationStatus')
                 ->label('wcf.acp.article.publicationStatus')
                 ->filter(
