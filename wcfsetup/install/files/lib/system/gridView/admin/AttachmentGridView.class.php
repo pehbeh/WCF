@@ -17,10 +17,13 @@ use wcf\system\gridView\filter\TextFilter;
 use wcf\system\gridView\filter\TimeFilter;
 use wcf\system\gridView\filter\UserFilter;
 use wcf\system\gridView\GridViewColumn;
+use wcf\system\gridView\GridViewRowLink;
 use wcf\system\gridView\renderer\AbstractColumnRenderer;
 use wcf\system\gridView\renderer\FilesizeColumnRenderer;
+use wcf\system\gridView\renderer\ILinkColumnRenderer;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\gridView\renderer\TimeColumnRenderer;
+use wcf\system\gridView\renderer\TruncatedTextColumnRenderer;
 use wcf\system\interaction\admin\AttachmentInteractions;
 use wcf\system\interaction\bulk\admin\AttachmentBulkInteractions;
 use wcf\system\request\LinkHandler;
@@ -46,55 +49,41 @@ final class AttachmentGridView extends AbstractGridView
                 ->renderer(new ObjectIdColumnRenderer())
                 ->filter(new ObjectIdFilter())
                 ->sortable(),
-            GridViewColumn::for('filename')
-                ->label('wcf.attachment.filename')
-                ->titleColumn()
-                ->filter(new TextFilter('file_table.filename'))
+
+            GridViewColumn::for('preview')
+                ->label('wcf.attachment.preview')
                 ->renderer(
-                    new class extends AbstractColumnRenderer {
+                    new class extends AbstractColumnRenderer implements ILinkColumnRenderer {
                         #[\Override]
                         public function render(mixed $value, DatabaseObject $row): string
                         {
                             \assert($row instanceof AdministrativeAttachment);
 
                             $isImage = $row->isImage;
-                            $link = $row->getLink();
-                            $fancyBox = $isImage ? ' data-fancybox="attachments" data-caption="' . $row->filename . '"' : '';
+                            $link = StringUtil::encodeHTML($row->getLink());
+                            $fancyBox = $isImage ? ' data-fancybox="attachments" data-caption="' . StringUtil::encodeHTML($row->filename) . '"' : '';
                             if ($row->tinyThumbnailType) {
                                 $thumbnailLink = \sprintf(
                                     '<img src="%s" class="attachmentTinyThumbnail" alt="">',
-                                    $row->getThumbnailLink('tiny')
+                                    StringUtil::encodeHTML($row->getThumbnailLink('tiny'))
                                 );
                             } else {
                                 $thumbnailLink = FontAwesomeIcon::fromValues($row->getIconName())->toHtml(64);
                             }
-                            $filename = StringUtil::wordwrap($row->filename, 30, "\xE2\x80\x8B");
-                            if ($row->getContainerObject()) {
-                                $containerObject = \sprintf(
-                                    '<p><small><a href="%s">%s</a></small></p>',
-                                    $row->getContainerObject()->getLink(),
-                                    StringUtil::encodeHTML(
-                                        StringUtil::wordwrap($row->getContainerObject()->getTitle(), 30, "\xE2\x80\x8B")
-                                    )
-                                );
-                            } else {
-                                $containerObject = "";
-                            }
 
                             return <<<HTML
-                                <div class="box64">
-                                    <a href="{$link}"{$fancyBox}>
-                                        {$thumbnailLink}
-                                    </a>
-                                    <div>
-                                        <p><a href="{$link}">{$filename}</a></p>
-                                        {$containerObject}
-                                    </div>
-                                </div>
+                                <a href="{$link}"{$fancyBox}>
+                                    {$thumbnailLink}
+                                </a>
                                 HTML;
                         }
                     }
-                )
+                ),
+            GridViewColumn::for('filename')
+                ->label('wcf.attachment.filename')
+                ->titleColumn()
+                ->filter(new TextFilter('file_table.filename'))
+                ->renderer(new TruncatedTextColumnRenderer())
                 ->sortable(sortByDatabaseColumn: 'file_table.filename'),
             GridViewColumn::for('fileType')
                 ->label('wcf.attachment.fileType')
@@ -152,6 +141,7 @@ final class AttachmentGridView extends AbstractGridView
         $interaction = new AttachmentInteractions();
         $this->setInteractionProvider($interaction);
         $this->setBulkInteractionProvider(new AttachmentBulkInteractions());
+        $this->addRowLink(new GridViewRowLink(isLinkableObject: true));
 
         $this->setSortOrder('DESC');
         $this->setSortField('uploadTime');
