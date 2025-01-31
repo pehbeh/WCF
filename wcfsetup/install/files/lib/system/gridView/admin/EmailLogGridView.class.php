@@ -42,6 +42,7 @@ final class EmailLogGridView extends AbstractGridView
                 ->label('wcf.acp.email.log.subject')
                 ->titleColumn()
                 ->filter(new TextFilter())
+                ->sortable()
                 ->renderer(
                     new class extends DefaultColumnRenderer {
                         #[\Override]
