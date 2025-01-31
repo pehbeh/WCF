@@ -11,7 +11,6 @@ use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\event\gridView\admin\ArticleGridViewInitialized;
 use wcf\event\IPsr14Event;
-use wcf\page\ArticlePage;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\BooleanFilter;
 use wcf\system\gridView\filter\CategoryFilter;
@@ -30,8 +29,6 @@ use wcf\system\interaction\admin\ArticleInteractions;
 use wcf\system\interaction\bulk\admin\ArticleBulkInteractions;
 use wcf\system\interaction\Divider;
 use wcf\system\interaction\EditInteraction;
-use wcf\system\interaction\LinkInteraction;
-use wcf\system\style\FontAwesomeIcon;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 
