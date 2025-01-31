@@ -8,6 +8,7 @@ use wcf\event\interaction\admin\ArticleInteractionCollecting;
 use wcf\system\event\EventHandler;
 use wcf\system\interaction\AbstractInteractionProvider;
 use wcf\system\interaction\DeleteInteraction;
+use wcf\system\interaction\LinkableObjectInteraction;
 use wcf\system\interaction\RestoreInteraction;
 use wcf\system\interaction\TrashInteraction;
 
@@ -24,6 +25,7 @@ final class ArticleInteractions extends AbstractInteractionProvider
     public function __construct()
     {
         $this->addInteractions([
+            new LinkableObjectInteraction('view', 'wcf.acp.article.button.viewArticle'),
             new TrashInteraction('core/articles/%s/trash', function (ViewableArticle $article): bool {
                 return $article->isDeleted !== 1;
             }),

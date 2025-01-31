@@ -140,11 +140,6 @@ final class ArticleGridView extends AbstractGridView
             new Divider(),
             new EditInteraction(ArticleEditForm::class)
         ]);
-        $this->addQuickInteraction(
-            new LinkInteraction('viewArticle', ArticlePage::class, function () {
-                return FontAwesomeIcon::fromValues('magnifying-glass')->toHtml();
-            })
-        );
         $this->setInteractionProvider($provider);
         $this->setBulkInteractionProvider(new ArticleBulkInteractions());
 
