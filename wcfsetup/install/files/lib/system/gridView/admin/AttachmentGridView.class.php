@@ -82,16 +82,16 @@ final class AttachmentGridView extends AbstractGridView
                             }
 
                             return <<<HTML
-<div class="box64">
-    <a href="{$link}"{$fancyBox}>
-        {$thumbnailLink}
-    </a>
-    <div>
-        <p><a href="{$link}">{$filename}</a></p>
-        {$containerObject}
-    </div>
-</div>
-HTML;
+                                <div class="box64">
+                                    <a href="{$link}"{$fancyBox}>
+                                        {$thumbnailLink}
+                                    </a>
+                                    <div>
+                                        <p><a href="{$link}">{$filename}</a></p>
+                                        {$containerObject}
+                                    </div>
+                                </div>
+                                HTML;
                         }
                     }
                 )
