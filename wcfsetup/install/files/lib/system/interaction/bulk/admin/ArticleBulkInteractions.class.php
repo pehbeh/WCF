@@ -65,7 +65,7 @@ final class ArticleBulkInteractions extends AbstractBulkInteractionProvider
                 }
             ),
             new BulkRpcInteraction(
-                'unPublish',
+                'unpublish',
                 'core/articles/%s/unpublish',
                 'wcf.article.button.unpublish',
                 InteractionConfirmationType::None,
