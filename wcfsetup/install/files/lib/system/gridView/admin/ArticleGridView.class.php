@@ -31,7 +31,6 @@ use wcf\system\interaction\bulk\admin\ArticleBulkInteractions;
 use wcf\system\interaction\Divider;
 use wcf\system\interaction\EditInteraction;
 use wcf\system\interaction\LinkInteraction;
-use wcf\system\request\LinkHandler;
 use wcf\system\style\FontAwesomeIcon;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
@@ -65,7 +64,7 @@ final class ArticleGridView extends AbstractGridView
 
                             $labels = '';
                             if ($row->hasLabels()) {
-                                $labels = '<ul class="labelList" style="float: right; padding-left: 7px;">';
+                                $labels = '<ul class="labelList">';
                                 foreach ($row->getLabels() as $label) {
                                     $labels .= '<li>' . $label->render() . '</li>';
                                 }
@@ -74,13 +73,13 @@ final class ArticleGridView extends AbstractGridView
                             $badges = '';
                             if ($row->isDeleted) {
                                 $badges .= \sprintf(
-                                    '<span class="badge label red jsIconDeleted">%s</span>',
+                                    '<span class="badge label red">%s</span>',
                                     WCF::getLanguage()->get('wcf.message.status.deleted')
                                 );
                             }
                             if ($row->publicationStatus == 0) {
                                 $badges .= \sprintf(
-                                    '<span class="badge jsUnpublishedArticle">%s</span>',
+                                    '<span class="badge">%s</span>',
                                     WCF::getLanguage()->get('wcf.acp.article.publicationStatus.unpublished')
                                 );
                             }
@@ -92,28 +91,9 @@ final class ArticleGridView extends AbstractGridView
                                 );
                             }
 
-                            $editLink = LinkHandler::getInstance()->getControllerLink(
-                                ArticleEditForm::class,
-                                ['id' => $row->articleID]
-                            );
-                            $editTitle = StringUtil::encodeHTML(
-                                WCF::getLanguage()->getDynamicVariable(
-                                    'wcf.acp.article.edit',
-                                    ['article' => $row]
-                                )
-                            );
                             $articleTitle = StringUtil::encodeHTML($row->title);
 
-                            return <<<HTML
-	<div class="containerHeadline">
-		{$labels}
-
-		<h3>
-			{$badges}
-			<a href="{$editLink}" title="{$editTitle}" class="jsTooltip">{$articleTitle}</a>
-		</h3>
-	</div>
-HTML;
+                            return \sprintf('<p>%s %s</p>%s', $badges, $articleTitle, $labels);
                         }
                     },
                 ])
