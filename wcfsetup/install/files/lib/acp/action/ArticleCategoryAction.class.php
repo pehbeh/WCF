@@ -82,7 +82,7 @@ final class ArticleCategoryAction implements RequestHandlerInterface
         );
         $form->appendChildren([
             SingleSelectionFormField::create('categoryID')
-                ->label('wcf.acp.article.category')
+                ->label('wcf.global.category')
                 ->options((new CategoryNodeTree('com.woltlab.wcf.article.category'))->getIterator(), true)
                 ->required()
         ]);
