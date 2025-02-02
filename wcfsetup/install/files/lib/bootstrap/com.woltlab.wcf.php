@@ -161,6 +161,7 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\articles\RestoreArticle());
             $event->register(new \wcf\system\endpoint\controller\core\articles\PublishArticle());
             $event->register(new \wcf\system\endpoint\controller\core\articles\UnpublishArticle());
+            $event->register(new \wcf\system\endpoint\controller\core\attachments\DeleteAttachment());
         }
     );
 
