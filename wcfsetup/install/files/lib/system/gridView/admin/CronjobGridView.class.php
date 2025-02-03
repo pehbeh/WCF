@@ -26,6 +26,7 @@ use wcf\system\interaction\Divider;
 use wcf\system\interaction\EditInteraction;
 use wcf\system\interaction\ToggleInteraction;
 use wcf\system\WCF;
+use wcf\util\StringUtil;
 
 /**
  * Grid view for the list of cronjobs.
