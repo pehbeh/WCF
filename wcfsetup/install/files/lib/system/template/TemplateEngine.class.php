@@ -694,6 +694,8 @@ class TemplateEngine extends SingletonFactory
      * @param array $variables
      * @param bool $sandbox enables execution in sandbox
      * @return  string
+     *
+     * @deprecated 6.2 use `render()` instead
      */
     public function fetch($templateName, $application = 'wcf', array $variables = [], $sandbox = false)
     {
@@ -720,6 +722,41 @@ class TemplateEngine extends SingletonFactory
         if ($sandbox) {
             $this->disableSandbox();
         }
+
+        return $output;
+    }
+
+
+    /**
+     * Returns the output of a template.
+     *
+     * @param string $application
+     * @param string $templateName
+     * @param array  $variables
+     *
+     * @return  string
+     *
+     * @since 6.2
+     */
+    public function render(string $application, string $templateName, array $variables): string
+    {
+        $this->enableSandbox();
+
+        // add new template variables
+        if (!empty($variables)) {
+            $this->v = \array_merge($this->v, $variables);
+        }
+
+        // get output
+        try {
+            \ob_start();
+            $this->display($templateName, $application, false);
+            $output = \ob_get_contents();
+        } finally {
+            \ob_end_clean();
+        }
+
+        $this->disableSandbox();
 
         return $output;
     }
