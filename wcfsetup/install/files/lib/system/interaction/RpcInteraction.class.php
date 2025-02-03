@@ -4,6 +4,7 @@ namespace wcf\system\interaction;
 
 use wcf\action\ApiAction;
 use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectDecorator;
 use wcf\data\ITitledObject;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
@@ -56,6 +57,14 @@ class RpcInteraction extends AbstractInteraction
             $objectName = StringUtil::encodeHTML($object->getTitle());
         } else {
             $objectName = '';
+
+            if ($object instanceof DatabaseObjectDecorator) {
+                $baseObject = $object->getDecoratedObject();
+
+                if ($baseObject instanceof ITitledObject) {
+                    $objectName = StringUtil::encodeHTML($baseObject->getTitle());
+                }
+            }
         }
 
         return <<<HTML

@@ -23,6 +23,7 @@ use wcf\util\Url;
  * @property-read   string $regex      regular expression to recognize media elements/element urls
  * @property-read   string $html       html code used to render media elements
  * @property-read   string $className  callback class name
+ * @property-read   int $isDisabled
  */
 class BBCodeMediaProvider extends DatabaseObject implements IRouteController
 {
