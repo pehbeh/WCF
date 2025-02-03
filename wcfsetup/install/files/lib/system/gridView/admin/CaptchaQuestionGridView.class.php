@@ -15,6 +15,8 @@ use wcf\system\gridView\GridViewRowLink;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\interaction\admin\CaptchaQuestionInteractions;
 use wcf\system\interaction\bulk\admin\CaptchaQuestionBulkInteractions;
+use wcf\system\interaction\Divider;
+use wcf\system\interaction\EditInteraction;
 use wcf\system\interaction\ToggleInteraction;
 use wcf\system\WCF;
 
