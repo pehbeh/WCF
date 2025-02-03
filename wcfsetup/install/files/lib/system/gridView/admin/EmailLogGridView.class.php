@@ -89,6 +89,7 @@ final class EmailLogGridView extends AbstractGridView
             GridViewColumn::for('recipientID')
                 ->label('wcf.user.username')
                 ->filter(new UserFilter())
+                ->sortable(sortByDatabaseColumn: 'user_table.username')
                 ->renderer(
                     new class extends AbstractColumnRenderer {
                         #[\Override]
@@ -182,6 +183,11 @@ HTML;
     #[\Override]
     protected function createObjectList(): DatabaseObjectList
     {
-        return new EmailLogEntryList();
+        $list = new EmailLogEntryList();
+        $join = " LEFT JOIN wcf1_user user_table
+                  ON        user_table.userID = email_log_entry.recipientID";
+        $list->sqlJoins = $join;
+
+        return $list;
     }
 }
