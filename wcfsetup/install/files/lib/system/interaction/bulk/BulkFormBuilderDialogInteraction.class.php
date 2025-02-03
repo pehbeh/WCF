@@ -2,30 +2,26 @@
 
 namespace wcf\system\interaction\bulk;
 
-use wcf\action\ApiAction;
 use wcf\data\DatabaseObject;
-use wcf\system\interaction\InteractionConfirmationType;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\JSON;
 use wcf\util\StringUtil;
 
 /**
- * Represents a bulk interaction that calls a rpc endpoint.
+ * Represents a bulk interaction that call a form builder action.
  *
- * @author      Marcel Werk
+ * @author      Olaf Braun
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-class BulkRpcInteraction extends AbstractBulkInteraction
+class BulkFormBuilderDialogInteraction extends AbstractBulkInteraction
 {
     public function __construct(
         string $identifier,
-        protected readonly string $endpoint,
-        protected readonly string $languageItem,
-        protected readonly InteractionConfirmationType $confirmationType = InteractionConfirmationType::None,
-        protected readonly string $confirmationMessage = '',
+        protected readonly string $controller,
+        protected readonly string | \Closure $languageItem,
         ?\Closure $isAvailableCallback = null
     ) {
         parent::__construct($identifier, $isAvailableCallback);
@@ -36,14 +32,15 @@ class BulkRpcInteraction extends AbstractBulkInteraction
     {
         $identifier = StringUtil::encodeJS($this->getIdentifier());
         $label = WCF::getLanguage()->get($this->languageItem) . ' (' . \count($objects) . ')';
-        $confirmationMessage = WCF::getLanguage()->getDynamicVariable($this->confirmationMessage);
+        $objectIDs = \array_values(\array_map(fn(DatabaseObject $object) => $object->getObjectID(), $objects));
         $endpoint = StringUtil::encodeHTML(
-            LinkHandler::getInstance()->getControllerLink(ApiAction::class, ['id' => 'rpc']) . $this->endpoint
+            LinkHandler::getInstance()->getControllerLink($this->controller, [
+                'objectIDs' => $objectIDs
+            ])
         );
-        $objectIDs = StringUtil::encodeHTML(
-            JSON::encode(
-                \array_values(\array_map(fn(DatabaseObject $object) => $object->getObjectID(), $objects))
-            )
+
+        $jsonObjectIDs = StringUtil::encodeHTML(
+            JSON::encode($objectIDs)
         );
 
         return <<<HTML
@@ -51,9 +48,7 @@ class BulkRpcInteraction extends AbstractBulkInteraction
                 type="button"
                 data-bulk-interaction="{$identifier}"
                 data-endpoint="{$endpoint}"
-                data-object-ids="{$objectIDs}"
-                data-confirmation-type="{$this->confirmationType->toString()}"
-                data-confirmation-message="{$confirmationMessage}"
+                data-object-ids="{$jsonObjectIDs}"
             >
                 {$label}
             </button>
@@ -68,7 +63,7 @@ class BulkRpcInteraction extends AbstractBulkInteraction
 
         return <<<HTML
             <script data-relocate="true">
-                require(['WoltLabSuite/Core/Component/Interaction/Bulk/Rpc'], ({ setup }) => {
+                require(['WoltLabSuite/Core/Component/Interaction/Bulk/FormBuilderDialog'], ({ setup }) => {
                     setup('{$identifier}', document.getElementById('{$containerId}'));
                 });
             </script>
