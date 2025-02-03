@@ -54,8 +54,12 @@ final class CaptchaQuestionGridView extends AbstractGridView
                 ->filter(new NumericFilter()),
         ]);
 
-        $interaction = new CaptchaQuestionInteractions();
-        $this->setInteractionProvider($interaction);
+        $provider = new CaptchaQuestionInteractions();
+        $provider->addInteractions([
+            new Divider(),
+            new EditInteraction(CaptchaQuestionEditForm::class)
+        ]);
+        $this->setInteractionProvider($provider);
         $this->setBulkInteractionProvider(new CaptchaQuestionBulkInteractions());
 
         $this->addQuickInteraction(
