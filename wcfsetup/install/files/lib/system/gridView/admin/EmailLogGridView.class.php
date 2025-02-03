@@ -52,7 +52,7 @@ final class EmailLogGridView extends AbstractGridView
                 ->filter(new TextFilter())
                 ->sortable()
                 ->renderer(
-                    new class extends TruncatedTextColumnRenderer {
+                    new class(50) extends TruncatedTextColumnRenderer {
                         #[\Override]
                         public function render(mixed $value, DatabaseObject $row): string
                         {
