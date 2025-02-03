@@ -98,8 +98,12 @@ final class BoxGridView extends AbstractGridView
                 ->hidden(),
         ]);
 
-        $interactionProvider = new BoxInteractions();
-        $this->setInteractionProvider($interactionProvider);
+        $provider = new BoxInteractions();
+        $provider->addInteractions([
+            new Divider(),
+            new EditInteraction(BoxEditForm::class)
+        ]);
+        $this->setInteractionProvider($provider);
 
         $this->addQuickInteraction(new ToggleInteraction('enable', 'core/boxes/%s/enable', 'core/boxes/%s/disable'));
 
