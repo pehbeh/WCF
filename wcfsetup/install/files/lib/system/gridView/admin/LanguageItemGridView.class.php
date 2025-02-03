@@ -5,6 +5,7 @@ namespace wcf\system\gridView\admin;
 use wcf\acp\action\LanguageItemEditAction;
 use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
+use wcf\data\language\category\LanguageCategoryList;
 use wcf\data\language\item\LanguageItem;
 use wcf\data\language\item\LanguageItemList;
 use wcf\data\language\Language;
@@ -55,6 +56,13 @@ final class LanguageItemGridView extends AbstractGridView
                     }
                 )
                 ->sortable(),
+            GridViewColumn::for('languageCategoryID')
+                ->label('wcf.global.category')
+                ->hidden()
+                ->filter(new SelectFilter(
+                    $this->getAvailableCategories(),
+                    labelLanguageItems: false
+                )),
             GridViewColumn::for('languageItemValue')
                 ->label('wcf.acp.language.item.value')
                 ->valueEncoding(false)
@@ -165,5 +173,13 @@ final class LanguageItemGridView extends AbstractGridView
     protected function getInitializedEvent(): ?IPsr14Event
     {
         return new LanguageItemGridViewInitialized($this);
+    }
+
+    private function getAvailableCategories(): array
+    {
+        $list = new LanguageCategoryList();
+        $list->readObjects();
+
+        return \array_map(static fn($object) => $object->languageCategory, $list->getObjects());
     }
 }
