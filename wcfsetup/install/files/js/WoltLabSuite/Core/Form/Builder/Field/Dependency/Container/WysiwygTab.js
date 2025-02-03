@@ -28,7 +28,7 @@ define(["require", "exports", "tslib", "./Abstract", "../Manager", "WoltLabSuite
             }
             const containerIsVisible = !this._container.hidden;
             const tabMenu = (0, MessageTabMenu_1.getTabMenu)(this.#wysiwygId);
-            const containerShouldBeVisible = tabMenu.isHiddenTab(this.#tabName);
+            const containerShouldBeVisible = !tabMenu.isHiddenTab(this.#tabName);
             if (containerIsVisible !== containerShouldBeVisible) {
                 if (containerShouldBeVisible) {
                     tabMenu?.showTab(this.#tabName);
