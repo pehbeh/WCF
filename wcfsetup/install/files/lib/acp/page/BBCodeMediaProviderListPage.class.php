@@ -2,19 +2,20 @@
 
 namespace wcf\acp\page;
 
-use wcf\data\bbcode\media\provider\BBCodeMediaProviderList;
-use wcf\page\SortablePage;
+use wcf\page\AbstractGridViewPage;
+use wcf\system\gridView\AbstractGridView;
+use wcf\system\gridView\admin\BBCodeMediaProviderGridView;
 
 /**
  * Lists the available media providers.
  *
- * @author  Tim Duesterhus
- * @copyright   2001-2019 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @author      Olaf Braun, Tim Duesterhus
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    BBCodeMediaProviderList $objectList
+ * @property    BBCodeMediaProviderGridView $gridView
  */
-class BBCodeMediaProviderListPage extends SortablePage
+class BBCodeMediaProviderListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -24,25 +25,16 @@ class BBCodeMediaProviderListPage extends SortablePage
     /**
      * @inheritDoc
      */
-    public $defaultSortField = 'title';
-
-    /**
-     * @inheritDoc
-     */
     public $neededPermissions = ['admin.content.bbcode.canManageBBCode'];
-
-    /**
-     * @inheritDoc
-     */
-    public $objectListClassName = BBCodeMediaProviderList::class;
 
     /**
      * @inheritDoc
      */
     public $templateName = 'bbcodeMediaProviderList';
 
-    /**
-     * @inheritDoc
-     */
-    public $validSortFields = ['providerID', 'title'];
+    #[\Override]
+    protected function createGridViewController(): AbstractGridView
+    {
+        return new BBCodeMediaProviderGridView();
+    }
 }

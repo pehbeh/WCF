@@ -112,6 +112,7 @@
 	<category name="wcf.acp.attachment">
 		<item name="wcf.acp.attachment.list"><![CDATA[Attachments]]></item>
 		<item name="wcf.acp.attachment.stats"><![CDATA[<ul class="inlineList dotSeparated"><li>{#$stats.count} Attachment{if $stats.count != 1}s{/if}</li><li>{@$stats.size|filesize}</li><li>{#$stats.downloads} Download{if $stats.downloads != 1}s{/if}</li></ul>]]></item>
+		<item name="wcf.acp.attachment.button.goToContent"><![CDATA[Go to Related Content]]></item>
 	</category>
 	<category name="wcf.acp.bbcode">
 		<item name="wcf.acp.bbcode.add"><![CDATA[Add BBCode]]></item>
@@ -3261,6 +3262,9 @@ Your account on {@PAGE_TITLE|phrase} [URL:{link isEmail=true}{/link}] has been a
 		<item name="wcf.article.convertFromI18n.question"><![CDATA[Are you sure you want to disable internationalization for this article?]]></item>
 		<item name="wcf.article.convertFromI18n.description"><![CDATA[All values except the ones of the selected language will be discarded, this will also delete the edit history of this article.<br><br>Please submit any unsaved changes before executing this action.]]></item>
 		<item name="wcf.article.category.delete.sure"><![CDATA[Do you really want to delete this category? All child categories of this category will be moved to this category’s parent category. Articles in this category will be deleted.]]></item>
+		<item name="wcf.article.button.publish"><![CDATA[Publish]]></item>
+		<item name="wcf.article.button.unpublish"><![CDATA[Withdraw Publication]]></item>
+		<item name="wcf.article.button.setCategory"><![CDATA[Set category]]></item>
 	</category>
 	<category name="wcf.attachment">
 		<item name="wcf.attachment.file.info"><![CDATA[{@$attachment->filesize|filesize} – {plural value=$attachment->downloads 1="1 Download" other="# Downloads"}]]></item>
@@ -3294,6 +3298,7 @@ Allowed extensions: {', '|implode:$attachmentHandler->getFormattedAllowedExtensi
 		<item name="wcf.attachment.dragAndDrop.dropHere"><![CDATA[Drag and Drop here to upload]]></item>
 		<item name="wcf.attachment.dragAndDrop.dropNow"><![CDATA[Drop now to upload]]></item>
 		<item name="wcf.attachment.moreOptions"><![CDATA[More Options]]></item>
+		<item name="wcf.attachment.preview"><![CDATA[Preview]]></item>
 	</category>
 	<category name="wcf.bbcode">
 		<item name="wcf.bbcode.button.collapse"><![CDATA[Display Less]]></item>

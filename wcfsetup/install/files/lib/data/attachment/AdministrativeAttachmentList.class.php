@@ -3,7 +3,6 @@
 namespace wcf\data\attachment;
 
 use wcf\data\object\type\ObjectTypeCache;
-use wcf\system\WCF;
 
 /**
  * Represents a list of attachments.
@@ -33,9 +32,14 @@ class AdministrativeAttachmentList extends AttachmentList
         parent::__construct();
 
         $this->sqlSelects = 'user_table.username';
-        $this->sqlJoins = "
-            LEFT JOIN   wcf1_user user_table
-            ON          user_table.userID = attachment.userID";
+
+        $join = "LEFT JOIN   wcf1_user user_table
+                 ON          user_table.userID = attachment.userID
+                 LEFT JOIN   wcf1_file file_table
+                 ON          file_table.fileID = attachment.fileID";
+
+        $this->sqlJoins = $join;
+        $this->sqlConditionJoins = $join;
     }
 
     /**
@@ -58,49 +62,5 @@ class AdministrativeAttachmentList extends AttachmentList
             $objectType = ObjectTypeCache::getInstance()->getObjectType($objectTypeID);
             $objectType->getProcessor()->cacheObjects($objectIDs);
         }
-    }
-
-    /**
-     * Returns a list of available mime types.
-     *
-     * @return  string[]
-     */
-    public function getAvailableFileTypes()
-    {
-        $fileTypes = [];
-        $sql = "SELECT  DISTINCT attachment.fileType
-                FROM    wcf1_attachment attachment
-                " . $this->getConditionBuilder();
-        $statement = WCF::getDB()->prepare($sql);
-        $statement->execute($this->getConditionBuilder()->getParameters());
-        while ($row = $statement->fetchArray()) {
-            if ($row['fileType']) {
-                $fileTypes[$row['fileType']] = $row['fileType'];
-            }
-        }
-
-        \ksort($fileTypes);
-
-        return $fileTypes;
-    }
-
-    /**
-     * Returns attachment statistics.
-     *
-     * @return  int[]
-     */
-    public function getStats()
-    {
-        $sql = "SELECT  COUNT(*) AS count,
-                        COALESCE(SUM(file.fileSize), 0) AS size,
-                        COALESCE(SUM(downloads), 0) AS downloads
-                FROM    wcf1_attachment attachment
-                LEFT JOIN   wcf1_file file
-                ON          (file.fileID = attachment.fileID)
-                " . $this->getConditionBuilder();
-        $statement = WCF::getDB()->prepare($sql);
-        $statement->execute($this->getConditionBuilder()->getParameters());
-
-        return $statement->fetchArray();
     }
 }
