@@ -15,6 +15,8 @@ use wcf\system\gridView\GridViewRowLink;
 use wcf\system\gridView\renderer\AbstractColumnRenderer;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\interaction\admin\BBCodeInteractions;
+use wcf\system\interaction\Divider;
+use wcf\system\interaction\EditInteraction;
 use wcf\system\WCF;
 
 /**
