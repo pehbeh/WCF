@@ -3,6 +3,8 @@
 namespace wcf\system\gridView;
 
 use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectDecorator;
+use wcf\data\ILinkableObject;
 use wcf\system\request\LinkHandler;
 use wcf\util\StringUtil;
 
@@ -19,7 +21,8 @@ class GridViewRowLink
     public function __construct(
         private readonly string $controllerClass = '',
         private readonly array $parameters = [],
-        private readonly string $cssClass = ''
+        private readonly string $cssClass = '',
+        private readonly bool $isLinkableObject = false,
     ) {}
 
     /**
@@ -29,10 +32,12 @@ class GridViewRowLink
     {
         $href = '';
         if ($this->controllerClass) {
-            $href = LinkHandler::getInstance()->getControllerLink(
+            $href = StringUtil::encodeHTML(LinkHandler::getInstance()->getControllerLink(
                 $this->controllerClass,
                 \array_merge($this->parameters, ['object' => $row])
-            );
+            ));
+        } else if ($this->isLinkableObject) {
+            $href = StringUtil::encodeHTML($this->getLink($row));
         }
 
         $attributes = [];
@@ -53,5 +58,21 @@ class GridViewRowLink
                 . $value
                 . '</a>';
         }
+    }
+
+    private function getLink(DatabaseObject $object): string
+    {
+        if ($object instanceof ILinkableObject) {
+            return $object->getLink();
+        }
+
+        if ($object instanceof DatabaseObjectDecorator) {
+            $decoratedObject = $object->getDecoratedObject();
+            if ($decoratedObject instanceof ILinkableObject) {
+                return $decoratedObject->getLink();
+            }
+        }
+
+        throw new \BadMethodCallException("GridViewRowLink expects object to be an implementation of ILinkableObject.");
     }
 }
