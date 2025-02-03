@@ -73,7 +73,7 @@ final class CronjobGridView extends AbstractGridView
                         {
                             \assert($row instanceof Cronjob);
 
-                            return $row->getPackage()->getTitle();
+                            return StringUtil::encodeHTML($row->getPackage()->getTitle());
                         }
                     }
                 )
