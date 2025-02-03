@@ -1452,6 +1452,7 @@
 		<file>js/WoltLab/WCF/Ui/User/Search/Input.js</file>
 		<file>js/WoltLab/WCF/Upload.js</file>
 		<file>js/WoltLab/WCF/User.js</file>
+		<file>js/WoltLabSuite/Core/Acp/Ui/Language/ItemList.js</file>
 		<file>js/WoltLabSuite/Core/Acp/Ui/Style/CoverPhoto/Delete.js</file>
 		<file>js/WoltLabSuite/Core/Acp/Ui/Style/CoverPhoto/Upload.js</file>
 		<file>js/WoltLabSuite/Core/Acp/Ui/Style/Favicon/Upload.js</file>
