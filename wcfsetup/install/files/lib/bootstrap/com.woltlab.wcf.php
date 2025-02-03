@@ -169,6 +169,9 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\captchas\questions\EnableQuestion());
             $event->register(new \wcf\system\endpoint\controller\core\captchas\questions\DisableQuestion());
             $event->register(new \wcf\system\endpoint\controller\core\captchas\questions\DeleteQuestion());
+            $event->register(new \wcf\system\endpoint\controller\core\boxes\DisableBox());
+            $event->register(new \wcf\system\endpoint\controller\core\boxes\EnableBox());
+            $event->register(new \wcf\system\endpoint\controller\core\boxes\DeleteBox());
         }
     );
 
