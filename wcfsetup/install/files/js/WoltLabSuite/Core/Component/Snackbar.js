@@ -9,18 +9,15 @@ define(["require", "exports", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/H
         SnackbarType[SnackbarType["Success"] = 0] = "Success";
         SnackbarType[SnackbarType["Progress"] = 1] = "Progress";
     })(SnackbarType || (SnackbarType = {}));
-    class Snackbar {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+    class Snackbar extends EventTarget {
         #message = "";
         #type;
         #snackbarElement;
-        #hidden;
-        #hiddenResolve;
         constructor(message, type) {
+            super();
             this.#message = message;
             this.#type = type;
-            this.#hidden = new Promise((resolve) => {
-                this.#hiddenResolve = resolve;
-            });
             this.#render();
         }
         get message() {
@@ -49,13 +46,16 @@ define(["require", "exports", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/H
             iconWrapper.append(icon);
             const message = document.createElement("div");
             message.classList.add("snackbar__message");
+            if (this.isProgress()) {
+                message.setAttribute("aria-live", "polite");
+            }
             message.append(this.message);
             const dismissButton = document.createElement("button");
             dismissButton.type = "button";
             dismissButton.classList.add("snackbar__dismissButton");
             dismissButton.setAttribute("aria-label", (0, Language_1.getPhrase)("wcf.global.button.close"));
             dismissButton.addEventListener("click", () => {
-                this.hide();
+                this.close();
             });
             const dismissIcon = document.createElement("fa-icon");
             dismissIcon.size = 24;
@@ -78,12 +78,15 @@ define(["require", "exports", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/H
         isProgress() {
             return this.#type == SnackbarType.Progress;
         }
-        hide() {
-            this.#snackbarElement.remove();
-            this.#hiddenResolve();
+        isVisible() {
+            return this.#snackbarElement.parentElement !== null;
         }
-        get hidden() {
-            return this.#hidden;
+        close() {
+            if (!this.isVisible()) {
+                return;
+            }
+            this.#snackbarElement.remove();
+            this.dispatchEvent(new CustomEvent("close"));
         }
         get element() {
             return this.#snackbarElement;
@@ -107,11 +110,11 @@ define(["require", "exports", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/H
         addSnackbar(snackbar) {
             if (this.#snackbars.length > 2) {
                 const oldSnackbar = this.#snackbars.shift();
-                oldSnackbar?.hide();
+                oldSnackbar?.close();
             }
             this.#snackbars.push(snackbar);
             this.#element.prepend(snackbar.element);
-            void snackbar.hidden.then(() => {
+            void snackbar.addEventListener("close", () => {
                 const i = this.#snackbars.indexOf(snackbar);
                 if (i !== -1) {
                     this.#snackbars = this.#snackbars.splice(i, 1);

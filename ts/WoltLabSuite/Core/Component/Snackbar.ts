@@ -6,20 +6,18 @@ enum SnackbarType {
   Progress,
 }
 
-class Snackbar {
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+class Snackbar extends EventTarget {
   #message: string = "";
   readonly #type: SnackbarType;
   #snackbarElement: HTMLElement;
-  readonly #hidden: Promise<void>;
-  #hiddenResolve: () => void;
 
   constructor(message: string, type: SnackbarType) {
+    super();
+
     this.#message = message;
     this.#type = type;
 
-    this.#hidden = new Promise<void>((resolve) => {
-      this.#hiddenResolve = resolve;
-    });
     this.#render();
   }
 
@@ -58,6 +56,9 @@ class Snackbar {
 
     const message = document.createElement("div");
     message.classList.add("snackbar__message");
+    if (this.isProgress()) {
+      message.setAttribute("aria-live", "polite");
+    }
     message.append(this.message);
 
     const dismissButton = document.createElement("button");
@@ -65,7 +66,7 @@ class Snackbar {
     dismissButton.classList.add("snackbar__dismissButton");
     dismissButton.setAttribute("aria-label", getPhrase("wcf.global.button.close"));
     dismissButton.addEventListener("click", () => {
-      this.hide();
+      this.close();
     });
 
     const dismissIcon = document.createElement("fa-icon");
@@ -95,18 +96,38 @@ class Snackbar {
     return this.#type == SnackbarType.Progress;
   }
 
-  hide(): void {
-    this.#snackbarElement.remove();
-    this.#hiddenResolve();
+  isVisible(): boolean {
+    return this.#snackbarElement.parentElement !== null;
   }
 
-  get hidden(): Promise<void> {
-    return this.#hidden;
+  close(): void {
+    if (!this.isVisible()) {
+      return;
+    }
+
+    this.#snackbarElement.remove();
+
+    this.dispatchEvent(new CustomEvent("close"));
   }
 
   get element(): HTMLElement {
     return this.#snackbarElement;
   }
+}
+
+interface SnackbarEventMap {
+  close: CustomEvent<void>;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+interface Snackbar extends EventTarget {
+  addEventListener: {
+    <T extends keyof SnackbarEventMap>(
+      type: T,
+      listener: (this: Snackbar, ev: SnackbarEventMap[T]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+  } & HTMLElement["addEventListener"];
 }
 
 let snackbarContainer: SnackbarContainer;
@@ -132,13 +153,13 @@ class SnackbarContainer {
   addSnackbar(snackbar: Snackbar): void {
     if (this.#snackbars.length > 2) {
       const oldSnackbar = this.#snackbars.shift();
-      oldSnackbar?.hide();
+      oldSnackbar?.close();
     }
 
     this.#snackbars.push(snackbar);
     this.#element.prepend(snackbar.element);
 
-    void snackbar.hidden.then(() => {
+    void snackbar.addEventListener("close", () => {
       const i = this.#snackbars.indexOf(snackbar);
       if (i !== -1) {
         this.#snackbars = this.#snackbars.splice(i, 1);
