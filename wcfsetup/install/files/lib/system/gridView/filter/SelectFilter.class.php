@@ -17,8 +17,11 @@ use wcf\system\WCF;
  */
 class SelectFilter extends AbstractFilter
 {
-    public function __construct(private readonly array $options, string $databaseColumn = '')
-    {
+    public function __construct(
+        private readonly array $options,
+        string $databaseColumn = '',
+        private readonly bool $labelLanguageItems = true
+    ) {
         parent::__construct($databaseColumn);
     }
 
@@ -27,7 +30,7 @@ class SelectFilter extends AbstractFilter
     {
         return SelectFormField::create($id)
             ->label($label)
-            ->options($this->options);
+            ->options($this->options, labelLanguageItems: $this->labelLanguageItems);
     }
 
     #[\Override]

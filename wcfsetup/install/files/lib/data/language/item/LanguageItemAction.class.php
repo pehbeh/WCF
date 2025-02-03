@@ -3,12 +3,7 @@
 namespace wcf\data\language\item;
 
 use wcf\data\AbstractDatabaseObjectAction;
-use wcf\event\language\PhraseChanged;
-use wcf\system\event\EventHandler;
-use wcf\system\exception\PermissionDeniedException;
-use wcf\system\exception\UserInputException;
 use wcf\system\language\LanguageFactory;
-use wcf\system\WCF;
 
 /**
  * Executes language item-related actions.
@@ -46,7 +41,7 @@ class LanguageItemAction extends AbstractDatabaseObjectAction
     /**
      * @inheritDoc
      */
-    protected $requireACP = ['create', 'delete', 'edit', 'prepareEdit', 'update'];
+    protected $requireACP = ['create', 'delete', 'update'];
 
     /**
      * Creates multiple language items.
@@ -83,144 +78,5 @@ class LanguageItemAction extends AbstractDatabaseObjectAction
                 ),
             ]))->executeAction();
         }
-    }
-
-    /**
-     * Validates parameters to prepare edit.
-     */
-    public function validatePrepareEdit()
-    {
-        if (!WCF::getSession()->getPermission('admin.language.canManageLanguage')) {
-            throw new PermissionDeniedException();
-        }
-
-        $this->readObjects();
-        if (!\count($this->objects)) {
-            throw new UserInputException('objectIDs');
-        }
-    }
-
-    /**
-     * Prepares edit.
-     */
-    public function prepareEdit()
-    {
-        $item = \reset($this->objects);
-        WCF::getTPL()->assign([
-            'item' => $item,
-        ]);
-
-        return [
-            'languageItem' => $item->languageItem,
-            'isCustomLanguageItem' => $item->isCustomLanguageItem,
-            'template' => WCF::getTPL()->fetch('languageItemEditDialog'),
-        ];
-    }
-
-    /**
-     * Validates edit action.
-     */
-    public function validateEdit()
-    {
-        if (!WCF::getSession()->getPermission('admin.language.canManageLanguage')) {
-            throw new PermissionDeniedException();
-        }
-
-        $this->readObjects();
-        if (!\count($this->objects)) {
-            throw new UserInputException('objectIDs');
-        }
-
-        $this->readString('languageItemValue', true);
-        $this->readString('languageCustomItemValue', true);
-        $this->readBoolean('languageUseCustomValue', true);
-    }
-
-    /**
-     * Edits an item.
-     */
-    public function edit()
-    {
-        // save item
-        /** @var LanguageItemEditor $editor */
-        $editor = \reset($this->objects);
-        if ($editor->languageItemOriginIsSystem) {
-            $updateData = [
-                'languageCustomItemValue' => !$this->parameters['languageUseCustomValue'] && empty($this->parameters['languageCustomItemValue']) ? null : $this->parameters['languageCustomItemValue'],
-                'languageUseCustomValue' => $this->parameters['languageUseCustomValue'] ? 1 : 0,
-                'languageCustomItemDisableTime' => null,
-            ];
-
-            if ($this->parameters['languageUseCustomValue']) {
-                $updateData['languageItemOldValue'] = null;
-            }
-        } else {
-            $updateData = [
-                'languageItemValue' => $this->parameters['languageItemValue'],
-            ];
-        }
-        $editor->update($updateData);
-
-        // clear cache
-        LanguageFactory::getInstance()->clearCache();
-        LanguageFactory::getInstance()->deleteLanguageCache();
-
-        $language = LanguageFactory::getInstance()->getLanguage($editor->languageID);
-        EventHandler::getInstance()->fire(
-            new PhraseChanged($language, $editor->languageItem)
-        );
-    }
-
-    /**
-     * Validates the `deleteCustomLanguageItems` action.
-     *
-     * @throws  PermissionDeniedException
-     * @throws  UserInputException
-     * @since   5.2
-     */
-    public function validateDeleteCustomLanguageItems()
-    {
-        if (!WCF::getSession()->getPermission('admin.language.canManageLanguage')) {
-            throw new PermissionDeniedException();
-        }
-
-        $this->readObjects();
-        if (empty($this->objects)) {
-            throw new UserInputException('objectIDs');
-        }
-
-        // this method is only available for custom language items
-        foreach ($this->getObjects() as $languageItem) {
-            if (!$languageItem->isCustomLanguageItem) {
-                throw new UserInputException('objectIDs');
-            }
-        }
-    }
-
-    /**
-     * Deletes custom language items in every language.
-     *
-     * @since   5.2
-     */
-    public function deleteCustomLanguageItems()
-    {
-        if (empty($this->objects)) {
-            $this->readObjects();
-        }
-
-        $languageItems = [];
-        foreach ($this->getObjects() as $languageItem) {
-            $languageItems[] = $languageItem->languageItem;
-        }
-
-        $languageItemList = new LanguageItemList();
-        $languageItemList->getConditionBuilder()->add('isCustomLanguageItem = ?', [1]);
-        $languageItemList->getConditionBuilder()->add('languageItem IN (?)', [\array_unique($languageItems)]);
-        $languageItemList->readObjects();
-
-        (new self($languageItemList->getObjects(), 'delete'))->executeAction();
-
-        LanguageFactory::getInstance()->clearCache();
-        LanguageFactory::getInstance()->deleteLanguageCache();
     }
 }
