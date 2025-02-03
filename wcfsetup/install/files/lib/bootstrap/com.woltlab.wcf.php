@@ -175,6 +175,7 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\bbcodes\media\providers\DeleteProvider());
             $event->register(new \wcf\system\endpoint\controller\core\bbcodes\media\providers\DisableProvider());
             $event->register(new \wcf\system\endpoint\controller\core\bbcodes\media\providers\EnableProvider());
+            $event->register(new \wcf\system\endpoint\controller\core\bbCodes\DeleteBBCodes());
         }
     );
 
