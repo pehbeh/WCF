@@ -18,6 +18,8 @@ use wcf\system\gridView\renderer\DefaultColumnRenderer;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\gridView\renderer\TimeColumnRenderer;
 use wcf\system\gridView\renderer\TruncatedTextColumnRenderer;
+use wcf\system\interaction\AbstractInteraction;
+use wcf\system\interaction\IInteraction;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
@@ -165,6 +167,7 @@ HTML;
                 ->sortable(),
         ]);
 
+        $this->addQuickInteraction($this->getShowDetailsInteraction());
         $this->setSortField('time');
         $this->setSortOrder('DESC');
     }
@@ -184,5 +187,47 @@ HTML;
         $list->sqlJoins = $join;
 
         return $list;
+    }
+
+    private function getShowDetailsInteraction(): IInteraction
+    {
+        return new class('showDetails') extends AbstractInteraction {
+            #[\Override]
+            public function render(DatabaseObject $object): string
+            {
+                \assert($object instanceof EmailLogEntry);
+
+                $buttonLabel = WCF::getLanguage()->get('wcf.acp.email.log.button.showDetails');
+                $buttonId = 'emailLogDetailsButton' . $object->entryID;
+                $id = 'emailLogDetails' . $object->entryID;
+                $messageIdLabel = WCF::getLanguage()->get('wcf.acp.email.log.messageId');
+                $messageId = StringUtil::encodeHTML($object->messageID);
+                $messageLabel = WCF::getLanguage()->get('wcf.acp.email.log.statusMessage');
+                $message = StringUtil::encodeHTML($object->message);
+                $dialogTitle = StringUtil::encodeJS(WCF::getLanguage()->get('wcf.acp.email.log.details'));
+
+                return <<<HTML
+                    <button type="button" id="{$buttonId}" class="jsTooltip" title="{$buttonLabel}">
+                        <fa-icon name="magnifying-glass"></fa-icon>
+                    </button>
+                    <template id="{$id}">
+                        <dl>
+                            <dt>{$messageIdLabel}</dt>
+                            <dd>{$messageId}</dd>
+                            <dt>{$messageLabel}</dt>
+                            <dd>{$message}</dd>
+                        </dl>
+                    </template>
+                    <script data-relocate="true">
+                        require(['WoltLabSuite/Core/Component/Dialog'], ({ dialogFactory }) => {
+                            document.getElementById('{$buttonId}').addEventListener('click', () => {
+                                const dialog = dialogFactory().fromId('{$id}').withoutControls();
+                                dialog.show('{$dialogTitle}');
+                            });
+                        });
+                    </script>
+                    HTML;
+            }
+        };
     }
 }
