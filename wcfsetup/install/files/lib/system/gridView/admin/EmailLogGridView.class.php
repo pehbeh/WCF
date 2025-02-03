@@ -143,24 +143,12 @@ final class EmailLogGridView extends AbstractGridView
                                 EmailLogEntry::STATUS_PERMANENT_FAILURE => ' red',
                                 default => '',
                             };
-                            $attributes = '';
-                            $dialog = '';
-                            if ($row->message) {
-                                $badgeClasses .= ' pointer jsStaticDialog';
-                                $attributes = \sprintf(' data-dialog-id="statusMessage%s"', $row->entryID);
-                                $message = StringUtil::encodeHTML($row->message);
 
-                                $dialog = <<<HTML
-<div class="jsStaticDialogContent" id="statusMessage{$row->entryID}" style="display:none;">
-{$message}
-</div>
-HTML;
-                            }
+                            $status = WCF::getLanguage()->get('wcf.acp.email.log.status.' . $row->status);
 
                             return <<<HTML
-<span class="badge{$badgeClasses}"{$attributes}>{$row->status}</span>
-{$dialog}
-HTML;
+                                <span class="badge{$badgeClasses}">{$status}</span>
+                                HTML;
                         }
                     }
                 )
