@@ -72,21 +72,34 @@ define(["require", "exports", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/H
         }
         #setHideTimeout() {
             window.setTimeout(() => {
-                //this.hide();
-            }, 5000);
+                this.close();
+            }, 3_000);
         }
         isProgress() {
             return this.#type == SnackbarType.Progress;
         }
         isVisible() {
-            return this.#snackbarElement.parentElement !== null;
+            if (this.#snackbarElement.parentElement === null) {
+                return false;
+            }
+            if (this.#snackbarElement.classList.contains("snackbar--closing")) {
+                return false;
+            }
+            return true;
         }
         close() {
             if (!this.isVisible()) {
                 return;
             }
-            this.#snackbarElement.remove();
             this.dispatchEvent(new CustomEvent("close"));
+            // The animation to move the element vertically relative to its height
+            // requires the value to be computed first.
+            const height = Math.trunc(getSnackbarContainer().getGapValue() + this.#snackbarElement.getBoundingClientRect().height);
+            this.#snackbarElement.style.setProperty("--height", `${height}px`);
+            this.#snackbarElement.classList.add("snackbar--closing");
+            this.#snackbarElement.addEventListener("animationend", () => {
+                this.#snackbarElement.remove();
+            });
         }
         get element() {
             return this.#snackbarElement;
@@ -120,6 +133,14 @@ define(["require", "exports", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/H
                     this.#snackbars = this.#snackbars.splice(i, 1);
                 }
             });
+        }
+        getGapValue() {
+            const gap = window.getComputedStyle(this.#element).gap;
+            const match = gap.match(/^(\d+)px$/);
+            if (match === null) {
+                return 0;
+            }
+            return parseInt(match[1]);
         }
     }
     function showSuccessSnackbar(message) {
