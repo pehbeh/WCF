@@ -173,7 +173,7 @@ async function resizeImage(element: WoltlabCoreFileUploadElement, file: File): P
 
   let fileType: string = resizeConfiguration.fileType;
   if (fileType === "image/jpeg" || fileType === "image/webp") {
-    fileType = "image/webp";
+    fileType = "image/jpeg";
   } else {
     fileType = file.type;
   }

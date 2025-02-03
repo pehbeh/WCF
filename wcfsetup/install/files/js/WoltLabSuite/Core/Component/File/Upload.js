@@ -108,7 +108,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/Selector", "Wol
         }
         let fileType = resizeConfiguration.fileType;
         if (fileType === "image/jpeg" || fileType === "image/webp") {
-            fileType = "image/webp";
+            fileType = "image/jpeg";
         }
         else {
             fileType = file.type;
