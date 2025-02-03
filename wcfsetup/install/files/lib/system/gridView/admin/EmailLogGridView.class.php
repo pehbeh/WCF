@@ -81,23 +81,6 @@ final class EmailLogGridView extends AbstractGridView
                                 $recipient = StringUtil::encodeHTML($row->getRedactedRecipientAddress());
                             }
 
-                            if ($row->getRecipient()) {
-                                $userEditLink = StringUtil::encodeHTML(
-                                    LinkHandler::getInstance()->getControllerLink(
-                                        UserEditForm::class,
-                                        ['object' => $row->getRecipient()]
-                                    )
-                                );
-                                $username = StringUtil::encodeHTML($row->getRecipient()->getTitle());
-
-                                $recipient .= <<<HTML
-<br>
-<small>
-    <a href="{$userEditLink}">{$username}</a>
-</small>
-HTML;
-                            }
-
                             return $recipient;
                         }
                     }
@@ -106,7 +89,33 @@ HTML;
             GridViewColumn::for('recipientID')
                 ->label('wcf.user.username')
                 ->filter(new UserFilter())
-                ->hidden(),
+                ->renderer(
+                    new class extends AbstractColumnRenderer {
+                        #[\Override]
+                        public function render(mixed $value, DatabaseObject $row): string
+                        {
+                            \assert($row instanceof EmailLogEntry);
+
+                            if (!$row->getRecipient()) {
+                                return WCF::getLanguage()->get('wcf.user.guest');
+                            }
+
+                            $username = StringUtil::encodeHTML($row->getRecipient()->getTitle());
+
+                            if (WCF::getSession()->getPermission('admin.user.canEditUser')) {
+                                return \sprintf(
+                                    '<a href="%s">%s</a>',
+                                    LinkHandler::getInstance()->getControllerLink(UserEditForm::class, [
+                                        'id' => $row->getRecipient()->userID,
+                                    ]),
+                                    $username
+                                );
+                            } else {
+                                return $username;
+                            }
+                        }
+                    }
+                ),
             GridViewColumn::for('time')
                 ->label('wcf.acp.email.log.time')
                 ->renderer(new TimeColumnRenderer())
