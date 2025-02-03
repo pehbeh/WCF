@@ -209,6 +209,12 @@ function validateFileLimit(element: WoltlabCoreFileUploadElement): boolean {
 }
 
 function validateFileSize(element: WoltlabCoreFileUploadElement, file: File): boolean {
+  if (file.size === 0) {
+    innerError(element, getPhrase("wcf.upload.error.emptyFile", { filename: file.name }));
+
+    return false;
+  }
+
   let isImage = false;
   switch (file.type) {
     case "image/gif":

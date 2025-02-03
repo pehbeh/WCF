@@ -133,6 +133,10 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/Selector", "Wol
         return false;
     }
     function validateFileSize(element, file) {
+        if (file.size === 0) {
+            (0, Util_1.innerError)(element, (0, Language_1.getPhrase)("wcf.upload.error.emptyFile", { filename: file.name }));
+            return false;
+        }
         let isImage = false;
         switch (file.type) {
             case "image/gif":
