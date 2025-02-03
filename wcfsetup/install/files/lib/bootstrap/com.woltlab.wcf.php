@@ -166,6 +166,9 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\cronjobs\DisableCronjob());
             $event->register(new \wcf\system\endpoint\controller\core\cronjobs\DeleteCronjob());
             $event->register(new \wcf\system\endpoint\controller\core\cronjobs\ExecuteCronjob());
+            $event->register(new \wcf\system\endpoint\controller\core\captchas\questions\EnableQuestion());
+            $event->register(new \wcf\system\endpoint\controller\core\captchas\questions\DisableQuestion());
+            $event->register(new \wcf\system\endpoint\controller\core\captchas\questions\DeleteQuestion());
         }
     );
 
