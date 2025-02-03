@@ -21,7 +21,7 @@ use wcf\system\WCF;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-#[DeleteRequest('/core/bb-codes/{id:\d+}')]
+#[DeleteRequest('/core/bbcodes/{id:\d+}')]
 final class DeleteBBCodes implements IController
 {
     #[\Override]

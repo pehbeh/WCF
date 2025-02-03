@@ -21,7 +21,7 @@ final class BBCodeInteractions extends AbstractInteractionProvider
     public function __construct()
     {
         $this->addInteractions([
-            new DeleteInteraction('core/bb-codes/%s', static fn(BBCode $bbcode) => $bbcode->canDelete()),
+            new DeleteInteraction('core/bbcodes/%s', static fn(BBCode $bbcode) => $bbcode->canDelete()),
         ]);
 
         EventHandler::getInstance()->fire(
