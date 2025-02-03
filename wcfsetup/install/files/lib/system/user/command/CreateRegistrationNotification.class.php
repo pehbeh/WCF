@@ -17,9 +17,7 @@ use wcf\system\WCF;
  */
 final class CreateRegistrationNotification
 {
-    public function __construct(private readonly User $user)
-    {
-    }
+    public function __construct(private readonly User $user) {}
 
     public function __invoke(): void
     {
@@ -55,7 +53,7 @@ final class CreateRegistrationNotification
                                 )
                             AND optionValue = ?
                     )";
-        $statement = WCF::getDB()->prepareStatement($sql, 100);
+        $statement = WCF::getDB()->prepare($sql, 100);
         $statement->execute([
             'admin.user.canSearchUser',
             1,
