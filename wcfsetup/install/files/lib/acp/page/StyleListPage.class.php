@@ -13,7 +13,7 @@ use wcf\system\gridView\admin\StyleGridView;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    UserRankGridView    $gridView
+ * @property    StyleGridView    $gridView
  */
 class StyleListPage  extends AbstractGridViewPage
 {
