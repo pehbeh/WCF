@@ -17,6 +17,7 @@ use wcf\system\gridView\renderer\AbstractColumnRenderer;
 use wcf\system\gridView\renderer\DefaultColumnRenderer;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\gridView\renderer\TimeColumnRenderer;
+use wcf\system\gridView\renderer\TruncatedTextColumnRenderer;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
@@ -43,28 +44,22 @@ final class EmailLogGridView extends AbstractGridView
                 ->titleColumn()
                 ->filter(new TextFilter())
                 ->sortable()
+                ->renderer(new TruncatedTextColumnRenderer()),
+            GridViewColumn::for('messageID')
+                ->label('wcf.acp.email.log.messageId')
+                ->filter(new TextFilter())
+                ->sortable()
                 ->renderer(
-                    new class extends DefaultColumnRenderer {
+                    new class extends TruncatedTextColumnRenderer {
                         #[\Override]
                         public function render(mixed $value, DatabaseObject $row): string
                         {
                             \assert($row instanceof EmailLogEntry);
 
-                            return \sprintf(
-                                '%s<br/><small><kbd class="jsTooltip" title="%s">%s</kbd></small>',
-                                StringUtil::encodeHTML($row->subject),
-                                StringUtil::encodeHTML($row->getFormattedMessageId()),
-                                StringUtil::encodeHTML(
-                                    StringUtil::truncate($row->getFormattedMessageId(), 50)
-                                )
-                            );
+                            return parent::render($row->getFormattedMessageId(), $row);
                         }
                     }
                 ),
-            GridViewColumn::for('messageID')
-                ->label('wcf.acp.email.log.messageId')
-                ->filter(new TextFilter())
-                ->hidden(),
             GridViewColumn::for('recipient')
                 ->label('wcf.user.email')
                 ->filter(WCF::getSession()->getPermission("admin.user.canEditMailAddress") ? new TextFilter() : null)
