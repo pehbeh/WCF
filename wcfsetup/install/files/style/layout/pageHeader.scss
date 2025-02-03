@@ -547,20 +547,6 @@
 		}
 	}
 
-	.mainMenu {
-		&::before {
-			color: var(--wcfHeaderLink);
-			font-family: FontAwesome;
-			font-size: 28px;
-			line-height: 32px;
-			padding: 5px 5px;
-		}
-
-		&:hover::before {
-			color: var(--wcfHeaderLinkActive);
-		}
-	}
-
 	.userPanelLoginLink {
 		align-items: center;
 		display: flex;
