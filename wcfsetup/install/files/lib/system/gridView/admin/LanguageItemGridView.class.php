@@ -57,11 +57,13 @@ final class LanguageItemGridView extends AbstractGridView
                 ->sortable(),
             GridViewColumn::for('languageItemValue')
                 ->label('wcf.acp.language.item.value')
+                ->valueEncoding(false)
                 ->renderer(new TruncatedTextColumnRenderer(255))
                 ->filter(new TextFilter())
                 ->sortable(),
             GridViewColumn::for('languageCustomItemValue')
                 ->label('wcf.acp.language.item.customValue')
+                ->valueEncoding(false)
                 ->renderer(
                     new class(255) extends TruncatedTextColumnRenderer {
                         #[\Override]
