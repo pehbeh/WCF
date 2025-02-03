@@ -106,14 +106,13 @@ class LanguageItemAction extends AbstractDatabaseObjectAction
     public function prepareEdit()
     {
         $item = \reset($this->objects);
-        WCF::getTPL()->assign([
-            'item' => $item,
-        ]);
 
         return [
             'languageItem' => $item->languageItem,
             'isCustomLanguageItem' => $item->isCustomLanguageItem,
-            'template' => WCF::getTPL()->fetch('languageItemEditDialog'),
+            'template' => WCF::getTPL()->render('wcf', 'languageItemEditDialog', [
+                'item' => $item,
+            ]),
         ];
     }
 

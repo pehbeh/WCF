@@ -49,7 +49,7 @@ class DevtoolsMissingLanguageItem extends DatabaseObject
     {
         $stackTrace = JSON::decode($this->stackTrace);
 
-        return WCF::getTPL()->fetch('__devtoolsMissingLanguageItemStackTrace', 'wcf', [
+        return WCF::getTPL()->render('wcf', '__devtoolsMissingLanguageItemStackTrace', [
             'stackTrace' => $stackTrace,
         ]);
     }

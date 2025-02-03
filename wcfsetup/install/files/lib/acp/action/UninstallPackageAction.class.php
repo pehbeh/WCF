@@ -130,12 +130,10 @@ final class UninstallPackageAction extends AbstractSecureAction
             $nextNode
         );
 
-        WCF::getTPL()->assign([
-            'queue' => $queue,
-        ]);
-
         return new JsonResponse([
-            'template' => WCF::getTPL()->fetch('packageUninstallationStepPrepare'),
+            'template' => WCF::getTPL()->render('wcf', 'packageUninstallationStepPrepare', [
+                'queue' => $queue,
+            ]),
             'step' => 'uninstall',
             'node' => $nextNode,
             'currentAction' => $this->getCurrentAction($queueID),

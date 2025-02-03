@@ -248,7 +248,7 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
             'hasMarkedItems' => ClipboardHandler::getInstance()->hasMarkedItems(ClipboardHandler::getInstance()->getObjectTypeID('com.woltlab.wcf.media')),
             'media' => $this->getI18nMediaData($mediaList),
             'pageCount' => \ceil($mediaList->countObjects() / static::ITEMS_PER_MANAGER_DIALOG_PAGE),
-            'template' => WCF::getTPL()->fetch('shared_mediaManager', 'wcf', [
+            'template' => WCF::getTPL()->render('wcf', 'shared_mediaManager', [
                 'categoryList' => $categoryList,
                 'mediaList' => $mediaList,
                 'mode' => $this->parameters['mode'],
@@ -342,7 +342,7 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
             'availableLanguageCount' => \count(LanguageFactory::getInstance()->getLanguages()),
             'categoryIDs' => \array_keys(CategoryHandler::getInstance()->getCategories('com.woltlab.wcf.media.category')),
             'mediaData' => $this->getI18nMediaData($mediaList)[$this->getSingleObject()->mediaID],
-            'template' => WCF::getTPL()->fetch('mediaEditor', 'wcf', [
+            'template' => WCF::getTPL()->render('wcf', 'mediaEditor', [
                 '__aclSimplePrefix' => 'mediaEditor_' . $media->mediaID . '_',
                 '__aclInputName' => 'mediaEditor_' . $media->mediaID . '_aclValues',
                 '__languageChooserPrefix' => 'mediaEditor_' . $media->mediaID . '_',
@@ -584,7 +584,7 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
             'media' => $this->getI18nMediaData($viewableMediaList),
             'pageCount' => \ceil($mediaList->countObjects() / static::ITEMS_PER_MANAGER_DIALOG_PAGE),
             'pageNo' => $this->parameters['pageNo'],
-            'template' => WCF::getTPL()->fetch('mediaListItems', 'wcf', [
+            'template' => WCF::getTPL()->render('wcf', 'mediaListItems', [
                 'mediaList' => $viewableMediaList,
                 'mode' => $this->parameters['mode'],
             ]),
@@ -683,7 +683,7 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
         $categoryList->setMaxDepth(0);
 
         return [
-            'template' => WCF::getTPL()->fetch('shared_mediaSetCategoryDialog', 'wcf', [
+            'template' => WCF::getTPL()->render('wcf', 'shared_mediaSetCategoryDialog', [
                 'categoryList' => $categoryList,
             ]),
         ];

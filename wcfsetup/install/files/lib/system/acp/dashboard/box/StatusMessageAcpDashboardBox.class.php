@@ -42,7 +42,7 @@ final class StatusMessageAcpDashboardBox extends AbstractAcpDashboardBox
 
     public function getContent(): string
     {
-        return WCF::getTPL()->fetch('statusMessageAcpDashboardBox', 'wcf', ['messages' => $this->getMessages()]);
+        return WCF::getTPL()->render('wcf', 'statusMessageAcpDashboardBox', ['messages' => $this->getMessages()]);
     }
 
     public function getName(): string

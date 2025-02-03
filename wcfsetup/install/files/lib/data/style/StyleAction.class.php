@@ -735,13 +735,11 @@ BROWSERCONFIG;
         $styleList->sqlOrderBy = "style.styleName ASC";
         $styleList->readObjects();
 
-        WCF::getTPL()->assign([
-            'styleList' => $styleList,
-        ]);
-
         return [
             'actionName' => 'getStyleChooser',
-            'template' => WCF::getTPL()->fetch('styleChooser'),
+            'template' => WCF::getTPL()->render('wcf', 'styleChooser', [
+                'styleList' => $styleList,
+            ]),
         ];
     }
 

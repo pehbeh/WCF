@@ -57,15 +57,13 @@ class CommentArticleDiscussionProvider extends AbstractArticleDiscussionProvider
             $this->articleContent->articleContentID
         );
 
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'articleComments', [
             'commentCanAdd' => $commentCanAdd,
             'commentList' => $commentList,
             'commentObjectTypeID' => $commentObjectTypeID,
             'lastCommentTime' => $commentList->getMinCommentTime(),
             'likeData' => (MODULE_LIKE) ? $commentList->getLikeData() : [],
         ]);
-
-        return WCF::getTPL()->fetch('articleComments');
     }
 
     /**

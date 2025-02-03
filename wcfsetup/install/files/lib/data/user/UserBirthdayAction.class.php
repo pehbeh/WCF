@@ -89,14 +89,12 @@ class UserBirthdayAction extends UserProfileAction implements IGroupedUserListAc
             DatabaseObject::sort($users, $this->parameters['sortField'], $this->parameters['sortOrder']);
         }
 
-        WCF::getTPL()->assign([
-            'users' => $users,
-            'year' => $year,
-        ]);
-
         return [
             'pageCount' => 1,
-            'template' => WCF::getTPL()->fetch('userBirthdayList'),
+            'template' => WCF::getTPL()->render('wcf', 'userBirthdayList', [
+                'users' => $users,
+                'year' => $year,
+            ]),
         ];
     }
 }

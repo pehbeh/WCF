@@ -182,7 +182,7 @@ class UserNotificationEventAction extends AbstractDatabaseObjectAction
 
         WCF::setLanguage($originalLanguage->languageID);
 
-        $template = WCF::getTPL()->fetch('devtoolsNotificationTestDialog', 'wcf', [
+        $template = WCF::getTPL()->render('wcf', 'devtoolsNotificationTestDialog', [
             'events' => $events,
             'errors' => $errors,
             'hasEmailSupport' => $hasEmailSupport,
