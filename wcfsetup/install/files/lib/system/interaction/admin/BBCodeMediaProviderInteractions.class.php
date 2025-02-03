@@ -21,7 +21,7 @@ final class BBCodeMediaProviderInteractions extends AbstractInteractionProvider
     public function __construct()
     {
         $this->addInteractions([
-            new DeleteInteraction('core/bb-codes/media/providers/%s'),
+            new DeleteInteraction('core/bbcodes/media/providers/%s'),
         ]);
 
         EventHandler::getInstance()->fire(

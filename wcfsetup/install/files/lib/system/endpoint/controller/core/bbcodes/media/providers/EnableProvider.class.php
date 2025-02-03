@@ -21,7 +21,7 @@ use wcf\system\WCF;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-#[PostRequest('/core/bb-codes/media/providers/{id:\d+}/enable')]
+#[PostRequest('/core/bbcodes/media/providers/{id:\d+}/enable')]
 final class EnableProvider implements IController
 {
     #[\Override]

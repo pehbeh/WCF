@@ -44,13 +44,17 @@ final class BBCodeMediaProviderGridView extends AbstractGridView
                 ->sortable(),
         ]);
 
-        $interaction = new BBCodeMediaProviderInteractions();
-        $this->setInteractionProvider($interaction);
+        $provider = new BBCodeMediaProviderInteractions();
+        $provider->addInteractions([
+            new Divider(),
+            new EditInteraction(BBCodeMediaProviderEditForm::class)
+        ]);
+        $this->setInteractionProvider($provider);
         $this->addQuickInteraction(
             new ToggleInteraction(
                 'enable',
-                'core/bb-codes/media/providers/%s/enable',
-                'core/bb-codes/media/providers/%s/disable'
+                'core/bbcodes/media/providers/%s/enable',
+                'core/bbcodes/media/providers/%s/disable'
             )
         );
 
