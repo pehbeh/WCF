@@ -1,10 +1,11 @@
 .snackbarContainer {
-	position: fixed;
-	left: 20px;
+	align-items: start;
 	bottom: 20px;
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
+	left: 20px;
+	position: fixed;
 }
 
 @keyframes snackbarIn {
@@ -46,51 +47,47 @@
 
 .snackbar {
 	animation: snackbarIn 0.12s ease-in-out;
-	color: #fff;
-	background-color: rgb(50, 50, 50);
-	display: flex;
-	user-select: none;
-	box-shadow:
-		rgba(0, 0, 0, 0.2) 0px 3px 5px -1px,
-		rgba(0, 0, 0, 0.14) 0px 6px 10px 0px,
-		rgba(0, 0, 0, 0.12) 0px 1px 18px 0px;
+	background-color: var(--wcfContentBackground);
+	border: 1px solid var(--wcfContentBorderInner);
 	border-radius: 4px;
-	gap: 10px;
-	overflow: hidden;
-	min-width: 200px;
-}
-
-.snackbar.snackbar--closing {
-	animation-name: snackbarOut;
-	animation-duration: .24s;
-}
-
-.snackbar__icon {
-	border-right: 2px solid transparent;
+	box-shadow: var(--wcfBoxShadow);
+	color: var(--wcfContentText);
 	display: flex;
-	align-items: center;
-	width: 36px;
-	text-align: center;
-	justify-content: center;
+	isolation: isolate;
+	min-width: 200px;
+	overflow: hidden;
+	padding: 0 5px;
+	user-select: none;
 }
 
-.snackbar__icon--success {
+.snackbar--closing {
+	animation-name: snackbarOut;
+	animation-duration: 0.24s;
+}
+
+.snackbar--success {
 	background-color: var(--wcfStatusSuccessBackground);
 	border-color: var(--wcfStatusSuccessBorder);
 	color: var(--wcfStatusSuccessText);
 }
 
-.snackbar__icon--progress {
+.snackbar--progress {
 	background-color: var(--wcfStatusInfoBackground);
 	border-color: var(--wcfStatusInfoBorder);
 	color: var(--wcfStatusInfoText);
 }
 
-.snackbar__message {
-	padding: 5px 0;
-	flex: 1 0 auto;
+.snackbar__icon {
+	align-items: center;
+	border: 1px solid transparent;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	width: 36px;
 }
 
-.snackbar__dismissButton {
-	padding-right: 5px;
+.snackbar__message {
+	flex: 1 0 auto;
+	padding: 10px 5px 10px 0;
 }
+

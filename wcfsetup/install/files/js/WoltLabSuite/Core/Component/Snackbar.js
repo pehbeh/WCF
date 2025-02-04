@@ -29,17 +29,15 @@ define(["require", "exports", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/H
         }
         markAsDone(message) {
             this.message = message;
-            const iconWrapper = this.#snackbarElement.querySelector(".snackbar__icon");
-            iconWrapper.classList.remove("snackbar__icon--progress");
-            iconWrapper.classList.add("snackbar__icon--success");
-            const icon = iconWrapper.querySelector("fa-icon");
+            this.#type = SnackbarType.Success;
+            this.#updateVisualType();
+            const icon = this.#snackbarElement.querySelector(".snackbar__icon fa-icon");
             icon.setIcon("check");
             this.#setHideTimeout();
         }
         #render() {
             const iconWrapper = document.createElement("div");
             iconWrapper.classList.add("snackbar__icon");
-            iconWrapper.classList.add(this.isProgress() ? "snackbar__icon--progress" : "snackbar__icon--success");
             const icon = document.createElement("fa-icon");
             icon.size = 24;
             icon.setIcon(this.isProgress() ? "spinner" : "check");
@@ -50,24 +48,30 @@ define(["require", "exports", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/H
                 message.setAttribute("aria-live", "polite");
             }
             message.append(this.message);
-            const dismissButton = document.createElement("button");
-            dismissButton.type = "button";
-            dismissButton.classList.add("snackbar__dismissButton");
-            dismissButton.setAttribute("aria-label", (0, Language_1.getPhrase)("wcf.global.button.close"));
-            dismissButton.addEventListener("click", () => {
-                this.close();
-            });
-            const dismissIcon = document.createElement("fa-icon");
-            dismissIcon.size = 24;
-            dismissIcon.setIcon("xmark");
-            dismissButton.append(dismissIcon);
             this.#snackbarElement = document.createElement("div");
             this.#snackbarElement.classList.add("snackbar");
             this.#snackbarElement.setAttribute("role", "status");
-            this.#snackbarElement.append(iconWrapper, message, dismissButton);
+            this.#updateVisualType();
+            this.#snackbarElement.addEventListener("click", () => {
+                if (this.isProgress()) {
+                    return;
+                }
+                this.close();
+            });
+            this.#snackbarElement.append(iconWrapper, message);
             getSnackbarContainer().addSnackbar(this);
             if (!this.isProgress()) {
                 this.#setHideTimeout();
+            }
+        }
+        #updateVisualType() {
+            if (this.isProgress()) {
+                this.#snackbarElement.classList.add("snackbar--progress");
+                this.#snackbarElement.classList.remove("snackbar--success");
+            }
+            else {
+                this.#snackbarElement.classList.remove("snackbar--progress");
+                this.#snackbarElement.classList.add("snackbar--success");
             }
         }
         #setHideTimeout() {

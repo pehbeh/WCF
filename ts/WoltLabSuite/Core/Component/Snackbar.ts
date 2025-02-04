@@ -9,7 +9,7 @@ enum SnackbarType {
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 class Snackbar extends EventTarget {
   #message: string = "";
-  readonly #type: SnackbarType;
+  #type: SnackbarType;
   #snackbarElement: HTMLElement;
 
   constructor(message: string, type: SnackbarType) {
@@ -34,11 +34,10 @@ class Snackbar extends EventTarget {
   markAsDone(message: string): void {
     this.message = message;
 
-    const iconWrapper = this.#snackbarElement.querySelector(".snackbar__icon")!;
-    iconWrapper.classList.remove("snackbar__icon--progress");
-    iconWrapper.classList.add("snackbar__icon--success");
+    this.#type = SnackbarType.Success;
+    this.#updateVisualType();
 
-    const icon = iconWrapper.querySelector("fa-icon")!;
+    const icon = this.#snackbarElement.querySelector(".snackbar__icon fa-icon") as FaIcon;
     icon.setIcon("check");
 
     this.#setHideTimeout();
@@ -47,7 +46,6 @@ class Snackbar extends EventTarget {
   #render(): void {
     const iconWrapper = document.createElement("div");
     iconWrapper.classList.add("snackbar__icon");
-    iconWrapper.classList.add(this.isProgress() ? "snackbar__icon--progress" : "snackbar__icon--success");
 
     const icon = document.createElement("fa-icon");
     icon.size = 24;
@@ -61,28 +59,34 @@ class Snackbar extends EventTarget {
     }
     message.append(this.message);
 
-    const dismissButton = document.createElement("button");
-    dismissButton.type = "button";
-    dismissButton.classList.add("snackbar__dismissButton");
-    dismissButton.setAttribute("aria-label", getPhrase("wcf.global.button.close"));
-    dismissButton.addEventListener("click", () => {
-      this.close();
-    });
-
-    const dismissIcon = document.createElement("fa-icon");
-    dismissIcon.size = 24;
-    dismissIcon.setIcon("xmark");
-    dismissButton.append(dismissIcon);
-
     this.#snackbarElement = document.createElement("div");
     this.#snackbarElement.classList.add("snackbar");
     this.#snackbarElement.setAttribute("role", "status");
-    this.#snackbarElement.append(iconWrapper, message, dismissButton);
+    this.#updateVisualType();
+    this.#snackbarElement.addEventListener("click", () => {
+      if (this.isProgress()) {
+        return;
+      }
+
+      this.close();
+    });
+
+    this.#snackbarElement.append(iconWrapper, message);
 
     getSnackbarContainer().addSnackbar(this);
 
     if (!this.isProgress()) {
       this.#setHideTimeout();
+    }
+  }
+
+  #updateVisualType(): void {
+    if (this.isProgress()) {
+      this.#snackbarElement.classList.add("snackbar--progress");
+      this.#snackbarElement.classList.remove("snackbar--success");
+    } else {
+      this.#snackbarElement.classList.remove("snackbar--progress");
+      this.#snackbarElement.classList.add("snackbar--success");
     }
   }
 
