@@ -18,7 +18,7 @@ async function handleFormBuilderDialogAction(element: HTMLElement, endpoint: str
   }
 
   element.dispatchEvent(
-    new CustomEvent("refresh", {
+    new CustomEvent("interaction:invalidate", {
       bubbles: true,
     }),
   );
@@ -28,7 +28,7 @@ async function handleFormBuilderDialogAction(element: HTMLElement, endpoint: str
 }
 
 export function setup(identifier: string, container: HTMLElement): void {
-  container.addEventListener("interaction", (event: CustomEvent) => {
+  container.addEventListener("interaction:execute", (event: CustomEvent) => {
     if (event.detail.interaction === identifier) {
       void handleFormBuilderDialogAction(event.target as HTMLElement, event.detail.endpoint);
     }

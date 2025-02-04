@@ -70,7 +70,7 @@ define(["require", "exports"], function (require, exports) {
                 this.#sortOrder = "ASC";
             }
             this.#renderActiveSorting();
-            this.dispatchEvent(new CustomEvent("change"));
+            this.dispatchEvent(new CustomEvent("grid-view:change"));
         }
         #renderActiveSorting() {
             this.#table.querySelectorAll('th[data-sortable="1"]').forEach((element) => {

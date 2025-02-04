@@ -23,13 +23,13 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax", "WoltLabSuite/Core/Ui/No
         if (confirmationType == Confirmation_1.ConfirmationType.Delete) {
             // TODO: This shows a generic success message and should be replaced with a more specific message.
             (0, Notification_1.show)(undefined, () => {
-                element.dispatchEvent(new CustomEvent("remove", {
+                element.dispatchEvent(new CustomEvent("interaction:remove", {
                     bubbles: true,
                 }));
             });
         }
         else {
-            element.dispatchEvent(new CustomEvent("refresh", {
+            element.dispatchEvent(new CustomEvent("interaction:invalidate", {
                 bubbles: true,
             }));
             // TODO: This shows a generic success message and should be replaced with a more specific message.
@@ -37,7 +37,7 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax", "WoltLabSuite/Core/Ui/No
         }
     }
     function setup(identifier, container) {
-        container.addEventListener("interaction", (event) => {
+        container.addEventListener("interaction:execute", (event) => {
             if (event.detail.interaction === identifier) {
                 void handleDboAction(event.target, event.detail.objectName, event.detail.className, event.detail.actionName, event.detail.confirmationType, event.detail.confirmationMessage);
             }

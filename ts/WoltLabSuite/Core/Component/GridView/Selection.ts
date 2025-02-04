@@ -184,7 +184,9 @@ export class Selection extends EventTarget {
       return;
     }
 
-    this.dispatchEvent(new CustomEvent("getBulkInteractions", { detail: { objectIds: this.getSelectedIds() } }));
+    this.dispatchEvent(
+      new CustomEvent("grid-view:get-bulk-interactions", { detail: { objectIds: this.getSelectedIds() } }),
+    );
 
     if (this.#bulkInteractionsLoadingDelay !== undefined) {
       window.clearTimeout(this.#bulkInteractionsLoadingDelay);
@@ -281,7 +283,7 @@ export class Selection extends EventTarget {
 }
 
 interface SelectionEventMap {
-  getBulkInteractions: CustomEvent<{ objectIds: number[] }>;
+  "grid-view:get-bulk-interactions": CustomEvent<{ objectIds: number[] }>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
