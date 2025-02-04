@@ -95,7 +95,7 @@ define(["require", "exports", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/H
             if (!this.isVisible()) {
                 return;
             }
-            this.dispatchEvent(new CustomEvent("close"));
+            this.dispatchEvent(new CustomEvent("snackbar:close"));
             // The animation to move the element vertically relative to its height
             // requires the value to be computed first.
             const height = Math.trunc(getSnackbarContainer().getGapValue() + this.#snackbarElement.getBoundingClientRect().height);
@@ -132,7 +132,7 @@ define(["require", "exports", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/H
             }
             this.#snackbars.push(snackbar);
             this.#element.prepend(snackbar.element);
-            void snackbar.addEventListener("close", () => {
+            void snackbar.addEventListener("snackbar:close", () => {
                 const i = this.#snackbars.indexOf(snackbar);
                 if (i !== -1) {
                     this.#snackbars = this.#snackbars.splice(i, 1);

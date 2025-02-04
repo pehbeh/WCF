@@ -117,7 +117,7 @@ class Snackbar extends EventTarget {
       return;
     }
 
-    this.dispatchEvent(new CustomEvent("close"));
+    this.dispatchEvent(new CustomEvent("snackbar:close"));
 
     // The animation to move the element vertically relative to its height
     // requires the value to be computed first.
@@ -138,7 +138,7 @@ class Snackbar extends EventTarget {
 }
 
 interface SnackbarEventMap {
-  close: CustomEvent<void>;
+  "snackbar:close": CustomEvent<void>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -182,7 +182,7 @@ class SnackbarContainer {
     this.#snackbars.push(snackbar);
     this.#element.prepend(snackbar.element);
 
-    void snackbar.addEventListener("close", () => {
+    void snackbar.addEventListener("snackbar:close", () => {
       const i = this.#snackbars.indexOf(snackbar);
       if (i !== -1) {
         this.#snackbars = this.#snackbars.splice(i, 1);
