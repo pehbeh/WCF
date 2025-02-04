@@ -105,7 +105,7 @@ class Trophy extends DatabaseObject implements ITitledLinkObject, IRouteControll
                 break;
 
             case self::TYPE_BADGE:
-                return WCF::getTPL()->fetch('wcf', 'trophyBadge', [
+                return WCF::getTPL()->render('wcf', 'trophyBadge', [
                     'size' => $size,
                     'trophy' => $this,
                     'showTooltip' => $showTooltip,

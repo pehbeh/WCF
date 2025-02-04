@@ -250,18 +250,18 @@ final class AttachmentBBCode extends AbstractBBCode
 
     private function showVideoPlayer(Attachment $attachment): string
     {
-        return WCF::getTPL()->fetch('shared_bbcode_attach_video', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'shared_bbcode_attach_video', [
             'attachment' => $attachment,
             'attachmentIdentifier' => StringUtil::getRandomID(),
-        ], true);
+        ]);
     }
 
     private function showAudioPlayer(Attachment $attachment): string
     {
-        return WCF::getTPL()->fetch('shared_bbcode_attach_audio', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'shared_bbcode_attach_audio', [
             'attachment' => $attachment,
             'attachmentIdentifier' => StringUtil::getRandomID(),
-        ], true);
+        ]);
     }
 
     private function getAttachment(int $attachmentID): ?Attachment

@@ -261,7 +261,7 @@ abstract class AbstractDatabaseObjectListBoxController extends AbstractBoxContro
     public function getConditionsTemplate()
     {
         if ($this->defaultLimit !== null || !empty($this->validSortFields) || !empty($this->conditionObjectTypes)) {
-            return WCF::getTPL()->fetch('boxConditions', 'wcf', [
+            return WCF::getTPL()->render('wcf', 'boxConditions', [
                 'boxController' => $this,
                 'conditionObjectTypes' => $this->conditionObjectTypes,
                 'defaultLimit' => $this->defaultLimit,
@@ -272,7 +272,7 @@ abstract class AbstractDatabaseObjectListBoxController extends AbstractBoxContro
                 'sortFieldLanguageItemPrefix' => $this->sortFieldLanguageItemPrefix,
                 'sortOrder' => $this->sortOrder,
                 'validSortFields' => $this->validSortFields,
-            ], true);
+            ]);
         }
 
         return '';

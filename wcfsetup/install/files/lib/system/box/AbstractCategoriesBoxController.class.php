@@ -40,16 +40,15 @@ abstract class AbstractCategoriesBoxController extends AbstractBoxController imp
         $categoryList = $categoryTree->getIterator();
 
         if (\iterator_count($categoryList)) {
-            $this->content = WCF::getTPL()->fetch(
-                'boxCategories',
+            $this->content = WCF::getTPL()->render(
                 'wcf',
+                'boxCategories',
                 [
                     'categoryList' => $categoryList,
                     'activeCategory' => $this->getActiveCategory(),
                     'resetFilterLink' => $this->getResetFilterLink(),
                     'showChildCategories' => $this->showChildCategories,
-                ],
-                true
+                ]
             );
         }
     }
@@ -104,9 +103,9 @@ abstract class AbstractCategoriesBoxController extends AbstractBoxController imp
      */
     public function getConditionsTemplate(): string
     {
-        return WCF::getTPL()->fetch('boxCategoryConditions', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'boxCategoryConditions', [
             'showChildCategories' => $this->showChildCategories,
-        ], true);
+        ]);
     }
 
     /**

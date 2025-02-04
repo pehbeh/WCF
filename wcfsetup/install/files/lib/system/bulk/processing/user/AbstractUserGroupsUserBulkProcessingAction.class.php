@@ -90,7 +90,7 @@ abstract class AbstractUserGroupsUserBulkProcessingAction extends AbstractUserBu
      */
     public function getHTML()
     {
-        return WCF::getTPL()->fetch('userGroupListUserBulkProcessing', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'userGroupListUserBulkProcessing', [
             'availableUserGroups' => $this->availableUserGroups,
             'inputName' => $this->inputName,
             'selectedUserGroupIDs' => $this->userGroupIDs,
