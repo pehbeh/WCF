@@ -64,7 +64,7 @@ final class LanguageGridView extends AbstractGridView
                 ->label('wcf.acp.language.variables')
                 ->filter(new NumericFilter($this->subSelectVariables()))
                 ->renderer(
-                    new class extends DefaultColumnRenderer implements ILinkColumnRenderer {
+                    new class extends NumberColumnRenderer implements ILinkColumnRenderer {
                         #[\Override]
                         public function render(mixed $value, DatabaseObject $row): string
                         {
@@ -86,7 +86,7 @@ final class LanguageGridView extends AbstractGridView
                 ->label('wcf.acp.language.customVariables')
                 ->filter(new NumericFilter($this->subSelectCustomVariables()))
                 ->renderer(
-                    new class extends DefaultColumnRenderer implements ILinkColumnRenderer {
+                    new class extends NumberColumnRenderer implements ILinkColumnRenderer {
                         #[\Override]
                         public function render(mixed $value, DatabaseObject $row): string
                         {
