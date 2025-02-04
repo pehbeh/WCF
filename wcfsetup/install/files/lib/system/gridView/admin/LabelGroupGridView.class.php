@@ -54,10 +54,10 @@ final class LabelGroupGridView extends AbstractGridView
                 ->filter(new NumericFilter())
                 ->sortable(
                     sortByDatabaseColumn: '(
-            SELECT  COUNT(*)
-            FROM    wcf1_label
-            WHERE   groupID = label_group.groupID
-        )'
+                        SELECT  COUNT(*)
+                        FROM    wcf1_label
+                        WHERE   groupID = label_group.groupID
+                    )'
                 ),
             GridViewColumn::for('showOrder')
                 ->label('wcf.global.showOrder')
