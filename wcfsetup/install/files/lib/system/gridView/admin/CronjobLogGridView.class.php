@@ -17,6 +17,8 @@ use wcf\system\gridView\GridViewColumn;
 use wcf\system\gridView\renderer\DefaultColumnRenderer;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\gridView\renderer\TimeColumnRenderer;
+use wcf\system\interaction\AbstractInteraction;
+use wcf\system\interaction\IInteraction;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 
@@ -76,26 +78,7 @@ final class CronjobLogGridView extends AbstractGridView
                                 return '<span class="badge green">' . WCF::getLanguage()->get('wcf.acp.cronjob.log.success') . '</span>';
                             }
                             if ($row->error) {
-                                $label = WCF::getLanguage()->get('wcf.acp.cronjob.log.error');
-                                $buttonId = 'cronjobLogErrorButton' . $row->cronjobLogID;
-                                $id = 'cronjobLogError' . $row->cronjobLogID;
-                                $error = StringUtil::encodeHTML($row->error);
-                                $dialogTitle = StringUtil::encodeJS(WCF::getLanguage()->get('wcf.acp.cronjob.log.error.details'));
-
-                                return <<<HTML
-                                    <button type="button" id="{$buttonId}" class="badge red">
-                                        {$label}
-                                    </button>
-                                    <template id="{$id}"><pre>{$error}</pre></template>
-                                    <script data-relocate="true">
-                                        require(['WoltLabSuite/Core/Component/Dialog'], ({ dialogFactory }) => {
-                                            document.getElementById('{$buttonId}').addEventListener('click', () => {
-                                                const dialog = dialogFactory().fromId('{$id}').withoutControls();
-                                                dialog.show('{$dialogTitle}');
-                                            });
-                                        });
-                                    </script>
-                                    HTML;
+                                return '<span class="badge red">' . WCF::getLanguage()->get('wcf.acp.cronjob.log.error') . '</span>';
                             }
 
                             return '';
@@ -104,6 +87,7 @@ final class CronjobLogGridView extends AbstractGridView
                 ]),
         ]);
 
+        $this->addQuickInteraction($this->getShowDetailsInteraction());
         $this->setSortField('execTime');
         $this->setSortOrder('DESC');
     }
@@ -133,5 +117,40 @@ final class CronjobLogGridView extends AbstractGridView
         $list->readObjects();
 
         return \array_map(fn(Cronjob $cronjob) => $cronjob->getDescription(), $list->getObjects());
+    }
+
+    private function getShowDetailsInteraction(): IInteraction
+    {
+        return new class(
+            'showDetails',
+            static fn(CronjobLog $object) => !!$object->error
+        ) extends AbstractInteraction {
+            #[\Override]
+            public function render(DatabaseObject $object): string
+            {
+                \assert($object instanceof CronjobLog);
+
+                $buttonLabel = WCF::getLanguage()->get('wcf.acp.cronjob.log.error.showDetails');
+                $buttonId = 'cronjobLogErrorButton' . $object->cronjobLogID;
+                $id = 'cronjobLogError' . $object->cronjobLogID;
+                $error = StringUtil::encodeHTML($object->error);
+                $dialogTitle = StringUtil::encodeJS(WCF::getLanguage()->get('wcf.acp.cronjob.log.error.details'));
+
+                return <<<HTML
+                    <button type="button" id="{$buttonId}" class="jsTooltip" title="{$buttonLabel}">
+                        <fa-icon name="magnifying-glass"></fa-icon>
+                    </button>
+                    <template id="{$id}"><pre>{$error}</pre></template>
+                    <script data-relocate="true">
+                        require(['WoltLabSuite/Core/Component/Dialog'], ({ dialogFactory }) => {
+                            document.getElementById('{$buttonId}').addEventListener('click', () => {
+                                const dialog = dialogFactory().fromId('{$id}').withoutControls();
+                                dialog.show('{$dialogTitle}');
+                            });
+                        });
+                    </script>
+                    HTML;
+            }
+        };
     }
 }
