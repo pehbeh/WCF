@@ -180,6 +180,10 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\bbcodes\media\providers\DisableProvider());
             $event->register(new \wcf\system\endpoint\controller\core\bbcodes\media\providers\EnableProvider());
             $event->register(new \wcf\system\endpoint\controller\core\bbCodes\DeleteBBCodes());
+            $event->register(new \wcf\system\endpoint\controller\core\languages\DisableLanguage());
+            $event->register(new \wcf\system\endpoint\controller\core\languages\DeleteLanguage());
+            $event->register(new \wcf\system\endpoint\controller\core\languages\EnableLanguage());
+            $event->register(new \wcf\system\endpoint\controller\core\languages\SetAsDefaultLanguage());
             $event->register(new \wcf\system\endpoint\controller\core\languages\items\DeleteItem());
             $event->register(new \wcf\system\endpoint\controller\core\labels\groups\DeleteGroup());
         }
