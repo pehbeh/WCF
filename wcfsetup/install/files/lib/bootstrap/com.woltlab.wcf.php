@@ -150,6 +150,10 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\CloseReport());
             $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\DeleteContent());
             $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\EnableContent());
+            $event->register(new \wcf\system\endpoint\controller\core\styles\DeleteStyle());
+            $event->register(new \wcf\system\endpoint\controller\core\styles\DisableStyle());
+            $event->register(new \wcf\system\endpoint\controller\core\styles\EnableStyle());
+            $event->register(new \wcf\system\endpoint\controller\core\styles\SetStyleAsDefault());
             $event->register(new \wcf\system\endpoint\controller\core\users\options\DeleteOption());
             $event->register(new \wcf\system\endpoint\controller\core\users\options\DisableOption());
             $event->register(new \wcf\system\endpoint\controller\core\users\options\EnableOption());
@@ -176,6 +180,7 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\bbcodes\media\providers\DisableProvider());
             $event->register(new \wcf\system\endpoint\controller\core\bbcodes\media\providers\EnableProvider());
             $event->register(new \wcf\system\endpoint\controller\core\bbCodes\DeleteBBCodes());
+            $event->register(new \wcf\system\endpoint\controller\core\languages\items\DeleteItem());
             $event->register(new \wcf\system\endpoint\controller\core\labels\groups\DeleteGroup());
         }
     );

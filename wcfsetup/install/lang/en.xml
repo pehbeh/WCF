@@ -617,7 +617,9 @@
 		<item name="wcf.acp.email.log.status.permanent_failure"><![CDATA[Ultimately Failed]]></item>
 		<item name="wcf.acp.email.log.status.new"><![CDATA[Pending]]></item>
 		<item name="wcf.acp.email.log.status.discarded"><![CDATA[Discarded]]></item>
-		<item name="wcf.acp.email.log.statusMessage.title"><![CDATA[Status Message]]></item>
+		<item name="wcf.acp.email.log.statusMessage"><![CDATA[Status Message]]></item>
+		<item name="wcf.acp.email.log.button.showDetails"><![CDATA[Show Details]]></item>
+		<item name="wcf.acp.email.log.details"><![CDATA[Details]]></item>
 	</category>
 	<category name="wcf.acp.exceptionLog">
 		<item name="wcf.acp.exceptionLog"><![CDATA[Logged errors]]></item>
