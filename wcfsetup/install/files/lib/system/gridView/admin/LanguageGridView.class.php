@@ -15,7 +15,9 @@ use wcf\system\gridView\filter\NumericFilter;
 use wcf\system\gridView\filter\ObjectIdFilter;
 use wcf\system\gridView\filter\TextFilter;
 use wcf\system\gridView\GridViewColumn;
+use wcf\system\gridView\GridViewRowLink;
 use wcf\system\gridView\renderer\DefaultColumnRenderer;
+use wcf\system\gridView\renderer\ILinkColumnRenderer;
 use wcf\system\gridView\renderer\NumberColumnRenderer;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\interaction\admin\LanguageInteractions;
@@ -44,14 +46,32 @@ final class LanguageGridView extends AbstractGridView
                 ->filter(new ObjectIdFilter())
                 ->renderer(new ObjectIdColumnRenderer())
                 ->sortable(),
-            GridViewColumn::for('languageCode')
-                ->label('wcf.acp.language.code')
-                ->filter(new TextFilter())
-                ->sortable(),
             GridViewColumn::for('languageName')
                 ->label('wcf.global.name')
                 ->filter(new TextFilter())
                 ->titleColumn()
+                ->sortable()
+                ->renderer([
+                    new class extends DefaultColumnRenderer {
+                        #[\Override]
+                        public function render(mixed $value, DatabaseObject $row): string
+                        {
+                            \assert($row instanceof Language);
+
+                            if ($row->isDefault) {
+                                $value .= \sprintf(
+                                    ' <span class="badge">%s</span>',
+                                    WCF::getLanguage()->get('wcf.global.defaultValue')
+                                );
+                            }
+
+                            return $value;
+                        }
+                    },
+                ]),
+            GridViewColumn::for('languageCode')
+                ->label('wcf.acp.language.code')
+                ->filter(new TextFilter())
                 ->sortable(),
             GridViewColumn::for('users')
                 ->label('wcf.acp.language.users')
@@ -62,7 +82,7 @@ final class LanguageGridView extends AbstractGridView
                 ->label('wcf.acp.language.variables')
                 ->filter(new NumericFilter($this->subSelectVariables()))
                 ->renderer(
-                    new class extends DefaultColumnRenderer {
+                    new class extends NumberColumnRenderer implements ILinkColumnRenderer {
                         #[\Override]
                         public function render(mixed $value, DatabaseObject $row): string
                         {
@@ -84,7 +104,7 @@ final class LanguageGridView extends AbstractGridView
                 ->label('wcf.acp.language.customVariables')
                 ->filter(new NumericFilter($this->subSelectCustomVariables()))
                 ->renderer(
-                    new class extends DefaultColumnRenderer {
+                    new class extends NumberColumnRenderer implements ILinkColumnRenderer {
                         #[\Override]
                         public function render(mixed $value, DatabaseObject $row): string
                         {
@@ -121,6 +141,7 @@ final class LanguageGridView extends AbstractGridView
             )
         );
 
+        $this->addRowLink(new GridViewRowLink(LanguageEditForm::class));
         $this->setSortField('languageName');
     }
 
