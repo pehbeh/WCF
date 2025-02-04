@@ -119,14 +119,14 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/Selector", "Wol
         }, file.name, fileType, resizeConfiguration.quality);
         return resizedFile;
     }
-    function validateFileLimit(element) {
+    function validateFileLimit(element, count) {
         const maximumCount = element.maximumCount;
         if (maximumCount === -1) {
             return true;
         }
         const files = Array.from(element.parentElement.querySelectorAll("woltlab-core-file"));
         const numberOfUploadedFiles = files.filter((file) => !file.isFailedUpload()).length;
-        if (numberOfUploadedFiles + 1 <= maximumCount) {
+        if (numberOfUploadedFiles + count <= maximumCount) {
             return true;
         }
         (0, Util_1.innerError)(element, (0, Language_1.getPhrase)("wcf.upload.error.maximumCountReached", { maximumCount }));
@@ -175,24 +175,33 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/Selector", "Wol
     }
     function setup() {
         (0, Selector_1.wheneverFirstSeen)("woltlab-core-file-upload", (element) => {
-            element.addEventListener("upload", (event) => {
-                const file = event.detail;
+            element.addEventListener("upload:files", (event) => {
+                const { files } = event.detail;
                 clearPreviousErrors(element);
-                if (!validateFileLimit(element)) {
+                if (!validateFileLimit(element, files.length)) {
                     return;
                 }
-                else if (!validateFileExtension(element, file)) {
-                    return;
+                for (const file of files) {
+                    if (!validateFileExtension(element, file)) {
+                        return;
+                    }
+                    else if (!validateFileSize(element, file)) {
+                        return;
+                    }
                 }
-                else if (!validateFileSize(element, file)) {
-                    return;
-                }
-                void resizeImage(element, file)
-                    .then((resizedFile) => {
-                    void upload(element, resizedFile);
-                })
-                    .catch(() => {
-                    (0, Util_1.innerError)(element, (0, Language_1.getPhrase)("wcf.upload.error.damagedImageFile", { filename: file.name }));
+                // Resize all files in parallel but keep the original order. This ensures
+                // that files are uploaded in the same order that they were provided by
+                // the browser.
+                void Promise.allSettled(files.map((file) => resizeImage(element, file))).then((results) => {
+                    for (let i = 0, length = results.length; i < length; i++) {
+                        const result = results[i];
+                        if (result.status === "fulfilled") {
+                            void upload(element, result.value);
+                        }
+                        else {
+                            (0, Util_1.innerError)(element, (0, Language_1.getPhrase)("wcf.upload.error.damagedImageFile", { filename: files[i].name }));
+                        }
+                    }
                 });
             });
             element.addEventListener("ckeditorDrop", (event) => {
