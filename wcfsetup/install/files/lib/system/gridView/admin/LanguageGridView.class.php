@@ -44,14 +44,14 @@ final class LanguageGridView extends AbstractGridView
                 ->filter(new ObjectIdFilter())
                 ->renderer(new ObjectIdColumnRenderer())
                 ->sortable(),
-            GridViewColumn::for('languageCode')
-                ->label('wcf.acp.language.code')
-                ->filter(new TextFilter())
-                ->sortable(),
             GridViewColumn::for('languageName')
                 ->label('wcf.global.name')
                 ->filter(new TextFilter())
                 ->titleColumn()
+                ->sortable(),
+            GridViewColumn::for('languageCode')
+                ->label('wcf.acp.language.code')
+                ->filter(new TextFilter())
                 ->sortable(),
             GridViewColumn::for('users')
                 ->label('wcf.acp.language.users')
