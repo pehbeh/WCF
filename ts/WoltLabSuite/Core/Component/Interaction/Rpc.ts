@@ -19,7 +19,7 @@ async function handleRpcInteraction(
   endpoint: string,
   confirmationType: ConfirmationType,
   customConfirmationMessage: string = "",
-  refreshAll = false,
+  invalidatesAllItems = false,
 ): Promise<void> {
   const confirmationResult = await handleConfirmation(objectName, confirmationType, customConfirmationMessage);
   if (!confirmationResult.result) {
@@ -51,8 +51,8 @@ async function handleRpcInteraction(
       );
     });
   } else {
-    if (refreshAll) {
-      container.dispatchEvent(new CustomEvent("interaction:refresh-all"));
+    if (invalidatesAllItems) {
+      container.dispatchEvent(new CustomEvent("interaction:invalidate-all"));
     } else {
       element.dispatchEvent(
         new CustomEvent("refresh", {
@@ -76,7 +76,7 @@ export function setup(identifier: string, container: HTMLElement): void {
         event.detail.endpoint,
         event.detail.confirmationType,
         event.detail.confirmationMessage,
-        event.detail.refreshAll,
+        event.detail.invalidatesAllItems === "true",
       );
     }
   });

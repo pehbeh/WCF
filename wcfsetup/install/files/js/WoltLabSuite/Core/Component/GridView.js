@@ -62,7 +62,7 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
             });
         }
         #initEventListeners() {
-            this.#table.addEventListener("interaction:refresh-all", () => {
+            this.#table.addEventListener("interaction:invalidate-all", () => {
                 void this.#loadRows(0 /* StateChangeCause.Change */);
             });
             this.#table.addEventListener("refresh", (event) => {

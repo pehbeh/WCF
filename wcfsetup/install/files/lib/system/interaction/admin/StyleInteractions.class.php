@@ -28,7 +28,7 @@ final class StyleInteractions extends AbstractInteractionProvider
                 'core/styles/%s/set-as-default',
                 'wcf.acp.style.button.setAsDefault',
                 isAvailableCallback: static fn(Style $object) => !$object->isDefault,
-                refreshAll: true
+                invalidatesAllItems: true
             ),
         ]);
 

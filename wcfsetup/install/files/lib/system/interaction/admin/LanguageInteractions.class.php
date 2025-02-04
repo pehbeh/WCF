@@ -30,7 +30,7 @@ final class LanguageInteractions extends AbstractInteractionProvider
                 "core/languages/%s/default",
                 "wcf.acp.language.setAsDefault",
                 isAvailableCallback: static fn(Language $language) => !$language->isDefault,
-                refreshAll: true
+                invalidatesAllItems: true
             ),
             new DeleteInteraction(
                 "core/languages/%s",
