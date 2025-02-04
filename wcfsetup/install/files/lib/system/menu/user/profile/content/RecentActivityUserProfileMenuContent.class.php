@@ -34,14 +34,12 @@ class RecentActivityUserProfileMenuContent extends SingletonFactory implements I
         // remove unused items
         $eventList->truncate(20);
 
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->fetch('wcf', 'recentActivities', [
             'eventList' => $eventList,
             'lastEventTime' => $eventList->getLastEventTime(),
             'placeholder' => WCF::getLanguage()->get('wcf.user.profile.content.recentActivity.noEntries'),
             'userID' => $userID,
         ]);
-
-        return WCF::getTPL()->fetch('recentActivities');
     }
 
     /**

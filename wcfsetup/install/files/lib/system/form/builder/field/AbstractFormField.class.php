@@ -108,13 +108,12 @@ abstract class AbstractFormField implements IFormField
             throw new \LogicException("\$templateName property has not been set for class '" . static::class . "'.");
         }
 
-        return WCF::getTPL()->fetch(
-            $this->templateName,
+        return WCF::getTPL()->render(
             $this->templateApplication,
+            $this->templateName,
             \array_merge($this->getHtmlVariables(), [
                 'field' => $this,
-            ]),
-            true
+            ])
         );
     }
 
@@ -127,11 +126,10 @@ abstract class AbstractFormField implements IFormField
             throw new \UnexpectedValueException("Form field '{$this->getPrefixedId()}' requires a label.");
         }
 
-        return WCF::getTPL()->fetch(
-            'shared_formField',
+        return WCF::getTPL()->render(
             'wcf',
+            'shared_formField',
             ['field' => $this],
-            true
         );
     }
 

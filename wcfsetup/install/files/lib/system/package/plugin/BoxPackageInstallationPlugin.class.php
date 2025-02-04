@@ -491,7 +491,7 @@ class BoxPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin 
      */
     public function getAdditionalTemplateCode()
     {
-        return WCF::getTPL()->fetch('__boxPipGui');
+        return WCF::getTPL()->render('wcf', '__boxPipGui', []);
     }
 
     /**

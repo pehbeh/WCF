@@ -39,12 +39,10 @@ final class PackageUpdateUnauthorizedException extends UserException
         }
 
         if ($requiresPaidUpgrade) {
-            WCF::getTPL()->assign([
+            return WCF::getTPL()->render('wcf', 'packageUpdateUnauthorizedPaidUpgrade', [
                 'packageName' => $this->packageUpdateVersion['packageName'],
                 'pluginStoreFileID' => $this->packageUpdateVersion['pluginStoreFileID'],
             ]);
-
-            return WCF::getTPL()->fetch('packageUpdateUnauthorizedPaidUpgrade');
         }
 
         $authInsufficient = (($this->responseHeaders['wcf-update-server-auth'][0] ?? '') === 'unauthorized');
@@ -58,27 +56,27 @@ final class PackageUpdateUnauthorizedException extends UserException
             }
 
             if ($hasOnlyTrustedServers) {
-                WCF::getTPL()->assign([
+                return WCF::getTPL()->render('wcf', 'packageUpdateUnauthorizedPurchaseRequired', [
                     'packageName' => $this->packageUpdateVersion['packageName'],
                     'pluginStoreFileID' => $this->packageUpdateVersion['pluginStoreFileID'],
                 ]);
-
-                return WCF::getTPL()->fetch('packageUpdateUnauthorizedPurchaseRequired');
             }
         }
 
-        WCF::getTPL()->assign([
-            'authInsufficient' => $authInsufficient,
-            'packageUpdateVersion' => $this->packageUpdateVersion,
-            'updateServer' => $this->updateServer,
-            'serverAuthData' => $this->updateServer->getAuthData(),
-            'requiresPaidUpgrade' => $requiresPaidUpgrade,
-            'responseStatusCode' => $this->responseStatusCode,
-            'responseHeaders' => $this->responseHeaders,
-            'responseMessage' => $this->responseMessage,
-        ]);
-
-        return WCF::getTPL()->fetch('packageUpdateUnauthorized');
+        return WCF::getTPL()->render(
+            'wcf',
+            'packageUpdateUnauthorized',
+            [
+                'authInsufficient' => $authInsufficient,
+                'packageUpdateVersion' => $this->packageUpdateVersion,
+                'updateServer' => $this->updateServer,
+                'serverAuthData' => $this->updateServer->getAuthData(),
+                'requiresPaidUpgrade' => $requiresPaidUpgrade,
+                'responseStatusCode' => $this->responseStatusCode,
+                'responseHeaders' => $this->responseHeaders,
+                'responseMessage' => $this->responseMessage,
+            ]
+        );
     }
 
     public function getResponseMessage(): string

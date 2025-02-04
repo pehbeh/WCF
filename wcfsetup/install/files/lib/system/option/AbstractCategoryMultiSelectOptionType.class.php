@@ -39,13 +39,11 @@ abstract class AbstractCategoryMultiSelectOptionType extends AbstractOptionType
         $categoryTree = new $this->nodeTreeClassname($this->objectType);
         $categoryList = $categoryTree->getIterator();
 
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'categoryMultiSelectOptionType', [
             'categoryList' => $categoryList,
             'option' => $option,
             'value' => !\is_array($value) ? \explode("\n", $value) : $value,
         ]);
-
-        return WCF::getTPL()->fetch('categoryMultiSelectOptionType');
     }
 
     /**

@@ -24,7 +24,7 @@ class SelectOptionType extends RadioButtonOptionType
         $options = $this->parseEnableOptions($option);
 
         /** @noinspection PhpUndefinedFieldInspection */
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'selectOptionType', [
             'disableOptions' => $options['disableOptions'],
             'enableOptions' => $options['enableOptions'],
             'option' => $option,
@@ -32,8 +32,6 @@ class SelectOptionType extends RadioButtonOptionType
             'value' => $value,
             'allowEmptyValue' => $this->allowEmptyValue || $option->allowEmptyValue,
         ]);
-
-        return WCF::getTPL()->fetch('selectOptionType');
     }
 
     /**
@@ -43,7 +41,7 @@ class SelectOptionType extends RadioButtonOptionType
     {
         $options = $this->parseEnableOptions($option);
 
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'selectSearchableOptionType', [
             'disableOptions' => $options['disableOptions'],
             'enableOptions' => $options['enableOptions'],
             'option' => $option,
@@ -52,8 +50,6 @@ class SelectOptionType extends RadioButtonOptionType
             'value' => $value,
             'allowEmptyValue' => true,
         ]);
-
-        return WCF::getTPL()->fetch('selectSearchableOptionType');
     }
 
     /**

@@ -44,8 +44,7 @@ class CommentUserProfileMenuContent extends SingletonFactory implements IUserPro
             $userID
         );
 
-        // assign variables
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'userProfileCommentList', [
             'commentCanAdd' => $this->commentManager->canAdd($userID),
             'commentList' => $commentList,
             'commentObjectTypeID' => $this->objectTypeID,
@@ -53,8 +52,6 @@ class CommentUserProfileMenuContent extends SingletonFactory implements IUserPro
             'lastCommentTime' => $commentList->getMinCommentTime(),
             'likeData' => MODULE_LIKE ? $commentList->getLikeData() : [],
         ]);
-
-        return WCF::getTPL()->fetch('userProfileCommentList');
     }
 
     /**
