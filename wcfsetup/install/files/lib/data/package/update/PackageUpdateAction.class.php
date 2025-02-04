@@ -165,7 +165,7 @@ class PackageUpdateAction extends AbstractDatabaseObjectAction
                 'count' => 0,
                 'pageCount' => 0,
                 'searchID' => 0,
-                'template' => WCF::getTPL()->render('packageSearchResultList', [
+                'template' => WCF::getTPL()->render('wcf', 'packageSearchResultList', [
                     'officialPackages' => [],
                     'thirdPartySources' => [],
                     'trustedSources' => [],
