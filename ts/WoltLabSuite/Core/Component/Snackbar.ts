@@ -1,3 +1,12 @@
+/**
+ * Shows snackbar like notifications.
+ *
+ * @author    Marcwl Werk
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license   GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since     6.2
+ */
+
 import { getPhrase } from "WoltLabSuite/Core/Language";
 import { getPageOverlayContainer } from "WoltLabSuite/Core/Helper/PageOverlay";
 
