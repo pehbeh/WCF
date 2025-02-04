@@ -94,6 +94,10 @@ export class GridView {
   }
 
   #initEventListeners(): void {
+    this.#table.addEventListener("interaction:refresh-all", () => {
+      void this.#loadRows(StateChangeCause.Change);
+    });
+
     this.#table.addEventListener("refresh", (event) => {
       void this.#refreshRow(event.target as HTMLElement);
     });

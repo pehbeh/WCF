@@ -26,7 +26,8 @@ class RpcInteraction extends AbstractInteraction
         protected readonly string|\Closure $languageItem,
         protected readonly InteractionConfirmationType $confirmationType = InteractionConfirmationType::None,
         protected readonly string|\Closure $confirmationMessage = '',
-        ?\Closure $isAvailableCallback = null
+        ?\Closure $isAvailableCallback = null,
+        protected readonly bool $refreshAll = false,
     ) {
         parent::__construct($identifier, $isAvailableCallback);
     }
@@ -75,6 +76,7 @@ class RpcInteraction extends AbstractInteraction
                 data-endpoint="{$endpoint}"
                 data-confirmation-type="{$this->confirmationType->toString()}"
                 data-confirmation-message="{$confirmationMessage}"
+                data-refresh-all={$this->refreshAll}
             >
                 {$label}
             </button>

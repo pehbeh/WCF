@@ -29,13 +29,13 @@ final class LanguageInteractions extends AbstractInteractionProvider
                 "setAsDefault",
                 "core/languages/%s/default",
                 "wcf.acp.language.setAsDefault",
-                isAvailableCallback: static function (Language $language) {
-                    return !$language->isDefault;
-                }
+                isAvailableCallback: static fn(Language $language) => !$language->isDefault,
+                refreshAll: true
             ),
-            new DeleteInteraction("core/languages/%s", static function (Language $language) {
-                return $language->isDeletable();
-            })
+            new DeleteInteraction(
+                "core/languages/%s",
+                static fn(Language $language) => $language->isDeletable()
+            )
         ]);
 
         EventHandler::getInstance()->fire(
