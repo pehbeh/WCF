@@ -2827,6 +2827,7 @@ Abschnitte dürfen nicht leer sein und nur folgende Zeichen enthalten: <kbd>[a-z
 		<item name="wcf.acp.updateServer.add"><![CDATA[Server hinzufügen]]></item>
 		<item name="wcf.acp.updateServer.edit"><![CDATA[Server bearbeiten]]></item>
 		<item name="wcf.acp.updateServer.errorMessage"><![CDATA[Fehlermeldungen]]></item>
+		<item name="wcf.acp.updateServer.showErrorMessage"><![CDATA[Fehlermeldung anzeigen]]></item>
 		<item name="wcf.acp.updateServer.list"><![CDATA[Paket-Server]]></item>
 		<item name="wcf.acp.updateServer.lastErrorMessage"><![CDATA[Beim letzten Verbindungsversuch trat folgender Fehler auf:]]></item>
 		<item name="wcf.acp.updateServer.loginPassword"><![CDATA[Kennwort]]></item>
