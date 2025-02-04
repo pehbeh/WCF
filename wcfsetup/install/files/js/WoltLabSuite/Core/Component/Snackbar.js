@@ -125,9 +125,10 @@ define(["require", "exports", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/H
             (0, PageOverlay_1.getPageOverlayContainer)().append(this.#element);
         }
         addSnackbar(snackbar) {
-            if (this.#snackbars.length > 2) {
-                const oldSnackbar = this.#snackbars.shift();
-                oldSnackbar?.close();
+            const existingStaticSnackbars = this.#snackbars.filter((snackbar) => !snackbar.isProgress());
+            if (existingStaticSnackbars.length > 2) {
+                const oldSnackbar = existingStaticSnackbars.shift();
+                oldSnackbar.close();
             }
             this.#snackbars.push(snackbar);
             this.#element.prepend(snackbar.element);

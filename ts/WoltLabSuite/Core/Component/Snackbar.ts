@@ -173,9 +173,10 @@ class SnackbarContainer {
   }
 
   addSnackbar(snackbar: Snackbar): void {
-    if (this.#snackbars.length > 2) {
-      const oldSnackbar = this.#snackbars.shift();
-      oldSnackbar?.close();
+    const existingStaticSnackbars = this.#snackbars.filter((snackbar) => !snackbar.isProgress());
+    if (existingStaticSnackbars.length > 2) {
+      const oldSnackbar = existingStaticSnackbars.shift();
+      oldSnackbar!.close();
     }
 
     this.#snackbars.push(snackbar);
