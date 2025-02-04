@@ -50,7 +50,25 @@ final class LanguageGridView extends AbstractGridView
                 ->label('wcf.global.name')
                 ->filter(new TextFilter())
                 ->titleColumn()
-                ->sortable(),
+                ->sortable()
+                ->renderer([
+                    new class extends DefaultColumnRenderer {
+                        #[\Override]
+                        public function render(mixed $value, DatabaseObject $row): string
+                        {
+                            \assert($row instanceof Language);
+
+                            if ($row->isDefault) {
+                                $value .= \sprintf(
+                                    ' <span class="badge">%s</span>',
+                                    WCF::getLanguage()->get('wcf.global.defaultValue')
+                                );
+                            }
+
+                            return $value;
+                        }
+                    },
+                ]),
             GridViewColumn::for('languageCode')
                 ->label('wcf.acp.language.code')
                 ->filter(new TextFilter())
