@@ -10,7 +10,7 @@ define(["require", "exports", "WoltLabSuite/Core/Api/DeleteObject", "WoltLabSuit
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
-    async function handleRpcInteraction(element, objectName, endpoint, confirmationType, customConfirmationMessage = "") {
+    async function handleRpcInteraction(container, element, objectName, endpoint, confirmationType, customConfirmationMessage = "", invalidatesAllItems = false) {
         const confirmationResult = await (0, Confirmation_1.handleConfirmation)(objectName, confirmationType, customConfirmationMessage);
         if (!confirmationResult.result) {
             return;
@@ -36,9 +36,14 @@ define(["require", "exports", "WoltLabSuite/Core/Api/DeleteObject", "WoltLabSuit
             });
         }
         else {
-            element.dispatchEvent(new CustomEvent("refresh", {
-                bubbles: true,
-            }));
+            if (invalidatesAllItems) {
+                container.dispatchEvent(new CustomEvent("interaction:invalidate-all"));
+            }
+            else {
+                element.dispatchEvent(new CustomEvent("refresh", {
+                    bubbles: true,
+                }));
+            }
             // TODO: This shows a generic success message and should be replaced with a more specific message.
             (0, Notification_1.show)();
         }
@@ -46,7 +51,7 @@ define(["require", "exports", "WoltLabSuite/Core/Api/DeleteObject", "WoltLabSuit
     function setup(identifier, container) {
         container.addEventListener("interaction", (event) => {
             if (event.detail.interaction === identifier) {
-                void handleRpcInteraction(event.target, event.detail.objectName, event.detail.endpoint, event.detail.confirmationType, event.detail.confirmationMessage);
+                void handleRpcInteraction(container, event.target, event.detail.objectName, event.detail.endpoint, event.detail.confirmationType, event.detail.confirmationMessage, event.detail.invalidatesAllItems === "true");
             }
         });
     }
