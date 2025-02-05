@@ -2722,6 +2722,7 @@
 		<file>lib/system/cli/command/WorkerCommand.class.php</file>
 		<file>lib/system/clipboard/action/UserExtendedClipboardAction.class.php</file>
 		<file>lib/system/clipboard/action/ArticleClipboardAction.class.php</file>
+		<file>lib/system/clipboard/action/TagClipboardAction.class.php</file>
 		<file>lib/system/condition/INoticeCondition.class.php</file>
 		<file>lib/system/condition/UserReputationCondition.class.php</file>
 		<file>lib/system/cronjob/CleanUpCronjobLogCronjob.class.php</file>
