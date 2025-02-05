@@ -2043,6 +2043,7 @@ If you have <strong>already bought the licenses for the listed apps</strong>, th
 		<item name="wcf.acp.paidSubscription.transactionLog.logMessage"><![CDATA[Action]]></item>
 		<item name="wcf.acp.paidSubscription.transactionLog"><![CDATA[Transaction]]></item>
 		<item name="wcf.acp.paidSubscription.transactionLog.transactionDetails"><![CDATA[Details]]></item>
+		<item name="wcf.acp.paidSubscription.transactionLog.showTransactionDetails"><![CDATA[Show Details]]></item>
 		<item name="wcf.acp.paidSubscription.excludedSubscriptions"><![CDATA[Excluded Subscriptions]]></item>
 		<item name="wcf.acp.paidSubscription.excludedSubscriptions.description"><![CDATA[Prevents purchasing of other subscriptions for buyers of this subscription.]]></item>
 		<item name="wcf.acp.paidSubscription.user.delete.confirmMessage"><![CDATA[Do you really want to terminate the subscription <span class="confirmationObject">{$subscriptionUser->title|phrase}</span> for the user <span class="confirmationObject">{$subscriptionUser->username}</span>?]]></item>
