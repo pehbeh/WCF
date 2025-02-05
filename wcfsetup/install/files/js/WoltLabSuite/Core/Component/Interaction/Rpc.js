@@ -30,7 +30,7 @@ define(["require", "exports", "WoltLabSuite/Core/Api/DeleteObject", "WoltLabSuit
         if (confirmationType === Confirmation_1.ConfirmationType.Delete) {
             // TODO: This shows a generic success message and should be replaced with a more specific message.
             (0, Notification_1.show)(undefined, () => {
-                element.dispatchEvent(new CustomEvent("remove", {
+                element.dispatchEvent(new CustomEvent("interaction:remove", {
                     bubbles: true,
                 }));
             });
@@ -40,7 +40,7 @@ define(["require", "exports", "WoltLabSuite/Core/Api/DeleteObject", "WoltLabSuit
                 container.dispatchEvent(new CustomEvent("interaction:invalidate-all"));
             }
             else {
-                element.dispatchEvent(new CustomEvent("refresh", {
+                element.dispatchEvent(new CustomEvent("interaction:invalidate", {
                     bubbles: true,
                 }));
             }
@@ -49,7 +49,7 @@ define(["require", "exports", "WoltLabSuite/Core/Api/DeleteObject", "WoltLabSuit
         }
     }
     function setup(identifier, container) {
-        container.addEventListener("interaction", (event) => {
+        container.addEventListener("interaction:execute", (event) => {
             if (event.detail.interaction === identifier) {
                 void handleRpcInteraction(container, event.target, event.detail.objectName, event.detail.endpoint, event.detail.confirmationType, event.detail.confirmationMessage, event.detail.invalidatesAllItems === "true");
             }
