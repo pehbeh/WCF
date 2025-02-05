@@ -49,7 +49,7 @@ final class TagGridView extends AbstractGridView
             GridViewColumn::for('synonymName')
                 ->label('wcf.acp.tag.synonymFor')
                 ->renderer(new DefaultColumnRenderer())
-                ->filter(new TextFilter())
+                ->filter(new TextFilter("synonym.name"))
                 ->sortable(sortByDatabaseColumn: "synonym.name"),
             GridViewColumn::for('languageName')
                 ->label('wcf.acp.tag.languageID')
@@ -122,6 +122,9 @@ final class TagGridView extends AbstractGridView
         $list->sqlJoins = "
             LEFT JOIN   wcf1_language language
             ON          tag.languageID = language.languageID
+            LEFT JOIN   wcf1_tag synonym
+            ON          tag.synonymFor = synonym.tagID";
+        $list->sqlConditionJoins = "
             LEFT JOIN   wcf1_tag synonym
             ON          tag.synonymFor = synonym.tagID";
 
