@@ -17,7 +17,7 @@ class GroupedUserList implements \Countable, \Iterator
 {
     /**
      * list of user profiles shared across all instances of GroupedUserList
-     * @var UserProfile[]
+     * @var array<int, UserProfile|null>
      */
     protected static array $users = [];
 
@@ -108,7 +108,7 @@ class GroupedUserList implements \Countable, \Iterator
         }
 
         // load user profiles
-        if (!empty($userIDs)) {
+        if ($userIDs !== []) {
             $userProfiles = UserProfileRuntimeCache::getInstance()->getObjects($userIDs);
             foreach ($userProfiles as $userID => $userProfile) {
                 if ($userProfile) {

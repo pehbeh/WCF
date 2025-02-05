@@ -97,12 +97,10 @@ class ViewableArticleContentList extends ArticleContentList
                 }
             }
 
-            if (isset($articleList)) {
-                if ($articleList->search($articleContent->articleID) !== null) {
-                    $articleContent->setArticle($articleList->search($articleContent->articleID));
-                } else {
-                    throw new \LogicException('Unable to find article with id "' . $articleContent->articleID . '".');
-                }
+            if ($articleList->search($articleContent->articleID) !== null) {
+                $articleContent->setArticle($articleList->search($articleContent->articleID));
+            } else {
+                throw new \LogicException('Unable to find article with id "' . $articleContent->articleID . '".');
             }
         }
     }

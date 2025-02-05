@@ -145,7 +145,7 @@ class PackageInstallationDispatcher
                 'package' => $this->installPackage($nodeData),
                 'pip' => $this->executePIP($nodeData),
                 'optionalPackages' => $this->selectOptionalPackages($node, $nodeData),
-                'end' => $this->handleEndMarker($nodeData),
+                'end' => $this->handleEndMarker(),
             };
 
             if ($step->splitNode()) {

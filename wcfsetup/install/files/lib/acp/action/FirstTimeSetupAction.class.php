@@ -7,7 +7,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use wcf\acp\form\FirstTimeSetupLicenseForm;
+use wcf\acp\form\FirstTimeSetupOptionsEmailForm;
 use wcf\acp\form\FirstTimeSetupOptionsForm;
+use wcf\acp\page\FirstTimeSetupCompletedPage;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 

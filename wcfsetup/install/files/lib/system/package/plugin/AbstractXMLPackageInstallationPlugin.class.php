@@ -290,7 +290,7 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
      *
      * @param array $row
      * @param array $data
-     * @return  \wcf\data\IStorableObject
+     * @return  \wcf\data\IStorableObject|null
      */
     protected function import(array $row, array $data)
     {
@@ -315,9 +315,7 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
      * Executed after all items would have been imported, use this hook if you've
      * overwritten import() to disable insert/update.
      */
-    protected function postImport()
-    {
-    }
+    protected function postImport() {}
 
     /**
      * Deletes the given items.
@@ -341,9 +339,7 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
      *
      * @param array $data
      */
-    protected function validateImport(array $data)
-    {
-    }
+    protected function validateImport(array $data) {}
 
     /**
      * Returns an array with a sql query and its parameters to find an existing item for updating
@@ -370,9 +366,7 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
     /**
      * Triggered after executing all delete and/or import actions.
      */
-    protected function cleanup()
-    {
-    }
+    protected function cleanup() {}
 
     /**
      * Loads the xml file into a string and returns this string.

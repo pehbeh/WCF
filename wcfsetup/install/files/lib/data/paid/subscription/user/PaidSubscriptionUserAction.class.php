@@ -133,7 +133,7 @@ class PaidSubscriptionUserAction extends AbstractDatabaseObjectAction
     {
         $this->revoke();
 
-        parent::delete();
+        return parent::delete();
     }
 
     /**

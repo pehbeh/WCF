@@ -347,7 +347,7 @@ class GDImageAdapter implements IImageAdapter, IWebpImageAdapter
      */
     public function adjustFontSize($text, $margin, $font, $size)
     {
-        // does nothing
+        return 0;
     }
 
     /**
@@ -507,9 +507,6 @@ class GDImageAdapter implements IImageAdapter, IWebpImageAdapter
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct)
     {
-        if (!isset($pct)) {
-            return false;
-        }
         $pct /= 100;
         // Get image width and height
         $w = \imagesx($src_im);

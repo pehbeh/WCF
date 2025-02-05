@@ -2,6 +2,7 @@
 
 namespace wcf\system\package\plugin;
 
+use DOMNode;
 use wcf\data\DatabaseObject;
 use wcf\data\IEditableCachedObject;
 use wcf\data\option\category\OptionCategory;
@@ -398,23 +399,20 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
     /**
      * @inheritDoc
      */
-    protected function handleDelete(array $items)
-    {
-    }
+    protected function handleDelete(array $items) {}
 
     /**
      * @inheritDoc
      */
     protected function prepareImport(array $data)
     {
+        return $data;
     }
 
     /**
      * @inheritDoc
      */
-    protected function findExistingItem(array $data)
-    {
-    }
+    protected function findExistingItem(array $data) {}
 
     /**
      * @inheritDoc
@@ -448,7 +446,10 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
                         ->options(function () {
                             $categories = $this->getSortedCategories();
 
-                            $getDepth = static function (/** @var OptionCategory $category */ $category) use (
+                            $getDepth = static function (
+                                /** @var OptionCategory $category */
+                                $category
+                            ) use (
                                 $categories
                             ) {
                                 $depth = 0;
@@ -530,7 +531,10 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
                         ->options(function (): array {
                             $categories = $this->getSortedCategories();
 
-                            $getDepth = static function (/** @var OptionCategory $category */ $category) use (
+                            $getDepth = static function (
+                                /** @var OptionCategory $category */
+                                $category
+                            ) use (
                                 $categories
                             ) {
                                 $depth = 0;

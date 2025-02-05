@@ -1337,6 +1337,8 @@ class TemplateScriptingCompiler
         if ($tag == 'section' && $openTag == 'sectionelse') {
             return $this->popTag($tag);
         }
+
+        return '';
     }
 
     /**

@@ -135,6 +135,8 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
             \assert($style instanceof self);
             $style->delete();
         }
+
+        return \count($styleList);
     }
 
     /**

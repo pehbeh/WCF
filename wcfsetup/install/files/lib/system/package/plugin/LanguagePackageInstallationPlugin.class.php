@@ -294,7 +294,7 @@ class LanguagePackageInstallationPlugin extends AbstractXMLPackageInstallationPl
      */
     protected function prepareImport(array $data)
     {
-        // does nothing
+        return $data;
     }
 
     /**

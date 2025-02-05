@@ -294,6 +294,9 @@ final class WCFSetup extends WCF
                 $this->calcProgress(21);
 
                 return $this->installPackages();
+
+            default:
+                throw new \LogicException('unreachable');
         }
     }
 

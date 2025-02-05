@@ -9,6 +9,7 @@ use wcf\data\user\UserAction;
 use wcf\system\box\RecentActivityListBoxController;
 use wcf\system\exception\UserInputException;
 use wcf\system\user\activity\event\UserActivityEventHandler;
+use wcf\system\user\UserProfileHandler;
 use wcf\system\WCF;
 
 /**
@@ -75,12 +76,10 @@ class UserActivityEventAction extends AbstractDatabaseObjectAction
             if ($this->parameters['userID']) {
                 $eventList->getConditionBuilder()->add("user_activity_event.userID = ?", [$this->parameters['userID']]);
             } else {
-                /** @noinspection PhpUndefinedMethodInspection */
-                if ($this->parameters['filteredByFollowedUsers'] && \count(WCF::getUserProfileHandler()->getFollowingUsers())) {
-                    /** @noinspection PhpUndefinedMethodInspection */
+                if ($this->parameters['filteredByFollowedUsers'] && \count(UserProfileHandler::getInstance()->getFollowingUsers())) {
                     $eventList->getConditionBuilder()->add(
                         'user_activity_event.userID IN (?)',
-                        [WCF::getUserProfileHandler()->getFollowingUsers()]
+                        [UserProfileHandler::getInstance()->getFollowingUsers()]
                     );
                 }
             }
@@ -135,9 +134,7 @@ class UserActivityEventAction extends AbstractDatabaseObjectAction
     /**
      * Does nothing.
      */
-    public function validateSwitchContext()
-    {
-    }
+    public function validateSwitchContext() {}
 
     public function switchContext()
     {

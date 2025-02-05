@@ -547,6 +547,8 @@ class WysiwygFormContainer extends FormContainer
         }
 
         EventHandler::getInstance()->fireAction($this, 'populate');
+
+        return $this;
     }
 
     /**

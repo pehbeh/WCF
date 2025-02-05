@@ -40,12 +40,10 @@ final class DeleteResponses
         private readonly bool $updateCounters = true,
     ) {
         $this->responseIDs = \array_column($this->responses, 'responseID');
-        foreach ($this->responses as $response) {
-            if (!isset($this->objectType)) {
-                $this->objectType = CommentHandler::getInstance()->getObjectType($response->getComment()->objectTypeID);
-                $this->commentManager = CommentHandler::getInstance()->getCommentManagerByID($response->getComment()->objectTypeID);
-            }
-        }
+        $firstResponse = \reset($this->responses);
+        \assert($firstResponse !== false);
+        $this->objectType = CommentHandler::getInstance()->getObjectType($firstResponse->getComment()->objectTypeID);
+        $this->commentManager = CommentHandler::getInstance()->getCommentManagerByID($firstResponse->getComment()->objectTypeID);
     }
 
     public function __invoke(): void
@@ -118,6 +116,7 @@ final class DeleteResponses
             return;
         }
 
+        $commentIDs = [];
         foreach ($this->responses as $response) {
             $commentIDs[] = $response->commentID;
         }

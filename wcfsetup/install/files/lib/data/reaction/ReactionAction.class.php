@@ -273,7 +273,7 @@ class ReactionAction extends AbstractDatabaseObjectAction
         }
         $likeList->readObjects();
 
-        if (empty($likeList)) {
+        if ($likeList->getObjects() === []) {
             return [];
         }
 

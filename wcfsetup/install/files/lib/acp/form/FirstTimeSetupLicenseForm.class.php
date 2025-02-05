@@ -4,6 +4,7 @@ namespace wcf\acp\form;
 
 use GuzzleHttp\Exception\ConnectException;
 use Psr\Http\Client\ClientExceptionInterface;
+use wcf\acp\action\FirstTimeSetupAction;
 use wcf\data\option\Option;
 use wcf\data\option\OptionAction;
 use wcf\data\package\update\server\PackageUpdateServerAction;

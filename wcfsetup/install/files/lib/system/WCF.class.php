@@ -32,6 +32,7 @@ use wcf\system\style\StyleHandler;
 use wcf\system\template\EmailTemplateEngine;
 use wcf\system\template\TemplateEngine;
 use wcf\system\user\storage\UserStorageHandler;
+use wcf\system\user\UserProfileHandler;
 use wcf\util\DirectoryUtil;
 use wcf\util\FileUtil;
 use wcf\util\StringUtil;
@@ -101,6 +102,7 @@ if (!\defined('NO_IMPORTS')) {
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
  * @method static Benchmark getBenchmark()
+ * @method static UserProfileHandler getUserProfileHandler()
  */
 class WCF
 {
@@ -891,7 +893,7 @@ class WCF
      * Returns dynamically loaded core objects.
      *
      * @param array $arguments
-     * @return  object
+     * @return  object|null
      * @throws  SystemException
      */
     final public static function __callStatic(string $name, array $arguments)
@@ -916,6 +918,8 @@ class WCF
 
             return self::$coreObject[$className];
         }
+
+        return null;
     }
 
     /**

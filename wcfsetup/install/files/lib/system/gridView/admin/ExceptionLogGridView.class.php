@@ -79,7 +79,7 @@ final class ExceptionLogGridView extends AbstractGridView
                     break;
                 }
 
-                unset($contents);
+                $contents = '';
             }
 
             if ($contents === '') {

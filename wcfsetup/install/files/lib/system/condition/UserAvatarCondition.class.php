@@ -89,6 +89,8 @@ class UserAvatarCondition extends AbstractSelectCondition implements
             case self::GRAVATAR:
                 return false;
         }
+
+        return false;
     }
 
     /**

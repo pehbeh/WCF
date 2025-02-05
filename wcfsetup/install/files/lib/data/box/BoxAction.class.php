@@ -290,7 +290,7 @@ class BoxAction extends AbstractDatabaseObjectAction implements IToggleAction
             MessageEmbeddedObjectManager::getInstance()->removeObjects('com.woltlab.wcf.box.content', $boxContentIDs);
         }
 
-        parent::delete();
+        return parent::delete();
     }
 
     /**

@@ -41,6 +41,9 @@ use wcf\util\StringUtil;
  *
  * @method  User    getDecoratedObject()
  * @mixin   User
+ * @property-read   int $sessionLastActivityTime
+ * @property-read   bool $birthdayShowYear
+ * @property-read   string $birthday
  */
 class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
 {
@@ -680,7 +683,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
      * Returns the user profiles of the users with the given names.
      *
      * @param string[] $usernames
-     * @return  UserProfile[]
+     * @return  array<string, UserProfile|null>
      */
     public static function getUserProfilesByUsername(array $usernames)
     {

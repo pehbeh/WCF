@@ -141,8 +141,8 @@ class AttachmentAction extends AbstractDatabaseObjectAction
                 'uploadTime' => $attachment->uploadTime,
                 'showOrder' => $attachment->showOrder,
                 'fileID' => $file?->fileID,
-                'thumbnailID' => $thumbnailID,
-                'tinyThumbnailID' => $tinyThumbnailID,
+                'thumbnailID' => $thumbnailID ?? null,
+                'tinyThumbnailID' => $tinyThumbnailID ?? null,
             ]);
 
             $newAttachmentIDs[$attachment->attachmentID] = $newAttachment->attachmentID;

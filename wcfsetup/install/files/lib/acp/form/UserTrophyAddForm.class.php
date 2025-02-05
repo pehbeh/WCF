@@ -42,7 +42,7 @@ class UserTrophyAddForm extends AbstractAcpForm
 
     /**
      * usernames (comma separated)
-     * @var string[]
+     * @var string
      */
     public $user = '';
 
@@ -146,7 +146,7 @@ class UserTrophyAddForm extends AbstractAcpForm
             }
         }
 
-        if (!empty($error)) {
+        if ($error !== []) {
             throw new UserInputException('user', $error);
         }
     }

@@ -86,12 +86,11 @@ class PackageInstallationNodeBuilder
     {
         $manifest = new PackageManifest($this->installation->getArchive());
         $auditLogger = new AuditLogger();
+        $currentPackageVersion = null;
 
         $package = $this->installation->getPackage();
         switch ($this->installation->getAction()) {
             case 'install':
-                $currentPackageVersion = null;
-
                 $auditLogger->log(
                     <<<EOT
                     Building installation nodes
@@ -109,6 +108,7 @@ class PackageInstallationNodeBuilder
                     EOT
                 );
                 break;
+
             case 'update':
                 $currentPackageVersion = self::$pendingPackages[$package->package] ?? $package->packageVersion;
 
@@ -131,6 +131,9 @@ class PackageInstallationNodeBuilder
                     EOT
                 );
                 break;
+
+            default:
+                new \LogicException('Unreachable');
         }
 
         // required packages
@@ -509,11 +512,8 @@ class PackageInstallationNodeBuilder
 
     /**
      * Builds nodes for required packages, whereas each has it own node.
-     *
-     * @return  string
-     * @throws  SystemException
      */
-    protected function buildRequirementNodes()
+    protected function buildRequirementNodes(): void
     {
         $queue = $this->installation->queue;
 
@@ -645,10 +645,8 @@ class PackageInstallationNodeBuilder
     /**
      * Builds package installation plugin nodes, whereas pips could be grouped within
      * one node, differ from each by nothing but the sequence number.
-     *
-     * @return  string
      */
-    protected function buildPluginNodes(array $instructions)
+    protected function buildPluginNodes(array $instructions): void
     {
         $count = \count($instructions);
 

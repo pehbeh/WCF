@@ -84,6 +84,8 @@ class UserCoverPhotoCondition extends AbstractSelectCondition implements
                 return $user->coverPhotoFileID !== null;
                 break;
         }
+
+        return false;
     }
 
     /**

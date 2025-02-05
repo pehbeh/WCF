@@ -58,6 +58,8 @@ final class UnfurlUrlBackgroundJob extends AbstractBackgroundJob
                 // 2 hours
                 return 2 * 60 * 60;
         }
+
+        return 0;
     }
 
     /**

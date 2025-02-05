@@ -104,9 +104,11 @@ class LabelAction extends AbstractDatabaseObjectAction implements ISortableActio
      */
     public function delete()
     {
-        parent::delete();
+        $count = parent::delete();
 
         $this->deleteI18nValues();
+
+        return $count;
     }
 
     /**

@@ -86,6 +86,8 @@ class UserSignatureCondition extends AbstractSelectCondition implements
                 return $user->signature !== '' && $user->signature !== null;
                 break;
         }
+
+        return false;
     }
 
     /**

@@ -51,6 +51,7 @@ class PackageUninstallationDispatcher extends PackageInstallationDispatcher
     public function uninstall(string $node): PackageInstallationStep
     {
         $nodes = $this->nodeBuilder->getNodeData($node);
+        $step = null;
 
         // invoke node-specific actions
         foreach ($nodes as $data) {
@@ -83,10 +84,15 @@ class PackageUninstallationDispatcher extends PackageInstallationDispatcher
                     break;
 
                 case 'end':
-                    $step = $this->handleEndMarker($nodeData);
+                    $step = $this->handleEndMarker();
                     break;
+
+                default:
+                    new \LogicException('Unreachable');
             }
         }
+
+        \assert($step instanceof PackageInstallationStep);
 
         // mark node as completed
         $this->nodeBuilder->completeNode($node);

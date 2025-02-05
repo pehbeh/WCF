@@ -452,7 +452,7 @@ class HtmlInputNodeTextParser
                         // be encoded at all times according to RFC 1738.
                         $path = \preg_replace_callback(
                             '~[^0-9a-zA-Z$-_.+!*\'(),;/?:@=&]~',
-                            static fn (array $matches) => \rawurlencode($matches[0]),
+                            static fn(array $matches) => \rawurlencode($matches[0]),
                             $path
                         );
                         $uri = $uri->withPath($path);
@@ -592,13 +592,11 @@ class HtmlInputNodeTextParser
                     }
                 }
 
-                if (!empty($tmp)) {
-                    if ($tmp === '(?<=\s|^)(?:') {
-                        $tmp = '';
-                    } else {
-                        // close the pattern group
-                        $tmp .= ')(?=\s|$)';
-                    }
+                if ($tmp === '(?<=\s|^)(?:') {
+                    $tmp = '';
+                } else {
+                    // close the pattern group
+                    $tmp .= ')(?=\s|$)';
                 }
             }
 

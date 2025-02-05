@@ -550,6 +550,8 @@ class UploadFormField extends AbstractFormField
         } else {
             $this->values = $value;
         }
+
+        return $this;
     }
 
     /**

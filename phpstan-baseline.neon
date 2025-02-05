@@ -1,0 +1,121 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Variable \$this might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: wcfsetup/install/files/acp/update_com.woltlab.wcf_6.1_spider_step1.php
+
+		-
+			message: '#^Constructor of class wcf\\data\\clipboard\\item\\ClipboardItemAction has an unused parameter \$objects\.$#'
+			identifier: constructor.unusedParameter
+			count: 1
+			path: wcfsetup/install/files/lib/data/clipboard/item/ClipboardItemAction.class.php
+
+		-
+			message: '#^Call to static method error\(\) on an unknown class phpline\\internal\\Log\.$#'
+			identifier: class.notFound
+			count: 3
+			path: wcfsetup/install/files/lib/system/CLIWCF.class.php
+
+		-
+			message: '#^Call to static method get\(\) on an unknown class phpline\\TerminalFactory\.$#'
+			identifier: class.notFound
+			count: 1
+			path: wcfsetup/install/files/lib/system/CLIWCF.class.php
+
+		-
+			message: '#^Call to static method warn\(\) on an unknown class phpline\\internal\\Log\.$#'
+			identifier: class.notFound
+			count: 1
+			path: wcfsetup/install/files/lib/system/CLIWCF.class.php
+
+		-
+			message: '#^Constant VERBOSITY not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: wcfsetup/install/files/lib/system/CLIWCF.class.php
+
+		-
+			message: '#^Instantiated class phpline\\console\\ConsoleReader not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: wcfsetup/install/files/lib/system/CLIWCF.class.php
+
+		-
+			message: '#^Instantiated class phpline\\console\\history\\MemoryHistory not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: wcfsetup/install/files/lib/system/CLIWCF.class.php
+
+		-
+			message: '#^Constant INSTALL_SCRIPT not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: wcfsetup/install/files/lib/system/WCFSetup.class.php
+
+		-
+			message: '#^Constant INSTALL_SCRIPT_DIR not found\.$#'
+			identifier: constant.notFound
+			count: 5
+			path: wcfsetup/install/files/lib/system/WCFSetup.class.php
+
+		-
+			message: '#^Constant SETUP_FILE not found\.$#'
+			identifier: constant.notFound
+			count: 3
+			path: wcfsetup/install/files/lib/system/WCFSetup.class.php
+
+		-
+			message: '#^Constant TMP_FILE_PREFIX not found\.$#'
+			identifier: constant.notFound
+			count: 5
+			path: wcfsetup/install/files/lib/system/WCFSetup.class.php
+
+		-
+			message: '#^Call to static method info\(\) on an unknown class phpline\\internal\\Log\.$#'
+			identifier: class.notFound
+			count: 2
+			path: wcfsetup/install/files/lib/system/cli/command/CLICommandHandler.class.php
+
+		-
+			message: '#^Call to static method debug\(\) on an unknown class phpline\\internal\\Log\.$#'
+			identifier: class.notFound
+			count: 1
+			path: wcfsetup/install/files/lib/system/cli/command/WorkerCLICommand.class.php
+
+		-
+			message: '#^Call to static method info\(\) on an unknown class phpline\\internal\\Log\.$#'
+			identifier: class.notFound
+			count: 2
+			path: wcfsetup/install/files/lib/system/cli/command/WorkerCLICommand.class.php
+
+		-
+			message: '#^Constructor of class wcf\\system\\exception\\ErrorException has an unused parameter \$filename\.$#'
+			identifier: constructor.unusedParameter
+			count: 1
+			path: wcfsetup/install/files/lib/system/exception/ErrorException.class.php
+
+		-
+			message: '#^Constructor of class wcf\\system\\exception\\ErrorException has an unused parameter \$lineno\.$#'
+			identifier: constructor.unusedParameter
+			count: 1
+			path: wcfsetup/install/files/lib/system/exception/ErrorException.class.php
+
+		-
+			message: '#^Call to an undefined method wcf\\system\\form\\builder\\container\\wysiwyg\\WysiwygFormContainer\:\:addValidationError\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: wcfsetup/install/files/lib/system/form/builder/container/wysiwyg/WysiwygFormContainer.class.php
+
+		-
+			message: '#^Method wcf\\system\\package\\plugin\\LanguagePackageInstallationPlugin\:\:getEmptyXml\(\) invoked with 0 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: wcfsetup/install/files/lib/system/package/plugin/LanguagePackageInstallationPlugin.class.php
+
+		-
+			message: '#^Call to static method stripAnsi\(\) on an unknown class phpline\\internal\\AnsiUtil\.$#'
+			identifier: class.notFound
+			count: 3
+			path: wcfsetup/install/files/lib/util/CLIUtil.class.php

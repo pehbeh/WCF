@@ -628,9 +628,11 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
             $mediaEditor->deleteFiles();
         }
 
-        parent::delete();
+        $count = parent::delete();
 
         $this->unmarkItems();
+
+        return $count;
     }
 
     /**

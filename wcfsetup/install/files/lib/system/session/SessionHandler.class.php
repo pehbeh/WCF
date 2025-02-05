@@ -1171,9 +1171,9 @@ final class SessionHandler extends SingletonFactory
 
         $data = [
             'ipAddress' => UserUtil::getIpAddress(),
-            'userAgent' => $this->userAgent,
-            'requestURI' => $this->requestURI,
-            'requestMethod' => $this->requestMethod,
+            'userAgent' => UserUtil::getUserAgent(),
+            'requestURI' => UserUtil::getRequestURI(),
+            'requestMethod' => !empty($_SERVER['REQUEST_METHOD']) ? \substr($_SERVER['REQUEST_METHOD'], 0, 7) : '',
             'lastActivityTime' => TIME_NOW,
             'sessionID' => $this->sessionID,
         ];
@@ -1204,9 +1204,7 @@ final class SessionHandler extends SingletonFactory
     /**
      * @deprecated 5.4 - This method is a noop. The lastActivityTime is always updated immediately after loading.
      */
-    public function keepAlive()
-    {
-    }
+    public function keepAlive() {}
 
     /**
      * Deletes this session and its related data.

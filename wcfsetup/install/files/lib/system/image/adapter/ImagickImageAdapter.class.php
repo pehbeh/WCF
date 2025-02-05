@@ -330,7 +330,7 @@ class ImagickImageAdapter implements IImageAdapter, ISingleFrameImageAdapter, IW
      */
     public function adjustFontSize($text, $margin, $font, $size)
     {
-        // does nothing
+        return 0;
     }
 
     /**

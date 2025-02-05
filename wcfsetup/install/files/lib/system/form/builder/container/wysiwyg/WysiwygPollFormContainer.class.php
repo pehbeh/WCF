@@ -380,5 +380,7 @@ class WysiwygPollFormContainer extends FormContainer implements IObjectTypeFormN
             $this->getResultsRequireVoteField(),
             $this->getSortByVotesField(),
         ]);
+
+        return $this;
     }
 }

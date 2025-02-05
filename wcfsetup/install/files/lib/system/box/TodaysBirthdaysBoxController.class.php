@@ -69,6 +69,7 @@ class TodaysBirthdaysBoxController extends AbstractDatabaseObjectListBoxControll
      */
     protected function getTemplate()
     {
+        return '';
     }
 
     /**

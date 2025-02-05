@@ -20,11 +20,16 @@ use wcf\util\UserUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
+ * @property-read   string $ipAddress
+ * @property-read   string $userAgent
+ * @property-read   int $lastActivityTime
+ * @property-read   string $requestURI
  * @property-read   int|null $pageID         id of the last visited page
  * @property-read   int|null $pageObjectID       id of the object the last visited page belongs to
  * @property-read   int|null $parentPageObjectID id of the parent of the object the last visited page belongs to
  * @property-read   string|null $userOnlineMarking  HTML code used to print the formatted name of a user group member
  * @property-read   ?string $spiderIdentifier identifier of the spider
+ * @property-read   int $canViewOnlineStatus
  */
 class UserOnline extends UserProfile
 {
@@ -73,9 +78,9 @@ class UserOnline extends UserProfile
                 $page = PageCache::getInstance()->getPage($this->pageID);
                 if ($page !== null) {
                     if ($page->getHandler() !== null && $page->getHandler() instanceof IOnlineLocationPageHandler) {
-                        // refer to page handler
-                        /** @noinspection PhpUndefinedMethodInspection */
-                        $this->location = $page->getHandler()->getOnlineLocation($page, $this);
+                        $handler = $page->getHandler();
+                        \assert($handler instanceof IOnlineLocationPageHandler);
+                        $this->location = $handler->getOnlineLocation($page, $this);
 
                         return true;
                     } elseif ($page->isVisible() && $page->isAccessible()) {

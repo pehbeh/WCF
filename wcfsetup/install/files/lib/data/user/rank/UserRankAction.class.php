@@ -133,9 +133,11 @@ class UserRankAction extends AbstractDatabaseObjectAction
     #[\Override]
     public function delete()
     {
-        parent::delete();
+        $count = parent::delete();
 
         $this->deleteI18nValues();
+
+        return $count;
     }
 
     public function getI18nSaveTypes(): array

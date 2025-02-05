@@ -162,6 +162,8 @@ final class CaptchaFormField extends AbstractFormField implements IObjectTypeFor
         if ($post !== null) {
             $_POST = $post;
         }
+
+        return $this;
     }
 
     /**

@@ -42,6 +42,6 @@ class ArticleContentAction extends AbstractDatabaseObjectAction
         // delete entry from search index
         SearchIndexManager::getInstance()->delete('com.woltlab.wcf.article', $articleContentIDs);
 
-        parent::delete();
+        return parent::delete();
     }
 }

@@ -26,6 +26,7 @@ use wcf\system\WCF;
  * @property-read   int $lastChangeTime     timestamp at which the moderation queue entry has been changed the last time
  * @property-read   array $additionalData     array with additional data of the moderation queue entry
  * @property-read   bool $markAsJustified    true if the report was closed, but it was actually justified and other actions may have been taken
+ * @property-read   string $message
  */
 class ModerationQueue extends DatabaseObject
 {
@@ -140,6 +141,8 @@ class ModerationQueue extends DatabaseObject
                 return WCF::getLanguage()->get('wcf.moderation.status.' . $phrase . '.' . $definition->definitionName);
                 break;
         }
+
+        return '';
     }
 
     /**

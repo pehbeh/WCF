@@ -73,6 +73,8 @@ final class EmailGrammar
                 return "(?:" . self::getGrammar('name-addr') . "|" . self::getGrammar('addr-spec') . ")";
             case 'msg-id':
                 return "(?:" . self::getGrammar('CFWS') . "?<" . self::getGrammar('id-left') . "@" . self::getGrammar('id-right') . ">" . self::getGrammar('CFWS') . "?)";
+            default:
+                throw new \LogicException('unreachable');
         }
     }
 
