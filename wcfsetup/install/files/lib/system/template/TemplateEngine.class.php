@@ -730,20 +730,13 @@ class TemplateEngine extends SingletonFactory
     /**
      * Returns the output of a template.
      *
-     * @param string $application
-     * @param string $templateName
-     * @param array  $variables
-     *
-     * @return  string
-     *
      * @since 6.2
      */
     public function render(string $application, string $templateName, array $variables): string
     {
         $this->enableSandbox();
 
-        // add new template variables
-        if (!empty($variables)) {
+        if ($variables !== []) {
             $this->v = \array_merge($this->v, $variables);
         }
 
