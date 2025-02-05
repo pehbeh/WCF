@@ -116,20 +116,21 @@ class MessageEmbeddedObjectManager extends SingletonFactory
 
         /** @var IMessageEmbeddedObjectHandler $handler */
         foreach ($this->getEmbeddedObjectHandlers() as $handler) {
-            $objectIDs = $handler->parse($htmlInputProcessor, $embeddedData);
-
-            if (!empty($objectIDs)) {
-                foreach ($objectIDs as $objectID) {
-                    $parameters = [$messageObjectTypeID, $messageID, $handler->objectTypeID, $objectID];
-                    if ($isBulk) {
-                        $this->bulkData['insert'][] = $parameters;
-                    } else {
-                        $statement->execute($parameters);
-                    }
-                }
-
-                $returnValue = true;
+            $objectIDs = \array_unique($handler->parse($htmlInputProcessor, $embeddedData));
+            if ($objectIDs === []) {
+                continue;
             }
+
+            foreach ($objectIDs as $objectID) {
+                $parameters = [$messageObjectTypeID, $messageID, $handler->objectTypeID, $objectID];
+                if ($isBulk) {
+                    $this->bulkData['insert'][] = $parameters;
+                } else {
+                    $statement->execute($parameters);
+                }
+            }
+
+            $returnValue = true;
         }
 
         if (!$isBulk) {
