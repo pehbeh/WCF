@@ -16,7 +16,7 @@ use wcf\system\gridView\filter\ObjectIdFilter;
 use wcf\system\gridView\filter\SelectFilter;
 use wcf\system\gridView\GridViewColumn;
 use wcf\system\gridView\GridViewRowLink;
-use wcf\system\gridView\renderer\AbstractColumnRenderer;
+use wcf\system\gridView\renderer\NumberColumnRenderer;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\gridView\renderer\PhraseColumnRenderer;
 use wcf\system\interaction\admin\PaidSubscriptionInteractions;
@@ -59,7 +59,7 @@ final class PaidSubscriptionGridView extends AbstractGridView
                 ->sortable()
                 ->filter(new NumericFilter())
                 ->renderer(
-                    new class extends AbstractColumnRenderer {
+                    new class extends NumberColumnRenderer {
                         #[\Override]
                         public function render(mixed $value, DatabaseObject $row): string
                         {
@@ -80,7 +80,7 @@ final class PaidSubscriptionGridView extends AbstractGridView
                 ->sortable()
                 ->filter(new NumericFilter())
                 ->renderer(
-                    new class extends AbstractColumnRenderer {
+                    new class extends NumberColumnRenderer {
                         #[\Override]
                         public function render(mixed $value, DatabaseObject $row): string
                         {
@@ -102,6 +102,7 @@ final class PaidSubscriptionGridView extends AbstractGridView
             GridViewColumn::for('showOrder')
                 ->label('wcf.global.showOrder')
                 ->sortable()
+                ->renderer(new NumberColumnRenderer())
                 ->filter(new NumericFilter())
         ]);
 
