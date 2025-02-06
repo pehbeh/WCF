@@ -186,6 +186,7 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\languages\SetAsDefaultLanguage());
             $event->register(new \wcf\system\endpoint\controller\core\languages\items\DeleteItem());
             $event->register(new \wcf\system\endpoint\controller\core\labels\groups\DeleteGroup());
+            $event->register(new \wcf\system\endpoint\controller\core\templates\DeleteTemplate());
         }
     );
 
