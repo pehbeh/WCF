@@ -757,4 +757,40 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
     {
         return 'userLink';
     }
+
+    /**
+     * Returns true if the active user can delete this user.
+     *
+     * @since 6.2
+     */
+    public function canDelete(): bool
+    {
+        return WCF::getUser()->userID !== $this->userID
+            && WCF::getSession()->getPermission('admin.user.canDeleteUser')
+            && UserGroup::isAccessibleGroup($this->getGroupIDs());
+    }
+
+    /**
+     * Returns true if the active user can ban this user.
+     *
+     * @since 6.2
+     */
+    public function canEnable(): bool
+    {
+        return WCF::getUser()->userID !== $this->userID
+            && WCF::getSession()->getPermission('admin.user.canEnableUser')
+            && UserGroup::isAccessibleGroup($this->getGroupIDs());
+    }
+
+    /**
+     * Returns true if the active user can ban this user.
+     *
+     * @since 6.2
+     */
+    public function canBan(): bool
+    {
+        return WCF::getUser()->userID !== $this->userID
+            && WCF::getSession()->getPermission('admin.user.canBanUser')
+            && UserGroup::isAccessibleGroup($this->getGroupIDs());
+    }
 }
