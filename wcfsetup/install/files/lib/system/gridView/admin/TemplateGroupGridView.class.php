@@ -79,7 +79,7 @@ final class TemplateGroupGridView extends AbstractGridView
                     return \sprintf(
                         '<a href="%s" title="%s" class="jsTooltip"><fa-icon name="list"></a>',
                         LinkHandler::getInstance()->getControllerLink(TemplateListPage::class, [
-                            'templateGroupID' => $object->templateGroupID,
+                            'filters' => ['templateGroupID' => $object->templateGroupID],
                         ]),
                         WCF::getLanguage()->get('wcf.acp.template.list'),
                     );
