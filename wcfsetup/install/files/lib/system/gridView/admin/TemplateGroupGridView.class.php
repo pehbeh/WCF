@@ -3,8 +3,6 @@
 namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\TemplateGroupEditForm;
-use wcf\acp\page\TemplateListPage;
-use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\data\template\group\I18nTemplateGroupList;
 use wcf\data\template\group\TemplateGroup;
@@ -17,11 +15,9 @@ use wcf\system\gridView\filter\TextFilter;
 use wcf\system\gridView\GridViewColumn;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\gridView\renderer\PhraseColumnRenderer;
-use wcf\system\interaction\AbstractInteraction;
 use wcf\system\interaction\admin\TemplateGroupInteractions;
 use wcf\system\interaction\Divider;
 use wcf\system\interaction\EditInteraction;
-use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 
 /**
@@ -69,23 +65,6 @@ final class TemplateGroupGridView extends AbstractGridView
             ),
         ]);
         $this->setInteractionProvider($provider);
-        $this->addQuickInteraction(
-            new class("showTemplates") extends AbstractInteraction {
-                #[\Override]
-                public function render(DatabaseObject $object): string
-                {
-                    \assert($object instanceof TemplateGroup);
-
-                    return \sprintf(
-                        '<a href="%s" title="%s" class="jsTooltip"><fa-icon name="list"></a>',
-                        LinkHandler::getInstance()->getControllerLink(TemplateListPage::class, [
-                            'templateGroupID' => $object->templateGroupID,
-                        ]),
-                        WCF::getLanguage()->get('wcf.acp.template.list'),
-                    );
-                }
-            }
-        );
 
         $this->setSortField("templateGroupName");
     }
