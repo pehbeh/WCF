@@ -7,6 +7,7 @@ use wcf\event\interaction\admin\PageInteractionCollecting;
 use wcf\system\event\EventHandler;
 use wcf\system\interaction\AbstractInteractionProvider;
 use wcf\system\interaction\DeleteInteraction;
+use wcf\system\interaction\LinkableObjectInteraction;
 
 /**
  * Interaction provider for pages.
@@ -21,6 +22,11 @@ final class PageInteractions extends AbstractInteractionProvider
     public function __construct()
     {
         $this->addInteractions([
+            new LinkableObjectInteraction(
+                'view',
+                'wcf.acp.page.button.viewPage',
+                static fn(Page $page) => !$page->requireObjectID
+            ),
             new DeleteInteraction('core/pages/%s', static fn(Page $page) => $page->canDelete()),
         ]);
 

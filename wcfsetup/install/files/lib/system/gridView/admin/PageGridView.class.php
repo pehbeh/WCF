@@ -23,7 +23,6 @@ use wcf\system\gridView\renderer\AbstractColumnRenderer;
 use wcf\system\gridView\renderer\DefaultColumnRenderer;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\gridView\renderer\TimeColumnRenderer;
-use wcf\system\interaction\AbstractInteraction;
 use wcf\system\interaction\admin\PageInteractions;
 use wcf\system\interaction\Divider;
 use wcf\system\interaction\EditInteraction;
@@ -137,30 +136,6 @@ final class PageGridView extends AbstractGridView
             new EditInteraction(PageEditForm::class)
         ]);
         $this->setInteractionProvider($provider);
-
-        $this->addQuickInteraction(
-            new class('view') extends AbstractInteraction {
-                #[\Override]
-                public function render(DatabaseObject $object): string
-                {
-                    \assert($object instanceof Page);
-
-                    return \sprintf(
-                        '<a href="%s" class="jsTooltip" title="%s"><fa-icon name="magnifying-glass"></a>',
-                        StringUtil::encodeHTML($object->getLink()),
-                        WCF::getLanguage()->get('wcf.acp.page.button.viewPage')
-                    );
-                }
-
-                #[\Override]
-                public function isAvailable(DatabaseObject $object): bool
-                {
-                    \assert($object instanceof Page);
-
-                    return !$object->requireObjectID;
-                }
-            }
-        );
         $this->addQuickInteraction(
             new ToggleInteraction(
                 'enable',
