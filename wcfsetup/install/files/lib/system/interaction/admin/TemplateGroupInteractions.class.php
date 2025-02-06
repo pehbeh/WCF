@@ -40,7 +40,7 @@ final class TemplateGroupInteractions extends AbstractInteractionProvider
                                 'templateGroupID' => $object->templateGroupID,
                             ])
                         ),
-                        WCF::getLanguage()->get('wcf.acp.template.list')
+                        WCF::getLanguage()->get('wcf.acp.template.group.button.showTemplates')
                     );
                 }
             },
