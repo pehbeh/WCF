@@ -28,6 +28,18 @@ final class UserBulkInteractions extends AbstractBulkInteractionProvider
     {
         $this->addInteractions([
             new BulkRpcInteraction(
+                "enable",
+                "core/users/%s/enable",
+                "wcf.acp.user.enable",
+                isAvailableCallback: static fn(UserProfile $user) => $user->pendingActivation() && $user->canEnable()
+            ),
+            new BulkRpcInteraction(
+                "disable",
+                "core/users/%s/disable",
+                "wcf.acp.user.disable",
+                isAvailableCallback: static fn(UserProfile $user) => !$user->pendingActivation() && $user->canEnable()
+            ),
+            new BulkRpcInteraction(
                 "ban",
                 "core/users/%s/ban",
                 "wcf.acp.user.ban",
