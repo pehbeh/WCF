@@ -7,8 +7,9 @@ use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use wcf\data\user\UserAction;
 use wcf\http\Helper;
-use wcf\system\cache\runtime\UserProfileRuntimeCache;
+use wcf\system\cache\runtime\UserRuntimeCache;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\exception\PermissionDeniedException;
 use wcf\system\form\builder\container\FormContainer;
@@ -46,7 +47,7 @@ final class BanUserAction implements RequestHandlerInterface
         }
 
         $userIDs = \is_array($parameters['objectIDs']) ? $parameters['objectIDs'] : [$parameters['objectIDs']];
-        $users = UserProfileRuntimeCache::getInstance()->getObjects($userIDs);
+        $users = UserRuntimeCache::getInstance()->getObjects($userIDs);
 
         if ($users === []) {
             throw new IllegalLinkException();
@@ -68,7 +69,12 @@ final class BanUserAction implements RequestHandlerInterface
                 return $response;
             }
 
-            // TODO ban users
+            $data = $form->getData()['data'];
+
+            (new UserAction($users, 'ban', [
+                'banReason' => $data['banReason'],
+                'banExpires' => $data['userBanNeverExpires'] ? 0 : \intval($data['userBanExpires'])
+            ]))->executeAction();
 
             return new JsonResponse([]);
         } else {
@@ -85,7 +91,7 @@ final class BanUserAction implements RequestHandlerInterface
         $form->appendChildren([
             FormContainer::create('section')
                 ->appendChildren([
-                    MultilineTextFormField::create('userBanReason')
+                    MultilineTextFormField::create('banReason')
                         ->label("wcf.acp.user.banReason")
                         ->rows(3)
                         ->description("wcf.acp.user.banReason.description"),
@@ -96,6 +102,7 @@ final class BanUserAction implements RequestHandlerInterface
                         ->label("wcf.acp.user.ban.expires")
                         ->description("wcf.acp.user.ban.expires.description")
                         ->earliestDate(\TIME_NOW)
+                        ->required()
                         ->addDependency(
                             EmptyFormFieldDependency::create("userBanNeverExpires")
                                 ->fieldId("userBanNeverExpires")
@@ -104,6 +111,7 @@ final class BanUserAction implements RequestHandlerInterface
         ]);
 
         $form->build();
+        $form->markRequiredFields(false);
 
         return $form;
     }

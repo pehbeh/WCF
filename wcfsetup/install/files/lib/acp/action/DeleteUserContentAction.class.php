@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use wcf\http\Helper;
-use wcf\system\cache\runtime\UserProfileRuntimeCache;
+use wcf\system\cache\runtime\UserRuntimeCache;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\exception\PermissionDeniedException;
 use wcf\system\form\builder\container\FormContainer;
@@ -42,10 +42,12 @@ final class DeleteUserContentAction implements RequestHandlerInterface
         }
 
         $userIDs = \is_array($parameters['objectIDs']) ? $parameters['objectIDs'] : [$parameters['objectIDs']];
-        $users = UserProfileRuntimeCache::getInstance()->getObjects($userIDs);
+        $users = UserRuntimeCache::getInstance()->getObjects($userIDs);
+
         if ($users === []) {
             throw new IllegalLinkException();
         }
+
         foreach ($users as $user) {
             if (!$user->canDelete()) {
                 throw new PermissionDeniedException();
