@@ -15,7 +15,7 @@ use wcf\system\gridView\admin\TemplateGridView;
  */
 final class TemplateGridViewInitialized implements IPsr14Event
 {
-    public function __construct(TemplateGridView $param)
+    public function __construct(public readonly TemplateGridView $param)
     {
     }
 }
