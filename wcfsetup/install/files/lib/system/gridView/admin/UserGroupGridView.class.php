@@ -8,6 +8,8 @@ use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\data\user\group\I18nUserGroupList;
 use wcf\data\user\group\UserGroup;
+use wcf\event\gridView\admin\UserGroupGridViewInitialized;
+use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\I18nTextFilter;
 use wcf\system\gridView\filter\NumericFilter;
@@ -136,5 +138,11 @@ final class UserGroupGridView extends AbstractGridView
         $list->sqlSelects .= $this->subSelectMembers() . " AS members";
 
         return $list;
+    }
+
+    #[\Override]
+    protected function getInitializedEvent(): ?IPsr14Event
+    {
+        return new UserGroupGridViewInitialized($this);
     }
 }
