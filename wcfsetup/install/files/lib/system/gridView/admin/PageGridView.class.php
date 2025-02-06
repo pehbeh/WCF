@@ -103,7 +103,8 @@ final class PageGridView extends AbstractGridView
                             return StringUtil::encodeHTML($application->domainName . $application->domainPath);
                         }
                     }
-                ),
+                )
+                ->hidden(),
             GridViewColumn::for('lastUpdateTime')
                 ->label('wcf.acp.page.lastUpdateTime')
                 ->renderer(new TimeColumnRenderer())
