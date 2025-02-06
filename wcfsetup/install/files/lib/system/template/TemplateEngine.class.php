@@ -699,9 +699,8 @@ class TemplateEngine extends SingletonFactory
      */
     public function fetch($templateName, $application = 'wcf', array $variables = [], $sandbox = false)
     {
-        // enable sandbox
         if ($sandbox) {
-            $this->enableSandbox();
+            return $this->render($application, $templateName, $variables);
         }
 
         // add new template variables
@@ -716,11 +715,6 @@ class TemplateEngine extends SingletonFactory
             $output = \ob_get_contents();
         } finally {
             \ob_end_clean();
-        }
-
-        // disable sandbox
-        if ($sandbox) {
-            $this->disableSandbox();
         }
 
         return $output;
