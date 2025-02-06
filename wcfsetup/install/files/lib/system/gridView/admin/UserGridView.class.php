@@ -152,6 +152,7 @@ final class UserGridView extends AbstractGridView
                 "enable",
                 "core/users/%s/enable",
                 "core/users/%s/disable",
+                propertyName: "activationCode",
                 isAvailableCallback: static fn(UserProfile $user) => $user->canEnable()
             )
         );
