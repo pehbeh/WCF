@@ -78,7 +78,7 @@ export class Sorting extends EventTarget {
 
     this.#renderActiveSorting();
 
-    this.dispatchEvent(new CustomEvent("change"));
+    this.dispatchEvent(new CustomEvent("grid-view:change"));
   }
 
   #renderActiveSorting(): void {
@@ -93,7 +93,7 @@ export class Sorting extends EventTarget {
 }
 
 interface SortingEventMap {
-  change: CustomEvent<void>;
+  "grid-view:change": CustomEvent<void>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging

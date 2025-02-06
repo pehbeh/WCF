@@ -15,14 +15,14 @@ define(["require", "exports", "WoltLabSuite/Core/Ui/Notification", "WoltLabSuite
         if (!ok) {
             return;
         }
-        element.dispatchEvent(new CustomEvent("refresh", {
+        element.dispatchEvent(new CustomEvent("interaction:invalidate", {
             bubbles: true,
         }));
         // TODO: This shows a generic success message and should be replaced with a more specific message.
         (0, Notification_1.show)();
     }
     function setup(identifier, container) {
-        container.addEventListener("interaction", (event) => {
+        container.addEventListener("interaction:execute", (event) => {
             if (event.detail.interaction === identifier) {
                 void handleFormBuilderDialogAction(event.target, event.detail.endpoint);
             }

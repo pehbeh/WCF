@@ -34,14 +34,14 @@ async function handleDboAction(
     // TODO: This shows a generic success message and should be replaced with a more specific message.
     showNotification(undefined, () => {
       element.dispatchEvent(
-        new CustomEvent("remove", {
+        new CustomEvent("interaction:remove", {
           bubbles: true,
         }),
       );
     });
   } else {
     element.dispatchEvent(
-      new CustomEvent("refresh", {
+      new CustomEvent("interaction:invalidate", {
         bubbles: true,
       }),
     );
@@ -52,7 +52,7 @@ async function handleDboAction(
 }
 
 export function setup(identifier: string, container: HTMLElement): void {
-  container.addEventListener("interaction", (event: CustomEvent) => {
+  container.addEventListener("interaction:execute", (event: CustomEvent) => {
     if (event.detail.interaction === identifier) {
       void handleDboAction(
         event.target as HTMLElement,
