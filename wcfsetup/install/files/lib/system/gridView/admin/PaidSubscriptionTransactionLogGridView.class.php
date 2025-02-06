@@ -20,6 +20,7 @@ use wcf\system\gridView\filter\TextFilter;
 use wcf\system\gridView\filter\TimeFilter;
 use wcf\system\gridView\filter\UserFilter;
 use wcf\system\gridView\GridViewColumn;
+use wcf\system\gridView\GridViewRowLink;
 use wcf\system\gridView\renderer\AbstractColumnRenderer;
 use wcf\system\gridView\renderer\DefaultColumnRenderer;
 use wcf\system\gridView\renderer\ILinkColumnRenderer;
@@ -27,7 +28,9 @@ use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\gridView\renderer\TimeColumnRenderer;
 use wcf\system\gridView\renderer\TruncatedTextColumnRenderer;
 use wcf\system\gridView\renderer\UserColumnRenderer;
-use wcf\system\interaction\AbstractInteraction;
+use wcf\system\interaction\AbstractInteractionProvider;
+use wcf\system\interaction\IInteractionProvider;
+use wcf\system\interaction\LinkInteraction;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
@@ -113,24 +116,8 @@ final class PaidSubscriptionTransactionLogGridView extends AbstractGridView
                 ->sortable(),
         ]);
 
-        $this->addQuickInteraction(
-            new class("show") extends AbstractInteraction {
-                #[\Override]
-                public function render(DatabaseObject $object): string
-                {
-                    return \sprintf(
-                        '<a href="%s" class="jsTooltip" title="%s"><fa-icon name="magnifying-glass"></fa-icon></a>',
-                        StringUtil::encodeHTML(
-                            LinkHandler::getInstance()->getControllerLink(PaidSubscriptionTransactionLogPage::class, [
-                                'id' => $object->getObjectID(),
-                            ])
-                        ),
-                        WCF::getLanguage()->get("wcf.acp.paidSubscription.transactionLog.showTransactionDetails")
-                    );
-                }
-            }
-        );
-
+        $this->setInteractionProvider($this->getInteractions());
+        $this->addRowLink(new GridViewRowLink(PaidSubscriptionTransactionLogPage::class));
         $this->setSortField("logTime");
         $this->setSortOrder("DESC");
     }
@@ -178,5 +165,27 @@ final class PaidSubscriptionTransactionLogGridView extends AbstractGridView
     protected function getInitializedEvent(): ?IPsr14Event
     {
         return new PaidSubscriptionTransactionLogGridViewInitialized($this);
+    }
+
+    private function getInteractions(): IInteractionProvider
+    {
+        return new class extends AbstractInteractionProvider {
+            public function __construct()
+            {
+                $this->addInteractions([
+                    new LinkInteraction(
+                        'showDetails',
+                        PaidSubscriptionTransactionLogPage::class,
+                        'wcf.acp.paidSubscription.transactionLog.showTransactionDetails'
+                    ),
+                ]);
+            }
+
+            #[\Override]
+            public function getObjectClassName(): string
+            {
+                return PaidSubscriptionTransactionLog::class;
+            }
+        };
     }
 }
