@@ -2,6 +2,7 @@
 
 namespace wcf\system\interaction\admin;
 
+use wcf\acp\action\BanUserAction;
 use wcf\acp\action\DeleteUserContentAction;
 use wcf\acp\form\UserMailForm;
 use wcf\data\user\UserProfile;
@@ -30,21 +31,19 @@ final class UserInteractions extends AbstractInteractionProvider
     public function __construct()
     {
         $this->addInteractions([
-            new RpcInteraction(
+            new FormBuilderDialogInteraction(
                 "ban",
-                "core/users/%s/ban",
+                LinkHandler::getInstance()->getControllerLink(BanUserAction::class, [
+                    "objectIDs" => "%s"
+                ]),
                 "wcf.acp.user.ban",
-                InteractionConfirmationType::Custom,
-                "wcf.acp.user.banUser.description",
                 static fn(UserProfile $user) => !$user->banned && $user->canBan()
             ),
             new RpcInteraction(
                 "unban",
                 "core/users/%s/unban",
                 "wcf.acp.user.unban",
-                InteractionConfirmationType::Custom,
-                "wcf.acp.user.unbanUser.description",
-                static fn(UserProfile $user) => $user->banned && $user->canBan()
+                isAvailableCallback: static fn(UserProfile $user) => $user->banned && $user->canBan()
             ),
             new RpcInteraction(
                 "confirm-email",

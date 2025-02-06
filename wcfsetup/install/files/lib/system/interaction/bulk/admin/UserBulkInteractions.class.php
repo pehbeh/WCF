@@ -2,6 +2,7 @@
 
 namespace wcf\system\interaction\bulk\admin;
 
+use wcf\acp\action\BanUserAction;
 use wcf\acp\action\DeleteUserContentAction;
 use wcf\data\user\UserProfile;
 use wcf\data\user\UserProfileList;
@@ -39,21 +40,17 @@ final class UserBulkInteractions extends AbstractBulkInteractionProvider
                 "wcf.acp.user.disable",
                 isAvailableCallback: static fn(UserProfile $user) => !$user->pendingActivation() && $user->canEnable()
             ),
-            new BulkRpcInteraction(
+            new BulkFormBuilderDialogInteraction(
                 "ban",
-                "core/users/%s/ban",
+                BanUserAction::class,
                 "wcf.acp.user.ban",
-                InteractionConfirmationType::Custom,
-                "wcf.acp.user.banUser.description",
-                static fn(UserProfile $user) => !$user->banned && $user->canBan()
+                isAvailableCallback: static fn(UserProfile $user) => !$user->banned && $user->canBan()
             ),
             new BulkRpcInteraction(
                 "unban",
                 "core/users/%s/unban",
                 "wcf.acp.user.unban",
-                InteractionConfirmationType::Custom,
-                "wcf.acp.user.unbanUser.description",
-                static fn(UserProfile $user) => $user->banned && $user->canBan()
+                isAvailableCallback: static fn(UserProfile $user) => $user->banned && $user->canBan()
             ),
             new BulkRpcInteraction(
                 "confirm-email",
