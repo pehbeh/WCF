@@ -104,6 +104,7 @@ export class GridView {
 
     this.#table.addEventListener("interaction:remove", (event) => {
       (event.target as HTMLElement).remove();
+      this.#checkEmptyTable();
     });
 
     this.#table.addEventListener("interaction:reset-selection", () => {
@@ -126,5 +127,13 @@ export class GridView {
   async #loadBulkInteractions(objectIds: number[]): Promise<void> {
     const response = await getBulkContextMenuOptions(this.#bulkInteractionProviderClassName, objectIds);
     this.#state.setBulkInteractionContextMenuOptions(response.unwrap().template);
+  }
+
+  #checkEmptyTable(): void {
+    if (this.#table.querySelectorAll("tbody tr").length > 0) {
+      return;
+    }
+
+    void this.#loadRows(StateChangeCause.Change);
   }
 }

@@ -70,6 +70,7 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
             });
             this.#table.addEventListener("interaction:remove", (event) => {
                 event.target.remove();
+                this.#checkEmptyTable();
             });
             this.#table.addEventListener("interaction:reset-selection", () => {
                 this.#state.resetSelection();
@@ -88,6 +89,12 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
         async #loadBulkInteractions(objectIds) {
             const response = await (0, GetBulkContextMenuOptions_1.getBulkContextMenuOptions)(this.#bulkInteractionProviderClassName, objectIds);
             this.#state.setBulkInteractionContextMenuOptions(response.unwrap().template);
+        }
+        #checkEmptyTable() {
+            if (this.#table.querySelectorAll("tbody tr").length > 0) {
+                return;
+            }
+            void this.#loadRows(0 /* StateChangeCause.Change */);
         }
     }
     exports.GridView = GridView;
