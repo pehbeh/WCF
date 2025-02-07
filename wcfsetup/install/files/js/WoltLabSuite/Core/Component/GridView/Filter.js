@@ -87,12 +87,12 @@ define(["require", "exports", "../../Helper/PromiseMutex", "../Dialog"], functio
             const { ok, result } = await (0, Dialog_1.dialogFactory)().usingFormBuilder().fromEndpoint(url.toString());
             if (ok) {
                 this.#filters = new Map(Object.entries(result));
-                this.dispatchEvent(new CustomEvent("change"));
+                this.dispatchEvent(new CustomEvent("grid-view:change"));
             }
         }
         #removeFilter(filter) {
             this.#filters.delete(filter);
-            this.dispatchEvent(new CustomEvent("change"));
+            this.dispatchEvent(new CustomEvent("grid-view:change"));
         }
     }
     exports.Filter = Filter;

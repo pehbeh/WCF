@@ -303,9 +303,10 @@ class DevtoolsPip extends DatabaseObjectDecorator
                         }
                     } else {
                         $path = 'wcfsetup/install/files/';
+                        $absolutePath = FileUtil::getRealPath($project->path . $path);
 
-                        $directory = new \RecursiveDirectoryIterator($project->path . $path);
-                        $filter = new \RecursiveCallbackFilterIterator($directory, static function ($current) {
+                        $directory = new \RecursiveDirectoryIterator($absolutePath);
+                        $filter = new \RecursiveCallbackFilterIterator($directory, static function ($current) use ($absolutePath) {
                             /** @var \SplFileInfo $current */
                             $filename = $current->getFilename();
                             if ($filename[0] === '.' && $filename !== '.gitignore' && $filename !== '.htaccess') {
@@ -322,8 +323,17 @@ class DevtoolsPip extends DatabaseObjectDecorator
                                 // ignore require build configuration file
                                 return false;
                             } elseif ($filename === 'templates') {
-                                // ignores both `templates` and `acp/templates`
-                                return false;
+                                $currentPath = FileUtil::addTrailingSlash($current->getPath());
+
+                                // Ignore the template directory at the root of the core.
+                                if (\str_ends_with($currentPath, $absolutePath)) {
+                                    return false;
+                                }
+
+                                // Also exclude the ACP template directory.
+                                if (\str_ends_with($currentPath, FileUtil::addTrailingSlash($absolutePath . 'acp'))) {
+                                    return false;
+                                }
                             }
 
                             return true;

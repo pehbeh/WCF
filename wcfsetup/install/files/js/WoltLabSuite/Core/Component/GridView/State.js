@@ -30,16 +30,16 @@ define(["require", "exports", "tslib", "./Filter", "./Selection", "./Sorting"], 
                 void this.#switchPage(event.detail, 2 /* StateChangeCause.Pagination */);
             });
             this.#filter = new Filter_1.default(gridId);
-            this.#filter.addEventListener("change", () => {
+            this.#filter.addEventListener("grid-view:change", () => {
                 this.#switchPage(1, 0 /* StateChangeCause.Change */);
             });
             this.#sorting = new Sorting_1.default(table, sortField, sortOrder);
-            this.#sorting.addEventListener("change", () => {
+            this.#sorting.addEventListener("grid-view:change", () => {
                 this.#switchPage(1, 0 /* StateChangeCause.Change */);
             });
             this.#selection = new Selection_1.default(gridId, table);
-            this.#selection.addEventListener("getBulkInteractions", (event) => {
-                this.dispatchEvent(new CustomEvent("getBulkInteractions", { detail: { objectIds: event.detail.objectIds } }));
+            this.#selection.addEventListener("grid-view:get-bulk-interactions", (event) => {
+                this.dispatchEvent(new CustomEvent("grid-view:get-bulk-interactions", { detail: { objectIds: event.detail.objectIds } }));
             });
             window.addEventListener("popstate", () => {
                 this.#handlePopState();
@@ -71,7 +71,7 @@ define(["require", "exports", "tslib", "./Filter", "./Selection", "./Sorting"], 
         #switchPage(pageNo, source) {
             this.#pagination.page = pageNo;
             this.#pageNo = pageNo;
-            this.dispatchEvent(new CustomEvent("change", { detail: { source } }));
+            this.dispatchEvent(new CustomEvent("grid-view:change", { detail: { source } }));
         }
         #updateQueryString() {
             if (!this.#baseUrl) {

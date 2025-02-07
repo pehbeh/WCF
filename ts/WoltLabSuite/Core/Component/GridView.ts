@@ -82,7 +82,7 @@ export class GridView {
         dropdown?.querySelectorAll<HTMLButtonElement>("[data-interaction]").forEach((element) => {
           element.addEventListener("click", () => {
             row.dispatchEvent(
-              new CustomEvent("interaction", {
+              new CustomEvent("interaction:execute", {
                 detail: element.dataset,
                 bubbles: true,
               }),
@@ -98,25 +98,25 @@ export class GridView {
       void this.#loadRows(StateChangeCause.Change);
     });
 
-    this.#table.addEventListener("refresh", (event) => {
+    this.#table.addEventListener("interaction:invalidate", (event) => {
       void this.#refreshRow(event.target as HTMLElement);
     });
 
-    this.#table.addEventListener("remove", (event) => {
+    this.#table.addEventListener("interaction:remove", (event) => {
       (event.target as HTMLElement).remove();
     });
 
-    this.#table.addEventListener("reset-selection", () => {
+    this.#table.addEventListener("interaction:reset-selection", () => {
       this.#state.resetSelection();
     });
   }
 
   #setupState(gridId: string, pageNo: number, baseUrl: string, sortField: string, sortOrder: string): State {
     const state = new State(gridId, this.#table, pageNo, baseUrl, sortField, sortOrder);
-    state.addEventListener("change", (event) => {
+    state.addEventListener("grid-view:change", (event) => {
       void this.#loadRows(event.detail.source);
     });
-    state.addEventListener("getBulkInteractions", (event) => {
+    state.addEventListener("grid-view:get-bulk-interactions", (event) => {
       void this.#loadBulkInteractions(event.detail.objectIds);
     });
 
