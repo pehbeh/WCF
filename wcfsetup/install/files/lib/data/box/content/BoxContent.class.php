@@ -140,7 +140,7 @@ class BoxContent extends DatabaseObject
 
         WCF::getTPL()->registerPrefilter(['simpleEmbeddedObject']);
 
-        $returnValue = WCF::getTPL()->fetch($templateName);
+        $returnValue = WCF::getTPL()->render('wcf', $templateName, []);
 
         WCF::getTPL()->removePrefilter('simpleEmbeddedObject');
 

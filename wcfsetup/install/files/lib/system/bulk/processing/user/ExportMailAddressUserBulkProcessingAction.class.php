@@ -83,7 +83,7 @@ class ExportMailAddressUserBulkProcessingAction extends AbstractUserBulkProcessi
      */
     public function getHTML()
     {
-        return WCF::getTPL()->fetch('exportMailAddressUserBulkProcessing', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'exportMailAddressUserBulkProcessing', [
             'fileType' => $this->fileType,
             'separator' => $this->separator,
             'textSeparator' => $this->textSeparator,

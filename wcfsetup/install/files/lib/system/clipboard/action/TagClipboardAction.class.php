@@ -54,9 +54,9 @@ class TagClipboardAction extends AbstractClipboardAction
             case 'setAsSynonyms':
                 $item->addParameter(
                     'template',
-                    WCF::getTPL()->fetch(
-                        'tagSetAsSynonyms',
+                    WCF::getTPL()->render(
                         'wcf',
+                        'tagSetAsSynonyms',
                         ['tags' => $this->objects]
                     )
                 );

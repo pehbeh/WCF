@@ -50,13 +50,11 @@ abstract class AbstractMessageQuoteHandler extends SingletonFactory implements I
             $userProfiles = UserProfileRuntimeCache::getInstance()->getObjects($userIDs);
         }
 
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', $this->templateName, [
             'messages' => $messages,
             'supportPaste' => $supportPaste,
             'userProfiles' => $userProfiles,
         ]);
-
-        return WCF::getTPL()->fetch($this->templateName);
     }
 
     /**

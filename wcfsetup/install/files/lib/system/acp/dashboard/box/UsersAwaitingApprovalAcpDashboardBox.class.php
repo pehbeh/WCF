@@ -46,10 +46,10 @@ final class UsersAwaitingApprovalAcpDashboardBox extends AbstractAcpDashboardBox
         $userList = $this->getUserList();
         $userList->readObjects();
 
-        return WCF::getTPL()->fetch('usersAwaitingApprovalAcpDashboardBox', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'usersAwaitingApprovalAcpDashboardBox', [
             'users' => $userList->getObjects(),
             'usersAwaitingApproval' => $this->getUsersAwaitingApproval(),
-        ], true);
+        ]);
     }
 
     #[\Override]

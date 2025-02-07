@@ -65,13 +65,11 @@ class UseroptionsOptionType extends AbstractOptionType
             $userOptions = \array_merge($sortedOptions, \array_diff($userOptions, $sortedOptions));
         }
 
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'useroptionsOptionType', [
             'option' => $option,
             'value' => \explode(',', $value),
             'availableOptions' => $userOptions,
         ]);
-
-        return WCF::getTPL()->fetch('useroptionsOptionType');
     }
 
     /**

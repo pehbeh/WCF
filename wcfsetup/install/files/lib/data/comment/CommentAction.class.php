@@ -163,14 +163,12 @@ class CommentAction extends AbstractDatabaseObjectAction implements IMessageInli
             $commentList->getObjects()
         );
 
-        WCF::getTPL()->assign([
-            'commentList' => $commentList,
-            'likeData' => MODULE_LIKE ? $commentList->getLikeData() : [],
-        ]);
-
         return [
             'lastCommentTime' => $commentList->getMinCommentTime(),
-            'template' => WCF::getTPL()->fetch('commentList'),
+            'template' => WCF::getTPL()->render('wcf', 'commentList', [
+                'commentList' => $commentList,
+                'likeData' => MODULE_LIKE ? $commentList->getLikeData() : [],
+            ]),
         ];
     }
 
@@ -829,15 +827,14 @@ class CommentAction extends AbstractDatabaseObjectAction implements IMessageInli
     {
         $upcastProcessor = new HtmlUpcastProcessor();
         $upcastProcessor->process($this->comment->message, 'com.woltlab.wcf.comment');
-        WCF::getTPL()->assign([
-            'comment' => $this->comment,
-            'text' => $upcastProcessor->getHtml(),
-            'wysiwygSelector' => 'commentEditor' . $this->comment->commentID,
-        ]);
 
         return [
             'actionName' => 'beginEdit',
-            'template' => WCF::getTPL()->fetch('commentEditor', 'wcf'),
+            'template' => WCF::getTPL()->render('wcf', 'commentEditor', [
+                'comment' => $this->comment,
+                'text' => $upcastProcessor->getHtml(),
+                'wysiwygSelector' => 'commentEditor' . $this->comment->commentID,
+            ]),
         ];
     }
 
@@ -999,7 +996,7 @@ class CommentAction extends AbstractDatabaseObjectAction implements IMessageInli
             }
         }
 
-        return WCF::getTPL()->fetch('commentAddGuestDialog', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'commentAddGuestDialog', [
             'ajaxCaptcha' => true,
             'captchaID' => 'commentAdd',
             'captchaObjectType' => $captchaObjectType,
@@ -1046,14 +1043,15 @@ class CommentAction extends AbstractDatabaseObjectAction implements IMessageInli
             }
         }
 
+        $tplVariables = [];
         // This functions renders a single comment without rendering its responses.
         // We need to prevent the setting of the data attribute for the last response time
         // so that the loading of the responses by the user works correctly.
         if ($comment->getDecoratedObject()->responses) {
-            WCF::getTPL()->assign('ignoreLastResponseTime', true);
+            $tplVariables['ignoreLastResponseTime'] = true;
         }
 
-        WCF::getTPL()->assign([
+        $tplVariables = \array_merge($tplVariables, [
             'commentCanAdd' => $this->commentProcessor->canAdd(
                 $comment->getDecoratedObject()->objectID
             ),
@@ -1087,10 +1085,10 @@ class CommentAction extends AbstractDatabaseObjectAction implements IMessageInli
                 $likeData['response'] = ReactionHandler::getInstance()->getLikeObjects($responseObjectType);
             }
 
-            WCF::getTPL()->assign('likeData', $likeData);
+            $tplVariables['likeData'] = $likeData;
         }
 
-        $template = WCF::getTPL()->fetch('commentList');
+        $template = WCF::getTPL()->render('wcf', 'commentList', $tplVariables);
         if ($response === null) {
             return $template;
         }
@@ -1122,7 +1120,7 @@ class CommentAction extends AbstractDatabaseObjectAction implements IMessageInli
         }
 
         // render response
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'commentResponseList', [
             'responseList' => [$response],
             'commentCanModerate' => $this->commentProcessor->canModerate(
                 $response->getComment()->objectTypeID,
@@ -1130,8 +1128,6 @@ class CommentAction extends AbstractDatabaseObjectAction implements IMessageInli
             ),
             'commentManager' => $this->commentProcessor,
         ]);
-
-        return WCF::getTPL()->fetch('commentResponseList');
     }
 
     /**

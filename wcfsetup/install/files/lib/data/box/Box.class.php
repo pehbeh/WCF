@@ -314,11 +314,9 @@ class Box extends DatabaseObject
             return '';
         }
 
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', '__box', [
             'box' => $this,
         ]);
-
-        return WCF::getTPL()->fetch('__box');
     }
 
     /**

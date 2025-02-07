@@ -68,15 +68,13 @@ class UserObjectWatchAction extends AbstractDatabaseObjectAction
      */
     public function manageSubscription()
     {
-        WCF::getTPL()->assign([
-            'objectType' => $this->objectType,
-            'userObjectWatch' => $this->userObjectWatch,
-        ]);
-
         return [
             'objectID' => $this->parameters['objectID'],
             'objectType' => $this->parameters['objectType'],
-            'template' => WCF::getTPL()->fetch('manageSubscription'),
+            'template' => WCF::getTPL()->render('wcf', 'manageSubscription', [
+                'objectType' => $this->objectType,
+                'userObjectWatch' => $this->userObjectWatch,
+            ]),
         ];
     }
 

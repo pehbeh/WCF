@@ -134,7 +134,7 @@ class UserOptionsCondition extends AbstractMultipleFieldsCondition implements
      */
     public function getHTML()
     {
-        return WCF::getTPL()->fetch('shared_userOptionsCondition', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'shared_userOptionsCondition', [
             'optionTree' => $this->optionHandler->getOptionTree('profile'),
         ]);
     }

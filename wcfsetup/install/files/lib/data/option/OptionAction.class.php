@@ -142,7 +142,7 @@ class OptionAction extends AbstractDatabaseObjectAction
      */
     public function generateRewriteRules()
     {
-        return WCF::getTPL()->fetch('__optionRewriteRulesOutput', 'wcf', [
+        return WCF::getTPL()->render('wcf', '__optionRewriteRulesOutput', [
             'rewriteRules' => $this->fetchRewriteRules(),
         ]);
     }

@@ -28,13 +28,11 @@ class TextI18nOptionType extends TextOptionType implements II18nOptionType
     {
         I18nHandler::getInstance()->assignVariables(!empty($_POST));
 
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'textI18nOptionType', [
             'option' => $option,
             'inputType' => $this->inputType,
             'value' => $value,
         ]);
-
-        return WCF::getTPL()->fetch('textI18nOptionType');
     }
 
     /**

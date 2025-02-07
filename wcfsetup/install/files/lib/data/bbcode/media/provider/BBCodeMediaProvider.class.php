@@ -168,7 +168,7 @@ class BBCodeMediaProvider extends DatabaseObject implements IRouteController
             return $html;
         }
 
-        return WCF::getTPL()->fetch('messageUserConsent', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'messageUserConsent', [
             'host' => Url::parse($url)['host'],
             'payload' => \base64_encode($html),
             'url' => $url,

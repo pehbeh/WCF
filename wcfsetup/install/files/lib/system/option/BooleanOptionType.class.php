@@ -31,14 +31,12 @@ class BooleanOptionType extends AbstractOptionType implements ISearchableConditi
     {
         $options = Option::parseEnableOptions($option->enableOptions);
 
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'shared_booleanOptionType', [
             'disableOptions' => $options['disableOptions'],
             'enableOptions' => $options['enableOptions'],
             'option' => $option,
             'value' => $value,
         ]);
-
-        return WCF::getTPL()->fetch('shared_booleanOptionType');
     }
 
     /**
@@ -60,7 +58,7 @@ class BooleanOptionType extends AbstractOptionType implements ISearchableConditi
     {
         $options = Option::parseEnableOptions($option->enableOptions);
 
-        return WCF::getTPL()->fetch('shared_booleanSearchableOptionType', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'shared_booleanSearchableOptionType', [
             'disableOptions' => $options['disableOptions'],
             'enableOptions' => $options['enableOptions'],
             'option' => $option,

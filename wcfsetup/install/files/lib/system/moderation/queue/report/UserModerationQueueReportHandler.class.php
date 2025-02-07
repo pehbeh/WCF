@@ -80,11 +80,9 @@ class UserModerationQueueReportHandler extends AbstractModerationQueueHandler im
     public function getReportedContent(ViewableModerationQueue $queue)
     {
         /** @noinspection PhpParamsInspection */
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'moderationUser', [
             'user' => new UserProfile($queue->getAffectedObject()),
         ]);
-
-        return WCF::getTPL()->fetch('moderationUser');
     }
 
     /**

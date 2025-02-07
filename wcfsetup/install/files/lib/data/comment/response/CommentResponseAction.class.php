@@ -151,18 +151,16 @@ class CommentResponseAction extends AbstractDatabaseObjectAction
             $responseList->getObjects()
         );
 
-        WCF::getTPL()->assign([
-            'commentCanModerate' => $commentCanModerate,
-            'likeData' => MODULE_LIKE ? $responseList->getLikeData() : [],
-            'responseList' => $responseList,
-            'commentManager' => $this->commentManager,
-        ]);
-
         return [
             'commentID' => $this->comment->commentID,
             'lastResponseTime' => $lastResponseTime,
             'lastResponseID' => $lastResponseID,
-            'template' => WCF::getTPL()->fetch('commentResponseList'),
+            'template' => WCF::getTPL()->render('wcf', 'commentResponseList', [
+                'commentCanModerate' => $commentCanModerate,
+                'likeData' => MODULE_LIKE ? $responseList->getLikeData() : [],
+                'responseList' => $responseList,
+                'commentManager' => $this->commentManager,
+            ]),
         ];
     }
 
@@ -191,15 +189,14 @@ class CommentResponseAction extends AbstractDatabaseObjectAction
     {
         $upcastProcessor = new HtmlUpcastProcessor();
         $upcastProcessor->process($this->response->message, 'com.woltlab.wcf.comment.response');
-        WCF::getTPL()->assign([
-            'response' => $this->response,
-            'text' => $upcastProcessor->getHtml(),
-            'wysiwygSelector' => 'commentResponseEditor' . $this->response->responseID,
-        ]);
 
         return [
             'actionName' => 'beginEdit',
-            'template' => WCF::getTPL()->fetch('commentResponseEditor', 'wcf'),
+            'template' => WCF::getTPL()->render('wcf', 'commentResponseEditor', [
+                'response' => $this->response,
+                'text' => $upcastProcessor->getHtml(),
+                'wysiwygSelector' => 'commentResponseEditor' . $this->response->responseID,
+            ]),
         ];
     }
 
