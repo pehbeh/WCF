@@ -15,12 +15,13 @@ use wcf\data\tag\TagEditor;
  */
 final class SetSynonym
 {
+    /**
+     * @param Tag[] $tags
+     */
     public function __construct(
         private readonly Tag $mainTag,
-        /** @var Tag[] */
         private readonly array $tags
-    ) {
-    }
+    ) {}
 
     public function __invoke()
     {
