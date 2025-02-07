@@ -198,6 +198,7 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\paid\subscriptions\EnableSubscription());
             $event->register(new \wcf\system\endpoint\controller\core\paid\subscriptions\users\DeleteSubscriptionUser());
             $event->register(new \wcf\system\endpoint\controller\core\templates\DeleteTemplate());
+            $event->register(new \wcf\system\endpoint\controller\core\tags\DeleteTag());
         }
     );
 
