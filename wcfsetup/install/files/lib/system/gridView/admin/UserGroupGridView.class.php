@@ -14,6 +14,7 @@ use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\I18nTextFilter;
 use wcf\system\gridView\filter\NumericFilter;
 use wcf\system\gridView\GridViewColumn;
+use wcf\system\gridView\GridViewRowLink;
 use wcf\system\gridView\renderer\AbstractColumnRenderer;
 use wcf\system\gridView\renderer\ILinkColumnRenderer;
 use wcf\system\gridView\renderer\NumberColumnRenderer;
@@ -115,6 +116,10 @@ final class UserGroupGridView extends AbstractGridView
         ]);
         $this->setInteractionProvider($provider);
 
+        $this->addRowLink(new GridViewRowLink(
+            UserGroupEditForm::class,
+            isAvailableCallback: static fn(UserGroup $group) => $group->isEditable()
+        ));
         $this->setSortField("groupName");
     }
 
