@@ -193,6 +193,9 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\packages\updates\servers\DisableServer());
             $event->register(new \wcf\system\endpoint\controller\core\packages\updates\servers\DeleteServer());
             $event->register(new \wcf\system\endpoint\controller\core\packages\updates\servers\EnableServer());
+            $event->register(new \wcf\system\endpoint\controller\core\paid\subscriptions\DeleteSubscription());
+            $event->register(new \wcf\system\endpoint\controller\core\paid\subscriptions\DisableSubscription());
+            $event->register(new \wcf\system\endpoint\controller\core\paid\subscriptions\EnableSubscription());
         }
     );
 

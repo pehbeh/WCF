@@ -2049,6 +2049,7 @@ If you have <strong>already bought the licenses for the listed apps</strong>, th
 		<item name="wcf.acp.paidSubscription.user.add"><![CDATA[Manually Add Subscription]]></item>
 		<item name="wcf.acp.paidSubscription.user.edit"><![CDATA[Edit Active Subscription]]></item>
 		<item name="wcf.acp.paidSubscription.error.noPaymentMethods"><![CDATA[Adding subscriptions requires at least one active payment provider for the “Supported Payment Methods” option.]]></item>
+		<item name="wcf.acp.paidSubscription.currency"><![CDATA[Currency]]></item>
 	</category>
 	<category name="wcf.acp.pip">
 		<item name="wcf.acp.pip.objectType.com.woltlab.wcf.adLocation.data.title"><![CDATA[Ad Location Data]]></item>
