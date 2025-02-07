@@ -85,7 +85,7 @@ final class TagSynonymAction implements RequestHandlerInterface
     {
         $form = new Psr15DialogForm(
             TagSynonymAction::class,
-            WCF::getLanguage()->get('wcf.acp.dashboard.configure')
+            WCF::getLanguage()->get('wcf.acp.tag.setAsSynonyms')
         );
         $form->appendChildren([
             FormContainer::create('section')
