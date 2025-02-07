@@ -17,6 +17,7 @@ use wcf\system\gridView\GridViewColumn;
 use wcf\system\gridView\GridViewRowLink;
 use wcf\system\gridView\renderer\DefaultColumnRenderer;
 use wcf\system\gridView\renderer\NumberColumnRenderer;
+use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\interaction\admin\TagInteractions;
 use wcf\system\interaction\bulk\admin\TagBulkInteractions;
 use wcf\system\interaction\Divider;
@@ -40,6 +41,7 @@ final class TagGridView extends AbstractGridView
         $this->addColumns([
             GridViewColumn::for('tagID')
                 ->label('wcf.global.objectID')
+                ->renderer(new ObjectIdColumnRenderer())
                 ->sortable(),
             GridViewColumn::for('name')
                 ->label('wcf.acp.tag.name')
