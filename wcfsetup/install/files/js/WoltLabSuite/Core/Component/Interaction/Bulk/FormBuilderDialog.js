@@ -20,13 +20,13 @@ define(["require", "exports", "WoltLabSuite/Core/Ui/Notification", "WoltLabSuite
             if (!element) {
                 continue;
             }
-            element.dispatchEvent(new CustomEvent("refresh", {
+            element.dispatchEvent(new CustomEvent("interaction:invalidate", {
                 bubbles: true,
             }));
         }
         // TODO: This shows a generic success message and should be replaced with a more specific message.
         (0, Notification_1.show)();
-        container.dispatchEvent(new CustomEvent("reset-selection"));
+        container.dispatchEvent(new CustomEvent("interaction:reset-selection"));
     }
     function setup(identifier, container) {
         container.addEventListener("bulk-interaction", (event) => {

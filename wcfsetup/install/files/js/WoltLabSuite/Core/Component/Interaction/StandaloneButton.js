@@ -49,7 +49,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Api/Interactions/GetCo
                 ?.querySelectorAll("[data-interaction]")
                 .forEach((element) => {
                 element.addEventListener("click", () => {
-                    this.#container.dispatchEvent(new CustomEvent("interaction", {
+                    this.#container.dispatchEvent(new CustomEvent("interaction:execute", {
                         detail: element.dataset,
                         bubbles: true,
                     }));
@@ -57,10 +57,10 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Api/Interactions/GetCo
             });
         }
         #initEventListeners() {
-            this.#container.addEventListener("refresh", () => {
+            this.#container.addEventListener("interaction:invalidate", () => {
                 void this.#refreshContextMenu();
             });
-            this.#container.addEventListener("remove", () => {
+            this.#container.addEventListener("interaction:remove", () => {
                 window.location.href = this.#redirectUrl;
             });
         }
