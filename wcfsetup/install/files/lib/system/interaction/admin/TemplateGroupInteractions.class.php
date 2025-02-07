@@ -37,7 +37,7 @@ final class TemplateGroupInteractions extends AbstractInteractionProvider
                         '<a href="%s">%s</a>',
                         StringUtil::encodeHTML(
                             LinkHandler::getInstance()->getControllerLink(TemplateListPage::class, [
-                                'templateGroupID' => $object->templateGroupID,
+                                "filters" => ['templateGroupID' => $object->templateGroupID,]
                             ])
                         ),
                         WCF::getLanguage()->get('wcf.acp.template.group.button.showTemplates')
