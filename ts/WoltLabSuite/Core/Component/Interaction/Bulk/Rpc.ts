@@ -9,13 +9,15 @@
 
 import { deleteObject } from "WoltLabSuite/Core/Api/DeleteObject";
 import { postObject } from "WoltLabSuite/Core/Api/PostObject";
-import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 import { ConfirmationType, handleConfirmation } from "../Confirmation";
+import { showProgressSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
+import { getPhrase } from "WoltLabSuite/Core/Language";
 
 async function handleRpcInteraction(
   container: HTMLElement,
   objectIds: number[],
   endpoint: string,
+  label: string,
   confirmationType: ConfirmationType,
   customConfirmationMessage: string = "",
 ): Promise<void> {
@@ -24,59 +26,51 @@ async function handleRpcInteraction(
     return;
   }
 
-  if (confirmationType == ConfirmationType.Delete) {
-    for (let i = 0; i < objectIds.length; i++) {
-      const result = await deleteObject(endpoint.replace(/%s/, objectIds[i].toString()));
-      if (!result.ok) {
-        return;
-      }
-    }
-  } else {
-    for (let i = 0; i < objectIds.length; i++) {
-      const result = await postObject(
+  const snackbar = showProgressSnackbar(
+    getPhrase("wcf.global.snackbar.progress", {
+      label,
+      iteration: 0,
+      length: objectIds.length,
+    }),
+  );
+
+  for (let i = 0; i < objectIds.length; i++) {
+    if (confirmationType == ConfirmationType.Delete) {
+      await deleteObject(endpoint.replace(/%s/, objectIds[i].toString()));
+    } else {
+      await postObject(
         endpoint.replace(/%s/, objectIds[i].toString()),
         confirmationResult.reason ? { reason: confirmationResult.reason } : undefined,
       );
-      if (!result.ok) {
-        return;
-      }
     }
-  }
 
-  if (confirmationType === ConfirmationType.Delete) {
-    // TODO: This shows a generic success message and should be replaced with a more specific message.
-    showNotification(undefined, () => {
-      for (let i = 0; i < objectIds.length; i++) {
-        const element = container.querySelector(`[data-object-id="${objectIds[i]}"]`);
-        if (!element) {
-          continue;
-        }
-
-        element.dispatchEvent(
-          new CustomEvent("interaction:remove", {
-            bubbles: true,
-          }),
-        );
-      }
+    snackbar.message = getPhrase("wcf.global.snackbar.progress", {
+      label,
+      iteration: i + 1,
+      length: objectIds.length,
     });
-  } else {
-    for (let i = 0; i < objectIds.length; i++) {
-      const element = container.querySelector(`[data-object-id="${objectIds[i]}"]`);
-      if (!element) {
-        continue;
-      }
 
+    const element = container.querySelector(`[data-object-id="${objectIds[i]}"]`);
+    if (!element) {
+      continue;
+    }
+
+    if (confirmationType == ConfirmationType.Delete) {
+      element.dispatchEvent(
+        new CustomEvent("interaction:remove", {
+          bubbles: true,
+        }),
+      );
+    } else {
       element.dispatchEvent(
         new CustomEvent("interaction:invalidate", {
           bubbles: true,
         }),
       );
     }
-
-    // TODO: This shows a generic success message and should be replaced with a more specific message.
-    showNotification();
   }
 
+  snackbar.markAsDone();
   container.dispatchEvent(new CustomEvent("interaction:reset-selection"));
 }
 
@@ -87,6 +81,7 @@ export function setup(identifier: string, container: HTMLElement): void {
         container,
         JSON.parse(event.detail.objectIds),
         event.detail.endpoint,
+        event.detail.label,
         event.detail.confirmationType,
         event.detail.confirmationMessage,
       );
