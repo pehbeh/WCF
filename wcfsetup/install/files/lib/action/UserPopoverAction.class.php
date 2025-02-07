@@ -38,7 +38,7 @@ final class UserPopoverAction implements RequestHandlerInterface
         }
 
         return new HtmlResponse(
-            WCF::getTPL()->fetch('userCard', 'wcf', ['user' => $user]),
+            WCF::getTPL()->render('wcf', 'userCard', ['user' => $user]),
         );
     }
 }

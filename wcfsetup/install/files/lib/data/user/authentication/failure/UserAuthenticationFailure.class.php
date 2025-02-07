@@ -20,6 +20,7 @@ use wcf\util\UserUtil;
  * @property-read   int $time           timestamp at which the user authentication failure has occurred
  * @property-read   string $ipAddress      ip address of the user trying to login in
  * @property-read   string $userAgent      user agent of the user trying to login in
+ * @property-read   string $validationError
  */
 class UserAuthenticationFailure extends DatabaseObject
 {

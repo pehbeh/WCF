@@ -144,9 +144,9 @@ abstract class AbstractFormFieldDependency implements IFormFieldDependency
             throw new \LogicException("Unknown application with abbreviation '{$this->templateNameApplication}'.");
         }
 
-        return WCF::getTPL()->fetch($this->templateName, $this->templateNameApplication, [
+        return WCF::getTPL()->render($this->templateNameApplication, $this->templateName, [
             'dependency' => $this,
-        ], true);
+        ]);
     }
 
     /**

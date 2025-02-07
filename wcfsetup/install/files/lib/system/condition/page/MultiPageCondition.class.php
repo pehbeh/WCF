@@ -59,7 +59,7 @@ class MultiPageCondition extends AbstractMultiSelectCondition implements IConten
      */
     protected function getFieldElement()
     {
-        return WCF::getTPL()->fetch('shared_scrollablePageCheckboxList', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'shared_scrollablePageCheckboxList', [
             'pageCheckboxID' => $this->fieldName,
             'pageCheckboxListContainerID' => $this->fieldName . 'Container',
             'pageIDs' => $this->fieldValue,
@@ -72,7 +72,7 @@ class MultiPageCondition extends AbstractMultiSelectCondition implements IConten
      */
     public function getHTML()
     {
-        return WCF::getTPL()->fetch('shared_multiPageCondition', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'shared_multiPageCondition', [
             'condition' => $this,
             'conditionHtml' => AbstractSingleFieldCondition::getHTML(),
             'fieldName' => $this->fieldName,

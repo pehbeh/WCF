@@ -25,7 +25,7 @@ class SignedInAsBoxController extends AbstractBoxController
     protected function loadContent()
     {
         if (WCF::getUser()->userID) {
-            $this->content = WCF::getTPL()->fetch('boxSignedInAs', 'wcf', [], true);
+            $this->content = WCF::getTPL()->render('wcf', 'boxSignedInAs', []);
         }
     }
 }

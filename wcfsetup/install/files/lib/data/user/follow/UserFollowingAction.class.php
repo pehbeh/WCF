@@ -71,13 +71,11 @@ class UserFollowingAction extends UserFollowAction
         // load user profiles
         GroupedUserList::loadUsers();
 
-        WCF::getTPL()->assign([
-            'groupedUsers' => [$group],
-        ]);
-
         return [
             'pageCount' => $pageCount,
-            'template' => WCF::getTPL()->fetch('groupedUserList'),
+            'template' => WCF::getTPL()->render('wcf', 'groupedUserList', [
+                'groupedUsers' => [$group],
+            ]),
         ];
     }
 }

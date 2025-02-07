@@ -111,12 +111,12 @@ final class ExpiringLicensesAcpDashboardBox extends AbstractAcpDashboardBox
             );
         }
 
-        return WCF::getTPL()->fetch('expiringLicensesAcpDashboardBox', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'expiringLicensesAcpDashboardBox', [
             'packages' => $packages,
             'expiredLicenses' => \array_filter($this->getExpiredLicenses(), fn($date) => $date < \TIME_NOW),
             'expiringLicenses' => \array_filter($this->getExpiredLicenses(), fn($date) => $date >= \TIME_NOW),
             'ctaLink' => $ctaLink,
-        ], true);
+        ]);
     }
 
     #[\Override]

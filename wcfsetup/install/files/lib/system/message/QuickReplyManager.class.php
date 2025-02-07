@@ -264,17 +264,17 @@ class QuickReplyManager extends SingletonFactory
             $startIndex = $count - (\count($messageList) - 1);
 
             /** @noinspection PhpUndefinedMethodInspection */
-            WCF::getTPL()->assign([
+            $tplVariables = [
                 'attachmentList' => $messageList->getAttachmentList(),
                 'container' => $this->container,
                 'objects' => $messageList,
                 'startIndex' => $startIndex,
                 'sortOrder' => $sortOrder,
-            ]);
+            ];
 
             // assign 'to top' link
             if (isset($parameters['anchor'])) {
-                WCF::getTPL()->assign('anchor', $parameters['anchor']);
+                $tplVariables['anchor'] = $parameters['anchor'];
             }
 
             // update visit time (messages shouldn't occur as new upon next visit)
@@ -290,7 +290,7 @@ class QuickReplyManager extends SingletonFactory
             return [
                 'lastPostTime' => $message->time,
                 'objectID' => $message->getObjectID(),
-                'template' => WCF::getTPL()->fetch($templateName, $application),
+                'template' => WCF::getTPL()->render($application, $templateName, $tplVariables),
             ];
         } else {
             // redirect

@@ -23,7 +23,7 @@ final class SystemInfoAcpDashboardBox extends AbstractAcpDashboardBox
     #[\Override]
     public function getContent(): string
     {
-        return WCF::getTPL()->fetch('systemInfoAcpDashboardBox', 'wcf', $this->getVariables(), true);
+        return WCF::getTPL()->render('wcf', 'systemInfoAcpDashboardBox', $this->getVariables());
     }
 
     #[\Override]

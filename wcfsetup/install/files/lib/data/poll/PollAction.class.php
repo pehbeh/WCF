@@ -294,7 +294,7 @@ class PollAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
                 'wcf.poll.totalVotes',
                 ['poll' => $this->poll->getDecoratedObject()]
             ),
-            'template' => WCF::getTPL()->fetch('pollResult', 'wcf', [
+            'template' => WCF::getTPL()->render('wcf', 'pollResult', [
                 'poll' => $this->poll->getDecoratedObject(),
             ]),
         ];
@@ -343,7 +343,7 @@ class PollAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
         \assert($this->poll instanceof PollEditor);
 
         return [
-            'template' => WCF::getTPL()->fetch('pollResult', 'wcf', [
+            'template' => WCF::getTPL()->render('wcf', 'pollResult', [
                 'poll' => $this->poll->getDecoratedObject(),
             ]),
         ];
@@ -374,7 +374,7 @@ class PollAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
     public function getVoteTemplate(): array
     {
         return [
-            'template' => WCF::getTPL()->fetch('pollVote', 'wcf', [
+            'template' => WCF::getTPL()->render('wcf', 'pollVote', [
                 'poll' => $this->poll,
             ]),
         ];
@@ -422,13 +422,11 @@ class PollAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
         // load user profiles
         GroupedUserList::loadUsers();
 
-        WCF::getTPL()->assign([
-            'groupedUsers' => $options,
-        ]);
-
         return [
             'pageCount' => 1,
-            'template' => WCF::getTPL()->fetch('groupedUserList'),
+            'template' => WCF::getTPL()->render('wcf', 'groupedUserList', [
+                'groupedUsers' => $options,
+            ]),
         ];
     }
 

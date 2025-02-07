@@ -55,11 +55,9 @@ class HtmlOutputNodeWoltlabSpoiler extends AbstractHtmlOutputNode
      */
     public function replaceTag(array $data)
     {
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'spoilerMetaCode', [
             'buttonLabel' => $data['label'],
             'spoilerID' => \substr(StringUtil::getRandomID(), 0, 8),
         ]);
-
-        return WCF::getTPL()->fetch('spoilerMetaCode');
     }
 }

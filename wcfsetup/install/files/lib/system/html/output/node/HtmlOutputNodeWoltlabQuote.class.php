@@ -104,14 +104,12 @@ class HtmlOutputNodeWoltlabQuote extends AbstractHtmlOutputNode
             }
         }
 
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'shared_quoteMetaCode', [
             'collapseQuote' => $data['collapse'],
             'quoteLink' => $data['url'],
             'quoteAuthor' => $data['author'],
             'quoteAuthorObject' => $quoteAuthorObject,
             'isExternalQuoteLink' => $externalQuoteLink,
         ]);
-
-        return WCF::getTPL()->fetch('shared_quoteMetaCode');
     }
 }

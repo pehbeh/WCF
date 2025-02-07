@@ -109,13 +109,11 @@ class InstallPackageAction extends AbstractSecureAction
             $nextNode
         );
 
-        WCF::getTPL()->assign([
-            'installationType' => $this->queue->action,
-            'packageName' => $this->installation->queue->packageName,
-        ]);
-
         return new JsonResponse([
-            'template' => WCF::getTPL()->fetch('packageInstallationStepPrepare'),
+            'template' => WCF::getTPL()->render('wcf', 'packageInstallationStepPrepare', [
+                'installationType' => $this->queue->action,
+                'packageName' => $this->installation->queue->packageName,
+            ]),
             'step' => 'install',
             'node' => $nextNode,
             'currentAction' => $this->getCurrentAction($queueID),

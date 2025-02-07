@@ -154,17 +154,15 @@ class ModerationQueueReportAction extends ModerationQueueAction
             $this->parameters['objectID']
         ) ? 1 : 0;
 
-        WCF::getTPL()->assign([
-            'alreadyReported' => $alreadyReported,
-            'object' => ModerationQueueReportManager::getInstance()->getReportedObject(
-                $this->parameters['objectType'],
-                $this->parameters['objectID']
-            ),
-        ]);
-
         return [
             'alreadyReported' => $alreadyReported,
-            'template' => WCF::getTPL()->fetch('moderationReportDialog'),
+            'template' => WCF::getTPL()->render('wcf', 'moderationReportDialog', [
+                'alreadyReported' => $alreadyReported,
+                'object' => ModerationQueueReportManager::getInstance()->getReportedObject(
+                    $this->parameters['objectType'],
+                    $this->parameters['objectID']
+                ),
+            ]),
         ];
     }
 

@@ -85,12 +85,10 @@ class FileOptionType extends AbstractOptionType
      */
     public function getFormElement(Option $option, $value)
     {
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'fileOptionType', [
             'option' => $option,
             'value' => $value,
         ]);
-
-        return WCF::getTPL()->fetch('fileOptionType');
     }
 
     /**

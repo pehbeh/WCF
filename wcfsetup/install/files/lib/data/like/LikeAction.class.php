@@ -105,13 +105,11 @@ class LikeAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
         // load user profiles
         GroupedUserList::loadUsers();
 
-        WCF::getTPL()->assign([
-            'groupedUsers' => $values,
-        ]);
-
         return [
             'containerID' => $this->parameters['data']['containerID'],
-            'template' => WCF::getTPL()->fetch('groupedUserList'),
+            'template' => WCF::getTPL()->render('wcf', 'groupedUserList', [
+                'groupedUsers' => $values,
+            ]),
         ];
     }
 
@@ -295,14 +293,12 @@ class LikeAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
         // load user profiles
         GroupedUserList::loadUsers();
 
-        WCF::getTPL()->assign([
-            'groupedUsers' => $values,
-        ]);
-
         return [
             'containerID' => $this->parameters['data']['containerID'],
             'pageCount' => $pageCount,
-            'template' => WCF::getTPL()->fetch('groupedUserList'),
+            'template' => WCF::getTPL()->render('wcf', 'groupedUserList', [
+                'groupedUsers' => $values,
+            ]),
         ];
     }
 
@@ -353,14 +349,11 @@ class LikeAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
             return [];
         }
 
-        // parse template
-        WCF::getTPL()->assign([
-            'likeList' => $likeList,
-        ]);
-
         return [
             'lastLikeTime' => $likeList->getLastLikeTime(),
-            'template' => WCF::getTPL()->fetch('userProfileLikeItem'),
+            'template' => WCF::getTPL()->render('wcf', 'userProfileLikeItem', [
+                'likeList' => $likeList,
+            ]),
         ];
     }
 

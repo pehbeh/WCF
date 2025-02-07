@@ -26,7 +26,7 @@ trait TReasonedBulkProcessingAction
      */
     public function getHTML()
     {
-        return WCF::getTPL()->fetch('reasonedBulkProcessingAction', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'reasonedBulkProcessingAction', [
             'reason' => $this->reason,
             'reasonFieldName' => $this->getReasonFieldName(),
         ]);

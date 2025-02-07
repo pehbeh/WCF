@@ -48,11 +48,10 @@ class TrophyCategoriesBoxController extends AbstractBoxController
                 }
             }
 
-            $this->content = WCF::getTPL()->fetch(
-                'boxTrophyCategories',
+            $this->content = WCF::getTPL()->render(
                 'wcf',
-                ['categories' => $categories, 'activeCategory' => $activeCategory],
-                true
+                'boxTrophyCategories',
+                ['categories' => $categories, 'activeCategory' => $activeCategory]
             );
         }
     }

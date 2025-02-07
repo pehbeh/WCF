@@ -29,7 +29,7 @@ class RegisterButtonBoxController extends AbstractBoxController
             !WCF::getUser()->userID
             && UserAuthenticationConfigurationFactory::getInstance()->getConfigration()->canRegister
         ) {
-            $this->content = WCF::getTPL()->fetch('boxRegisterButton', 'wcf', ['box' => $this->box], true);
+            $this->content = WCF::getTPL()->render('wcf', 'boxRegisterButton', ['box' => $this->box]);
         }
     }
 }

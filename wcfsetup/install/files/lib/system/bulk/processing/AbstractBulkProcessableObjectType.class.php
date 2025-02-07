@@ -57,7 +57,7 @@ abstract class AbstractBulkProcessableObjectType extends AbstractObjectTypeProce
      */
     public function getConditionHTML()
     {
-        return WCF::getTPL()->fetch($this->templateName, \explode('\\', static::class)[0]);
+        return WCF::getTPL()->render(\explode('\\', static::class)[0], $this->templateName, []);
     }
 
     /**

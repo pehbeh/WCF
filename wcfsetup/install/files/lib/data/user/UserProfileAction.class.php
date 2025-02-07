@@ -152,9 +152,9 @@ class UserProfileAction extends UserAction
         }
 
         return [
-            'template' => WCF::getTPL()->fetch(
-                'detailedActivityPointList',
+            'template' => WCF::getTPL()->render(
                 'wcf',
+                'detailedActivityPointList',
                 [
                     'entries' => $entries,
                     'user' => $this->userProfile,
@@ -198,14 +198,13 @@ class UserProfileAction extends UserAction
     public function beginEdit()
     {
         $optionTree = $this->getOptionHandler($this->userProfile->getDecoratedObject())->getOptionTree();
-        WCF::getTPL()->assign([
-            'errorType' => [],
-            'optionTree' => $optionTree,
-            '__userTitle' => $this->userProfile->userTitle,
-        ]);
 
         return [
-            'template' => WCF::getTPL()->fetch('userProfileAboutEditable'),
+            'template' => WCF::getTPL()->render('wcf', 'userProfileAboutEditable', [
+                'errorType' => [],
+                'optionTree' => $optionTree,
+                '__userTitle' => $this->userProfile->userTitle,
+            ]),
         ];
     }
 
@@ -297,26 +296,23 @@ class UserProfileAction extends UserAction
 
             // return parsed template
             $options = $optionHandler->getOptionTree();
-            WCF::getTPL()->assign([
-                'options' => $options,
-                'userID' => $this->userProfile->userID,
-            ]);
 
             return [
                 'success' => true,
-                'template' => WCF::getTPL()->fetch('userProfileAbout'),
+                'template' => WCF::getTPL()->render('wcf', 'userProfileAbout', [
+                    'options' => $options,
+                    'userID' => $this->userProfile->userID,
+                ]),
             ];
         } else {
             // validation failed
-            WCF::getTPL()->assign([
-                'errorType' => $errors,
-                'optionTree' => $optionHandler->getOptionTree(),
-                '__userTitle' => $userTitle !== null ? $userTitle : $this->userProfile->userTitle,
-            ]);
-
             return [
                 'success' => false,
-                'template' => WCF::getTPL()->fetch('userProfileAboutEditable'),
+                'template' => WCF::getTPL()->render('wcf', 'userProfileAboutEditable', [
+                    'errorType' => $errors,
+                    'optionTree' => $optionHandler->getOptionTree(),
+                    '__userTitle' => $userTitle !== null ? $userTitle : $this->userProfile->userTitle,
+                ]),
             ];
         }
     }

@@ -23,7 +23,7 @@ final class NewsAcpDashboardBox extends AbstractAcpDashboardBox
     #[\Override]
     public function getContent(): string
     {
-        return WCF::getTPL()->fetch('newsAcpDashboardBox');
+        return WCF::getTPL()->render('wcf', 'newsAcpDashboardBox', []);
     }
 
     #[\Override]
