@@ -40,14 +40,13 @@ class DeviceNode implements IFormChildNode, IFormParentNode
      */
     public function getHtml(): string
     {
-        return WCF::getTPL()->fetch(
-            $this->templateName,
+        return WCF::getTPL()->render(
             'wcf',
+            $this->templateName,
             [
                 'container' => $this,
                 'device' => $this->data,
-            ],
-            true
+            ]
         );
     }
 

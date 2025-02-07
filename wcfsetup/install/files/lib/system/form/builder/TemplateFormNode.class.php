@@ -79,11 +79,10 @@ class TemplateFormNode implements IFormChildNode
      */
     public function getHtml()
     {
-        return WCF::getTPL()->fetch(
-            $this->getTemplateName(),
+        return WCF::getTPL()->render(
             $this->getApplication(),
+            $this->getTemplateName(),
             $this->getVariables(),
-            true
         );
     }
 

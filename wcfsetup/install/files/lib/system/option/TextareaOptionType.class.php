@@ -20,12 +20,10 @@ class TextareaOptionType extends TextOptionType
      */
     public function getFormElement(Option $option, $value)
     {
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'textareaOptionType', [
             'option' => $option,
             'value' => $value,
         ]);
-
-        return WCF::getTPL()->fetch('textareaOptionType');
     }
 
     /**
@@ -33,13 +31,11 @@ class TextareaOptionType extends TextOptionType
      */
     public function getSearchFormElement(Option $option, $value)
     {
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'textareaSearchableOptionType', [
             'option' => $option,
             'searchOption' => $this->forceSearchOption || ($value !== null && $value !== $option->defaultValue) || isset($_POST['searchOptions'][$option->optionName]),
             'value' => $value,
         ]);
-
-        return WCF::getTPL()->fetch('textareaSearchableOptionType');
     }
 
     /**

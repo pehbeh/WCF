@@ -45,8 +45,8 @@ final class GetArticlePopover implements IController
 
     private function renderPopover(Article $article): string
     {
-        return WCF::getTPL()->fetch('articlePopover', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'articlePopover', [
             'article' => ViewableArticle::getArticle($article->articleID),
-        ], true);
+        ]);
     }
 }

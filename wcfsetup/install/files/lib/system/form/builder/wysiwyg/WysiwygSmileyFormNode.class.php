@@ -35,7 +35,7 @@ class WysiwygSmileyFormNode implements IFormChildNode
      */
     public function getHtml()
     {
-        return WCF::getTPL()->fetch('shared_wysiwygSmileyFormNode', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'shared_wysiwygSmileyFormNode', [
             'node' => $this,
         ]);
     }

@@ -57,9 +57,9 @@ final class UserProfileHeaderView
 
     public function __toString(): string
     {
-        return WCF::getTPL()->fetch('userProfileHeader', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'userProfileHeader', [
             'view' => $this,
-        ], true);
+        ]);
     }
 
     public function hasStatItems(): bool

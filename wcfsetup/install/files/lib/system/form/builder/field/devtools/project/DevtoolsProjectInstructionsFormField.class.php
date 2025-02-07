@@ -90,15 +90,14 @@ final class DevtoolsProjectInstructionsFormField extends AbstractFormField
 
         $this->removeClass('formError');
 
-        return WCF::getTPL()->fetch(
-            $this->templateName,
+        return WCF::getTPL()->render(
             'wcf',
+            $this->templateName,
             [
                 'apps' => $this->getApplications(),
                 'field' => $this,
                 'packageInstallationPlugins' => $this->getPackageInstallationPlugins(),
-            ],
-            true
+            ]
         );
     }
 

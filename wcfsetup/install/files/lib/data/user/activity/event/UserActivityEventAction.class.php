@@ -121,16 +121,14 @@ class UserActivityEventAction extends AbstractDatabaseObjectAction
         }
 
         // parse template
-        WCF::getTPL()->assign([
-            'eventList' => $eventList,
-        ]);
-
         $events = $eventList->getObjects();
 
         return [
             'lastEventID' => \end($events)->eventID,
             'lastEventTime' => $lastEventTime,
-            'template' => WCF::getTPL()->fetch('recentActivityListItem'),
+            'template' => WCF::getTPL()->render('wcf', 'recentActivityListItem', [
+                'eventList' => $eventList,
+            ]),
         ];
     }
 

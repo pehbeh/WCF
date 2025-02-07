@@ -93,7 +93,7 @@ class PageContent extends DatabaseObject implements ITitledLinkObject
 
         WCF::getTPL()->registerPrefilter(['simpleEmbeddedObject']);
 
-        $returnValue = WCF::getTPL()->fetch($templateName);
+        $returnValue = WCF::getTPL()->render('wcf', $templateName, []);
 
         WCF::getTPL()->removePrefilter('simpleEmbeddedObject');
 

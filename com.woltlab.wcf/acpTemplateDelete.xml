@@ -155,5 +155,6 @@
 		<template>__multiPageCondition</template>
 		<template>__multilineItemListFormField</template>
 		<template>imageViewer</template>
+		<template>tagSetAsSynonyms</template>
 	</delete>
 </data>

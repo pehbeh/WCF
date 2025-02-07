@@ -55,11 +55,9 @@ class ArticleModerationQueueReportHandler extends AbstractModerationQueueHandler
      */
     public function getReportedContent(ViewableModerationQueue $queue)
     {
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'moderationArticle', [
             'article' => $this->getArticle($queue->getAffectedObject()->articleID),
         ]);
-
-        return WCF::getTPL()->fetch('moderationArticle');
     }
 
     /**

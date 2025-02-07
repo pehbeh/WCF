@@ -330,7 +330,7 @@ class MenuPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
      */
     public function getAdditionalTemplateCode()
     {
-        return WCF::getTPL()->fetch('__menuPipGui');
+        return WCF::getTPL()->render('wcf', '__menuPipGui', []);
     }
 
     /**

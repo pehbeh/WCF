@@ -2,19 +2,20 @@
 
 namespace wcf\acp\page;
 
-use wcf\data\package\update\server\PackageUpdateServerList;
-use wcf\page\SortablePage;
+use wcf\page\AbstractGridViewPage;
+use wcf\system\gridView\AbstractGridView;
+use wcf\system\gridView\admin\PackageUpdateServerGridView;
 
 /**
  * Shows information about available update package servers.
  *
- * @author  Marcel Werk
- * @copyright   2001-2019 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @author      Olaf Braun, Marcel Werk
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    PackageUpdateServerList $objectList
+ * @property    PackageUpdateServerGridView $gridView
  */
-class PackageUpdateServerListPage extends SortablePage
+class PackageUpdateServerListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -26,36 +27,9 @@ class PackageUpdateServerListPage extends SortablePage
      */
     public $neededPermissions = ['admin.configuration.package.canEditServer'];
 
-    /**
-     * @inheritDoc
-     */
-    public $defaultSortField = 'serverURL';
-
-    /**
-     * @inheritDoc
-     */
-    public $validSortFields = [
-        'packageUpdateServerID',
-        'serverURL',
-        'loginUsername',
-        'status',
-        'errorMessage',
-        'lastUpdateTime',
-        'packages',
-    ];
-
-    /**
-     * @inheritDoc
-     */
-    public $objectListClassName = PackageUpdateServerList::class;
-
-    /**
-     * @inheritDoc
-     */
-    public function readObjects()
+    #[\Override]
+    protected function createGridViewController(): AbstractGridView
     {
-        $this->sqlOrderBy = ($this->sortField != 'packages' ? 'package_update_server.' : '') . $this->sortField . ' ' . $this->sortOrder;
-
-        parent::readObjects();
+        return new PackageUpdateServerGridView();
     }
 }

@@ -94,22 +94,6 @@
 			</pages>
 		</action>
 		<!-- /com.woltlab.wcf.user -->
-		<!-- com.woltlab.wcf.tag -->
-		<action name="delete">
-			<actionclassname>wcf\system\clipboard\action\TagClipboardAction</actionclassname>
-			<showorder>1</showorder>
-			<pages>
-				<page>wcf\acp\page\TagListPage</page>
-			</pages>
-		</action>
-		<action name="setAsSynonyms">
-			<actionclassname>wcf\system\clipboard\action\TagClipboardAction</actionclassname>
-			<showorder>2</showorder>
-			<pages>
-				<page>wcf\acp\page\TagListPage</page>
-			</pages>
-		</action>
-		<!-- com.woltlab.wcf.tag -->
 		<!-- com.woltlab.wcf.media -->
 		<action name="insert">
 			<actionclassname>wcf\system\clipboard\action\MediaClipboardAction</actionclassname>
@@ -217,5 +201,21 @@
 				<page>wcf\acp\page\ArticleListPage</page>
 			</pages>
 		</action>
+		<!-- com.woltlab.wcf.tag -->
+		<action name="delete">
+			<actionclassname>wcf\system\clipboard\action\TagClipboardAction</actionclassname>
+			<showorder>1</showorder>
+			<pages>
+				<page>wcf\acp\page\TagListPage</page>
+			</pages>
+		</action>
+		<action name="setAsSynonyms">
+			<actionclassname>wcf\system\clipboard\action\TagClipboardAction</actionclassname>
+			<showorder>2</showorder>
+			<pages>
+				<page>wcf\acp\page\TagListPage</page>
+			</pages>
+		</action>
+		<!-- com.woltlab.wcf.tag -->
 	</delete>
 </data>

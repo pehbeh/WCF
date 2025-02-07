@@ -211,7 +211,7 @@ class Page extends DatabaseObject implements ILinkableObject, ITitledObject
      */
     public function getDisplayLink()
     {
-        return \preg_replace('~^https?://~', '', $this->getLink());
+        return \str_replace(WCF::getPath(), '', $this->getLink());
     }
 
     /**

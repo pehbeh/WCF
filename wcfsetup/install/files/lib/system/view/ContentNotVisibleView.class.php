@@ -21,9 +21,9 @@ final class ContentNotVisibleView
 
     public function __toString(): string
     {
-        return WCF::getTPL()->fetch('shared_contentNotVisible', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'shared_contentNotVisible', [
             'message' => $this->message,
-        ], true);
+        ]);
     }
 
     public static function forNotAvailable(): self

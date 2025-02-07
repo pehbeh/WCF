@@ -68,13 +68,11 @@ class MessageOptionType extends TextareaOptionType
         $upcastProcessor = new HtmlUpcastProcessor();
         $upcastProcessor->process($value ?? '', $this->messageObjectType);
 
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'messageOptionType', [
             'defaultSmilies' => SmileyCache::getInstance()->getCategorySmilies(),
             'option' => $option,
             'value' => $upcastProcessor->getHtml(),
         ]);
-
-        return WCF::getTPL()->fetch('messageOptionType');
     }
 
     /**

@@ -42,9 +42,9 @@ class ReactionType extends DatabaseObject implements ITitledObject
      */
     public function renderIcon()
     {
-        return WCF::getTPL()->fetch('reactionTypeImage', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'reactionTypeImage', [
             'reactionType' => $this,
-        ], true);
+        ]);
     }
 
     /**

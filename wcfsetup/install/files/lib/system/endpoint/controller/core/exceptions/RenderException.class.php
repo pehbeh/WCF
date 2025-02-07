@@ -36,7 +36,7 @@ final class RenderException implements IController
         }
 
         return new JsonResponse([
-            'template' => WCF::getTPL()->fetch('shared_exceptionLogDetails', 'wcf', [
+            'template' => WCF::getTPL()->render('wcf', 'shared_exceptionLogDetails', [
                 'exception' => $exception,
                 'exceptionID' => $variables['id'],
             ])

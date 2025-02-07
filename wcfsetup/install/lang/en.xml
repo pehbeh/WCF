@@ -2043,12 +2043,14 @@ If you have <strong>already bought the licenses for the listed apps</strong>, th
 		<item name="wcf.acp.paidSubscription.transactionLog.logMessage"><![CDATA[Action]]></item>
 		<item name="wcf.acp.paidSubscription.transactionLog"><![CDATA[Transaction]]></item>
 		<item name="wcf.acp.paidSubscription.transactionLog.transactionDetails"><![CDATA[Details]]></item>
+		<item name="wcf.acp.paidSubscription.transactionLog.showTransactionDetails"><![CDATA[Show Details]]></item>
 		<item name="wcf.acp.paidSubscription.excludedSubscriptions"><![CDATA[Excluded Subscriptions]]></item>
 		<item name="wcf.acp.paidSubscription.excludedSubscriptions.description"><![CDATA[Prevents purchasing of other subscriptions for buyers of this subscription.]]></item>
 		<item name="wcf.acp.paidSubscription.user.delete.confirmMessage"><![CDATA[Do you really want to terminate the subscription <span class="confirmationObject">{$subscriptionUser->title|phrase}</span> for the user <span class="confirmationObject">{$subscriptionUser->username}</span>?]]></item>
 		<item name="wcf.acp.paidSubscription.user.add"><![CDATA[Manually Add Subscription]]></item>
 		<item name="wcf.acp.paidSubscription.user.edit"><![CDATA[Edit Active Subscription]]></item>
 		<item name="wcf.acp.paidSubscription.error.noPaymentMethods"><![CDATA[Adding subscriptions requires at least one active payment provider for the “Supported Payment Methods” option.]]></item>
+		<item name="wcf.acp.paidSubscription.currency"><![CDATA[Currency]]></item>
 	</category>
 	<category name="wcf.acp.pip">
 		<item name="wcf.acp.pip.objectType.com.woltlab.wcf.adLocation.data.title"><![CDATA[Ad Location Data]]></item>
@@ -2756,6 +2758,7 @@ If you have <strong>already bought the licenses for the listed apps</strong>, th
 		<item name="wcf.acp.updateServer.add"><![CDATA[Add Server]]></item>
 		<item name="wcf.acp.updateServer.edit"><![CDATA[Edit Server]]></item>
 		<item name="wcf.acp.updateServer.errorMessage"><![CDATA[Error Message]]></item>
+		<item name="wcf.acp.updateServer.showErrorMessage"><![CDATA[Show Error Message]]></item>
 		<item name="wcf.acp.updateServer.list"><![CDATA[Package Servers]]></item>
 		<item name="wcf.acp.updateServer.lastErrorMessage"><![CDATA[Errors occurred on last connection attempt:]]></item>
 		<item name="wcf.acp.updateServer.loginPassword"><![CDATA[Password]]></item>
@@ -2992,6 +2995,7 @@ If you have <strong>already bought the licenses for the listed apps</strong>, th
 		<item name="wcf.acp.template.name.error.invalid"><![CDATA[This name is invalid.]]></item>
 		<item name="wcf.acp.template.group.error.shared"><![CDATA[The template must be in the “Shared templates” template group.]]></item>
 		<item name="wcf.acp.template.group.error.notShared"><![CDATA[The template must not be in the “Shared templates” template group.]]></item>
+		<item name="wcf.acp.template.group.button.showTemplates"><![CDATA[Show Templates]]></item>
 	</category>
 	<category name="wcf.acp.user">
 		<item name="wcf.acp.user.add"><![CDATA[Add User]]></item>
@@ -3403,9 +3407,6 @@ Allowed extensions: {', '|implode:$attachmentHandler->getFormattedAllowedExtensi
 		<item name="wcf.clipboard.item.com.woltlab.wcf.media.delete.confirmMessage"><![CDATA[Do you really want to delete {#$count} file{if $count != 1}s{/if}?]]></item>
 		<item name="wcf.clipboard.item.com.woltlab.wcf.media.insert"><![CDATA[Insert ({#$count})]]></item>
 		<item name="wcf.clipboard.item.com.woltlab.wcf.media.setCategory"><![CDATA[Edit Category ({#$count})]]></item>
-		<item name="wcf.clipboard.item.com.woltlab.wcf.tag.delete"><![CDATA[Delete ({#$count})]]></item>
-		<item name="wcf.clipboard.item.com.woltlab.wcf.tag.delete.confirmMessage"><![CDATA[Do you really want to delete {#$count} tag{if $count != 1}s{/if}?]]></item>
-		<item name="wcf.clipboard.item.com.woltlab.wcf.tag.setAsSynonyms"><![CDATA[Set as Synonyms ({#$count})]]></item>
 		<item name="wcf.clipboard.item.com.woltlab.wcf.user.assignToGroup"><![CDATA[Add to User Group]]></item>
 		<item name="wcf.clipboard.item.com.woltlab.wcf.user.ban"><![CDATA[Ban ({#$count})]]></item>
 		<item name="wcf.clipboard.item.com.woltlab.wcf.user.delete"><![CDATA[Delete ({#$count})]]></item>
@@ -3428,7 +3429,6 @@ Allowed extensions: {', '|implode:$attachmentHandler->getFormattedAllowedExtensi
 		<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.removeReportContent"><![CDATA[Delete Reported Content ({#$count})]]></item>
 		<item name="wcf.clipboard.label.com.woltlab.wcf.article.marked"><![CDATA[{if $count == 1}One Article{else}{#$count} Articles{/if}]]></item>
 		<item name="wcf.clipboard.label.com.woltlab.wcf.media.marked"><![CDATA[{if $count == 1}One File{else}{#$count} Files{/if}]]></item>
-		<item name="wcf.clipboard.label.com.woltlab.wcf.tag.marked"><![CDATA[{if $count == 1}One Tag{else}{#$count} Tags{/if}]]></item>
 		<item name="wcf.clipboard.label.com.woltlab.wcf.user.marked"><![CDATA[{if $count == 1}One User{else}{#$count} Users{/if}]]></item>
 		<item name="wcf.clipboard.label.com.woltlab.wcf.moderation.queue.marked"><![CDATA[{plural value=$count 1='One Moderation Item' other='# Moderation Items'}]]></item>
 	</category>
@@ -7494,5 +7494,9 @@ your notifications on <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phras
 	<item name="wcf.message.quote.showQuotes"/>
 	<item name="wcf.message.quote.removeSelectedQuotes"/>
 	<item name="wcf.message.quote.removeAllQuotes"/>
+	<item name="wcf.clipboard.item.com.woltlab.wcf.tag.delete"/>
+	<item name="wcf.clipboard.item.com.woltlab.wcf.tag.delete.confirmMessage"/>
+	<item name="wcf.clipboard.item.com.woltlab.wcf.tag.setAsSynonyms"/>
+	<item name="wcf.clipboard.label.com.woltlab.wcf.tag.marked"/>
 </delete>
 </language>

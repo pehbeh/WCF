@@ -47,11 +47,9 @@ class RecaptchaHandler implements ICaptchaHandler
             return '';
         }
 
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'shared_recaptcha', [
             'recaptchaLegacyMode' => true,
         ]);
-
-        return WCF::getTPL()->fetch('shared_recaptcha');
     }
 
     /**

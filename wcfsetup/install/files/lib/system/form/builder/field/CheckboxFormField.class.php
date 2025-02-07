@@ -46,9 +46,9 @@ class CheckboxFormField extends BooleanFormField implements INullableFormField
             throw new \UnexpectedValueException("Form field '{$this->getPrefixedId()}' requires a label.");
         }
 
-        return WCF::getTPL()->fetch(
-            'shared_checkboxFormField',
+        return WCF::getTPL()->render(
             'wcf',
+            'shared_checkboxFormField',
             [
                 'field' => $this,
             ]
