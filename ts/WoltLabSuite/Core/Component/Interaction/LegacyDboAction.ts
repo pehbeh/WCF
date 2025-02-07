@@ -9,8 +9,9 @@
  */
 
 import { dboAction } from "WoltLabSuite/Core/Ajax";
-import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 import { ConfirmationType, handleConfirmation } from "./Confirmation";
+import { showDefaultSuccessSnackbar, showSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
+import { getPhrase } from "WoltLabSuite/Core/Language";
 
 async function handleDboAction(
   element: HTMLElement,
@@ -31,14 +32,13 @@ async function handleDboAction(
     .dispatch();
 
   if (confirmationType == ConfirmationType.Delete) {
-    // TODO: This shows a generic success message and should be replaced with a more specific message.
-    showNotification(undefined, () => {
-      element.dispatchEvent(
-        new CustomEvent("interaction:remove", {
-          bubbles: true,
-        }),
-      );
-    });
+    element.dispatchEvent(
+      new CustomEvent("interaction:remove", {
+        bubbles: true,
+      }),
+    );
+
+    showSuccessSnackbar(getPhrase("wcf.global.success.delete"));
   } else {
     element.dispatchEvent(
       new CustomEvent("interaction:invalidate", {
@@ -46,8 +46,7 @@ async function handleDboAction(
       }),
     );
 
-    // TODO: This shows a generic success message and should be replaced with a more specific message.
-    showNotification();
+    showDefaultSuccessSnackbar();
   }
 }
 

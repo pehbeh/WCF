@@ -7,8 +7,8 @@
  * @since 6.2
  */
 
-import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 async function handleFormBuilderDialogAction(
   container: HTMLElement,
@@ -34,8 +34,7 @@ async function handleFormBuilderDialogAction(
     );
   }
 
-  // TODO: This shows a generic success message and should be replaced with a more specific message.
-  showNotification();
+  showDefaultSuccessSnackbar();
 
   container.dispatchEvent(new CustomEvent("interaction:reset-selection"));
 }

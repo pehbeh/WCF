@@ -7,7 +7,7 @@
  * @since 6.2
  * @deprecated 6.2 DBO actions are considered outdated and should be migrated to RPC endpoints.
  */
-define(["require", "exports", "WoltLabSuite/Core/Ajax", "WoltLabSuite/Core/Ui/Notification", "./Confirmation"], function (require, exports, Ajax_1, Notification_1, Confirmation_1) {
+define(["require", "exports", "WoltLabSuite/Core/Ajax", "./Confirmation", "WoltLabSuite/Core/Component/Snackbar", "WoltLabSuite/Core/Language"], function (require, exports, Ajax_1, Confirmation_1, Snackbar_1, Language_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
@@ -21,19 +21,16 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax", "WoltLabSuite/Core/Ui/No
             .payload(confirmationResult.reason ? { reason: confirmationResult.reason } : {})
             .dispatch();
         if (confirmationType == Confirmation_1.ConfirmationType.Delete) {
-            // TODO: This shows a generic success message and should be replaced with a more specific message.
-            (0, Notification_1.show)(undefined, () => {
-                element.dispatchEvent(new CustomEvent("interaction:remove", {
-                    bubbles: true,
-                }));
-            });
+            element.dispatchEvent(new CustomEvent("interaction:remove", {
+                bubbles: true,
+            }));
+            (0, Snackbar_1.showSuccessSnackbar)((0, Language_1.getPhrase)("wcf.global.success.delete"));
         }
         else {
             element.dispatchEvent(new CustomEvent("interaction:invalidate", {
                 bubbles: true,
             }));
-            // TODO: This shows a generic success message and should be replaced with a more specific message.
-            (0, Notification_1.show)();
+            (0, Snackbar_1.showDefaultSuccessSnackbar)();
         }
     }
     function setup(identifier, container) {

@@ -9,8 +9,9 @@
 
 import { deleteObject } from "WoltLabSuite/Core/Api/DeleteObject";
 import { postObject } from "WoltLabSuite/Core/Api/PostObject";
-import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 import { ConfirmationType, handleConfirmation } from "./Confirmation";
+import { showDefaultSuccessSnackbar, showSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
+import { getPhrase } from "WoltLabSuite/Core/Language";
 
 async function handleRpcInteraction(
   container: HTMLElement,
@@ -42,14 +43,13 @@ async function handleRpcInteraction(
   }
 
   if (confirmationType === ConfirmationType.Delete) {
-    // TODO: This shows a generic success message and should be replaced with a more specific message.
-    showNotification(undefined, () => {
-      element.dispatchEvent(
-        new CustomEvent("interaction:remove", {
-          bubbles: true,
-        }),
-      );
-    });
+    element.dispatchEvent(
+      new CustomEvent("interaction:remove", {
+        bubbles: true,
+      }),
+    );
+
+    showSuccessSnackbar(getPhrase("wcf.global.success.delete"));
   } else {
     if (invalidatesAllItems) {
       container.dispatchEvent(new CustomEvent("interaction:invalidate-all"));
@@ -61,8 +61,7 @@ async function handleRpcInteraction(
       );
     }
 
-    // TODO: This shows a generic success message and should be replaced with a more specific message.
-    showNotification();
+    showDefaultSuccessSnackbar();
   }
 }
 
