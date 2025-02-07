@@ -52,7 +52,7 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
                     }
                     dropdown?.querySelectorAll("[data-interaction]").forEach((element) => {
                         element.addEventListener("click", () => {
-                            row.dispatchEvent(new CustomEvent("interaction", {
+                            row.dispatchEvent(new CustomEvent("interaction:execute", {
                                 detail: element.dataset,
                                 bubbles: true,
                             }));
@@ -62,22 +62,25 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
             });
         }
         #initEventListeners() {
-            this.#table.addEventListener("refresh", (event) => {
+            this.#table.addEventListener("interaction:invalidate-all", () => {
+                void this.#loadRows(0 /* StateChangeCause.Change */);
+            });
+            this.#table.addEventListener("interaction:invalidate", (event) => {
                 void this.#refreshRow(event.target);
             });
-            this.#table.addEventListener("remove", (event) => {
+            this.#table.addEventListener("interaction:remove", (event) => {
                 event.target.remove();
             });
-            this.#table.addEventListener("reset-selection", () => {
+            this.#table.addEventListener("interaction:reset-selection", () => {
                 this.#state.resetSelection();
             });
         }
         #setupState(gridId, pageNo, baseUrl, sortField, sortOrder) {
             const state = new State_1.State(gridId, this.#table, pageNo, baseUrl, sortField, sortOrder);
-            state.addEventListener("change", (event) => {
+            state.addEventListener("grid-view:change", (event) => {
                 void this.#loadRows(event.detail.source);
             });
-            state.addEventListener("getBulkInteractions", (event) => {
+            state.addEventListener("grid-view:get-bulk-interactions", (event) => {
                 void this.#loadBulkInteractions(event.detail.objectIds);
             });
             return state;

@@ -111,19 +111,19 @@ export class Filter extends EventTarget {
     if (ok) {
       this.#filters = new Map(Object.entries(result as ArrayLike<string>));
 
-      this.dispatchEvent(new CustomEvent("change"));
+      this.dispatchEvent(new CustomEvent("grid-view:change"));
     }
   }
 
   #removeFilter(filter: string): void {
     this.#filters.delete(filter);
 
-    this.dispatchEvent(new CustomEvent("change"));
+    this.dispatchEvent(new CustomEvent("grid-view:change"));
   }
 }
 
 interface FilterEventMap {
-  change: CustomEvent<void>;
+  "grid-view:change": CustomEvent<void>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging

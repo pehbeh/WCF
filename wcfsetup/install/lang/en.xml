@@ -2993,6 +2993,7 @@ If you have <strong>already bought the licenses for the listed apps</strong>, th
 		<item name="wcf.acp.template.name.error.invalid"><![CDATA[This name is invalid.]]></item>
 		<item name="wcf.acp.template.group.error.shared"><![CDATA[The template must be in the “Shared templates” template group.]]></item>
 		<item name="wcf.acp.template.group.error.notShared"><![CDATA[The template must not be in the “Shared templates” template group.]]></item>
+		<item name="wcf.acp.template.group.button.showTemplates"><![CDATA[Show Templates]]></item>
 	</category>
 	<category name="wcf.acp.user">
 		<item name="wcf.acp.user.add"><![CDATA[Add User]]></item>

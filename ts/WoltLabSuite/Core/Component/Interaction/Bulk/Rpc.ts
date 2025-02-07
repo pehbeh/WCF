@@ -53,7 +53,7 @@ async function handleRpcInteraction(
         }
 
         element.dispatchEvent(
-          new CustomEvent("remove", {
+          new CustomEvent("interaction:remove", {
             bubbles: true,
           }),
         );
@@ -67,7 +67,7 @@ async function handleRpcInteraction(
       }
 
       element.dispatchEvent(
-        new CustomEvent("refresh", {
+        new CustomEvent("interaction:invalidate", {
           bubbles: true,
         }),
       );
@@ -77,7 +77,7 @@ async function handleRpcInteraction(
     showNotification();
   }
 
-  container.dispatchEvent(new CustomEvent("reset-selection"));
+  container.dispatchEvent(new CustomEvent("interaction:reset-selection"));
 }
 
 export function setup(identifier: string, container: HTMLElement): void {

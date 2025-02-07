@@ -59,7 +59,7 @@ export class StandaloneButton {
       .forEach((element) => {
         element.addEventListener("click", () => {
           this.#container.dispatchEvent(
-            new CustomEvent("interaction", {
+            new CustomEvent("interaction:execute", {
               detail: element.dataset,
               bubbles: true,
             }),
@@ -69,11 +69,11 @@ export class StandaloneButton {
   }
 
   #initEventListeners(): void {
-    this.#container.addEventListener("refresh", () => {
+    this.#container.addEventListener("interaction:invalidate", () => {
       void this.#refreshContextMenu();
     });
 
-    this.#container.addEventListener("remove", () => {
+    this.#container.addEventListener("interaction:remove", () => {
       window.location.href = this.#redirectUrl;
     });
   }

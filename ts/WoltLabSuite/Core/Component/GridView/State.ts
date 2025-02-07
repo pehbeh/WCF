@@ -45,18 +45,20 @@ export class State extends EventTarget {
     });
 
     this.#filter = new Filter(gridId);
-    this.#filter.addEventListener("change", () => {
+    this.#filter.addEventListener("grid-view:change", () => {
       this.#switchPage(1, StateChangeCause.Change);
     });
 
     this.#sorting = new Sorting(table, sortField, sortOrder);
-    this.#sorting.addEventListener("change", () => {
+    this.#sorting.addEventListener("grid-view:change", () => {
       this.#switchPage(1, StateChangeCause.Change);
     });
 
     this.#selection = new Selection(gridId, table);
-    this.#selection.addEventListener("getBulkInteractions", (event) => {
-      this.dispatchEvent(new CustomEvent("getBulkInteractions", { detail: { objectIds: event.detail.objectIds } }));
+    this.#selection.addEventListener("grid-view:get-bulk-interactions", (event) => {
+      this.dispatchEvent(
+        new CustomEvent("grid-view:get-bulk-interactions", { detail: { objectIds: event.detail.objectIds } }),
+      );
     });
 
     window.addEventListener("popstate", () => {
@@ -98,7 +100,7 @@ export class State extends EventTarget {
     this.#pagination.page = pageNo;
     this.#pageNo = pageNo;
 
-    this.dispatchEvent(new CustomEvent("change", { detail: { source } }));
+    this.dispatchEvent(new CustomEvent("grid-view:change", { detail: { source } }));
   }
 
   #updateQueryString(): void {
@@ -157,8 +159,8 @@ export class State extends EventTarget {
 }
 
 interface StateEventMap {
-  change: CustomEvent<{ source: StateChangeCause }>;
-  getBulkInteractions: CustomEvent<{ objectIds: number[] }>;
+  "grid-view:change": CustomEvent<{ source: StateChangeCause }>;
+  "grid-view:get-bulk-interactions": CustomEvent<{ objectIds: number[] }>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging

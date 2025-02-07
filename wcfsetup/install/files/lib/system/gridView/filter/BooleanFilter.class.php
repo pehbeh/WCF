@@ -16,6 +16,11 @@ use wcf\system\form\builder\field\CheckboxFormField;
  */
 class BooleanFilter extends AbstractFilter
 {
+    public function __construct(string $databaseColumn = '', private readonly bool $reverseValue = false)
+    {
+        parent::__construct($databaseColumn);
+    }
+
     #[\Override]
     public function getFormField(string $id, string $label): AbstractFormField
     {
@@ -29,7 +34,9 @@ class BooleanFilter extends AbstractFilter
     {
         $columnName = $this->getDatabaseColumnName($list, $id);
 
-        $list->getConditionBuilder()->add("{$columnName} = ?", [1]);
+        $list->getConditionBuilder()->add("{$columnName} = ?", [
+            $this->reverseValue ? 0 : 1,
+        ]);
     }
 
     #[\Override]

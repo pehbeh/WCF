@@ -1,0 +1,93 @@
+.snackbarContainer {
+	align-items: start;
+	bottom: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	left: 20px;
+	position: fixed;
+}
+
+@keyframes snackbarIn {
+	0% {
+		opacity: 0;
+		transform: translateX(-100%);
+	}
+	50% {
+		opacity: 1;
+		transform: translateX(-50%);
+	}
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes snackbarOut {
+	0% {
+		opacity: 1;
+		transform: translateX(0);
+		margin-bottom: 0;
+	}
+	25% {
+		opacity: 1;
+		transform: translateX(-50%);
+	}
+	50% {
+		margin-bottom: 0;
+		opacity: 0;
+		transform: translateX(-100%);
+	}
+	100% {
+		margin-bottom: calc(var(--height) * -1);
+		opacity: 0;
+		transform: translateX(-100%);
+	}
+}
+
+.snackbar {
+	animation: snackbarIn 0.12s ease-in-out;
+	background-color: var(--wcfContentBackground);
+	border: 1px solid var(--wcfContentBorderInner);
+	border-radius: 4px;
+	box-shadow: var(--wcfBoxShadow);
+	color: var(--wcfContentText);
+	display: flex;
+	isolation: isolate;
+	min-width: 200px;
+	overflow: hidden;
+	padding: 0 5px;
+	user-select: none;
+}
+
+.snackbar--closing {
+	animation-name: snackbarOut;
+	animation-duration: 0.24s;
+}
+
+.snackbar--success {
+	background-color: var(--wcfStatusSuccessBackground);
+	border-color: var(--wcfStatusSuccessBorder);
+	color: var(--wcfStatusSuccessText);
+}
+
+.snackbar--progress {
+	background-color: var(--wcfStatusInfoBackground);
+	border-color: var(--wcfStatusInfoBorder);
+	color: var(--wcfStatusInfoText);
+}
+
+.snackbar__icon {
+	align-items: center;
+	border: 1px solid transparent;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	width: 36px;
+}
+
+.snackbar__message {
+	flex: 1 0 auto;
+	padding: 10px 5px 10px 0;
+}
+

@@ -180,8 +180,16 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\bbcodes\media\providers\DisableProvider());
             $event->register(new \wcf\system\endpoint\controller\core\bbcodes\media\providers\EnableProvider());
             $event->register(new \wcf\system\endpoint\controller\core\bbCodes\DeleteBBCodes());
+            $event->register(new \wcf\system\endpoint\controller\core\languages\DisableLanguage());
+            $event->register(new \wcf\system\endpoint\controller\core\languages\DeleteLanguage());
+            $event->register(new \wcf\system\endpoint\controller\core\languages\EnableLanguage());
+            $event->register(new \wcf\system\endpoint\controller\core\languages\SetAsDefaultLanguage());
             $event->register(new \wcf\system\endpoint\controller\core\languages\items\DeleteItem());
             $event->register(new \wcf\system\endpoint\controller\core\labels\groups\DeleteGroup());
+            $event->register(new \wcf\system\endpoint\controller\core\pages\DeletePage());
+            $event->register(new \wcf\system\endpoint\controller\core\pages\DisablePage());
+            $event->register(new \wcf\system\endpoint\controller\core\pages\EnablePage());
+            $event->register(new \wcf\system\endpoint\controller\core\templates\groups\DeleteTemplateGroup());
             $event->register(new \wcf\system\endpoint\controller\core\packages\updates\servers\DisableServer());
             $event->register(new \wcf\system\endpoint\controller\core\packages\updates\servers\DeleteServer());
             $event->register(new \wcf\system\endpoint\controller\core\packages\updates\servers\EnableServer());
