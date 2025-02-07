@@ -190,6 +190,9 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\pages\DisablePage());
             $event->register(new \wcf\system\endpoint\controller\core\pages\EnablePage());
             $event->register(new \wcf\system\endpoint\controller\core\templates\groups\DeleteTemplateGroup());
+            $event->register(new \wcf\system\endpoint\controller\core\packages\updates\servers\DisableServer());
+            $event->register(new \wcf\system\endpoint\controller\core\packages\updates\servers\DeleteServer());
+            $event->register(new \wcf\system\endpoint\controller\core\packages\updates\servers\EnableServer());
         }
     );
 
