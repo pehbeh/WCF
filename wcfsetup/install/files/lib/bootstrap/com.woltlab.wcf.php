@@ -199,6 +199,9 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\paid\subscriptions\users\DeleteSubscriptionUser());
             $event->register(new \wcf\system\endpoint\controller\core\templates\DeleteTemplate());
             $event->register(new \wcf\system\endpoint\controller\core\tags\DeleteTag());
+            $event->register(new \wcf\system\endpoint\controller\core\users\groups\assignment\DeleteAssignment());
+            $event->register(new \wcf\system\endpoint\controller\core\users\groups\assignment\EnableAssignment());
+            $event->register(new \wcf\system\endpoint\controller\core\users\groups\assignment\DisableAssignment());
         }
     );
 

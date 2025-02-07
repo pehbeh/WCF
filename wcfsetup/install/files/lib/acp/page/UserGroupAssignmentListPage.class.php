@@ -3,7 +3,9 @@
 namespace wcf\acp\page;
 
 use wcf\data\user\group\assignment\UserGroupAssignmentList;
-use wcf\page\MultipleLinkPage;
+use wcf\page\AbstractGridViewPage;
+use wcf\system\gridView\AbstractGridView;
+use wcf\system\gridView\admin\UserGroupAssignmentGridView;
 
 /**
  * Lists the available automatic user group assignments.
@@ -14,7 +16,7 @@ use wcf\page\MultipleLinkPage;
  *
  * @property    UserGroupAssignmentList $objectList
  */
-class UserGroupAssignmentListPage extends MultipleLinkPage
+class UserGroupAssignmentListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -26,8 +28,9 @@ class UserGroupAssignmentListPage extends MultipleLinkPage
      */
     public $neededPermissions = ['admin.user.canManageGroupAssignment'];
 
-    /**
-     * @inheritDoc
-     */
-    public $objectListClassName = UserGroupAssignmentList::class;
+    #[\Override]
+    protected function createGridViewController(): AbstractGridView
+    {
+        return new UserGroupAssignmentGridView();
+    }
 }
