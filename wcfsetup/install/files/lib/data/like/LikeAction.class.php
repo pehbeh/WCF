@@ -4,6 +4,7 @@ namespace wcf\data\like;
 
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\data\IGroupedUserListAction;
+use wcf\data\like\object\ILikeObject;
 use wcf\data\reaction\ReactionAction;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
 use wcf\system\exception\IllegalLinkException;
@@ -127,6 +128,7 @@ class LikeAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
 
         // check if liking own content but forbidden by configuration
         $this->likeableObject = $this->objectTypeProvider->getObjectByID($this->parameters['data']['objectID']);
+        \assert($this->likeableObject instanceof ILikeObject);
         $this->likeableObject->setObjectType($this->objectType);
         if ($this->likeableObject->getUserID() == WCF::getUser()->userID) {
             throw new PermissionDeniedException();

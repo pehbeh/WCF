@@ -25,6 +25,7 @@ use wcf\util\StringUtil;
  *
  * @method  ModerationQueueEditor[]     getObjects()
  * @method  ModerationQueueEditor       getSingleObject()
+ * @property-read ModerationQueueEditor[] $objects
  */
 class ModerationQueueAction extends AbstractDatabaseObjectAction
 {

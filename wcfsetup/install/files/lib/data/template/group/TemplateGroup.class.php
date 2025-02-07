@@ -97,17 +97,14 @@ class TemplateGroup extends DatabaseObject implements ITitledObject
     /**
      * Returns a list of all parent template groups.
      *
-     * @return TemplateGroup[]
+     * @return \Generator<TemplateGroup>
      */
     public static function getParentTemplatesGroups($parentID = 0): \Generator
     {
         self::buildTemplateGroupStructure();
 
-        if (!isset(self::$templateGroupStructure[$parentID ?: 0])) {
-            return;
-        }
-
-        foreach (self::$templateGroupStructure[$parentID ?: 0] as $templateGroup) {
+        $templateGroups = self::$templateGroupStructure[$parentID ?: 0] ?? [];
+        foreach ($templateGroups as $templateGroup) {
             yield $templateGroup;
         }
     }

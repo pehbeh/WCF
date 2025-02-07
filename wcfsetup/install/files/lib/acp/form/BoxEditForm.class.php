@@ -155,6 +155,7 @@ class BoxEditForm extends BoxAddForm
             // pass updated box to box controller as in `BoxAddForm::save()`
             $box = new Box($this->box->boxID);
             if ($this->boxController->getProcessor() instanceof IConditionBoxController) {
+                // @phpstan-ignore arguments.count
                 $this->boxController->getProcessor()->setBox($box, false);
             } else {
                 $this->boxController->getProcessor()->setBox($box);

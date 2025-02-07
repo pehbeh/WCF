@@ -556,6 +556,7 @@ class UserNotificationHandler extends SingletonFactory
         $deleteNotifications = [];
         foreach ($notificationObjects as $notification) {
             $object = $objectTypes[$notification->objectType]['objects'][$notification->objectID];
+            /** @phpstan-ignore property.notFound */
             if ($object->__unknownNotificationObject) {
                 $deleteNotifications[] = $notification;
                 continue;

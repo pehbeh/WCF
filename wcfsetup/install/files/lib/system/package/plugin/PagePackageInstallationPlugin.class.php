@@ -310,7 +310,6 @@ class PagePackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
         $content = $data['content'];
         unset($data['content']);
 
-        /** @var Page $page */
         if (!empty($row)) {
             // allow update of `controller`, `handler` and `excludeFromLandingPage`
             // only, prevents user modifications form being overwritten

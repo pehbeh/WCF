@@ -160,6 +160,7 @@ final class HtmlOutputNodeNormalizer
     private function stripMarkerOnBr(\DOMXPath $xpath): void
     {
         foreach ($xpath->query(".//br[@data-cke-filler='true']") as $br) {
+            \assert($br instanceof \DOMElement);
             $br->removeAttribute("data-cke-filler");
         }
     }

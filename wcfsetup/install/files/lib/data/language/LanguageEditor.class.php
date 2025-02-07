@@ -735,6 +735,7 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
         $rootNode = $xml->xpath()->query('/ns:language')->item(0);
         $attributes = $xml->xpath()->query('attribute::*', $rootNode);
         foreach ($attributes as $attribute) {
+            \assert($attribute instanceof \DOMAttr);
             if ($attribute->name == 'languagecode') {
                 return $attribute->value;
             }
@@ -755,6 +756,7 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
         $rootNode = $xml->xpath()->query('/ns:language')->item(0);
         $attributes = $xml->xpath()->query('attribute::*', $rootNode);
         foreach ($attributes as $attribute) {
+            \assert($attribute instanceof \DOMAttr);
             if ($attribute->name == 'languagename') {
                 return $attribute->value;
             }
@@ -775,6 +777,7 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
         $rootNode = $xml->xpath()->query('/ns:language')->item(0);
         $attributes = $xml->xpath()->query('attribute::*', $rootNode);
         foreach ($attributes as $attribute) {
+            \assert($attribute instanceof \DOMAttr);
             if ($attribute->name == 'countrycode') {
                 return $attribute->value;
             }

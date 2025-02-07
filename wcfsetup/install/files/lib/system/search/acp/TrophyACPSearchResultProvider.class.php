@@ -58,7 +58,6 @@ class TrophyACPSearchResultProvider implements IACPSearchResultProvider
             '%' . $query . '%',
         ], $conditions->getParameters()));
 
-        /** @var Trophy $trophy */
         while ($trophy = $statement->fetchObject(Trophy::class)) {
             $results[] = new ACPSearchResult($trophy->getTitle(), LinkHandler::getInstance()->getLink('TrophyEdit', [
                 'id' => $trophy->trophyID,

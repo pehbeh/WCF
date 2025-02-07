@@ -500,7 +500,6 @@ final class WCFSetup extends WCF
             // test connection
             try {
                 // check connection data
-                /** @var \wcf\system\database\Database $db */
                 try {
                     $db = new MySQLDatabase(
                         $dbHostWithoutPort,

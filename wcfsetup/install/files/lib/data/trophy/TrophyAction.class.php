@@ -29,6 +29,7 @@ use wcf\system\WCF;
  *
  * @method  TrophyEditor[]      getObjects()
  * @method  TrophyEditor        getSingleObject()
+ * @property-read TrophyEditor[] $objects
  */
 class TrophyAction extends AbstractDatabaseObjectAction implements IToggleAction, IUploadAction, ISortableAction
 {

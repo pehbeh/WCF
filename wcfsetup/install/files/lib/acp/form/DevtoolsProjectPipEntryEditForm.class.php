@@ -3,6 +3,7 @@
 namespace wcf\acp\form;
 
 use wcf\form\AbstractForm;
+use wcf\system\devtools\pip\IGuiPackageInstallationPlugin;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\form\builder\IFormDocument;
 use wcf\system\request\LinkHandler;
@@ -43,14 +44,17 @@ class DevtoolsProjectPipEntryEditForm extends DevtoolsProjectPipEntryAddForm
      */
     public function readData()
     {
+        $pip = $this->pipObject->getPip();
+        \assert($pip instanceof IGuiPackageInstallationPlugin);
+
         if (!empty($_POST)) {
-            $this->pipObject->getPip()->setEditedEntryIdentifier($this->identifier);
+            $pip->setEditedEntryIdentifier($this->identifier);
         }
 
         parent::readData();
 
         if (empty($_POST)) {
-            if (!$this->pipObject->getPip()->setEntryData($this->identifier, $this->form)) {
+            if (!$pip->setEntryData($this->identifier, $this->form)) {
                 throw new IllegalLinkException();
             }
         }
@@ -86,7 +90,9 @@ class DevtoolsProjectPipEntryEditForm extends DevtoolsProjectPipEntryAddForm
     {
         AbstractForm::save();
 
-        $newIdentifier = $this->pipObject->getPip()->editEntry($this->form, $this->identifier);
+        $pip = $this->pipObject->getPip();
+        \assert($pip instanceof IGuiPackageInstallationPlugin);
+        $newIdentifier = $pip->editEntry($this->form, $this->identifier);
 
         $this->saved();
 

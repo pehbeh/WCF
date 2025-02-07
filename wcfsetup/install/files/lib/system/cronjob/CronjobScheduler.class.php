@@ -131,7 +131,6 @@ final class CronjobScheduler extends SingletonFactory
                 0,
                 TIME_NOW,
             ]);
-            /** @var Cronjob $cronjob */
             while ($cronjob = $statement->fetchObject(Cronjob::class)) {
                 // In any case: Reset the state to READY.
                 $data['state'] = Cronjob::READY;
@@ -225,7 +224,6 @@ final class CronjobScheduler extends SingletonFactory
             ]);
 
             $cronjobEditors = [];
-            /** @var Cronjob $cronjob */
             while ($cronjob = $statement->fetchObject(Cronjob::class)) {
                 $cronjobEditor = new CronjobEditor($cronjob);
 

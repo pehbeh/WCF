@@ -82,6 +82,7 @@ final class AvatarDecorator implements IUserAvatar, ISafeFormatAvatar
                 $lazyLoading ? 'lazy' : 'eager'
             );
         } else {
+            // @phpstan-ignore arguments.count
             return $this->avatar->getImageTag($size, $lazyLoading);
         }
     }

@@ -68,7 +68,7 @@ class TrophyAddForm extends AbstractAcpForm
 
     /**
      * All available trophy types.
-     * @var []
+     * @var array<int, string>
      */
     public $availableTypes = [
         Trophy::TYPE_IMAGE => 'imageUpload',

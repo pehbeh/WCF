@@ -16,7 +16,7 @@ final class FormFieldValidator implements IFormFieldValidator
 {
     /**
      * id of the validator that has to be unique for each field
-     * @var
+     * @var string
      */
     protected $id;
 

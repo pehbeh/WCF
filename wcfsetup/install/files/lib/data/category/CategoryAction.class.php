@@ -27,6 +27,7 @@ use wcf\system\WCF;
  * @method  Category        create()
  * @method  CategoryEditor[]    getObjects()
  * @method  CategoryEditor      getSingleObject()
+ * @property-read CategoryEditor[] $objects
  */
 class CategoryAction extends AbstractDatabaseObjectAction implements
     ISortableAction,

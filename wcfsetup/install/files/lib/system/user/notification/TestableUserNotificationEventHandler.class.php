@@ -150,7 +150,9 @@ class TestableUserNotificationEventHandler extends SingletonFactory
             ]));
         }
 
-        $email->getBody()->setRecipient($mailbox);
+        $body = $email->getBody();
+        \assert($body instanceof RecipientAwareTextMimePart);
+        $body->setRecipient($mailbox);
 
         return $email->getBodyString();
     }

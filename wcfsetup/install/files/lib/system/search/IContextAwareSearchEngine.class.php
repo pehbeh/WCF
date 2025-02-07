@@ -30,9 +30,9 @@ interface IContextAwareSearchEngine extends ISearchEngine
      * 'fulltextCondition' and 'searchIndexCondition' index instead of a PreparedStatementConditionBuilder instance.
      *
      * @return  array{
-     *              fulltextCondition: ?PreparedStatementConditionBuilder
-     *              searchIndexCondition: ?PreparedStatementConditionBuilder
-     *              sql: string
+     *              fulltextCondition: ?PreparedStatementConditionBuilder,
+     *              searchIndexCondition: ?PreparedStatementConditionBuilder,
+     *              sql: string,
      *          }
      */
     public function getInnerJoinWithContext(

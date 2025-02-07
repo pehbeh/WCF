@@ -7,6 +7,7 @@ use wcf\data\package\Package;
 use wcf\system\devtools\pip\IIdempotentPackageInstallationPlugin;
 use wcf\system\exception\SystemException;
 use wcf\system\package\PackageArchive;
+use wcf\system\package\PackageUninstallationDispatcher;
 use wcf\system\package\TemplatesFileHandler;
 use wcf\system\WCF;
 
@@ -78,8 +79,8 @@ class TemplatePackageInstallationPlugin extends AbstractPackageInstallationPlugi
             $templates[$row['application']][] = 'templates/' . $row['templateGroupFolderName'] . $row['templateName'] . '.tpl';
         }
 
+        \assert($this->installation instanceof PackageUninstallationDispatcher);
         foreach ($templates as $application => $templateNames) {
-            /** @noinspection PhpUndefinedMethodInspection */
             $this->installation->deleteFiles(
                 Application::getDirectory($application),
                 $templateNames,

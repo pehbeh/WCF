@@ -36,6 +36,7 @@ class DateModifierTemplatePlugin implements IModifierTemplatePlugin
         }
 
         if (!empty($tagArgs[1])) {
+            \assert($dateTime instanceof \DateTime || $dateTime instanceof \DateTimeImmutable);
             return $dateTime
                 ->setTimezone(WCF::getUser()->getTimeZone())
                 ->format($tagArgs[1]);

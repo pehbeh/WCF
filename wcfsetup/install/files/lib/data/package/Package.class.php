@@ -201,7 +201,6 @@ class Package extends DatabaseObject implements ILinkableObject, IRouteControlle
             $this->allRequiredPackages = $this->getRequiredPackages();
             $packagesToCheck = $this->allRequiredPackages;
 
-            /** @var Package $checkedPackage */
             while (($checkedPackage = \array_pop($packagesToCheck))) {
                 $newRequiredPackages = \array_diff($checkedPackage->getRequiredPackages(), $this->allRequiredPackages);
 

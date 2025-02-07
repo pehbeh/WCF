@@ -285,10 +285,12 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
 
         $categories = $xpath->query('/ns:style/*');
         foreach ($categories as $category) {
+            \assert($category instanceof \DOMElement);
             switch ($category->tagName) {
                 case 'author':
                     $elements = $xpath->query('child::*', $category);
                     foreach ($elements as $element) {
+                        \assert($element instanceof \DOMElement);
                         switch ($element->tagName) {
                             case 'authorname':
                                 $data['authorName'] = $element->nodeValue;

@@ -225,7 +225,7 @@ final class DateUtil
     ) {
         $years = $interval->format('%y');
         $months = $interval->format('%m');
-        $days = $interval->format('%d');
+        $days = (int)$interval->format('%d');
         $weeks = \floor($days / 7);
         $hours = $interval->format('%h');
         $minutes = $interval->format('%i');

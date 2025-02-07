@@ -85,8 +85,8 @@ class ModerationQueueActivationManager extends AbstractModerationQueueManager
      * This method is intended for bulk processing.
      *
      * @param string $objectType
-     * @param int[] $objectID
-     * @poram   int[]   $containerIDs       format: `objectID => containerID`
+     * @param int[] $objectIDs
+     * @param   int[]   $containerIDs       format: `objectID => containerID`
      * @param array $additionalData
      * @throws  InvalidObjectTypeException
      */

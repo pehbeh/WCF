@@ -100,6 +100,7 @@ class BBCodePackageInstallationPlugin extends AbstractXMLPackageInstallationPlug
 
                 $attributeValues = $xpath->query('child::*', $attribute);
                 foreach ($attributeValues as $attributeValue) {
+                    \assert($attributeValue instanceof \DOMElement);
                     $nodeValue[$attributeNo][$attributeValue->tagName] = $attributeValue->nodeValue;
                 }
             }

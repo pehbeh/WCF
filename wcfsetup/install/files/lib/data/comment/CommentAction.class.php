@@ -1034,7 +1034,6 @@ class CommentAction extends AbstractDatabaseObjectAction implements IMessageInli
 
         if ($response !== null) {
             // check if response is not visible
-            /** @var CommentResponse $visibleResponse */
             foreach ($comment as $visibleResponse) {
                 if ($visibleResponse->responseID == $response->responseID) {
                     $response = null;

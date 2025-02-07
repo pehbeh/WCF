@@ -72,7 +72,7 @@ class GDImageAdapter implements IImageAdapter, IWebpImageAdapter
     /**
      * @inheritDoc
      */
-    public function load($image, $type = '')
+    public function load($image, $type = 0)
     {
         if (!$this->isImage($image)) {
             throw new SystemException("Image resource is invalid.");

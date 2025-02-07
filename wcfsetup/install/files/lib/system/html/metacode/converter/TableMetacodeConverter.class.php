@@ -158,10 +158,13 @@ class TableMetacodeConverter extends AbstractMetacodeConverter
      */
     protected function isInsideTable(\DOMNode $node)
     {
-        /** @var \DOMElement $parent */
         $parent = $node;
         while ($parent = $parent->parentNode) {
-            if ($parent->nodeName === 'woltlab-metacode' && $parent->getAttribute('data-name') === 'table') {
+            if (
+                $parent->nodeName === 'woltlab-metacode'
+                && $parent instanceof \DOMElement
+                && $parent->getAttribute('data-name') === 'table'
+            ) {
                 return true;
             }
         }

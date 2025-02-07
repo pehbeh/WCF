@@ -138,6 +138,7 @@ class EmailFormField extends AbstractFormField implements
     protected static function getReservedFieldAttributes(): array
     {
         return \array_merge(
+            // @phpstan-ignore staticClassAccess.privateMethod
             static::defaultGetReservedFieldAttributes(),
             [
                 'maxlength',

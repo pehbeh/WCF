@@ -29,7 +29,7 @@ class ArticleSitemapObject extends AbstractSitemapObjectObjectType
      */
     public function canView(DatabaseObject $object)
     {
-        /** @var $object ArticleContent */
+        /** @var ArticleContent $object */
         return $object->getArticle()->canRead();
     }
 

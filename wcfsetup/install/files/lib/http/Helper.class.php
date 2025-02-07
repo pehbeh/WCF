@@ -149,7 +149,7 @@ final class Helper
      * based on the signature of the provided class name. For `POST` request
      * the parsed body is validated instead.
      *
-     * @template T
+     * @template T of object
      * @param class-string<T> $className
      * @return T
      * @throws MappingError
@@ -170,7 +170,7 @@ final class Helper
      * truthy, a UserInputException is thrown using the tables index name as the
      * field name.
      *
-     * @template T
+     * @template T of object
      * @param class-string<T> $className
      * @return T
      * @throws UserInputException

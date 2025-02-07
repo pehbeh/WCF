@@ -22,18 +22,21 @@ use wcf\system\exception\SystemException;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  bool        close()
- * @method  bool        eof()
- * @method  int     filesize()
- * @method  string      gets($length = null)
- * @method  resource    open($mode, $use_include_path = false, $context = null)
- * @method  int     puts($string, $length = null)       alias of `write`
- * @method  string      read($length)
- * @method  int     seek($offset, $whence = SEEK_SET)
- * @method  array       stat()
- * @method  int     tell()
- * @method  bool        touch($time = 0, $atime = 0)        note: default value of `$time` actually is `time()`
- * @method  int     write($string, $length = null)
+ * @method bool     close()
+ * @method bool     eof()
+ * @method int      filesize()
+ * @method bool     flush()
+ * @method string   gets($length = null)
+ * @method bool     lock(int $operation, int &$would_block = null)
+ * @method resource open($mode, $use_include_path = false, $context = null)
+ * @method int      puts($string, $length = null)       alias of `write`
+ * @method string   read($length)
+ * @method int      seek($offset, $whence = 0)
+ * @method array    stat()
+ * @method bool     sync()
+ * @method int      tell()
+ * @method bool     touch($time = 0, $atime = 0)        note: default value of `$time` actually is `time()`
+ * @method int      write($string, $length = null)
  */
 class File
 {

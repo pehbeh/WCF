@@ -2,6 +2,7 @@
 
 namespace wcf\system\box;
 
+use wcf\data\comment\StructuredCommentList;
 use wcf\system\comment\CommentHandler;
 use wcf\system\request\RequestHandler;
 use wcf\system\WCF;
@@ -12,6 +13,8 @@ use wcf\system\WCF;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @property-read StructuredCommentList $objectList
  */
 class PageCommentListBoxController extends AbstractDatabaseObjectListBoxController
 {
@@ -41,7 +44,6 @@ class PageCommentListBoxController extends AbstractDatabaseObjectListBoxControll
      */
     protected function getTemplate()
     {
-        /** @noinspection PhpUndefinedMethodInspection */
         return WCF::getTPL()->render('wcf', 'boxPageComments', [
             'commentCanAdd' => WCF::getSession()->getPermission('user.page.canAddComment'),
             'commentList' => $this->objectList,

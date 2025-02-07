@@ -34,7 +34,7 @@ class MultilingualPageSitemapObject extends AbstractSitemapObjectObjectType
      */
     public function getObjectList()
     {
-        /** @var $pageList PageContentList */
+        /** @var PageContentList $pageList */
         $pageList = parent::getObjectList();
 
         $pageList->sqlConditionJoins = '
@@ -57,7 +57,7 @@ class MultilingualPageSitemapObject extends AbstractSitemapObjectObjectType
      */
     public function canView(DatabaseObject $object)
     {
-        /** @var $object PageContent */
+        /** @var PageContent $object */
         $page = new Page($object->pageID);
 
         if ($page->requireObjectID) {
@@ -73,7 +73,7 @@ class MultilingualPageSitemapObject extends AbstractSitemapObjectObjectType
         }
 
         if (!empty($page->controller)) {
-            /** @var $pageInstance AbstractPage */
+            /** @var AbstractPage $pageInstance */
             $pageInstance = new $page->controller();
 
             if ($pageInstance->loginRequired) {

@@ -104,6 +104,7 @@ class MenuPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
 
         if ($element->tagName === 'title') {
             if (empty($element->getAttribute('language'))) {
+                \assert($element->parentNode instanceof \DOMElement);
                 throw new SystemException("Missing required attribute 'language' for menu '" . $element->parentNode->getAttribute('identifier') . "'");
             }
 
@@ -120,6 +121,7 @@ class MenuPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
             foreach ($xpath->query('child::*', $element) as $child) {
                 if ($child->tagName === 'name') {
                     if (empty($child->getAttribute('language'))) {
+                        \assert($element->parentNode instanceof \DOMElement);
                         throw new SystemException("Missing required attribute 'language' for box name (menu '" . $element->parentNode->getAttribute('identifier') . "')");
                     }
 
@@ -131,7 +133,7 @@ class MenuPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
                     $elements['box']['name'][$element->getAttribute('language')] = $element->nodeValue;
                 } elseif ($child->tagName === 'visibilityExceptions') {
                     $elements['box']['visibilityExceptions'] = [];
-                    /** @var \DOMElement $child */
+                    /** @var \DOMElement $child2 */
                     foreach ($xpath->query('child::*', $child) as $child2) {
                         $elements['box']['visibilityExceptions'][] = $child2->nodeValue;
                     }

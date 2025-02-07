@@ -126,7 +126,7 @@ class ViewableMedia extends DatabaseObjectDecorator
     /**
      * Returns a tag to display the media element.
      *
-     * @param string $size
+     * @param int $size
      * @return  string
      */
     public function getElementTag($size)

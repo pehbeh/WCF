@@ -187,6 +187,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
             // get child elements
             $children = $xpath->query('child::*', $element);
             foreach ($children as $child) {
+                \assert($child instanceof \DOMElement);
                 $data[$child->tagName] = $child->nodeValue;
             }
 
@@ -241,6 +242,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
             $data = [];
             $children = $xpath->query('child::*', $element);
             foreach ($children as $child) {
+                \assert($child instanceof \DOMElement);
                 $data[$child->tagName] = $child->nodeValue;
             }
 
@@ -412,7 +414,10 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
     /**
      * @inheritDoc
      */
-    protected function findExistingItem(array $data) {}
+    protected function findExistingItem(array $data)
+    {
+        return null;
+    }
 
     /**
      * @inheritDoc

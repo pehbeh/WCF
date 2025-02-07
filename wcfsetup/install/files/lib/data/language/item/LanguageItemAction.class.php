@@ -15,6 +15,7 @@ use wcf\system\language\LanguageFactory;
  * @method  LanguageItem        create()
  * @method  LanguageItemEditor[]    getObjects()
  * @method  LanguageItemEditor  getSingleObject()
+ * @property-read LanguageItemEditor[] $objects
  */
 class LanguageItemAction extends AbstractDatabaseObjectAction
 {

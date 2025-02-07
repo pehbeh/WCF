@@ -57,7 +57,7 @@ class ObjectActionFunctionTemplatePlugin implements IFunctionTemplatePlugin
             throw new \InvalidArgumentException("Missing 'action' argument.");
         }
         $action = $tagArgs['action'];
-        if (!\in_array($action, static::SUPPORTED_ACTIONS)) {
+        if (!\in_array($action, self::SUPPORTED_ACTIONS)) {
             throw new \InvalidArgumentException("Unsupported action '{$action}'.");
         }
 

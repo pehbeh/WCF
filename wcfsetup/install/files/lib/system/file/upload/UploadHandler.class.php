@@ -26,7 +26,7 @@ class UploadHandler extends SingletonFactory
 
     /**
      * Contains the valid image extensions w/o svg.
-     * @var string
+     * @var string[]
      * @deprecated 5.3 Use \wcf\util\ImageUtil::$imageExtensions instead (direct replacement).
      */
     const VALID_IMAGE_EXTENSIONS = ['jpeg', 'jpg', 'png', 'gif', 'webp'];
@@ -53,9 +53,6 @@ class UploadHandler extends SingletonFactory
 
     /**
      * Registers a UploadField.
-     *
-     * @param UploadField $field
-     * @param mixed $requestData
      *
      * @throws      \InvalidArgumentException       if a field with the given fieldId is already registered
      */

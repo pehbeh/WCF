@@ -46,7 +46,7 @@ class ArticleCategorySitemapObject extends AbstractSitemapObjectObjectType
      */
     public function canView(DatabaseObject $object)
     {
-        /** @var $object ArticleCategory */
+        /** @var ArticleCategory $object */
         return $object->isAccessible();
     }
 

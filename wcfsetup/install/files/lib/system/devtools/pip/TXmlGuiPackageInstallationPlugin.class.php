@@ -500,7 +500,7 @@ XML;
      */
     protected function getXmlFileLocation()
     {
-        /** @var DevtoolsProject $project */
+        \assert($this->installation instanceof DevtoolsPackageInstallationDispatcher);
         $project = $this->installation->getProject();
 
         return $project->path . ($project->getPackage()->package === 'com.woltlab.wcf' ? 'com.woltlab.wcf/' : '') . static::getDefaultFilename();

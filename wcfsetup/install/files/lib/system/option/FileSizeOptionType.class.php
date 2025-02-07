@@ -32,7 +32,7 @@ class FileSizeOptionType extends TextOptionType
             return 0;
         }
 
-        $number = $matches[0];
+        $number = (float)$matches[0];
         if (\preg_match('/[kmgt]i?b$/i', $newValue, $multiplier)) {
             switch (\mb_strtolower($multiplier[0])) {
                 case 'tb':

@@ -5,6 +5,7 @@ namespace wcf\data\user\follow;
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\data\IGroupedUserListAction;
 use wcf\data\user\User;
+use wcf\data\user\UserProfile;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
 use wcf\system\exception\PermissionDeniedException;
 use wcf\system\exception\UserInputException;
@@ -35,7 +36,7 @@ class UserFollowAction extends AbstractDatabaseObjectAction implements IGroupedU
 
     /**
      * user profile object
-     * @var UserProfile;
+     * @var UserProfile
      */
     public $userProfile;
 

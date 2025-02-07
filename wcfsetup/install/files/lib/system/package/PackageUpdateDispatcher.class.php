@@ -329,6 +329,7 @@ final class PackageUpdateDispatcher extends SingletonFactory
         // parse package information
         $elements = $xpath->query('./ns:packageinformation/*', $package);
         foreach ($elements as $element) {
+            \assert($element instanceof \DOMElement);
             switch ($element->tagName) {
                 case 'packagename':
                     $packageInfo['packageName'] = $element->nodeValue;
@@ -353,6 +354,7 @@ final class PackageUpdateDispatcher extends SingletonFactory
         // parse author information
         $elements = $xpath->query('./ns:authorinformation/*', $package);
         foreach ($elements as $element) {
+            \assert($element instanceof \DOMElement);
             switch ($element->tagName) {
                 case 'author':
                     $packageInfo['author'] = $element->nodeValue;

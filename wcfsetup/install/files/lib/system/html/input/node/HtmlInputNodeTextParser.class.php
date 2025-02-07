@@ -682,13 +682,13 @@ class HtmlInputNodeTextParser
     protected function hasCodeParent(\DOMText $text)
     {
         $parent = $text;
-        /** @var \DOMElement $parent */
         while ($parent = $parent->parentNode) {
             $nodeName = $parent->nodeName;
             if ($nodeName === 'code' || $nodeName === 'kbd' || $nodeName === 'pre') {
                 return true;
             } elseif (
                 $nodeName === 'woltlab-metacode'
+                && $parent instanceof \DOMElement
                 && \in_array($parent->getAttribute('data-name'), $this->sourceBBCodes)
             ) {
                 return true;
@@ -708,7 +708,6 @@ class HtmlInputNodeTextParser
     protected function hasLinkParent(\DOMText $text)
     {
         $parent = $text;
-        /** @var \DOMElement $parent */
         while ($parent = $parent->parentNode) {
             $nodeName = $parent->nodeName;
             if ($nodeName === 'a') {

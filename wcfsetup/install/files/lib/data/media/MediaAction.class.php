@@ -34,6 +34,7 @@ use wcf\util\FileUtil;
  * @method  Media       create()
  * @method  MediaEditor[]   getObjects()
  * @method  MediaEditor getSingleObject()
+ * @property-read MediaEditor[] $objects
  */
 class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction, IUploadAction
 {

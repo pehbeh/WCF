@@ -402,8 +402,6 @@ class TemplateEngine extends SingletonFactory
 
     /**
      * Clears an assignment of template variables.
-     *
-     * @param mixed $variables
      */
     public function clearAssign(array $variables)
     {

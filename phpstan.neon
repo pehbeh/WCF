@@ -2,7 +2,7 @@ includes:
     - phpstan-baseline.neon
 
 parameters:
-    level: 1
+    level: 2
     paths:
         - wcfsetup/install/files
     excludePaths:
@@ -12,3 +12,15 @@ parameters:
         - constants.php
     ignoreErrors:
         - identifier: new.static
+    universalObjectCratesClasses:
+        - wcf\data\category\Category
+        - wcf\data\condition\Condition
+        - wcf\data\object\type\ObjectType
+        - wcf\data\option\Option
+        - wcf\data\user\activity\event\ViewableUserActivityEvent
+        - wcf\data\user\notification\UserNotification
+        - wcf\data\user\User
+        - wcf\system\menu\ITreeMenuItem
+        - wcf\system\message\embedded\object\IMessageEmbeddedObjectHandler
+        - wcf\system\user\notification\event\IUserNotificationEvent
+        - wcf\system\user\notification\object\type\IUserNotificationObjectType

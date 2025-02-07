@@ -17,6 +17,7 @@ use wcf\system\WCF;
  *
  * @method  SmileyEditor[]  getObjects()
  * @method  SmileyEditor    getSingleObject()
+ * @property-read SmileyEditor[] $objects
  */
 class SmileyAction extends AbstractDatabaseObjectAction implements ISortableAction
 {

@@ -6,6 +6,7 @@ use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use wcf\data\file\File;
+use wcf\data\file\thumbnail\FileThumbnail;
 use wcf\data\file\thumbnail\FileThumbnailList;
 use wcf\http\Helper;
 use wcf\system\endpoint\IController;

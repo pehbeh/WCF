@@ -8,6 +8,7 @@ use wcf\system\devtools\pip\IIdempotentPackageInstallationPlugin;
 use wcf\system\exception\SystemException;
 use wcf\system\package\ACPTemplatesFileHandler;
 use wcf\system\package\PackageArchive;
+use wcf\system\package\PackageUninstallationDispatcher;
 use wcf\system\WCF;
 
 /**
@@ -76,8 +77,8 @@ class ACPTemplatePackageInstallationPlugin extends AbstractPackageInstallationPl
             $templates[$row['application']][] = 'acp/templates/' . $row['templateName'] . '.tpl';
         }
 
+        \assert($this->installation instanceof PackageUninstallationDispatcher);
         foreach ($templates as $application => $templateNames) {
-            /** @noinspection PhpUndefinedMethodInspection */
             $this->installation->deleteFiles(
                 Application::getDirectory($application),
                 $templateNames,

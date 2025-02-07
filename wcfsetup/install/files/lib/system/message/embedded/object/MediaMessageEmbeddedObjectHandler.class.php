@@ -50,6 +50,7 @@ class MediaMessageEmbeddedObjectHandler extends AbstractSimpleMessageEmbeddedObj
         if ($contentLanguageID !== null) {
             $mediaIDs = [];
             foreach ($viewableMedia as $media) {
+                // @phpstan-ignore property.notFound
                 if ($media !== null && $media->localizedLanguageID != $contentLanguageID) {
                     $mediaIDs[] = $media->getDecoratedObject()->mediaID;
                 }

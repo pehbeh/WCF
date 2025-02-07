@@ -55,8 +55,8 @@ final class IpAddress
             $ip = \substr($ip, 7);
             if (\preg_match('~^([a-f0-9]{1,4}):([a-f0-9]{1,4})$~', $ip, $matches)) {
                 $ip = [
-                    \base_convert($matches[1], 16, 10),
-                    \base_convert($matches[2], 16, 10),
+                    \intval(\base_convert($matches[1], 16, 10)),
+                    \intval(\base_convert($matches[2], 16, 10)),
                 ];
 
                 $ipParts = [];
@@ -104,7 +104,10 @@ final class IpAddress
             $mask .= \chr(0xff << (8 - \min(8, $maskBits)));
         }
 
-        return new self(\inet_ntop(\inet_pton((string)$ipAddress) & $mask));
+        $packed = \inet_pton((string)$ipAddress);
+        \assert($packed !== false);
+
+        return new self(\inet_ntop($packed & $mask));
     }
 
     /**

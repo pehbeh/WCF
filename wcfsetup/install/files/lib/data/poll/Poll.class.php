@@ -58,7 +58,7 @@ class Poll extends DatabaseObject
         if ($option->pollID == $this->pollID) {
             $this->options[$option->optionID] = $option;
 
-            /** @noinspection PhpUndefinedFieldInspection */
+            // @phpstan-ignore property.notFound
             if ($option->voted) {
                 $this->isParticipant = true;
             }
@@ -118,7 +118,7 @@ class Poll extends DatabaseObject
         foreach ($optionList as $option) {
             $this->options[$option->optionID] = $option;
 
-            /** @noinspection PhpUndefinedFieldInspection */
+            // @phpstan-ignore property.notFound
             if ($option->voted) {
                 $this->isParticipant = true;
             }

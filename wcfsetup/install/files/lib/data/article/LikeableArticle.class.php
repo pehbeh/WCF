@@ -89,7 +89,7 @@ class LikeableArticle extends AbstractLikeObject implements IReactionObject
                 'com.woltlab.wcf.likeableArticle.notification',
                 $notificationObject,
                 [$this->getDecoratedObject()->userID],
-                ['objectID' => $this->getDecoratedObject()->entryID]
+                ['objectID' => $this->getDecoratedObject()->articleID]
             );
         }
     }

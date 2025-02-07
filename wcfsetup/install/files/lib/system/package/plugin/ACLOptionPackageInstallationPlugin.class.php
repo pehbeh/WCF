@@ -144,6 +144,7 @@ class ACLOptionPackageInstallationPlugin extends AbstractOptionPackageInstallati
             // get child elements
             $children = $xpath->query('child::*', $element);
             foreach ($children as $child) {
+                \assert($child instanceof \DOMElement);
                 $data[$child->tagName] = $child->nodeValue;
             }
 
@@ -230,6 +231,7 @@ class ACLOptionPackageInstallationPlugin extends AbstractOptionPackageInstallati
             $data = [];
             $children = $xpath->query('child::*', $element);
             foreach ($children as $child) {
+                \assert($child instanceof \DOMElement);
                 $data[$child->tagName] = $child->nodeValue;
             }
 

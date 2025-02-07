@@ -98,12 +98,14 @@ trait TDecoratedCategoryLookupPageHandler
         }
 
         $conditionBuilder = new PreparedStatementConditionBuilder();
-        /** @noinspection PhpUndefinedFieldInspection */
         $conditionBuilder->add(
             'category.objectTypeID = ?',
             [
-                ObjectTypeCache::getInstance()
-                    ->getObjectTypeIDByName('com.woltlab.wcf.category', $className::OBJECT_TYPE_NAME),
+                ObjectTypeCache::getInstance()->getObjectTypeIDByName(
+                    'com.woltlab.wcf.category',
+                    // @phpstan-ignore classConstant.notFound
+                    $className::OBJECT_TYPE_NAME
+                ),
             ]
         );
         $conditionBuilder->add(

@@ -60,6 +60,7 @@ class TrophyImporter extends AbstractImporter
             $data['iconFile'] = $filename;
         }
 
+        /** @var Trophy $trophy */
         $trophy = TrophyEditor::create($data);
 
         if (!empty($additionalData['i18n'])) {

@@ -38,6 +38,7 @@ use wcf\util\UserRegistrationUtil;
  *
  * @method  UserEditor[]    getObjects()
  * @method  UserEditor  getSingleObject()
+ * @property-read UserEditor[] $objects
  */
 class UserAction extends AbstractDatabaseObjectAction implements IClipboardAction, ISearchAction
 {

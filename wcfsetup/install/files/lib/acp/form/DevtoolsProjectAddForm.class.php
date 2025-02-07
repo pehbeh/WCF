@@ -987,7 +987,6 @@ class DevtoolsProjectAddForm extends AbstractFormBuilderForm
             $action = 'update';
         }
 
-        /** @var AbstractDatabaseObjectAction objectAction */
         $this->objectAction = new $this->objectActionClass(
             \array_filter([$this->formObject]),
             $action,

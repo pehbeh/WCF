@@ -125,6 +125,7 @@ abstract class AbstractCategoriesBoxController extends AbstractBoxController imp
     {
         parent::setBox($box);
 
+        // @phpstan-ignore property.notFound
         if ($setConditionData && $this->box->showChildCategories) {
             $this->showChildCategories = $this->box->showChildCategories;
         }

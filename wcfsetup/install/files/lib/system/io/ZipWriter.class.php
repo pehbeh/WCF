@@ -202,18 +202,18 @@ class ZipWriter
             return "\x00\x00\x00\x00";
         }
 
-        $day = \gmdate('d', $date);
-        $month = \gmdate('m', $date);
-        $year = \gmdate('Y', $date);
+        $day = (int)\gmdate('d', $date);
+        $month = (int)\gmdate('m', $date);
+        $year = (int)\gmdate('Y', $date);
         $year -= 1980;
-        $hour = \gmdate('H', $date);
-        $minute = \gmdate('i', $date);
-        $second = \gmdate('s', $date);
+        $hour = (int)\gmdate('H', $date);
+        $minute = (int)\gmdate('i', $date);
+        $second = (int)\gmdate('s', $date);
 
         // calculate time
         $time = $hour;
         $time = ($time << 6) + $minute;
-        $time = ($time << 5) + \number_format($second / 2, 0);
+        $time = ($time << 5) + (float)\number_format($second / 2, 0);
         $timeRight = $time >> 8;
         $timeLeft = $time - ($timeRight << 8);
 

@@ -176,6 +176,7 @@ abstract class AbstractFileDeletePackageInstallationPlugin extends AbstractXMLPa
     final protected function import(array $row, array $data)
     {
         // Does nothing, imports are not supported.
+        return null;
     }
 
     /**

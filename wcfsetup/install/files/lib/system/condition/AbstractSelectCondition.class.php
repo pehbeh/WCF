@@ -32,7 +32,7 @@ abstract class AbstractSelectCondition extends AbstractSingleFieldCondition
      * value of the "no selection" option
      * @var string
      */
-    const NO_SELECTION_VALUE = -1;
+    const NO_SELECTION_VALUE = '-1';
 
     /**
      * @inheritDoc

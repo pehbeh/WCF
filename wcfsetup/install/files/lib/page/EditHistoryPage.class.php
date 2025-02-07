@@ -2,6 +2,7 @@
 
 namespace wcf\page;
 
+use wcf\data\DatabaseObject;
 use wcf\data\edit\history\entry\EditHistoryEntry;
 use wcf\data\edit\history\entry\EditHistoryEntryList;
 use wcf\data\object\type\ObjectType;
@@ -130,7 +131,9 @@ class EditHistoryPage extends AbstractPage
         /** @var IHistorySavingObjectTypeProvider $processor */
         $processor = $this->objectType->getProcessor();
 
-        $this->object = $processor->getObjectByID($this->objectID);
+        /** @var (DatabaseObject&IHistorySavingObject) $object */
+        $object = $processor->getObjectByID($this->objectID);
+        $this->object = $object;
         if (!$this->object->getObjectID()) {
             throw new IllegalLinkException();
         }

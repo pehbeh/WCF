@@ -29,6 +29,7 @@ use wcf\system\form\builder\field\ShowOrderFormField;
 use wcf\system\form\builder\field\TitleFormField;
 use wcf\system\form\builder\field\validation\FormFieldValidationError;
 use wcf\system\form\builder\field\validation\FormFieldValidator;
+use wcf\system\form\builder\IFormChildNode;
 use wcf\system\form\builder\IFormDocument;
 use wcf\system\language\I18nHandler;
 use wcf\system\WCF;
@@ -454,6 +455,7 @@ abstract class CategoryAddFormBuilderForm extends AbstractFormBuilderForm
             $category = $this->objectAction->getReturnValues()['returnValues'];
             \assert($category instanceof Category);
         } else {
+            // @phpstan-ignore property.notFound
             $category = new Category($this->formObject->categoryID);
         }
 
@@ -512,6 +514,7 @@ abstract class CategoryAddFormBuilderForm extends AbstractFormBuilderForm
         \assert($processor instanceof ICategoryType);
 
         if ($this->formObject instanceof DatabaseObject) {
+            // @phpstan-ignore property.notFound
             if ($this->formObject->objectTypeID !== $this->objectType->getObjectID()) {
                 throw new IllegalLinkException();
             }

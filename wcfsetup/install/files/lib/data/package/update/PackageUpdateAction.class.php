@@ -533,17 +533,14 @@ class PackageUpdateAction extends AbstractDatabaseObjectAction
         /** @var PackageUpdateVersion[] $updateVersions */
         $updateVersions = $statement->fetchObjects(PackageUpdateVersion::class, 'packageUpdateVersionID');
 
-        // assign versions
-        /**
-         * @var ViewablePackageUpdate[] $officialPackages
-         * @var ViewablePackageUpdate[] $thirdPartySources
-         * @var ViewablePackageUpdate[] $trustedSources
-         */
-        $officialPackages = $thirdPartySources = $trustedSources = [];
-        /**
-         * @var int $packageUpdateID
-         * @var ViewablePackageUpdate $packageUpdate
-         */
+        /** @var ViewablePackageUpdate[] $officialPackages */
+        $officialPackages = [];
+        /** @var ViewablePackageUpdate[] $thirdPartySources */
+        $thirdPartySources = [];
+        /** @var ViewablePackageUpdate[] $trustedSources */
+        $trustedSources = [];
+
+        /** @var ViewablePackageUpdate $packageUpdate */
         foreach ($packageUpdates as $packageUpdate) {
             $versionIDs = $updateData[$packageUpdate->packageUpdateID];
             $packageUpdate->setAccessibleVersion($updateVersions[$versionIDs['accessible']]);

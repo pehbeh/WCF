@@ -645,6 +645,7 @@ class BoxAddForm extends AbstractForm
 
         if ($this->boxController) {
             if ($this->boxController->getProcessor() instanceof IConditionBoxController) {
+                // @phpstan-ignore arguments.count
                 $this->boxController->getProcessor()->setBox($box, false);
             } else {
                 $this->boxController->getProcessor()->setBox($box);

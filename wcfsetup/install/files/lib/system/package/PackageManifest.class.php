@@ -225,7 +225,7 @@ final class PackageManifest
      * Attention: This method must not be modified. If a format change is required a
      * replacement method must be written.
      *
-     * @throws UnexpectedValueException On non-representable data.
+     * @throws \UnexpectedValueException On non-representable data.
      */
     private function stringifyV1(array|string|int $data, int $depth = 0): string
     {

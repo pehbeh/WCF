@@ -26,7 +26,7 @@ class StructuredCommentResponseList extends CommentResponseList
 {
     /**
      * comment object
-     * @var Comment;
+     * @var Comment
      */
     public $comment;
 

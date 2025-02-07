@@ -55,6 +55,7 @@ class SendNewPasswordWorker extends AbstractWorker
         $userList->readObjects();
 
         /** @var UserEditor $userEditor */
+        // @phpstan-ignore varTag.nativeType
         foreach ($userList as $userEditor) {
             $this->resetPassword($userEditor);
         }

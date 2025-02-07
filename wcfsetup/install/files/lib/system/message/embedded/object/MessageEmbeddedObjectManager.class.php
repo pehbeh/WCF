@@ -482,7 +482,7 @@ class MessageEmbeddedObjectManager extends SingletonFactory
     }
 
     /**
-     * @return      ISimpleMessageEmbeddedObjectHandler[];
+     * @return ISimpleMessageEmbeddedObjectHandler[]
      */
     public function getSimpleMessageEmbeddedObjectHandlers()
     {

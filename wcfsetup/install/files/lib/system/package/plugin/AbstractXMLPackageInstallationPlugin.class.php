@@ -104,6 +104,7 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
             // get attributes
             $attributes = $xpath->query('attribute::*', $element);
             foreach ($attributes as $attribute) {
+                \assert($attribute instanceof \DOMAttr);
                 $data['attributes'][$attribute->name] = $attribute->value;
             }
 
@@ -149,6 +150,7 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
             // fetch attributes
             $attributes = $xpath->query('attribute::*', $element);
             foreach ($attributes as $attribute) {
+                \assert($attribute instanceof \DOMAttr);
                 $data['attributes'][$attribute->name] = $attribute->value;
             }
 

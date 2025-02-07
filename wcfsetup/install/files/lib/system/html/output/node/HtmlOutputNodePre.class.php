@@ -46,6 +46,7 @@ class HtmlOutputNodePre extends AbstractHtmlOutputNode
 
             switch ($this->outputType) {
                 case 'text/html':
+                    \assert($htmlNodeProcessor instanceof HtmlOutputNodeProcessor);
                     $context = $htmlNodeProcessor->getHtmlProcessor()->getContext();
                     $prefix = '';
                     // Create a unique prefix if possible

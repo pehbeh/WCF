@@ -928,7 +928,6 @@ final class SessionHandler extends SingletonFactory
      * Changes the user stored in the session.
      *
      * @param User $user
-     * @throws  DatabaseException
      */
     private function changeUserVirtual(User $user): void
     {

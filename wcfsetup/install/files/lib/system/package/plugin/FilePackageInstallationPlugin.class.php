@@ -9,6 +9,7 @@ use wcf\system\exception\SystemException;
 use wcf\system\package\FilesFileHandler;
 use wcf\system\package\PackageArchive;
 use wcf\system\package\PackageInstallationDispatcher;
+use wcf\system\package\PackageUninstallationDispatcher;
 use wcf\system\style\StyleHandler;
 use wcf\system\WCF;
 
@@ -102,8 +103,8 @@ class FilePackageInstallationPlugin extends AbstractPackageInstallationPlugin im
         $statement->execute([$this->installation->getPackageID()]);
         $files = $statement->fetchMap('application', 'filename', false);
 
+        \assert($this->installation instanceof PackageUninstallationDispatcher);
         foreach ($files as $application => $filenames) {
-            /** @noinspection PhpUndefinedMethodInspection */
             $this->installation->deleteFiles(Application::getDirectory($application), $filenames);
 
             // delete log entries

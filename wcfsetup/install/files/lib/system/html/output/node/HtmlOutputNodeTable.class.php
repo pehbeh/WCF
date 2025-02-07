@@ -31,12 +31,12 @@ class HtmlOutputNodeTable extends AbstractHtmlOutputNode
                 // `rowspan` property.
                 /** @var \DOMElement $td */
                 foreach ($element->getElementsByTagName('td') as $td) {
-                    $rowspan = $td->getAttribute('rowspan');
+                    $rowspan = (int)$td->getAttribute('rowspan');
                     if ($rowspan) {
                         $nextTrCount = 0;
                         $nextSibling = $td->parentNode->nextSibling;
                         while ($nextSibling) {
-                            if ($nextSibling->nodeType === \XML_ELEMENT_NODE && $nextSibling->tagName === "tr") {
+                            if ($nextSibling instanceof \DOMElement && $nextSibling->tagName === "tr") {
                                 $nextTrCount++;
                             }
                             $nextSibling = $nextSibling->nextSibling;

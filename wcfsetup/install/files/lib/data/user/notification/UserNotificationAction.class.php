@@ -23,6 +23,7 @@ use wcf\system\WCF;
  *
  * @method  UserNotificationEditor[]    getObjects()
  * @method  UserNotificationEditor      getSingleObject()
+ * @method UserNotification create()
  */
 class UserNotificationAction extends AbstractDatabaseObjectAction
 {

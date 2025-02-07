@@ -64,7 +64,6 @@ class MenuItemACPSearchResultProvider extends AbstractACPSearchResultProvider im
 
         $menuItems = ACPMenu::getInstance()->menuItemList;
 
-        /** @var ACPMenuItem $menuItem */
         while ($menuItem = $statement->fetchObject(ACPMenuItem::class)) {
             // only valid menu items exist in TreeMenu::$menuItemList,
             // so no need to call AbstractACPSearchResultProvider::validate()

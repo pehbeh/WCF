@@ -6,6 +6,7 @@ use wcf\data\AbstractDatabaseObjectAction;
 use wcf\data\package\installation\queue\PackageInstallationQueue;
 use wcf\data\package\installation\queue\PackageInstallationQueueEditor;
 use wcf\system\devtools\pip\DevtoolsPip;
+use wcf\system\devtools\pip\IGuiPackageInstallationPlugin;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\WCF;
 use wcf\util\DirectoryUtil;
@@ -284,7 +285,9 @@ class DevtoolsProjectAction extends AbstractDatabaseObjectAction
      */
     public function deletePipEntry()
     {
-        $this->pip->getPip()->deleteEntry($this->parameters['identifier'], $this->parameters['addDeleteInstruction']);
+        $pip = $this->pip->getPip();
+        \assert($pip instanceof IGuiPackageInstallationPlugin);
+        $pip->deleteEntry($this->parameters['identifier'], $this->parameters['addDeleteInstruction']);
 
         return [
             'identifier' => $this->parameters['identifier'],

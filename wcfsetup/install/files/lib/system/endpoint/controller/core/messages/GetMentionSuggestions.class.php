@@ -6,6 +6,7 @@ use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use wcf\data\user\group\UserGroup;
+use wcf\data\user\UserProfile;
 use wcf\data\user\UserProfileList;
 use wcf\http\Helper;
 use wcf\system\endpoint\GetRequest;

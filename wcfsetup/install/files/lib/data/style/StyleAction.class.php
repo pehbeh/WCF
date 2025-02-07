@@ -28,6 +28,7 @@ use wcf\util\ImageUtil;
  *
  * @method  StyleEditor[]   getObjects()
  * @method  StyleEditor getSingleObject()
+ * @property-read StyleEditor[] $objects
  */
 class StyleAction extends AbstractDatabaseObjectAction implements IToggleAction
 {

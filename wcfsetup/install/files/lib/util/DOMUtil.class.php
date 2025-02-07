@@ -415,7 +415,7 @@ final class DOMUtil
     public static function normalize(\DOMElement $element): void
     {
         $childNodes = self::getChildNodes($element);
-        /** @var \DOMNode $lastTextNode */
+        /** @var ?\DOMNode $lastTextNode */
         $lastTextNode = null;
         foreach ($childNodes as $childNode) {
             if ($childNode->nodeType !== \XML_TEXT_NODE) {

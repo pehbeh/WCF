@@ -480,7 +480,7 @@ class CronjobPackageInstallationPlugin extends AbstractXMLPackageInstallationPlu
                 $cronjob->appendChild($document->createElement('description', $formData['description']));
             }
         } elseif (isset($data['description_i18n'])) {
-            /** @var \DOMElement $firstDescription */
+            /** @var ?\DOMElement $firstDescription */
             $firstDescription = null;
             foreach ($data['description_i18n'] as $languageItem => $description) {
                 if ($description !== '') {

@@ -122,6 +122,7 @@ class BoxPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin 
 
         if ($element->tagName === 'name') {
             if (empty($element->getAttribute('language'))) {
+                \assert($element->parentNode instanceof \DOMElement);
                 throw new SystemException("Missing required attribute 'language' for '" . $element->tagName . "' element (box '" . $element->parentNode->getAttribute('identifier') . "')");
             }
 
@@ -144,6 +145,7 @@ class BoxPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin 
             }
 
             if (empty($children['title'])) {
+                \assert($element->parentNode instanceof \DOMElement);
                 throw new SystemException("Expected non-empty child element 'title' for 'content' element (box '" . $element->parentNode->getAttribute('identifier') . "')");
             }
 
@@ -346,6 +348,7 @@ class BoxPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin 
                 unset($data['additionalData']);
             }
 
+            /** @var Box $box */
             $box = parent::import($row, $data);
         }
 

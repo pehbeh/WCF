@@ -2,6 +2,8 @@
 
 namespace wcf\system\user\notification\event;
 
+use wcf\system\user\notification\object\CommentUserNotificationObject;
+
 /**
  * Provides a default implementation for user notifications about comments.
  *

@@ -10,6 +10,7 @@ use wcf\data\language\item\LanguageItemList;
 use wcf\data\language\Language;
 use wcf\data\language\LanguageEditor;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
+use wcf\system\devtools\pip\DevtoolsPackageInstallationDispatcher;
 use wcf\system\devtools\pip\DevtoolsPipEntryList;
 use wcf\system\devtools\pip\IDevtoolsPipEntryList;
 use wcf\system\devtools\pip\IGuiPackageInstallationPlugin;
@@ -302,7 +303,7 @@ class LanguagePackageInstallationPlugin extends AbstractXMLPackageInstallationPl
      */
     protected function findExistingItem(array $data)
     {
-        // does nothing
+        return null;
     }
 
     /**
@@ -534,6 +535,7 @@ class LanguagePackageInstallationPlugin extends AbstractXMLPackageInstallationPl
         ];
 
         if ($element->parentNode) {
+            \assert($element->parentNode instanceof \DOMElement);
             $languageCategory = $element->parentNode->getAttribute('name');
 
             if ($saveData) {
@@ -591,6 +593,7 @@ class LanguagePackageInstallationPlugin extends AbstractXMLPackageInstallationPl
                 $elementIdentifier = $this->getElementIdentifier($element);
 
                 if (!isset($entryData[$elementIdentifier])) {
+                    \assert($element->parentNode instanceof \DOMElement);
                     $entryData[$elementIdentifier] = [
                         'languageItem' => $element->getAttribute('name'),
                         'languageItemCategory' => $element->parentNode->getAttribute('name'),
@@ -660,6 +663,7 @@ XML;
     {
         $xmls = [];
 
+        \assert($this->installation instanceof DevtoolsPackageInstallationDispatcher);
         if ($createXmlFiles) {
             $directory = $this->installation->getProject()->path . ($this->installation->getProject()->isCore() ? 'wcfsetup/install/lang/' : 'language/');
             if (!\is_dir($directory)) {

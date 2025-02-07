@@ -22,6 +22,7 @@ use wcf\system\WCF;
  *
  * @method  PollEditor[]    getObjects()
  * @method  PollEditor  getSingleObject()
+ * @property-read PollEditor[] $objects
  */
 class PollAction extends AbstractDatabaseObjectAction implements IGroupedUserListAction
 {
@@ -37,7 +38,7 @@ class PollAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
 
     /**
      * poll object
-     * @var Poll
+     * @var PollEditor
      */
     protected $poll;
 
@@ -308,7 +309,7 @@ class PollAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
         $this->readInteger('pollID');
 
         // read poll
-        $this->poll = new Poll($this->parameters['pollID']);
+        $this->poll = new PollEditor(new Poll($this->parameters['pollID']));
         if (!$this->poll->pollID) {
             throw new UserInputException('pollID');
         } elseif (!$this->poll->canViewParticipants()) {

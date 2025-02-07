@@ -2,6 +2,7 @@
 
 namespace wcf\system\worker;
 
+use wcf\data\article\Article;
 use wcf\data\article\ArticleEditor;
 use wcf\data\article\ArticleList;
 use wcf\data\article\content\ArticleContentEditor;
@@ -65,6 +66,7 @@ class ArticleRebuildDataWorker extends AbstractRebuildDataWorker
         if (!\count($this->objectList)) {
             return;
         }
+        /** @var Article[] $articles */
         $articles = $this->objectList->getObjects();
 
         $commentObjectType = ObjectTypeCache::getInstance()

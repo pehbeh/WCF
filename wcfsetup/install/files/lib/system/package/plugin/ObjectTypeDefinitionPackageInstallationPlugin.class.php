@@ -4,6 +4,7 @@ namespace wcf\system\package\plugin;
 
 use wcf\data\object\type\definition\ObjectTypeDefinitionEditor;
 use wcf\data\object\type\ObjectTypeCache;
+use wcf\system\devtools\pip\DevtoolsPackageInstallationDispatcher;
 use wcf\system\devtools\pip\IDevtoolsPipEntryList;
 use wcf\system\devtools\pip\IGuiPackageInstallationPlugin;
 use wcf\system\devtools\pip\TXmlGuiPackageInstallationPlugin;
@@ -109,6 +110,7 @@ class ObjectTypeDefinitionPackageInstallationPlugin extends AbstractXMLPackageIn
         /** @var FormContainer $dataContainer */
         $dataContainer = $form->getNodeById('data');
 
+        \assert($this->installation instanceof DevtoolsPackageInstallationDispatcher);
         $dataContainer->appendChildren([
             TextFormField::create('definitionName')
                 ->objectProperty('name')

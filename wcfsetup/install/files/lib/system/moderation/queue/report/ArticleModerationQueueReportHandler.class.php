@@ -56,6 +56,7 @@ class ArticleModerationQueueReportHandler extends AbstractModerationQueueHandler
     public function getReportedContent(ViewableModerationQueue $queue)
     {
         return WCF::getTPL()->render('wcf', 'moderationArticle', [
+            // @phpstan-ignore property.notFound
             'article' => $this->getArticle($queue->getAffectedObject()->articleID),
         ]);
     }

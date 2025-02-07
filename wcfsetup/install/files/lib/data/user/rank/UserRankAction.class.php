@@ -16,6 +16,7 @@ use wcf\system\file\upload\UploadFile;
  *
  * @method  UserRankEditor[]    getObjects()
  * @method  UserRankEditor      getSingleObject()
+ * @property-read UserRankEditor[] $objects
  */
 class UserRankAction extends AbstractDatabaseObjectAction
 {

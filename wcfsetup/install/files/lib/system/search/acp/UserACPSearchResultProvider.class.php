@@ -41,7 +41,6 @@ class UserACPSearchResultProvider implements IACPSearchResultProvider
 
         $results = [];
 
-        /** @var User $user */
         while ($user = $statement->fetchObject(User::class)) {
             if (UserGroup::isAccessibleGroup($user->getGroupIDs())) {
                 $results[] = new ACPSearchResult($user->username, LinkHandler::getInstance()->getLink('UserEdit', [
