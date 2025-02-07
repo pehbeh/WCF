@@ -212,7 +212,7 @@ class SitemapRebuildWorker extends AbstractRebuildDataWorker
 
                 $objectType = $this->sitemapObjects[$this->workerData['sitemap']];
                 if ($sitemapObject->canView($object)) {
-                    $this->file->write(WCF::getTPL()->fetch('shared_sitemapEntry', 'wcf', [
+                    $this->file->write(WCF::getTPL()->render('wcf', 'shared_sitemapEntry', [
                         // strip session links
                         'link' => MessageUtil::stripCrap($link),
                         'lastModifiedTime' => $lastModifiedTime,
@@ -312,7 +312,7 @@ class SitemapRebuildWorker extends AbstractRebuildDataWorker
     protected function writeIndexFile($closeFile = true)
     {
         $file = new AtomicWriter(self::getSitemapPath() . 'sitemap.xml');
-        $file->write(WCF::getTPL()->fetch('shared_sitemapIndex', 'wcf', [
+        $file->write(WCF::getTPL()->render('wcf', 'shared_sitemapIndex', [
             'sitemaps' => $this->workerData['sitemaps'],
         ]));
         $file->flush();
@@ -346,7 +346,7 @@ class SitemapRebuildWorker extends AbstractRebuildDataWorker
 
         $this->openFile();
 
-        $this->file->write(WCF::getTPL()->fetch('shared_sitemapStart'));
+        $this->file->write(WCF::getTPL()->render('wcf', 'shared_sitemapStart', []));
     }
 
     /**
@@ -380,7 +380,7 @@ class SitemapRebuildWorker extends AbstractRebuildDataWorker
      */
     protected function finishSitemap($filename, $packageID)
     {
-        $this->file->write(WCF::getTPL()->fetch('shared_sitemapEnd'));
+        $this->file->write(WCF::getTPL()->render('wcf', 'shared_sitemapEnd', []));
         $this->file->close();
 
         \rename($this->workerData['tmpFile'], self::getSitemapPath() . $filename);

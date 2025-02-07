@@ -61,13 +61,11 @@ class SmileyCategoryAction extends AbstractDatabaseObjectAction
     {
         $this->smileyCategory->loadSmilies();
 
-        WCF::getTPL()->assign([
-            'smilies' => $this->smileyCategory,
-        ]);
-
         return [
             'smileyCategoryID' => $this->smileyCategory->categoryID,
-            'template' => WCF::getTPL()->fetch('shared_messageFormSmilies'),
+            'template' => WCF::getTPL()->render('wcf', 'shared_messageFormSmilies', [
+                'smilies' => $this->smileyCategory,
+            ]),
         ];
     }
 }

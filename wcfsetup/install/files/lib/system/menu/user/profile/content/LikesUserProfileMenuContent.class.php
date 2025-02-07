@@ -24,13 +24,11 @@ class LikesUserProfileMenuContent extends SingletonFactory implements IUserProfi
         $likeList->getConditionBuilder()->add("like_table.objectUserID = ?", [$userID]);
         $likeList->readObjects();
 
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'userProfileLikes', [
             'likeList' => $likeList,
             'userID' => $userID,
             'lastLikeTime' => $likeList->getLastLikeTime(),
         ]);
-
-        return WCF::getTPL()->fetch('userProfileLikes');
     }
 
     /**

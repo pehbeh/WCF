@@ -145,10 +145,10 @@ class UserListBoxController extends AbstractDatabaseObjectListBoxController
             DatabaseObject::sort($userProfiles, $this->sortField, $this->sortOrder);
         }
 
-        return WCF::getTPL()->fetch($templateName, 'wcf', [
+        return WCF::getTPL()->render('wcf', $templateName, [
             'boxUsers' => $this->userIDs !== null ? $userProfiles : $this->objectList->getObjects(),
             'boxSortField' => $this->box->sortField,
-        ], true);
+        ]);
     }
 
     /**

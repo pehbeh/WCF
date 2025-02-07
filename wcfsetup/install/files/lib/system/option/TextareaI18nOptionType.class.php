@@ -28,12 +28,10 @@ class TextareaI18nOptionType extends TextareaOptionType implements II18nOptionTy
     {
         I18nHandler::getInstance()->assignVariables(!empty($_POST));
 
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'textareaI18nOptionType', [
             'option' => $option,
             'value' => $value,
         ]);
-
-        return WCF::getTPL()->fetch('textareaI18nOptionType');
     }
 
     /**

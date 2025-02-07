@@ -1082,7 +1082,7 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
         ));
 
         return [
-            'template' => WCF::getTPL()->fetch('removeUserContentDialog', 'wcf', [
+            'template' => WCF::getTPL()->render('wcf', 'removeUserContentDialog', [
                 'knownContentProvider' => $knownContentProvider,
                 'userIDs' => $this->parameters['userIDs'],
                 'users' => $this->parameters['users'],

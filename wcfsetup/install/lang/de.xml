@@ -2113,12 +2113,14 @@ Die Datenbestände werden sorgfältig gepflegt, aber es ist nicht ausgeschlossen
 		<item name="wcf.acp.paidSubscription.transactionLog.logMessage"><![CDATA[Aktion]]></item>
 		<item name="wcf.acp.paidSubscription.transactionLog"><![CDATA[Transaktion]]></item>
 		<item name="wcf.acp.paidSubscription.transactionLog.transactionDetails"><![CDATA[Details]]></item>
+		<item name="wcf.acp.paidSubscription.transactionLog.showTransactionDetails"><![CDATA[Details anzeigen]]></item>
 		<item name="wcf.acp.paidSubscription.excludedSubscriptions"><![CDATA[Andere Mitgliedschaften ausschließen]]></item>
 		<item name="wcf.acp.paidSubscription.excludedSubscriptions.description"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Du kannst{else}Sie können{/if} den Erwerb anderer bezahlter Mitgliedschaften für Käufer dieser Mitgliedschaft ausschließen.]]></item>
 		<item name="wcf.acp.paidSubscription.user.delete.confirmMessage"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Willst du{else}Wollen Sie{/if} die Mitgliedschaft <span class="confirmationObject">{$subscriptionUser->title|phrase}</span> für den Benutzer <span class="confirmationObject">{$subscriptionUser->username}</span> wirklich entfernen?]]></item>
 		<item name="wcf.acp.paidSubscription.user.add"><![CDATA[Mitgliedschaft manuell zuweisen]]></item>
 		<item name="wcf.acp.paidSubscription.user.edit"><![CDATA[Aktive Mitgliedschaft bearbeiten]]></item>
 		<item name="wcf.acp.paidSubscription.error.noPaymentMethods"><![CDATA[Es muss mindestens ein Zahlungsanbieter in den Optionen unter „Zahlungsoptionen“ ausgewählt sein, um bezahlte Mitgliedschaften erstellen zu können.]]></item>
+		<item name="wcf.acp.paidSubscription.currency"><![CDATA[Währung]]></item>
 	</category>
 	<category name="wcf.acp.pip">
 		<item name="wcf.acp.pip.objectType.com.woltlab.wcf.attachment.objectType.data.title"><![CDATA[Daten des Dateianhangtyps]]></item>
@@ -2827,6 +2829,7 @@ Abschnitte dürfen nicht leer sein und nur folgende Zeichen enthalten: <kbd>[a-z
 		<item name="wcf.acp.updateServer.add"><![CDATA[Server hinzufügen]]></item>
 		<item name="wcf.acp.updateServer.edit"><![CDATA[Server bearbeiten]]></item>
 		<item name="wcf.acp.updateServer.errorMessage"><![CDATA[Fehlermeldungen]]></item>
+		<item name="wcf.acp.updateServer.showErrorMessage"><![CDATA[Fehlermeldung anzeigen]]></item>
 		<item name="wcf.acp.updateServer.list"><![CDATA[Paket-Server]]></item>
 		<item name="wcf.acp.updateServer.lastErrorMessage"><![CDATA[Beim letzten Verbindungsversuch trat folgender Fehler auf:]]></item>
 		<item name="wcf.acp.updateServer.loginPassword"><![CDATA[Kennwort]]></item>
@@ -3063,6 +3066,7 @@ Abschnitte dürfen nicht leer sein und nur folgende Zeichen enthalten: <kbd>[a-z
 		<item name="wcf.acp.template.name.error.invalid"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Du hast{else}Sie haben{/if} einen ungültigen Namen eingegeben.]]></item>
 		<item name="wcf.acp.template.group.error.shared"><![CDATA[Das Template muss in die Templategruppe „Geteilte-Templates“.]]></item>
 		<item name="wcf.acp.template.group.error.notShared"><![CDATA[Das Template darf nicht in die Templategruppe „Geteilte-Templates“.]]></item>
+		<item name="wcf.acp.template.group.button.showTemplates"><![CDATA[Templates anzeigen]]></item>
 	</category>
 	<category name="wcf.acp.user">
 		<item name="wcf.acp.user.add"><![CDATA[Benutzer hinzufügen]]></item>
@@ -3478,9 +3482,6 @@ Erlaubte Dateiendungen: {', '|implode:$attachmentHandler->getFormattedAllowedExt
 		<item name="wcf.clipboard.item.com.woltlab.wcf.media.delete.confirmMessage"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Willst du{else}Wollen Sie{/if} wirklich {if $count == 1}eine Datei{else}{#$count} Dateien{/if} löschen?]]></item>
 		<item name="wcf.clipboard.item.com.woltlab.wcf.media.insert"><![CDATA[Einfügen ({#$count})]]></item>
 		<item name="wcf.clipboard.item.com.woltlab.wcf.media.setCategory"><![CDATA[Kategorie bearbeiten ({#$count})]]></item>
-		<item name="wcf.clipboard.item.com.woltlab.wcf.tag.delete"><![CDATA[Löschen ({#$count})]]></item>
-		<item name="wcf.clipboard.item.com.woltlab.wcf.tag.delete.confirmMessage"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Willst du{else}Wollen Sie{/if} wirklich {if $count == 1}einen Tag{else}{#$count} Tags{/if} löschen?]]></item>
-		<item name="wcf.clipboard.item.com.woltlab.wcf.tag.setAsSynonyms"><![CDATA[Als Synonyme verwenden ({#$count})]]></item>
 		<item name="wcf.clipboard.item.com.woltlab.wcf.user.assignToGroup"><![CDATA[Benutzergruppe zuweisen]]></item>
 		<item name="wcf.clipboard.item.com.woltlab.wcf.user.ban"><![CDATA[Sperren ({#$count})]]></item>
 		<item name="wcf.clipboard.item.com.woltlab.wcf.user.delete"><![CDATA[Löschen ({#$count})]]></item>
@@ -3503,7 +3504,6 @@ Erlaubte Dateiendungen: {', '|implode:$attachmentHandler->getFormattedAllowedExt
 		<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.removeReportContent"><![CDATA[Gemeldeten Inhalt löschen ({#$count})]]></item>
 		<item name="wcf.clipboard.label.com.woltlab.wcf.article.marked"><![CDATA[{if $count == 1}Ein{else}{#$count}{/if} Artikel]]></item>
 		<item name="wcf.clipboard.label.com.woltlab.wcf.media.marked"><![CDATA[{if $count == 1}Eine Datei{else}{#$count} Dateien{/if}]]></item>
-		<item name="wcf.clipboard.label.com.woltlab.wcf.tag.marked"><![CDATA[{if $count == 1}Ein Tag{else}{#$count} Tags{/if}]]></item>
 		<item name="wcf.clipboard.label.com.woltlab.wcf.user.marked"><![CDATA[{if $count == 1}Ein{else}{#$count}{/if} Benutzer]]></item>
 		<item name="wcf.clipboard.label.com.woltlab.wcf.moderation.queue.marked"><![CDATA[{plural value=$count 1='Ein Moderationseintrag' other='# Moderationseinträge'}]]></item>
 	</category>
@@ -7603,5 +7603,9 @@ Benachrichtigungen auf <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phra
 	<item name="wcf.message.quote.showQuotes"/>
 	<item name="wcf.message.quote.removeSelectedQuotes"/>
 	<item name="wcf.message.quote.removeAllQuotes"/>
+	<item name="wcf.clipboard.item.com.woltlab.wcf.tag.delete"/>
+	<item name="wcf.clipboard.item.com.woltlab.wcf.tag.delete.confirmMessage"/>
+	<item name="wcf.clipboard.item.com.woltlab.wcf.tag.setAsSynonyms"/>
+	<item name="wcf.clipboard.label.com.woltlab.wcf.tag.marked"/>
 </delete>
 </language>

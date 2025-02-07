@@ -86,13 +86,11 @@ class Menu extends DatabaseObject implements ITitledObject
      */
     public function getContent()
     {
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', '__menu', [
             'menuItemNodeList' => $this->getMenuItemNodeList(),
             'menuTitle' => $this->getTitle(),
             'menuIdentifier' => $this->identifier,
         ]);
-
-        return WCF::getTPL()->fetch('__menu');
     }
 
     /**

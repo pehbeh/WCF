@@ -85,7 +85,7 @@ class PaidSubscriptionsBoxController extends AbstractBoxController
                     $templateName = 'boxPaidSubscriptionsSidebar';
                 }
 
-                $this->content = WCF::getTPL()->fetch($templateName, 'wcf', ['subscriptions' => $subscriptions], true);
+                $this->content = WCF::getTPL()->render('wcf', $templateName, ['subscriptions' => $subscriptions]);
             }
         }
     }

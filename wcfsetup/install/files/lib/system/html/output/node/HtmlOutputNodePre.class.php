@@ -139,8 +139,7 @@ class HtmlOutputNodePre extends AbstractHtmlOutputNode
         $splitContent[] = $last;
 
         // show template
-        /** @noinspection PhpUndefinedMethodInspection */
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'shared_codeMetaCode', [
             'codeID' => $this->getCodeID($data['prefix'] ?? '', $content),
             'startLineNumber' => $line,
             'content' => $splitContent,
@@ -149,8 +148,6 @@ class HtmlOutputNodePre extends AbstractHtmlOutputNode
             'title' => $title,
             'lines' => \count($splitContent),
         ]);
-
-        return WCF::getTPL()->fetch('shared_codeMetaCode');
     }
 
     /**

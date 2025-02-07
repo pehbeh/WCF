@@ -17,9 +17,9 @@ class StandaloneInteractionContextMenuView extends InteractionContextMenuView
 
     public function render(): string
     {
-        return WCF::getTPL()->fetch(
-            'shared_standaloneInteractionButton',
+        return WCF::getTPL()->render(
             'wcf',
+            'shared_standaloneInteractionButton',
             [
                 'contextMenuOptions' => $this->renderContextMenuOptions($this->object),
                 'initializationCode' => $this->renderInitialization($this->getContainerID()),
@@ -28,7 +28,6 @@ class StandaloneInteractionContextMenuView extends InteractionContextMenuView
                 'objectID' => $this->object->getObjectID(),
                 'redirectUrl' => $this->redirectUrl,
             ],
-            true
         );
 
         return '';

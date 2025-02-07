@@ -96,7 +96,7 @@ final class RenderResponse implements IController
         $structedResponse->setIsDeletable($commentManager->canDeleteResponse($response));
         $structedResponse->setIsEditable($commentManager->canEditResponse($response));
 
-        return WCF::getTPL()->fetch('commentResponseList', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'commentResponseList', [
             'responseList' => [$structedResponse],
             'commentCanModerate' => $commentManager->canModerate(
                 $response->getComment()->objectTypeID,

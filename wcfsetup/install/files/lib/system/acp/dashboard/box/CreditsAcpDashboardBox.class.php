@@ -23,7 +23,7 @@ final class CreditsAcpDashboardBox extends AbstractAcpDashboardBox
     #[\Override]
     public function getContent(): string
     {
-        return WCF::getTPL()->fetch('creditsAcpDashboardBox');
+        return WCF::getTPL()->render('wcf', 'creditsAcpDashboardBox', []);
     }
 
     #[\Override]

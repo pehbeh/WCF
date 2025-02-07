@@ -34,7 +34,7 @@ class CaptchaSelectOptionType extends AbstractOptionType
 
         $options = $this->parseEnableOptions($option);
 
-        return WCF::getTPL()->fetch('selectOptionType', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'selectOptionType', [
             'disableOptions' => $options['disableOptions'],
             'enableOptions' => $options['enableOptions'],
             'selectOptions' => $selectOptions,

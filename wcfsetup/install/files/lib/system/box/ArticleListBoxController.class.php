@@ -89,10 +89,10 @@ class ArticleListBoxController extends AbstractDatabaseObjectListBoxController
      */
     protected function getTemplate()
     {
-        return WCF::getTPL()->fetch('boxArticleList', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'boxArticleList', [
             'boxArticleList' => $this->objectList,
             'boxSortField' => $this->sortField,
             'boxPosition' => $this->box->position,
-        ], true);
+        ]);
     }
 }

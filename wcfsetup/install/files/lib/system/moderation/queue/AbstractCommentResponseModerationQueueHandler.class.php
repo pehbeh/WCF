@@ -4,7 +4,6 @@ namespace wcf\system\moderation\queue;
 
 use wcf\data\comment\Comment;
 use wcf\data\comment\response\CommentResponse;
-use wcf\data\comment\response\CommentResponseAction;
 use wcf\data\comment\response\ViewableCommentResponse;
 use wcf\data\moderation\queue\ModerationQueue;
 use wcf\data\moderation\queue\ViewableModerationQueue;
@@ -89,11 +88,9 @@ class AbstractCommentResponseModerationQueueHandler extends AbstractCommentComme
      */
     public function getRelatedContent(ViewableModerationQueue $queue)
     {
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'moderationComment', [
             'message' => ViewableCommentResponse::getResponse($queue->objectID),
         ]);
-
-        return WCF::getTPL()->fetch('moderationComment');
     }
 
     /**

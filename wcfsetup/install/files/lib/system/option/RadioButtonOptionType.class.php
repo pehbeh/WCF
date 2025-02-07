@@ -58,15 +58,13 @@ class RadioButtonOptionType extends AbstractOptionType implements
             $value = \reset($keys);
         }
 
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', $this->templateName, [
             'disableOptions' => $options['disableOptions'],
             'enableOptions' => $options['enableOptions'],
             'option' => $option,
             'selectOptions' => $this->getSelectOptions($option),
             'value' => $value,
         ]);
-
-        return WCF::getTPL()->fetch($this->templateName);
     }
 
     /**

@@ -255,7 +255,7 @@ class UserTrophyAction extends AbstractDatabaseObjectAction
                 'wcf.user.trophy.dialogTitle',
                 ['username' => $this->userProfile->username]
             ),
-            'template' => WCF::getTPL()->fetch('groupedUserTrophyList', 'wcf', [
+            'template' => WCF::getTPL()->render('wcf', 'groupedUserTrophyList', [
                 'userTrophyList' => $userTrophyList,
             ]),
         ];

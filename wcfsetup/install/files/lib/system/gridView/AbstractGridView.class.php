@@ -250,7 +250,7 @@ abstract class AbstractGridView
      */
     public function render(): string
     {
-        return WCF::getTPL()->fetch('shared_gridView', 'wcf', ['view' => $this], true);
+        return WCF::getTPL()->render('wcf', 'shared_gridView', ['view' => $this]);
     }
 
     /**
@@ -260,7 +260,7 @@ abstract class AbstractGridView
     {
         $this->prepareRenderers();
 
-        return WCF::getTPL()->fetch('shared_gridViewRows', 'wcf', ['view' => $this], true);
+        return WCF::getTPL()->render('wcf', 'shared_gridViewRows', ['view' => $this]);
     }
 
     /**

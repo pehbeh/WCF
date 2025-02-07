@@ -117,12 +117,6 @@ class SearchAction extends AbstractDatabaseObjectAction
         $templateName = $resultHandler->getTemplateName();
         SearchResultTextParser::getInstance()->setSearchQuery($resultHandler->getQuery());
 
-        WCF::getTPL()->assign([
-            'objects' => $resultHandler->getSearchResults(),
-            'query' => $resultHandler->getQuery(),
-            'customIcons' => $resultHandler->getCustomIcons(),
-        ]);
-
         return [
             'count' => $resultHandler->countSearchResults(),
             'title' => WCF::getLanguage()->getDynamicVariable('wcf.search.results.title', [
@@ -132,7 +126,11 @@ class SearchAction extends AbstractDatabaseObjectAction
             'pages' => \ceil($resultHandler->countSearchResults() / SEARCH_RESULTS_PER_PAGE),
             'pageNo' => $this->parameters['pageNo'] ?: 1,
             'searchID' => $search->searchID,
-            'template' => WCF::getTPL()->fetch($templateName['templateName'], $templateName['application']),
+            'template' => WCF::getTPL()->render($templateName['application'], $templateName['templateName'], [
+                'objects' => $resultHandler->getSearchResults(),
+                'query' => $resultHandler->getQuery(),
+                'customIcons' => $resultHandler->getCustomIcons(),
+            ]),
         ];
     }
 
@@ -164,14 +162,12 @@ class SearchAction extends AbstractDatabaseObjectAction
         $templateName = $resultHandler->getTemplateName();
         SearchResultTextParser::getInstance()->setSearchQuery($resultHandler->getQuery());
 
-        WCF::getTPL()->assign([
-            'objects' => $resultHandler->getSearchResults(),
-            'query' => $resultHandler->getQuery(),
-            'customIcons' => $resultHandler->getCustomIcons(),
-        ]);
-
         return [
-            'template' => WCF::getTPL()->fetch($templateName['templateName'], $templateName['application']),
+            'template' => WCF::getTPL()->render($templateName['application'], $templateName['templateName'], [
+                'objects' => $resultHandler->getSearchResults(),
+                'query' => $resultHandler->getQuery(),
+                'customIcons' => $resultHandler->getCustomIcons(),
+            ]),
         ];
     }
 }

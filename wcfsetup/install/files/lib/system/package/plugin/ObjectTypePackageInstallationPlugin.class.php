@@ -204,10 +204,10 @@ class ObjectTypePackageInstallationPlugin extends AbstractXMLPackageInstallation
      */
     public function getAdditionalTemplateCode()
     {
-        return WCF::getTPL()->fetch('__objectTypePipGui', 'wcf', [
+        return WCF::getTPL()->render('wcf', '__objectTypePipGui', [
             'definitionNames' => $this->definitionNames,
             'definitionInterfaces' => $this->definitionInterfaces,
-        ], true);
+        ]);
     }
 
     /**

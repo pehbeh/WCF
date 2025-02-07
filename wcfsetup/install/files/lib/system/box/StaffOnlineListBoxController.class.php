@@ -47,7 +47,7 @@ class StaffOnlineListBoxController extends AbstractDatabaseObjectListBoxControll
      */
     protected function getTemplate()
     {
-        return WCF::getTPL()->fetch('boxStaffOnline', 'wcf', ['usersOnlineList' => $this->objectList], true);
+        return WCF::getTPL()->render('wcf', 'boxStaffOnline', ['usersOnlineList' => $this->objectList]);
     }
 
     /**

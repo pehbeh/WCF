@@ -31,7 +31,7 @@ class LineBreakSeparatedTextOptionType extends TextareaOptionType
         } while (\in_array($identifier, $identifiers));
         $identifiers[] = $identifier;
 
-        return WCF::getTPL()->fetch('shared_lineBreakSeparatedTextOptionType', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'shared_lineBreakSeparatedTextOptionType', [
             'identifier' => $identifier,
             'option' => $option,
             'values' => $values,

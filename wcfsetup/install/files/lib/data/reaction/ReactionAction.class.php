@@ -120,7 +120,7 @@ class ReactionAction extends AbstractDatabaseObjectAction
         });
 
         return [
-            'template' => WCF::getTPL()->fetch('groupedUserReactionList', 'wcf', ['groupedUsers' => $data]),
+            'template' => WCF::getTPL()->render('wcf', 'groupedUserReactionList', ['groupedUsers' => $data]),
             'title' => WCF::getLanguage()->get('wcf.reactions.summary.title'),
         ];
     }
@@ -277,14 +277,11 @@ class ReactionAction extends AbstractDatabaseObjectAction
             return [];
         }
 
-        // parse template
-        WCF::getTPL()->assign([
-            'likeList' => $likeList,
-        ]);
-
         return [
             'lastLikeTime' => $likeList->getLastLikeTime(),
-            'template' => WCF::getTPL()->fetch('userProfileLikeItem'),
+            'template' => WCF::getTPL()->render('wcf', 'userProfileLikeItem', [
+                'likeList' => $likeList,
+            ]),
         ];
     }
 
