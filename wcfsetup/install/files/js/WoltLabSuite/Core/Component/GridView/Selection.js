@@ -155,7 +155,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
             if (this.#bulkInteractionsPlaceholder !== null) {
                 return;
             }
-            this.dispatchEvent(new CustomEvent("getBulkInteractions", { detail: { objectIds: this.getSelectedIds() } }));
+            this.dispatchEvent(new CustomEvent("grid-view:get-bulk-interactions", { detail: { objectIds: this.getSelectedIds() } }));
             if (this.#bulkInteractionsLoadingDelay !== undefined) {
                 window.clearTimeout(this.#bulkInteractionsLoadingDelay);
             }
