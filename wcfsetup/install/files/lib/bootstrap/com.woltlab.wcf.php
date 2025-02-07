@@ -202,6 +202,7 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\users\groups\assignment\DeleteAssignment());
             $event->register(new \wcf\system\endpoint\controller\core\users\groups\assignment\EnableAssignment());
             $event->register(new \wcf\system\endpoint\controller\core\users\groups\assignment\DisableAssignment());
+            $event->register(new \wcf\system\endpoint\controller\core\users\groups\DeleteGroup());
         }
     );
 

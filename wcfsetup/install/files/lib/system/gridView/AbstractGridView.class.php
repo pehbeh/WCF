@@ -275,7 +275,11 @@ abstract class AbstractGridView
 
         $value = $column->render($value, $row);
 
-        if (isset($this->rowLink) && $column->applyRowLink()) {
+        if (
+            isset($this->rowLink)
+            && $column->applyRowLink()
+            && $this->rowLink->isAvailable($row)
+        ) {
             $value = $this->rowLink->render($value, $row, $column->isTitleColumn());
         }
 

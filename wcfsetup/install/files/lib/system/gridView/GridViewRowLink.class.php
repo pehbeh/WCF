@@ -23,6 +23,7 @@ class GridViewRowLink
         private readonly array $parameters = [],
         private readonly string $cssClass = '',
         private readonly bool $isLinkableObject = false,
+        private readonly ?\Closure $isAvailableCallback = null
     ) {}
 
     /**
@@ -74,5 +75,14 @@ class GridViewRowLink
         }
 
         throw new \BadMethodCallException("GridViewRowLink expects object to be an implementation of ILinkableObject.");
+    }
+
+    public function isAvailable(DatabaseObject $row): bool
+    {
+        if ($this->isAvailableCallback === null) {
+            return true;
+        }
+
+        return ($this->isAvailableCallback)($row);
     }
 }

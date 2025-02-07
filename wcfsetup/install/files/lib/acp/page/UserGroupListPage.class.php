@@ -2,20 +2,20 @@
 
 namespace wcf\acp\page;
 
-use wcf\data\user\group\I18nUserGroupList;
-use wcf\page\SortablePage;
-use wcf\system\WCF;
+use wcf\page\AbstractGridViewPage;
+use wcf\system\gridView\AbstractGridView;
+use wcf\system\gridView\admin\UserGroupGridView;
 
 /**
  * Shows a list of all user groups.
  *
- * @author  Marcel Werk
- * @copyright   2001-2019 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @author      Olaf Braun, Marcel Werk
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    I18nUserGroupList $objectList
+ * @property    UserGroupGridView $gridView
  */
-class UserGroupListPage extends SortablePage
+class UserGroupListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -27,76 +27,9 @@ class UserGroupListPage extends SortablePage
      */
     public $neededPermissions = ['admin.user.canEditGroup', 'admin.user.canDeleteGroup'];
 
-    /**
-     * @inheritDoc
-     */
-    public $defaultSortField = 'groupNameI18n';
-
-    /**
-     * @inheritDoc
-     */
-    public $validSortFields = ['groupID', 'groupNameI18n', 'groupType', 'members', 'priority'];
-
-    /**
-     * @inheritDoc
-     */
-    public $objectListClassName = I18nUserGroupList::class;
-
-    /**
-     * indicates if a group has just been deleted
-     * @var int
-     */
-    public $deletedGroups = 0;
-
-    /**
-     * @inheritDoc
-     */
-    public function readParameters()
+    #[\Override]
+    protected function createGridViewController(): AbstractGridView
     {
-        parent::readParameters();
-
-        // detect group deletion
-        if (isset($_REQUEST['deletedGroups'])) {
-            $this->deletedGroups = \intval($_REQUEST['deletedGroups']);
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function initObjectList()
-    {
-        parent::initObjectList();
-
-        if (!empty($this->objectList->sqlSelects)) {
-            $this->objectList->sqlSelects .= ',';
-        }
-        $this->objectList->sqlSelects .= "(
-            SELECT  COUNT(*)
-            FROM    wcf1_user_to_group
-            WHERE   groupID = user_group.groupID
-        ) AS members";
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function readObjects()
-    {
-        $this->sqlOrderBy = (($this->sortField != 'members' && $this->sortField != 'groupNameI18n') ? 'user_group.' : '') . $this->sortField . " " . $this->sortOrder;
-
-        parent::readObjects();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function assignVariables()
-    {
-        parent::assignVariables();
-
-        WCF::getTPL()->assign([
-            'deletedGroups' => $this->deletedGroups,
-        ]);
+        return new UserGroupGridView();
     }
 }
