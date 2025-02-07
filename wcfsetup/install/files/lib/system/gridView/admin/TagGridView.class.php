@@ -62,16 +62,19 @@ final class TagGridView extends AbstractGridView
                         {
                             \assert($row instanceof Tag);
 
-                            /** @noinspection PhpUndefinedFieldInspection */
-                            if (!$row->languageName) {
+                            if (!$row->languageID) {
                                 return '';
                             }
 
-                            /** @noinspection PhpUndefinedFieldInspection */
+                            $language = LanguageFactory::getInstance()->getLanguage($row->languageID);
+                            if ($language === null) {
+                                return '';
+                            }
+
                             return \sprintf(
                                 '%s (%s)',
-                                StringUtil::encodeHTML($row->languageName),
-                                StringUtil::encodeHTML($row->languageCode),
+                                StringUtil::encodeHTML($language->languageName),
+                                StringUtil::encodeHTML($language->languageCode),
                             );
                         }
                     }
