@@ -2113,6 +2113,7 @@ Die Datenbestände werden sorgfältig gepflegt, aber es ist nicht ausgeschlossen
 		<item name="wcf.acp.paidSubscription.transactionLog.logMessage"><![CDATA[Aktion]]></item>
 		<item name="wcf.acp.paidSubscription.transactionLog"><![CDATA[Transaktion]]></item>
 		<item name="wcf.acp.paidSubscription.transactionLog.transactionDetails"><![CDATA[Details]]></item>
+		<item name="wcf.acp.paidSubscription.transactionLog.showTransactionDetails"><![CDATA[Details anzeigen]]></item>
 		<item name="wcf.acp.paidSubscription.excludedSubscriptions"><![CDATA[Andere Mitgliedschaften ausschließen]]></item>
 		<item name="wcf.acp.paidSubscription.excludedSubscriptions.description"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Du kannst{else}Sie können{/if} den Erwerb anderer bezahlter Mitgliedschaften für Käufer dieser Mitgliedschaft ausschließen.]]></item>
 		<item name="wcf.acp.paidSubscription.user.delete.confirmMessage"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Willst du{else}Wollen Sie{/if} die Mitgliedschaft <span class="confirmationObject">{$subscriptionUser->title|phrase}</span> für den Benutzer <span class="confirmationObject">{$subscriptionUser->username}</span> wirklich entfernen?]]></item>
