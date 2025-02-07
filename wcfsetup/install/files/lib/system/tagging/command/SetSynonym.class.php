@@ -17,6 +17,7 @@ final class SetSynonym
 {
     public function __construct(
         private readonly Tag $mainTag,
+        /** @var Tag[] */
         private readonly array $tags
     ) {
     }
