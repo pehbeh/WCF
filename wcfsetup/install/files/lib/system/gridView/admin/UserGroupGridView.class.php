@@ -15,7 +15,6 @@ use wcf\system\gridView\filter\I18nTextFilter;
 use wcf\system\gridView\filter\NumericFilter;
 use wcf\system\gridView\GridViewColumn;
 use wcf\system\gridView\GridViewRowLink;
-use wcf\system\gridView\renderer\AbstractColumnRenderer;
 use wcf\system\gridView\renderer\ILinkColumnRenderer;
 use wcf\system\gridView\renderer\NumberColumnRenderer;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
@@ -43,37 +42,32 @@ final class UserGroupGridView extends AbstractGridView
                 ->label("wcf.global.objectID")
                 ->renderer(new ObjectIdColumnRenderer())
                 ->sortable(),
-            GridViewColumn::for("isOwner")
-                ->renderer(
-                    new class extends AbstractColumnRenderer {
-                        #[\Override]
-                        public function render(mixed $value, DatabaseObject $row): string
-                        {
-                            \assert($row instanceof UserGroup);
-                            if (!$row->isOwner()) {
-                                return "";
-                            }
-
-                            $title = WCF::getLanguage()->get("wcf.acp.group.type.owner");
-                            return <<<HTML
-                                <span  class="jsTooltip" title="{$title}">
-                                    <fa-icon name="shield-halved"></fa-icon>
-                                </span>
-                            HTML;
-                        }
-
-                        #[\Override]
-                        public function getClasses(): string
-                        {
-                            return 'gridView__column--digits';
-                        }
-                    }
-                ),
             GridViewColumn::for("groupName")
                 ->label("wcf.global.name")
                 ->titleColumn()
                 ->filter(new I18nTextFilter())
-                ->renderer(new PhraseColumnRenderer())
+                ->renderer(
+                    new class extends PhraseColumnRenderer {
+                        #[\Override]
+                        public function render(mixed $value, DatabaseObject $row): string
+                        {
+                            $renderedValue = parent::render($value, $row);
+
+                            \assert($row instanceof UserGroup);
+
+                            if ($row->isOwner()) {
+                                $title = WCF::getLanguage()->get("wcf.acp.group.type.owner");
+                                $renderedValue .= <<<HTML
+                                    <span title="{$title}">
+                                        <fa-icon name="shield-halved"></fa-icon>
+                                    </span>
+                                HTML;
+                            }
+
+                            return $renderedValue;
+                        }
+                    }
+                )
                 ->sortable(sortByDatabaseColumn: "groupNameI18n"),
             GridViewColumn::for("members")
                 ->label("wcf.acp.group.members")
