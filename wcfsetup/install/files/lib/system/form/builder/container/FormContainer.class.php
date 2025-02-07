@@ -54,13 +54,12 @@ class FormContainer implements IFormContainer
      */
     public function getHtml()
     {
-        return WCF::getTPL()->fetch(
-            $this->templateName,
+        return WCF::getTPL()->render(
             $this->templateApplication,
+            $this->templateName,
             \array_merge($this->getHtmlVariables(), [
                 'container' => $this,
             ]),
-            true
         );
     }
 

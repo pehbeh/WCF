@@ -74,9 +74,9 @@ class FormButton implements IFormButton
      */
     public function getHtml()
     {
-        return WCF::getTPL()->fetch(
-            $this->templateName,
+        return WCF::getTPL()->render(
             'wcf',
+            $this->templateName,
             [
                 'button' => $this,
             ]

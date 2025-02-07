@@ -109,11 +109,10 @@ class UserOnlineListBoxController extends AbstractDatabaseObjectListBoxControlle
             $templateName = 'boxUsersOnline';
         }
 
-        return WCF::getTPL()->fetch(
-            $templateName,
+        return WCF::getTPL()->render(
             'wcf',
-            ['usersOnlineList' => $this->objectList, '__showRecord' => $this->showRecord],
-            true
+            $templateName,
+            ['usersOnlineList' => $this->objectList, '__showRecord' => $this->showRecord]
         );
     }
 

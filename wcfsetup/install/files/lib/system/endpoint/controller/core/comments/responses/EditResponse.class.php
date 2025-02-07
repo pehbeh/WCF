@@ -42,7 +42,7 @@ final class EditResponse implements IController
         $upcastProcessor->process($response->message, 'com.woltlab.wcf.comment.response');
 
         return new JsonResponse([
-            'template' => WCF::getTPL()->fetch('commentResponseEditor', 'wcf', [
+            'template' => WCF::getTPL()->render('wcf', 'commentResponseEditor', [
                 'response' => $response,
                 'text' => $upcastProcessor->getHtml(),
                 'wysiwygSelector' => 'commentResponseEditor' . $response->responseID,

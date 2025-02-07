@@ -84,7 +84,7 @@ final class RenderResponses implements IController
         return new JsonResponse([
             'lastResponseTime' => $lastResponseTime,
             'lastResponseID' => $lastResponseID,
-            'template' => WCF::getTPL()->fetch('commentResponseList', 'wcf', [
+            'template' => WCF::getTPL()->render('wcf', 'commentResponseList', [
                 'commentCanModerate' => $commentCanModerate,
                 'likeData' => MODULE_LIKE ? $responseList->getLikeData() : [],
                 'responseList' => $responseList,

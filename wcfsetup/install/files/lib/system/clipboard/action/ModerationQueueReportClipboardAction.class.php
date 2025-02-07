@@ -67,7 +67,7 @@ class ModerationQueueReportClipboardAction extends AbstractClipboardAction
                 );
                 $item->addInternalData(
                     'template',
-                    WCF::getTPL()->fetch('moderationReportRemoveContent')
+                    WCF::getTPL()->render('wcf', 'moderationReportRemoveContent', [])
                 );
                 break;
 
@@ -83,7 +83,7 @@ class ModerationQueueReportClipboardAction extends AbstractClipboardAction
                 );
                 $item->addInternalData(
                     'template',
-                    WCF::getTPL()->fetch('moderationReportRemoveReport')
+                    WCF::getTPL()->render('wcf', 'moderationReportRemoveReport', [])
                 );
                 break;
         }

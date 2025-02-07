@@ -42,14 +42,12 @@ class TextOptionType extends AbstractOptionType implements ISearchableConditionU
      */
     public function getFormElement(Option $option, $value)
     {
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'textOptionType', [
             'option' => $option,
             'inputType' => $this->inputType,
             'inputClass' => $this->inputClass,
             'value' => $value,
         ]);
-
-        return WCF::getTPL()->fetch('textOptionType');
     }
 
     /**
@@ -57,15 +55,13 @@ class TextOptionType extends AbstractOptionType implements ISearchableConditionU
      */
     public function getSearchFormElement(Option $option, $value)
     {
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'textSearchableOptionType', [
             'option' => $option,
             'inputType' => $this->inputType,
             'inputClass' => $this->inputClass,
             'searchOption' => $this->forceSearchOption || ($value !== null && $value !== $option->defaultValue) || isset($_POST['searchOptions'][$option->optionName]),
             'value' => $value,
         ]);
-
-        return WCF::getTPL()->fetch('textSearchableOptionType');
     }
 
     /**

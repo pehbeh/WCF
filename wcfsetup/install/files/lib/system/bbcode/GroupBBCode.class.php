@@ -31,9 +31,9 @@ final class GroupBBCode extends AbstractBBCode
             return $content;
         }
 
-        return WCF::getTPL()->fetch('shared_bbcode_group', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'shared_bbcode_group', [
             'group' => $group,
             'groupName' => $content,
-        ], true);
+        ]);
     }
 }

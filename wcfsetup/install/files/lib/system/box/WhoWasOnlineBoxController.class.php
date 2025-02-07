@@ -59,11 +59,11 @@ class WhoWasOnlineBoxController extends AbstractDatabaseObjectListBoxController
      */
     protected function getTemplate()
     {
-        return WCF::getTPL()->fetch('boxWhoWasOnline', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'boxWhoWasOnline', [
             'whoWasOnlineList' => $this->users,
             'boxPosition' => $this->box->position,
             'whoWasOnlineTimeFormat' => DateUtil::TIME_FORMAT,
-        ], true);
+        ]);
     }
 
     /**

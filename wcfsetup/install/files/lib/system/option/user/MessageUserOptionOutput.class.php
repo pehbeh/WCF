@@ -45,11 +45,9 @@ class MessageUserOptionOutput implements IUserOptionOutput
         $htmlOutputProcessor = new HtmlOutputProcessor();
         $htmlOutputProcessor->process($value, 'com.woltlab.wcf.user.aboutMe', $user->userID);
 
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'messageUserOptionOutput', [
             'option' => $option,
             'value' => $htmlOutputProcessor->getHtml(),
         ]);
-
-        return WCF::getTPL()->fetch('messageUserOptionOutput');
     }
 }

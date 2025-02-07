@@ -141,11 +141,11 @@ class TodaysBirthdaysBoxController extends AbstractDatabaseObjectListBoxControll
                     // sort users
                     DatabaseObject::sort($visibleUserProfiles, $this->sortField, $this->sortOrder);
 
-                    $this->content = WCF::getTPL()->fetch($this->templateName, 'wcf', [
+                    $this->content = WCF::getTPL()->render('wcf', $this->templateName, [
                         'birthdayUserProfiles' => $visibleUserProfiles,
                         'sortField' => $this->sortField,
                         'sortOrder' => $this->sortOrder,
-                    ], true);
+                    ]);
                 }
             }
         }

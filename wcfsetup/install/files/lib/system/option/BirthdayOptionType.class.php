@@ -62,13 +62,11 @@ class BirthdayOptionType extends DateOptionType
             $ageTo = \intval($value['ageTo']);
         }
 
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'birthdaySearchableOptionType', [
             'option' => $option,
             'valueAgeFrom' => $ageFrom,
             'valueAgeTo' => $ageTo,
         ]);
-
-        return WCF::getTPL()->fetch('birthdaySearchableOptionType');
     }
 
     /**

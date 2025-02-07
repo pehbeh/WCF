@@ -442,9 +442,9 @@ class FormDocument implements IFormDocument
             throw new \BadMethodCallException("The form document has to be built before it can be rendered.");
         }
 
-        return WCF::getTPL()->fetch(
-            'shared_form',
+        return WCF::getTPL()->render(
             'wcf',
+            'shared_form',
             \array_merge($this->getHtmlVariables(), ['form' => $this])
         );
     }

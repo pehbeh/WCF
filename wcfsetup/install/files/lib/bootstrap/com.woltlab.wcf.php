@@ -186,7 +186,17 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\languages\SetAsDefaultLanguage());
             $event->register(new \wcf\system\endpoint\controller\core\languages\items\DeleteItem());
             $event->register(new \wcf\system\endpoint\controller\core\labels\groups\DeleteGroup());
+            $event->register(new \wcf\system\endpoint\controller\core\pages\DeletePage());
+            $event->register(new \wcf\system\endpoint\controller\core\pages\DisablePage());
+            $event->register(new \wcf\system\endpoint\controller\core\pages\EnablePage());
             $event->register(new \wcf\system\endpoint\controller\core\templates\groups\DeleteTemplateGroup());
+            $event->register(new \wcf\system\endpoint\controller\core\packages\updates\servers\DisableServer());
+            $event->register(new \wcf\system\endpoint\controller\core\packages\updates\servers\DeleteServer());
+            $event->register(new \wcf\system\endpoint\controller\core\packages\updates\servers\EnableServer());
+            $event->register(new \wcf\system\endpoint\controller\core\paid\subscriptions\DeleteSubscription());
+            $event->register(new \wcf\system\endpoint\controller\core\paid\subscriptions\DisableSubscription());
+            $event->register(new \wcf\system\endpoint\controller\core\paid\subscriptions\EnableSubscription());
+            $event->register(new \wcf\system\endpoint\controller\core\paid\subscriptions\users\DeleteSubscriptionUser());
             $event->register(new \wcf\system\endpoint\controller\core\templates\DeleteTemplate());
         }
     );

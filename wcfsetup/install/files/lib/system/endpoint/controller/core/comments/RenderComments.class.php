@@ -52,7 +52,7 @@ final class RenderComments implements IController
 
         return new JsonResponse([
             'lastCommentTime' => $commentList->getMinCommentTime(),
-            'template' => WCF::getTPL()->fetch('commentList', 'wcf', [
+            'template' => WCF::getTPL()->render('wcf', 'commentList', [
                 'commentList' => $commentList,
                 'likeData' => MODULE_LIKE ? $commentList->getLikeData() : [],
             ]),

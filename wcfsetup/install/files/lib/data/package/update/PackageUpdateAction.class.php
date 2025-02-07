@@ -69,17 +69,15 @@ class PackageUpdateAction extends AbstractDatabaseObjectAction
 
         // there are no available package update servers
         if (empty($availableUpdateServers)) {
-            WCF::getTPL()->assign([
-                'officialPackages' => [],
-                'thirdPartySources' => [],
-                'trustedSources' => [],
-            ]);
-
             return [
                 'count' => 0,
                 'pageCount' => 0,
                 'searchID' => 0,
-                'template' => WCF::getTPL()->fetch('packageSearchResultList'),
+                'template' => WCF::getTPL()->render('wcf', 'packageSearchResultList', [
+                    'officialPackages' => [],
+                    'thirdPartySources' => [],
+                    'trustedSources' => [],
+                ]),
             ];
         }
 
@@ -108,17 +106,15 @@ class PackageUpdateAction extends AbstractDatabaseObjectAction
 
         // no matches found
         if (empty($packageUpdateIDs)) {
-            WCF::getTPL()->assign([
-                'officialPackages' => [],
-                'thirdPartySources' => [],
-                'trustedSources' => [],
-            ]);
-
             return [
                 'count' => 0,
                 'pageCount' => 0,
                 'searchID' => 0,
-                'template' => WCF::getTPL()->fetch('packageSearchResultList'),
+                'template' => WCF::getTPL()->render('wcf', 'packageSearchResultList', [
+                    'officialPackages' => [],
+                    'thirdPartySources' => [],
+                    'trustedSources' => [],
+                ]),
             ];
         }
 
@@ -165,17 +161,15 @@ class PackageUpdateAction extends AbstractDatabaseObjectAction
 
         // no matches found
         if (empty($packageUpdates)) {
-            WCF::getTPL()->assign([
-                'officialPackages' => [],
-                'thirdPartySources' => [],
-                'trustedSources' => [],
-            ]);
-
             return [
                 'count' => 0,
                 'pageCount' => 0,
                 'searchID' => 0,
-                'template' => WCF::getTPL()->fetch('packageSearchResultList'),
+                'template' => WCF::getTPL()->render('wcf', 'packageSearchResultList', [
+                    'officialPackages' => [],
+                    'thirdPartySources' => [],
+                    'trustedSources' => [],
+                ]),
             ];
         }
 
@@ -575,15 +569,13 @@ class PackageUpdateAction extends AbstractDatabaseObjectAction
             return \strnatcasecmp($a->getName(), $b->getName());
         });
 
-        WCF::getTPL()->assign([
-            'officialPackages' => $officialPackages,
-            'thirdPartySources' => $thirdPartySources,
-            'trustedSources' => $trustedSources,
-        ]);
-
         return [
             'count' => \count($officialPackages) + \count($thirdPartySources) + \count($trustedSources),
-            'template' => WCF::getTPL()->fetch('packageSearchResultList'),
+            'template' => WCF::getTPL()->render('wcf', 'packageSearchResultList', [
+                'officialPackages' => $officialPackages,
+                'thirdPartySources' => $thirdPartySources,
+                'trustedSources' => $trustedSources,
+            ]),
         ];
     }
 
@@ -767,9 +759,9 @@ class PackageUpdateAction extends AbstractDatabaseObjectAction
 
         if (!empty($excludedPackages)) {
             return [
-                'template' => WCF::getTPL()->fetch(
-                    'packageUpdateExcludedPackages',
+                'template' => WCF::getTPL()->render(
                     'wcf',
+                    'packageUpdateExcludedPackages',
                     ['excludedPackages' => $excludedPackages]
                 ),
                 'type' => 'conflict',

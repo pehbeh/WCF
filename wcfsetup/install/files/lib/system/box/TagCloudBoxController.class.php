@@ -74,10 +74,10 @@ abstract class TagCloudBoxController extends AbstractBoxController
             $tags = $tagCloud->getTags();
 
             if (!empty($tags)) {
-                $this->content = WCF::getTPL()->fetch('tagCloudBox', 'wcf', [
+                $this->content = WCF::getTPL()->render('wcf', 'tagCloudBox', [
                     'tags' => $tags,
                     'taggableObjectType' => $this->objectType,
-                ], true);
+                ]);
             }
         }
     }

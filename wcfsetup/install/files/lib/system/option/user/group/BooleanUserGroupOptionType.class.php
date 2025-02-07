@@ -26,15 +26,13 @@ class BooleanUserGroupOptionType extends BooleanOptionType implements IUserGroup
     {
         $options = Option::parseEnableOptions($option->enableOptions);
 
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'userGroupBooleanOptionType', [
             'disableOptions' => $options['disableOptions'],
             'enableOptions' => $options['enableOptions'],
             'group' => $this->userGroup,
             'option' => $option,
             'value' => $value,
         ]);
-
-        return WCF::getTPL()->fetch('userGroupBooleanOptionType');
     }
 
     /**

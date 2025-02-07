@@ -23,7 +23,7 @@ class PaymentMethodSelectOptionType extends AbstractOptionType
     {
         $selectOptions = PaymentMethodHandler::getInstance()->getPaymentMethodSelection();
 
-        return WCF::getTPL()->fetch('paymentMethodSelectOptionType', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'paymentMethodSelectOptionType', [
             'selectOptions' => $selectOptions,
             'option' => $option,
             'value' => \explode(',', $value),

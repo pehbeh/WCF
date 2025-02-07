@@ -145,14 +145,15 @@ final class RenderComment implements IController
             }
         }
 
+        $tplVariables = [];
         // This functions renders a single comment without rendering its responses.
         // We need to prevent the setting of the data attribute for the last response time
         // so that the loading of the responses by the user works correctly.
         if ($comment->responses) {
-            WCF::getTPL()->assign('ignoreLastResponseTime', true);
+            $tplVariables['ignoreLastResponseTime'] = true;
         }
 
-        WCF::getTPL()->assign([
+        $tplVariables = \array_merge($tplVariables, [
             'commentCanAdd' => $commentManager->canAdd(
                 $comment->objectID
             ),
@@ -186,11 +187,11 @@ final class RenderComment implements IController
                 $likeData['response'] = ReactionHandler::getInstance()->getLikeObjects($responseObjectType);
             }
 
-            WCF::getTPL()->assign('likeData', $likeData);
+            $tplVariables['likeData'] = $likeData;
         }
 
         $returnValue = [
-            'template' => WCF::getTPL()->fetch('commentList'),
+            'template' => WCF::getTPL()->render('wcf', 'commentList', $tplVariables),
         ];
         if ($response !== null) {
             $returnValue['response'] = $this->renderResponse($response);
@@ -218,7 +219,7 @@ final class RenderComment implements IController
         $structedResponse->setIsDeletable($commentManager->canDeleteResponse($response));
         $structedResponse->setIsEditable($commentManager->canEditResponse($response));
 
-        return WCF::getTPL()->fetch('commentResponseList', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'commentResponseList', [
             'responseList' => [$structedResponse],
             'commentCanModerate' => $commentManager->canModerate(
                 $response->getComment()->objectTypeID,

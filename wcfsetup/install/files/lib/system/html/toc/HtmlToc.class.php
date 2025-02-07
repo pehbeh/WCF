@@ -106,7 +106,7 @@ class HtmlToc
             $lastItem = $heading;
         }
 
-        return WCF::getTPL()->fetch('shared_messageTableOfContents', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'shared_messageTableOfContents', [
             'idPrefix' => $idPrefix,
             'items' => $toc->getIterator(),
         ]);

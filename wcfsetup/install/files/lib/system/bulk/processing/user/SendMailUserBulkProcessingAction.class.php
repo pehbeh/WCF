@@ -78,7 +78,7 @@ class SendMailUserBulkProcessingAction extends AbstractUserBulkProcessingAction
      */
     public function getHTML()
     {
-        return WCF::getTPL()->fetch('sendMailUserBulkProcessing', 'wcf', [
+        return WCF::getTPL()->render('wcf', 'sendMailUserBulkProcessing', [
             'enableHTML' => $this->enableHTML,
             'mailID' => $this->mailID,
             'subject' => $this->subject,

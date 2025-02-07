@@ -28,7 +28,7 @@ class TimezoneOptionType extends AbstractOptionType
             );
         }
 
-        WCF::getTPL()->assign([
+        return WCF::getTPL()->render('wcf', 'selectOptionType', [
             'disableOptions' => '',
             'enableOptions' => '',
             'option' => $option,
@@ -36,8 +36,6 @@ class TimezoneOptionType extends AbstractOptionType
             'value' => $value ?: TIMEZONE,
             'allowEmptyValue' => false,
         ]);
-
-        return WCF::getTPL()->fetch('selectOptionType');
     }
 
     /**
