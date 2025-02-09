@@ -20,7 +20,7 @@ class ImplodeCompilerTemplatePlugin implements ICompilerTemplatePlugin
 {
     /**
      * local tag stack
-     * @var string[]
+     * @var string[]|string[][]
      */
     protected $tagStack = [];
 

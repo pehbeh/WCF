@@ -228,11 +228,11 @@ class Tar implements IArchive
         if ($header['type'] === 'folder') {
             FileUtil::makePath($destination);
 
-            return;
+            return true;
         }
         if ($header['type'] === 'symlink') {
             // skip symlinks
-            return;
+            return true;
         }
 
         // seek to offset

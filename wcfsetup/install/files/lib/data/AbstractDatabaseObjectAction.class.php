@@ -254,7 +254,7 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
     /**
      * Sets the database objects.
      *
-     * @param DatabaseObject[] $objects
+     * @param DatabaseObjectEditor[] $objects
      */
     public function setObjects(array $objects)
     {

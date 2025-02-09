@@ -37,6 +37,7 @@ class IntegerOptionType extends TextOptionType
      */
     public function getData(Option $option, $newValue)
     {
+        // @phpstan-ignore return.type
         return \intval($newValue);
     }
 

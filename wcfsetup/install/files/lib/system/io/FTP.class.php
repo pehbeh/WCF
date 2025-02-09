@@ -11,7 +11,7 @@ class FTP
 {
     /**
      * file pointer resource
-     * @var resource
+     * @var \FTP\Connection
      */
     protected $resource;
 
@@ -25,10 +25,12 @@ class FTP
      */
     public function __construct($host = 'localhost', $port = 21, $timeout = 30)
     {
-        $this->resource = \ftp_connect($host, $port, $timeout);
-        if ($this->resource === false) {
+        $resource = \ftp_connect($host, $port, $timeout);
+        if ($resource === false) {
             throw new SystemException('Can not connect to ' . $host);
         }
+
+        $this->resource = $resource;
     }
 
     /**

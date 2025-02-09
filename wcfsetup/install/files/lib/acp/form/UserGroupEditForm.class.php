@@ -91,7 +91,7 @@ class UserGroupEditForm extends UserGroupAddForm
         parent::validate();
 
         if ($this->allowMention && $this->isUnmentionableGroup) {
-            $this->allowMention = false;
+            $this->allowMention = 0;
         }
     }
 

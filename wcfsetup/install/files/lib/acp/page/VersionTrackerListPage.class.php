@@ -62,7 +62,7 @@ class VersionTrackerListPage extends AbstractPage
 
     /**
      * right / new version id
-     * @var int
+     * @var int|string
      */
     public $newID = 0;
 

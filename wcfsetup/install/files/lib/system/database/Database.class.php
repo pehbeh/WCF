@@ -156,13 +156,21 @@ abstract class Database
      *
      * @param string $table
      * @param string $field
-     * @return  string|false
+     * @return  string
      * @throws  DatabaseException
      */
     public function getInsertID($table, $field)
     {
         try {
-            return $this->pdo->lastInsertId();
+            $lastInsertID = $this->pdo->lastInsertId();
+
+            // The only supported implementation `MySQLDatabase` sets the error
+            // mode to “exception” which prevents `false` ever being returned
+            // here. The entire code base relies on this method never returning
+            // anything but a string.
+            \assert($lastInsertID !== false);
+
+            return $lastInsertID;
         } catch (\PDOException $e) {
             throw new GenericDatabaseException("Cannot fetch last insert id", $e);
         }
@@ -401,17 +409,18 @@ abstract class Database
     }
 
     /**
-     * Returns the number of the last error.
+     * Returns the code of the last error.
      *
-     * @return  int
+     * @return string
      */
     public function getErrorNumber()
     {
-        if ($this->pdo !== null) {
-            return $this->pdo->errorCode();
+        $errorCode = $this->pdo?->errorCode();
+        if ($errorCode === null) {
+            return '0';
         }
 
-        return 0;
+        return $errorCode;
     }
 
     /**

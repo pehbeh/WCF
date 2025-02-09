@@ -36,6 +36,7 @@ class FloatOptionType extends TextOptionType
      */
     public function getData(Option $option, $newValue)
     {
+        // @phpstan-ignore return.type
         return $this->toFloat($newValue);
     }
 

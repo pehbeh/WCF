@@ -17,7 +17,7 @@ class DatabaseException extends SystemException
 {
     /**
      * error number
-     * @var int
+     * @var string
      */
     protected $errorNumber;
 
@@ -85,9 +85,9 @@ class DatabaseException extends SystemException
     }
 
     /**
-     * Returns the error number of this exception.
+     * Returns the error code of this exception.
      *
-     * @return  int
+     * @return string
      */
     public function getErrorNumber()
     {

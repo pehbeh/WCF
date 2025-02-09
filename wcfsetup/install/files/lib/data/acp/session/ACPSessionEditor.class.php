@@ -35,8 +35,9 @@ class ACPSessionEditor extends DatabaseObjectEditor
             $parameters['userID'] = null;
         }
 
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return parent::create($parameters);
+        $object = parent::create($parameters);
+        \assert($object instanceof ACPSession);
+        return $object;
     }
 
     /**

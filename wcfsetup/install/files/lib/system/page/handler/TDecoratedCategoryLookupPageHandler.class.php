@@ -81,7 +81,7 @@ trait TDecoratedCategoryLookupPageHandler
      * an `objectID => title` relation.
      *
      * @param string $searchString search string
-     * @return  string[]
+     * @return list<array<string, mixed>>
      * @see ILookupPageHandler::lookup()
      */
     public function lookup($searchString)

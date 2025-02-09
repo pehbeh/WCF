@@ -63,7 +63,7 @@ class RegisterForm extends UserAddForm
 
     /**
      * captcha object type object
-     * @var ObjectType
+     * @var ?ObjectType
      */
     public $captchaObjectType;
 
@@ -77,7 +77,7 @@ class RegisterForm extends UserAddForm
      * true if captcha is used
      * @var bool
      */
-    public $useCaptcha = REGISTER_USE_CAPTCHA;
+    public $useCaptcha = !!REGISTER_USE_CAPTCHA;
 
     /**
      * field names

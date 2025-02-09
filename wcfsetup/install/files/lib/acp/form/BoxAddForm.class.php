@@ -53,7 +53,7 @@ class BoxAddForm extends AbstractForm
 
     /**
      * true if created box is multi-lingual
-     * @var bool
+     * @var int
      */
     public $isMultilingual = 0;
 
@@ -77,7 +77,7 @@ class BoxAddForm extends AbstractForm
 
     /**
      * true if created box is visible everywhere
-     * @var bool
+     * @var int
      */
     public $visibleEverywhere = 1;
 
@@ -89,7 +89,7 @@ class BoxAddForm extends AbstractForm
 
     /**
      * true if box header is visible
-     * @var bool
+     * @var int
      */
     public $showHeader = 1;
 
@@ -137,7 +137,7 @@ class BoxAddForm extends AbstractForm
 
     /**
      * selected box controller object type
-     * @var ObjectType
+     * @var ?ObjectType
      */
     public $boxController;
 
@@ -200,7 +200,7 @@ class BoxAddForm extends AbstractForm
     public $availableBoxPositions = [];
 
     /**
-     * @var bool
+     * @var int
      * @since   5.2
      */
     public $isDisabled = 0;
@@ -218,7 +218,7 @@ class BoxAddForm extends AbstractForm
     public $presetBox;
 
     /**
-     * @var bool
+     * @var int
      * @since   5.4
      */
     public $invertPermissions;
@@ -480,13 +480,13 @@ class BoxAddForm extends AbstractForm
                 }
             }
         } elseif ($this->boxType !== 'system' && $this->linkType == 'external') {
-            $this->linkPageID = $this->linkPageObjectID = null;
+            $this->linkPageID = $this->linkPageObjectID = 0;
 
             if (empty($this->externalURL)) {
                 throw new UserInputException('externalURL');
             }
         } else {
-            $this->linkPageID = $this->linkPageObjectID = null;
+            $this->linkPageID = $this->linkPageObjectID = 0;
             $this->externalURL = '';
         }
 

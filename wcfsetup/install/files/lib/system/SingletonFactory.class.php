@@ -15,7 +15,7 @@ abstract class SingletonFactory
 {
     /**
      * list of singletons
-     * @var SingletonFactory[]
+     * @var static[]
      */
     protected static $__singletonObjects = [];
 

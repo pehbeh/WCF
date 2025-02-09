@@ -118,7 +118,7 @@ final class Wcf1e implements IPasswordAlgorithm
     ): string {
         switch ($this->encryptionMethod) {
             case 'c':
-                return \crc32($string);
+                return (string)\crc32($string);
                 break;
 
             case 'm':

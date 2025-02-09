@@ -16,7 +16,7 @@ trait TPlaceholderFormField
 {
     /**
      * placeholder value of this element
-     * @var string
+     * @var ?string
      */
     protected $placeholder;
 

@@ -40,7 +40,7 @@ interface IPackageInstallationPlugin
      * Returns the default file name containing the instructions or `null` if no default
      * file name is supported.
      *
-     * @return  string
+     * @return  ?string
      * @since   3.0
      */
     public static function getDefaultFilename();

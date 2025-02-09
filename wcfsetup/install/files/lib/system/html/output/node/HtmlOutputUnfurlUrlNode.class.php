@@ -86,6 +86,9 @@ class HtmlOutputUnfurlUrlNode extends AbstractHtmlOutputNode
      */
     protected function getUnfurlUrl(int $id): UnfurlUrl
     {
-        return MessageEmbeddedObjectManager::getInstance()->getObject('com.woltlab.wcf.unfurlUrl', $id);
+        $object = MessageEmbeddedObjectManager::getInstance()->getObject('com.woltlab.wcf.unfurlUrl', $id);
+        \assert($object instanceof UnfurlUrl);
+
+        return $object;
     }
 }

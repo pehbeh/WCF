@@ -124,6 +124,7 @@ class VersionTracker extends SingletonFactory
         $statement->execute([$objectID]);
         $versions = [];
         while ($version = $statement->fetchObject(VersionTrackerEntry::class)) {
+            /** @var VersionTrackerEntry $version */
             $versions[] = $version;
         }
 

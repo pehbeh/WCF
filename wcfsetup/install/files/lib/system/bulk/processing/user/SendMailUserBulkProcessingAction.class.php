@@ -58,7 +58,7 @@ class SendMailUserBulkProcessingAction extends AbstractUserBulkProcessingAction
             if ($userMailData === null) {
                 $userMailData = [];
             }
-            $this->mailID = \count($userMailData) + 1;
+            $this->mailID = (string)(\count($userMailData) + 1);
             $userMailData[$this->mailID] = [
                 'action' => '',
                 'enableHTML' => $this->enableHTML,

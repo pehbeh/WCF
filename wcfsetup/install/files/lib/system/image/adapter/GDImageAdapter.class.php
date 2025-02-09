@@ -16,7 +16,7 @@ class GDImageAdapter implements IImageAdapter, IWebpImageAdapter
 {
     /**
      * active color
-     * @var int
+     * @var ?int
      */
     protected $color;
 

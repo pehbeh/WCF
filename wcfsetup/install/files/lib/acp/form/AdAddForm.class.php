@@ -70,7 +70,7 @@ class AdAddForm extends AbstractForm
 
     /**
      * list of available locations
-     * @var string[]
+     * @var array<string, array<int, string>>
      */
     public $locations = [];
 

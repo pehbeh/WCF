@@ -108,7 +108,7 @@ HTML;
     public function setData(Condition $condition)
     {
         $this->multifactorActive = $condition->multifactorActive;
-        $this->multifactorNotActive = !$condition->multifactorActive;
+        $this->multifactorNotActive = $condition->multifactorActive ? 0 : 1;
     }
 
     /**

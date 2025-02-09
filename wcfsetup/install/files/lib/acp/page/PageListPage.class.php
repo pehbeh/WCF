@@ -32,7 +32,7 @@ class PageListPage extends AbstractGridViewPage
 
     /**
      * display 'Add Page' dialog on load
-     * @var bool
+     * @var int
      */
     public $showPageAddDialog = 0;
 

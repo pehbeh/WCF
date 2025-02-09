@@ -108,7 +108,7 @@ class Cronjob extends DatabaseObject
      */
     public function isEditable()
     {
-        return $this->canBeEdited;
+        return !!$this->canBeEdited;
     }
 
     /**
@@ -128,7 +128,7 @@ class Cronjob extends DatabaseObject
      */
     public function canBeDisabled()
     {
-        return $this->canBeDisabled;
+        return !!$this->canBeDisabled;
     }
 
     /**

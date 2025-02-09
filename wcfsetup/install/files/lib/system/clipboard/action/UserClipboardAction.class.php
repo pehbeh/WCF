@@ -52,7 +52,7 @@ class UserClipboardAction extends AbstractClipboardAction
         $item = parent::execute($objects, $action);
 
         if ($item === null) {
-            return;
+            return null;
         }
 
         // handle actions

@@ -38,7 +38,7 @@ abstract class AbstractCustomOptionForm extends AbstractAcpForm
 
     /**
      * option default value
-     * @var string
+     * @var string|int|float
      */
     public $defaultValue = '';
 
@@ -56,7 +56,7 @@ abstract class AbstractCustomOptionForm extends AbstractAcpForm
 
     /**
      * field is required
-     * @var bool
+     * @var int
      */
     public $required = 0;
 
@@ -68,7 +68,7 @@ abstract class AbstractCustomOptionForm extends AbstractAcpForm
 
     /**
      * 1 if the option is disabled
-     * @var bool
+     * @var int
      * @since   5.2
      */
     public $isDisabled = 0;

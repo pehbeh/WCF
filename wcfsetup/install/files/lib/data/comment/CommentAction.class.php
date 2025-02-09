@@ -48,6 +48,7 @@ use wcf\util\UserUtil;
  * @method  Comment         create()
  * @method  CommentEditor[]     getObjects()
  * @method  CommentEditor       getSingleObject()
+ * @property-read CommentEditor[] $objects
  */
 class CommentAction extends AbstractDatabaseObjectAction implements IMessageInlineEditorAction
 {
@@ -64,7 +65,7 @@ class CommentAction extends AbstractDatabaseObjectAction implements IMessageInli
 
     /**
      * captcha object type used for comments
-     * @var ObjectType
+     * @var ?ObjectType
      * @deprecated 6.1
      */
     public $captchaObjectType;
@@ -727,7 +728,9 @@ class CommentAction extends AbstractDatabaseObjectAction implements IMessageInli
     public function enable()
     {
         if ($this->comment === null) {
-            $this->comment = \reset($this->objects);
+            $comment = \reset($this->objects);
+            \assert($comment !== false);
+            $this->comment = $comment;
         }
 
         if ($this->comment->isDisabled) {
@@ -779,10 +782,14 @@ class CommentAction extends AbstractDatabaseObjectAction implements IMessageInli
     public function enableResponse()
     {
         if ($this->comment === null) {
-            $this->comment = \reset($this->objects);
+            $comment = \reset($this->objects);
+            \assert($comment !== false);
+            $this->comment = $comment;
         }
         if ($this->response === null) {
-            $this->response = \reset($this->parameters['responses']);
+            $response = \reset($this->parameters['responses']);
+            \assert($response !== false);
+            $this->response = $response;
         }
 
         if ($this->response->isDisabled) {

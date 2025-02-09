@@ -182,7 +182,7 @@ class TemplateScriptingCompiler
 
     /**
      * current line number during template compilation
-     * @var string
+     * @var int
      */
     protected $currentLineNo;
 

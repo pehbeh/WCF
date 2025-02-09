@@ -30,7 +30,7 @@ class PageEditForm extends PageAddForm
     public $activeMenuItem = 'wcf.acp.menu.link.cms.page.list';
 
     /**
-     * @var int
+     * @var ?int
      */
     public $overrideApplicationPackageID;
 

@@ -72,7 +72,7 @@ class PackageInstallationDispatcher
 
     /**
      * instance of Package
-     * @var Package
+     * @var ?Package
      */
     protected $package;
 

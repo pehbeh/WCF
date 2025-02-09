@@ -91,7 +91,7 @@ abstract class AbstractPage implements IPage
 
     /**
      * enables template usage
-     * @var string
+     * @var bool
      */
     public $useTemplate = true;
 

@@ -55,7 +55,7 @@ trait TDecoratedCategoryOnlineLocationPageHandler
         }
 
         if ($category instanceof IAccessibleObject && !$category->isAccessible()) {
-            return;
+            return '';
         }
 
         return WCF::getLanguage()->getDynamicVariable(

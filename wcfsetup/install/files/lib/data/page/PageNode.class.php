@@ -43,6 +43,7 @@ class PageNode extends DatabaseObjectDecorator implements IObjectTreeNode
         }
         parent::__construct($page);
 
+        // @phpstan-ignore assign.propertyType
         $this->parentNode = $parentNode;
         $this->depth = $depth;
     }
@@ -54,6 +55,7 @@ class PageNode extends DatabaseObjectDecorator implements IObjectTreeNode
      */
     public function setChildren(array $children): void
     {
+        // @phpstan-ignore assign.propertyType
         $this->children = $children;
     }
 

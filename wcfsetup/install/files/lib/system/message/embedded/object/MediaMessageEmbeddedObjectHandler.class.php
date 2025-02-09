@@ -95,14 +95,13 @@ class MediaMessageEmbeddedObjectHandler extends AbstractSimpleMessageEmbeddedObj
         /** @var Media $media */
         $media = MessageEmbeddedObjectManager::getInstance()->getObject('com.woltlab.wcf.media', $value);
         if ($media === null) {
-            return;
+            return null;
         }
 
         $return = (!empty($attributes['return'])) ? $attributes['return'] : 'link';
         switch ($return) {
             case 'title':
                 return $media->getTitle();
-                break;
 
             case 'link':
             default:
@@ -112,15 +111,11 @@ class MediaMessageEmbeddedObjectHandler extends AbstractSimpleMessageEmbeddedObj
                     case 'medium':
                     case 'large':
                         return $media->getThumbnailLink($size);
-                        break;
 
                     case 'original':
                     default:
                         return $media->getLink();
-                        break;
                 }
-
-                break;
         }
     }
 }

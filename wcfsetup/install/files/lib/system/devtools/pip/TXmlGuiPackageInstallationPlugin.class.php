@@ -334,6 +334,8 @@ trait TXmlGuiPackageInstallationPlugin
     {
         foreach ($this->getImportElements($xml->xpath()) as $element) {
             if ($this->getElementIdentifier($element) === $identifier) {
+                \assert($element instanceof \DOMElement);
+
                 return $element;
             }
         }

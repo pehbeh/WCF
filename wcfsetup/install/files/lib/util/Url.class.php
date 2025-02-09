@@ -25,7 +25,7 @@ final class Url implements \ArrayAccess
 
     /**
      * maps properties to the array indices
-     * @var int[]
+     * @var array<int, string>
      */
     private static $propertyMap = [
         \PHP_URL_SCHEME => 'scheme',
@@ -146,7 +146,7 @@ final class Url implements \ArrayAccess
      * making it easier to spot typos.
      *
      * @param mixed $property
-     * @return      int
+     * @return      int|string
      * @throws      \RuntimeException
      */
     private function getIndex($property)

@@ -51,7 +51,7 @@ use wcf\system\WCF;
  * @property-read   string|null $sortField      sort field of the objects shown in the box for `AbstractDatabaseObjectListBoxController` controllers or `null` otherwise
  * @property-read   string|null $sortOrder      sort order of the objects shown in the box for `AbstractDatabaseObjectListBoxController` controllers or `null` otherwise
  * @property-read   int $isDisabled     is `1` if the box is disabled and thus is not displayed, otherwise `0`
- * @property-read   bool $invertPermissions     is `1` if the permissions are inverted
+ * @property-read   int $invertPermissions     is `1` if the permissions are inverted
  */
 class Box extends DatabaseObject
 {

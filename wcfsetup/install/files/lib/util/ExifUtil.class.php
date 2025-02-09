@@ -124,7 +124,7 @@ final class ExifUtil
      * Returns the creation timestamp based on the given exif data.
      *
      * @param array $exifData
-     * @return  string
+     * @return  int
      */
     public static function getCreationTime(array $exifData)
     {
@@ -293,7 +293,7 @@ final class ExifUtil
     {
         $data = \explode('/', $rational);
         if (\count($data) == 1) {
-            return $data;
+            return $rational;
         }
 
         $numerator = $data[0];

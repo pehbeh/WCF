@@ -9,6 +9,7 @@ use wcf\form\AbstractForm;
 use wcf\system\exception\PermissionDeniedException;
 use wcf\system\language\I18nHandler;
 use wcf\system\WCF;
+use wcf\util\ArrayUtil;
 
 /**
  * Shows the paid subscription edit form.
@@ -108,8 +109,8 @@ class PaidSubscriptionEditForm extends PaidSubscriptionAddForm
             $this->subscriptionLength = $this->subscription->subscriptionLength;
             $this->subscriptionLengthUnit = $this->subscription->subscriptionLengthUnit;
             $this->isRecurring = $this->subscription->isRecurring;
-            $this->groupIDs = \explode(',', $this->subscription->groupIDs);
-            $this->excludedSubscriptionIDs = \explode(',', $this->subscription->excludedSubscriptionIDs);
+            $this->groupIDs = ArrayUtil::toIntegerArray(\explode(',', $this->subscription->groupIDs));
+            $this->excludedSubscriptionIDs = ArrayUtil::toIntegerArray(\explode(',', $this->subscription->excludedSubscriptionIDs));
         }
     }
 

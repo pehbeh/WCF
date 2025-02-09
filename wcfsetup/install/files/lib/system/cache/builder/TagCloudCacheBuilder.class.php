@@ -18,14 +18,12 @@ use wcf\system\WCF;
 class TagCloudCacheBuilder extends AbstractCacheBuilder
 {
     /**
-     * list of tags
      * @var TagCloudTag[]
      */
     protected $tags = [];
 
     /**
-     * language ids
-     * @var int
+     * @var int[]
      */
     protected $languageIDs = [];
 
@@ -35,8 +33,7 @@ class TagCloudCacheBuilder extends AbstractCacheBuilder
     protected $maxLifetime = 3600;
 
     /**
-     * object type ids
-     * @var int
+     * @var int[]
      */
     protected $objectTypeIDs = [];
 

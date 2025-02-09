@@ -45,7 +45,7 @@ class NotificationPresetSettingsForm extends AbstractForm
 
     /**
      * true to apply change to existing users
-     * @var bool
+     * @var int
      */
     public $applyChangesToExistingUsers = 0;
 

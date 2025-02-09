@@ -2,6 +2,7 @@
 
 namespace wcf\form;
 
+use wcf\data\object\type\ObjectType;
 use wcf\system\captcha\CaptchaHandler;
 use wcf\system\exception\SystemException;
 use wcf\system\WCF;
@@ -17,7 +18,7 @@ abstract class AbstractCaptchaForm extends AbstractForm
 {
     /**
      * captcha object type object
-     * @var \wcf\data\object\type\ObjectType
+     * @var ?ObjectType
      */
     public $captchaObjectType;
 

@@ -14,7 +14,7 @@ interface IArchive
     /**
      * Returns the table of contents (TOC) list for this archive.
      *
-     * @return  array       list of content
+     * @return array list of contents
      */
     public function getContentList();
 
@@ -23,7 +23,7 @@ interface IArchive
      * in the archive.
      *
      * @param mixed $index index or name of the requested file
-     * @return  array
+     * @return array
      */
     public function getFileInfo($index);
 
@@ -32,7 +32,7 @@ interface IArchive
      * false if extraction failed.
      *
      * @param mixed $index index or name of the requested file
-     * @return  string              content of the requested file
+     * @return string|false content of the requested file
      */
     public function extractToString($index);
 
@@ -42,7 +42,7 @@ interface IArchive
      *
      * @param mixed $index index or name of the requested file
      * @param string $destination
-     * @return  bool        $success
+     * @return bool
      */
     public function extract($index, $destination);
 
@@ -51,7 +51,7 @@ interface IArchive
      * Returns false if not found.
      *
      * @param string $filename
-     * @return  int             index of the requested file
+     * @return int|false index of the requested file
      */
     public function getIndexByFilename($filename);
 }

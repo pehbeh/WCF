@@ -29,7 +29,7 @@ class BBCodeHandler extends SingletonFactory
 
     /**
      * list of BBCodes disallowed for usage
-     * @var BBCode[]
+     * @var string[]
      */
     protected $disallowedBBCodes = [];
 

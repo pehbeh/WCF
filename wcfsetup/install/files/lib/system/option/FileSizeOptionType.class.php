@@ -29,6 +29,7 @@ class FileSizeOptionType extends TextOptionType
         $number = \str_replace(WCF::getLanguage()->get('wcf.global.decimalPoint'), '.', $number);
 
         if (!\preg_match('~^(?:\d*)\.?\d+~', $number, $matches)) {
+            // @phpstan-ignore return.type
             return 0;
         }
 
@@ -62,6 +63,7 @@ class FileSizeOptionType extends TextOptionType
             }
         }
 
+        // @phpstan-ignore return.type
         return $number;
     }
 

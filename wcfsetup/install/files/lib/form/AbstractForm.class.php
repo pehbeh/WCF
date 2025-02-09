@@ -27,13 +27,13 @@ abstract class AbstractForm extends AbstractPage implements IForm
 
     /**
      * name of error field
-     * @var string
+     * @var string|string[]
      */
     public $errorField = '';
 
     /**
      * error type
-     * @var string
+     * @var string|string[]
      */
     public $errorType = '';
 

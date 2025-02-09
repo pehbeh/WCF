@@ -84,7 +84,7 @@ abstract class MessageForm extends AbstractCaptchaForm
 
     /**
      * content language id
-     * @var int
+     * @var ?int
      */
     public $languageID;
 

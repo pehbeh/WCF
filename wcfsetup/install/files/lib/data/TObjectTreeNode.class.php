@@ -28,7 +28,7 @@ trait TObjectTreeNode
 
     /**
      * parent node object
-     * @var static
+     * @var ?static
      */
     protected $parentNode;
 
@@ -46,6 +46,7 @@ trait TObjectTreeNode
 
         $child->setParentNode($this);
 
+        /** @var static $child */
         $this->children[] = $child;
     }
 
@@ -172,6 +173,7 @@ trait TObjectTreeNode
             throw new \InvalidArgumentException("Parent has to be a (decorated) instance of '" . static::class . "', but instance of '" . \get_class($parentNode) . "' given.");
         }
 
+        /** @var static $parentNode */
         $this->parentNode = $parentNode;
     }
 

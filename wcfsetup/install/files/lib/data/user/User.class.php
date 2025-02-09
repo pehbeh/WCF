@@ -423,7 +423,7 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
     /**
      * Returns true if this user is marked.
      *
-     * @return  bool
+     * @return int
      */
     public function isMarked()
     {
@@ -731,7 +731,7 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
      */
     public function mustSelfEmailConfirm()
     {
-        return REGISTER_ACTIVATION_METHOD & self::REGISTER_ACTIVATION_USER;
+        return !!(REGISTER_ACTIVATION_METHOD & self::REGISTER_ACTIVATION_USER);
     }
 
     /**

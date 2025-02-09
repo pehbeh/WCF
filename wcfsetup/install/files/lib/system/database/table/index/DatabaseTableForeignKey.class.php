@@ -290,7 +290,7 @@ final class DatabaseTableForeignKey
     protected function normalizeAction($action)
     {
         if ($action === 'RESTRICT' || $action === 'NO ACTION') {
-            return;
+            return null;
         }
 
         return $action;

@@ -59,7 +59,7 @@ class ArticleAddForm extends AbstractForm
 
     /**
      * true if created article is multi-lingual
-     * @var bool
+     * @var int
      */
     public $isMultilingual = 0;
 
@@ -113,7 +113,7 @@ class ArticleAddForm extends AbstractForm
 
     /**
      * enables the comment function
-     * @var bool
+     * @var int
      */
     public $enableComments = ARTICLE_ENABLE_COMMENTS_DEFAULT_VALUE;
 
@@ -587,7 +587,7 @@ class ArticleAddForm extends AbstractForm
         $this->categoryID = 0;
         $this->publicationStatus = Article::PUBLISHED;
         $this->enableComments = ARTICLE_ENABLE_COMMENTS_DEFAULT_VALUE;
-        $this->title = $this->teaser = $this->content = $this->images = $this->imageID = $this->teaserImages = $this->teaserImageID == $this->tags = [];
+        $this->title = $this->teaser = $this->content = $this->images = $this->imageID = $this->teaserImages = $this->teaserImageID = $this->tags = [];
         $this->metaTitle = $this->metaDescription = [];
 
         // Reload attachment handler to reset the uploaded attachments.

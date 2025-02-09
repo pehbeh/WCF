@@ -169,6 +169,7 @@ class MenuItemNodeTree
      */
     public function getNodeTree()
     {
+        // @phpstan-ignore return.type
         return $this->node->getChildren();
     }
 

@@ -217,7 +217,8 @@ abstract class DatabaseObject implements IIDObject, IStorableObject
     /**
      * Sorts a list of database objects.
      *
-     * @param DatabaseObject[] $objects
+     * @template T of object
+     * @param T[] $objects
      * @param mixed $sortBy
      * @param string $sortOrder
      * @param bool $maintainIndexAssociation

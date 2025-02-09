@@ -14,7 +14,7 @@ class UploadField
 {
     /**
      * The max number of files for this field.
-     * @var int
+     * @var ?int
      */
     public $maxFiles = 10;
 

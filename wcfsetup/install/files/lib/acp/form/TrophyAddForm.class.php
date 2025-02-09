@@ -2,8 +2,8 @@
 
 namespace wcf\acp\form;
 
-use wcf\data\category\Category;
 use wcf\data\object\type\ObjectType;
+use wcf\data\trophy\category\TrophyCategory;
 use wcf\data\trophy\category\TrophyCategoryCache;
 use wcf\data\trophy\Trophy;
 use wcf\data\trophy\TrophyAction;
@@ -50,7 +50,7 @@ class TrophyAddForm extends AbstractAcpForm
 
     /**
      * Category object.
-     * @var Category
+     * @var ?TrophyCategory
      */
     public $category;
 

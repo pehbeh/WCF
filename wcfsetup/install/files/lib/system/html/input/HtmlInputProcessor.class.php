@@ -26,12 +26,12 @@ class HtmlInputProcessor extends AbstractHtmlProcessor
     protected $embeddedContent = [];
 
     /**
-     * @var IHtmlInputFilter
+     * @var ?IHtmlInputFilter
      */
     protected $htmlInputFilter;
 
     /**
-     * @var HtmlInputNodeProcessor
+     * @var ?HtmlInputNodeProcessor
      */
     protected $htmlInputNodeProcessor;
 

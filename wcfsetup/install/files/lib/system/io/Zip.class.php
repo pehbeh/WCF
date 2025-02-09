@@ -127,7 +127,7 @@ class Zip extends File implements IArchive
         if ($file['header']['type'] === 'folder') {
             FileUtil::makePath($destination);
 
-            return;
+            return true;
         }
 
         \file_put_contents($destination, $file['content']);

@@ -41,13 +41,13 @@ class AttachmentPage extends AbstractPage
 
     /**
      * shows the tiny thumbnail
-     * @var bool
+     * @var int
      */
     public $tiny = 0;
 
     /**
      * shows the standard thumbnail
-     * @var bool
+     * @var int
      */
     public $thumbnail = 0;
 
@@ -169,7 +169,7 @@ class AttachmentPage extends AbstractPage
             $mimeType = $this->attachment->fileType;
             $filesize = $this->attachment->filesize;
             $location = $this->attachment->getLocation();
-            $this->eTag = $this->attachmentID;
+            $this->eTag = (string)$this->attachmentID;
         }
 
         // unsaved attachments may be cached by the browser for up to 5 minutes only

@@ -46,13 +46,13 @@ use wcf\system\WCF;
  * @property-read   int $hasFixedParent             is `1` if the page's parent page cannot be changed, otherwise `0`
  * @property-read   int $lastUpdateTime             timestamp at which the page has been updated the last time
  * @property-read   string $cssClassName               css class name(s) of the page
- * @property-read   string $availableDuringOfflineMode     is `1` if the page is available during offline mode, otherwise `0`
- * @property-read   string $allowSpidersToIndex            is `1` if the page is accessible for search spiders, otherwise `0`
- * @property-read   string $excludeFromLandingPage         is `1` if the page can never be set as landing page, otherwise `0`
- * @property-read   string $enableShareButtons             is `1` if the page should display share buttons, otherwise `0`
+ * @property-read   int $availableDuringOfflineMode     is `1` if the page is available during offline mode, otherwise `0`
+ * @property-read   int $allowSpidersToIndex            is `1` if the page is accessible for search spiders, otherwise `0`
+ * @property-read   int $excludeFromLandingPage         is `1` if the page can never be set as landing page, otherwise `0`
+ * @property-read   int $enableShareButtons             is `1` if the page should display share buttons, otherwise `0`
  * @property-read   string $permissions                comma separated list of user group permissions of which the active user needs to have at least one to access the page
  * @property-read   string $options                comma separated list of options of which at least one needs to be enabled for the page to be accessible
- * @property-read   bool $invertPermissions                is `1` if the permissions are inverted
+ * @property-read   int $invertPermissions                is `1` if the permissions are inverted
  */
 class Page extends DatabaseObject implements ILinkableObject, ITitledObject
 {

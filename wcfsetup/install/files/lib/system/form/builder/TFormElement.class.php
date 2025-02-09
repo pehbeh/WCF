@@ -18,13 +18,13 @@ trait TFormElement
 
     /**
      * description of this element
-     * @var string
+     * @var ?string
      */
     protected $description;
 
     /**
      * label of this element
-     * @var string
+     * @var ?string
      */
     protected $label;
 

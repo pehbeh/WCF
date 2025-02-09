@@ -30,7 +30,7 @@ class AbstractCategoryImporter extends AbstractImporter
 
     /**
      * object type name
-     * @var int
+     * @var string
      */
     protected $objectTypeName = '';
 

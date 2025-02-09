@@ -37,13 +37,13 @@ final class ControllerMap extends SingletonFactory
     protected $customUrls;
 
     /**
-     * @var string[]
+     * @var string[][]
      */
     protected $landingPages;
 
     /**
      * list of <ControllerName> to <controller-name> mappings
-     * @var string[]
+     * @var array<string, string>
      */
     protected $lookupCache = [];
 

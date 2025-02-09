@@ -129,8 +129,9 @@ class CategoryEditor extends DatabaseObjectEditor implements IEditableCachedObje
             $parameters['additionalData'] = \serialize([]);
         }
 
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return parent::create($parameters);
+        $object = parent::create($parameters);
+        \assert($object instanceof Category);
+        return $object;
     }
 
     /**

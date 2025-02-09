@@ -341,7 +341,7 @@ class PackageInstallationNodeBuilder
         } else {
             $total = $progress['done'] + $progress['outstanding'];
 
-            return \round(($progress['done'] / $total) * 100);
+            return (int)\round(($progress['done'] / $total) * 100);
         }
     }
 

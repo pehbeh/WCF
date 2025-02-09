@@ -72,7 +72,7 @@ abstract class AbstractWorker implements IWorker
             $progress = 100;
         }
 
-        return \floor($progress);
+        return (int)\floor($progress);
     }
 
     /**

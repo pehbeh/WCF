@@ -278,7 +278,7 @@ class DevtoolsPip extends DatabaseObjectDecorator
      *
      * @param DevtoolsProject $project
      * @param string $target
-     * @return      string[]
+     * @return array<string, array<string, string>|string>
      */
     public function getInstructions(DevtoolsProject $project, $target)
     {

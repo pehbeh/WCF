@@ -51,7 +51,7 @@ class CronjobEditor extends DatabaseObjectEditor implements IEditableCachedObjec
             $cronjobEditor->saveDescriptions($descriptions);
         }
 
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        \assert($cronjob instanceof Cronjob);
         return $cronjob;
     }
 

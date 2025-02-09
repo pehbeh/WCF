@@ -185,7 +185,7 @@ class XML
     /**
      * Reads errors from libxml since be bypassed built-in error handler.
      *
-     * @return  string[][]
+     * @return  list<array<string, int|string>>
      * @see     \wcf\util\XML::__construct()
      */
     public function pollErrors()

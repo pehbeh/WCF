@@ -27,7 +27,7 @@ class ACLHandler extends SingletonFactory
 {
     /**
      * indicates if assignment of variables is disabled
-     * @var int
+     * @var bool
      */
     protected $assignVariablesDisabled = false;
 

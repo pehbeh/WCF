@@ -95,7 +95,7 @@ class PackageInstallationPluginAction extends AbstractDatabaseObjectAction
     /**
      * Invokes a single PIP and returns the time needed to process it.
      *
-     * @return      string[]
+     * @return array{invokeAgain: bool, pluginName: string, target: string, timeElapsed: string}
      */
     public function invoke()
     {

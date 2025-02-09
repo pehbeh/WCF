@@ -23,37 +23,37 @@ final class SmtpEmailTransport implements IStatusReportingEmailTransport
 {
     /**
      * SMTP connection
-     * @var RemoteFile
+     * @var ?RemoteFile
      */
     protected $connection;
 
     /**
      * host of the smtp server to use
-     * @var string
+     * @var ?string
      */
     protected $host;
 
     /**
      * port to use
-     * @var int
+     * @var ?int
      */
     protected $port;
 
     /**
      * username to use for authentication
-     * @var string
+     * @var ?string
      */
     protected $username;
 
     /**
      * password corresponding to the username
-     * @var string
+     * @var ?string
      */
     protected $password;
 
     /**
      * STARTTLS encryption level
-     * @var string
+     * @var ?string
      */
     protected $starttls;
 
@@ -72,7 +72,7 @@ final class SmtpEmailTransport implements IStatusReportingEmailTransport
     /**
      * if this property is an instance of \Exception email delivery will be locked
      * and the \Exception will be thrown when attempting to deliver() an email
-     * @var \Exception
+     * @var ?\Exception
      */
     protected $locked;
 

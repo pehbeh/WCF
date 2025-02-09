@@ -64,7 +64,7 @@ class PackageCache extends SingletonFactory
      * Returns a specific package.
      *
      * @param string $package
-     * @return  Package
+     * @return ?Package
      */
     public function getPackageByIdentifier($package)
     {

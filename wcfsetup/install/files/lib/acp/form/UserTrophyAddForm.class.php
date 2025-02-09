@@ -213,7 +213,7 @@ class UserTrophyAddForm extends AbstractAcpForm
 
         $this->user = '';
         $this->userIDs = [];
-        $this->trophyID = '';
+        $this->trophyID = 0;
         $this->useCustomDescription = $this->trophyUseHtml = 0;
     }
 

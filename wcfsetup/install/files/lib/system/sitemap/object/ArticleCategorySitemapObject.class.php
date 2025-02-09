@@ -59,7 +59,7 @@ class ArticleCategorySitemapObject extends AbstractSitemapObjectObjectType
             return false;
         }
 
-        return PageCache::getInstance()
+        return !!PageCache::getInstance()
             ->getPageByIdentifier('com.woltlab.wcf.CategoryArticleList')
             ->allowSpidersToIndex;
     }

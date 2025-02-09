@@ -7,166 +7,58 @@ parameters:
 			path: wcfsetup/install/files/acp/update_com.woltlab.wcf_6.1_spider_step1.php
 
 		-
+			message: '#^Property wcf\\acp\\form\\AbstractCategoryAddForm\:\:\$categoryNodeTree \(wcf\\data\\category\\UncachedCategoryNodeTree\) does not accept wcf\\data\\category\\CategoryNodeTree\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: wcfsetup/install/files/lib/acp/form/AbstractCategoryEditForm.class.php
+
+		-
+			message: '#^Property wcf\\acp\\form\\LanguageImportForm\:\:\$language \(wcf\\data\\language\\Language\) does not accept wcf\\data\\language\\LanguageEditor\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: wcfsetup/install/files/lib/acp/form/LanguageImportForm.class.php
+
+		-
+			message: '#^Property wcf\\acp\\page\\DevtoolsNotificationTestPage\:\:\$events \(array\<array\<wcf\\system\\user\\notification\\event\\ITestableUserNotificationEvent\>\>\) does not accept array\<array\<wcf\\system\\user\\notification\\event\\IUserNotificationEvent\>\>\.$#'
+			identifier: assign.propertyType
+			count: 3
+			path: wcfsetup/install/files/lib/acp/page/DevtoolsNotificationTestPage.class.php
+
+		-
+			message: '#^Property wcf\\acp\\page\\DevtoolsNotificationTestPage\:\:\$events \(array\<array\<wcf\\system\\user\\notification\\event\\ITestableUserNotificationEvent\>\>\) does not accept array\<list\<wcf\\system\\user\\notification\\event\\IUserNotificationEvent\>\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: wcfsetup/install/files/lib/acp/page/DevtoolsNotificationTestPage.class.php
+
+		-
+			message: '#^Method wcf\\data\\article\\ArticleAction\:\:delete\(\) should return int but returns array\<string, array\<int\>\|string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: wcfsetup/install/files/lib/data/article/ArticleAction.class.php
+
+		-
 			message: '#^Constructor of class wcf\\data\\clipboard\\item\\ClipboardItemAction has an unused parameter \$objects\.$#'
 			identifier: constructor.unusedParameter
 			count: 1
 			path: wcfsetup/install/files/lib/data/clipboard/item/ClipboardItemAction.class.php
 
 		-
-			message: '#^Call to static method error\(\) on an unknown class phpline\\internal\\Log\.$#'
-			identifier: class.notFound
-			count: 3
-			path: wcfsetup/install/files/lib/system/CLIWCF.class.php
-
-		-
-			message: '#^Call to static method get\(\) on an unknown class phpline\\TerminalFactory\.$#'
-			identifier: class.notFound
-			count: 1
-			path: wcfsetup/install/files/lib/system/CLIWCF.class.php
-
-		-
-			message: '#^Call to static method warn\(\) on an unknown class phpline\\internal\\Log\.$#'
-			identifier: class.notFound
-			count: 1
-			path: wcfsetup/install/files/lib/system/CLIWCF.class.php
-
-		-
-			message: '#^Constant VERBOSITY not found\.$#'
-			identifier: constant.notFound
-			count: 1
-			path: wcfsetup/install/files/lib/system/CLIWCF.class.php
-
-		-
-			message: '#^Instantiated class phpline\\console\\ConsoleReader not found\.$#'
-			identifier: class.notFound
-			count: 1
-			path: wcfsetup/install/files/lib/system/CLIWCF.class.php
-
-		-
-			message: '#^Instantiated class phpline\\console\\history\\MemoryHistory not found\.$#'
-			identifier: class.notFound
-			count: 1
-			path: wcfsetup/install/files/lib/system/CLIWCF.class.php
-
-		-
-			message: '#^Constant INSTALL_SCRIPT not found\.$#'
-			identifier: constant.notFound
-			count: 1
-			path: wcfsetup/install/files/lib/system/WCFSetup.class.php
-
-		-
-			message: '#^Constant INSTALL_SCRIPT_DIR not found\.$#'
-			identifier: constant.notFound
-			count: 5
-			path: wcfsetup/install/files/lib/system/WCFSetup.class.php
-
-		-
-			message: '#^Constant SETUP_FILE not found\.$#'
-			identifier: constant.notFound
-			count: 3
-			path: wcfsetup/install/files/lib/system/WCFSetup.class.php
-
-		-
-			message: '#^Constant TMP_FILE_PREFIX not found\.$#'
-			identifier: constant.notFound
-			count: 5
-			path: wcfsetup/install/files/lib/system/WCFSetup.class.php
-
-		-
-			message: '#^Call to static method info\(\) on an unknown class phpline\\internal\\Log\.$#'
-			identifier: class.notFound
+			message: '#^Property wcf\\data\\comment\\CommentAction\:\:\$comment \(wcf\\data\\comment\\Comment\) does not accept wcf\\data\\comment\\CommentEditor\.$#'
+			identifier: assign.propertyType
 			count: 2
-			path: wcfsetup/install/files/lib/system/cli/command/CLICommandHandler.class.php
+			path: wcfsetup/install/files/lib/data/comment/CommentAction.class.php
 
 		-
-			message: '#^Call to static method debug\(\) on an unknown class phpline\\internal\\Log\.$#'
-			identifier: class.notFound
+			message: '#^Property wcf\\data\\comment\\response\\CommentResponseAction\:\:\$response \(wcf\\data\\comment\\response\\CommentResponse\) does not accept wcf\\data\\comment\\response\\CommentResponseEditor\.$#'
+			identifier: assign.propertyType
 			count: 1
-			path: wcfsetup/install/files/lib/system/cli/command/WorkerCLICommand.class.php
+			path: wcfsetup/install/files/lib/data/comment/response/CommentResponseAction.class.php
 
 		-
-			message: '#^Call to static method info\(\) on an unknown class phpline\\internal\\Log\.$#'
-			identifier: class.notFound
-			count: 2
-			path: wcfsetup/install/files/lib/system/cli/command/WorkerCLICommand.class.php
-
-		-
-			message: '#^Constructor of class wcf\\system\\exception\\ErrorException has an unused parameter \$filename\.$#'
-			identifier: constructor.unusedParameter
+			message: '#^Property wcf\\data\\style\\StyleAction\:\:\$style \(wcf\\data\\style\\Style\) does not accept wcf\\data\\style\\StyleEditor\.$#'
+			identifier: assign.propertyType
 			count: 1
-			path: wcfsetup/install/files/lib/system/exception/ErrorException.class.php
-
-		-
-			message: '#^Constructor of class wcf\\system\\exception\\ErrorException has an unused parameter \$lineno\.$#'
-			identifier: constructor.unusedParameter
-			count: 1
-			path: wcfsetup/install/files/lib/system/exception/ErrorException.class.php
-
-		-
-			message: '#^Call to an undefined method wcf\\system\\form\\builder\\container\\wysiwyg\\WysiwygFormContainer\:\:addValidationError\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: wcfsetup/install/files/lib/system/form/builder/container/wysiwyg/WysiwygFormContainer.class.php
-
-		-
-			message: '#^Method wcf\\system\\package\\plugin\\LanguagePackageInstallationPlugin\:\:getEmptyXml\(\) invoked with 0 parameters, 1 required\.$#'
-			identifier: arguments.count
-			count: 1
-			path: wcfsetup/install/files/lib/system/package/plugin/LanguagePackageInstallationPlugin.class.php
-
-		-
-			message: '#^Call to static method stripAnsi\(\) on an unknown class phpline\\internal\\AnsiUtil\.$#'
-			identifier: class.notFound
-			count: 3
-			path: wcfsetup/install/files/lib/util/CLIUtil.class.php
-
-		-
-			message: '#^Access to an undefined property Zend\\Console\\Getopt\:\:\$list\.$#'
-			identifier: property.notFound
-			count: 1
-			path: wcfsetup/install/files/lib/system/cli/command/WorkerCLICommand.class.php
-
-		-
-			message: '#^Access to an undefined property Zend\\Console\\Getopt\:\:\$threadId\.$#'
-			identifier: property.notFound
-			count: 1
-			path: wcfsetup/install/files/lib/system/cli/command/WorkerCLICommand.class.php
-
-		-
-			message: '#^Access to an undefined property Zend\\Console\\Getopt\:\:\$threads\.$#'
-			identifier: property.notFound
-			count: 1
-			path: wcfsetup/install/files/lib/system/cli/command/WorkerCLICommand.class.php
-
-		-
-			message: '#^Call to method getWidth\(\) on an unknown class phpline\\Terminal\.$#'
-			identifier: class.notFound
-			count: 2
-			path: wcfsetup/install/files/lib/system/cli/command/WorkerCLICommand.class.php
-
-		-
-			message: '#^Call to method println\(\) on an unknown class phpline\\console\\ConsoleReader\.$#'
-			identifier: class.notFound
-			count: 4
-			path: wcfsetup/install/files/lib/system/cli/command/WorkerCLICommand.class.php
-
-		-
-			message: '#^Call to method println\(\) on an unknown class phpline\\console\\ConsoleReader\.$#'
-			identifier: class.notFound
-			count: 31
-			path: wcfsetup/install/files/lib/system/cli/command/ImportCLICommand.class.php
-
-		-
-			message: '#^Call to method readLine\(\) on an unknown class phpline\\console\\ConsoleReader\.$#'
-			identifier: class.notFound
-			count: 11
-			path: wcfsetup/install/files/lib/system/cli/command/ImportCLICommand.class.php
-
-		-
-			message: '#^Call to method setHistoryEnabled\(\) on an unknown class phpline\\console\\ConsoleReader\.$#'
-			identifier: class.notFound
-			count: 3
-			path: wcfsetup/install/files/lib/system/cli/command/ImportCLICommand.class.php
+			path: wcfsetup/install/files/lib/data/style/StyleAction.class.php
 
 		-
 			message: '#^Access to an undefined property Zend\\Console\\Getopt\:\:\$exitOnFail\.$#'
@@ -247,6 +139,42 @@ parameters:
 			path: wcfsetup/install/files/lib/system/CLIWCF.class.php
 
 		-
+			message: '#^Call to static method error\(\) on an unknown class phpline\\internal\\Log\.$#'
+			identifier: class.notFound
+			count: 3
+			path: wcfsetup/install/files/lib/system/CLIWCF.class.php
+
+		-
+			message: '#^Call to static method get\(\) on an unknown class phpline\\TerminalFactory\.$#'
+			identifier: class.notFound
+			count: 1
+			path: wcfsetup/install/files/lib/system/CLIWCF.class.php
+
+		-
+			message: '#^Call to static method warn\(\) on an unknown class phpline\\internal\\Log\.$#'
+			identifier: class.notFound
+			count: 1
+			path: wcfsetup/install/files/lib/system/CLIWCF.class.php
+
+		-
+			message: '#^Constant VERBOSITY not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: wcfsetup/install/files/lib/system/CLIWCF.class.php
+
+		-
+			message: '#^Instantiated class phpline\\console\\ConsoleReader not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: wcfsetup/install/files/lib/system/CLIWCF.class.php
+
+		-
+			message: '#^Instantiated class phpline\\console\\history\\MemoryHistory not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: wcfsetup/install/files/lib/system/CLIWCF.class.php
+
+		-
 			message: '#^Method wcf\\system\\CLIWCF\:\:getReader\(\) has invalid return type phpline\\console\\ConsoleReader\.$#'
 			identifier: class.notFound
 			count: 1
@@ -263,3 +191,261 @@ parameters:
 			identifier: class.notFound
 			count: 1
 			path: wcfsetup/install/files/lib/system/CLIWCF.class.php
+
+		-
+			message: '#^Constant INSTALL_SCRIPT not found\.$#'
+			identifier: constant.notFound
+			count: 1
+			path: wcfsetup/install/files/lib/system/WCFSetup.class.php
+
+		-
+			message: '#^Constant INSTALL_SCRIPT_DIR not found\.$#'
+			identifier: constant.notFound
+			count: 5
+			path: wcfsetup/install/files/lib/system/WCFSetup.class.php
+
+		-
+			message: '#^Constant SETUP_FILE not found\.$#'
+			identifier: constant.notFound
+			count: 3
+			path: wcfsetup/install/files/lib/system/WCFSetup.class.php
+
+		-
+			message: '#^Constant TMP_FILE_PREFIX not found\.$#'
+			identifier: constant.notFound
+			count: 5
+			path: wcfsetup/install/files/lib/system/WCFSetup.class.php
+
+		-
+			message: '#^Call to static method info\(\) on an unknown class phpline\\internal\\Log\.$#'
+			identifier: class.notFound
+			count: 2
+			path: wcfsetup/install/files/lib/system/cli/command/CLICommandHandler.class.php
+
+		-
+			message: '#^Call to method println\(\) on an unknown class phpline\\console\\ConsoleReader\.$#'
+			identifier: class.notFound
+			count: 31
+			path: wcfsetup/install/files/lib/system/cli/command/ImportCLICommand.class.php
+
+		-
+			message: '#^Call to method readLine\(\) on an unknown class phpline\\console\\ConsoleReader\.$#'
+			identifier: class.notFound
+			count: 11
+			path: wcfsetup/install/files/lib/system/cli/command/ImportCLICommand.class.php
+
+		-
+			message: '#^Call to method setHistoryEnabled\(\) on an unknown class phpline\\console\\ConsoleReader\.$#'
+			identifier: class.notFound
+			count: 3
+			path: wcfsetup/install/files/lib/system/cli/command/ImportCLICommand.class.php
+
+		-
+			message: '#^Access to an undefined property Zend\\Console\\Getopt\:\:\$list\.$#'
+			identifier: property.notFound
+			count: 1
+			path: wcfsetup/install/files/lib/system/cli/command/WorkerCLICommand.class.php
+
+		-
+			message: '#^Access to an undefined property Zend\\Console\\Getopt\:\:\$threadId\.$#'
+			identifier: property.notFound
+			count: 1
+			path: wcfsetup/install/files/lib/system/cli/command/WorkerCLICommand.class.php
+
+		-
+			message: '#^Access to an undefined property Zend\\Console\\Getopt\:\:\$threads\.$#'
+			identifier: property.notFound
+			count: 1
+			path: wcfsetup/install/files/lib/system/cli/command/WorkerCLICommand.class.php
+
+		-
+			message: '#^Call to method getWidth\(\) on an unknown class phpline\\Terminal\.$#'
+			identifier: class.notFound
+			count: 2
+			path: wcfsetup/install/files/lib/system/cli/command/WorkerCLICommand.class.php
+
+		-
+			message: '#^Call to method println\(\) on an unknown class phpline\\console\\ConsoleReader\.$#'
+			identifier: class.notFound
+			count: 4
+			path: wcfsetup/install/files/lib/system/cli/command/WorkerCLICommand.class.php
+
+		-
+			message: '#^Call to static method debug\(\) on an unknown class phpline\\internal\\Log\.$#'
+			identifier: class.notFound
+			count: 1
+			path: wcfsetup/install/files/lib/system/cli/command/WorkerCLICommand.class.php
+
+		-
+			message: '#^Call to static method info\(\) on an unknown class phpline\\internal\\Log\.$#'
+			identifier: class.notFound
+			count: 2
+			path: wcfsetup/install/files/lib/system/cli/command/WorkerCLICommand.class.php
+
+		-
+			message: '#^Method wcf\\system\\condition\\AbstractCheckboxCondition\:\:getData\(\) should return array\<mixed\> but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/condition/AbstractCheckboxCondition.class.php
+
+		-
+			message: '#^Method wcf\\system\\condition\\AbstractIntegerCondition\:\:getData\(\) should return array\<mixed\> but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/condition/AbstractIntegerCondition.class.php
+
+		-
+			message: '#^Method wcf\\system\\condition\\AbstractMultiSelectCondition\:\:getData\(\) should return array\<mixed\> but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/condition/AbstractMultiSelectCondition.class.php
+
+		-
+			message: '#^PHPDoc type array of property wcf\\system\\condition\\AbstractMultiSelectCondition\:\:\$fieldValue is not covariant with PHPDoc type string of overridden property wcf\\system\\condition\\AbstractSelectCondition\:\:\$fieldValue\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: wcfsetup/install/files/lib/system/condition/AbstractMultiSelectCondition.class.php
+
+		-
+			message: '#^Method wcf\\system\\condition\\AbstractSelectCondition\:\:getData\(\) should return array\<mixed\> but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/condition/AbstractSelectCondition.class.php
+
+		-
+			message: '#^Method wcf\\system\\condition\\AbstractTextCondition\:\:getData\(\) should return array\<mixed\> but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/condition/AbstractTextCondition.class.php
+
+		-
+			message: '#^Method wcf\\system\\condition\\AbstractTimestampCondition\:\:getData\(\) should return array\<mixed\> but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/condition/AbstractTimestampCondition.class.php
+
+		-
+			message: '#^Method wcf\\system\\condition\\TimeCondition\:\:getData\(\) should return array\<mixed\> but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/condition/TimeCondition.class.php
+
+		-
+			message: '#^Method wcf\\system\\condition\\UserBirthdayCondition\:\:getData\(\) should return array\<mixed\> but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/condition/UserBirthdayCondition.class.php
+
+		-
+			message: '#^Method wcf\\system\\condition\\UserGroupCondition\:\:getData\(\) should return array\<mixed\> but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/condition/UserGroupCondition.class.php
+
+		-
+			message: '#^Method wcf\\system\\condition\\UserLanguageCondition\:\:getData\(\) should return array\<mixed\> but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/condition/UserLanguageCondition.class.php
+
+		-
+			message: '#^Method wcf\\system\\condition\\UserMobileBrowserCondition\:\:getData\(\) should return array\<mixed\> but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/condition/UserMobileBrowserCondition.class.php
+
+		-
+			message: '#^Method wcf\\system\\condition\\UserMultifactorCondition\:\:getData\(\) should return array\<mixed\> but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/condition/UserMultifactorCondition.class.php
+
+		-
+			message: '#^Method wcf\\system\\condition\\UserOptionsCondition\:\:getData\(\) should return array\<mixed\> but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/condition/UserOptionsCondition.class.php
+
+		-
+			message: '#^Method wcf\\system\\condition\\UserRegistrationDateCondition\:\:getData\(\) should return array\<mixed\> but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/condition/UserRegistrationDateCondition.class.php
+
+		-
+			message: '#^Method wcf\\system\\condition\\UserStateCondition\:\:getData\(\) should return array\<mixed\> but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/condition/UserStateCondition.class.php
+
+		-
+			message: '#^Method wcf\\system\\condition\\UserTrophyCondition\:\:getData\(\) should return array\<mixed\> but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/condition/UserTrophyCondition.class.php
+
+		-
+			message: '#^Method wcf\\system\\condition\\UserUserIDCondition\:\:getData\(\) should return array\<mixed\> but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/condition/UserUserIDCondition.class.php
+
+		-
+			message: '#^Method wcf\\system\\condition\\page\\MultiPageCondition\:\:getData\(\) should return array\<mixed\> but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/condition/page/MultiPageCondition.class.php
+
+		-
+			message: '#^Method wcf\\system\\condition\\user\\UserLastActivityTimeIntervalDaysCondition\:\:getData\(\) should return array\<mixed\> but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/condition/user/UserLastActivityTimeIntervalDaysCondition.class.php
+
+		-
+			message: '#^Argument of an invalid type wcf\\data\\comment\\Comment supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: wcfsetup/install/files/lib/system/endpoint/controller/core/comments/RenderComment.class.php
+
+		-
+			message: '#^Constructor of class wcf\\system\\exception\\ErrorException has an unused parameter \$filename\.$#'
+			identifier: constructor.unusedParameter
+			count: 1
+			path: wcfsetup/install/files/lib/system/exception/ErrorException.class.php
+
+		-
+			message: '#^Constructor of class wcf\\system\\exception\\ErrorException has an unused parameter \$lineno\.$#'
+			identifier: constructor.unusedParameter
+			count: 1
+			path: wcfsetup/install/files/lib/system/exception/ErrorException.class.php
+
+		-
+			message: '#^Call to an undefined method wcf\\system\\form\\builder\\container\\wysiwyg\\WysiwygFormContainer\:\:addValidationError\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: wcfsetup/install/files/lib/system/form/builder/container/wysiwyg/WysiwygFormContainer.class.php
+
+		-
+			message: '#^Property wcf\\system\\form\\element\\AbstractNamedFormElement\:\:\$value \(string\) does not accept array\<string\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: wcfsetup/install/files/lib/system/form/element/MultipleSelectionFormElement.class.php
+
+		-
+			message: '#^Method wcf\\system\\package\\plugin\\LanguagePackageInstallationPlugin\:\:getEmptyXml\(\) invoked with 0 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: wcfsetup/install/files/lib/system/package/plugin/LanguagePackageInstallationPlugin.class.php
+
+		-
+			message: '#^Call to static method stripAnsi\(\) on an unknown class phpline\\internal\\AnsiUtil\.$#'
+			identifier: class.notFound
+			count: 3
+			path: wcfsetup/install/files/lib/util/CLIUtil.class.php
+
+		-
+			message: '#^Property wcf\\util\\DirectoryUtil\:\:\$fileObjects \(array\<DirectoryIterator\>\) does not accept array\<SplFileInfo\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: wcfsetup/install/files/lib/util/DirectoryUtil.class.php

@@ -119,7 +119,7 @@ class ImportWorker extends AbstractWorker
             $progress = 100;
         }
 
-        return \floor($progress);
+        return (int)\floor($progress);
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace wcf\system\attachment;
 
-use wcf\data\DatabaseObject;
+use wcf\data\IUserContent;
 use wcf\system\WCF;
 use wcf\util\ArrayUtil;
 
@@ -17,7 +17,7 @@ abstract class AbstractAttachmentObjectType implements IAttachmentObjectType
 {
     /**
      * cached objects
-     * @var DatabaseObject[]
+     * @var IUserContent[]
      */
     protected $cachedObjects = [];
 

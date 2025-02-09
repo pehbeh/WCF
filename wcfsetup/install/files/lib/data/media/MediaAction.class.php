@@ -146,7 +146,7 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
      * Returns the data of the media file to be returned by AJAX requests.
      *
      * @param Media|ViewableMedia $media media files whose data will be returned
-     * @return  string[]
+     * @return mixed[]
      */
     protected function getMediaData($media)
     {
@@ -227,7 +227,7 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
     /**
      * Returns the dialog to manage media.
      *
-     * @return  string[]
+     * @return mixed[]
      */
     public function getManagementDialog()
     {
@@ -322,7 +322,7 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
     /**
      * Returns the template for the media editor.
      *
-     * @return  string[]
+     * @return mixed[]
      */
     public function getEditorDialog()
     {

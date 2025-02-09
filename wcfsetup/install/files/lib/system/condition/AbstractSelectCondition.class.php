@@ -119,7 +119,7 @@ abstract class AbstractSelectCondition extends AbstractSingleFieldCondition
     public function readFormParameters()
     {
         if (isset($_POST[$this->fieldName])) {
-            $this->fieldValue = \intval($_POST[$this->fieldName]);
+            $this->fieldValue = (string)\intval($_POST[$this->fieldName]);
         }
     }
 

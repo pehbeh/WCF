@@ -135,7 +135,7 @@ class UploadFile
     public function getImage()
     {
         if (!$this->isImage() || !$this->viewableImage) {
-            return;
+            return null;
         }
 
         if ($this->processed) {

@@ -182,7 +182,7 @@ class QuotedMessage implements \Countable, \Iterator
      *
      * @see \Iterator::key()
      */
-    public function key(): string
+    public function key(): int
     {
         return $this->indexToObject[$this->index];
     }

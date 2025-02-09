@@ -75,7 +75,7 @@ class SessionAction extends AbstractDatabaseObjectAction
     /**
      * Polls notification data, including values provided by `keepAlive()`.
      *
-     * @return      array[]
+     * @return array{keepAliveData: array<string, mixed>, lastRequestTimestamp: int, pollData: array<string, mixed>}
      */
     public function poll()
     {

@@ -96,7 +96,7 @@ class MultiPageCondition extends AbstractMultiSelectCondition implements IConten
         parent::readFormParameters();
 
         if (isset($_POST[$this->fieldName . '_reverseLogic'])) {
-            $this->reverseLogic = (bool)$this->fieldName . '_reverseLogic';
+            $this->reverseLogic = (bool)$_POST[$this->fieldName . '_reverseLogic'];
         }
     }
 

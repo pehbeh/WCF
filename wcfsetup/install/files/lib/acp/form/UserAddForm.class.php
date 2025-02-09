@@ -55,7 +55,7 @@ class UserAddForm extends UserOptionListForm
 
     /**
      * user password
-     * @var string
+     * @var ?string
      */
     public $password = '';
 
@@ -96,7 +96,7 @@ class UserAddForm extends UserOptionListForm
 
     /**
      * true to disable this signature
-     * @var bool
+     * @var int
      */
     public $disableSignature = 0;
 

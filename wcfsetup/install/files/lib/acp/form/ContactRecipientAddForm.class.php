@@ -175,7 +175,7 @@ class ContactRecipientAddForm extends AbstractForm
         ]);
 
         // reset values
-        $this->email = $this->name = 0;
+        $this->email = $this->name = '';
         $this->isDisabled = $this->showOrder = 0;
 
         I18nHandler::getInstance()->reset();

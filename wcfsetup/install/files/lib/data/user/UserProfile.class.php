@@ -108,7 +108,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
 
     /**
      * user cover photo
-     * @var UserCoverPhoto
+     * @var ?IUserCoverPhoto
      */
     protected $coverPhoto;
 
@@ -350,42 +350,40 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
     public function getAvatar()
     {
         if ($this->avatar === null) {
+            $avatar = null;
             if (!$this->disableAvatar) {
                 if ($this->canSeeAvatar()) {
                     if ($this->avatarFileID !== null) {
                         $data = UserStorageHandler::getInstance()->getField('avatar', $this->userID);
                         if ($data === null) {
-                            $this->avatar = FileRuntimeCache::getInstance()->getObject($this->avatarFileID);
+                            $avatar = FileRuntimeCache::getInstance()->getObject($this->avatarFileID);
 
                             UserStorageHandler::getInstance()->update(
                                 $this->userID,
                                 'avatar',
-                                \serialize($this->avatar)
+                                \serialize($avatar)
                             );
                         } else {
-                            $this->avatar = \unserialize($data);
+                            $avatar = \unserialize($data);
                         }
                     } else {
                         $parameters = ['avatar' => null];
                         EventHandler::getInstance()->fireAction($this, 'getAvatar', $parameters);
 
-                        if ($parameters['avatar'] !== null) {
-                            if (!($parameters['avatar'] instanceof IUserAvatar)) {
-                                throw new ImplementationException(
-                                    \get_class($parameters['avatar']),
-                                    IUserAvatar::class
-                                );
-                            }
-
-                            $this->avatar = $parameters['avatar'];
+                        $avatar = $parameters['avatar'];
+                        if ($avatar !== null && !($avatar instanceof IUserAvatar)) {
+                            throw new ImplementationException(
+                                \get_class($avatar),
+                                IUserAvatar::class
+                            );
                         }
                     }
                 }
             }
 
             // use default avatar
-            if ($this->avatar === null) {
-                $this->avatar = new DefaultAvatar($this->username ?: '');
+            if ($avatar === null) {
+                $avatar = new DefaultAvatar($this->username ?: '');
             }
 
             $this->avatar = new AvatarDecorator($this->avatar);

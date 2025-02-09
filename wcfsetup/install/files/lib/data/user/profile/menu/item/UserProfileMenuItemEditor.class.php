@@ -33,8 +33,9 @@ class UserProfileMenuItemEditor extends DatabaseObjectEditor implements IEditabl
         // calculate show order
         $parameters['showOrder'] = self::getShowOrder($parameters['showOrder'] ?? 0);
 
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return parent::create($parameters);
+        $object = parent::create($parameters);
+        \assert($object instanceof UserProfileMenuItem);
+        return $object;
     }
 
     /**

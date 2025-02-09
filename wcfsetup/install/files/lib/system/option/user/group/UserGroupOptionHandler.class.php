@@ -94,7 +94,7 @@ class UserGroupOptionHandler extends OptionHandler
 
         // validate class
         if (!\class_exists($className)) {
-            return;
+            return null;
         }
         if (!\is_subclass_of($className, IUserGroupOptionType::class)) {
             throw new ImplementationException($className, IUserGroupOptionType::class);

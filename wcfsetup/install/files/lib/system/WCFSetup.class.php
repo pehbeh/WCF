@@ -71,7 +71,7 @@ final class WCFSetup extends WCF
 
     /**
      * indicates if developer mode is used to install
-     * @var bool
+     * @var int
      */
     protected static $developerMode = 0;
 

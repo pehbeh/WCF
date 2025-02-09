@@ -320,7 +320,7 @@ class HtmlInputNodeTextParser
 
     /**
      * @param string[] $usernames
-     * @return UserGroup[]
+     * @return array<int, string>
      * @since 5.2
      */
     protected function lookupGroups(array $usernames)

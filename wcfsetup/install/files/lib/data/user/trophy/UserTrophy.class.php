@@ -25,7 +25,7 @@ use wcf\util\StringUtil;
  * @property-read   int $userID             user id
  * @property-read   int $time               the time when the trophy was rewarded
  * @property-read   string $description            the custom trophy description
- * @property-read   string $useCustomDescription       `1`, if the trophy use a custom description
+ * @property-read   int $useCustomDescription       `1`, if the trophy use a custom description
  * @property-read   int $trophyUseHtml              `1`, if the trophy use a html description
  */
 class UserTrophy extends DatabaseObject

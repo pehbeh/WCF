@@ -42,7 +42,7 @@ abstract class AbstractHtmlNodeProcessor implements IHtmlNodeProcessor
 
     /**
      * XPath instance
-     * @var \DOMXPath
+     * @var ?\DOMXPath
      */
     protected $xpath;
 

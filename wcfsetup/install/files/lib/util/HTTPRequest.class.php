@@ -73,7 +73,7 @@ final class HTTPRequest
     private $replyBody;
 
     /**
-     * @var ResponseInterface
+     * @var ?ResponseInterface
      */
     private $response;
 

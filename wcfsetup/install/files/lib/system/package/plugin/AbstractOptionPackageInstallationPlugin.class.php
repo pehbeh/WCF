@@ -962,7 +962,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
     /**
      * Returns an option handler used for sorting.
      *
-     * @return  IOptionHandler
+     * @return  ?IOptionHandler
      * @see     OptionPackageInstallationPlugin::getSortOptionHandler()
      */
     protected function getSortOptionHandler()

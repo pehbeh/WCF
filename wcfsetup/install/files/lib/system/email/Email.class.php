@@ -25,13 +25,13 @@ class Email
 {
     /**
      * From header
-     * @var Mailbox
+     * @var ?Mailbox
      */
     protected $sender;
 
     /**
      * Reply-To header
-     * @var Mailbox
+     * @var ?Mailbox
      */
     protected $replyTo;
 
@@ -43,7 +43,7 @@ class Email
 
     /**
      * Message-Id header
-     * @var string
+     * @var ?string
      */
     protected $messageID;
 
@@ -61,21 +61,21 @@ class Email
 
     /**
      * List-Id header
-     * @var string
+     * @var ?string
      * @since 5.3
      */
     protected $listId;
 
     /**
      * Human readable part of the List-Id header
-     * @var string
+     * @var ?string
      * @since 5.3
      */
     protected $listIdHuman;
 
     /**
      * List-Unsubscribe URI
-     * @var string
+     * @var ?string
      * @since 5.3
      */
     protected $listUnsubscribe;
@@ -89,7 +89,7 @@ class Email
 
     /**
      * Date header
-     * @var \DateTime
+     * @var ?\DateTime
      */
     protected $date;
 
@@ -107,13 +107,13 @@ class Email
 
     /**
      * The body of this Email.
-     * @var AbstractMimePart
+     * @var ?AbstractMimePart
      */
     protected $body;
 
     /**
      * Mail host for use in the Message-Id
-     * @var string
+     * @var ?string
      */
     private static $host;
 
@@ -332,7 +332,7 @@ class Email
     public function getListID()
     {
         if ($this->listId === null) {
-            return;
+            return null;
         }
 
         return ($this->listIdHuman ? $this->listIdHuman . ' ' : '') . '<' . $this->listId . '.list-id.' . self::getHost() . '>';

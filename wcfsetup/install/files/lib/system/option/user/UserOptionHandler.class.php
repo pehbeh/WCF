@@ -212,7 +212,7 @@ class UserOptionHandler extends OptionHandler
             }
 
             if ($this->removeEmptyOptions && empty($optionData['object']->optionValue)) {
-                return;
+                return null;
             }
         }
 

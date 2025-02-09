@@ -73,7 +73,7 @@ class UploadFile
     public function __construct($filename, $location, $filesize, $errorCode = 0, $mimeType = '')
     {
         if (\preg_match('~^__wcf_([0-9]+)_(.*)~', $filename, $matches)) {
-            $this->internalFileID = $matches[1];
+            $this->internalFileID = (int)$matches[1];
             $filename = $matches[2];
         }
 

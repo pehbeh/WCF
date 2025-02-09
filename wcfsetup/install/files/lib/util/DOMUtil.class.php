@@ -132,7 +132,11 @@ final class DOMUtil
      */
     public static function getParentNode(\DOMNode $node): \DOMElement|\DOMDocument
     {
-        return $node->parentNode ?: $node->ownerDocument;
+        if ($node->parentNode instanceof \DOMElement) {
+            return $node->parentNode;
+        }
+
+        return $node->ownerDocument;
     }
 
     /**
@@ -147,6 +151,7 @@ final class DOMUtil
 
         $parent = $node;
         while ($parent = $parent->parentNode) {
+            /** @var \DOMElement $parent */
             $parents[] = $parent;
         }
 

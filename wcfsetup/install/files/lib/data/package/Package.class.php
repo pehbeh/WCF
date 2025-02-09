@@ -394,7 +394,7 @@ class Package extends DatabaseObject implements ILinkableObject, IRouteControlle
      * Compares two version number strings.
      *
      * @param string $operator
-     * @return  bool        result
+     * @return int|bool        result
      * @see http://www.php.net/manual/en/function.version-compare.php
      */
     public static function compareVersion(string $version1, string $version2, $operator = null)

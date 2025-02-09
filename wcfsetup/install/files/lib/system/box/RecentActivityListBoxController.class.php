@@ -87,6 +87,7 @@ class RecentActivityListBoxController extends AbstractDatabaseObjectListBoxContr
 
     /**
      * @inheritDoc
+     * @return ViewableUserActivityEventList
      */
     protected function getObjectList()
     {

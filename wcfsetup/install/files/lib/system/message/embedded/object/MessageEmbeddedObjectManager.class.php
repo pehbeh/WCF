@@ -56,7 +56,7 @@ class MessageEmbeddedObjectManager extends SingletonFactory
 
     /**
      * content language id
-     * @var int
+     * @var ?int
      */
     protected $contentLanguageID;
 

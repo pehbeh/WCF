@@ -15,7 +15,7 @@ interface ISearchAction
     /**
      * Returns a list with data of objects that match the given search criteria.
      *
-     * @return  array<array>
+     * @return mixed[]
      */
     public function getSearchResultList();
 

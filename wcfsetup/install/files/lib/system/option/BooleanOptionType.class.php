@@ -45,9 +45,11 @@ class BooleanOptionType extends AbstractOptionType implements ISearchableConditi
     public function getData(Option $option, $newValue)
     {
         if ($newValue == 1) {
+            // @phpstan-ignore return.type
             return 1;
         }
 
+        // @phpstan-ignore return.type
         return 0;
     }
 

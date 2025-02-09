@@ -91,7 +91,7 @@ class LanguageFactory extends SingletonFactory
      * language exists.
      *
      * @param string $languageCode
-     * @return  Language
+     * @return ?Language
      */
     public function getLanguageByCode($languageCode)
     {

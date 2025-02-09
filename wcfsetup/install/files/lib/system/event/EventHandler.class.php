@@ -25,12 +25,12 @@ final class EventHandler extends SingletonFactory
     public const DEFAULT_EVENT_NAME = ':default';
 
     /**
-     * @var array<string, EventListener>
+     * @var array<string, EventListener[]>
      */
     private array $actions = [];
 
     /**
-     * @var array<class-string, array<string, EventListener>>
+     * @var array<class-string, array<string, EventListener[]>>
      */
     private array $inheritedActions = [];
 
@@ -98,7 +98,6 @@ final class EventHandler extends SingletonFactory
                     continue;
                 }
 
-                /** @var EventListener $eventListener */
                 foreach ($this->inheritedActions[$member][$eventName] as $eventListener) {
                     if (
                         $eventListener->validateOptions()
@@ -211,7 +210,6 @@ final class EventHandler extends SingletonFactory
             }
 
             $this->actionsObjects[$name] = [];
-            /** @var EventListener $eventListener */
             foreach ($this->actions[$name] as $eventListener) {
                 if (
                     $eventListener->validateOptions()

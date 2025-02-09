@@ -55,7 +55,7 @@ final class SessionHandler extends SingletonFactory
 
     /**
      * group data and permissions
-     * @var mixed[][]
+     * @var mixed[][]|null
      */
     private $groupData;
 

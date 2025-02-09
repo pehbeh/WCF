@@ -47,7 +47,7 @@ class PollManager extends SingletonFactory
 
     /**
      * poll object
-     * @var Poll
+     * @var ?Poll
      */
     protected $poll;
 

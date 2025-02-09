@@ -10,6 +10,7 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Message\ResponseInterface;
 use ValueError;
 use wcf\system\io\http\RedirectGuard;
 use wcf\system\io\HttpFactory;
@@ -299,7 +300,7 @@ final class UnfurlResponse
      * @throws DownloadFailed If the url can not be downloaded. This can be a temporary error.
      * @throws UrlInaccessible If the url is inaccessible (e.g. sends status code 403).
      */
-    public function getImage(): Response
+    public function getImage(): ResponseInterface
     {
         if (!$this->getImageUrl()) {
             throw new BadMethodCallException("This url does not have an image.");
