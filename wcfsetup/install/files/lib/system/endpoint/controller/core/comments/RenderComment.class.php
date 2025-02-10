@@ -129,21 +129,9 @@ final class RenderComment implements IController
         }
 
         $commentManager = CommentHandler::getInstance()->getCommentManagerByID($comment->objectTypeID);
-
         $structuredComment = new StructuredComment($comment);
         $structuredComment->setIsDeletable($commentManager->canDeleteComment($comment));
         $structuredComment->setIsEditable($commentManager->canEditComment($comment));
-
-        if ($response !== null) {
-            // check if response is not visible
-            foreach ($comment as $visibleResponse) {
-                \assert($visibleResponse instanceof CommentResponse);
-                if ($visibleResponse->responseID == $response->responseID) {
-                    $response = null;
-                    break;
-                }
-            }
-        }
 
         // This functions renders a single comment without rendering its responses.
         // We need to prevent the setting of the data attribute for the last response time
@@ -171,18 +159,9 @@ final class RenderComment implements IController
             ReactionHandler::getInstance()->loadLikeObjects($commentObjectType, [$comment->commentID]);
             $likeData['comment'] = ReactionHandler::getInstance()->getLikeObjects($commentObjectType);
 
-            $responseIDs = [];
-            foreach ($structuredComment as $visibleResponse) {
-                $responseIDs[] = $visibleResponse->responseID;
-            }
-
             if ($response !== null) {
-                $responseIDs[] = $response->responseID;
-            }
-
-            if (!empty($responseIDs)) {
                 $responseObjectType = ReactionHandler::getInstance()->getObjectType('com.woltlab.wcf.comment.response');
-                ReactionHandler::getInstance()->loadLikeObjects($responseObjectType, $responseIDs);
+                ReactionHandler::getInstance()->loadLikeObjects($responseObjectType, [$response->responseID]);
                 $likeData['response'] = ReactionHandler::getInstance()->getLikeObjects($responseObjectType);
             }
 
