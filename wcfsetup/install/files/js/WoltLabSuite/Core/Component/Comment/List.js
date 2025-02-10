@@ -285,7 +285,7 @@ define(["require", "exports", "tslib", "../../Dom/Change/Listener", "../../Dom/U
             }
             Util_1.default.insertHtml(response.value.template, commentResponseList, "append");
             Listener_1.default.trigger();
-            const scrollTarget = commentResponseList.firstElementChild;
+            const scrollTarget = this.#container.querySelector(`.commentResponseList__item[data-response-id="${responseId}"]`);
             window.setTimeout(() => {
                 UiScroll.element(scrollTarget);
             }, 100);

@@ -388,7 +388,9 @@ class CommentList {
     DomUtil.insertHtml(response.value.template, commentResponseList, "append");
     DomChangeListener.trigger();
 
-    const scrollTarget = commentResponseList.firstElementChild as HTMLElement;
+    const scrollTarget = this.#container.querySelector(
+      `.commentResponseList__item[data-response-id="${responseId}"]`,
+    ) as HTMLElement;
 
     window.setTimeout(() => {
       UiScroll.element(scrollTarget);
