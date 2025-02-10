@@ -11,6 +11,7 @@ use wcf\system\gridView\filter\NumericFilter;
 use wcf\system\gridView\filter\ObjectIdFilter;
 use wcf\system\gridView\GridViewColumn;
 use wcf\system\gridView\GridViewRowLink;
+use wcf\system\gridView\GridViewSortButton;
 use wcf\system\gridView\renderer\NumberColumnRenderer;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\gridView\renderer\PhraseColumnRenderer;
@@ -54,6 +55,8 @@ final class TrophyGridView extends AbstractGridView
         $this->addQuickInteraction(
             new ToggleInteraction("enable", "core/trophies/%s/enable", "core/trophies/%s/disable")
         );
+
+        $this->setSortButton(new GridViewSortButton("showOrder", "core/trophies/sort"));
 
         $this->setSortField("showOrder");
         $this->addRowLink(new GridViewRowLink(TrophyEditForm::class));

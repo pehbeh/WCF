@@ -54,6 +54,7 @@ abstract class AbstractGridView
     private ?IInteractionProvider $interactionProvider = null;
     private ?IBulkInteractionProvider $bulkInteractionProvider = null;
     private InteractionContextMenuView $interactionContextMenuView;
+    private ?GridViewSortButton $sortButton = null;
 
     /**
      * Adds a new column to the grid view.
@@ -256,9 +257,16 @@ abstract class AbstractGridView
     /**
      * Renders the rows and returns the HTML code.
      */
-    public function renderRows(): string
+    public function renderRows(bool $withoutInteractions = false): string
     {
         $this->prepareRenderers();
+
+        if ($withoutInteractions && $this->hasInteractions()) {
+            // TODO
+            $this->interactionProvider = null;
+            $this->quickInteractions = [];
+            unset($this->rowLink);
+        }
 
         return WCF::getTPL()->render('wcf', 'shared_gridViewRows', ['view' => $this]);
     }
@@ -592,6 +600,22 @@ abstract class AbstractGridView
     public function getObjectIDFilter(): string|int|null
     {
         return $this->objectIDFilter;
+    }
+
+    /**
+     * Returns the grid view sort button.
+     */
+    public function getSortButton(): ?GridViewSortButton
+    {
+        return $this->sortButton;
+    }
+
+    /**
+     * Sets the grid view sort button.
+     */
+    public function setSortButton(?GridViewSortButton $sortButton): void
+    {
+        $this->sortButton = $sortButton;
     }
 
     /**

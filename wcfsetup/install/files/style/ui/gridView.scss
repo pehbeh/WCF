@@ -158,7 +158,7 @@
 	flex-wrap: wrap;
 }
 
-.gridView__filterButton {
+.gridView__buttons {
 	flex: 0 0 auto;
 }
 
@@ -205,4 +205,8 @@
 	100% {
 		box-shadow: rgba(0, 0, 0, 0.08) 0px 10px 16px 2px;
 	}
+}
+
+.gridView__sortBody tr {
+	cursor: move;
 }

@@ -9,8 +9,11 @@
 					</button>
 				{/foreach}
 			</div>
-			<div class="gridView__filterButton">
-				<button type="button" class="button small" id="{$view->getID()}_filterButton" data-endpoint="{$view->getFilterActionEndpoint()}">
+			<div class="gridView__buttons">
+				{if $view->getSortButton() !== null}
+					{unsafe:$view->getSortButton()->renderButton($view)}
+				{/if}
+				<button type="button" class="gridView__filterButton button small" id="{$view->getID()}_filterButton" data-endpoint="{$view->getFilterActionEndpoint()}">
 					{icon name='filter'}
 					{lang}wcf.global.filter{/lang}
 				</button>
@@ -45,7 +48,7 @@
 					{if $view->hasInteractions()}
 						<th class="gridView__headerColumn gridView__actionColumn"></th>
 					{/if}
-				</td>
+				</tr>
 			</thead>
 			<tbody>
 				{unsafe:$view->renderRows()}

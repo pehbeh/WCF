@@ -18,6 +18,4 @@
 	{unsafe:$gridView->render()}
 </div>
 
-{* TODO sortable button *}
-
 {include file='footer'}

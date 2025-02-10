@@ -6,13 +6,14 @@
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.2
  */
-define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridviews/GetRows", "../Api/Interactions/GetBulkContextMenuOptions", "../Dom/Change/Listener", "../Dom/Util", "../Helper/Selector", "../Ui/Dropdown/Simple", "./GridView/State"], function (require, exports, tslib_1, GetRow_1, GetRows_1, GetBulkContextMenuOptions_1, Listener_1, Util_1, Selector_1, Simple_1, State_1) {
+define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridviews/GetRows", "../Api/Interactions/GetBulkContextMenuOptions", "../Dom/Change/Listener", "../Dom/Util", "../Helper/Selector", "../Ui/Dropdown/Simple", "./GridView/State", "WoltLabSuite/Core/Api/Gridviews/GetSortDialog", "WoltLabSuite/Core/Component/Dialog", "WoltLabSuite/Core/Language", "sortablejs"], function (require, exports, tslib_1, GetRow_1, GetRows_1, GetBulkContextMenuOptions_1, Listener_1, Util_1, Selector_1, Simple_1, State_1, GetSortDialog_1, Dialog_1, Language_1, sortablejs_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GridView = void 0;
     Listener_1 = tslib_1.__importDefault(Listener_1);
     Util_1 = tslib_1.__importDefault(Util_1);
     Simple_1 = tslib_1.__importDefault(Simple_1);
+    sortablejs_1 = tslib_1.__importDefault(sortablejs_1);
     class GridView {
         #gridClassName;
         #table;
@@ -29,6 +30,7 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
             this.#initInteractions();
             this.#state = this.#setupState(gridId, pageNo, baseUrl, sortField, sortOrder);
             this.#initEventListeners();
+            this.#initSortButton(gridId);
         }
         async #loadRows(cause) {
             const response = (await (0, GetRows_1.getRows)(this.#gridClassName, this.#state.getPageNo(), this.#state.getSortField(), this.#state.getSortOrder(), this.#state.getActiveFilters(), this.#gridViewParameters)).unwrap();
@@ -95,6 +97,35 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
                 return;
             }
             void this.#loadRows(0 /* StateChangeCause.Change */);
+        }
+        #initSortButton(gridId) {
+            const sortButton = document.getElementById(`${gridId}_sortButton`);
+            sortButton?.addEventListener("click", () => {
+                const endpoint = sortButton.dataset.endpoint;
+                const saveEndpoint = sortButton.dataset.saveEndpoint;
+                if (endpoint.trim().length > 0) {
+                    // TODO open filter dialog if needed
+                }
+                else {
+                    void this.#renderSortDialog(saveEndpoint);
+                }
+            });
+        }
+        async #renderSortDialog(saveEndpoint, filters) {
+            const response = await (0, GetSortDialog_1.getSortDialog)(this.#gridClassName, filters, this.#gridViewParameters);
+            if (!response.ok) {
+                throw new Error("Failed to load sort dialog");
+            }
+            const dialog = (0, Dialog_1.dialogFactory)().fromHtml(response.value).withoutControls();
+            dialog.show((0, Language_1.getPhrase)("wcf.global.sort"));
+            new sortablejs_1.default(dialog.content.querySelector(".gridView__sortBody"), {
+                direction: "vertical",
+                animation: 150,
+                fallbackOnBody: true,
+                dataIdAttr: "data-object-id",
+                draggable: "tr",
+            });
+            // TODO save sorting
         }
     }
     exports.GridView = GridView;

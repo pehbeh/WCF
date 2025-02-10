@@ -15,6 +15,10 @@ import DomUtil from "../Dom/Util";
 import { wheneverFirstSeen } from "../Helper/Selector";
 import UiDropdownSimple from "../Ui/Dropdown/Simple";
 import { State, StateChangeCause } from "./GridView/State";
+import { getSortDialog } from "WoltLabSuite/Core/Api/Gridviews/GetSortDialog";
+import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
+import { getPhrase } from "WoltLabSuite/Core/Language";
+import Sortable from "sortablejs";
 
 export class GridView {
   readonly #gridClassName: string;
@@ -43,6 +47,7 @@ export class GridView {
     this.#initInteractions();
     this.#state = this.#setupState(gridId, pageNo, baseUrl, sortField, sortOrder);
     this.#initEventListeners();
+    this.#initSortButton(gridId);
   }
 
   async #loadRows(cause: StateChangeCause): Promise<void> {
@@ -135,5 +140,39 @@ export class GridView {
     }
 
     void this.#loadRows(StateChangeCause.Change);
+  }
+
+  #initSortButton(gridId: string) {
+    const sortButton = document.getElementById(`${gridId}_sortButton`);
+
+    sortButton?.addEventListener("click", () => {
+      const endpoint = sortButton.dataset.endpoint!;
+      const saveEndpoint = sortButton.dataset.saveEndpoint!;
+      if (endpoint.trim().length > 0) {
+        // TODO open filter dialog if needed
+      } else {
+        void this.#renderSortDialog(saveEndpoint);
+      }
+    });
+  }
+
+  async #renderSortDialog(saveEndpoint: string, filters?: Map<string, string>) {
+    const response = await getSortDialog(this.#gridClassName, filters, this.#gridViewParameters);
+    if (!response.ok) {
+      throw new Error("Failed to load sort dialog");
+    }
+
+    const dialog = dialogFactory().fromHtml(response.value).withoutControls();
+    dialog.show(getPhrase("wcf.global.sort"));
+
+    new Sortable(dialog.content.querySelector(".gridView__sortBody")!, {
+      direction: "vertical",
+      animation: 150,
+      fallbackOnBody: true,
+      dataIdAttr: "data-object-id",
+      draggable: "tr",
+    });
+
+    // TODO save sorting
   }
 }
