@@ -2,18 +2,19 @@
 
 namespace wcf\acp\page;
 
-use wcf\data\trophy\TrophyList;
-use wcf\page\MultipleLinkPage;
+use wcf\page\AbstractGridViewPage;
+use wcf\system\gridView\AbstractGridView;
+use wcf\system\gridView\admin\TrophyGridView;
 
 /**
  * Trophy list page.
  *
- * @author  Joshua Ruesweg
- * @copyright   2001-2019 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
- * @since   3.1
+ * @author      Olaf Braun, Joshua Ruesweg
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       3.1
  */
-class TrophyListPage extends MultipleLinkPage
+class TrophyListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -30,18 +31,9 @@ class TrophyListPage extends MultipleLinkPage
      */
     public $neededPermissions = ['admin.trophy.canManageTrophy'];
 
-    /**
-     * @inheritDoc
-     */
-    public $sortField = 'trophy.showOrder';
-
-    /**
-     * @inheritDoc
-     */
-    public $sortOrder = 'ASC';
-
-    /**
-     * @inheritDoc
-     */
-    public $objectListClassName = TrophyList::class;
+    #[\Override]
+    protected function createGridViewController(): AbstractGridView
+    {
+        return new TrophyGridView();
+    }
 }
