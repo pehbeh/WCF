@@ -31,13 +31,13 @@ export class WysiwygTab extends Abstract {
 
     const containerIsVisible = !this._container.hidden;
     const tabMenu = getTabMenu(this.#wysiwygId)!;
-    const containerShouldBeVisible = !tabMenu.isHiddenTab(this.#tabName);
+    const containerShouldBeVisible = !tabMenu.isHiddenTab(this.#tabName) && tabMenu.activeTabName === this.#tabName;
 
     if (containerIsVisible !== containerShouldBeVisible) {
       if (containerShouldBeVisible) {
-        tabMenu?.showTab(this.#tabName);
+        tabMenu.showTab(this.#tabName);
       } else {
-        tabMenu?.hideTab(this.#tabName);
+        tabMenu.hideTab(this.#tabName);
       }
 
       // Check containers again to make sure parent containers can react to changing the visibility

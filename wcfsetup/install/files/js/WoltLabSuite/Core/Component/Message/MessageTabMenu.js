@@ -127,6 +127,9 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/Selector", "Wol
                 this.#tabContainers[i].classList.remove("active");
             }
         }
+        get activeTabName() {
+            return this.#activeTabName;
+        }
     }
     const tabMenus = new Map();
     function initTabMenu(tabMenu) {

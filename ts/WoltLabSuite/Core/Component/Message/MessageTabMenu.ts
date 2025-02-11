@@ -155,6 +155,10 @@ class TabMenu {
       this.#tabContainers[i].classList.remove("active");
     }
   }
+
+  get activeTabName(): string {
+    return this.#activeTabName;
+  }
 }
 
 const tabMenus = new Map<string, TabMenu>();
