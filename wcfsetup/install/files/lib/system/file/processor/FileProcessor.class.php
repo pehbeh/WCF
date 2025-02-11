@@ -238,7 +238,6 @@ final class FileProcessor extends SingletonFactory
 
         $existingThumbnails = [];
         foreach ($thumbnailList as $thumbnail) {
-            \assert($thumbnail instanceof FileThumbnail);
             $existingThumbnails[$thumbnail->identifier] = $thumbnail;
         }
 
@@ -292,8 +291,6 @@ final class FileProcessor extends SingletonFactory
                         return;
                     }
                 }
-
-                \assert($imageAdapter instanceof ImageAdapter);
 
                 try {
                     $image = $imageAdapter->createThumbnail($format->width, $format->height, $format->retainDimensions);

@@ -223,10 +223,7 @@ final class HtmlOutputNodeNormalizer
             $length = \count($foundBrs);
             if ($length > 1) {
                 for ($i = 1; $i < $length; $i++) {
-                    $br = $foundBrs[$i];
-                    \assert($br instanceof \DOMElement);
-
-                    $br->remove();
+                    $foundBrs[$i]->remove();
                 }
             }
         }

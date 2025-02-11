@@ -201,7 +201,7 @@ class ArticleContent extends DatabaseObject implements ILinkableObject, IRouteCo
      * Returns a certain article content or `null` if it does not exist.
      *
      * @param int $articleID
-     * @param int $languageID
+     * @param ?int $languageID
      * @return      ArticleContent|null
      */
     public static function getArticleContent($articleID, $languageID)

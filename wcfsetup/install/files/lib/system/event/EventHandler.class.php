@@ -160,6 +160,7 @@ final class EventHandler extends SingletonFactory
             } elseif ($actionObj instanceof IParameterizedEventListener) {
                 $actionObj->execute($eventObj, $className, $eventName, $parameters);
 
+                // @phpstan-ignore function.alreadyNarrowedType
                 if (!\is_array($parameters)) {
                     throw new \LogicException("'{$actionClassName}' breaks the '\$parameters' array.");
                 }

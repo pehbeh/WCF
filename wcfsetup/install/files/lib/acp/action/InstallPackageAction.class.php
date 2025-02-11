@@ -51,7 +51,6 @@ class InstallPackageAction extends AbstractSecureAction
 
             default:
                 throw new IllegalLinkException();
-                break;
         }
 
         if (isset($_POST['node'])) {

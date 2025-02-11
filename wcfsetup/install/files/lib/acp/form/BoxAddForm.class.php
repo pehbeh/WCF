@@ -212,7 +212,7 @@ class BoxAddForm extends AbstractForm
     public $presetBoxID = 0;
 
     /**
-     * @var Box
+     * @var ?Box
      * @since   5.2
      */
     public $presetBox;
@@ -264,7 +264,7 @@ class BoxAddForm extends AbstractForm
         $collator = new \Collator(WCF::getLanguage()->getLocale());
         \uasort(
             $this->availableBoxControllers,
-            static fn (ObjectType $a, ObjectType $b) => $collator->compare(
+            static fn(ObjectType $a, ObjectType $b) => $collator->compare(
                 WCF::getLanguage()->get('wcf.acp.box.boxController.' . $a->objectType),
                 WCF::getLanguage()->get('wcf.acp.box.boxController.' . $b->objectType)
             )
@@ -445,7 +445,7 @@ class BoxAddForm extends AbstractForm
                 throw new UserInputException('boxController');
             }
 
-            if ($this->boxController && $this->boxController->getProcessor() instanceof IConditionBoxController) {
+            if ($this->boxController->getProcessor() instanceof IConditionBoxController) {
                 $this->boxController->getProcessor()->readConditions();
             }
         } else {
@@ -469,13 +469,13 @@ class BoxAddForm extends AbstractForm
 
             // validate page object id
             if (isset($this->pageHandlers[$page->pageID])) {
-                if ($this->pageHandlers[$page->pageID] && !$this->linkPageObjectID) {
+                if (!$this->linkPageObjectID) {
                     throw new UserInputException('linkPageObjectID');
                 }
 
                 /** @var ILookupPageHandler $handler */
                 $handler = $page->getHandler();
-                if ($this->linkPageObjectID && !$handler->isValid($this->linkPageObjectID)) {
+                if (!$handler->isValid($this->linkPageObjectID)) {
                     throw new UserInputException('linkPageObjectID', 'invalid');
                 }
             }
@@ -497,7 +497,7 @@ class BoxAddForm extends AbstractForm
         // validate images
         if (WCF::getSession()->getPermission('admin.content.cms.canUseMedia')) {
             foreach ($this->imageID as $languageID => $imageID) {
-                if (!isset($this->imageID[$languageID])) {
+                if (!isset($this->images[$languageID])) {
                     throw new UserInputException('imageID' . $languageID);
                 }
             }

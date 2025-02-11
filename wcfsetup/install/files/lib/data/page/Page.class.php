@@ -398,7 +398,7 @@ class Page extends DatabaseObject implements ILinkableObject, ITitledObject
      * Returns the page with the given identifier.
      *
      * @param string $identifier unique page identifier
-     * @return  Page
+     * @return ?Page
      */
     public static function getPageByIdentifier($identifier)
     {
@@ -415,7 +415,7 @@ class Page extends DatabaseObject implements ILinkableObject, ITitledObject
      * Returns the page with the given name.
      *
      * @param string $name
-     * @return  Page
+     * @return ?Page
      */
     public static function getPageByName($name)
     {

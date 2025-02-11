@@ -166,6 +166,7 @@ final class EmailMultifactorMethod implements IMultifactorMethod
         }
 
         if ($lastCode < (\TIME_NOW - self::REFRESH_AFTER)) {
+            // @phpstan-ignore function.alreadyNarrowedType, smallerOrEqual.alwaysTrue
             \assert(self::LENGTH <= 9, "Code does not fit into a 32-bit integer.");
 
             $code = \random_int(

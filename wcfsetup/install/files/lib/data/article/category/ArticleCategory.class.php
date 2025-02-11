@@ -27,7 +27,7 @@ use wcf\system\WCF;
  *
  * @method      ArticleCategory[]   getChildCategories()
  * @method      ArticleCategory[]   getAllChildCategories()
- * @method      ArticleCategory     getParentCategory()
+ * @method      ?ArticleCategory     getParentCategory()
  * @method      ArticleCategory[]   getParentCategories()
  * @method static ArticleCategory|null    getCategory($categoryID)
  * @property-read       string $sortField

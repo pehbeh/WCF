@@ -73,7 +73,7 @@ class UploadFile
 
     /**
      * The return value of `getimagesize`.
-     * @var array
+     * @var array|false
      */
     private $imageData;
 

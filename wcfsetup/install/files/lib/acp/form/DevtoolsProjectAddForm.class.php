@@ -210,7 +210,6 @@ class DevtoolsProjectAddForm extends AbstractFormBuilderForm
 
                             default:
                                 throw new \LogicException("Unknown mode '{$modeField->getSaveValue()}'.");
-                                break;
                         }
                     }))
                     ->addValidator(new FormFieldValidator('uniqueness', function (TextFormField $formField) {

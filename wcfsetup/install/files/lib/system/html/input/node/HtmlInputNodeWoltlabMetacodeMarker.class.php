@@ -436,6 +436,7 @@ class HtmlInputNodeWoltlabMetacodeMarker extends AbstractHtmlInputNode
             DOMUtil::removeNode($end);
         } else {
             $commonAncestor = DOMUtil::getCommonAncestor($start, $end);
+            \assert($commonAncestor !== null);
 
             // This method doesn't behave nicely if the start and/or end node are
             // contained in other inline elements. HTMLPurifier guarantees well-
@@ -551,10 +552,6 @@ class HtmlInputNodeWoltlabMetacodeMarker extends AbstractHtmlInputNode
 
             while ($sibling = $element->previousSibling) {
                 DOMUtil::prepend($sibling, $element);
-
-                if ($sibling === $startNode) {
-                    break;
-                }
             }
         }
 

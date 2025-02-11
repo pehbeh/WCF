@@ -257,19 +257,21 @@ class DevtoolsProjectAction extends AbstractDatabaseObjectAction
 
         // read and validate entry type
         $this->readString('entryType', true);
+        $pip = $this->pip->getPip();
+        \assert($pip instanceof IGuiPackageInstallationPlugin);
         if ($this->parameters['entryType'] !== '') {
             try {
-                $this->pip->getPip()->setEntryType($this->parameters['entryType']);
+                $pip->setEntryType($this->parameters['entryType']);
             } catch (\InvalidArgumentException $e) {
                 throw new IllegalLinkException();
             }
-        } elseif (!empty($this->pip->getPip()->getEntryTypes())) {
+        } elseif (!empty($pip->getEntryTypes())) {
             throw new IllegalLinkException();
         }
 
         // read and validate identifier
         $this->readString('identifier');
-        $entryList = $this->pip->getPip()->getEntryList();
+        $entryList = $pip->getEntryList();
         if (!$entryList->hasEntry($this->parameters['identifier'])) {
             throw new IllegalLinkException();
         }

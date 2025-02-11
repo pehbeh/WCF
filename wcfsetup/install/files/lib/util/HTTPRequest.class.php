@@ -98,13 +98,11 @@ final class HTTPRequest
         $language = WCF::getLanguage();
         $this->addHeader(
             'user-agent',
-            "HTTP.PHP (HTTPRequest.class.php; WoltLab Suite/" . WCF_VERSION . "; " . ($language ? $language->languageCode : 'en') . ")"
+            "HTTP.PHP (HTTPRequest.class.php; WoltLab Suite/" . WCF_VERSION . "; " . $language->languageCode . ")"
         );
         $this->addHeader('accept', '*/*');
         $this->addHeader('accept-encoding', 'identity');
-        if ($language) {
-            $this->addHeader('accept-language', $language->getFixedLanguageCode());
-        }
+        $this->addHeader('accept-language', $language->getFixedLanguageCode());
 
         if (isset($this->options['maxLength'])) {
             $this->addHeader('Range', 'bytes=0-' . ($this->options['maxLength'] - 1));

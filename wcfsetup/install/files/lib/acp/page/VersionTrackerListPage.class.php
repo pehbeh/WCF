@@ -56,7 +56,7 @@ class VersionTrackerListPage extends AbstractPage
 
     /**
      * left / old version
-     * @var VersionTrackerEntry
+     * @var ?VersionTrackerEntry
      */
     public $old;
 
@@ -68,7 +68,7 @@ class VersionTrackerListPage extends AbstractPage
 
     /**
      * right / new version
-     * @var VersionTrackerEntry
+     * @var ?VersionTrackerEntry
      */
     public $new;
 

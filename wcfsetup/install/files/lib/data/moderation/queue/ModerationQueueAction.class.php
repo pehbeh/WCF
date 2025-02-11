@@ -42,7 +42,7 @@ class ModerationQueueAction extends AbstractDatabaseObjectAction
 
     /**
      * user object
-     * @var User
+     * @var ?User
      */
     public $user;
 

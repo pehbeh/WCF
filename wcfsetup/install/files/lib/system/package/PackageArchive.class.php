@@ -31,7 +31,7 @@ class PackageArchive
 
     /**
      * tar archive object
-     * @var Tar
+     * @var ?Tar
      */
     protected $tar;
 
@@ -542,9 +542,7 @@ class PackageArchive
      */
     public function deleteArchive()
     {
-        if ($this->tar instanceof Tar) {
-            $this->tar->close();
-        }
+        $this->tar?->close();
 
         @\unlink($this->archive);
     }

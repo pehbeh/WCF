@@ -74,7 +74,7 @@ class ArticleListPage extends SortablePage
     public $controllerParameters = ['application' => 'wcf'];
 
     /**
-     * @var User
+     * @var ?User
      * @since   5.2
      */
     public $user;

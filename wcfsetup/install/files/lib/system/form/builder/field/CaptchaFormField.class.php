@@ -41,7 +41,7 @@ final class CaptchaFormField extends AbstractFormField implements IObjectTypeFor
     protected $validationException;
 
     /**
-     * @var IFormFieldValidationError
+     * @var ?IFormFieldValidationError
      */
     protected $validationError;
 

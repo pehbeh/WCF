@@ -34,7 +34,7 @@ class PackageStartInstallForm extends AbstractForm
 
     /**
      * updated package object
-     * @var Package
+     * @var ?Package
      */
     public $package;
 

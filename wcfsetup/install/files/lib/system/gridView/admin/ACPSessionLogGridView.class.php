@@ -5,9 +5,7 @@ namespace wcf\system\gridView\admin;
 use wcf\acp\form\UserEditForm;
 use wcf\acp\page\ACPSessionLogPage;
 use wcf\data\acp\session\log\ACPSessionLogList;
-use wcf\data\DatabaseObjectList;
 use wcf\event\gridView\admin\ACPSessionLogGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\IpAddressFilter;
 use wcf\system\gridView\filter\TextFilter;
@@ -85,7 +83,7 @@ final class ACPSessionLogGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): ACPSessionLogList
     {
         $list = new ACPSessionLogList();
         $list->sqlSelects .= "
@@ -102,7 +100,7 @@ final class ACPSessionLogGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): ACPSessionLogGridViewInitialized
     {
         return new ACPSessionLogGridViewInitialized($this);
     }

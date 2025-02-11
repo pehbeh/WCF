@@ -25,7 +25,7 @@ use wcf\system\WCF;
  * @since   3.0
  *
  * @method          Article                 getDecoratedObject()
- * @method          ArticleContent|ViewableArticleContent   getArticleContent()
+ * @method          ArticleContent|ViewableArticleContent|null   getArticleContent()
  * @mixin           Article
  * @property-read   int|null $visitTime  last time the active user has visited the time or `null` if object has not been fetched via `ViewableArticleList` or if the active user is a guest
  */

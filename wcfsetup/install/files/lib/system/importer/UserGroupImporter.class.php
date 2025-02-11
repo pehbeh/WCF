@@ -66,7 +66,7 @@ class UserGroupImporter extends AbstractImporter
                         foreach ($propertyValues as $languageID => $languageItemValue) {
                             $items[] = [
                                 'languageID' => $languageID,
-                                'languageItem' => 'wcf.acp.group.' . ($property === 'description' ? 'groupDescription' : 'group') . $newGroupID,
+                                'languageItem' => 'wcf.acp.group.' . ($property === 'groupDescription' ? 'groupDescription' : 'group') . $newGroupID,
                                 'languageItemValue' => $languageItemValue,
                             ];
                         }

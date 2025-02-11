@@ -56,7 +56,6 @@ class MessageQuoteManager extends SingletonFactory
      * @param bool $returnFalseIfExists
      *
      * @return  mixed
-     * @throws  SystemException
      * @deprecated 6.2
      */
     public function addQuote(
@@ -264,7 +263,6 @@ class MessageQuoteManager extends SingletonFactory
      * @param string[] $objectTypes
      *
      * @return  mixed[][]
-     * @throws  SystemException
      * @deprecated 6.2
      */
     public function getFullQuoteObjectIDs(array $objectTypes)
@@ -277,8 +275,6 @@ class MessageQuoteManager extends SingletonFactory
      *
      * @param string $objectType
      * @param int[] $objectIDs
-     *
-     * @throws  SystemException
      *
      * @deprecated 6.2
      */

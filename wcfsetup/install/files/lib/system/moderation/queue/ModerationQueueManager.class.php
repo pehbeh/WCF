@@ -100,7 +100,7 @@ class ModerationQueueManager extends SingletonFactory
      * Returns the object type processor.
      *
      * @param string $definitionName
-     * @param string $objectType
+     * @param ?string $objectType
      * @param int $objectTypeID
      * @return  object|null
      */

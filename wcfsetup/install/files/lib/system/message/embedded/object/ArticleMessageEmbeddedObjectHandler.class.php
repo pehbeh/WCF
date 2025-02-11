@@ -49,8 +49,7 @@ class ArticleMessageEmbeddedObjectHandler extends AbstractSimpleMessageEmbeddedO
             $articleIDs = [];
             foreach ($articles as $article) {
                 if (
-                    $article !== null
-                    && $article->getArticleContent()->languageID
+                    $article->getArticleContent()->languageID
                     && $article->getArticleContent()->languageID != $contentLanguageID
                 ) {
                     $articleIDs[] = $article->articleID;

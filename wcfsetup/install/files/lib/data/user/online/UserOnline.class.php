@@ -77,9 +77,8 @@ class UserOnline extends UserProfile
             if ($this->pageID) {
                 $page = PageCache::getInstance()->getPage($this->pageID);
                 if ($page !== null) {
-                    if ($page->getHandler() !== null && $page->getHandler() instanceof IOnlineLocationPageHandler) {
-                        $handler = $page->getHandler();
-                        \assert($handler instanceof IOnlineLocationPageHandler);
+                    $handler = $page->getHandler();
+                    if ($handler instanceof IOnlineLocationPageHandler) {
                         $this->location = $handler->getOnlineLocation($page, $this);
 
                         return true;

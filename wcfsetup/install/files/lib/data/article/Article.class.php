@@ -70,7 +70,7 @@ class Article extends DatabaseObject implements ILinkableObject, IPopoverObject,
 
     /**
      * article's category
-     * @var ArticleCategory
+     * @var ?ArticleCategory
      */
     protected $category;
 
@@ -323,7 +323,7 @@ class Article extends DatabaseObject implements ILinkableObject, IPopoverObject,
     /**
      * Returns the category of the article.
      *
-     * @return  ArticleCategory
+     * @return ?ArticleCategory
      */
     public function getCategory()
     {
@@ -377,7 +377,7 @@ class Article extends DatabaseObject implements ILinkableObject, IPopoverObject,
      */
     public static function getAllDiscussionProviders()
     {
-        /** @var string[] $discussionProviders */
+        /** @var ?string[] $discussionProviders */
         static $discussionProviders;
 
         if ($discussionProviders === null) {

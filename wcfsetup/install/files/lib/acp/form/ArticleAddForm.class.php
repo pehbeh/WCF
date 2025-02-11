@@ -89,7 +89,7 @@ class ArticleAddForm extends AbstractForm
 
     /**
      * article date object
-     * @var \DateTime
+     * @var ?\DateTime
      */
     public $timeObj;
 
@@ -107,7 +107,7 @@ class ArticleAddForm extends AbstractForm
 
     /**
      * publication date object
-     * @var \DateTime
+     * @var ?\DateTime
      */
     public $publicationDateObj;
 

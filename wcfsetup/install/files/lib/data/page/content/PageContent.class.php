@@ -104,7 +104,7 @@ class PageContent extends DatabaseObject implements ITitledLinkObject
      * Returns a certain page content.
      *
      * @param int $pageID
-     * @param int $languageID
+     * @param ?int $languageID
      * @return      PageContent|null
      */
     public static function getPageContent($pageID, $languageID)

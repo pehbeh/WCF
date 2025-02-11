@@ -42,7 +42,6 @@ class HtmlOutputNodeImg extends AbstractHtmlOutputNode
             if (\preg_match('~\bsmiley\b~', $class)) {
                 $code = $element->getAttribute('alt');
 
-                /** @var Smiley $smiley */
                 $smiley = SmileyCache::getInstance()->getSmileyByCode($code);
                 if ($smiley === null || $this->outputType === 'text/plain') {
                     // output as raw code instead

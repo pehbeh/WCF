@@ -633,7 +633,7 @@ class PackageInstallationDispatcher
             && empty($this->getPackage()->packageDir)
         ) {
             $document = $this->promptPackageDir($applicationDirectory);
-            if ($document !== null && $document instanceof FormDocument) {
+            if ($document !== null) {
                 $installationStep->setDocument($document);
             }
 
@@ -995,63 +995,61 @@ class PackageInstallationDispatcher
                 }
             }
 
-            if ($packageDir !== null) {
-                // validate package dir
-                if ($document !== null && \file_exists($packageDir . 'global.php')) {
-                    $document->setError(
-                        'packageDir',
-                        WCF::getLanguage()->get('wcf.acp.package.packageDir.notAvailable')
-                    );
+            // validate package dir
+            if ($document !== null && \file_exists($packageDir . 'global.php')) {
+                $document->setError(
+                    'packageDir',
+                    WCF::getLanguage()->get('wcf.acp.package.packageDir.notAvailable')
+                );
 
-                    return $document;
-                }
+                return $document;
+            }
 
-                // set package dir
-                $packageEditor = new PackageEditor($this->getPackage());
-                $packageEditor->update([
-                    'packageDir' => FileUtil::getRelativePath(WCF_DIR, $packageDir),
-                ]);
+            // set package dir
+            $packageEditor = new PackageEditor($this->getPackage());
+            $packageEditor->update([
+                'packageDir' => FileUtil::getRelativePath(WCF_DIR, $packageDir),
+            ]);
 
-                // determine domain path, in some environments (e.g. ISPConfig) the $_SERVER paths are
-                // faked and differ from the real filesystem path
-                if (PACKAGE_ID) {
-                    $wcfDomainPath = ApplicationHandler::getInstance()->getWCF()->domainPath;
-                } else {
-                    $sql = "SELECT  domainPath
+            // determine domain path, in some environments (e.g. ISPConfig) the $_SERVER paths are
+            // faked and differ from the real filesystem path
+            if (PACKAGE_ID) {
+                $wcfDomainPath = ApplicationHandler::getInstance()->getWCF()->domainPath;
+            } else {
+                $sql = "SELECT  domainPath
                             FROM    wcf1_application
                             WHERE   packageID = ?";
-                    $statement = WCF::getDB()->prepare($sql);
-                    $statement->execute([1]);
-                    $row = $statement->fetchArray();
+                $statement = WCF::getDB()->prepare($sql);
+                $statement->execute([1]);
+                $row = $statement->fetchArray();
 
-                    $wcfDomainPath = $row['domainPath'];
-                }
-
-                $documentRoot = \substr(
-                    FileUtil::unifyDirSeparator(WCF_DIR),
-                    0,
-                    -\strlen(FileUtil::unifyDirSeparator($wcfDomainPath))
-                );
-                $domainPath = FileUtil::getRelativePath($documentRoot, $packageDir);
-                if ($domainPath === './') {
-                    // `FileUtil::getRelativePath()` returns `./` if both paths lead to the same directory
-                    $domainPath = '/';
-                }
-
-                $domainPath = FileUtil::addLeadingSlash($domainPath);
-
-                // update application path and untaint application
-                $application = new Application($this->getPackage()->packageID);
-                $applicationEditor = new ApplicationEditor($application);
-                $applicationEditor->update([
-                    'domainPath' => $domainPath,
-                    'isTainted' => 0,
-                ]);
-
-                // create directory and set permissions
-                @\mkdir($packageDir, 0777, true);
-                FileUtil::makeWritable($packageDir);
+                $wcfDomainPath = $row['domainPath'];
             }
+
+            $documentRoot = \substr(
+                FileUtil::unifyDirSeparator(WCF_DIR),
+                0,
+                -\strlen(FileUtil::unifyDirSeparator($wcfDomainPath))
+            );
+            $domainPath = FileUtil::getRelativePath($documentRoot, $packageDir);
+            if ($domainPath === './') {
+                // `FileUtil::getRelativePath()` returns `./` if both paths lead to the same directory
+                $domainPath = '/';
+            }
+
+            $domainPath = FileUtil::addLeadingSlash($domainPath);
+
+            // update application path and untaint application
+            $application = new Application($this->getPackage()->packageID);
+            $applicationEditor = new ApplicationEditor($application);
+            $applicationEditor->update([
+                'domainPath' => $domainPath,
+                'isTainted' => 0,
+            ]);
+
+            // create directory and set permissions
+            @\mkdir($packageDir, 0777, true);
+            FileUtil::makeWritable($packageDir);
 
             return null;
         }

@@ -237,7 +237,7 @@ abstract class CategoryAddFormBuilderForm extends AbstractFormBuilderForm
         );
 
         $maximumNestingLevel = $processor->getMaximumNestingLevel();
-        if (\is_numeric($maximumNestingLevel) && $maximumNestingLevel !== -1) {
+        if ($maximumNestingLevel !== -1) {
             $categoryNodeTree->setMaxDepth($maximumNestingLevel - 1);
         }
 
@@ -511,7 +511,6 @@ abstract class CategoryAddFormBuilderForm extends AbstractFormBuilderForm
     protected function checkCategoryPermissions(): void
     {
         $processor = $this->getObjectTypeProcessor();
-        \assert($processor instanceof ICategoryType);
 
         if ($this->formObject instanceof DatabaseObject) {
             // @phpstan-ignore property.notFound

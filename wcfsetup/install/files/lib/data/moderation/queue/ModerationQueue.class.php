@@ -118,15 +118,12 @@ class ModerationQueue extends DatabaseObject
         switch ($status) {
             case self::STATUS_OUTSTANDING:
                 return WCF::getLanguage()->get('wcf.moderation.status.outstanding');
-                break;
 
             case self::STATUS_PROCESSING:
                 return WCF::getLanguage()->get('wcf.moderation.status.processing');
-                break;
 
             case self::STATUS_DONE:
                 return WCF::getLanguage()->get('wcf.moderation.status.done');
-                break;
 
             case self::STATUS_REJECTED:
             case self::STATUS_CONFIRMED:
@@ -139,7 +136,6 @@ class ModerationQueue extends DatabaseObject
                 }
 
                 return WCF::getLanguage()->get('wcf.moderation.status.' . $phrase . '.' . $definition->definitionName);
-                break;
         }
 
         return '';

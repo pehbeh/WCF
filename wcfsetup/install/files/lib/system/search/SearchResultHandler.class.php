@@ -107,6 +107,7 @@ final class SearchResultHandler
             $objectType = SearchEngine::getInstance()->getObjectType($type);
             $message = $objectType->getObject($objectID);
             if ($message !== null) {
+                // @phpstan-ignore instanceof.alwaysTrue
                 if (!($message instanceof ISearchResultObject)) {
                     throw new ImplementationException(\get_class($message), ISearchResultObject::class);
                 }

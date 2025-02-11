@@ -158,19 +158,18 @@ class LanguagePackageInstallationPlugin extends AbstractXMLPackageInstallationPl
 
             // save language
             if ($languageFile !== null) {
-                if ($xml = $this->readLanguage($languageFile)) {
-                    // get language object
-                    $languageEditor = new LanguageEditor(new Language(null, $installedLanguage));
+                $xml = $this->readLanguage($languageFile);
+                // get language object
+                $languageEditor = new LanguageEditor(new Language(null, $installedLanguage));
 
-                    // import xml
-                    // don't update language files if package is an application
-                    $languageEditor->updateFromXML(
-                        $xml,
-                        $this->installation->getPackageID(),
-                        !$this->installation->getPackage()->isApplication,
-                        $updateExistingItems
-                    );
-                }
+                // import xml
+                // don't update language files if package is an application
+                $languageEditor->updateFromXML(
+                    $xml,
+                    $this->installation->getPackageID(),
+                    !$this->installation->getPackage()->isApplication,
+                    $updateExistingItems
+                );
             }
         }
     }
@@ -822,14 +821,13 @@ XML;
                 throw new \LogicException("Unknown language category mode '{$data['languageCategoryIDMode']}'.");
         }
 
-        /** @var \DOMElement $import */
+        /** @var ?\DOMElement $import */
         $import = $document->getElementsByTagName('import')->item(0);
         if ($import === null) {
             $import = $document->createElement('import');
             DOMUtil::prepend($import, $document->documentElement);
         }
 
-        /** @var \DOMElement $languageCategory */
         foreach ($import->getElementsByTagName('category') as $languageCategory) {
             if ($languageCategory instanceof \DOMElement && $languageCategory->getAttribute('name') === $languageCategoryName) {
                 $languageCategory->appendChild($languageItem);

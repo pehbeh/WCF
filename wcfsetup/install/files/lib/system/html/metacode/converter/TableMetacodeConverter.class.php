@@ -83,13 +83,7 @@ class TableMetacodeConverter extends AbstractMetacodeConverter
         }
 
         // move tds
-        /** @var \DOMElement $col */
         foreach ($cols as $col) {
-            if (false && $col->parentNode !== $row) {
-                $parent = DOMUtil::getParentBefore($col, $row);
-                $row->insertBefore($col, $parent);
-            }
-
             DOMUtil::replaceElement($col, $row->ownerDocument->createElement('td'));
         }
 

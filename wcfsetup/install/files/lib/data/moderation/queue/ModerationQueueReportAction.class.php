@@ -238,9 +238,6 @@ class ModerationQueueReportAction extends ModerationQueueAction
     public function changeJustifiedStatus(): void
     {
         $additionalData = $this->queue->additionalData;
-        if (!\is_array($additionalData)) {
-            $additionalData = [];
-        }
         $additionalData['markAsJustified'] = $this->parameters['markAsJustified'];
 
         $this->queue->update([

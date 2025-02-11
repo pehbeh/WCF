@@ -28,15 +28,15 @@ class DateModifierTemplatePlugin implements IModifierTemplatePlugin
      */
     public function execute($tagArgs, TemplateEngine $tplObj)
     {
-        if ($tagArgs[0] instanceof \DateTimeInterface) {
-            $dateTime = clone $tagArgs[0];
+        $value = $tagArgs[0];
+        if ($value instanceof \DateTime || $value instanceof \DateTimeImmutable) {
+            $dateTime = clone $value;
         } else {
-            $timestamp = \intval($tagArgs[0]);
+            $timestamp = \intval($value);
             $dateTime = new \DateTimeImmutable('@' . $timestamp);
         }
 
         if (!empty($tagArgs[1])) {
-            \assert($dateTime instanceof \DateTime || $dateTime instanceof \DateTimeImmutable);
             return $dateTime
                 ->setTimezone(WCF::getUser()->getTimeZone())
                 ->format($tagArgs[1]);

@@ -77,13 +77,13 @@ abstract class Database
 
     /**
      * database editor object
-     * @var DatabaseEditor
+     * @var ?DatabaseEditor
      */
     protected $editor;
 
     /**
      * pdo object
-     * @var \PDO
+     * @var ?\PDO
      */
     protected $pdo;
 

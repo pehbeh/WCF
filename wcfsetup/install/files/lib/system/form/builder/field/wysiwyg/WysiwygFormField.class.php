@@ -156,16 +156,15 @@ final class WysiwygFormField extends AbstractFormField implements
      *
      * @param null|string $index quote data index
      *
-     * @return  string[]|string
+     * @return  string
      *
      * @throws  \BadMethodCallException     if quotes are not supported for this field
-     * @throws  \InvalidArgumentException   if unknown quote data is requested
      *
      * @deprecated 6.2
      */
     public function getQuoteData($index = null)
     {
-        if (!$this->supportQuotes()) {
+        if (!$this->supportQuotes) {
             throw new \BadMethodCallException("Quotes are not supported for field '{$this->getId()}'.");
         }
 
@@ -229,8 +228,6 @@ final class WysiwygFormField extends AbstractFormField implements
      * @param string[] $selectors selectors for the quotable content (required keys: `container`, `messageBody`, and `messageContent`)
      *
      * @return  static
-     *
-     * @throws  \InvalidArgumentException   if any of the given arguments is invalid
      *
      * @deprecated 6.2
      */

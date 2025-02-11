@@ -245,7 +245,6 @@ class BoxPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin 
 
             default:
                 throw new SystemException("Unknown type '{$boxType}' for box '{$identifier}");
-                break;
         }
 
         if (!empty($data['elements']['visibilityExceptions'])) {
@@ -348,7 +347,7 @@ class BoxPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin 
                 unset($data['additionalData']);
             }
 
-            /** @var Box $box */
+            /** @var Box|BoxEditor $box */
             $box = parent::import($row, $data);
         }
 

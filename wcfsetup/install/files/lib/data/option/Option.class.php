@@ -21,7 +21,7 @@ use wcf\util\StringUtil;
  * @property-read   string $optionName     name and textual identifier of the option
  * @property-read   string $categoryName       name of the option category the option belongs to
  * @property-read   string $optionType     textual identifier of the option (corresponds to a class implementing `wcf\system\option\IOptionType`)
- * @property-read   string $optionValue        value of the option
+ * @property-read   ?string $optionValue        value of the option
  * @property-read   string $validationPattern  regular expression used to validate the option's value or empty if no such regular expression exists
  * @property-read   string $selectOptions      newline-separated list of selectable options for a selectable option type (line pattern: `{value}:{language item name}`)
  * @property-read   string $enableOptions      list of options that are enabled based on the option's value (simple comma-separated list of boolean options, otherwise newline-separated list with line pattern: `{select value}:{comma-separated list}`)

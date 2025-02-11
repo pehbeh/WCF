@@ -43,14 +43,9 @@ final class UnfurlResponse
     public const MAX_IMAGE_SIZE = (3 * (1 << 20));
 
     /**
-     * @var ClientInterface
+     * @var ?ClientInterface
      */
     private static $httpClient;
-
-    /**
-     * @var string
-     */
-    private $url;
 
     /**
      * @var Response
@@ -108,7 +103,7 @@ final class UnfurlResponse
             ]);
             $response = self::getHttpClient()->send($request);
 
-            return new self($url, $response);
+            return new self($response);
         } catch (BadResponseException $e) {
             $response = $e->getResponse();
 
@@ -128,9 +123,8 @@ final class UnfurlResponse
      * @throws ParsingFailed If the body cannot be parsed (e.g. the url is an image).
      * @throws DownloadFailed If the url can not be downloaded. This can be a temporary error.
      */
-    private function __construct(string $url, Response $response)
+    private function __construct(Response $response)
     {
-        $this->url = $url;
         $this->response = $response;
 
         $this->readBody();
@@ -337,7 +331,6 @@ final class UnfurlResponse
             case 404: // Not Found
             case 406: // Not Acceptable
                 return true;
-                break;
         }
 
         return false;

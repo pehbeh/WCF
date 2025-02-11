@@ -114,36 +114,34 @@ class BlacklistStatus extends DatabaseObject
         }
 
         $data = JSON::decode((string)$response->getBody());
-        if (\is_array($data)) {
-            $deltas = ['delta1', 'delta2', 'delta3', 'delta4'];
+        $deltas = ['delta1', 'delta2', 'delta3', 'delta4'];
 
-            // The array is ordered from "now" to "14 days ago".
-            foreach (\array_reverse($data) as $entry) {
-                $date = $entry['date'];
-                if (isset($status[$date])) {
-                    $dateStatus = $status[$date];
-                    if ($dateStatus->isComplete()) {
-                        continue;
-                    }
-
-                    foreach ($deltas as $delta) {
-                        if ($entry['files'][$delta] && !$dateStatus->{$delta}) {
-                            return "{$date}/{$delta}.json";
-                        }
-                    }
-                } else {
-                    foreach ($deltas as $delta) {
-                        if ($entry['files'][$delta]) {
-                            return "{$date}/{$delta}.json";
-                        }
-                    }
+        // The array is ordered from "now" to "14 days ago".
+        foreach (\array_reverse($data) as $entry) {
+            $date = $entry['date'];
+            if (isset($status[$date])) {
+                $dateStatus = $status[$date];
+                if ($dateStatus->isComplete()) {
+                    continue;
                 }
 
-                // The `full.json` file is not considered for now, because it is very unlikely that none of the
-                // delta files are available. Also, it's significant larger than the delta updates and we cannot
-                // reliably predict if we're able to import it at all: slow hosts or max_execution_time almost
-                // exhausted by other cronjobs.
+                foreach ($deltas as $delta) {
+                    if ($entry['files'][$delta] && !$dateStatus->{$delta}) {
+                        return "{$date}/{$delta}.json";
+                    }
+                }
+            } else {
+                foreach ($deltas as $delta) {
+                    if ($entry['files'][$delta]) {
+                        return "{$date}/{$delta}.json";
+                    }
+                }
             }
+
+            // The `full.json` file is not considered for now, because it is very unlikely that none of the
+            // delta files are available. Also, it's significant larger than the delta updates and we cannot
+            // reliably predict if we're able to import it at all: slow hosts or max_execution_time almost
+            // exhausted by other cronjobs.
         }
 
         return null;

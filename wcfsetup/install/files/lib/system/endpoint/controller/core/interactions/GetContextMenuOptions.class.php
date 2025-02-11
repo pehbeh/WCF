@@ -34,6 +34,7 @@ final class GetContextMenuOptions implements IController
         }
 
         $provider = new $parameters->provider();
+        // @phpstan-ignore function.alreadyNarrowedType, instanceof.alwaysTrue
         \assert($provider instanceof IInteractionProvider);
 
         $object = new ($provider->getObjectClassName())($parameters->objectID);

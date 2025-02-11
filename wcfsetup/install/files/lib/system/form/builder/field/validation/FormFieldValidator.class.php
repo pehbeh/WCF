@@ -43,7 +43,6 @@ final class FormFieldValidator implements IFormFieldValidator
                 . " parameters are expected for validator '{$id}'."
             );
         }
-        /** @var \ReflectionType $parameterType */
         $parameterType = $parameters[0]->getType();
         if (
             !(

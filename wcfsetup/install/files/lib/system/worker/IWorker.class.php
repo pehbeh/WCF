@@ -59,6 +59,8 @@ interface IWorker
 
     /**
      * Executes actions after worker has been executed.
+     *
+     * @return void
      */
     public function finalize();
 }

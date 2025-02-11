@@ -80,11 +80,9 @@ class UserSignatureCondition extends AbstractSelectCondition implements
         switch ($condition->userSignature) {
             case self::NO_SIGNATURE:
                 return $user->signature === '' || $user->signature === null;
-                break;
 
             case self::SIGNATURE:
                 return $user->signature !== '' && $user->signature !== null;
-                break;
         }
 
         return false;

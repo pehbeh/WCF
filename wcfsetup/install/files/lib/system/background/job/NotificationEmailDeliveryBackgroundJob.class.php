@@ -87,7 +87,6 @@ class NotificationEmailDeliveryBackgroundJob extends AbstractBackgroundJob
         $statement = WCF::getDB()->prepare($sql, 1);
         $statement->execute([$this->notificationID]);
 
-        /** @var UserNotification $notification */
         $notification = $statement->fetchObject(UserNotification::class);
         $statement->closeCursor();
 

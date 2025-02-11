@@ -32,12 +32,6 @@ class MenuItemNode extends DatabaseObjectDecorator implements IObjectTreeNode
     protected bool $isActive = false;
 
     /**
-     * iterator position
-     * @var int
-     */
-    private int $position = 0;
-
-    /**
      * @inheritDoc
      */
     protected static $baseClass = MenuItem::class;

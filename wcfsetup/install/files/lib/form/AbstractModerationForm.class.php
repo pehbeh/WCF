@@ -71,7 +71,7 @@ abstract class AbstractModerationForm extends AbstractForm
 
     /**
      * list of comments
-     * @var StructuredCommentList
+     * @var ?StructuredCommentList
      */
     public $commentList;
 

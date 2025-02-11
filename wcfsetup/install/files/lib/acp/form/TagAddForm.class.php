@@ -27,7 +27,7 @@ use wcf\util\StringUtil;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property Tag $formObject
+ * @property ?Tag $formObject
  */
 class TagAddForm extends AbstractFormBuilderForm
 {

@@ -20,7 +20,7 @@ trait TAttributeFormField
     protected $fieldAttributes = [];
 
     /**
-     * @var string[]
+     * @var array<string, string>
      */
     protected static $interfaceToFieldAttributeMap = [
         IAutoFocusFormField::class => 'autofocus',

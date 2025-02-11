@@ -132,7 +132,8 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
         $styleList->readObjects();
 
         foreach ($styleList as $style) {
-            \assert($style instanceof self);
+            // @phpstan-ignore function.impossibleType, instanceof.alwaysFalse
+            \assert($style instanceof StyleEditor);
             $style->delete();
         }
 
@@ -892,7 +893,7 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
         $location = WCF_DIR . $location;
 
         $index = null;
-        do {
+        for (;;) {
             $directory = $location . ($index === null ? '' : $index);
             if (!\is_dir($directory)) {
                 @\mkdir($directory, 0777, true);
@@ -902,10 +903,7 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
             }
 
             $index = ($index === null ? 2 : ($index + 1));
-        } while (true);
-
-        // this should never happen
-        throw new \LogicException();
+        }
     }
 
     /**

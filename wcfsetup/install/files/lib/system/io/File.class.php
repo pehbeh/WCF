@@ -26,7 +26,7 @@ use wcf\system\exception\SystemException;
  * @method bool     eof()
  * @method int      filesize()
  * @method bool     flush()
- * @method string   gets($length = null)
+ * @method string|false   gets($length = null)
  * @method bool     lock(int $operation, int &$would_block = null)
  * @method resource open($mode, $use_include_path = false, $context = null)
  * @method int      puts($string, $length = null)       alias of `write`

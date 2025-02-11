@@ -118,6 +118,7 @@ class LoginForm extends AbstractFormBuilderForm
                     if ($user->userID) {
                         $failures = UserAuthenticationFailure::countUserFailures($user->userID);
                         if (
+                            // @phpstan-ignore booleanAnd.leftAlwaysTrue
                             USER_AUTHENTICATION_FAILURE_USER_CAPTCHA
                             && $failures >= USER_AUTHENTICATION_FAILURE_USER_CAPTCHA
                         ) {

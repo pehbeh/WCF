@@ -80,7 +80,6 @@ final class ServiceWorkerDeliveryBackgroundJob extends AbstractUniqueBackgroundJ
         $statement = WCF::getDB()->prepare($sql, 1);
         $statement->execute([$notificationID]);
 
-        /** @var UserNotification $notification */
         $notification = $statement->fetchObject(UserNotification::class);
         $statement->closeCursor();
         if (!$notification || !$notification->notificationID) {

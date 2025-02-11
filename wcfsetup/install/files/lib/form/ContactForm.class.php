@@ -185,9 +185,6 @@ class ContactForm extends AbstractCaptchaForm
             }
 
             $messages[] = $object->getOptionValue();
-            if ($object->optionType === 'date' && !$object->getOptionValue()) {
-                continue;
-            }
         }
 
         $spamCheckEvent = new ContactFormSpamChecking(

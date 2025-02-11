@@ -18,7 +18,7 @@ final class Helper
     public static function digitStream(): \Iterator
     {
         $i = 1;
-        while (true) {
+        for (;;) {
             yield $i++;
             if ($i > 9) {
                 $i = 0;

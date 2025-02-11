@@ -290,7 +290,7 @@ class Email
     /**
      * Sets the list-label part of the email's 'List-Id'.
      *
-     * @param string $listId
+     * @param ?string $listId
      * @param string $humanReadable
      * @throws  \DomainException
      * @since 5.3
@@ -344,7 +344,7 @@ class Email
      * If $supportsOneClick is set to true the 'List-Unsubscribe-Post' header
      * with the value 'List-Unsubscribe=One-Click' is added.
      *
-     * @param string $uri
+     * @param ?string $uri
      * @param bool $supportsOneClick
      * @since 5.3
      */
@@ -645,10 +645,8 @@ class Email
                 return \quoted_printable_encode(
                     \str_replace("\n", "\r\n", StringUtil::unifyNewlines($this->body->getContent()))
                 );
-                break;
             case 'base64':
                 return \chunk_split(\base64_encode($this->body->getContent()));
-                break;
             case '':
                 return $this->body->getContent();
         }

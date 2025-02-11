@@ -39,10 +39,7 @@ final class PackageEnableUpgradeOverrideForm extends AbstractFormBuilderForm
      */
     public $neededPermissions = ['admin.configuration.package.canUpdatePackage'];
 
-    /**
-     * @var bool
-     */
-    private $isEnabled;
+    private bool $isEnabled;
 
     /**
      * @inheritDoc
@@ -51,6 +48,7 @@ final class PackageEnableUpgradeOverrideForm extends AbstractFormBuilderForm
     {
         parent::readParameters();
 
+        // @phpstan-ignore identical.alwaysTrue
         if (WCF::AVAILABLE_UPGRADE_VERSION === null) {
             throw new IllegalLinkException();
         }

@@ -121,7 +121,7 @@ class SmileyAction extends AbstractDatabaseObjectAction implements ISortableActi
     public function validateUpdatePosition()
     {
         // validate permissions
-        if (\is_array($this->permissionsUpdate) && \count($this->permissionsUpdate)) {
+        if ($this->permissionsUpdate !== []) {
             WCF::getSession()->checkPermissions($this->permissionsUpdate);
         } else {
             throw new PermissionDeniedException();

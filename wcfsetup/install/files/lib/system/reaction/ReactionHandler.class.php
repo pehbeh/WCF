@@ -196,6 +196,7 @@ class ReactionHandler extends SingletonFactory
             );
         }
 
+        // @phpstan-ignore instanceof.alwaysTrue
         if (!($this->likeableObjectsCache[$objectTypeName][$objectID] instanceof ILikeObject)) {
             throw new ImplementationException(
                 \get_class($this->likeableObjectsCache[$objectTypeName][$objectID]),
@@ -430,7 +431,7 @@ class ReactionHandler extends SingletonFactory
             throw $e;
         }
 
-        /** @noinspection PhpUnreachableStatementInspection */
+        // @phpstan-ignore deadCode.unreachable
         throw new \LogicException('Unreachable');
     }
 

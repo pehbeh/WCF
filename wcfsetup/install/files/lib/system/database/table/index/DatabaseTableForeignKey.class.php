@@ -21,7 +21,7 @@ final class DatabaseTableForeignKey
      * columns affected by the foreign key
      * @var string[]
      */
-    protected $columns;
+    protected array $columns;
 
     /**
      * name of the foreign key
@@ -219,7 +219,7 @@ final class DatabaseTableForeignKey
      * Sets the action executed in referenced table if row is deleted and returns the foreign
      * key.
      *
-     * @param string $onDelete action executed in referenced table if row is deleted
+     * @param ?string $onDelete action executed in referenced table if row is deleted
      * @return  $this               this foreign key
      * @throws  \InvalidArgumentException   if given action is invalid
      */
@@ -238,7 +238,7 @@ final class DatabaseTableForeignKey
      * Sets the action executed in referenced table if row is updated and returns the foreign
      * key.
      *
-     * @param string $onUpdate action executed in referenced table if row is updated
+     * @param ?string $onUpdate action executed in referenced table if row is updated
      * @return  $this               this foreign key
      * @throws  \InvalidArgumentException   if given action is invalid
      */

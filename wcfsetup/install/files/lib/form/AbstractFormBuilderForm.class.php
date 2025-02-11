@@ -127,6 +127,8 @@ abstract class AbstractFormBuilderForm extends AbstractForm
      * Finalizes the form after it has been successfully built.
      *
      * This method can be used to add form field dependencies.
+     *
+     * @return void
      */
     protected function finalizeForm()
     {

@@ -283,7 +283,7 @@ final class UserUtil
             return null;
         }
 
-        if (!\is_array($data) || !isset($data['username']) || !isset($data['time'])) {
+        if (!isset($data['username']) || !isset($data['time'])) {
             return null;
         }
 

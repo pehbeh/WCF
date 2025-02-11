@@ -27,7 +27,7 @@ class UserGroupOptionHandler extends OptionHandler
 
     /**
      * user group object
-     * @var UserGroup
+     * @var ?UserGroup
      */
     protected $group;
 

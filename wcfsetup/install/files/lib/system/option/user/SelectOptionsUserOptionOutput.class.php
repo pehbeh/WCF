@@ -46,7 +46,7 @@ class SelectOptionsUserOptionOutput implements IUserOptionOutput
      * Returns the selected option value(s) for output.
      *
      * @param UserOption $option
-     * @param string $value
+     * @param ?string $value
      * @return  mixed
      */
     protected static function getResult(UserOption $option, $value)

@@ -118,7 +118,7 @@
 \define('REGISTER_USERNAME_MAX_LENGTH', 25);
 \define('REGISTER_USERNAME_FORCE_ASCII', 2);
 \define('REGISTER_MIN_USER_AGE', 0);
-\define('REGISTER_ANTISPAM_ACTION', 0);
+\define('REGISTER_ANTISPAM_ACTION', 'disable');
 \define('GITHUB_PUBLIC_KEY', '');
 \define('GITHUB_PRIVATE_KEY', '');
 \define('TWITTER_PUBLIC_KEY', '');

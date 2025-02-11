@@ -407,7 +407,6 @@ final class SmtpEmailTransport implements IStatusReportingEmailTransport
 
                                 // Authentication was successful.
                                 return;
-                                break;
                             case 'plain':
                                 // RFC 4616
                                 try {

@@ -445,10 +445,9 @@ class DevtoolsPip extends DatabaseObjectDecorator
                     if (!\is_file($path)) {
                         $path = "{$project->path}files_wcf/{$instructions['value']}";
 
-                        if (!isset($instructions['attributes'])) {
-                            $instructions['attributes'] = [];
-                        }
-                        $instructions['attributes']['application'] = 'wcf';
+                        $instructions['attributes'] = [
+                            'application' => 'wcf',
+                        ];
                     }
 
                     $tar->registerFile($instructions['value'], $path);

@@ -111,7 +111,7 @@ class GroupedUserList implements \Countable, \Iterator
         if ($userIDs !== []) {
             $userProfiles = UserProfileRuntimeCache::getInstance()->getObjects($userIDs);
             foreach ($userProfiles as $userID => $userProfile) {
-                if ($userProfile) {
+                if ($userProfile !== null) {
                     self::$users[$userID] = $userProfile;
                 }
             }

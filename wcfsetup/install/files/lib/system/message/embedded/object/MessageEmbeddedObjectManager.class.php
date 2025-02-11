@@ -292,7 +292,7 @@ class MessageEmbeddedObjectManager extends SingletonFactory
     /**
      * Returns the content language id or null.
      *
-     * @return      int
+     * @return      ?int
      */
     public function getContentLanguageID()
     {

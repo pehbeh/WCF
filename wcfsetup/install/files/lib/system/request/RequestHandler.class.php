@@ -164,6 +164,7 @@ final class RequestHandler extends SingletonFactory
                     return;
                 }
             } else {
+                // @phpstan-ignore function.alreadyNarrowedType, instanceof.alwaysTrue
                 \assert($builtRequest instanceof RequestHandlerInterface);
 
                 $pipeline = new Pipeline([

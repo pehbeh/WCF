@@ -137,7 +137,7 @@ class TrophyAddForm extends AbstractAcpForm
 
     /**
      * list of grouped user group assignment condition object types
-     * @var ObjectType[][]
+     * @var (ObjectType|ObjectType[])[][]
      */
     public $conditions = [];
 

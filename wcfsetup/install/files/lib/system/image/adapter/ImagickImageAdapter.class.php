@@ -18,7 +18,7 @@ class ImagickImageAdapter implements IImageAdapter, ISingleFrameImageAdapter, IW
 {
     /**
      * active color
-     * @var \ImagickPixel
+     * @var ?\ImagickPixel
      */
     protected $color;
 

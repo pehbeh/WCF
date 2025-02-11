@@ -12,16 +12,16 @@ namespace wcf\system\rssFeed;
  */
 final class XmlElement extends \SimpleXMLElement
 {
-    public function addChild(string $name, ?string $value = null, ?string $namespace = null): ?static
+    public function addChild(string $name, ?string $value = null, ?string $namespace = null): ?self
     {
-        if ($value !== null && \is_string($value)) {
+        if ($value !== null) {
             $value = \str_replace('&', '&amp;', $value);
         }
 
         return parent::addChild($name, $value, $namespace);
     }
 
-    public function addChildCData(string $name, string $value): static
+    public function addChildCData(string $name, string $value): self
     {
         $child = $this->addChild($name);
         $child->addCData($value);

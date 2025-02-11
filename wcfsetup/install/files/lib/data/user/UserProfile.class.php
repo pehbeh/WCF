@@ -386,7 +386,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
                 $avatar = new DefaultAvatar($this->username ?: '');
             }
 
-            $this->avatar = new AvatarDecorator($this->avatar);
+            $this->avatar = new AvatarDecorator($avatar);
         }
 
         return $this->avatar;
@@ -668,7 +668,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
      * Returns the user profile of the user with the given name.
      *
      * @param string $username
-     * @return  UserProfile
+     * @return ?UserProfile
      */
     public static function getUserProfileByUsername($username)
     {
@@ -805,9 +805,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
             if ($showYear) {
                 $birthdayYear = 0;
                 $value = \explode('-', $this->birthday);
-                if (isset($value[0])) {
-                    $birthdayYear = \intval($value[0]);
-                }
+                $birthdayYear = \intval($value[0]);
                 if ($birthdayYear) {
                     return $year - $birthdayYear;
                 }
@@ -838,9 +836,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
         // split date
         $birthdayYear = $month = $day = 0;
         $value = \explode('-', $this->birthday);
-        if (isset($value[0])) {
-            $birthdayYear = \intval($value[0]);
-        }
+        $birthdayYear = \intval($value[0]);
         if (isset($value[1])) {
             $month = \intval($value[1]);
         }

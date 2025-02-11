@@ -69,7 +69,7 @@ class UserGroup extends DatabaseObject implements ITitledObject
 
     /**
      * group cache
-     * @var array{groups: array<int, UserGroup>, types: array<string, int[]>}
+     * @var array{groups: array<int, UserGroup>, types: array<int, int[]>}
      */
     protected static $cache;
 
@@ -115,7 +115,7 @@ class UserGroup extends DatabaseObject implements ITitledObject
      *
      * @param int[] $types
      * @param int[] $invalidGroupTypes
-     * @return  UserGroup[]
+     * @return array<int, UserGroup>
      */
     public static function getGroupsByType(array $types = [], array $invalidGroupTypes = [])
     {
@@ -157,7 +157,7 @@ class UserGroup extends DatabaseObject implements ITitledObject
      * Returns unique group by given type. Only works for the default user groups.
      *
      * @param int $type
-     * @return  UserGroup
+     * @return ?UserGroup
      * @throws  SystemException
      */
     public static function getGroupByType($type)

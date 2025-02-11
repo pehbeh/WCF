@@ -203,7 +203,7 @@ final class AttachmentFileProcessor extends AbstractFileProcessor
         $columnName = match ($thumbnail->identifier) {
             '' => 'thumbnailID',
             'tiny' => 'tinyThumbnailID',
-            'default' => throw new UnexpectedThumbnailIdentifier($thumbnail->identifier),
+            default => throw new UnexpectedThumbnailIdentifier($thumbnail->identifier),
         };
 
         $attachmentEditor = new AttachmentEditor($attachment);

@@ -165,8 +165,6 @@ final class UnfurlUrlBackgroundJob extends AbstractBackgroundJob
         } catch (UrlInaccessible | DownloadFailed $e) {
             return [];
         }
-
-        throw new LogicException("Unreachable");
     }
 
     private static function getImageIdByUrl(string $url): ?int

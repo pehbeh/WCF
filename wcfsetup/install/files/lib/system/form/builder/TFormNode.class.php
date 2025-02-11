@@ -424,7 +424,7 @@ trait TFormNode
                     );
                 }
 
-                /** @var IFormField $field */
+                /** @var ?IFormField $field */
                 $field = $this->getDocument()->getNodeById($dependency->getFieldId());
                 if ($field === null) {
                     throw new \UnexpectedValueException(

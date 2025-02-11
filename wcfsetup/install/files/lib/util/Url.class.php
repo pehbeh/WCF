@@ -146,7 +146,7 @@ final class Url implements \ArrayAccess
      * making it easier to spot typos.
      *
      * @param mixed $property
-     * @return      int|string
+     * @return      string
      * @throws      \RuntimeException
      */
     private function getIndex($property)

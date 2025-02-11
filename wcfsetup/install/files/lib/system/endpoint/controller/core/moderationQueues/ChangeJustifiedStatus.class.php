@@ -33,6 +33,7 @@ final class ChangeJustifiedStatus implements IController
         $parameters = Helper::mapApiParameters($request, ChangeJustifiedStatusParameters::class);
 
         $additionalData = $queue->additionalData;
+        // @phpstan-ignore function.alreadyNarrowedType
         if (!\is_array($additionalData)) {
             $additionalData = [];
         }

@@ -86,10 +86,6 @@ final class TagFormField extends AbstractFormField implements IAttributeFormFiel
                     );
                 }
 
-                if ($this->getObjectType() === null) {
-                    throw new \UnexpectedValueException("Missing taggable object type for field '{$this->getId()}'.");
-                }
-
                 $languageIDs = [];
 
                 /** @noinspection PhpUndefinedFieldInspection */

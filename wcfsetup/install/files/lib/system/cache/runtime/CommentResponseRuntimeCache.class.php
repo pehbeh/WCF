@@ -13,9 +13,9 @@ use wcf\data\comment\response\CommentResponseList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  CommentResponse[]    getCachedObjects()
- * @method  CommentResponse|null getObject($objectID)
- * @method  CommentResponse[]    getObjects(array $objectIDs)
+ * @method  (CommentResponse|null)[]    getCachedObjects()
+ * @method  ?CommentResponse getObject($objectID)
+ * @method  (CommentResponse|null)[]    getObjects(array $objectIDs)
  */
 class CommentResponseRuntimeCache extends AbstractRuntimeCache
 {

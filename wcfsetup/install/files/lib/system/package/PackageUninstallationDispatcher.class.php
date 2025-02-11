@@ -88,7 +88,7 @@ class PackageUninstallationDispatcher extends PackageInstallationDispatcher
                     break;
 
                 default:
-                    new \LogicException('Unreachable');
+                    throw new \LogicException('Unreachable');
             }
         }
 

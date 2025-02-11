@@ -167,6 +167,7 @@ namespace wcf\functions\exception {
 	 * Logs the given Throwable.
 	 *
 	 * @param	string			$logFile	The log file to use. If set to `null` the default log file will be used and the variable contents will be replaced by the actual path.
+	 * @param-out string $logFile
 	 * @return	string					The ID of the log entry.
 	 */
 	function logThrowable(\Throwable $e, &$logFile = null): string
@@ -258,6 +259,7 @@ namespace wcf\functions\exception {
 		$exceptionTitle = $exceptionSubtitle = $exceptionExplanation = '';
 		$logFile = sanitizePath($logFile);
 		try {
+			// @phpstan-ignore notIdentical.alwaysTrue
 			if (WCF::getLanguage() !== null) {
 				$exceptionTitle = WCF::getLanguage()->get('wcf.global.exception.title', true);
 				$exceptionSubtitle = str_replace('{$exceptionID}', $exceptionID, WCF::getLanguage()->get('wcf.global.exception.subtitle', true));

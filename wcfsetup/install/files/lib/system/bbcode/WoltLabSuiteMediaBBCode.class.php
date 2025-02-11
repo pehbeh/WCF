@@ -37,7 +37,7 @@ final class WoltLabSuiteMediaBBCode extends AbstractBBCode
         }
 
         $removeLinks = false;
-        /** @var \DOMElement $element */
+        /** @var ?\DOMElement $element */
         $element = $closingTag['__parents'][0] ?? null;
         if ($element && $element->nodeName === 'a') {
             // We do permit media elements to be nested inside a link, but we must suppress
@@ -46,7 +46,7 @@ final class WoltLabSuiteMediaBBCode extends AbstractBBCode
             $removeLinks = true;
         }
 
-        /** @var ViewableMedia $media */
+        /** @var ?ViewableMedia $media */
         $media = MessageEmbeddedObjectManager::getInstance()->getObject('com.woltlab.wcf.media', $mediaID);
         if ($media === null) {
             return ContentNotVisibleView::forNotAvailable();

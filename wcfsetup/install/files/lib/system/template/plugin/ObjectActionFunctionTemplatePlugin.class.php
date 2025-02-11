@@ -114,8 +114,6 @@ class ObjectActionFunctionTemplatePlugin implements IFunctionTemplatePlugin
                 </button>
                 HTML;
 
-                break;
-
             case 'toggle':
                 if (!isset($tagArgs['isDisabled'])) {
                     throw new \InvalidArgumentException("Missing 'isDisabled' argument for 'toggle' action.");

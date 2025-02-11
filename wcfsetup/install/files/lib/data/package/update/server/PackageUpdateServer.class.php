@@ -372,10 +372,12 @@ class PackageUpdateServer extends DatabaseObject
      */
     final public static function isUpgradeOverrideEnabled(): bool
     {
+        // @phpstan-ignore identical.alwaysTrue
         if (WCF::AVAILABLE_UPGRADE_VERSION === null) {
             return false;
         }
 
+        // @phpstan-ignore deadCode.unreachable
         $overrideKey = \sprintf(
             "%s\0upgradeOverride_%s",
             self::class,

@@ -29,8 +29,6 @@ class StandaloneInteractionContextMenuView extends InteractionContextMenuView
                 'redirectUrl' => $this->redirectUrl,
             ],
         );
-
-        return '';
     }
 
     public function getContainerID(): string

@@ -239,6 +239,7 @@ class WCF
     {
         try {
             // database has to be initialized
+            // @phpstan-ignore function.alreadyNarrowedType
             if (!\is_object(self::$dbObj)) {
                 return;
             }
@@ -258,6 +259,7 @@ class WCF
             }
 
             // update session
+            // @phpstan-ignore function.alreadyNarrowedType
             if (\is_object(self::getSession())) {
                 self::getSession()->update();
             }
@@ -417,6 +419,7 @@ class WCF
             if (!\is_writable($filename)) {
                 FileUtil::makeWritable($filename);
 
+                // @phpstan-ignore booleanNot.alwaysTrue
                 if (!\is_writable($filename)) {
                     throw new SystemException("The option file '" . $filename . "' is not writable.");
                 }
@@ -644,6 +647,7 @@ class WCF
                 $packageDir = FileUtil::getRealPath(WCF_DIR . $relativePath);
                 self::$autoloadDirectories[$abbreviation] = $packageDir . 'lib/';
 
+                // @phpstan-ignore if.alwaysFalse
                 if (\class_exists($className)) {
                     // the class can now be found, update the `packageDir` value
                     (new PackageEditor($package))->update(['packageDir' => $relativePath]);
@@ -830,7 +834,7 @@ class WCF
     final public static function autoload(string $className): void
     {
         $className = \strtr($className, '\\', '/');
-        if (($slashPos = \strpos($className, '/')) !== null) {
+        if (($slashPos = \strpos($className, '/')) !== false) {
             $applicationPrefix = \substr($className, 0, $slashPos);
             if (isset(self::$autoloadDirectories[$applicationPrefix])) {
                 $classPath = self::$autoloadDirectories[$applicationPrefix] . \substr($className, $slashPos + 1) . '.class.php';
@@ -854,7 +858,7 @@ class WCF
         // logic cannot be moved into a shared function, because it
         // measurably reduced autoloader performance.
         $className = \strtr($className, '\\', '/');
-        if (($slashPos = \strpos($className, '/')) !== null) {
+        if (($slashPos = \strpos($className, '/')) !== false) {
             $applicationPrefix = \substr($className, 0, $slashPos);
             if (isset(self::$autoloadDirectories[$applicationPrefix])) {
                 $classPath = self::$autoloadDirectories[$applicationPrefix] . \substr($className, $slashPos + 1) . '.class.php';

@@ -81,8 +81,6 @@ final class CronjobScheduler extends SingletonFactory
                         $this->executeCronjob($cronjobEditor, $logEditor);
                     } catch (\Throwable $e) {
                         $this->logResult($logEditor, $e);
-                    } catch (\Exception $e) {
-                        $this->logResult($logEditor, $e);
                     }
                 } else {
                     $this->logResult($logEditor);

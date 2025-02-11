@@ -38,7 +38,7 @@ class PollAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
 
     /**
      * poll object
-     * @var PollEditor
+     * @var ?PollEditor
      */
     protected $poll;
 
@@ -205,8 +205,6 @@ class PollAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
         if (empty($this->poll)) {
             $this->poll = $this->getSingleObject();
         }
-
-        \assert($this->poll instanceof PollEditor);
 
         // get previous vote
         $sql = "SELECT  optionID

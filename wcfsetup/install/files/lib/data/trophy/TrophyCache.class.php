@@ -29,7 +29,7 @@ class TrophyCache extends SingletonFactory
 
     /**
      * Contains all trophies sorted by the category.
-     * @var array<int, array<int, Trophy>>
+     * @var ?array<int, array<int, Trophy>>
      */
     protected $categorySortedTrophies;
 

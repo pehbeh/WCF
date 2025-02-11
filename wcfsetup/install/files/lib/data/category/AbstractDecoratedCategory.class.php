@@ -38,7 +38,7 @@ abstract class AbstractDecoratedCategory extends DatabaseObjectDecorator
 
     /**
      * parent category of this category
-     * @var AbstractDecoratedCategory
+     * @var ?AbstractDecoratedCategory
      */
     protected $parentCategory;
 

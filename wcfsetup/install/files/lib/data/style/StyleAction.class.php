@@ -161,7 +161,7 @@ class StyleAction extends AbstractDatabaseObjectAction implements IToggleAction
         $style->loadVariables();
         foreach (['pageLogo', 'pageLogoMobile'] as $type) {
             if (\array_key_exists($type, $this->parameters['uploads'])) {
-                /** @var \wcf\system\file\upload\UploadFile $file */
+                /** @var ?\wcf\system\file\upload\UploadFile $file */
                 $file = $this->parameters['uploads'][$type];
 
                 if ($style->getVariable($type) && \file_exists($style->getAssetPath() . \basename($style->getVariable($type)))) {
@@ -271,7 +271,7 @@ class StyleAction extends AbstractDatabaseObjectAction implements IToggleAction
     {
         foreach (['image', 'image2x'] as $type) {
             if (\array_key_exists($type, $this->parameters['uploads'])) {
-                /** @var \wcf\system\file\upload\UploadFile $file */
+                /** @var ?\wcf\system\file\upload\UploadFile $file */
                 $file = $this->parameters['uploads'][$type];
 
                 if ($style->{$type} && \file_exists($style->getAssetPath() . \basename($style->{$type}))) {
@@ -326,7 +326,7 @@ class StyleAction extends AbstractDatabaseObjectAction implements IToggleAction
         ];
 
         if (\array_key_exists('favicon', $this->parameters['uploads'])) {
-            /** @var \wcf\system\file\upload\UploadFile $file */
+            /** @var ?\wcf\system\file\upload\UploadFile $file */
             $file = $this->parameters['uploads']['favicon'];
 
             if ($file !== null) {
@@ -422,7 +422,7 @@ BROWSERCONFIG;
     protected function updateCoverPhoto(Style $style)
     {
         if (\array_key_exists('coverPhoto', $this->parameters['uploads'])) {
-            /** @var \wcf\system\file\upload\UploadFile $file */
+            /** @var ?\wcf\system\file\upload\UploadFile $file */
             $file = $this->parameters['uploads']['coverPhoto'];
 
             if ($style->coverPhotoExtension && \file_exists($style->getCoverPhotoLocation(false))) {

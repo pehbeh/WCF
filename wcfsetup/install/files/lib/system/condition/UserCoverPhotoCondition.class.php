@@ -78,11 +78,9 @@ class UserCoverPhotoCondition extends AbstractSelectCondition implements
         switch ($condition->userCoverPhoto) {
             case self::NO_COVER_PHOTO:
                 return $user->coverPhotoFileID === null;
-                break;
 
             case self::COVER_PHOTO:
                 return $user->coverPhotoFileID !== null;
-                break;
         }
 
         return false;

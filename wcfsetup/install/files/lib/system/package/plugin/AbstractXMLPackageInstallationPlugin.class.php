@@ -195,15 +195,9 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
         }
 
         if ($this instanceof IUniqueNameXMLPackageInstallationPlugin) {
-            $names = \array_map(function ($data) {
-                \assert($this instanceof IUniqueNameXMLPackageInstallationPlugin);
+            $names = \array_map(fn($data) => $this->getNameByData($data), $pipData);
 
-                return $this->getNameByData($data);
-            }, $pipData);
-
-            $validNames = \array_filter($names, static function ($name) {
-                return !empty($name);
-            });
+            $validNames = \array_filter($names);
 
             if ($validNames !== \array_unique($validNames)) {
                 throw new LogicException(
@@ -292,7 +286,7 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
      *
      * @param array $row
      * @param array $data
-     * @return  \wcf\data\IStorableObject|null
+     * @return  \wcf\data\IStorableObject|\wcf\data\DatabaseObjectEditor|null
      */
     protected function import(array $row, array $data)
     {

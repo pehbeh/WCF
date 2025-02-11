@@ -133,7 +133,7 @@ class PackageInstallationNodeBuilder
                 break;
 
             default:
-                new \LogicException('Unreachable');
+                throw new \LogicException('Unreachable');
         }
 
         // required packages
@@ -706,6 +706,7 @@ class PackageInstallationNodeBuilder
             }
         }
 
+        // @phpstan-ignore function.alreadyNarrowedType, notIdentical.alwaysTrue
         \assert($pluginNodes !== []);
 
         $sql = "INSERT INTO wcf1_package_installation_node

@@ -197,7 +197,7 @@ class PageAddForm extends AbstractForm
     public $presetPageID = 0;
 
     /**
-     * @var Page
+     * @var ?Page
      * @since   5.2
      */
     public $presetPage;

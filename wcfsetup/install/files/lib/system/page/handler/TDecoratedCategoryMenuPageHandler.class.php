@@ -34,7 +34,7 @@ trait TDecoratedCategoryMenuPageHandler
     {
         $className = $this->getDecoratedCategoryClass();
 
-        /** @var AbstractDecoratedCategory $category */
+        /** @var ?AbstractDecoratedCategory $category */
         /** @noinspection PhpUndefinedMethodInspection */
         $category = $className::getCategory($objectID);
 

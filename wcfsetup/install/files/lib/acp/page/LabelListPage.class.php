@@ -75,7 +75,7 @@ class LabelListPage extends SortablePage
 
     /**
      * label group to which the displayed labels belong
-     * @var LabelGroup
+     * @var ?LabelGroup
      */
     public $labelGroup;
 

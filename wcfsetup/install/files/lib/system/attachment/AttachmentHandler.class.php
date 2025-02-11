@@ -347,7 +347,7 @@ class AttachmentHandler implements \Countable
     {
         return $this->getFileProcessor()->toHtmlElement(
             $this->objectType->objectType,
-            $this->objectID ?? 0,
+            $this->objectID,
             \implode(',', $this->tmpHash),
             $this->parentObjectID
         );

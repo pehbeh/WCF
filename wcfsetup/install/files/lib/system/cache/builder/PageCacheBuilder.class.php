@@ -42,13 +42,13 @@ class PageCacheBuilder extends AbstractCacheBuilder
         while ($row = $statement->fetchArray()) {
             $pageID = $row['pageID'];
 
-            if (!isset($data['pageTitles'])) {
+            if (!isset($data['pageTitles'][$pageID])) {
                 $data['pageTitles'][$pageID] = [];
             }
 
             $data['pageTitles'][$pageID][$row['languageID'] ?: 0] = $row['title'];
 
-            if (!isset($data['pageMetaDescriptions'])) {
+            if (!isset($data['pageMetaDescriptions'][$pageID])) {
                 $data['pageMetaDescriptions'][$pageID] = [];
             }
             $data['pageMetaDescriptions'][$pageID][$row['languageID'] ?: 0] = $row['metaDescription'];

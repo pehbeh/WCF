@@ -342,6 +342,8 @@ trait TFormParentNode
      *
      * Note: A `IFormParentNode` object may only return `true` if all of its child
      * nodes are valid. A `IFormField` object is valid if its value is valid.
+     *
+     * @return void
      */
     public function validate()
     {
@@ -370,8 +372,6 @@ trait TFormParentNode
 
     /**
      * Checks if the given node can be added as a child to this node.
-     *
-     * @throws  \InvalidArgumentException       if given node cannot be added as a child
      */
     public function validateChild(IFormChildNode $child): void
     {

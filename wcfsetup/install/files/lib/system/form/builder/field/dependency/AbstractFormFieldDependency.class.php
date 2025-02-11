@@ -25,7 +25,7 @@ abstract class AbstractFormFieldDependency implements IFormFieldDependency
 
     /**
      * field the availability of the node dependents on
-     * @var IFormField
+     * @var ?IFormField
      */
     protected $field;
 

@@ -176,7 +176,7 @@ final class Setup implements IIDObject
         ]);
 
         $setup = self::find($objectType, $user);
-        \assert($setup);
+        \assert($setup !== null);
 
         return $setup;
     }

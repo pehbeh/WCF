@@ -58,7 +58,7 @@ class SitemapRebuildWorker extends AbstractRebuildDataWorker
 
     /**
      * The current temporary file as File object.
-     * @var File
+     * @var ?File
      */
     public $file;
 

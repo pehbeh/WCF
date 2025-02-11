@@ -189,6 +189,7 @@ class BBCodeHandler extends SingletonFactory
      */
     public function getCodeBlockLanguages(): array
     {
+        /** @var string[] $highlighters */
         $highlighters = \explode("\n", StringUtil::unifyNewlines(\MESSAGE_PUBLIC_HIGHLIGHTERS));
         if ($highlighters !== []) {
             return $highlighters;

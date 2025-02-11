@@ -5,7 +5,6 @@ namespace wcf\system\gridView\admin;
 use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\event\gridView\admin\ExceptionLogGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\Regex;
 use wcf\system\gridView\filter\SelectFilter;
@@ -200,7 +199,7 @@ final class ExceptionLogGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): ExceptionLogGridViewInitialized
     {
         return new ExceptionLogGridViewInitialized($this);
     }

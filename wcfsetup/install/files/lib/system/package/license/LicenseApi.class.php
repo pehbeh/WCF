@@ -28,7 +28,7 @@ final class LicenseApi
 
     public function updateLicenseFile(?LicenseData $data): void
     {
-        $creationDate = $data?->creationDate ?? new \DateTimeImmutable();
+        $creationDate = $data->creationDate ?? new \DateTimeImmutable();
 
         $writer = new AtomicWriter(self::LICENSE_FILE);
         $writer->write("<?php /* {$creationDate->format('c')} */\n\n");

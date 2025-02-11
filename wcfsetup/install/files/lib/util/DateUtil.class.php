@@ -444,9 +444,7 @@ final class DateUtil
         // split date
         $year = $month = $day = 0;
         $value = \explode('-', $date);
-        if (isset($value[0])) {
-            $year = \intval($value[0]);
-        }
+        $year = \intval($value[0]);
         if (isset($value[1])) {
             $month = \intval($value[1]);
         }

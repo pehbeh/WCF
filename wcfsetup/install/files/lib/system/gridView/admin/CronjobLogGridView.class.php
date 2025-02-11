@@ -7,9 +7,7 @@ use wcf\data\cronjob\I18nCronjobList;
 use wcf\data\cronjob\log\CronjobLog;
 use wcf\data\cronjob\log\CronjobLogList;
 use wcf\data\DatabaseObject;
-use wcf\data\DatabaseObjectList;
 use wcf\event\gridView\admin\CronjobLogGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\SelectFilter;
 use wcf\system\gridView\filter\TimeFilter;
@@ -99,13 +97,13 @@ final class CronjobLogGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): CronjobLogList
     {
         return new CronjobLogList();
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): CronjobLogGridViewInitialized
     {
         return new CronjobLogGridViewInitialized($this);
     }

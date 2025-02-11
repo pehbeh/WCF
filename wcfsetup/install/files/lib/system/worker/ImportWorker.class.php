@@ -25,7 +25,7 @@ class ImportWorker extends AbstractWorker
 
     /**
      * exporter object
-     * @var \wcf\system\exporter\IExporter
+     * @var ?\wcf\system\exporter\IExporter
      */
     protected $exporter;
 

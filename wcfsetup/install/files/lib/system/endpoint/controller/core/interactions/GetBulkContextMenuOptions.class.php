@@ -34,6 +34,7 @@ final class GetBulkContextMenuOptions implements IController
         }
 
         $provider = new $parameters->provider();
+        // @phpstan-ignore function.alreadyNarrowedType, instanceof.alwaysTrue
         \assert($provider instanceof IBulkInteractionProvider);
 
         $list = new ($provider->getObjectListClassName())();

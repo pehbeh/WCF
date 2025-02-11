@@ -17,12 +17,12 @@ use wcf\data\article\content\ArticleContent;
 abstract class AbstractArticleDiscussionProvider implements IArticleDiscussionProvider
 {
     /**
-     * @var Article
+     * @var ?Article
      */
     protected $article;
 
     /**
-     * @var ArticleContent
+     * @var ?ArticleContent
      */
     protected $articleContent;
 

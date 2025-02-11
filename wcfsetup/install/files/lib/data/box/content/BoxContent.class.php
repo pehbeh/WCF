@@ -46,7 +46,7 @@ class BoxContent extends DatabaseObject
      * Returns a certain box content or `null` if it does not exist.
      *
      * @param int $boxID
-     * @param int $languageID
+     * @param ?int $languageID
      * @return      BoxContent|null
      */
     public static function getBoxContent($boxID, $languageID)

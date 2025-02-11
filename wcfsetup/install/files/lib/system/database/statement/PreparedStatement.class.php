@@ -333,7 +333,7 @@ class PreparedStatement
      */
     public function getErrorNumber()
     {
-        $errorCode = $this->pdoStatement?->errorCode();
+        $errorCode = $this->pdoStatement->errorCode();
         if ($errorCode === null) {
             return '0';
         }
@@ -348,14 +348,8 @@ class PreparedStatement
      */
     public function getErrorDesc()
     {
-        if ($this->pdoStatement !== null) {
-            $errorInfoArray = $this->pdoStatement->errorInfo();
-            if (isset($errorInfoArray[2])) {
-                return $errorInfoArray[2];
-            }
-        }
-
-        return '';
+        $errorInfoArray = $this->pdoStatement->errorInfo();
+        return $errorInfoArray[2] ?? '';
     }
 
     /**

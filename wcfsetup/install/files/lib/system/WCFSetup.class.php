@@ -531,7 +531,6 @@ final class WCFSetup extends WCF
 
                         case 1115: // work-around for older MySQL versions that don't know utf8mb4
                             throw new SystemException("Insufficient MySQL version. Version '8.0.30' or greater is needed.");
-                            break;
 
                         default:
                             throw $e;

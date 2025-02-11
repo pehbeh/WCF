@@ -71,7 +71,7 @@ final class HeaderUtil
         }
 
         $cookieDomain = $application->cookieDomain;
-        if ($addDomain && \strpos($cookieDomain, ':') !== false) {
+        if (\strpos($cookieDomain, ':') !== false) {
             $cookieDomain = \explode(':', $cookieDomain, 2)[0];
         }
 

@@ -31,7 +31,7 @@ final class UserStorageHandler extends SingletonFactory
 
     /**
      * redis instance
-     * @var Redis
+     * @var ?Redis
      */
     private $redis;
 
@@ -251,6 +251,8 @@ final class UserStorageHandler extends SingletonFactory
 
     /**
      * Removes and inserts data records on shutdown.
+     *
+     * @return void
      */
     public function shutdown()
     {

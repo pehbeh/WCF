@@ -302,9 +302,6 @@ class WorkerCLICommand implements ICLICommand
                 $cursorOffset = -$threads;
                 foreach ($processes as &$processData) {
                     $status = \proc_get_status($processData['process']);
-                    if ($status === false) {
-                        throw new \LogicException('Unreachable');
-                    }
 
                     $line = false;
                     if ($processData['pipes'][3] !== false) {
@@ -367,9 +364,6 @@ class WorkerCLICommand implements ICLICommand
             echo "\033[" . $threads . "A";
             foreach ($processes as $processData) {
                 $status = \proc_get_status($processData['process']);
-                if ($status === false) {
-                    throw new \LogicException('Unreachable');
-                }
 
                 if (!$status['running']) {
                     $processData['progressbar']->update(null, 'T' . $processData['threadId'] . ': exited');

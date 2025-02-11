@@ -544,6 +544,7 @@ XML;
 
         $this->addFormFields($eventParameters['form']);
 
+        // @phpstan-ignore instanceof.alwaysTrue
         if (!($eventParameters['form'] instanceof IFormDocument)) {
             throw new \UnexpectedValueException('Form document is no longer a "' . IFormDocument::class . '" object.');
         }

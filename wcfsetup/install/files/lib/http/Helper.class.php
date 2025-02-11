@@ -182,8 +182,8 @@ final class Helper
             throw new ParentClassException($className, DatabaseObject::class);
         }
 
+        /** @var DatabaseObject $dbo */
         $dbo = new $className($objectID);
-        \assert($dbo instanceof DatabaseObject);
 
         if (!$dbo->getObjectID()) {
             throw new UserInputException(

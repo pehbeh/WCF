@@ -50,7 +50,7 @@ class TaggedPage extends MultipleLinkPage
 
     /**
      * object type object
-     * @var ObjectType
+     * @var ?ObjectType
      */
     public $objectType;
 

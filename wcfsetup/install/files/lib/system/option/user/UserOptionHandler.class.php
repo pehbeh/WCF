@@ -62,7 +62,7 @@ class UserOptionHandler extends OptionHandler
 
     /**
      * current user
-     * @var User
+     * @var ?User
      */
     public $user;
 

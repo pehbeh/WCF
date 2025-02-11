@@ -267,7 +267,7 @@ class Zip extends File implements IArchive
      * Checks whether the next record is a file.
      * This does not change the position of the file-pointer.
      *
-     * @param int $offset where to start reading
+     * @param int|false|null $offset where to start reading
      * @return  bool
      * @throws  SystemException
      */
@@ -293,7 +293,7 @@ class Zip extends File implements IArchive
     /**
      * Reads a file and returns it.
      *
-     * @param int $offset where to start reading
+     * @param int|false|null $offset where to start reading
      * @return  array
      * @throws  SystemException
      */
@@ -301,9 +301,6 @@ class Zip extends File implements IArchive
     {
         if ($offset === null) {
             $offset = $this->tell();
-        }
-        if (!\is_int($offset)) {
-            $offset = $this->getIndexByFilename($offset);
         }
         if ($offset === false) {
             throw new SystemException('Invalid offset passed to readFile');

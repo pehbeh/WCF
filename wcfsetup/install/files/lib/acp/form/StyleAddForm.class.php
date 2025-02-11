@@ -591,6 +591,7 @@ class StyleAddForm extends AbstractForm
                     }
 
                     // Check again after scaling
+                    // @phpstan-ignore identical.alwaysFalse
                     if (($imageData = \getimagesize($fileLocation)) === false) {
                         throw new UserInputException($field, 'invalid');
                     }

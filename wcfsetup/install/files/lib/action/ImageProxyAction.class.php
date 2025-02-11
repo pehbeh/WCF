@@ -160,12 +160,8 @@ final class ImageProxyAction extends AbstractAction
                     } catch (TransferException $e) {
                         throw new \DomainException('Failed to request', 0, $e);
                     } finally {
-                        if ($response && $response->getBody()) {
-                            $response->getBody()->close();
-                        }
-                        if ($file) {
-                            $file->close();
-                        }
+                        $response?->getBody()->close();
+                        $file?->close();
                     }
 
                     // check file type

@@ -41,7 +41,7 @@ class CombinedTaggedPage extends MultipleLinkPage
     public $neededPermissions = ['user.tag.canViewTag'];
 
     /**
-     * @var ObjectType
+     * @var ?ObjectType
      */
     public $objectType;
 

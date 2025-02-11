@@ -312,7 +312,7 @@ class CommentHandler extends SingletonFactory
 
         // mark comment reaction notifications as confirmed
         $reactionCommentEvents = [];
-        if (UserNotificationHandler::getInstance()->getObjectTypeID($objectType . '.like.notification') !== null) {
+        if (UserNotificationHandler::getInstance()->getObjectTypeID($objectType . '.like.notification') !== 0) {
             foreach (UserNotificationHandler::getInstance()->getEvents($objectType . '.like.notification') as $event) {
                 $reactionCommentEvents[$event->eventID] = [
                     'eventName' => $event->eventName,
@@ -415,7 +415,7 @@ class CommentHandler extends SingletonFactory
 
         // mark comment response reaction notifications as confirmed
         $reactionResponseEvents = [];
-        if (UserNotificationHandler::getInstance()->getObjectTypeID($objectType . '.response.like.notification') !== null) {
+        if (UserNotificationHandler::getInstance()->getObjectTypeID($objectType . '.response.like.notification') !== 0) {
             foreach (UserNotificationHandler::getInstance()->getEvents($objectType . '.response.like.notification') as $event) {
                 $reactionResponseEvents[$event->eventID] = [
                     'eventName' => $event->eventName,
@@ -523,7 +523,7 @@ class CommentHandler extends SingletonFactory
 
         // mark comment reaction notifications as confirmed
         $reactionCommentEvents = [];
-        if (UserNotificationHandler::getInstance()->getObjectTypeID($objectType . '.like.notification') !== null) {
+        if (UserNotificationHandler::getInstance()->getObjectTypeID($objectType . '.like.notification') !== 0) {
             foreach (UserNotificationHandler::getInstance()->getEvents($objectType . '.like.notification') as $event) {
                 $reactionCommentEvents[$event->eventID] = [
                     'eventName' => $event->eventName,
@@ -602,7 +602,7 @@ class CommentHandler extends SingletonFactory
 
             // mark comment response reaction notifications as confirmed
             $reactionResponseEvents = [];
-            if (UserNotificationHandler::getInstance()->getObjectTypeID($objectType . '.response.like.notification') !== null) {
+            if (UserNotificationHandler::getInstance()->getObjectTypeID($objectType . '.response.like.notification') !== 0) {
                 foreach (UserNotificationHandler::getInstance()->getEvents($objectType . '.response.like.notification') as $event) {
                     $reactionResponseEvents[$event->eventID] = [
                         'eventName' => $event->eventName,
@@ -702,7 +702,7 @@ class CommentHandler extends SingletonFactory
 
         // mark comment response reaction notifications as confirmed
         $reactionResponseEvents = [];
-        if (UserNotificationHandler::getInstance()->getObjectTypeID($objectType . '.response.like.notification') !== null) {
+        if (UserNotificationHandler::getInstance()->getObjectTypeID($objectType . '.response.like.notification') !== 0) {
             foreach (UserNotificationHandler::getInstance()->getEvents($objectType . '.response.like.notification') as $event) {
                 $reactionResponseEvents[$event->eventID] = [
                     'eventName' => $event->eventName,

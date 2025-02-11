@@ -74,7 +74,7 @@ class UploadField
     /**
      * Returns the max number of files.
      *
-     * @return int
+     * @return ?int
      */
     public function getMaxFiles()
     {

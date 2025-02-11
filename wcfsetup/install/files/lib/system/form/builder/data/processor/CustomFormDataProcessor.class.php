@@ -63,7 +63,6 @@ final class CustomFormDataProcessor extends AbstractFormDataProcessor
                 );
             }
 
-            /** @var \ReflectionType $parameterType */
             $parameterType = $parameters[0]->getType();
             if (
                 !(
@@ -105,7 +104,6 @@ final class CustomFormDataProcessor extends AbstractFormDataProcessor
                 );
             }
 
-            /** @var \ReflectionType $parameterType */
             $parameterType = $parameters[0]->getType();
             if (
                 !(
