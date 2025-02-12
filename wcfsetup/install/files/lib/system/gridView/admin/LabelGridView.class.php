@@ -13,6 +13,7 @@ use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\I18nTextFilter;
 use wcf\system\gridView\filter\NumericFilter;
 use wcf\system\gridView\filter\ObjectIdFilter;
+use wcf\system\gridView\filter\SelectFilter;
 use wcf\system\gridView\GridViewColumn;
 use wcf\system\gridView\GridViewRowLink;
 use wcf\system\gridView\GridViewSortButton;
@@ -83,6 +84,14 @@ final class LabelGridView extends AbstractGridView
                             );
                         }
                     }
+                )
+                ->filter(
+                    new SelectFilter(
+                        \array_map(
+                            static fn(ViewableLabelGroup $group) => $group->getTitle(),
+                            LabelCacheBuilder::getInstance()->getData(arrayIndex: "groups"),
+                        ),
+                    )
                 )
                 ->sortable(),
             GridViewColumn::for("showOrder")
