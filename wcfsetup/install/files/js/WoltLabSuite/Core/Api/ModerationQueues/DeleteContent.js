@@ -11,11 +11,11 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "../Result"], fu
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.deleteContent = deleteContent;
-    async function deleteContent(queueId, message) {
+    async function deleteContent(queueId, reason) {
         try {
             await (0, Backend_1.prepareRequest)(`${window.WSC_RPC_API_URL}core/moderation-queues/${queueId}/delete-content`)
                 .post({
-                message,
+                reason,
             })
                 .fetchAsJson();
         }

@@ -4,13 +4,14 @@ namespace wcf\system\interaction\user;
 
 use wcf\action\ModerationQueueAssignUserAction;
 use wcf\action\ModerationReportQueueCloseAction;
-use wcf\action\ModerationReportQueueRemoveContentAction;
 use wcf\data\moderation\queue\ViewableModerationQueue;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\event\interaction\user\ModerationQueueInteractionCollecting;
 use wcf\system\event\EventHandler;
 use wcf\system\interaction\AbstractInteractionProvider;
 use wcf\system\interaction\FormBuilderDialogInteraction;
+use wcf\system\interaction\InteractionConfirmationType;
+use wcf\system\interaction\RpcInteraction;
 use wcf\system\moderation\queue\report\IModerationQueueReportHandler;
 use wcf\system\request\LinkHandler;
 
@@ -43,13 +44,11 @@ final class ModerationQueueInteractions extends AbstractInteractionProvider
                         && !$queue->isDone();
                 }
             ),
-            new FormBuilderDialogInteraction(
+            new RpcInteraction(
                 "remove-content",
-                LinkHandler::getInstance()->getControllerLink(
-                    ModerationReportQueueRemoveContentAction::class,
-                    ["id" => "%s"]
-                ),
+                "core/moderation-queues/%s/delete-content",
                 "wcf.moderation.report.removeContent",
+                InteractionConfirmationType::SoftDeleteWithReason,
                 isAvailableCallback: static function (ViewableModerationQueue $queue) {
                     $objectType = ObjectTypeCache::getInstance()->getObjectType($queue->objectTypeID);
                     /** @var IModerationQueueReportHandler $processor */
