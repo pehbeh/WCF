@@ -60,13 +60,21 @@ final class DeleteContent implements IController
 
     private function deleteContent(ModerationQueue $queue, string $message): void
     {
-        $this->getManager($queue)::getInstance()->removeContent(
+        $this->getManager($queue)->removeContent(
             $queue,
             $message
         );
 
         $editor = new ModerationQueueEditor($queue);
-        $editor->markAsConfirmed();
+
+        $definition = ObjectTypeCache::getInstance()->getDefinition(
+            ObjectTypeCache::getInstance()->getObjectType($queue->objectTypeID)->definitionID
+        );
+        if ($definition->definitionName === 'com.woltlab.wcf.moderation.type.report') {
+            $editor->markAsConfirmed();
+        } else {
+            $editor->markAsRejected();
+        }
     }
 }
 
