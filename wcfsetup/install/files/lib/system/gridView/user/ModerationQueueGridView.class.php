@@ -83,8 +83,17 @@ final class ModerationQueueGridView extends AbstractGridView
 
                             $link = StringUtil::encodeHTML($row->getLink());
                             $title = StringUtil::encodeHTML($row->getTitle());
+
+                            if ($row->isNew()) {
+                                $badgeLabel = WCF::getLanguage()->get('wcf.message.new');
+                                $badge = <<<HTML
+                                    <span class="badge label newMessageBadge">{$badgeLabel}</span>
+                                HTML;
+                            } else {
+                                $badge = '';
+                            }
                             return <<<HTML
-                                <a href="{$link}">{$title}</a>
+                                <a href="{$link}">{$title}</a>{$badge}
                             HTML;
                         }
                     }
