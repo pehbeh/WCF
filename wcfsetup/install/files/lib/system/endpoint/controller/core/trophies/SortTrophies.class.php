@@ -28,7 +28,7 @@ final class SortTrophies implements IController
     {
         $this->assertTrophiesCanBeSorted();
 
-        $parameters = Helper::mapApiParameters($request, SaveSortingParameters::class);
+        $parameters = Helper::mapApiParameters($request, SortTrophiesParameters::class);
 
         $sql = "UPDATE  wcf1_trophy
                 SET     showOrder = ?
@@ -60,7 +60,7 @@ final class SortTrophies implements IController
 }
 
 /** @internal */
-final class SaveSortingParameters
+final class SortTrophiesParameters
 {
     public function __construct(
         /** @var positive-int[] */
