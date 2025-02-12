@@ -23,6 +23,7 @@ use wcf\system\gridView\renderer\ILinkColumnRenderer;
 use wcf\system\gridView\renderer\NumberColumnRenderer;
 use wcf\system\gridView\renderer\TimeColumnRenderer;
 use wcf\system\gridView\renderer\UserLinkColumnRenderer;
+use wcf\system\interaction\user\ModerationQueueInteractions;
 use wcf\system\moderation\queue\ModerationQueueManager;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
@@ -200,7 +201,9 @@ final class ModerationQueueGridView extends AbstractGridView
                 ->renderer(new TimeColumnRenderer()),
         ]);
 
-        // TODO add interactions
+        $provider = new ModerationQueueInteractions();
+        $this->setInteractionProvider($provider);
+        // TODO add bulk interactions
 
         $this->setSortField("lastChangeTime");
         $this->setSortOrder("DESC");
