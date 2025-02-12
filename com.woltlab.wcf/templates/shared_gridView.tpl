@@ -77,6 +77,10 @@
 </div>
 
 <script data-relocate="true">
+	{if $view->getSortButton() !== null}
+		{jsphrase name='wcf.global.button.saveSorting'}
+		{jsphrase name='wcf.global.sort'}
+	{/if}
 	require(['WoltLabSuite/Core/Component/GridView'], ({ GridView }) => {
 		WoltLabLanguage.registerPhrase("wcf.clipboard.button.numberOfSelectedItems", '{jslang __literal=true}wcf.clipboard.button.numberOfSelectedItems{/jslang}');
 		

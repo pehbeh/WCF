@@ -4009,6 +4009,7 @@ Dateianhänge:
 		<item name="wcf.global.showOrder"><![CDATA[Reihenfolge]]></item>
 		<item name="wcf.global.sortOrder.ascending"><![CDATA[aufsteigend]]></item>
 		<item name="wcf.global.sortOrder.descending"><![CDATA[absteigend]]></item>
+		<item name="wcf.global.sort"><![CDATA[Sortieren]]></item>
 		<item name="wcf.global.state.closed"><![CDATA[Geschlossen]]></item>
 		<item name="wcf.global.state.trashed"><![CDATA[Im Papierkorb]]></item>
 		<item name="wcf.global.subject"><![CDATA[Betreff]]></item>

@@ -19,6 +19,8 @@ import { getSortDialog } from "WoltLabSuite/Core/Api/Gridviews/GetSortDialog";
 import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
 import { getPhrase } from "WoltLabSuite/Core/Language";
 import Sortable from "sortablejs";
+import { prepareRequest } from "WoltLabSuite/Core/Ajax/Backend";
+import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 
 export class GridView {
   readonly #gridClassName: string;
@@ -162,10 +164,14 @@ export class GridView {
       throw new Error("Failed to load sort dialog");
     }
 
-    const dialog = dialogFactory().fromHtml(response.value).withoutControls();
+    const dialog = dialogFactory()
+      .fromHtml(response.value)
+      .asPrompt({
+        primary: getPhrase("wcf.global.button.saveSorting"),
+      });
     dialog.show(getPhrase("wcf.global.sort"));
 
-    new Sortable(dialog.content.querySelector(".gridView__sortBody")!, {
+    const sortable = new Sortable(dialog.content.querySelector(".gridView__sortBody")!, {
       direction: "vertical",
       animation: 150,
       fallbackOnBody: true,
@@ -173,6 +179,15 @@ export class GridView {
       draggable: "tr",
     });
 
-    // TODO save sorting
+    dialog.addEventListener("primary", () => {
+      void prepareRequest(`${window.WSC_RPC_API_URL}${saveEndpoint}`)
+        .post({ objectIDs: sortable.toArray().map(Number) })
+        .fetchAsJson()
+        .then(() => {
+          showNotification();
+
+          void this.#loadRows(StateChangeCause.Change);
+        });
+    });
   }
 }

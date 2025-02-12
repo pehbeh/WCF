@@ -6,7 +6,7 @@
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.2
  */
-define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridviews/GetRows", "../Api/Interactions/GetBulkContextMenuOptions", "../Dom/Change/Listener", "../Dom/Util", "../Helper/Selector", "../Ui/Dropdown/Simple", "./GridView/State", "WoltLabSuite/Core/Api/Gridviews/GetSortDialog", "WoltLabSuite/Core/Component/Dialog", "WoltLabSuite/Core/Language", "sortablejs"], function (require, exports, tslib_1, GetRow_1, GetRows_1, GetBulkContextMenuOptions_1, Listener_1, Util_1, Selector_1, Simple_1, State_1, GetSortDialog_1, Dialog_1, Language_1, sortablejs_1) {
+define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridviews/GetRows", "../Api/Interactions/GetBulkContextMenuOptions", "../Dom/Change/Listener", "../Dom/Util", "../Helper/Selector", "../Ui/Dropdown/Simple", "./GridView/State", "WoltLabSuite/Core/Api/Gridviews/GetSortDialog", "WoltLabSuite/Core/Component/Dialog", "WoltLabSuite/Core/Language", "sortablejs", "WoltLabSuite/Core/Ajax/Backend", "WoltLabSuite/Core/Ui/Notification"], function (require, exports, tslib_1, GetRow_1, GetRows_1, GetBulkContextMenuOptions_1, Listener_1, Util_1, Selector_1, Simple_1, State_1, GetSortDialog_1, Dialog_1, Language_1, sortablejs_1, Backend_1, Notification_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GridView = void 0;
@@ -116,16 +116,28 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
             if (!response.ok) {
                 throw new Error("Failed to load sort dialog");
             }
-            const dialog = (0, Dialog_1.dialogFactory)().fromHtml(response.value).withoutControls();
+            const dialog = (0, Dialog_1.dialogFactory)()
+                .fromHtml(response.value)
+                .asPrompt({
+                primary: (0, Language_1.getPhrase)("wcf.global.button.saveSorting"),
+            });
             dialog.show((0, Language_1.getPhrase)("wcf.global.sort"));
-            new sortablejs_1.default(dialog.content.querySelector(".gridView__sortBody"), {
+            const sortable = new sortablejs_1.default(dialog.content.querySelector(".gridView__sortBody"), {
                 direction: "vertical",
                 animation: 150,
                 fallbackOnBody: true,
                 dataIdAttr: "data-object-id",
                 draggable: "tr",
             });
-            // TODO save sorting
+            dialog.addEventListener("primary", () => {
+                void (0, Backend_1.prepareRequest)(`${window.WSC_RPC_API_URL}${saveEndpoint}`)
+                    .post({ objectIDs: sortable.toArray().map(Number) })
+                    .fetchAsJson()
+                    .then(() => {
+                    (0, Notification_1.show)();
+                    void this.#loadRows(0 /* StateChangeCause.Change */);
+                });
+            });
         }
     }
     exports.GridView = GridView;
