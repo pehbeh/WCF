@@ -21,7 +21,7 @@ final class GridViewSortButton
     public function __construct(
         public readonly string $sortOrderColumnId,
         private readonly string $saveEndpoint,
-        public readonly ?IColumnRenderer $renderer = null,
+        public readonly ?IColumnRenderer $titleColumnRenderer = null,
         /** @var string[] */
         public readonly array $filterColumns = []
     ) {
@@ -32,7 +32,6 @@ final class GridViewSortButton
      */
     public function renderButton(AbstractGridView $view): string
     {
-        // TODO
         $title = WCF::getLanguage()->get("wcf.global.sort");
         $saveEndpoint = StringUtil::encodeHTML($this->saveEndpoint);
         if ($this->filterColumns !== []) {

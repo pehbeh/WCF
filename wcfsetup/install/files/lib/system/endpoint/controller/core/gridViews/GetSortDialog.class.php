@@ -65,8 +65,8 @@ final class GetSortDialog implements IController
 
         $titleColumn = \array_filter($view->getColumns(), fn($column) => $column->isTitleColumn());
         $titleColumn = \reset($titleColumn);
-        if ($sortButton->renderer !== null) {
-            $titleColumn->renderer($sortButton->renderer);
+        if ($sortButton->titleColumnRenderer !== null) {
+            $titleColumn->renderer($sortButton->titleColumnRenderer);
         }
 
         foreach ($view->getVisibleColumns() as $column) {
