@@ -48,6 +48,7 @@ final class GetSortDialog implements IController
 
         $view->setSortField($sortButton->sortOrderColumnId);
         $view->setSortOrder("ASC");
+        $view->setRowsPerPage(0);
 
         if ($sortButton->filterColumns !== []) {
             $view->setActiveFilters(
