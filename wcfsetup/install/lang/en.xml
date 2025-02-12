@@ -4264,8 +4264,7 @@ Allowed extensions: gif, jpg, jpeg, png, webp]]></item>
 		<item name="wcf.moderation.filterByUser.allEntries"><![CDATA[All Items]]></item>
 		<item name="wcf.moderation.filterByUser.myself"><![CDATA[Myself ({$__wcf->getUser()->username})]]></item>
 		<item name="wcf.moderation.filterByUser.nobody"><![CDATA[Nobody]]></item>
-		<item name="wcf.moderation.outstandingItems"><![CDATA[Pending Items]]></item>
-		<item name="wcf.moderation.doneItems"><![CDATA[Resolved Items]]></item>
+		<item name="wcf.moderation.items"><![CDATA[Moderation Items]]></item>
 		<item name="wcf.moderation.lastChangeTime"><![CDATA[Last Change]]></item>
 		<item name="wcf.moderation.moderation"><![CDATA[Moderation]]></item>
 		<item name="wcf.moderation.noMoreItems"><![CDATA[You have no recent items.]]></item>
@@ -4307,7 +4306,6 @@ Allowed extensions: gif, jpg, jpeg, png, webp]]></item>
 		<item name="wcf.moderation.markAsRead.doubleClick"><![CDATA[Double-Click to Mark This Item Read]]></item>
 		<item name="wcf.moderation.comments"><![CDATA[Comments]]></item>
 		<item name="wcf.moderation.username"><![CDATA[Author]]></item>
-		<item name="wcf.moderation.noEntries"><![CDATA[There are no items at the moment. <a href="#" class="jsStaticDialog" data-dialog-id="moderationListSortFilter" role="button">Change the filters.</a>{if $hasActiveFilter} <a href="{link controller='ModerationList'}{/link}">Reset the active filters.</a>{/if}]]></item>
 	</category>
 	<category name="wcf.moderation.activation">
 		<item name="wcf.moderation.activation"><![CDATA[Approval]]></item>
@@ -7501,5 +7499,8 @@ your notifications on <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phras
 	<item name="wcf.clipboard.item.com.woltlab.wcf.tag.delete.confirmMessage"/>
 	<item name="wcf.clipboard.item.com.woltlab.wcf.tag.setAsSynonyms"/>
 	<item name="wcf.clipboard.label.com.woltlab.wcf.tag.marked"/>
+	<item name="wcf.moderation.noEntries"/>
+	<item name="wcf.moderation.outstandingItems"/>
+	<item name="wcf.moderation.doneItems"/>
 </delete>
 </language>
