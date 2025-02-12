@@ -7,8 +7,8 @@
  * @since 6.2
  */
 
-import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 async function handleFormBuilderDialogAction(element: HTMLElement, endpoint: string): Promise<void> {
   const { ok } = await dialogFactory().usingFormBuilder().fromEndpoint(endpoint);
@@ -23,8 +23,7 @@ async function handleFormBuilderDialogAction(element: HTMLElement, endpoint: str
     }),
   );
 
-  // TODO: This shows a generic success message and should be replaced with a more specific message.
-  showNotification();
+  showDefaultSuccessSnackbar();
 }
 
 export function setup(identifier: string, container: HTMLElement): void {

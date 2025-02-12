@@ -6,7 +6,7 @@
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.2
  */
-define(["require", "exports", "WoltLabSuite/Core/Ui/Notification", "WoltLabSuite/Core/Component/Dialog"], function (require, exports, Notification_1, Dialog_1) {
+define(["require", "exports", "WoltLabSuite/Core/Component/Dialog", "WoltLabSuite/Core/Component/Snackbar"], function (require, exports, Dialog_1, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
@@ -18,8 +18,7 @@ define(["require", "exports", "WoltLabSuite/Core/Ui/Notification", "WoltLabSuite
         element.dispatchEvent(new CustomEvent("interaction:invalidate", {
             bubbles: true,
         }));
-        // TODO: This shows a generic success message and should be replaced with a more specific message.
-        (0, Notification_1.show)();
+        (0, Snackbar_1.showDefaultSuccessSnackbar)();
     }
     function setup(identifier, container) {
         container.addEventListener("interaction:execute", (event) => {
