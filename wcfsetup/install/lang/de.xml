@@ -3497,15 +3497,9 @@ Erlaubte Dateiendungen: {', '|implode:$attachmentHandler->getFormattedAllowedExt
 		<item name="wcf.clipboard.item.com.woltlab.wcf.user.confirmEmail"><![CDATA[E-Mail-Adresse bestätigen ({#$count})]]></item>
 		<item name="wcf.clipboard.item.com.woltlab.wcf.user.unconfirmEmail"><![CDATA[Bestätigung der E-Mail-Adresse widerrufen ({#$count})]]></item>
 		<item name="wcf.clipboard.item.com.woltlab.wcf.user.deleteUserContent"><![CDATA[Inhalte der Benutzer löschen ({#$count})]]></item>
-		<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.assignUserByClipboard"><![CDATA[Benutzer zuweisen ({#$count})]]></item>
-		<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.enableContent"><![CDATA[Inhalt freischalten ({#$count})]]></item>
-		<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.removeActivationContent"><![CDATA[Freizuschaltenden Inhalt löschen ({#$count})]]></item>
-		<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.removeReport"><![CDATA[Meldung schließen ({#$count})]]></item>
-		<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.removeReportContent"><![CDATA[Gemeldeten Inhalt löschen ({#$count})]]></item>
 		<item name="wcf.clipboard.label.com.woltlab.wcf.article.marked"><![CDATA[{if $count == 1}Ein{else}{#$count}{/if} Artikel]]></item>
 		<item name="wcf.clipboard.label.com.woltlab.wcf.media.marked"><![CDATA[{if $count == 1}Eine Datei{else}{#$count} Dateien{/if}]]></item>
 		<item name="wcf.clipboard.label.com.woltlab.wcf.user.marked"><![CDATA[{if $count == 1}Ein{else}{#$count}{/if} Benutzer]]></item>
-		<item name="wcf.clipboard.label.com.woltlab.wcf.moderation.queue.marked"><![CDATA[{plural value=$count 1='Ein Moderationseintrag' other='# Moderationseinträge'}]]></item>
 	</category>
 	<category name="wcf.comment">
 		<item name="wcf.comment.add"><![CDATA[Kommentar schreiben …]]></item>
@@ -7611,5 +7605,11 @@ Benachrichtigungen auf <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phra
 	<item name="wcf.moderation.noEntries"/>
 	<item name="wcf.moderation.outstandingItems"/>
 	<item name="wcf.moderation.doneItems"/>
+	<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.assignUserByClipboard"/>
+	<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.enableContent"/>
+	<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.removeActivationContent"/>
+	<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.removeReport"/>
+	<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.removeReportContent"/>
+	<item name="wcf.clipboard.label.com.woltlab.wcf.moderation.queue.marked"/>
 </delete>
 </language>

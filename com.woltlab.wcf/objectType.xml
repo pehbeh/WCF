@@ -22,11 +22,6 @@
 			<definitionname>com.woltlab.wcf.clipboardItem</definitionname>
 			<listclassname>wcf\data\article\ArticleList</listclassname>
 		</type>
-		<type>
-			<name>com.woltlab.wcf.moderation.queue</name>
-			<definitionname>com.woltlab.wcf.clipboardItem</definitionname>
-			<listclassname>wcf\data\moderation\queue\ViewableModerationQueueList</listclassname>
-		</type>
 		<!-- /clipboard items -->
 		<!-- articles -->
 		<type>
@@ -1813,6 +1808,9 @@
 		</type>
 		<type name="com.woltlab.wcf.sitemap">
 			<definitionname>com.woltlab.wcf.rebuildData</definitionname>
+		</type>
+		<type name="com.woltlab.wcf.moderation.queue">
+			<definitionname>com.woltlab.wcf.clipboardItem</definitionname>
 		</type>
 	</delete>
 </data>
