@@ -2,6 +2,7 @@
 
 namespace wcf\page;
 
+use wcf\data\moderation\queue\ModerationQueue;
 use wcf\system\gridView\user\ModerationQueueGridView;
 
 /**
@@ -28,6 +29,6 @@ final class ModerationListPage extends AbstractGridViewPage
     #[\Override]
     protected function createGridView(): ModerationQueueGridView
     {
-        return new ModerationQueueGridView();
+        return new ModerationQueueGridView(ModerationQueue::STATUS_OUTSTANDING);
     }
 }
