@@ -172,6 +172,8 @@ export class GridView {
       throw new Error("Failed to load sort dialog");
     }
 
+    // TODO handle if empty response.value. Then no object to sort
+
     const dialog = dialogFactory()
       .fromHtml(response.value)
       .asPrompt({
