@@ -8,7 +8,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use wcf\data\moderation\queue\ModerationQueue;
 use wcf\data\moderation\queue\ModerationQueueList;
-use wcf\data\object\type\ObjectTypeCache;
 use wcf\http\Helper;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\exception\PermissionDeniedException;
@@ -20,7 +19,7 @@ use wcf\system\form\builder\Psr15DialogForm;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-abstract class AbstractModerationReportAction implements RequestHandlerInterface
+abstract class AbstractModerationAction implements RequestHandlerInterface
 {
     #[\Override]
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -52,7 +51,7 @@ abstract class AbstractModerationReportAction implements RequestHandlerInterface
             $this->assertCanEditQueueEntry($queue);
         }
 
-        $form = $this->getForm();
+        $form = $this->getForm($moderationList->getObjects());
 
         if ($request->getMethod() === 'GET') {
             return $form->toResponse();
@@ -62,11 +61,12 @@ abstract class AbstractModerationReportAction implements RequestHandlerInterface
                 return $response;
             }
 
+            $jsonResponse = [];
             foreach ($moderationList as $queue) {
-                $this->performAction($queue, $form);
+                $jsonResponse = \array_merge($jsonResponse, $this->performAction($queue, $form));
             }
 
-            return new JsonResponse([]);
+            return new JsonResponse($jsonResponse);
         } else {
             throw new \LogicException('Unreachable');
         }
@@ -74,17 +74,15 @@ abstract class AbstractModerationReportAction implements RequestHandlerInterface
 
     protected function assertCanEditQueueEntry(ModerationQueue $queue): void
     {
-        $definition = ObjectTypeCache::getInstance()->getObjectType($queue->objectTypeID)->getDefinition();
-        if ($definition->definitionName !== 'com.woltlab.wcf.moderation.report') {
-            throw new PermissionDeniedException();
-        }
-
         if (!$queue->canEdit()) {
             throw new PermissionDeniedException();
         }
     }
 
-    abstract protected function getForm(): Psr15DialogForm;
+    /**
+     * @param ModerationQueue[] $moderationQueues
+     */
+    abstract protected function getForm(array $moderationQueues): Psr15DialogForm;
 
-    abstract protected function performAction(ModerationQueue $queue, Psr15DialogForm $form): void;
+    abstract protected function performAction(ModerationQueue $queue, Psr15DialogForm $form): array;
 }

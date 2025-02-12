@@ -4,6 +4,7 @@ namespace wcf\action;
 
 use wcf\data\moderation\queue\ModerationQueue;
 use wcf\data\moderation\queue\ModerationQueueEditor;
+use wcf\data\object\type\ObjectTypeCache;
 use wcf\system\exception\PermissionDeniedException;
 use wcf\system\form\builder\field\BooleanFormField;
 use wcf\system\form\builder\Psr15DialogForm;
@@ -17,19 +18,25 @@ use wcf\system\WCF;
  * @license   GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since     6.2
  */
-final class ModerationReportQueueCloseAction extends AbstractModerationReportAction
+final class ModerationReportQueueCloseAction extends AbstractModerationAction
 {
-
+    #[\Override]
     protected function assertCanEditQueueEntry(ModerationQueue $queue): void
     {
         parent::assertCanEditQueueEntry($queue);
+
+        $definition = ObjectTypeCache::getInstance()->getObjectType($queue->objectTypeID)->getDefinition();
+        if ($definition->definitionName !== 'com.woltlab.wcf.moderation.report') {
+            throw new PermissionDeniedException();
+        }
 
         if ($queue->isDone()) {
             throw new PermissionDeniedException();
         }
     }
 
-    protected function getForm(): Psr15DialogForm
+    #[\Override]
+    protected function getForm(array $moderationQueues): Psr15DialogForm
     {
         $form = new Psr15DialogForm(
             static::class,
@@ -49,11 +56,13 @@ final class ModerationReportQueueCloseAction extends AbstractModerationReportAct
     }
 
     #[\Override]
-    protected function performAction(ModerationQueue $queue, Psr15DialogForm $form): void
+    protected function performAction(ModerationQueue $queue, Psr15DialogForm $form): array
     {
         $data = $form->getData()['data'];
 
         $editor = new ModerationQueueEditor($queue);
         $editor->markAsRejected(\boolval($data['markAsJustified']));
+
+        return [];
     }
 }

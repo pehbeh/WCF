@@ -34,7 +34,7 @@ final class DeleteContent implements IController
 
         $parameters = Helper::mapApiParameters($request, DeleteContentParameters::class);
 
-        $this->deleteContent($queue, $parameters->reason);
+        $this->deleteContent($queue, $parameters->reason ?? '');
 
         return new JsonResponse([]);
     }
@@ -82,6 +82,6 @@ final class DeleteContent implements IController
 final class DeleteContentParameters
 {
     public function __construct(
-        public readonly string $reason,
+        public readonly ?string $reason = null
     ) {}
 }
