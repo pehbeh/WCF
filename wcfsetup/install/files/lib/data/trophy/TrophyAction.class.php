@@ -3,7 +3,6 @@
 namespace wcf\data\trophy;
 
 use wcf\data\AbstractDatabaseObjectAction;
-use wcf\data\ISortableAction;
 use wcf\data\IToggleAction;
 use wcf\data\IUploadAction;
 use wcf\data\TDatabaseObjectToggle;
@@ -30,7 +29,7 @@ use wcf\system\WCF;
  * @method  TrophyEditor[]      getObjects()
  * @method  TrophyEditor        getSingleObject()
  */
-class TrophyAction extends AbstractDatabaseObjectAction implements IToggleAction, IUploadAction, ISortableAction
+class TrophyAction extends AbstractDatabaseObjectAction implements IToggleAction, IUploadAction
 {
     use TDatabaseObjectToggle;
 
@@ -312,47 +311,5 @@ class TrophyAction extends AbstractDatabaseObjectAction implements IToggleAction
                 }
             }
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function validateUpdatePosition()
-    {
-        WCF::getSession()->checkPermissions($this->permissionsUpdate);
-
-        if (!isset($this->parameters['data']['structure']) || !\is_array($this->parameters['data']['structure'])) {
-            throw new UserInputException('structure');
-        }
-
-        $trophyList = new TrophyList();
-        $trophyList->setObjectIDs($this->parameters['data']['structure'][0]);
-        $trophyList->readObjects();
-        if (\count($trophyList) !== \count($this->parameters['data']['structure'][0])) {
-            throw new UserInputException('structure');
-        }
-
-        $this->readInteger('offset', true, 'data');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function updatePosition()
-    {
-        $sql = "UPDATE  wcf1_trophy
-                SET     showOrder = ?
-                WHERE   trophyID = ?";
-        $statement = WCF::getDB()->prepare($sql);
-
-        $showOrder = $this->parameters['data']['offset'];
-        WCF::getDB()->beginTransaction();
-        foreach ($this->parameters['data']['structure'][0] as $trophyID) {
-            $statement->execute([
-                $showOrder++,
-                $trophyID,
-            ]);
-        }
-        WCF::getDB()->commitTransaction();
     }
 }
