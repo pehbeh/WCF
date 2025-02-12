@@ -60,3 +60,6 @@ nbactions.xml
 
 # Node.js
 node_modules/
+
+# Composer
+/vendor/
