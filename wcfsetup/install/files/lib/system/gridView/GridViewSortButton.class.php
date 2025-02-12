@@ -37,7 +37,7 @@ final class GridViewSortButton
         if ($this->filterColumns !== []) {
             $endpoint = StringUtil::encodeHTML(
                 LinkHandler::getInstance()->getControllerLink(GridViewSortAction::class, [
-                    'gridView' => $view->getID(),
+                    'gridView' => $view->getClassName(),
                     'gridViewParameters' => $view->getParameters()
                 ])
             );

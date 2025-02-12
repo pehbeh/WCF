@@ -55,6 +55,9 @@ final class GridViewSortAction implements RequestHandlerInterface
         if ($view->getSortButton() === null) {
             throw new IllegalLinkException();
         }
+        if ($view->getSortButton()->filterColumns === []) {
+            throw new IllegalLinkException();
+        }
 
         $form = $this->getForm($view);
 
@@ -67,11 +70,6 @@ final class GridViewSortAction implements RequestHandlerInterface
             }
 
             $data = $form->getData()['data'];
-            foreach ($data as $key => $value) {
-                if ($value === '' || $value === null) {
-                    unset($data[$key]);
-                }
-            }
 
             return new JsonResponse([
                 'result' => $data
@@ -88,8 +86,16 @@ final class GridViewSortAction implements RequestHandlerInterface
             WCF::getLanguage()->get('wcf.global.filter')
         );
 
-        foreach ($gridView->getFilterableColumns() as $column) {
-            $form->appendChild($column->getFilterFormField());
+        $sortableButton = $gridView->getSortButton();
+        $columns = \array_filter($gridView->getFilterableColumns(), static function ($column) use ($sortableButton) {
+            return \in_array($column->getID(), $sortableButton->filterColumns);
+        });
+
+        foreach ($columns as $column) {
+            $form->appendChild(
+                $column->getFilterFormField()
+                    ->required()
+            );
         }
 
         $form->markRequiredFields(false);

@@ -104,7 +104,15 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
                 const endpoint = sortButton.dataset.endpoint;
                 const saveEndpoint = sortButton.dataset.saveEndpoint;
                 if (endpoint.trim().length > 0) {
-                    // TODO open filter dialog if needed
+                    void (0, Dialog_1.dialogFactory)()
+                        .usingFormBuilder()
+                        .fromEndpoint(endpoint)
+                        .then((result) => {
+                        if (result.ok) {
+                            const filters = new Map(Object.entries(result.result));
+                            void this.#renderSortDialog(saveEndpoint, filters);
+                        }
+                    });
                 }
                 else {
                     void this.#renderSortDialog(saveEndpoint);

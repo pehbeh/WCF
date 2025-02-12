@@ -151,7 +151,15 @@ export class GridView {
       const endpoint = sortButton.dataset.endpoint!;
       const saveEndpoint = sortButton.dataset.saveEndpoint!;
       if (endpoint.trim().length > 0) {
-        // TODO open filter dialog if needed
+        void dialogFactory()
+          .usingFormBuilder()
+          .fromEndpoint(endpoint)
+          .then((result) => {
+            if (result.ok) {
+              const filters = new Map(Object.entries(result.result as ArrayLike<string>));
+              void this.#renderSortDialog(saveEndpoint, filters);
+            }
+          });
       } else {
         void this.#renderSortDialog(saveEndpoint);
       }
