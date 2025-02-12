@@ -40,9 +40,7 @@ class Snackbar extends EventTarget {
     this.#snackbarElement.querySelector(".snackbar__message")!.textContent = message;
   }
 
-  markAsDone(message: string): void {
-    this.message = message;
-
+  markAsDone(): void {
     this.#type = SnackbarType.Success;
     this.#updateVisualType();
 

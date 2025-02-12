@@ -107,6 +107,7 @@ final class PreloadPhrasesCollectingListener
         $event->preload('wcf.global.reason.optional');
         $event->preload('wcf.global.scrollUp');
         $event->preload('wcf.global.select');
+        $event->preload('wcf.global.snackbar.progress');
         $event->preload('wcf.global.success');
         $event->preload('wcf.global.success.add');
         $event->preload('wcf.global.success.edit');

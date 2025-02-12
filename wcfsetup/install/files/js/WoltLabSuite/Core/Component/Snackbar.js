@@ -35,8 +35,7 @@ define(["require", "exports", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/H
             this.#message = message;
             this.#snackbarElement.querySelector(".snackbar__message").textContent = message;
         }
-        markAsDone(message) {
-            this.message = message;
+        markAsDone() {
             this.#type = SnackbarType.Success;
             this.#updateVisualType();
             const icon = this.#snackbarElement.querySelector(".snackbar__icon fa-icon");

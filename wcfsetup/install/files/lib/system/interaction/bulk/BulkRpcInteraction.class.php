@@ -35,6 +35,7 @@ class BulkRpcInteraction extends AbstractBulkInteraction
     public function render(array $objects): string
     {
         $identifier = StringUtil::encodeJS($this->getIdentifier());
+        $dataLabel = WCF::getLanguage()->get($this->languageItem);
         $label = WCF::getLanguage()->get($this->languageItem) . ' (' . \count($objects) . ')';
         $confirmationMessage = WCF::getLanguage()->getDynamicVariable($this->confirmationMessage);
         $endpoint = StringUtil::encodeHTML(
@@ -54,6 +55,7 @@ class BulkRpcInteraction extends AbstractBulkInteraction
                 data-object-ids="{$objectIDs}"
                 data-confirmation-type="{$this->confirmationType->toString()}"
                 data-confirmation-message="{$confirmationMessage}"
+                data-label="{$dataLabel}"
             >
                 {$label}
             </button>

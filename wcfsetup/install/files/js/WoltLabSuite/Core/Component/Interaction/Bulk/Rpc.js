@@ -6,64 +6,54 @@
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.2
  */
-define(["require", "exports", "WoltLabSuite/Core/Api/DeleteObject", "WoltLabSuite/Core/Api/PostObject", "WoltLabSuite/Core/Ui/Notification", "../Confirmation"], function (require, exports, DeleteObject_1, PostObject_1, Notification_1, Confirmation_1) {
+define(["require", "exports", "WoltLabSuite/Core/Api/DeleteObject", "WoltLabSuite/Core/Api/PostObject", "../Confirmation", "WoltLabSuite/Core/Component/Snackbar", "WoltLabSuite/Core/Language"], function (require, exports, DeleteObject_1, PostObject_1, Confirmation_1, Snackbar_1, Language_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
-    async function handleRpcInteraction(container, objectIds, endpoint, confirmationType, customConfirmationMessage = "") {
+    async function handleRpcInteraction(container, objectIds, endpoint, label, confirmationType, customConfirmationMessage = "") {
         const confirmationResult = await (0, Confirmation_1.handleConfirmation)("", confirmationType, customConfirmationMessage);
         if (!confirmationResult.result) {
             return;
         }
-        if (confirmationType == Confirmation_1.ConfirmationType.Delete) {
-            for (let i = 0; i < objectIds.length; i++) {
-                const result = await (0, DeleteObject_1.deleteObject)(endpoint.replace(/%s/, objectIds[i].toString()));
-                if (!result.ok) {
-                    return;
-                }
+        const snackbar = (0, Snackbar_1.showProgressSnackbar)((0, Language_1.getPhrase)("wcf.global.snackbar.progress", {
+            label,
+            iteration: 0,
+            length: objectIds.length,
+        }));
+        for (let i = 0; i < objectIds.length; i++) {
+            if (confirmationType == Confirmation_1.ConfirmationType.Delete) {
+                await (0, DeleteObject_1.deleteObject)(endpoint.replace(/%s/, objectIds[i].toString()));
             }
-        }
-        else {
-            for (let i = 0; i < objectIds.length; i++) {
-                const result = await (0, PostObject_1.postObject)(endpoint.replace(/%s/, objectIds[i].toString()), confirmationResult.reason ? { reason: confirmationResult.reason } : undefined);
-                if (!result.ok) {
-                    return;
-                }
+            else {
+                await (0, PostObject_1.postObject)(endpoint.replace(/%s/, objectIds[i].toString()), confirmationResult.reason ? { reason: confirmationResult.reason } : undefined);
             }
-        }
-        if (confirmationType === Confirmation_1.ConfirmationType.Delete) {
-            // TODO: This shows a generic success message and should be replaced with a more specific message.
-            (0, Notification_1.show)(undefined, () => {
-                for (let i = 0; i < objectIds.length; i++) {
-                    const element = container.querySelector(`[data-object-id="${objectIds[i]}"]`);
-                    if (!element) {
-                        continue;
-                    }
-                    element.dispatchEvent(new CustomEvent("interaction:remove", {
-                        bubbles: true,
-                    }));
-                }
+            snackbar.message = (0, Language_1.getPhrase)("wcf.global.snackbar.progress", {
+                label,
+                iteration: i + 1,
+                length: objectIds.length,
             });
-        }
-        else {
-            for (let i = 0; i < objectIds.length; i++) {
-                const element = container.querySelector(`[data-object-id="${objectIds[i]}"]`);
-                if (!element) {
-                    continue;
-                }
+            const element = container.querySelector(`[data-object-id="${objectIds[i]}"]`);
+            if (!element) {
+                continue;
+            }
+            if (confirmationType == Confirmation_1.ConfirmationType.Delete) {
+                element.dispatchEvent(new CustomEvent("interaction:remove", {
+                    bubbles: true,
+                }));
+            }
+            else {
                 element.dispatchEvent(new CustomEvent("interaction:invalidate", {
                     bubbles: true,
                 }));
             }
-            // TODO: This shows a generic success message and should be replaced with a more specific message.
-            (0, Notification_1.show)();
         }
+        snackbar.markAsDone();
         container.dispatchEvent(new CustomEvent("interaction:reset-selection"));
     }
     function setup(identifier, container) {
         container.addEventListener("bulk-interaction", (event) => {
             if (event.detail.bulkInteraction === identifier) {
-                void handleRpcInteraction(container, JSON.parse(event.detail.objectIds), event.detail.endpoint, event.detail.confirmationType, event.detail.confirmationMessage);
+                void handleRpcInteraction(container, JSON.parse(event.detail.objectIds), event.detail.endpoint, event.detail.label, event.detail.confirmationType, event.detail.confirmationMessage);
             }
         });
     }
