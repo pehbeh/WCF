@@ -172,7 +172,10 @@ export class GridView {
       throw new Error("Failed to load sort dialog");
     }
 
-    // TODO handle if empty response.value. Then no object to sort
+    if (!response.value?.trim().length) {
+      dialogFactory().withoutContent().asAlert().show(getPhrase("wcf.global.sort.noObjects"));
+      return;
+    }
 
     const dialog = dialogFactory()
       .fromHtml(response.value)

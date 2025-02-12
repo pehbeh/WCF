@@ -124,6 +124,11 @@ define(["require", "exports", "tslib", "../Api/Gridviews/GetRow", "../Api/Gridvi
             if (!response.ok) {
                 throw new Error("Failed to load sort dialog");
             }
+            // TODO handle if empty response.value. Then no object to sort
+            if (!response.value?.trim().length) {
+                (0, Dialog_1.dialogFactory)().withoutContent().asAlert().show((0, Language_1.getPhrase)("wcf.global.sort.noObjects"));
+                return;
+            }
             const dialog = (0, Dialog_1.dialogFactory)()
                 .fromHtml(response.value)
                 .asPrompt({

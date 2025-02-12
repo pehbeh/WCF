@@ -3956,6 +3956,7 @@ Attachments:
 		<item name="wcf.global.sortOrder.ascending"><![CDATA[Ascending]]></item>
 		<item name="wcf.global.sortOrder.descending"><![CDATA[Descending]]></item>
 		<item name="wcf.global.sort"><![CDATA[Sort]]></item>
+		<item name="wcf.global.sort.noObjects"><![CDATA[No entries for sorting available.]]></item>
 		<item name="wcf.global.state.closed"><![CDATA[Closed]]></item>
 		<item name="wcf.global.state.trashed"><![CDATA[Deleted]]></item>
 		<item name="wcf.global.subject"><![CDATA[Subject]]></item>

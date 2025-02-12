@@ -11,14 +11,14 @@ import { prepareRequest } from "WoltLabSuite/Core/Ajax/Backend";
 import { ApiResult, apiResultFromError, apiResultFromValue } from "../Result";
 
 type Response = {
-  template: string;
+  template?: string;
 };
 
 export async function getSortDialog(
   gridViewClass: string,
   filters?: Map<string, string>,
   gridViewParameters?: Map<string, string>,
-): Promise<ApiResult<string>> {
+): Promise<ApiResult<undefined | string>> {
   const url = new URL(`${window.WSC_RPC_API_URL}core/grid-views/sort`);
   url.searchParams.set("gridView", gridViewClass);
   if (filters) {

@@ -57,10 +57,7 @@ final class GetSortDialog implements IController
         }
 
         if ($view->countRows() < 1) {
-            // TODO custom message that there are no objects to sort
-            return new JsonResponse([
-                'template' => null
-            ]);
+            return new JsonResponse([]);
         }
 
         $titleColumn = \array_filter($view->getColumns(), fn($column) => $column->isTitleColumn());
