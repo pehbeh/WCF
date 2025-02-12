@@ -6,6 +6,7 @@ use wcf\action\ModerationQueueAssignUserAction;
 use wcf\action\ModerationReportQueueCloseAction;
 use wcf\data\moderation\queue\ModerationQueue;
 use wcf\data\moderation\queue\ModerationQueueList;
+use wcf\data\moderation\queue\ViewableModerationQueue;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\event\interaction\bulk\user\ModerationQueueBulkInteractionCollecting;
 use wcf\system\event\EventHandler;
@@ -28,6 +29,15 @@ final class ModerationQueueBulkInteractions extends AbstractBulkInteractionProvi
     public function __construct()
     {
         $this->addInteractions([
+            new BulkRpcInteraction(
+                "mark-as-read",
+                "core/moderation-queues/%s/mark-as-read",
+                "wcf.global.button.markAsRead",
+                isAvailableCallback: static function (ModerationQueue $queue) {
+                    $viewableQueue = new ViewableModerationQueue($queue);
+                    return $viewableQueue->isNew();
+                }
+            ),
             new BulkFormBuilderDialogInteraction(
                 "assign-user",
                 ModerationQueueAssignUserAction::class,
