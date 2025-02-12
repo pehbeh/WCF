@@ -174,7 +174,7 @@ async function resizeImage(element: WoltlabCoreFileUploadElement, file: File): P
 
   let fileType: string = resizeConfiguration.fileType;
   if (fileType === "image/jpeg" || fileType === "image/webp") {
-    fileType = "image/webp";
+    fileType = "image/jpeg";
   } else {
     fileType = file.type;
   }
@@ -192,7 +192,7 @@ async function resizeImage(element: WoltlabCoreFileUploadElement, file: File): P
   return resizedFile;
 }
 
-function validateFileLimit(element: WoltlabCoreFileUploadElement): boolean {
+function validateFileLimit(element: WoltlabCoreFileUploadElement, count: number): boolean {
   const maximumCount = element.maximumCount;
   if (maximumCount === -1) {
     return true;
@@ -200,7 +200,7 @@ function validateFileLimit(element: WoltlabCoreFileUploadElement): boolean {
 
   const files = Array.from(element.parentElement!.querySelectorAll("woltlab-core-file"));
   const numberOfUploadedFiles = files.filter((file) => !file.isFailedUpload()).length;
-  if (numberOfUploadedFiles + 1 <= maximumCount) {
+  if (numberOfUploadedFiles + count <= maximumCount) {
     return true;
   }
 
@@ -210,6 +210,12 @@ function validateFileLimit(element: WoltlabCoreFileUploadElement): boolean {
 }
 
 function validateFileSize(element: WoltlabCoreFileUploadElement, file: File): boolean {
+  if (file.size === 0) {
+    innerError(element, getPhrase("wcf.upload.error.emptyFile", { filename: file.name }));
+
+    return false;
+  }
+
   let isImage = false;
   switch (file.type) {
     case "image/gif":
@@ -256,47 +262,54 @@ function validateFileExtension(element: WoltlabCoreFileUploadElement, file: File
 
 export function setup(): void {
   wheneverFirstSeen("woltlab-core-file-upload", (element: WoltlabCoreFileUploadElement) => {
-    element.addEventListener("upload", (event: CustomEvent<File>) => {
-      const file = event.detail;
+    element.addEventListener("upload:files", (event: CustomEvent<{ files: File[] }>) => {
+      const { files } = event.detail;
 
       clearPreviousErrors(element);
 
-      if (!validateFileLimit(element)) {
-        return;
-      } else if (!validateFileExtension(element, file)) {
-        return;
-      } else if (!validateFileSize(element, file)) {
+      if (!validateFileLimit(element, files.length)) {
         return;
       }
 
+      for (const file of files) {
+        if (!validateFileExtension(element, file)) {
+          return;
+        } else if (!validateFileSize(element, file)) {
+          return;
+        }
+      }
+
+      let processImage: (file: File) => Promise<File>;
       if (element.dataset.cropperConfiguration) {
         const cropperConfiguration = JSON.parse(element.dataset.cropperConfiguration) as CropperConfiguration;
 
-        void cropImage(element, file, cropperConfiguration)
-          .then((resizedFile) => {
-            void upload(element, resizedFile);
-          })
-          .catch((e) => {
+        processImage = async (file) => {
+          try {
+            return await cropImage(element, file, cropperConfiguration);
+          } catch (e) {
             element.dispatchEvent(new CustomEvent("cancel"));
 
-            if (e === undefined) {
-              // User closed the dialog.
-              return;
-            }
-
-            if (e instanceof Error) {
-              innerError(element, e.message);
-            }
-          });
+            throw e;
+          }
+        };
       } else {
-        void resizeImage(element, file)
-        .then((resizedFile) => {
-            void upload(element, resizedFile);
-          })
-        .catch(() => {
-          innerError(element, getPhrase("wcf.upload.error.damagedImageFile", { filename: file.name }));
-        });
+        processImage = async (file) => resizeImage(element, file);
       }
+
+      // Resize all files in parallel but keep the original order. This ensures
+      // that files are uploaded in the same order that they were provided by
+      // the browser.
+      void Promise.allSettled(files.map((file) => processImage(file))).then((results) => {
+        for (let i = 0, length = results.length; i < length; i++) {
+          const result = results[i];
+
+          if (result.status === "fulfilled") {
+            void upload(element, result.value);
+          } else if (result.reason !== undefined) {
+            innerError(element, getPhrase("wcf.upload.error.damagedImageFile", { filename: files[i].name }));
+          }
+        }
+      });
     });
 
     element.addEventListener("ckeditorDrop", (event: CustomEvent<CkeditorDropEvent>) => {

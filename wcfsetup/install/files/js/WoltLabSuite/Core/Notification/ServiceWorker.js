@@ -5,7 +5,7 @@
  * @since 6.1
  * @woltlabExcludeBundle tiny
  */
-define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend"], function (require, exports, Backend_1) {
+define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "WoltLabSuite/Core/Notification/Handler"], function (require, exports, Backend_1, Handler_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.serviceWorkerSupported = serviceWorkerSupported;
@@ -26,6 +26,13 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend"], function (requi
                 scope: "/",
             });
             this.#serviceWorkerRegistration = window.navigator.serviceWorker.ready;
+            window.navigator.serviceWorker.addEventListener("message", (event) => {
+                // Validate that this is a message from our service worker
+                if (!(event.source instanceof window.ServiceWorker) || event.source.scriptURL !== this.#serviceWorkerJsUrl) {
+                    return;
+                }
+                (0, Handler_1.updateLastRequestTimestamp)(event.data.time);
+            });
         }
         async register() {
             const currentSubscription = await (await this.#serviceWorkerRegistration).pushManager.getSubscription();

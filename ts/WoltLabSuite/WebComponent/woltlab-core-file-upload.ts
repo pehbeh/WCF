@@ -21,6 +21,7 @@
         }
 
         for (const file of files) {
+          /** @deprecated 6.1 No longer supported */
           const event = new CustomEvent<File>("shouldUpload", {
             cancelable: true,
             detail: file,
@@ -31,11 +32,19 @@
             continue;
           }
 
+          /** @deprecated 6.1 Use `upload:files` instead */
           const uploadEvent = new CustomEvent<File>("upload", {
             detail: file,
           });
           this.dispatchEvent(uploadEvent);
         }
+
+        const event = new CustomEvent<{ files: File[] }>("upload:files", {
+          detail: {
+            files: Array.from(files),
+          },
+        });
+        this.dispatchEvent(event);
 
         // Reset the selected file.
         this.#element.value = "";

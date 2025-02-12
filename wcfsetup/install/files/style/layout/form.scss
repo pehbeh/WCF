@@ -126,7 +126,7 @@ select {
 		input[type="submit"],
 		.button,
 		a.button {
-			flex: 1;
+			flex: 1 0 auto;
 		}
 	}
 }

@@ -104,10 +104,8 @@ final class RenderReponsesParameters
         /** @var positive-int **/
         public readonly int $lastResponseTime,
 
-        /** @var positive-int **/
         public readonly int $lastResponseID,
 
         public readonly bool $loadAllResponses,
-    ) {
-    }
+    ) {}
 }

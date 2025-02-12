@@ -469,7 +469,8 @@ html[data-color-scheme="dark"] .dialog::backdrop {
 	}
 
 	.dialog__document {
-		min-width: 0;
+		min-width: calc(100% - 20px);
+		min-width: 100%;
 	}
 }
 

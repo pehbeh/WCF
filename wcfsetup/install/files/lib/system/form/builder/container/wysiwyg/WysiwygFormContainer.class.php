@@ -13,6 +13,7 @@ use wcf\system\form\builder\field\TMinimumLengthFormField;
 use wcf\system\form\builder\field\wysiwyg\WysiwygAttachmentFormField;
 use wcf\system\form\builder\field\wysiwyg\WysiwygFormField;
 use wcf\system\form\builder\IFormChildNode;
+use wcf\system\form\builder\Psr15DialogForm;
 use wcf\system\form\builder\TWysiwygFormNode;
 use wcf\system\style\FontAwesomeIcon;
 
@@ -536,7 +537,7 @@ class WysiwygFormContainer extends FormContainer
         }
         $this->wysiwygField->supportAttachments($this->attachmentField->isAvailable());
 
-        if ($this->enablePreviewButton) {
+        if ($this->enablePreviewButton && !($this->getDocument() instanceof Psr15DialogForm)) {
             $this->getDocument()->addButton(
                 WysiwygPreviewFormButton::create($this->getWysiwygId() . 'PreviewButton')
                     ->objectType($this->messageObjectType)
