@@ -5,9 +5,7 @@ namespace wcf\system\gridView\admin;
 use wcf\acp\form\BBCodeEditForm;
 use wcf\data\bbcode\BBCodeList;
 use wcf\data\DatabaseObject;
-use wcf\data\DatabaseObjectList;
 use wcf\event\gridView\admin\BBCodeGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\TextFilter;
 use wcf\system\gridView\GridViewColumn;
@@ -74,13 +72,13 @@ final class BBCodeGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): BBCodeList
     {
         return new BBCodeList();
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): BBCodeGridViewInitialized
     {
         return new BBCodeGridViewInitialized($this);
     }

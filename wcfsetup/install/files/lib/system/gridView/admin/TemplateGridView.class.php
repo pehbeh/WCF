@@ -12,7 +12,6 @@ use wcf\data\template\group\TemplateGroupNodeTree;
 use wcf\data\template\Template;
 use wcf\data\template\TemplateList;
 use wcf\event\gridView\admin\TemplateGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\application\ApplicationHandler;
 use wcf\system\cache\builder\TemplateGroupCacheBuilder;
 use wcf\system\form\builder\field\AbstractFormField;
@@ -178,13 +177,13 @@ final class TemplateGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): TemplateList
     {
         return new TemplateList();
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): TemplateGridViewInitialized
     {
         return new TemplateGridViewInitialized($this);
     }

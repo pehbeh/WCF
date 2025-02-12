@@ -4,11 +4,9 @@ namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\UserEditForm;
 use wcf\data\DatabaseObject;
-use wcf\data\DatabaseObjectList;
 use wcf\data\user\authentication\failure\UserAuthenticationFailure;
 use wcf\data\user\authentication\failure\UserAuthenticationFailureList;
 use wcf\event\gridView\admin\UserAuthenticationFailureGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\IpAddressFilter;
 use wcf\system\gridView\filter\SelectFilter;
@@ -119,13 +117,13 @@ final class UserAuthenticationFailureGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): UserAuthenticationFailureList
     {
         return new UserAuthenticationFailureList();
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): UserAuthenticationFailureGridViewInitialized
     {
         return new UserAuthenticationFailureGridViewInitialized($this);
     }

@@ -4,11 +4,9 @@ namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\PaidSubscriptionEditForm;
 use wcf\data\DatabaseObject;
-use wcf\data\DatabaseObjectList;
 use wcf\data\paid\subscription\I18nPaidSubscriptionList;
 use wcf\data\paid\subscription\PaidSubscription;
 use wcf\event\gridView\admin\PaidSubscriptionGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\I18nTextFilter;
 use wcf\system\gridView\filter\NumericFilter;
@@ -148,13 +146,13 @@ final class PaidSubscriptionGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): I18nPaidSubscriptionList
     {
         return new I18nPaidSubscriptionList();
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): PaidSubscriptionGridViewInitialized
     {
         return new PaidSubscriptionGridViewInitialized($this);
     }

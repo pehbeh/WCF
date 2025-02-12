@@ -4,9 +4,7 @@ namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\CaptchaQuestionEditForm;
 use wcf\data\captcha\question\I18nCaptchaQuestionList;
-use wcf\data\DatabaseObjectList;
 use wcf\event\gridView\admin\CaptchaQuestionGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\I18nTextFilter;
 use wcf\system\gridView\filter\NumericFilter;
@@ -79,13 +77,13 @@ final class CaptchaQuestionGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): I18nCaptchaQuestionList
     {
         return new I18nCaptchaQuestionList();
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): CaptchaQuestionGridViewInitialized
     {
         return new CaptchaQuestionGridViewInitialized($this);
     }

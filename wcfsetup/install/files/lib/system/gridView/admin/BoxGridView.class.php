@@ -7,7 +7,6 @@ use wcf\data\box\Box;
 use wcf\data\box\BoxList;
 use wcf\data\DatabaseObjectList;
 use wcf\event\gridView\admin\BoxGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\BooleanFilter;
 use wcf\system\gridView\filter\NumericFilter;
@@ -138,7 +137,7 @@ final class BoxGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): BoxList
     {
         $boxList = new BoxList();
         $boxList->getConditionBuilder()->add('box.boxType <> ?', ['menu']);
@@ -147,7 +146,7 @@ final class BoxGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): BoxGridViewInitialized
     {
         return new BoxGridViewInitialized($this);
     }

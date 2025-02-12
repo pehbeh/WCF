@@ -517,18 +517,6 @@ parameters:
 			path: wcfsetup/install/files/lib/system/email/mime/RecipientAwareTextMimePart.class.php
 
 		-
-			message: '#^Argument of an invalid type wcf\\data\\comment\\Comment supplied for foreach, only iterables are supported\.$#'
-			identifier: foreach.nonIterable
-			count: 1
-			path: wcfsetup/install/files/lib/system/endpoint/controller/core/comments/RenderComment.class.php
-
-		-
-			message: '#^If condition is always true\.$#'
-			identifier: if.alwaysTrue
-			count: 1
-			path: wcfsetup/install/files/lib/system/endpoint/controller/core/comments/responses/RenderResponses.class.php
-
-		-
 			message: '#^Constructor of class wcf\\system\\exception\\ErrorException has an unused parameter \$filename\.$#'
 			identifier: constructor.unusedParameter
 			count: 1
@@ -1175,6 +1163,12 @@ parameters:
 			identifier: deadCode.unreachable
 			count: 1
 			path: wcfsetup/install/files/lib/system/io/Zip.class.php
+
+		-
+			message: '#^Call to an undefined method wcf\\data\\DatabaseObjectList\:\:getAttachmentList\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: wcfsetup/install/files/lib/system/message/QuickReplyManager.class.php
 
 		-
 			message: '#^Call to function is_array\(\) with string will always evaluate to false\.$#'

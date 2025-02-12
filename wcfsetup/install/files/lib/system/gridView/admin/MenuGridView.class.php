@@ -5,10 +5,8 @@ namespace wcf\system\gridView\admin;
 use wcf\acp\form\MenuEditForm;
 use wcf\data\box\Box;
 use wcf\data\DatabaseObject;
-use wcf\data\DatabaseObjectList;
 use wcf\data\menu\I18nMenuList;
 use wcf\event\gridView\admin\MenuGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\I18nTextFilter;
 use wcf\system\gridView\filter\NumericFilter;
@@ -110,7 +108,7 @@ final class MenuGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): I18nMenuList
     {
         $list = new I18nMenuList();
         if (!empty($list->sqlSelects)) {
@@ -146,7 +144,7 @@ final class MenuGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): MenuGridViewInitialized
     {
         return new MenuGridViewInitialized($this);
     }

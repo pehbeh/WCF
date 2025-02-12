@@ -3,11 +3,9 @@
 namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\TemplateGroupEditForm;
-use wcf\data\DatabaseObjectList;
 use wcf\data\template\group\I18nTemplateGroupList;
 use wcf\data\template\group\TemplateGroup;
 use wcf\event\gridView\admin\TemplateGroupGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\I18nTextFilter;
 use wcf\system\gridView\filter\NumericFilter;
@@ -94,7 +92,7 @@ final class TemplateGroupGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): I18nTemplateGroupList
     {
         $list = new I18nTemplateGroupList();
         if (!empty($list->sqlSelects)) {
@@ -107,7 +105,7 @@ final class TemplateGroupGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): TemplateGroupGridViewInitialized
     {
         return new TemplateGroupGridViewInitialized($this);
     }

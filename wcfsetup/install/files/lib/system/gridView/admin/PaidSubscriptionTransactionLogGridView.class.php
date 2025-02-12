@@ -5,13 +5,11 @@ namespace wcf\system\gridView\admin;
 use wcf\acp\form\UserEditForm;
 use wcf\acp\page\PaidSubscriptionTransactionLogPage;
 use wcf\data\DatabaseObject;
-use wcf\data\DatabaseObjectList;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\data\paid\subscription\PaidSubscription;
 use wcf\data\paid\subscription\transaction\log\PaidSubscriptionTransactionLog;
 use wcf\data\paid\subscription\transaction\log\PaidSubscriptionTransactionLogList;
 use wcf\event\gridView\admin\PaidSubscriptionTransactionLogGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\cache\builder\PaidSubscriptionCacheBuilder;
 use wcf\system\cache\runtime\UserRuntimeCache;
 use wcf\system\gridView\AbstractGridView;
@@ -151,7 +149,7 @@ final class PaidSubscriptionTransactionLogGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): PaidSubscriptionTransactionLogList
     {
         $list = new PaidSubscriptionTransactionLogList();
         $list->sqlJoins = "
@@ -162,7 +160,7 @@ final class PaidSubscriptionTransactionLogGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): PaidSubscriptionTransactionLogGridViewInitialized
     {
         return new PaidSubscriptionTransactionLogGridViewInitialized($this);
     }

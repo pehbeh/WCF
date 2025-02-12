@@ -9,7 +9,6 @@ use wcf\data\DatabaseObjectList;
 use wcf\data\page\Page;
 use wcf\data\page\PageList;
 use wcf\event\gridView\admin\PageGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\application\ApplicationHandler;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\BooleanFilter;
@@ -195,13 +194,13 @@ final class PageGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): PageList
     {
         return new PageList();
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): PageGridViewInitialized
     {
         return new PageGridViewInitialized($this);
     }
