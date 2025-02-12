@@ -13,20 +13,20 @@ import * as UiNotification from "../Notification";
 async function markAllAsRead(): Promise<void> {
   await dboAction("markAllAsRead", "wcf\\data\\moderation\\queue\\ModerationQueueAction").dispatch();
 
-  document.querySelectorAll(".moderationQueueEntryList .new").forEach((el: HTMLElement) => {
-    el.classList.remove("new");
-  });
+  document
+    .querySelectorAll("#wcf-system-gridView-user-ModerationQueueGridView_table .newMessageBadge")
+    .forEach((el: HTMLElement) => {
+      el.remove();
+    });
   document.querySelector("#outstandingModeration .badgeUpdate")?.remove();
 
   UiNotification.show();
 }
 
 export function setup(): void {
-  document.querySelectorAll(".markAllAsReadButton").forEach((el: HTMLElement) => {
-    el.addEventListener("click", (event) => {
-      event.preventDefault();
+  document.querySelector<HTMLButtonElement>(".markAllAsReadButton")?.addEventListener("click", (event) => {
+    event.preventDefault();
 
-      void markAllAsRead();
-    });
+    void markAllAsRead();
   });
 }

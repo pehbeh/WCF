@@ -13,18 +13,18 @@ define(["require", "exports", "tslib", "../../Ajax", "../Notification"], functio
     UiNotification = tslib_1.__importStar(UiNotification);
     async function markAllAsRead() {
         await (0, Ajax_1.dboAction)("markAllAsRead", "wcf\\data\\moderation\\queue\\ModerationQueueAction").dispatch();
-        document.querySelectorAll(".moderationQueueEntryList .new").forEach((el) => {
-            el.classList.remove("new");
+        document
+            .querySelectorAll("#wcf-system-gridView-user-ModerationQueueGridView_table .newMessageBadge")
+            .forEach((el) => {
+            el.remove();
         });
         document.querySelector("#outstandingModeration .badgeUpdate")?.remove();
         UiNotification.show();
     }
     function setup() {
-        document.querySelectorAll(".markAllAsReadButton").forEach((el) => {
-            el.addEventListener("click", (event) => {
-                event.preventDefault();
-                void markAllAsRead();
-            });
+        document.querySelector(".markAllAsReadButton")?.addEventListener("click", (event) => {
+            event.preventDefault();
+            void markAllAsRead();
         });
     }
 });

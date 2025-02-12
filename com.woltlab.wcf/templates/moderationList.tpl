@@ -17,11 +17,7 @@
 	{unsafe:$gridView->render()}
 </div>
 
-<!-- TODO -->
 <script data-relocate="true">
-	require(['WoltLabSuite/Core/Ui/Moderation/MarkAsRead'], (MarkAsRead) => {
-		MarkAsRead.setup();
-	});
 	require(['WoltLabSuite/Core/Ui/Moderation/MarkAllAsRead'], (MarkAllAsRead) => {
 		MarkAllAsRead.setup();
 	});
