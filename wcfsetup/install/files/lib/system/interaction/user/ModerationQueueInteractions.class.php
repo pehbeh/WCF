@@ -12,8 +12,9 @@ use wcf\system\interaction\AbstractInteractionProvider;
 use wcf\system\interaction\FormBuilderDialogInteraction;
 use wcf\system\interaction\InteractionConfirmationType;
 use wcf\system\interaction\RpcInteraction;
-use wcf\system\moderation\queue\report\IModerationQueueReportHandler;
+use wcf\system\moderation\queue\IModerationQueueHandler;
 use wcf\system\request\LinkHandler;
+use wcf\system\WCF;
 
 /**
  * Interaction provider for moderation queue entries.
@@ -51,13 +52,28 @@ final class ModerationQueueInteractions extends AbstractInteractionProvider
                 InteractionConfirmationType::SoftDeleteWithReason,
                 isAvailableCallback: static function (ViewableModerationQueue $queue) {
                     $objectType = ObjectTypeCache::getInstance()->getObjectType($queue->objectTypeID);
-                    /** @var IModerationQueueReportHandler $processor */
+                    /** @var IModerationQueueHandler $processor */
                     $processor = $objectType->getProcessor();
 
-                    return self::isReportQueue($queue)
-                        && $queue->canEdit()
+                    return $queue->canEdit()
                         && !$queue->isDone()
                         && $processor->canRemoveContent($queue->getDecoratedObject());
+                }
+            ),
+            new RpcInteraction(
+                "enable",
+                "core/moderation-queues/%s/enable-content",
+                "wcf.moderation.activation.enableContent",
+                InteractionConfirmationType::Custom,
+                static function () {
+                    return WCF::getLanguage()->getDynamicVariable(
+                        "wcf.moderation.activation.enableContent.confirmMessage"
+                    );
+                },
+                isAvailableCallback: static function (ViewableModerationQueue $queue) {
+                    return self::isActivationQueue($queue)
+                        && $queue->canEdit()
+                        && !$queue->isDone();
                 }
             )
         ]);
@@ -72,6 +88,13 @@ final class ModerationQueueInteractions extends AbstractInteractionProvider
         $definition = ObjectTypeCache::getInstance()->getObjectType($queue->objectTypeID)->getDefinition();
 
         return $definition->definitionName === 'com.woltlab.wcf.moderation.report';
+    }
+
+    private static function isActivationQueue(ViewableModerationQueue $queue): bool
+    {
+        $definition = ObjectTypeCache::getInstance()->getObjectType($queue->objectTypeID)->getDefinition();
+
+        return $definition->definitionName === 'com.woltlab.wcf.moderation.activation';
     }
 
     #[\Override]
