@@ -4,10 +4,10 @@ namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\LabelEditForm;
 use wcf\data\DatabaseObject;
-use wcf\data\DatabaseObjectList;
 use wcf\data\label\group\ViewableLabelGroup;
 use wcf\data\label\I18nLabelList;
 use wcf\data\label\Label;
+use wcf\event\gridView\admin\LabelGridViewInitialized;
 use wcf\system\cache\builder\LabelCacheBuilder;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\I18nTextFilter;
@@ -20,6 +20,10 @@ use wcf\system\gridView\GridViewSortButton;
 use wcf\system\gridView\renderer\AbstractColumnRenderer;
 use wcf\system\gridView\renderer\NumberColumnRenderer;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
+use wcf\system\interaction\admin\LabelInteractions;
+use wcf\system\interaction\bulk\admin\LabelBulkInteractions;
+use wcf\system\interaction\Divider;
+use wcf\system\interaction\EditInteraction;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 
@@ -101,7 +105,13 @@ final class LabelGridView extends AbstractGridView
                 ->sortable(),
         ]);
 
-        // TODO add interaction provider
+        $provider = new LabelInteractions();
+        $provider->addInteractions([
+            new Divider(),
+            new EditInteraction(LabelEditForm::class),
+        ]);
+        $this->setInteractionProvider($provider);
+        $this->setBulkInteractionProvider(new LabelBulkInteractions());
 
         $this->setSortButton(new GridViewSortButton("showOrder", "core/labels/sort", filterColumns: ["groupID"]));
 
@@ -116,8 +126,14 @@ final class LabelGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): I18nLabelList
     {
         return new I18nLabelList();
+    }
+
+    #[\Override]
+    protected function getInitializedEvent(): LabelGridViewInitialized
+    {
+        return new LabelGridViewInitialized($this);
     }
 }

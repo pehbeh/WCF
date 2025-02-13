@@ -188,6 +188,7 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\languages\items\DeleteItem());
             $event->register(new \wcf\system\endpoint\controller\core\labels\groups\DeleteGroup());
             $event->register(new \wcf\system\endpoint\controller\core\labels\SortLabels());
+            $event->register(new \wcf\system\endpoint\controller\core\labels\DeleteLabel());
             $event->register(new \wcf\system\endpoint\controller\core\pages\DeletePage());
             $event->register(new \wcf\system\endpoint\controller\core\pages\DisablePage());
             $event->register(new \wcf\system\endpoint\controller\core\pages\EnablePage());
