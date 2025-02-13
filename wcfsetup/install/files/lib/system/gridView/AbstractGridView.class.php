@@ -265,6 +265,7 @@ abstract class AbstractGridView
             // TODO
             $this->interactionProvider = null;
             $this->quickInteractions = [];
+            $this->bulkInteractionProvider = null;
             unset($this->rowLink);
         }
 
