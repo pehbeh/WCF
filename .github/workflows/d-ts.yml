@@ -49,7 +49,7 @@ jobs:
         set -x
         cd d.ts/
 
-        jq --argfile dependencies ../package.json '.dependencies = ($dependencies |.dependencies)' ./package.json \
+        jq --slurpfile dependencies ../package.json '.dependencies = $dependencies |.dependencies' ./package.json \
           |sponge ./package.json
 
         if ! git diff --quiet package.json; then
