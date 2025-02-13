@@ -7,13 +7,12 @@
  * @since 5.3
  * @woltlabExcludeBundle tiny
  */
-define(["require", "exports", "tslib", "../Core", "./Upload", "../Language", "../Dom/Util", "../Ui/Notification", "../Dom/Change/Listener"], function (require, exports, tslib_1, Core, Upload_1, Language, Util_1, UiNotification, DomChangeListener) {
+define(["require", "exports", "tslib", "../Core", "./Upload", "../Language", "../Dom/Util", "../Dom/Change/Listener", "../Component/Snackbar"], function (require, exports, tslib_1, Core, Upload_1, Language, Util_1, DomChangeListener, Snackbar_1) {
     "use strict";
     Core = tslib_1.__importStar(Core);
     Upload_1 = tslib_1.__importDefault(Upload_1);
     Language = tslib_1.__importStar(Language);
     Util_1 = tslib_1.__importDefault(Util_1);
-    UiNotification = tslib_1.__importStar(UiNotification);
     DomChangeListener = tslib_1.__importStar(DomChangeListener);
     class MediaReplace extends Upload_1.default {
         _mediaID;
@@ -53,7 +52,7 @@ define(["require", "exports", "tslib", "../Core", "./Upload", "../Language", "..
                     this._options.mediaEditor.updateData(media);
                     // Remove existing error messages.
                     Util_1.default.innerError(this._buttonContainer, "");
-                    UiNotification.show();
+                    (0, Snackbar_1.showDefaultSuccessSnackbar)();
                 }
                 else {
                     let error = data.returnValues.errors[internalFileId];

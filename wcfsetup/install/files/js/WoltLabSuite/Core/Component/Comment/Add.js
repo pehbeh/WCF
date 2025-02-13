@@ -6,13 +6,12 @@
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.0
  */
-define(["require", "exports", "tslib", "../../Ui/Scroll", "../../Ui/Notification", "../../Language", "../../Event/Handler", "../../Dom/Util", "../Ckeditor", "../Ckeditor/Event", "WoltLabSuite/Core/Api/Comments/CreateComment", "../GuestTokenDialog", "WoltLabSuite/Core/User", "WoltLabSuite/Core/Component/Quote/Storage", "WoltLabSuite/Core/Component/Quote/Message"], function (require, exports, tslib_1, UiScroll, UiNotification, Language_1, EventHandler, Util_1, Ckeditor_1, Event_1, CreateComment_1, GuestTokenDialog_1, User_1, Storage_1, Message_1) {
+define(["require", "exports", "tslib", "../../Ui/Scroll", "../../Language", "../../Event/Handler", "../../Dom/Util", "../Ckeditor", "../Ckeditor/Event", "WoltLabSuite/Core/Api/Comments/CreateComment", "../GuestTokenDialog", "WoltLabSuite/Core/User", "WoltLabSuite/Core/Component/Quote/Storage", "WoltLabSuite/Core/Component/Quote/Message", "../Snackbar"], function (require, exports, tslib_1, UiScroll, Language_1, EventHandler, Util_1, Ckeditor_1, Event_1, CreateComment_1, GuestTokenDialog_1, User_1, Storage_1, Message_1, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CommentAdd = void 0;
     exports.setCommentEditorFeatures = setCommentEditorFeatures;
     UiScroll = tslib_1.__importStar(UiScroll);
-    UiNotification = tslib_1.__importStar(UiNotification);
     EventHandler = tslib_1.__importStar(EventHandler);
     Util_1 = tslib_1.__importDefault(Util_1);
     User_1 = tslib_1.__importDefault(User_1);
@@ -112,7 +111,7 @@ define(["require", "exports", "tslib", "../../Ui/Scroll", "../../Ui/Notification
                 return;
             }
             this.#callback(response.value.commentID);
-            UiNotification.show((0, Language_1.getPhrase)("wcf.global.success.add"));
+            (0, Snackbar_1.showSuccessSnackbar)((0, Language_1.getPhrase)("wcf.global.success.add"));
             this.#reset();
             this.#hideLoadingOverlay();
         }

@@ -7,7 +7,7 @@
  * @since     6.2
  * @woltlabExcludeBundle all
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Component/Dialog", "WoltLabSuite/Core/Ajax/Backend", "WoltLabSuite/Core/Ui/Notification", "WoltLabSuite/Core/Form/Builder/Manager", "WoltLabSuite/Core/Event/Handler", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Dom/Util", "WoltLabSuite/Core/StringUtil", "WoltLabSuite/Core/Form/Builder/Field/Controller/FileProcessor"], function (require, exports, tslib_1, PromiseMutex_1, Selector_1, Dialog_1, Backend_1, Notification_1, FormBuilderManager, Handler_1, Language_1, Util_1, StringUtil_1, FileProcessor_1) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Component/Dialog", "WoltLabSuite/Core/Ajax/Backend", "WoltLabSuite/Core/Form/Builder/Manager", "WoltLabSuite/Core/Event/Handler", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Dom/Util", "WoltLabSuite/Core/StringUtil", "WoltLabSuite/Core/Form/Builder/Field/Controller/FileProcessor", "../Snackbar"], function (require, exports, tslib_1, PromiseMutex_1, Selector_1, Dialog_1, Backend_1, FormBuilderManager, Handler_1, Language_1, Util_1, StringUtil_1, FileProcessor_1, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
@@ -59,7 +59,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/PromiseMutex", 
                         coverPhotoElement.dataset.objectId = fileId?.toString() || "";
                     }
                 }
-                (0, Notification_1.show)();
+                (0, Snackbar_1.showDefaultSuccessSnackbar)();
                 (0, Handler_1.fire)("com.woltlab.wcf.user", "coverPhoto", {
                     url: coverPhotoUrl,
                 });

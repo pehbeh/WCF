@@ -6,11 +6,11 @@
  * @license	GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 
-import * as Language from "../Language";
 import * as Clipboard from "../Clipboard";
-import * as UiNotification from "../Ui/Notification";
 import Prism from "../Prism";
 import * as PrismHelper from "../Prism/Helper";
+import { showSuccessSnackbar } from "../Component/Snackbar";
+import { getPhrase } from "../Language";
 
 async function waitForIdle(): Promise<void> {
   return new Promise((resolve, _reject) => {
@@ -63,12 +63,12 @@ class Code {
     button.type = "button";
     button.innerHTML = '<fa-icon size="24" name="copy"></fa-icon>';
     button.classList.add("jsTooltip");
-    button.title = Language.get("wcf.message.bbcode.code.copy");
+    button.title = getPhrase("wcf.message.bbcode.code.copy");
 
     const clickCallback = async () => {
       await Clipboard.copyElementTextToClipboard(this.codeContainer);
 
-      UiNotification.show(Language.get("wcf.message.bbcode.code.copy.success"));
+      showSuccessSnackbar(getPhrase("wcf.message.bbcode.code.copy.success"));
     };
     button.addEventListener("click", () => clickCallback());
 

@@ -6,9 +6,8 @@
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @woltlabExcludeBundle tiny
  */
-define(["require", "exports", "tslib", "../Ui/Notification", "../Ui/Dialog", "../Language/Chooser", "../Language/Input", "../Dom/Util", "../Dom/Traverse", "../Dom/Change/Listener", "../Language", "../Ajax", "./Replace"], function (require, exports, tslib_1, UiNotification, UiDialog, LanguageChooser, LanguageInput, DomUtil, DomTraverse, Listener_1, Language, Ajax, Replace_1) {
+define(["require", "exports", "tslib", "../Ui/Dialog", "../Language/Chooser", "../Language/Input", "../Dom/Util", "../Dom/Traverse", "../Dom/Change/Listener", "../Language", "../Ajax", "./Replace", "../Component/Snackbar"], function (require, exports, tslib_1, UiDialog, LanguageChooser, LanguageInput, DomUtil, DomTraverse, Listener_1, Language, Ajax, Replace_1, Snackbar_1) {
     "use strict";
-    UiNotification = tslib_1.__importStar(UiNotification);
     UiDialog = tslib_1.__importStar(UiDialog);
     LanguageChooser = tslib_1.__importStar(LanguageChooser);
     LanguageInput = tslib_1.__importStar(LanguageInput);
@@ -43,7 +42,7 @@ define(["require", "exports", "tslib", "../Ui/Notification", "../Ui/Dialog", "..
             };
         }
         _ajaxSuccess() {
-            UiNotification.show();
+            (0, Snackbar_1.showDefaultSuccessSnackbar)();
             if (this._callbackObject._editorSuccess) {
                 this._callbackObject._editorSuccess(this._media, this._oldCategoryId);
                 this._oldCategoryId = 0;

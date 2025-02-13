@@ -5,7 +5,7 @@
  * @copyright  2001-2019 WoltLab GmbH
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
-define(["require", "exports", "tslib", "../../../../Ajax", "../../../../Dom/Util", "../../../../Language", "../../../../Ui/Dialog", "../../../../Ui/Notification"], function (require, exports, tslib_1, Ajax, Util_1, Language, Dialog_1, UiNotification) {
+define(["require", "exports", "tslib", "../../../../Ajax", "../../../../Dom/Util", "../../../../Language", "../../../../Ui/Dialog", "WoltLabSuite/Core/Component/Snackbar"], function (require, exports, tslib_1, Ajax, Util_1, Language, Dialog_1, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.init = init;
@@ -13,7 +13,6 @@ define(["require", "exports", "tslib", "../../../../Ajax", "../../../../Dom/Util
     Util_1 = tslib_1.__importDefault(Util_1);
     Language = tslib_1.__importStar(Language);
     Dialog_1 = tslib_1.__importDefault(Dialog_1);
-    UiNotification = tslib_1.__importStar(UiNotification);
     class AcpUiDevtoolsProjectQuickSetup {
         pathInput;
         submitButton;
@@ -50,7 +49,7 @@ define(["require", "exports", "tslib", "../../../../Ajax", "../../../../Dom/Util
                 return;
             }
             Dialog_1.default.close(this);
-            UiNotification.show(data.returnValues.successMessage, () => {
+            (0, Snackbar_1.showSuccessSnackbar)(data.returnValues.successMessage).addEventListener("snackbar:close", () => {
                 window.location.reload();
             });
         }

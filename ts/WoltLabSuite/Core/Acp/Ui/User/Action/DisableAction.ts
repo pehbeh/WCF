@@ -10,9 +10,9 @@
 import * as Ajax from "../../../../Ajax";
 import * as Core from "../../../../Core";
 import { AjaxCallbackObject, AjaxCallbackSetup, DatabaseObjectActionResponse } from "../../../../Ajax/Data";
-import * as UiNotification from "../../../../Ui/Notification";
 import AbstractUserAction from "./Abstract";
 import * as EventHandler from "../../../../Event/Handler";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 export class DisableAction extends AbstractUserAction implements AjaxCallbackObject {
   public constructor(button: HTMLElement, userId: number, userDataElement: HTMLElement) {
@@ -57,7 +57,7 @@ export class DisableAction extends AbstractUserAction implements AjaxCallbackObj
       }
     });
 
-    UiNotification.show();
+    showDefaultSuccessSnackbar();
 
     EventHandler.fire("com.woltlab.wcf.acp.user", "refresh", {
       userIds: [this.userId],

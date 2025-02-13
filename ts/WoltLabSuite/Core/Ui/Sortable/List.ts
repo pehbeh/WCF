@@ -10,8 +10,8 @@
 import * as Core from "../../Core";
 import Sortable from "sortablejs";
 import { dboAction } from "WoltLabSuite/Core/Ajax";
-import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 import { getPhrase } from "WoltLabSuite/Core/Language";
+import { showSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 interface UnknownObject {
   [key: string]: unknown;
@@ -149,7 +149,7 @@ class UiSortableList {
 
     await dboAction("updatePosition", this._options.className).payload(parameters).dispatch();
 
-    showNotification(getPhrase("wcf.global.success.edit"));
+    showSuccessSnackbar(getPhrase("wcf.global.success.edit"));
   }
 
   #onMove(event: Sortable.MoveEvent) {

@@ -8,17 +8,17 @@
  * @since 6.0
  */
 
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 import { prepareRequest } from "../../../Ajax/Backend";
 import { confirmationFactory } from "../../../Component/Confirmation";
 import { getPhrase } from "../../../Language";
-import { show as showNotification } from "../../../Ui/Notification";
 
 async function promptConfirmation(endpoint: string, question: string): Promise<void> {
   const ok = await confirmationFactory().custom(question).message(getPhrase("wcf.dialog.confirmation.cannotBeUndone"));
   if (ok) {
     const response = await prepareRequest(endpoint).post().fetchAsResponse();
     if (response?.ok) {
-      showNotification(undefined, () => {
+      showDefaultSuccessSnackbar().addEventListener("snackbar:close", () => {
         window.location.reload();
       });
     }

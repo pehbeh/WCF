@@ -7,7 +7,7 @@
  * @woltlabExcludeBundle tiny
  * @since 6.2
  */
-define(["require", "exports", "WoltLabSuite/Core/Api/ModerationQueues/DeleteContent", "WoltLabSuite/Core/Api/ModerationQueues/EnableContent", "WoltLabSuite/Core/Component/Confirmation", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Ui/Notification"], function (require, exports, DeleteContent_1, EnableContent_1, Confirmation_1, PromiseMutex_1, Language_1, Notification_1) {
+define(["require", "exports", "WoltLabSuite/Core/Api/ModerationQueues/DeleteContent", "WoltLabSuite/Core/Api/ModerationQueues/EnableContent", "WoltLabSuite/Core/Component/Confirmation", "WoltLabSuite/Core/Component/Snackbar", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabSuite/Core/Language"], function (require, exports, DeleteContent_1, EnableContent_1, Confirmation_1, Snackbar_1, PromiseMutex_1, Language_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
@@ -18,7 +18,7 @@ define(["require", "exports", "WoltLabSuite/Core/Api/ModerationQueues/DeleteCont
         if (result) {
             const response = await (0, EnableContent_1.enableContent)(queueId);
             if (response.ok) {
-                (0, Notification_1.show)(undefined, () => {
+                (0, Snackbar_1.showDefaultSuccessSnackbar)().addEventListener("snackbar:close", () => {
                     window.location.href = redirectUrl;
                 });
             }
@@ -29,7 +29,7 @@ define(["require", "exports", "WoltLabSuite/Core/Api/ModerationQueues/DeleteCont
         if (result) {
             const response = await (0, DeleteContent_1.deleteContent)(queueId, reason);
             if (response.ok) {
-                (0, Notification_1.show)(undefined, () => {
+                (0, Snackbar_1.showDefaultSuccessSnackbar)().addEventListener("snackbar:close", () => {
                     window.location.href = redirectUrl;
                 });
             }

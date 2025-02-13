@@ -9,7 +9,6 @@
 
 import DomUtil from "../../Dom/Util";
 import UiDropdownSimple from "../../Ui/Dropdown/Simple";
-import * as UiNotification from "../../Ui/Notification";
 import { confirmationFactory } from "../Confirmation";
 import * as UiScroll from "../../Ui/Scroll";
 import * as EventHandler from "../../Event/Handler";
@@ -20,6 +19,7 @@ import { enableComment } from "WoltLabSuite/Core/Api/Comments/EnableComment";
 import { editComment } from "WoltLabSuite/Core/Api/Comments/EditComment";
 import { updateComment } from "WoltLabSuite/Core/Api/Comments/UpdateComment";
 import { renderComment } from "WoltLabSuite/Core/Api/Comments/RenderComment";
+import { showDefaultSuccessSnackbar } from "../Snackbar";
 
 export class WoltlabCoreCommentElement extends HTMLParsedElement {
   parsedCallback() {
@@ -63,7 +63,7 @@ export class WoltlabCoreCommentElement extends HTMLParsedElement {
     if (result) {
       (await deleteComment(this.commentId)).unwrap();
 
-      UiNotification.show();
+      showDefaultSuccessSnackbar();
 
       this.dispatchEvent(new CustomEvent("delete"));
     }
@@ -134,7 +134,7 @@ export class WoltlabCoreCommentElement extends HTMLParsedElement {
     DomUtil.setInnerHtml(this.querySelector<HTMLElement>(".htmlContent")!, template);
     this.#hideLoadingIndicator();
     this.#cancelEdit();
-    UiNotification.show();
+    showDefaultSuccessSnackbar();
   }
 
   #showLoadingIndicator(): void {

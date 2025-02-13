@@ -5,7 +5,7 @@
  * @copyright  2001-2024 WoltLab GmbH
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
-define(["require", "exports", "tslib", "../../../Event/Handler", "WoltLabSuite/Core/Ajax", "WoltLabSuite/Core/Ui/Notification", "WoltLabSuite/Core/Ui/Dropdown/Simple", "WoltLabSuite/Core/Acp/Ui/User/Action/Handler/Ban", "WoltLabSuite/Core/Acp/Ui/User/Action/Handler/SendNewPassword", "WoltLabSuite/Core/Controller/Clipboard", "WoltLabSuite/Core/Acp/Ui/User/Editor", "WoltLabSuite/Core/Acp/Ui/User/Content/Remove/Clipboard"], function (require, exports, tslib_1, EventHandler, Ajax_1, Notification_1, Simple_1, Ban_1, SendNewPassword_1, Clipboard_1, Editor_1, Clipboard_2) {
+define(["require", "exports", "tslib", "../../../Event/Handler", "WoltLabSuite/Core/Ajax", "WoltLabSuite/Core/Ui/Dropdown/Simple", "WoltLabSuite/Core/Acp/Ui/User/Action/Handler/Ban", "WoltLabSuite/Core/Acp/Ui/User/Action/Handler/SendNewPassword", "WoltLabSuite/Core/Controller/Clipboard", "WoltLabSuite/Core/Acp/Ui/User/Editor", "WoltLabSuite/Core/Acp/Ui/User/Content/Remove/Clipboard", "WoltLabSuite/Core/Component/Snackbar"], function (require, exports, tslib_1, EventHandler, Ajax_1, Simple_1, Ban_1, SendNewPassword_1, Clipboard_1, Editor_1, Clipboard_2, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
@@ -24,7 +24,7 @@ define(["require", "exports", "tslib", "../../../Event/Handler", "WoltLabSuite/C
     }
     function refresh(userIDs) {
         (0, Clipboard_1.unmark)("com.woltlab.wcf.user", userIDs);
-        (0, Notification_1.show)();
+        (0, Snackbar_1.showDefaultSuccessSnackbar)();
         EventHandler.fire("com.woltlab.wcf.acp.user", "refresh", {
             userIds: userIDs,
         });

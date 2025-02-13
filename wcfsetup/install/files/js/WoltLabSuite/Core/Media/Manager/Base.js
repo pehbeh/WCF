@@ -6,7 +6,7 @@
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @woltlabExcludeBundle tiny
  */
-define(["require", "exports", "tslib", "../../Core", "../../Language", "../../Permission", "../../Dom/Change/Listener", "../../Event/Handler", "../../Dom/Traverse", "../../Dom/Util", "../../Ui/Dialog", "../../Controller/Clipboard", "../../Ui/Pagination", "../../Ui/Notification", "../../StringUtil", "./Search", "../Upload", "../Editor", "../Clipboard"], function (require, exports, tslib_1, Core, Language, Permission, DomChangeListener, EventHandler, DomTraverse, DomUtil, UiDialog, Clipboard, Pagination_1, UiNotification, StringUtil, Search_1, Upload_1, Editor_1, MediaClipboard) {
+define(["require", "exports", "tslib", "../../Core", "../../Language", "../../Permission", "../../Dom/Change/Listener", "../../Event/Handler", "../../Dom/Traverse", "../../Dom/Util", "../../Ui/Dialog", "../../Controller/Clipboard", "../../Ui/Pagination", "../../StringUtil", "./Search", "../Upload", "../Editor", "../Clipboard", "WoltLabSuite/Core/Component/Snackbar"], function (require, exports, tslib_1, Core, Language, Permission, DomChangeListener, EventHandler, DomTraverse, DomUtil, UiDialog, Clipboard, Pagination_1, StringUtil, Search_1, Upload_1, Editor_1, MediaClipboard, Snackbar_1) {
     "use strict";
     Core = tslib_1.__importStar(Core);
     Language = tslib_1.__importStar(Language);
@@ -18,7 +18,6 @@ define(["require", "exports", "tslib", "../../Core", "../../Language", "../../Pe
     UiDialog = tslib_1.__importStar(UiDialog);
     Clipboard = tslib_1.__importStar(Clipboard);
     Pagination_1 = tslib_1.__importDefault(Pagination_1);
-    UiNotification = tslib_1.__importStar(UiNotification);
     StringUtil = tslib_1.__importStar(StringUtil);
     Search_1 = tslib_1.__importDefault(Search_1);
     Upload_1 = tslib_1.__importDefault(Upload_1);
@@ -324,7 +323,7 @@ define(["require", "exports", "tslib", "../../Core", "../../Language", "../../Pe
             mediaIds.forEach((mediaId) => {
                 this.removeMedia(~~mediaId);
             });
-            UiNotification.show();
+            (0, Snackbar_1.showDefaultSuccessSnackbar)();
         }
         /**
          * Returns the id of the currently selected category or `0` if no category is selected.

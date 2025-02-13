@@ -9,7 +9,7 @@
 
 import { dboAction } from "WoltLabSuite/Core/Ajax";
 import { confirmationFactory } from "WoltLabSuite/Core/Component/Confirmation";
-import * as UiNotification from "WoltLabSuite/Core/Ui/Notification";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 function initRevertButtons(container: HTMLElement): void {
   container.querySelectorAll<HTMLButtonElement>(".jsRevertButton").forEach((button) => {
@@ -27,7 +27,7 @@ function initRevertButtons(container: HTMLElement): void {
 async function revert(objectId: number): Promise<void> {
   await dboAction("revert", "wcf\\data\\edit\\history\\entry\\EditHistoryEntryAction").objectIds([objectId]).dispatch();
 
-  UiNotification.show(undefined, () => {
+  showDefaultSuccessSnackbar().addEventListener("snackbar:close", () => {
     window.location.reload();
   });
 }

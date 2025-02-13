@@ -6,6 +6,7 @@
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 import * as Ajax from "../../../Ajax";
 import { AjaxCallbackSetup, DatabaseObjectActionResponse } from "../../../Ajax/Data";
 import { confirmationFactory } from "../../../Component/Confirmation";
@@ -100,7 +101,7 @@ class AcpUiArticleInlineEditor {
       if (triggerFunction) {
         actionData.responseData.objectIDs.forEach((objectId) => triggerFunction(objectId));
 
-        UiNotification.show();
+        showDefaultSuccessSnackbar();
       }
     } else if (actionData.data.actionName === "com.woltlab.wcf.article.setCategory") {
       const dialog = UiDialog.openStatic("articleCategoryDialog", actionData.data.internalData.template, {

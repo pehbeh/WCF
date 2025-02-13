@@ -10,8 +10,8 @@
 import * as Core from "../../../../Core";
 import AbstractUserAction from "./Abstract";
 import BanHandler from "./Handler/Ban";
-import * as UiNotification from "../../../../Ui/Notification";
 import * as EventHandler from "../../../../Event/Handler";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 export class BanAction extends AbstractUserAction {
   private banHandler: BanHandler;
@@ -31,7 +31,7 @@ export class BanAction extends AbstractUserAction {
           this.userDataElement.dataset.banned = "false";
           this.button.textContent = this.button.dataset.banMessage!;
 
-          UiNotification.show();
+          showDefaultSuccessSnackbar();
 
           EventHandler.fire("com.woltlab.wcf.acp.user", "refresh", {
             userIds: [this.userId],
@@ -42,7 +42,7 @@ export class BanAction extends AbstractUserAction {
           this.userDataElement.dataset.banned = "true";
           this.button.textContent = this.button.dataset.unbanMessage!;
 
-          UiNotification.show();
+          showDefaultSuccessSnackbar();
 
           EventHandler.fire("com.woltlab.wcf.acp.user", "refresh", {
             userIds: [this.userId],

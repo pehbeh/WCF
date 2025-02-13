@@ -9,7 +9,7 @@
 
 import { revertVersion } from "WoltLabSuite/Core/Api/VersionTrackers/RevertVersion";
 import { confirmationFactory } from "WoltLabSuite/Core/Component/Confirmation";
-import * as UiNotification from "WoltLabSuite/Core/Ui/Notification";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 function initRevertButtons(container: HTMLElement, objectType: string, objectId: number): void {
   container.querySelectorAll<HTMLButtonElement>(".jsRevertButton").forEach((button) => {
@@ -21,7 +21,7 @@ function initRevertButtons(container: HTMLElement, objectType: string, objectId:
 
       const response = await revertVersion(objectType, objectId, parseInt(button.dataset.objectId!));
       if (response.ok) {
-        UiNotification.show(undefined, () => {
+        showDefaultSuccessSnackbar().addEventListener("snackbar:close", () => {
           window.location.reload();
         });
       }

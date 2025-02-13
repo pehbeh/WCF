@@ -11,9 +11,9 @@
 import { deleteContent } from "WoltLabSuite/Core/Api/ModerationQueues/DeleteContent";
 import { enableContent } from "WoltLabSuite/Core/Api/ModerationQueues/EnableContent";
 import { confirmationFactory } from "WoltLabSuite/Core/Component/Confirmation";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 import { promiseMutex } from "WoltLabSuite/Core/Helper/PromiseMutex";
 import { getPhrase } from "WoltLabSuite/Core/Language";
-import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 
 async function handleEnableContent(queueId: number, redirectUrl: string): Promise<void> {
   const result = await confirmationFactory()
@@ -23,7 +23,7 @@ async function handleEnableContent(queueId: number, redirectUrl: string): Promis
   if (result) {
     const response = await enableContent(queueId);
     if (response.ok) {
-      showNotification(undefined, () => {
+      showDefaultSuccessSnackbar().addEventListener("snackbar:close", () => {
         window.location.href = redirectUrl;
       });
     }
@@ -36,7 +36,7 @@ async function handleRemoveContent(queueId: number, objectName: string, redirect
   if (result) {
     const response = await deleteContent(queueId, reason);
     if (response.ok) {
-      showNotification(undefined, () => {
+      showDefaultSuccessSnackbar().addEventListener("snackbar:close", () => {
         window.location.href = redirectUrl;
       });
     }

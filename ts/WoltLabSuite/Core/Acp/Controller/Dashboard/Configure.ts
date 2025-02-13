@@ -8,14 +8,14 @@
  */
 
 import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 import { promiseMutex } from "WoltLabSuite/Core/Helper/PromiseMutex";
-import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 
 async function showDialog(url: string): Promise<void> {
   const { ok } = await dialogFactory().usingFormBuilder().fromEndpoint<Response>(url);
 
   if (ok) {
-    showNotification(undefined, () => {
+    showDefaultSuccessSnackbar().addEventListener("snackbar:close", () => {
       window.location.reload();
     });
   }

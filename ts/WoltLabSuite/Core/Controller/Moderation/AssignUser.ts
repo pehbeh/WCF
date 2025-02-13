@@ -10,7 +10,7 @@
 import { promiseMutex } from "WoltLabSuite/Core/Helper/PromiseMutex";
 import { dialogFactory } from "../../Component/Dialog";
 import { getPhrase } from "../../Language";
-import { show as showNotification } from "../../Ui/Notification";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 type Assignee = {
   username: string;
@@ -30,7 +30,7 @@ async function showDialog(url: string): Promise<void> {
     updateAssignee(result.assignee);
     updateStatus(result.status);
 
-    showNotification();
+    showDefaultSuccessSnackbar();
   }
 }
 

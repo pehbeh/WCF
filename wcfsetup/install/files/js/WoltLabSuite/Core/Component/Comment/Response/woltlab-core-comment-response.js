@@ -6,13 +6,12 @@
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.0
  */
-define(["require", "exports", "tslib", "../../../Dom/Util", "../../../Ui/Dropdown/Simple", "../../../Ui/Notification", "../../Confirmation", "../../../Event/Handler", "../../../Ui/Scroll", "../../../Language", "../../Ckeditor", "WoltLabSuite/Core/Api/Comments/Responses/EnableResponse", "WoltLabSuite/Core/Api/Comments/Responses/DeleteResponse", "WoltLabSuite/Core/Api/Comments/Responses/EditResponse", "WoltLabSuite/Core/Api/Comments/Responses/RenderResponse", "WoltLabSuite/Core/Api/Comments/Responses/UpdateResponse"], function (require, exports, tslib_1, Util_1, Simple_1, UiNotification, Confirmation_1, EventHandler, UiScroll, Language_1, Ckeditor_1, EnableResponse_1, DeleteResponse_1, EditResponse_1, RenderResponse_1, UpdateResponse_1) {
+define(["require", "exports", "tslib", "../../../Dom/Util", "../../../Ui/Dropdown/Simple", "../../Confirmation", "../../../Event/Handler", "../../../Ui/Scroll", "../../../Language", "../../Ckeditor", "WoltLabSuite/Core/Api/Comments/Responses/EnableResponse", "WoltLabSuite/Core/Api/Comments/Responses/DeleteResponse", "WoltLabSuite/Core/Api/Comments/Responses/EditResponse", "WoltLabSuite/Core/Api/Comments/Responses/RenderResponse", "WoltLabSuite/Core/Api/Comments/Responses/UpdateResponse", "../../Snackbar"], function (require, exports, tslib_1, Util_1, Simple_1, Confirmation_1, EventHandler, UiScroll, Language_1, Ckeditor_1, EnableResponse_1, DeleteResponse_1, EditResponse_1, RenderResponse_1, UpdateResponse_1, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.WoltlabCoreCommentResponseElement = void 0;
     Util_1 = tslib_1.__importDefault(Util_1);
     Simple_1 = tslib_1.__importDefault(Simple_1);
-    UiNotification = tslib_1.__importStar(UiNotification);
     EventHandler = tslib_1.__importStar(EventHandler);
     UiScroll = tslib_1.__importStar(UiScroll);
     class WoltlabCoreCommentResponseElement extends HTMLParsedElement {
@@ -46,7 +45,7 @@ define(["require", "exports", "tslib", "../../../Dom/Util", "../../../Ui/Dropdow
             const result = await (0, Confirmation_1.confirmationFactory)().delete();
             if (result) {
                 (await (0, DeleteResponse_1.deleteResponse)(this.responseId)).unwrap();
-                UiNotification.show();
+                (0, Snackbar_1.showDefaultSuccessSnackbar)();
                 this.dispatchEvent(new CustomEvent("delete"));
             }
         }
@@ -102,7 +101,7 @@ define(["require", "exports", "tslib", "../../../Dom/Util", "../../../Ui/Dropdow
             Util_1.default.setInnerHtml(this.querySelector(".htmlContent"), template);
             this.#hideLoadingIndicator();
             this.#cancelEdit();
-            UiNotification.show();
+            (0, Snackbar_1.showDefaultSuccessSnackbar)();
         }
         #showLoadingIndicator() {
             let div = this.querySelector(".commentResponse__loading");

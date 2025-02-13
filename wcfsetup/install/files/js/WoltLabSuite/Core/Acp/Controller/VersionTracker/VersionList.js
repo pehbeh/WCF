@@ -6,11 +6,10 @@
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.2
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Api/VersionTrackers/RevertVersion", "WoltLabSuite/Core/Component/Confirmation", "WoltLabSuite/Core/Ui/Notification"], function (require, exports, tslib_1, RevertVersion_1, Confirmation_1, UiNotification) {
+define(["require", "exports", "WoltLabSuite/Core/Api/VersionTrackers/RevertVersion", "WoltLabSuite/Core/Component/Confirmation", "WoltLabSuite/Core/Component/Snackbar"], function (require, exports, RevertVersion_1, Confirmation_1, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
-    UiNotification = tslib_1.__importStar(UiNotification);
     function initRevertButtons(container, objectType, objectId) {
         container.querySelectorAll(".jsRevertButton").forEach((button) => {
             button.addEventListener("click", async () => {
@@ -20,7 +19,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Api/VersionTrackers/Re
                 }
                 const response = await (0, RevertVersion_1.revertVersion)(objectType, objectId, parseInt(button.dataset.objectId));
                 if (response.ok) {
-                    UiNotification.show(undefined, () => {
+                    (0, Snackbar_1.showDefaultSuccessSnackbar)().addEventListener("snackbar:close", () => {
                         window.location.reload();
                     });
                 }

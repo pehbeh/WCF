@@ -7,7 +7,7 @@
  * @woltlabExcludeBundle tiny
  * @since 6.2
  */
-define(["require", "exports", "WoltLabSuite/Core/Api/ModerationQueues/ChangeJustifiedStatus", "WoltLabSuite/Core/Api/ModerationQueues/CloseReport", "WoltLabSuite/Core/Api/ModerationQueues/DeleteContent", "WoltLabSuite/Core/Component/Confirmation", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Ui/Notification"], function (require, exports, ChangeJustifiedStatus_1, CloseReport_1, DeleteContent_1, Confirmation_1, PromiseMutex_1, Language_1, Notification_1) {
+define(["require", "exports", "WoltLabSuite/Core/Api/ModerationQueues/ChangeJustifiedStatus", "WoltLabSuite/Core/Api/ModerationQueues/CloseReport", "WoltLabSuite/Core/Api/ModerationQueues/DeleteContent", "WoltLabSuite/Core/Component/Confirmation", "WoltLabSuite/Core/Component/Snackbar", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabSuite/Core/Language"], function (require, exports, ChangeJustifiedStatus_1, CloseReport_1, DeleteContent_1, Confirmation_1, Snackbar_1, PromiseMutex_1, Language_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
@@ -16,7 +16,7 @@ define(["require", "exports", "WoltLabSuite/Core/Api/ModerationQueues/ChangeJust
         if (result) {
             const response = await (0, DeleteContent_1.deleteContent)(queueId, reason);
             if (response.ok) {
-                (0, Notification_1.show)(undefined, () => {
+                (0, Snackbar_1.showDefaultSuccessSnackbar)().addEventListener("snackbar:close", () => {
                     window.location.href = redirectUrl;
                 });
             }
@@ -35,7 +35,7 @@ define(["require", "exports", "WoltLabSuite/Core/Api/ModerationQueues/ChangeJust
         if (result) {
             const response = await (0, CloseReport_1.closeReport)(queueId, dialog.content.querySelector("input").checked);
             if (response.ok) {
-                (0, Notification_1.show)(undefined, () => {
+                (0, Snackbar_1.showDefaultSuccessSnackbar)().addEventListener("snackbar:close", () => {
                     window.location.href = redirectUrl;
                 });
             }
@@ -55,7 +55,7 @@ define(["require", "exports", "WoltLabSuite/Core/Api/ModerationQueues/ChangeJust
         if (result) {
             const response = await (0, ChangeJustifiedStatus_1.changeJustifiedStatus)(queueId, dialog.content.querySelector("input").checked);
             if (response.ok) {
-                (0, Notification_1.show)(undefined, () => {
+                (0, Snackbar_1.showDefaultSuccessSnackbar)().addEventListener("snackbar:close", () => {
                     window.location.href = redirectUrl;
                 });
             }

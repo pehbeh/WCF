@@ -5,11 +5,10 @@
  * @copyright  2001-2019 WoltLab GmbH
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
-define(["require", "exports", "tslib", "../../../../../../Ajax", "../../../../../../Language", "../../../../../../Ui/Confirmation", "../../../../../../Ui/Notification"], function (require, exports, tslib_1, Ajax, Language, Confirmation_1, UiNotification) {
+define(["require", "exports", "tslib", "../../../../../../Ajax", "../../../../../../Language", "../../../../../../Ui/Confirmation", "WoltLabSuite/Core/Component/Snackbar"], function (require, exports, tslib_1, Ajax, Language, Confirmation_1, Snackbar_1) {
     "use strict";
     Ajax = tslib_1.__importStar(Ajax);
     Language = tslib_1.__importStar(Language);
-    UiNotification = tslib_1.__importStar(UiNotification);
     class DevtoolsProjectPipEntryList {
         entryType;
         pip;
@@ -51,7 +50,7 @@ define(["require", "exports", "tslib", "../../../../../../Ajax", "../../../../..
          * Handles successful AJAX request.
          */
         _ajaxSuccess(data) {
-            UiNotification.show();
+            (0, Snackbar_1.showDefaultSuccessSnackbar)();
             this.table.querySelectorAll("tbody > tr").forEach((pipEntry) => {
                 if (pipEntry.dataset.identifier === data.returnValues.identifier) {
                     pipEntry.remove();

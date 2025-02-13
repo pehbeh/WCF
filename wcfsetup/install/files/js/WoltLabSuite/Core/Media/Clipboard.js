@@ -6,13 +6,12 @@
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @woltlabExcludeBundle tiny
  */
-define(["require", "exports", "tslib", "../Controller/Clipboard", "../Ui/Notification", "../Event/Handler", "../Language", "../Ajax", "WoltLabSuite/Core/Component/Dialog"], function (require, exports, tslib_1, Clipboard, UiNotification, EventHandler, Language_1, Ajax, Dialog_1) {
+define(["require", "exports", "tslib", "../Controller/Clipboard", "../Event/Handler", "../Language", "../Ajax", "WoltLabSuite/Core/Component/Dialog", "../Component/Snackbar"], function (require, exports, tslib_1, Clipboard, EventHandler, Language_1, Ajax, Dialog_1, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.init = init;
     exports.setMediaManager = setMediaManager;
     Clipboard = tslib_1.__importStar(Clipboard);
-    UiNotification = tslib_1.__importStar(UiNotification);
     EventHandler = tslib_1.__importStar(EventHandler);
     Ajax = tslib_1.__importStar(Ajax);
     let _mediaManager;
@@ -38,7 +37,7 @@ define(["require", "exports", "tslib", "../Controller/Clipboard", "../Ui/Notific
                     break;
                 case "setCategory":
                     this.#dialog?.close();
-                    UiNotification.show();
+                    (0, Snackbar_1.showDefaultSuccessSnackbar)();
                     Clipboard.reload();
                     break;
             }

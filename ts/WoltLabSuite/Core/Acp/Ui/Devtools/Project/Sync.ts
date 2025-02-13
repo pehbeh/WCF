@@ -1,9 +1,9 @@
 import * as Ajax from "../../../../Ajax";
 import * as Language from "../../../../Language";
-import * as UiNotification from "../../../../Ui/Notification";
 import { AjaxCallbackSetup, AjaxResponseException } from "../../../../Ajax/Data";
 import { DialogCallbackSetup } from "../../../../Ui/Dialog/Data";
 import { dialogFactory } from "../../../../Component/Dialog";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 interface PipData {
   dependencies: string[];
@@ -176,7 +176,7 @@ class AcpUiDevtoolsProjectSync {
     if (this.queue.length === 0) {
       this.buttonSyncAll.classList.remove("disabled");
 
-      UiNotification.show();
+      showDefaultSuccessSnackbar();
 
       return;
     }

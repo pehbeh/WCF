@@ -6,14 +6,13 @@
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       5.5
  */
-define(["require", "exports", "tslib", "./Abstract", "../../../../Ajax", "../../../../Core", "../../../../Ui/Notification"], function (require, exports, tslib_1, Abstract_1, Ajax, Core, UiNotification) {
+define(["require", "exports", "tslib", "./Abstract", "../../../../Ajax", "../../../../Core", "WoltLabSuite/Core/Component/Snackbar"], function (require, exports, tslib_1, Abstract_1, Ajax, Core, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ToggleConfirmEmailAction = void 0;
     Abstract_1 = tslib_1.__importDefault(Abstract_1);
     Ajax = tslib_1.__importStar(Ajax);
     Core = tslib_1.__importStar(Core);
-    UiNotification = tslib_1.__importStar(UiNotification);
     class ToggleConfirmEmailAction extends Abstract_1.default {
         constructor(button, userId, userDataElement) {
             super(button, userId, userDataElement);
@@ -50,7 +49,7 @@ define(["require", "exports", "tslib", "./Abstract", "../../../../Ajax", "../../
                     }
                 }
             });
-            UiNotification.show();
+            (0, Snackbar_1.showDefaultSuccessSnackbar)();
         }
     }
     exports.ToggleConfirmEmailAction = ToggleConfirmEmailAction;

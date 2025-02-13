@@ -12,9 +12,9 @@ import { changeJustifiedStatus } from "WoltLabSuite/Core/Api/ModerationQueues/Ch
 import { closeReport } from "WoltLabSuite/Core/Api/ModerationQueues/CloseReport";
 import { deleteContent } from "WoltLabSuite/Core/Api/ModerationQueues/DeleteContent";
 import { confirmationFactory } from "WoltLabSuite/Core/Component/Confirmation";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 import { promiseMutex } from "WoltLabSuite/Core/Helper/PromiseMutex";
 import { getPhrase } from "WoltLabSuite/Core/Language";
-import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 
 async function handleRemoveContent(queueId: number, objectName: string, redirectUrl: string): Promise<void> {
   const { result, reason } = await confirmationFactory().softDelete(objectName, true);
@@ -22,7 +22,7 @@ async function handleRemoveContent(queueId: number, objectName: string, redirect
   if (result) {
     const response = await deleteContent(queueId, reason);
     if (response.ok) {
-      showNotification(undefined, () => {
+      showDefaultSuccessSnackbar().addEventListener("snackbar:close", () => {
         window.location.href = redirectUrl;
       });
     }
@@ -44,7 +44,7 @@ async function handleCloseReport(queueId: number, redirectUrl: string): Promise<
   if (result) {
     const response = await closeReport(queueId, dialog.content.querySelector("input")!.checked);
     if (response.ok) {
-      showNotification(undefined, () => {
+      showDefaultSuccessSnackbar().addEventListener("snackbar:close", () => {
         window.location.href = redirectUrl;
       });
     }
@@ -67,7 +67,7 @@ async function handleChangeJustifiedStatus(queueId: number, justified: boolean, 
   if (result) {
     const response = await changeJustifiedStatus(queueId, dialog.content.querySelector("input")!.checked);
     if (response.ok) {
-      showNotification(undefined, () => {
+      showDefaultSuccessSnackbar().addEventListener("snackbar:close", () => {
         window.location.href = redirectUrl;
       });
     }
