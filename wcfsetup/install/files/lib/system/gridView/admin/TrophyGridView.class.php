@@ -3,8 +3,10 @@
 namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\TrophyEditForm;
-use wcf\data\DatabaseObjectList;
+use wcf\data\DatabaseObject;
 use wcf\data\trophy\I18nTrophyList;
+use wcf\data\trophy\Trophy;
+use wcf\event\gridView\admin\TrophyGridViewInitialized;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\I18nTextFilter;
 use wcf\system\gridView\filter\NumericFilter;
@@ -12,9 +14,14 @@ use wcf\system\gridView\filter\ObjectIdFilter;
 use wcf\system\gridView\GridViewColumn;
 use wcf\system\gridView\GridViewRowLink;
 use wcf\system\gridView\GridViewSortButton;
+use wcf\system\gridView\renderer\AbstractColumnRenderer;
 use wcf\system\gridView\renderer\NumberColumnRenderer;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\gridView\renderer\PhraseColumnRenderer;
+use wcf\system\interaction\admin\TrophyInteractions;
+use wcf\system\interaction\bulk\admin\TrophyBulkInteractions;
+use wcf\system\interaction\Divider;
+use wcf\system\interaction\EditInteraction;
 use wcf\system\interaction\ToggleInteraction;
 use wcf\system\WCF;
 
@@ -36,6 +43,25 @@ final class TrophyGridView extends AbstractGridView
                 ->renderer(new ObjectIdColumnRenderer())
                 ->filter(new ObjectIdFilter())
                 ->sortable(),
+            GridViewColumn::for("image")
+                ->label("wcf.acp.trophy")
+                ->renderer(
+                    new class extends AbstractColumnRenderer {
+                        #[\Override]
+                        public function render(mixed $value, DatabaseObject $row): string
+                        {
+                            \assert($row instanceof Trophy);
+
+                            return $row->renderTrophy();
+                        }
+
+                        #[\Override]
+                        public function getClasses(): string
+                        {
+                            return "gridView__column--icon";
+                        }
+                    }
+                ),
             GridViewColumn::for("title")
                 ->titleColumn()
                 ->label("wcf.global.title")
@@ -49,9 +75,14 @@ final class TrophyGridView extends AbstractGridView
                 ->sortable(),
         ]);
 
-        // TODO add interaction provider
+        $provider = new TrophyInteractions();
+        $provider->addInteractions([
+            new Divider(),
+            new EditInteraction(TrophyEditForm::class),
+        ]);
+        $this->setInteractionProvider($provider);
+        $this->setBulkInteractionProvider(new TrophyBulkInteractions());
 
-        // TODO add endpoints
         $this->addQuickInteraction(
             new ToggleInteraction("enable", "core/trophies/%s/enable", "core/trophies/%s/disable")
         );
@@ -70,8 +101,14 @@ final class TrophyGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): I18nTrophyList
     {
         return new I18nTrophyList();
+    }
+
+    #[\Override]
+    protected function getInitializedEvent(): TrophyGridViewInitialized
+    {
+        return new TrophyGridViewInitialized($this);
     }
 }

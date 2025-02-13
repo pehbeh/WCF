@@ -92,6 +92,12 @@
 		word-wrap: normal;
 	}
 
+	&.gridView__column--icon {
+		width: 32px;
+		white-space: nowrap;
+		word-wrap: normal;
+	}
+
 	&.gridView__column--date {
 		text-align: right;
 		width: 1px;
