@@ -1,7 +1,7 @@
 {include file='header' pageTitle='wcf.acp.cronjob.log'}
 
 <script data-relocate="true">
-	require(['WoltLabSuite/Core/Api/Cronjobs/Logs/ClearLogs', 'Ui/Notification', 'WoltLabSuite/Core/Component/Confirmation'], ({ clearLogs }, UiNotification, { confirmationFactory }) => {
+	require(['WoltLabSuite/Core/Api/Cronjobs/Logs/ClearLogs', 'WoltLabSuite/Core/Component/Snackbar', 'WoltLabSuite/Core/Component/Confirmation'], ({ clearLogs }, { showDefaultSuccessSnackbar }, { confirmationFactory }) => {
 		document.querySelectorAll('.jsCronjobLogDelete').forEach((button) => {
 			button.addEventListener('click', async () => {
 				const result = await confirmationFactory()
@@ -11,7 +11,7 @@
 				if (result) {
 					const response = await clearLogs();
 					if (response.ok) {
-						UiNotification.show(undefined, () => {
+						showDefaultSuccessSnackbar().addEventListener("snackbar:close", () => {
 							window.location.reload();
 						});
 					}

@@ -1,17 +1,15 @@
 {include file='header' pageTitle='wcf.acp.user.rank.list'}
 
 <script data-relocate="true">
-	require(['Language', 'Ui/Notification', 'WoltLabSuite/Core/Acp/Ui/Worker'], function (Language, UiNotification, AcpUiWorker) {
+	require(['Language', 'WoltLabSuite/Core/Component/Snackbar', 'WoltLabSuite/Core/Acp/Ui/Worker'], (Language, { showDefaultSuccessSnackbar }, AcpUiWorker) => {
 		Language.add('wcf.acp.worker.abort.confirmMessage', '{jslang}wcf.acp.worker.abort.confirmMessage{/jslang}');
 		
-		document.getElementById('updateEvents').addEventListener('click', function (event) {
-			event.preventDefault();
-			
+		document.getElementById('updateEvents').addEventListener('click', () => {
 			new AcpUiWorker({
 				dialogId: 'updateEvents',
 				dialogTitle: '{jslang}wcf.acp.user.activityPoint.updateEvents{/jslang}',
 				className: 'wcf\\system\\worker\\UserActivityPointUpdateEventsWorker',
-				callbackSuccess: () => UiNotification.show()
+				callbackSuccess: () => showDefaultSuccessSnackbar()
 			});
 		});
 	});
@@ -24,7 +22,7 @@
 	
 	<nav class="contentHeaderNavigation">
 		<ul>
-			<li><a id="updateEvents" class="button">{icon name='arrow-rotate-right'} <span>{lang}wcf.acp.user.activityPoint.updateEvents{/lang}</span></a></li>
+			<li><button type="button" id="updateEvents" class="button">{icon name='arrow-rotate-right'} <span>{lang}wcf.acp.user.activityPoint.updateEvents{/lang}</span></button></li>
 			<li><a href="{link controller='UserRankAdd'}{/link}" class="button">{icon name='plus'} <span>{lang}wcf.acp.user.rank.add{/lang}</span></a></li>
 			
 			{event name='contentHeaderNavigation'}
