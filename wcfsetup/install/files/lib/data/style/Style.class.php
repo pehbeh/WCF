@@ -3,6 +3,7 @@
 namespace wcf\data\style;
 
 use wcf\data\DatabaseObject;
+use wcf\data\ITitledObject;
 use wcf\system\style\StyleCompiler;
 use wcf\system\WCF;
 use wcf\util\FileUtil;
@@ -37,7 +38,7 @@ use wcf\util\ImageUtil;
  * @property-read   int $coverPhotoExtension    extension of the style's cover photo file
  * @property-read int $hasDarkMode
  */
-class Style extends DatabaseObject
+class Style extends DatabaseObject implements ITitledObject
 {
     /**
      * @since 5.4
@@ -492,5 +493,11 @@ class Style extends DatabaseObject
         $statement->execute();
 
         return $statement->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
+    #[\Override]
+    public function getTitle(): string
+    {
+        return $this->styleName;
     }
 }
