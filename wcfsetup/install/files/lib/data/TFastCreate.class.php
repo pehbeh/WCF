@@ -21,7 +21,7 @@ trait TFastCreate
      * @see IEditableObject::create()
      * @return int|string
      */
-    public static function fastCreate(array $parameters)
+    public static function fastCreate(array $parameters): int|string
     {
         $keys = $values = '';
         $statementParameters = [];
