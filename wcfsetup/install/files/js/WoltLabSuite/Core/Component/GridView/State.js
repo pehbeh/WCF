@@ -114,6 +114,9 @@ define(["require", "exports", "tslib", "./Filter", "./Selection", "./Sorting"], 
         resetSelection() {
             this.#selection.resetSelection();
         }
+        refreshSelection() {
+            this.#selection.refresh();
+        }
     }
     exports.State = State;
     exports.default = State;

@@ -156,6 +156,10 @@ export class State extends EventTarget {
   resetSelection(): void {
     this.#selection.resetSelection();
   }
+
+  refreshSelection(): void {
+    this.#selection.refresh();
+  }
 }
 
 interface StateEventMap {

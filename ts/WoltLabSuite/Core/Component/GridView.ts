@@ -68,6 +68,7 @@ export class GridView {
   async #refreshRow(row: HTMLElement): Promise<void> {
     const response = (await getRow(this.#gridClassName, row.dataset.objectId!, this.#gridViewParameters)).unwrap();
     row.replaceWith(DomUtil.createFragmentFromHtml(response.template));
+    this.#state.refreshSelection();
     DomChangeListener.trigger();
   }
 
