@@ -6,6 +6,7 @@ use wcf\data\devtools\project\DevtoolsProject;
 use wcf\page\AbstractPage;
 use wcf\system\devtools\pip\DevtoolsPip;
 use wcf\system\devtools\pip\IDevtoolsPipEntryList;
+use wcf\system\devtools\pip\IGuiPackageInstallationPlugin;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
@@ -162,15 +163,17 @@ class DevtoolsProjectPipEntryListPage extends AbstractPage
             throw new IllegalLinkException();
         }
 
+        $pip = $this->pipObject->getPip();
+        \assert($pip instanceof IGuiPackageInstallationPlugin);
         if (isset($_REQUEST['entryType'])) {
             $this->entryType = StringUtil::trim($_REQUEST['entryType']);
 
             try {
-                $this->pipObject->getPip()->setEntryType($this->entryType);
+                $pip->setEntryType($this->entryType);
             } catch (\InvalidArgumentException $e) {
                 throw new IllegalLinkException();
             }
-        } elseif (!empty($this->pipObject->getPip()->getEntryTypes())) {
+        } elseif (!empty($pip->getEntryTypes())) {
             throw new IllegalLinkException();
         }
 
@@ -207,8 +210,9 @@ class DevtoolsProjectPipEntryListPage extends AbstractPage
     {
         parent::readData();
 
-        /** @var IDevtoolsPipEntryList entryList */
-        $this->entryList = $this->pipObject->getPip()->getEntryList();
+        $pip = $this->pipObject->getPip();
+        \assert($pip instanceof IGuiPackageInstallationPlugin);
+        $this->entryList = $pip->getEntryList();
 
         if ($this->entryFilter !== null && $this->entryFilter !== '') {
             $this->entryList->filterEntries($this->entryFilter);

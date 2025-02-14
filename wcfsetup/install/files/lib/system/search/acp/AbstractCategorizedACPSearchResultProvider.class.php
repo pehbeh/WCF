@@ -49,6 +49,7 @@ abstract class AbstractCategorizedACPSearchResultProvider extends AbstractACPSea
      */
     protected function getCategoryID($categoryName)
     {
+        // @phpstan-ignore property.notFound
         return $this->getTopCategory($categoryName)->categoryID;
     }
 
@@ -60,6 +61,7 @@ abstract class AbstractCategorizedACPSearchResultProvider extends AbstractACPSea
      */
     protected function getCategoryName($categoryName)
     {
+        // @phpstan-ignore property.notFound
         return $this->getTopCategory($categoryName)->categoryName;
     }
 
@@ -82,6 +84,7 @@ abstract class AbstractCategorizedACPSearchResultProvider extends AbstractACPSea
         }
 
         // check parent category
+        // @phpstan-ignore property.notFound
         return $this->getTopCategory($this->categories[$categoryName]->parentCategoryName);
     }
 
@@ -117,12 +120,14 @@ abstract class AbstractCategorizedACPSearchResultProvider extends AbstractACPSea
         // create level 2 categories
         $topCategories = [];
         foreach ($this->categories as $key => $category) {
+            // @phpstan-ignore property.notFound
             if ($category->parentCategoryName) {
                 // check if parent category exists, thus if it is valid; if is does not exist, then all
                 // child categories are also invalid
                 if (!isset($this->categories[$category->parentCategoryName])) {
                     unset($this->categories[$key]);
                 } elseif (\in_array($category->parentCategoryName, $this->topCategories)) {
+                    // @phpstan-ignore property.notFound
                     $topCategories[] = $category->categoryName;
                 }
             }

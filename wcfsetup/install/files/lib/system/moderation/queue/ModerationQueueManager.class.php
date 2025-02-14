@@ -99,14 +99,18 @@ class ModerationQueueManager extends SingletonFactory
     /**
      * Returns the object type processor.
      *
-     * @param string $definitionName
-     * @param string $objectType
+     * @param ?string $definitionName
+     * @param ?string $objectType
      * @param int $objectTypeID
      * @return  object|null
      */
     public function getProcessor($definitionName, $objectType, $objectTypeID = null)
     {
         if ($objectType !== null) {
+            if ($definitionName === null) {
+                throw new \RuntimeException("The definition name cannot be null when the object type is set.");
+            }
+
             $objectTypeID = $this->getObjectTypeID($definitionName, $objectType);
         }
 
@@ -345,7 +349,7 @@ class ModerationQueueManager extends SingletonFactory
     /**
      * Saves moderation queue assignments.
      *
-     * @param bool[] $assignments
+     * @param array<int, bool> $assignments
      */
     public function setAssignment(array $assignments, ?User $user = null)
     {

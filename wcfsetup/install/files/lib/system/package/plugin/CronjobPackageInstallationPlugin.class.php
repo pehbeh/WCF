@@ -56,7 +56,7 @@ class CronjobPackageInstallationPlugin extends AbstractXMLPackageInstallationPlu
                 break;
             case 'expression':
                 $elements['expression'] = [
-                    'type' => $element->getAttribute('type') ?? '',
+                    'type' => $element->getAttribute('type'),
                     'value' => $element->nodeValue,
                 ];
                 break;
@@ -120,7 +120,7 @@ class CronjobPackageInstallationPlugin extends AbstractXMLPackageInstallationPlu
                     $name
                 ), true)
             ));
-            $engine = static fn (int $min, int $max) => $randomizer->getInt($min, $max);
+            $engine = static fn(int $min, int $max) => $randomizer->getInt($min, $max);
         } else {
             // A seedable engine is not available, use completely random values.
             $engine = \random_int(...);
@@ -480,7 +480,7 @@ class CronjobPackageInstallationPlugin extends AbstractXMLPackageInstallationPlu
                 $cronjob->appendChild($document->createElement('description', $formData['description']));
             }
         } elseif (isset($data['description_i18n'])) {
-            /** @var \DOMElement $firstDescription */
+            /** @var ?\DOMElement $firstDescription */
             $firstDescription = null;
             foreach ($data['description_i18n'] as $languageItem => $description) {
                 if ($description !== '') {
@@ -506,14 +506,14 @@ class CronjobPackageInstallationPlugin extends AbstractXMLPackageInstallationPlu
         $expression = $document->createElement(
             'expression',
             $formData['expression'] ??
-            \sprintf(
-                '%s %s %s %s %s',
-                $formData['startminute'],
-                $formData['starthour'],
-                $formData['startdom'],
-                $formData['startmonth'],
-                $formData['startdow']
-            )
+                \sprintf(
+                    '%s %s %s %s %s',
+                    $formData['startminute'],
+                    $formData['starthour'],
+                    $formData['startdom'],
+                    $formData['startmonth'],
+                    $formData['startdow']
+                )
         );
         if ($formData['expressionType'] !== '') {
             $expression->setAttribute('type', $formData['expressionType']);

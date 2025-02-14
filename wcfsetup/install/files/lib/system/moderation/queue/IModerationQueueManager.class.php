@@ -50,9 +50,9 @@ interface IModerationQueueManager
     /**
      * Returns object type processor by object type.
      *
-     * @param string $objectType
-     * @param int $objectTypeID
-     * @return  object
+     * @param ?string $objectType
+     * @param ?int $objectTypeID
+     * @return IModerationQueueHandler
      */
     public function getProcessor($objectType, $objectTypeID = null);
 

@@ -182,19 +182,19 @@ class TemplateScriptingCompiler
 
     /**
      * current line number during template compilation
-     * @var string
+     * @var int
      */
     protected $currentLineNo;
 
     /**
      * list of automatically loaded tenplate plugins
-     * @var string[]
+     * @var array<string, string>
      */
     protected $autoloadPlugins = [];
 
     /**
      * stack with template tags data
-     * @var array
+     * @var list<array{0: string, 1: int}>
      */
     protected $tagStack = [];
 
@@ -334,18 +334,15 @@ class TemplateScriptingCompiler
         }
 
         // throw error messages for unclosed tags
-        if (\count($this->tagStack) > 0) {
-            foreach ($this->tagStack as $tagStack) {
-                throw new SystemException(
-                    static::formatSyntaxError(
-                        'unclosed tag {' . $tagStack[0] . '}',
-                        $this->currentIdentifier,
-                        $tagStack[1]
-                    )
-                );
-            }
-
-            return false;
+        $unclosedTag = \array_shift($this->tagStack);
+        if ($unclosedTag !== null) {
+            throw new SystemException(
+                static::formatSyntaxError(
+                    'unclosed tag {' . $unclosedTag[0] . '}',
+                    $this->currentIdentifier,
+                    $unclosedTag[1]
+                )
+            );
         }
 
         $compiledContent = '';
@@ -365,7 +362,7 @@ class TemplateScriptingCompiler
 
         // include Plugins
         $compiledAutoloadPlugins = '';
-        if (\count($this->autoloadPlugins) > 0) {
+        if ($this->autoloadPlugins !== []) {
             $compiledAutoloadPlugins = "<?php\n";
             foreach ($this->autoloadPlugins as $className) {
                 $compiledAutoloadPlugins .= "if (!isset(\$this->pluginObjects['{$className}'])) {\n";
@@ -399,6 +396,7 @@ class TemplateScriptingCompiler
      * @param array $metaData
      * @return  string
      * @throws  SystemException
+     * @phpstan-impure
      */
     protected function compileTag($tag, $identifier, array &$metaData)
     {
@@ -423,6 +421,7 @@ class TemplateScriptingCompiler
                     return $this->compileIfTag($tagArgs);
 
                 case 'elseif':
+                    \assert($this->tagStack !== []);
                     [$openTag] = \end($this->tagStack);
                     if ($openTag != 'if' && $openTag != 'elseif') {
                         throw new SystemException(
@@ -439,6 +438,7 @@ class TemplateScriptingCompiler
                     return $this->compileIfTag($tagArgs, true);
 
                 case 'else':
+                    \assert($this->tagStack !== []);
                     [$openTag] = \end($this->tagStack);
                     if ($openTag != 'if' && $openTag != 'elseif') {
                         throw new SystemException(
@@ -454,6 +454,7 @@ class TemplateScriptingCompiler
                     return '<?php } else { ?>';
 
                 case '/if':
+                    \assert($this->tagStack !== []);
                     [$openTag] = \end($this->tagStack);
                     if ($openTag != 'if' && $openTag != 'elseif' && $openTag != 'else') {
                         throw new SystemException(
@@ -477,6 +478,7 @@ class TemplateScriptingCompiler
                     return $this->compileForeachTag($tagArgs);
 
                 case 'foreachelse':
+                    \assert($this->tagStack !== []);
                     [$openTag] = \end($this->tagStack);
                     if ($openTag != 'foreach') {
                         throw new SystemException(
@@ -492,6 +494,7 @@ class TemplateScriptingCompiler
                     return '<?php } } else { { ?>';
 
                 case '/foreach':
+                    \assert($this->tagStack !== []);
                     [$openTag] = \end($this->tagStack);
                     if ($openTag != 'foreach' && $openTag != 'foreachelse') {
                         throw new SystemException(
@@ -512,6 +515,7 @@ class TemplateScriptingCompiler
                     return $this->compileSectionTag($tagArgs);
 
                 case 'sectionelse':
+                    \assert($this->tagStack !== []);
                     [$openTag] = \end($this->tagStack);
                     if ($openTag != 'section') {
                         throw new SystemException(
@@ -527,6 +531,7 @@ class TemplateScriptingCompiler
                     return '<?php } } else { { ?>';
 
                 case '/section':
+                    \assert($this->tagStack !== []);
                     [$openTag] = \end($this->tagStack);
                     if ($openTag != 'section' && $openTag != 'sectionelse') {
                         throw new SystemException(
@@ -1192,8 +1197,8 @@ class TemplateScriptingCompiler
      * Returns a formatted syntax error message.
      *
      * @param string $errorMsg
-     * @param string $file
-     * @param int $line
+     * @param ?string $file
+     * @param ?int $line
      * @return  string
      */
     public static function formatSyntaxError($errorMsg, $file = null, $line = null)
@@ -1201,7 +1206,7 @@ class TemplateScriptingCompiler
         $errorMsg = 'Template compilation failed: ' . $errorMsg;
         if ($file && $line) {
             $errorMsg .= " in template '{$file}' on line {$line}";
-        } elseif ($file && !$line) {
+        } elseif ($file) {
             $errorMsg .= " in template '{$file}'";
         }
 
@@ -1310,6 +1315,7 @@ class TemplateScriptingCompiler
      * Adds a tag to the tag stack.
      *
      * @param string $tag
+     * @return void
      */
     public function pushTag($tag)
     {
@@ -1337,6 +1343,8 @@ class TemplateScriptingCompiler
         if ($tag == 'section' && $openTag == 'sectionelse') {
             return $this->popTag($tag);
         }
+
+        return '';
     }
 
     /**
@@ -1605,7 +1613,6 @@ class TemplateScriptingCompiler
                                 $this->currentLineNo
                             )
                         );
-                        break;
                 }
             }
 
@@ -1629,7 +1636,6 @@ class TemplateScriptingCompiler
                                 $this->currentLineNo
                             )
                         );
-                        break;
 
                     case '->': // object access
                     case '?->':
@@ -1646,7 +1652,6 @@ class TemplateScriptingCompiler
                                 $this->currentLineNo
                             )
                         );
-                        break;
 
                     case '(': // left parenthesis
                         if ($status == 'object') {
@@ -1676,7 +1681,6 @@ class TemplateScriptingCompiler
                                 $this->currentLineNo
                             )
                         );
-                        break;
 
                     case ')': // right parenthesis
                         while ($oldStatus = \array_pop($statusStack)) {
@@ -1706,7 +1710,6 @@ class TemplateScriptingCompiler
                                 $this->currentLineNo
                             )
                         );
-                        break;
 
                     case '[': // bracket open
                         if ($status == 'variable' || $status == 'object') {
@@ -1725,7 +1728,6 @@ class TemplateScriptingCompiler
                                 $this->currentLineNo
                             )
                         );
-                        break;
 
                     case ']': // bracket close
                         while ($oldStatus = \array_pop($statusStack)) {
@@ -1751,7 +1753,6 @@ class TemplateScriptingCompiler
                                 $this->currentLineNo
                             )
                         );
-                        break;
 
                     case '|': // modifier
                         // handle previous modifier
@@ -1814,7 +1815,6 @@ class TemplateScriptingCompiler
                                 $this->currentLineNo
                             )
                         );
-                        break;
 
                     case ',':
                         while ($oldStatus = \array_pop($statusStack)) {
@@ -1842,7 +1842,6 @@ class TemplateScriptingCompiler
                                 $this->currentLineNo
                             )
                         );
-                        break;
 
                     case '+': // math operators
                     case '-':
@@ -1869,7 +1868,6 @@ class TemplateScriptingCompiler
                                 $this->currentLineNo
                             )
                         );
-                        break;
                 }
             }
         }
@@ -1986,7 +1984,7 @@ class TemplateScriptingCompiler
             } else {
                 throw new SystemException(
                     static::formatSyntaxError(
-                        "Prefilter '" . (\is_object($prefilter) ? \get_class($prefilter) : $prefilter) . "' does not implement the interface 'IPrefilterTemplatePlugin'",
+                        "Prefilter '" . \get_class($prefilter) . "' does not implement the interface 'IPrefilterTemplatePlugin'",
                         $this->currentIdentifier
                     )
                 );

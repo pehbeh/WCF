@@ -89,7 +89,7 @@ class VersionTracker extends SingletonFactory
      *
      * @param string $objectTypeName object type name
      * @param int $objectID target object id
-     * @return      VersionTrackerEntry|null|DatabaseObject
+     * @return ?VersionTrackerEntry
      */
     public function getLastVersion($objectTypeName, $objectID)
     {
@@ -101,8 +101,12 @@ class VersionTracker extends SingletonFactory
                 ORDER BY    versionID DESC";
         $statement = WCF::getDB()->prepare($sql, 1);
         $statement->execute([$objectID]);
+        $row = $statement->fetchSingleRow();
+        if ($row === false) {
+            return null;
+        }
 
-        return $statement->fetchObject(VersionTrackerEntry::class);
+        return new VersionTrackerEntry(null, $row);
     }
 
     /**
@@ -123,8 +127,8 @@ class VersionTracker extends SingletonFactory
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute([$objectID]);
         $versions = [];
-        while ($version = $statement->fetchObject(VersionTrackerEntry::class)) {
-            $versions[] = $version;
+        while ($row = $statement->fetchArray()) {
+            $versions[] = new VersionTrackerEntry(null, $row);
         }
 
         return $versions;
@@ -135,7 +139,7 @@ class VersionTracker extends SingletonFactory
      *
      * @param string $objectTypeName object type name
      * @param int $versionID version id
-     * @return      VersionTrackerEntry|null|DatabaseObject
+     * @return ?VersionTrackerEntry
      */
     public function getVersion($objectTypeName, $versionID)
     {
@@ -146,8 +150,12 @@ class VersionTracker extends SingletonFactory
                 WHERE   versionID = ?";
         $statement = WCF::getDB()->prepare($sql, 1);
         $statement->execute([$versionID]);
+        $row = $statement->fetchSingleRow();
+        if ($row === false) {
+            return null;
+        }
 
-        return $statement->fetchObject(VersionTrackerEntry::class);
+        return new VersionTrackerEntry(null, $row);
     }
 
     /**

@@ -29,7 +29,7 @@ class TrophyCache extends SingletonFactory
 
     /**
      * Contains all trophies sorted by the category.
-     * @var Trophy[]
+     * @var ?array<int, array<int, Trophy>>
      */
     protected $categorySortedTrophies;
 
@@ -57,7 +57,7 @@ class TrophyCache extends SingletonFactory
      * Returns the trophy with the given trophyID.
      *
      * @param int[] $trophyIDs
-     * @return  Trophy[]
+     * @return (Trophy|null)[]
      */
     public function getTrophiesByID(array $trophyIDs)
     {

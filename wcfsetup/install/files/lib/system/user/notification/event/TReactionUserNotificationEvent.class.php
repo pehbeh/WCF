@@ -20,14 +20,14 @@ trait TReactionUserNotificationEvent
 {
     /**
      * Cached reactions
-     * @var int[]
+     * @var array<int, int>
      */
     private $cachedReactions;
 
     /**
      * Returns the count of reactionTypeIDs for the specific user notification object.
      *
-     * @return int[]
+     * @return array<int, int>
      */
     final protected function getReactionsForAuthors()
     {
@@ -39,12 +39,12 @@ trait TReactionUserNotificationEvent
         $conditionBuilder->add('like_table.userID IN (?)', [\array_keys($this->getAuthors())]);
         $conditionBuilder->add('like_table_join.likeID = ?', [$this->getUserNotificationObject()->getObjectID()]);
 
-        $sql = "SELECT      like_table.reactionTypeID, COUNT(like_table.reactionTypeID) as count 
+        $sql = "SELECT      like_table.reactionTypeID, COUNT(like_table.reactionTypeID) as count
                 FROM        wcf1_like like_table
                 LEFT JOIN   wcf1_like like_table_join
                 ON          like_table_join.objectTypeID = like_table.objectTypeID
                         AND like_table_join.objectID = like_table.objectID
-                " . $conditionBuilder . " 
+                " . $conditionBuilder . "
                 GROUP BY    like_table.reactionTypeID";
 
         $statement = WCF::getDB()->prepare($sql);

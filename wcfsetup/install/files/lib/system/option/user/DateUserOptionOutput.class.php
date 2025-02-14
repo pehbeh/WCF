@@ -46,9 +46,7 @@ class DateUserOptionOutput implements IUserOptionOutput
     {
         $year = $month = $day = 0;
         $optionValue = \explode('-', $value);
-        if (isset($optionValue[0])) {
-            $year = \intval($optionValue[0]);
-        }
+        $year = \intval($optionValue[0]);
         if (isset($optionValue[1])) {
             $month = \intval($optionValue[1]);
         }

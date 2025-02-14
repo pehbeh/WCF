@@ -46,7 +46,7 @@ class ArticleCategorySitemapObject extends AbstractSitemapObjectObjectType
      */
     public function canView(DatabaseObject $object)
     {
-        /** @var $object ArticleCategory */
+        /** @var ArticleCategory $object */
         return $object->isAccessible();
     }
 
@@ -59,7 +59,7 @@ class ArticleCategorySitemapObject extends AbstractSitemapObjectObjectType
             return false;
         }
 
-        return PageCache::getInstance()
+        return !!PageCache::getInstance()
             ->getPageByIdentifier('com.woltlab.wcf.CategoryArticleList')
             ->allowSpidersToIndex;
     }

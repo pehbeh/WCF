@@ -71,6 +71,8 @@ final class PollOptionsFormField extends AbstractFormField
                 ];
             }
         }
+
+        return $this;
     }
 
     /**

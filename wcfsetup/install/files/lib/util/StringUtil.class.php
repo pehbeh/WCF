@@ -415,7 +415,7 @@ final class StringUtil
     public static function getCharValue($c)
     {
         $ud = 0;
-        if (\ord($c[0]) >= 0 && \ord($c[0]) <= 127) {
+        if (\ord($c[0]) <= 127) {
             $ud = \ord($c[0]);
         }
         if (\ord($c[0]) >= 192 && \ord($c[0]) <= 223) {
@@ -433,7 +433,7 @@ final class StringUtil
         if (\ord($c[0]) >= 252 && \ord($c[0]) <= 253) {
             $ud = (\ord($c[0]) - 252) * 1073741824 + (\ord($c[1]) - 128) * 16777216 + (\ord($c[2]) - 128) * 262144 + (\ord($c[3]) - 128) * 4096 + (\ord($c[4]) - 128) * 64 + (\ord($c[5]) - 128);
         }
-        if (\ord($c[0]) >= 254 && \ord($c[0]) <= 255) {
+        if (\ord($c[0]) >= 254) {
             $ud = false; // error
         }
 

@@ -42,7 +42,7 @@ final class ArrayUtil
      * Applies intval() to all elements of the given array.
      *
      * @param array|string $array
-     * @return  array|string
+     * @return  array|int
      */
     public static function toIntegerArray($array)
     {
@@ -79,8 +79,8 @@ final class ArrayUtil
     /**
      * Applies stripslashes on all elements of the given array.
      *
-     * @param array $array
-     * @return  array
+     * @param array|string $array
+     * @return  array|string
      */
     public static function stripslashes($array)
     {

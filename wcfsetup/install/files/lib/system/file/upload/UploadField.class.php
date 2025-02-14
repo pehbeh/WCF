@@ -14,7 +14,7 @@ class UploadField
 {
     /**
      * The max number of files for this field.
-     * @var int
+     * @var ?int
      */
     public $maxFiles = 10;
 
@@ -74,7 +74,7 @@ class UploadField
     /**
      * Returns the max number of files.
      *
-     * @return int
+     * @return ?int
      */
     public function getMaxFiles()
     {

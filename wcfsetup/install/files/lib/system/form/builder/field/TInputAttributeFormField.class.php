@@ -24,6 +24,7 @@ trait TInputAttributeFormField
     protected static function getReservedFieldAttributes(): array
     {
         return \array_merge(
+            // @phpstan-ignore staticClassAccess.privateMethod
             static::defaultGetReservedFieldAttributes(),
             [
                 'name',

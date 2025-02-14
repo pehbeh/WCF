@@ -5,6 +5,7 @@ namespace wcf\system\moderation\queue;
 use wcf\data\moderation\queue\ModerationQueue;
 use wcf\data\moderation\queue\ViewableModerationQueue;
 use wcf\system\exception\InvalidObjectTypeException;
+use wcf\system\moderation\queue\activation\IModerationQueueActivationHandler;
 use wcf\system\request\LinkHandler;
 
 /**
@@ -13,6 +14,7 @@ use wcf\system\request\LinkHandler;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @method IModerationQueueActivationHandler getProcessor(?string $objectType, ?int $objectTypeID = null)
  */
 class ModerationQueueActivationManager extends AbstractModerationQueueManager
 {
@@ -85,8 +87,8 @@ class ModerationQueueActivationManager extends AbstractModerationQueueManager
      * This method is intended for bulk processing.
      *
      * @param string $objectType
-     * @param int[] $objectID
-     * @poram   int[]   $containerIDs       format: `objectID => containerID`
+     * @param int[] $objectIDs
+     * @param   int[]   $containerIDs       format: `objectID => containerID`
      * @param array $additionalData
      * @throws  InvalidObjectTypeException
      */

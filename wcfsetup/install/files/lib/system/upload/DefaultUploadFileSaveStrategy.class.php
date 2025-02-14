@@ -130,11 +130,11 @@ class DefaultUploadFileSaveStrategy implements IUploadFileSaveStrategy
             }
         }
 
-        /** @var IDatabaseObjectAction $action */
         $objects = [];
         if (isset($this->options['object'])) {
             $objects = [$this->options['object']];
         }
+        /** @var IDatabaseObjectAction $action */
         $action = new $this->actionClassName($objects, $this->options['action'], [
             'data' => $data,
         ]);

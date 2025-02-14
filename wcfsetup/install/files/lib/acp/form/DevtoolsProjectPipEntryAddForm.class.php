@@ -6,6 +6,7 @@ use wcf\data\devtools\project\DevtoolsProject;
 use wcf\form\AbstractForm;
 use wcf\form\AbstractFormBuilderForm;
 use wcf\system\devtools\pip\DevtoolsPip;
+use wcf\system\devtools\pip\IGuiPackageInstallationPlugin;
 use wcf\system\event\EventHandler;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\form\builder\container\FormContainer;
@@ -104,15 +105,17 @@ class DevtoolsProjectPipEntryAddForm extends AbstractFormBuilderForm
             throw new IllegalLinkException();
         }
 
+        $pip = $this->pipObject->getPip();
+        \assert($pip instanceof IGuiPackageInstallationPlugin);
         if (isset($_REQUEST['entryType'])) {
             $this->entryType = StringUtil::trim($_REQUEST['entryType']);
 
             try {
-                $this->pipObject->getPip()->setEntryType($this->entryType);
+                $pip->setEntryType($this->entryType);
             } catch (\InvalidArgumentException $e) {
                 throw new IllegalLinkException();
             }
-        } elseif (!empty($this->pipObject->getPip()->getEntryTypes())) {
+        } elseif (!empty($pip->getEntryTypes())) {
             throw new IllegalLinkException();
         }
     }
@@ -137,7 +140,9 @@ class DevtoolsProjectPipEntryAddForm extends AbstractFormBuilderForm
                 ->label('wcf.global.form.data')
         );
 
-        $this->pipObject->getPip()->populateForm($this->form);
+        $pip = $this->pipObject->getPip();
+        \assert($pip instanceof IGuiPackageInstallationPlugin);
+        $pip->populateForm($this->form);
 
         EventHandler::getInstance()->fireAction($this, 'addPipFormFields');
     }
@@ -149,7 +154,9 @@ class DevtoolsProjectPipEntryAddForm extends AbstractFormBuilderForm
     {
         AbstractForm::save();
 
-        $this->pipObject->getPip()->addEntry($this->form);
+        $pip = $this->pipObject->getPip();
+        \assert($pip instanceof IGuiPackageInstallationPlugin);
+        $pip->addEntry($this->form);
 
         $this->saved();
 

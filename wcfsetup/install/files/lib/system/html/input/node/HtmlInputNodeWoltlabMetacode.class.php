@@ -147,6 +147,7 @@ class HtmlInputNodeWoltlabMetacode extends AbstractHtmlInputNode
                 }
 
                 $newElement = $converter->convert($fragment, $attributes);
+                // @phpstan-ignore instanceof.alwaysTrue
                 if (!($newElement instanceof \DOMElement)) {
                     throw new \UnexpectedValueException("Expected a valid DOMElement as return value.");
                 }

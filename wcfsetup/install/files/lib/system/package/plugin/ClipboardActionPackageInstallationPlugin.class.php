@@ -277,7 +277,7 @@ class ClipboardActionPackageInstallationPlugin extends AbstractXMLPackageInstall
 
         $showOrder = $element->getElementsByTagName('showorder')->item(0);
         if ($showOrder !== null) {
-            $data['showOrder'] = $showOrder->nodeValue;
+            $data['showOrder'] = (int)$showOrder->nodeValue;
         }
         if ($saveData && $this->editedEntry === null) {
             // only set explicit showOrder when adding new clipboard actions

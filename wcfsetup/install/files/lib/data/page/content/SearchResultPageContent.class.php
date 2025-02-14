@@ -3,6 +3,7 @@
 namespace wcf\data\page\content;
 
 use wcf\data\DatabaseObjectDecorator;
+use wcf\data\page\Page;
 use wcf\data\search\ISearchResultObject;
 use wcf\system\request\LinkHandler;
 use wcf\system\search\SearchResultTextParser;
@@ -73,7 +74,8 @@ class SearchResultPageContent extends DatabaseObjectDecorator implements ISearch
      */
     public function getFormattedMessage()
     {
-        if ($this->getDecoratedObject()->pageType == 'text') {
+        $page = new Page($this->pageID);
+        if ($page->pageType === 'text') {
             $message = SearchResultTextParser::getInstance()->parse($this->getDecoratedObject()->getFormattedContent());
         } else {
             $message = SearchResultTextParser::getInstance()->parse($this->getDecoratedObject()->getParsedContent());

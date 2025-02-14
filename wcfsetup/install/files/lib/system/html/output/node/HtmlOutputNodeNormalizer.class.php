@@ -87,7 +87,7 @@ final class HtmlOutputNodeNormalizer
                 // is an uneven number in which case we need to remove one
                 // additional paragraph.
                 $totalNumberOfParagraphs = $offset + 1;
-                $numberOfParagraphsToRemove = \ceil($totalNumberOfParagraphs / 2);
+                $numberOfParagraphsToRemove = (int)\ceil($totalNumberOfParagraphs / 2);
 
                 $removeParagraphs = \array_slice($paragraphs, $i, $numberOfParagraphsToRemove);
                 foreach ($removeParagraphs as $paragraph) {
@@ -148,6 +148,7 @@ final class HtmlOutputNodeNormalizer
             }
         }
 
+        \assert($paragraphOrTableCell instanceof \DOMElement);
         if (!DOMUtil::isLastNode($br, $paragraphOrTableCell)) {
             return;
         }
@@ -160,6 +161,7 @@ final class HtmlOutputNodeNormalizer
     private function stripMarkerOnBr(\DOMXPath $xpath): void
     {
         foreach ($xpath->query(".//br[@data-cke-filler='true']") as $br) {
+            \assert($br instanceof \DOMElement);
             $br->removeAttribute("data-cke-filler");
         }
     }
@@ -222,10 +224,7 @@ final class HtmlOutputNodeNormalizer
             $length = \count($foundBrs);
             if ($length > 1) {
                 for ($i = 1; $i < $length; $i++) {
-                    $br = $foundBrs[$i];
-                    \assert($br instanceof \DOMElement);
-
-                    $br->remove();
+                    $foundBrs[$i]->remove();
                 }
             }
         }

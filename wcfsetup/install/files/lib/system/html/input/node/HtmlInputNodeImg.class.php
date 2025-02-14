@@ -260,7 +260,6 @@ class HtmlInputNodeImg extends AbstractHtmlInputNode
     {
         $code = $element->getAttribute('alt');
 
-        /** @var Smiley $smiley */
         $smiley = SmileyCache::getInstance()->getSmileyByCode($code);
         if ($smiley === null || $this->smiliesFound === 50) {
             $element->parentNode->insertBefore($element->ownerDocument->createTextNode($code), $element);

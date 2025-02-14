@@ -5,6 +5,7 @@ namespace wcf\data\attachment;
 use wcf\data\DatabaseObjectDecorator;
 use wcf\data\IUserContent;
 use wcf\data\object\type\ObjectTypeCache;
+use wcf\system\attachment\IAttachmentObjectType;
 
 /**
  * Represents an attachment.
@@ -15,6 +16,7 @@ use wcf\data\object\type\ObjectTypeCache;
  *
  * @method  Attachment  getDecoratedObject()
  * @mixin   Attachment
+ * @property-read string $username
  */
 class AdministrativeAttachment extends DatabaseObjectDecorator
 {
@@ -25,7 +27,7 @@ class AdministrativeAttachment extends DatabaseObjectDecorator
 
     /**
      * container object
-     * @var IUserContent
+     * @var ?IUserContent
      */
     protected $containerObject;
 
@@ -38,7 +40,7 @@ class AdministrativeAttachment extends DatabaseObjectDecorator
     /**
      * Returns the container object of this attachment.
      *
-     * @return  IUserContent
+     * @return ?IUserContent
      */
     public function getContainerObject()
     {
@@ -46,7 +48,9 @@ class AdministrativeAttachment extends DatabaseObjectDecorator
             $this->containerObjectLoaded = true;
 
             $objectType = ObjectTypeCache::getInstance()->getObjectType($this->objectTypeID);
-            $this->containerObject = $objectType->getProcessor()->getObject($this->objectID);
+            $processor = $objectType->getProcessor();
+            \assert($processor instanceof IAttachmentObjectType);
+            $this->containerObject = $processor->getObject($this->objectID);
         }
 
         return $this->containerObject;

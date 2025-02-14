@@ -51,9 +51,12 @@ final class WoltLabSuiteArticleBBCode extends AbstractBBCode
 
     private function getArticle(int $articleID): ?ViewableArticle
     {
-        return MessageEmbeddedObjectManager::getInstance()->getObject(
+        $article = MessageEmbeddedObjectManager::getInstance()->getObject(
             'com.woltlab.wcf.article',
             $articleID
         );
+        \assert($article === null || $article instanceof ViewableArticle);
+
+        return $article;
     }
 }

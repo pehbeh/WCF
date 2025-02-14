@@ -4,12 +4,10 @@ namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\UserRankEditForm;
 use wcf\data\DatabaseObject;
-use wcf\data\DatabaseObjectList;
 use wcf\data\user\group\UserGroup;
 use wcf\data\user\rank\I18nUserRankList;
 use wcf\data\user\rank\UserRank;
 use wcf\event\gridView\admin\UserRankGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\I18nTextFilter;
 use wcf\system\gridView\filter\SelectFilter;
@@ -127,13 +125,13 @@ final class UserRankGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): I18nUserRankList
     {
         return new I18nUserRankList();
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): UserRankGridViewInitialized
     {
         return new UserRankGridViewInitialized($this);
     }

@@ -83,13 +83,7 @@ class TableMetacodeConverter extends AbstractMetacodeConverter
         }
 
         // move tds
-        /** @var \DOMElement $col */
         foreach ($cols as $col) {
-            if (false && $col->parentNode !== $row) {
-                $parent = DOMUtil::getParentBefore($col, $row);
-                $row->insertBefore($col, $parent);
-            }
-
             DOMUtil::replaceElement($col, $row->ownerDocument->createElement('td'));
         }
 
@@ -158,10 +152,13 @@ class TableMetacodeConverter extends AbstractMetacodeConverter
      */
     protected function isInsideTable(\DOMNode $node)
     {
-        /** @var \DOMElement $parent */
         $parent = $node;
         while ($parent = $parent->parentNode) {
-            if ($parent->nodeName === 'woltlab-metacode' && $parent->getAttribute('data-name') === 'table') {
+            if (
+                $parent->nodeName === 'woltlab-metacode'
+                && $parent instanceof \DOMElement
+                && $parent->getAttribute('data-name') === 'table'
+            ) {
                 return true;
             }
         }

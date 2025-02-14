@@ -17,7 +17,7 @@ class ObjectIdColumnRenderer extends AbstractColumnRenderer
     #[\Override]
     public function render(mixed $value, DatabaseObject $row): string
     {
-        return \intval($value);
+        return (string)\intval($value);
     }
 
     #[\Override]

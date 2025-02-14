@@ -49,8 +49,7 @@ class ArticleMessageEmbeddedObjectHandler extends AbstractSimpleMessageEmbeddedO
             $articleIDs = [];
             foreach ($articles as $article) {
                 if (
-                    $article !== null
-                    && $article->getArticleContent()->languageID
+                    $article->getArticleContent()->languageID
                     && $article->getArticleContent()->languageID != $contentLanguageID
                 ) {
                     $articleIDs[] = $article->articleID;
@@ -92,22 +91,21 @@ class ArticleMessageEmbeddedObjectHandler extends AbstractSimpleMessageEmbeddedO
      */
     public function replaceSimple($objectType, $objectID, $value, array $attributes)
     {
-        /** @var Article $article */
         $article = MessageEmbeddedObjectManager::getInstance()->getObject('com.woltlab.wcf.article', $value);
         if ($article === null) {
-            return;
+            return null;
         }
+
+        \assert($article instanceof Article);
 
         $return = (!empty($attributes['return'])) ? $attributes['return'] : 'link';
         switch ($return) {
             case 'title':
                 return $article->getTitle();
-                break;
 
             case 'link':
             default:
                 return $article->getLink();
-                break;
         }
     }
 }

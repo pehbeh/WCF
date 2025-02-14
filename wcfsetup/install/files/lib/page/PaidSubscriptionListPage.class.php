@@ -40,9 +40,9 @@ class PaidSubscriptionListPage extends AbstractPage
 
     /**
      * list of user subscriptions
-     * @var PaidSubscriptionUserList
+     * @var ?PaidSubscriptionUserList
      */
-    public $userSubscriptionList = [];
+    public $userSubscriptionList;
 
     /**
      * @inheritDoc

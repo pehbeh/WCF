@@ -2,8 +2,8 @@
 
 namespace wcf\acp\form;
 
-use wcf\data\category\Category;
 use wcf\data\object\type\ObjectType;
+use wcf\data\trophy\category\TrophyCategory;
 use wcf\data\trophy\category\TrophyCategoryCache;
 use wcf\data\trophy\Trophy;
 use wcf\data\trophy\TrophyAction;
@@ -50,7 +50,7 @@ class TrophyAddForm extends AbstractAcpForm
 
     /**
      * Category object.
-     * @var Category
+     * @var ?TrophyCategory
      */
     public $category;
 
@@ -68,7 +68,7 @@ class TrophyAddForm extends AbstractAcpForm
 
     /**
      * All available trophy types.
-     * @var []
+     * @var array<int, string>
      */
     public $availableTypes = [
         Trophy::TYPE_IMAGE => 'imageUpload',
@@ -137,7 +137,7 @@ class TrophyAddForm extends AbstractAcpForm
 
     /**
      * list of grouped user group assignment condition object types
-     * @var ObjectType[][]
+     * @var (ObjectType|ObjectType[])[][]
      */
     public $conditions = [];
 

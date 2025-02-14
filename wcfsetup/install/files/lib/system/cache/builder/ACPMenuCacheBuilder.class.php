@@ -26,7 +26,7 @@ class ACPMenuCacheBuilder extends AbstractCacheBuilder
 
     /**
      * list of option categories grouped by the name of their parent category
-     * @var OptionCategory[]
+     * @var array<string, OptionCategory[]>
      */
     protected $categoryStructure = [];
 

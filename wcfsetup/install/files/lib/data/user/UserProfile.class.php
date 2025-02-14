@@ -41,6 +41,9 @@ use wcf\util\StringUtil;
  *
  * @method  User    getDecoratedObject()
  * @mixin   User
+ * @property-read   int $sessionLastActivityTime
+ * @property-read   bool $birthdayShowYear
+ * @property-read   string $birthday
  */
 class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
 {
@@ -105,7 +108,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
 
     /**
      * user cover photo
-     * @var UserCoverPhoto
+     * @var ?IUserCoverPhoto
      */
     protected $coverPhoto;
 
@@ -347,45 +350,43 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
     public function getAvatar()
     {
         if ($this->avatar === null) {
+            $avatar = null;
             if (!$this->disableAvatar) {
                 if ($this->canSeeAvatar()) {
                     if ($this->avatarFileID !== null) {
                         $data = UserStorageHandler::getInstance()->getField('avatar', $this->userID);
                         if ($data === null) {
-                            $this->avatar = FileRuntimeCache::getInstance()->getObject($this->avatarFileID);
+                            $avatar = FileRuntimeCache::getInstance()->getObject($this->avatarFileID);
 
                             UserStorageHandler::getInstance()->update(
                                 $this->userID,
                                 'avatar',
-                                \serialize($this->avatar)
+                                \serialize($avatar)
                             );
                         } else {
-                            $this->avatar = \unserialize($data);
+                            $avatar = \unserialize($data);
                         }
                     } else {
                         $parameters = ['avatar' => null];
                         EventHandler::getInstance()->fireAction($this, 'getAvatar', $parameters);
 
-                        if ($parameters['avatar'] !== null) {
-                            if (!($parameters['avatar'] instanceof IUserAvatar)) {
-                                throw new ImplementationException(
-                                    \get_class($parameters['avatar']),
-                                    IUserAvatar::class
-                                );
-                            }
-
-                            $this->avatar = $parameters['avatar'];
+                        $avatar = $parameters['avatar'];
+                        if ($avatar !== null && !($avatar instanceof IUserAvatar)) {
+                            throw new ImplementationException(
+                                \get_class($avatar),
+                                IUserAvatar::class
+                            );
                         }
                     }
                 }
             }
 
             // use default avatar
-            if ($this->avatar === null) {
-                $this->avatar = new DefaultAvatar($this->username ?: '');
+            if ($avatar === null) {
+                $avatar = new DefaultAvatar($this->username ?: '');
             }
 
-            $this->avatar = new AvatarDecorator($this->avatar);
+            $this->avatar = new AvatarDecorator($avatar);
         }
 
         return $this->avatar;
@@ -667,7 +668,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
      * Returns the user profile of the user with the given name.
      *
      * @param string $username
-     * @return  UserProfile
+     * @return ?UserProfile
      */
     public static function getUserProfileByUsername($username)
     {
@@ -680,7 +681,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
      * Returns the user profiles of the users with the given names.
      *
      * @param string[] $usernames
-     * @return  UserProfile[]
+     * @return  array<string, UserProfile|null>
      */
     public static function getUserProfilesByUsername(array $usernames)
     {
@@ -804,9 +805,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
             if ($showYear) {
                 $birthdayYear = 0;
                 $value = \explode('-', $this->birthday);
-                if (isset($value[0])) {
-                    $birthdayYear = \intval($value[0]);
-                }
+                $birthdayYear = \intval($value[0]);
                 if ($birthdayYear) {
                     return $year - $birthdayYear;
                 }
@@ -837,9 +836,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
         // split date
         $birthdayYear = $month = $day = 0;
         $value = \explode('-', $this->birthday);
-        if (isset($value[0])) {
-            $birthdayYear = \intval($value[0]);
-        }
+        $birthdayYear = \intval($value[0]);
         if (isset($value[1])) {
             $month = \intval($value[1]);
         }

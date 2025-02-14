@@ -37,6 +37,7 @@ final class UsernameValidatingCheckCharactersListener
                 $checks = Spoofchecker::INVISIBLE;
 
                 // HIDDEN_OVERLAY (256) is available since ICU 62
+                // @phpstan-ignore if.alwaysTrue
                 if (\version_compare(\INTL_ICU_VERSION, '62.0', '>=')) {
                     if (\defined(Spoofchecker::class . '::HIDDEN_OVERLAY')) {
                         // The constant will exist with PHP 8.3.
@@ -48,6 +49,7 @@ final class UsernameValidatingCheckCharactersListener
                 }
 
                 // ->setRestrictionLevel() requires ICU 58.
+                // @phpstan-ignore function.alreadyNarrowedType
                 if (\method_exists($spoofchecker, 'setRestrictionLevel')) {
                     // This method needs to be called first. ->setRestrictionLevel() will
                     // implicitly enable the check for the restriction level for which no

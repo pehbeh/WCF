@@ -73,7 +73,7 @@ interface IAttachmentObjectType
      * Returns the container object of an attachment or `null` if the container object does not exist.
      *
      * @param int $objectID
-     * @return  IUserContent|null
+     * @return  ?IUserContent
      */
     public function getObject($objectID);
 

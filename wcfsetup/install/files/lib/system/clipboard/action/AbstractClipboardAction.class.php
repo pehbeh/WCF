@@ -67,7 +67,7 @@ abstract class AbstractClipboardAction implements IClipboardAction
         if (\method_exists($this, $methodName)) {
             $objectIDs = $this->{$methodName}();
             if (empty($objectIDs)) {
-                return;
+                return null;
             }
 
             $item->addParameter('objectIDs', $objectIDs);

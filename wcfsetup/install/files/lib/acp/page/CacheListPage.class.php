@@ -129,24 +129,22 @@ class CacheListPage extends AbstractPage
 
         // get additional file information
         $data = [];
-        if (\is_array($files)) {
-            /** @var \SplFileInfo $file */
-            foreach ($files as $file) {
-                if ($ignore !== null && $ignore->match($file->getPath())) {
-                    continue;
-                }
-
-                $data[] = [
-                    'filename' => $file->getBasename(),
-                    'filesize' => $file->getSize(),
-                    'mtime' => $file->getMTime(),
-                    'perm' => \substr(\sprintf('%o', $file->getPerms()), -3),
-                    'writable' => $file->isWritable(),
-                ];
-
-                $this->cacheData['files']++;
-                $this->cacheData['size'] += $file->getSize();
+        /** @var \SplFileInfo $file */
+        foreach ($files as $file) {
+            if ($ignore !== null && $ignore->match($file->getPath())) {
+                continue;
             }
+
+            $data[] = [
+                'filename' => $file->getBasename(),
+                'filesize' => $file->getSize(),
+                'mtime' => $file->getMTime(),
+                'perm' => \substr(\sprintf('%o', $file->getPerms()), -3),
+                'writable' => $file->isWritable(),
+            ];
+
+            $this->cacheData['files']++;
+            $this->cacheData['size'] += $file->getSize();
         }
 
         $this->caches[$cacheType][$cacheDir] = $data;

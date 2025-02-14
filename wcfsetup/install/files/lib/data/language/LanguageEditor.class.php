@@ -48,7 +48,7 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
     {
         parent::delete();
 
-        self::deleteLanguageFiles($this->languageID);
+        self::deleteLanguageFiles((string)$this->languageID);
     }
 
     /**
@@ -651,7 +651,7 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
 
         // update the relevant language files
         if ($updateFiles) {
-            self::deleteLanguageFiles($this->languageID);
+            self::deleteLanguageFiles((string)$this->languageID);
         }
 
         // delete relevant template compilations
@@ -735,6 +735,7 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
         $rootNode = $xml->xpath()->query('/ns:language')->item(0);
         $attributes = $xml->xpath()->query('attribute::*', $rootNode);
         foreach ($attributes as $attribute) {
+            \assert($attribute instanceof \DOMAttr);
             if ($attribute->name == 'languagecode') {
                 return $attribute->value;
             }
@@ -755,6 +756,7 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
         $rootNode = $xml->xpath()->query('/ns:language')->item(0);
         $attributes = $xml->xpath()->query('attribute::*', $rootNode);
         foreach ($attributes as $attribute) {
+            \assert($attribute instanceof \DOMAttr);
             if ($attribute->name == 'languagename') {
                 return $attribute->value;
             }
@@ -775,6 +777,7 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
         $rootNode = $xml->xpath()->query('/ns:language')->item(0);
         $attributes = $xml->xpath()->query('attribute::*', $rootNode);
         foreach ($attributes as $attribute) {
+            \assert($attribute instanceof \DOMAttr);
             if ($attribute->name == 'countrycode') {
                 return $attribute->value;
             }
@@ -904,7 +907,7 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
         }
 
         // update the relevant language files
-        self::deleteLanguageFiles($this->languageID, $category->languageCategory);
+        self::deleteLanguageFiles((string)$this->languageID, $category->languageCategory);
 
         // delete relevant template compilations
         $this->deleteCompiledTemplates();

@@ -269,7 +269,7 @@ class PreparedStatement
      * @param string $keyColumn name of the key column
      * @param string $valueColumn name of the value column
      * @param bool $uniqueKey if `true`, a one-dimensional array is returned, otherwise, for each key an array of fetched values is returned
-     * @return  string[]|string[][]
+     * @return  array<string|int, (string|int)|(string|int)[]>
      */
     public function fetchMap($keyColumn, $valueColumn, $uniqueKey = true)
     {
@@ -327,17 +327,18 @@ class PreparedStatement
     }
 
     /**
-     * Returns the number of the last error.
+     * Returns the code of the last error.
      *
-     * @return  int
+     * @return string
      */
     public function getErrorNumber()
     {
-        if ($this->pdoStatement !== null) {
-            return $this->pdoStatement->errorCode();
+        $errorCode = $this->pdoStatement->errorCode();
+        if ($errorCode === null) {
+            return '0';
         }
 
-        return 0;
+        return $errorCode;
     }
 
     /**
@@ -347,14 +348,8 @@ class PreparedStatement
      */
     public function getErrorDesc()
     {
-        if ($this->pdoStatement !== null) {
-            $errorInfoArray = $this->pdoStatement->errorInfo();
-            if (isset($errorInfoArray[2])) {
-                return $errorInfoArray[2];
-            }
-        }
-
-        return '';
+        $errorInfoArray = $this->pdoStatement->errorInfo();
+        return $errorInfoArray[2] ?? '';
     }
 
     /**

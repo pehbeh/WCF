@@ -28,7 +28,6 @@ class SmileyCacheBuilder extends AbstractCacheBuilder
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute();
 
-        /** @var Smiley $object */
         while ($object = $statement->fetchObject(Smiley::class)) {
             $object->smileyCodes = $object->getAliases();
             $object->smileyCodes[] = $object->smileyCode;

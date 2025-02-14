@@ -4,7 +4,7 @@ namespace wcf\acp\form;
 
 use wcf\data\file\File;
 use wcf\data\style\Style;
-use wcf\data\user\cover\photo\UserCoverPhoto;
+use wcf\data\user\cover\photo\IUserCoverPhoto;
 use wcf\data\user\group\UserGroup;
 use wcf\data\user\User;
 use wcf\data\user\UserAction;
@@ -58,7 +58,7 @@ class UserEditForm extends UserAddForm
 
     /**
      * ban status
-     * @var bool
+     * @var int
      */
     public $banned = 0;
 
@@ -87,7 +87,7 @@ class UserEditForm extends UserAddForm
 
     /**
      * true to disable this avatar
-     * @var bool
+     * @var int
      */
     public $disableAvatar = 0;
 
@@ -105,13 +105,13 @@ class UserEditForm extends UserAddForm
 
     /**
      * user cover photo object
-     * @var UserCoverPhoto
+     * @var IUserCoverPhoto
      */
     public $userCoverPhoto;
 
     /**
      * true to disable this cover photo
-     * @var bool
+     * @var int
      */
     public $disableCoverPhoto = 0;
 
@@ -129,19 +129,19 @@ class UserEditForm extends UserAddForm
 
     /**
      * true to delete the current cover photo
-     * @var bool
+     * @var int
      */
     public $deleteCoverPhoto = 0;
 
     /**
      * true to delete the current auth data
-     * @var bool
+     * @var int
      */
     public $disconnect3rdParty = 0;
 
     /**
      * true to disable multifactor authentication
-     * @var bool
+     * @var int
      */
     public $multifactorDisable = 0;
 

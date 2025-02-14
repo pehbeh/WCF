@@ -6,10 +6,8 @@ use wcf\acp\form\CronjobEditForm;
 use wcf\data\cronjob\Cronjob;
 use wcf\data\cronjob\I18nCronjobList;
 use wcf\data\DatabaseObject;
-use wcf\data\DatabaseObjectList;
 use wcf\data\package\PackageCache;
 use wcf\event\gridView\admin\CronjobGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\I18nTextFilter;
 use wcf\system\gridView\filter\SelectFilter;
@@ -128,13 +126,13 @@ final class CronjobGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): I18nCronjobList
     {
         return new I18nCronjobList();
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): CronjobGridViewInitialized
     {
         return new CronjobGridViewInitialized($this);
     }

@@ -43,7 +43,7 @@ abstract class AbstractFormBuilderForm extends AbstractForm
 
     /**
      * updated object, not relevant for form action `create`
-     * @var IStorableObject
+     * @var ?IStorableObject
      */
     public $formObject;
 
@@ -127,6 +127,8 @@ abstract class AbstractFormBuilderForm extends AbstractForm
      * Finalizes the form after it has been successfully built.
      *
      * This method can be used to add form field dependencies.
+     *
+     * @return void
      */
     protected function finalizeForm()
     {
@@ -179,7 +181,6 @@ abstract class AbstractFormBuilderForm extends AbstractForm
         }
         $formData['data'] = \array_merge($this->additionalFields, $formData['data']);
 
-        /** @var AbstractDatabaseObjectAction objectAction */
         $this->objectAction = new $this->objectActionClass(
             \array_filter([$this->formObject]),
             $action,

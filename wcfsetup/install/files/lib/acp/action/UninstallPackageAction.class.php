@@ -54,7 +54,6 @@ final class UninstallPackageAction extends AbstractSecureAction
 
             default:
                 throw new IllegalLinkException();
-                break;
         }
 
         if (isset($_POST['node'])) {

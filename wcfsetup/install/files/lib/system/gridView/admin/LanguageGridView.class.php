@@ -5,11 +5,9 @@ namespace wcf\system\gridView\admin;
 use wcf\acp\form\LanguageEditForm;
 use wcf\acp\page\LanguageItemListPage;
 use wcf\data\DatabaseObject;
-use wcf\data\DatabaseObjectList;
 use wcf\data\language\Language;
 use wcf\data\language\LanguageList;
 use wcf\event\gridView\admin\LanguageGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\NumericFilter;
 use wcf\system\gridView\filter\ObjectIdFilter;
@@ -180,7 +178,7 @@ final class LanguageGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): LanguageList
     {
         $list = new LanguageList();
         $list->sqlSelects = \sprintf(
@@ -194,7 +192,7 @@ final class LanguageGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): LanguageGridViewInitialized
     {
         return new LanguageGridViewInitialized($this);
     }

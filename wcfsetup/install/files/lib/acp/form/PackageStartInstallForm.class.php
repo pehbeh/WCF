@@ -34,7 +34,7 @@ class PackageStartInstallForm extends AbstractForm
 
     /**
      * updated package object
-     * @var Package
+     * @var ?Package
      */
     public $package;
 
@@ -42,7 +42,7 @@ class PackageStartInstallForm extends AbstractForm
      * data of the uploaded package
      * @var string[]
      */
-    public $uploadPackage = '';
+    public $uploadPackage = [];
 
     /**
      * archive of the installation/update package

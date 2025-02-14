@@ -32,7 +32,7 @@ class SimplePageSitemapObject extends AbstractSitemapObjectObjectType
      */
     public function getObjectList()
     {
-        /** @var $pageList PageList */
+        /** @var PageList $pageList */
         $pageList = parent::getObjectList();
         $pageList->getConditionBuilder()->add('isMultilingual = ?', [0]);
         $pageList->getConditionBuilder()->add('page.allowSpidersToIndex = ?', [1]);
@@ -60,7 +60,7 @@ class SimplePageSitemapObject extends AbstractSitemapObjectObjectType
         }
 
         if (!empty($object->controller)) {
-            /** @var $page AbstractPage */
+            /** @var AbstractPage $page */
             $page = new $object->controller();
 
             if ($page->loginRequired) {

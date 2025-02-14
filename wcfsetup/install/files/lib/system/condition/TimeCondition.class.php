@@ -41,7 +41,7 @@ class TimeCondition extends AbstractMultipleFieldsCondition implements IContentC
      * timezone used to evaluate the start/end time
      * @var string
      */
-    protected $timezone = 0;
+    protected $timezone = '';
 
     /**
      * @inheritDoc
@@ -140,7 +140,7 @@ HTML;
     {
         $this->endTime = '00:00';
         $this->startTime = '00:00';
-        $this->timezone = 0;
+        $this->timezone = '';
     }
 
     /**

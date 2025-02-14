@@ -17,13 +17,13 @@ abstract class AbstractIntegerCondition extends AbstractSingleFieldCondition
 {
     /**
      * property value has to be greater than the given value
-     * @var int
+     * @var ?int
      */
     protected $greaterThan;
 
     /**
      * property value has to be less than the given value
-     * @var int
+     * @var ?int
      */
     protected $lessThan;
 

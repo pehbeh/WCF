@@ -32,8 +32,6 @@ trait TFormParentNode
     /**
      * Appends the given node to this node and returns this node.
      *
-     * @return  $this
-     *
      * @throws  \BadMethodCallException     if method is called with more than one parameter (might be mistakenly used instead of `appendChildren()`)
      */
     public function appendChild(IFormChildNode $child): static
@@ -53,7 +51,6 @@ trait TFormParentNode
      * Appends the given children to this node and returns this node.
      *
      * @param IFormChildNode[] $children appended children
-     * @return  $this
      */
     public function appendChildren(array $children): static
     {
@@ -342,6 +339,8 @@ trait TFormParentNode
      *
      * Note: A `IFormParentNode` object may only return `true` if all of its child
      * nodes are valid. A `IFormField` object is valid if its value is valid.
+     *
+     * @return void
      */
     public function validate()
     {
@@ -370,8 +369,6 @@ trait TFormParentNode
 
     /**
      * Checks if the given node can be added as a child to this node.
-     *
-     * @throws  \InvalidArgumentException       if given node cannot be added as a child
      */
     public function validateChild(IFormChildNode $child): void
     {

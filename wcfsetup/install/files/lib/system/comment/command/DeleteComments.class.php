@@ -39,12 +39,10 @@ final class DeleteComments
         private readonly bool $updateCounters = true,
     ) {
         $this->commentIDs = \array_column($this->comments, 'commentID');
-        foreach ($this->comments as $comment) {
-            if (!isset($this->objectType)) {
-                $this->objectType = CommentHandler::getInstance()->getObjectType($comment->objectTypeID);
-                $this->commentManager = CommentHandler::getInstance()->getCommentManagerByID($comment->objectTypeID);
-            }
-        }
+        $firstComment = \reset($this->comments);
+        \assert($firstComment !== false);
+        $this->objectType = CommentHandler::getInstance()->getObjectType($firstComment->objectTypeID);
+        $this->commentManager = CommentHandler::getInstance()->getCommentManagerByID($firstComment->objectTypeID);
     }
 
     public function __invoke(): void

@@ -198,7 +198,9 @@ class ReactionAction extends AbstractDatabaseObjectAction
         }
 
         // check if liking own content but forbidden by configuration
-        $this->likeableObject = $this->objectTypeProvider->getObjectByID($this->parameters['data']['objectID']);
+        $likeableObject = $this->objectTypeProvider->getObjectByID($this->parameters['data']['objectID']);
+        \assert($likeableObject instanceof ILikeObject);
+        $this->likeableObject = $likeableObject;
         $this->likeableObject->setObjectType($this->objectType);
         if ($this->likeableObject->getUserID() == WCF::getUser()->userID) {
             throw new PermissionDeniedException();
@@ -273,7 +275,7 @@ class ReactionAction extends AbstractDatabaseObjectAction
         }
         $likeList->readObjects();
 
-        if (empty($likeList)) {
+        if ($likeList->getObjects() === []) {
             return [];
         }
 

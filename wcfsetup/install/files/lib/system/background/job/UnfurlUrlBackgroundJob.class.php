@@ -58,6 +58,8 @@ final class UnfurlUrlBackgroundJob extends AbstractBackgroundJob
                 // 2 hours
                 return 2 * 60 * 60;
         }
+
+        return 0;
     }
 
     /**
@@ -163,8 +165,6 @@ final class UnfurlUrlBackgroundJob extends AbstractBackgroundJob
         } catch (UrlInaccessible | DownloadFailed $e) {
             return [];
         }
-
-        throw new LogicException("Unreachable");
     }
 
     private static function getImageIdByUrl(string $url): ?int

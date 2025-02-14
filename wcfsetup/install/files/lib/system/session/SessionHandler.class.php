@@ -55,7 +55,7 @@ final class SessionHandler extends SingletonFactory
 
     /**
      * group data and permissions
-     * @var mixed[][]
+     * @var mixed[][]|null
      */
     private $groupData;
 
@@ -194,29 +194,27 @@ final class SessionHandler extends SingletonFactory
         }
 
         $version = \unpack('Cversion', $value)['version'];
-        if (!\in_array($version, [1], true)) {
-            throw new \InvalidArgumentException(\sprintf(
-                'Unknown version %d',
-                $version
-            ));
-        }
+        switch ($version) {
+            case 1:
+                if ($length !== 22) {
+                    throw new \InvalidArgumentException(\sprintf(
+                        'Expected exactly 22 Bytes, %d given.',
+                        $length
+                    ));
+                }
+                $data = \unpack('Cversion/a20sessionId/Ctimestep', $value);
+                \assert($data['version'] === 1);
+                \assert(\strlen($data['sessionId']) === 20);
+                $data['sessionId'] = Hex::encode($data['sessionId']);
 
-        if ($version === 1) {
-            if ($length !== 22) {
+                return $data;
+
+            default:
                 throw new \InvalidArgumentException(\sprintf(
-                    'Expected exactly 22 Bytes, %d given.',
-                    $length
+                    'Unknown version %d',
+                    $version
                 ));
-            }
-            $data = \unpack('Cversion/a20sessionId/Ctimestep', $value);
-            \assert($data['version'] === 1);
-            \assert(\strlen($data['sessionId']) === 20);
-            $data['sessionId'] = Hex::encode($data['sessionId']);
-
-            return $data;
         }
-
-        throw new \LogicException('Unreachable');
     }
 
     /**
@@ -273,6 +271,7 @@ final class SessionHandler extends SingletonFactory
     {
         $window = (24 * 3600);
 
+        // @phpstan-ignore function.alreadyNarrowedType, smaller.alwaysTrue
         \assert((self::USER_SESSION_LIFETIME / $window) < 0xFF);
 
         return \intdiv(TIME_NOW, $window) & 0xFF;
@@ -928,7 +927,6 @@ final class SessionHandler extends SingletonFactory
      * Changes the user stored in the session.
      *
      * @param User $user
-     * @throws  DatabaseException
      */
     private function changeUserVirtual(User $user): void
     {
@@ -1171,9 +1169,9 @@ final class SessionHandler extends SingletonFactory
 
         $data = [
             'ipAddress' => UserUtil::getIpAddress(),
-            'userAgent' => $this->userAgent,
-            'requestURI' => $this->requestURI,
-            'requestMethod' => $this->requestMethod,
+            'userAgent' => UserUtil::getUserAgent(),
+            'requestURI' => UserUtil::getRequestURI(),
+            'requestMethod' => !empty($_SERVER['REQUEST_METHOD']) ? \substr($_SERVER['REQUEST_METHOD'], 0, 7) : '',
             'lastActivityTime' => TIME_NOW,
             'sessionID' => $this->sessionID,
         ];
@@ -1204,9 +1202,7 @@ final class SessionHandler extends SingletonFactory
     /**
      * @deprecated 5.4 - This method is a noop. The lastActivityTime is always updated immediately after loading.
      */
-    public function keepAlive()
-    {
-    }
+    public function keepAlive() {}
 
     /**
      * Deletes this session and its related data.

@@ -66,8 +66,7 @@ class RecentActivityListBoxController extends AbstractDatabaseObjectListBoxContr
      */
     public function __construct()
     {
-        /** @noinspection PhpUndefinedMethodInspection */
-        if (WCF::getUser()->userID && \count(WCF::getUserProfileHandler()->getFollowingUsers())) {
+        if (WCF::getUser()->userID && \count(UserProfileHandler::getInstance()->getFollowingUsers())) {
             $this->canFilterByFollowedUsers = true;
         }
 
@@ -88,6 +87,7 @@ class RecentActivityListBoxController extends AbstractDatabaseObjectListBoxContr
 
     /**
      * @inheritDoc
+     * @return ViewableUserActivityEventList
      */
     protected function getObjectList()
     {
@@ -148,10 +148,9 @@ class RecentActivityListBoxController extends AbstractDatabaseObjectListBoxContr
     {
         // apply filter
         if (($this->getBox()->position == 'contentTop' || $this->getBox()->position == 'contentBottom') && $this->filteredByFollowedUsers) {
-            /** @noinspection PhpUndefinedMethodInspection */
             $this->objectList->getConditionBuilder()->add(
                 'user_activity_event.userID IN (?)',
-                [WCF::getUserProfileHandler()->getFollowingUsers()]
+                [UserProfileHandler::getInstance()->getFollowingUsers()]
             );
         } elseif (!empty(UserProfileHandler::getInstance()->getIgnoredUsers(UserIgnore::TYPE_HIDE_MESSAGES))) {
             $this->objectList->getConditionBuilder()->add(
@@ -201,10 +200,9 @@ class RecentActivityListBoxController extends AbstractDatabaseObjectListBoxContr
 
         // apply filter
         if (($this->getBox()->position == 'contentTop' || $this->getBox()->position == 'contentBottom') && $this->filteredByFollowedUsers) {
-            /** @noinspection PhpUndefinedMethodInspection */
             $this->objectList->getConditionBuilder()->add(
                 'user_activity_event.userID IN (?)',
-                [WCF::getUserProfileHandler()->getFollowingUsers()]
+                [UserProfileHandler::getInstance()->getFollowingUsers()]
             );
         } elseif (!empty(UserProfileHandler::getInstance()->getIgnoredUsers(UserIgnore::TYPE_HIDE_MESSAGES))) {
             $this->objectList->getConditionBuilder()->add(

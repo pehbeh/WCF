@@ -18,7 +18,7 @@ class ImagickImageAdapter implements IImageAdapter, ISingleFrameImageAdapter, IW
 {
     /**
      * active color
-     * @var \ImagickPixel
+     * @var ?\ImagickPixel
      */
     protected $color;
 
@@ -67,7 +67,7 @@ class ImagickImageAdapter implements IImageAdapter, ISingleFrameImageAdapter, IW
     /**
      * @inheritDoc
      */
-    public function load($image, $type = '')
+    public function load($image, $type = 0)
     {
         if (!($image instanceof \Imagick)) {
             throw new SystemException("Object must be an instance of Imagick");
@@ -330,7 +330,7 @@ class ImagickImageAdapter implements IImageAdapter, ISingleFrameImageAdapter, IW
      */
     public function adjustFontSize($text, $margin, $font, $size)
     {
-        // does nothing
+        return 0;
     }
 
     /**

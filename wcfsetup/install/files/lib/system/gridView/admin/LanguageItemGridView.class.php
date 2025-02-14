@@ -10,7 +10,6 @@ use wcf\data\language\item\LanguageItem;
 use wcf\data\language\item\LanguageItemList;
 use wcf\data\language\Language;
 use wcf\event\gridView\admin\LanguageItemGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\BooleanFilter;
 use wcf\system\gridView\filter\SelectFilter;
@@ -164,13 +163,13 @@ final class LanguageItemGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): LanguageItemList
     {
         return new LanguageItemList();
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): LanguageItemGridViewInitialized
     {
         return new LanguageItemGridViewInitialized($this);
     }

@@ -18,7 +18,7 @@ class PackageValidationException extends SystemException
 {
     /**
      * list of additional details for each subtype
-     * @var string[]
+     * @var array<string, mixed>
      */
     protected $details = [];
 
@@ -233,7 +233,7 @@ class PackageValidationException extends SystemException
      * Creates a new PackageArchiveValidationException.
      *
      * @param int $code
-     * @param string[] $details
+     * @param array<string, mixed> $details
      */
     public function __construct($code, array $details = [])
     {
@@ -245,7 +245,7 @@ class PackageValidationException extends SystemException
     /**
      * Returns exception details.
      *
-     * @return  string[]
+     * @return array<string, mixed>
      */
     public function getDetails()
     {
@@ -285,23 +285,18 @@ class PackageValidationException extends SystemException
                 }
 
                 return "unable to find package file '" . $this->details['archive'] . "'";
-                break;
 
             case self::MISSING_PACKAGE_XML:
                 return "package information file '" . PackageArchive::INFO_FILE . "' not found in '" . $this->details['archive'] . "'";
-                break;
 
             case self::INVALID_PACKAGE_NAME:
                 return "'" . $this->details['packageName'] . "' is not a valid package name.";
-                break;
 
             case self::INVALID_PACKAGE_VERSION:
                 return "package version '" . $this->details['packageVersion'] . "' is invalid";
-                break;
 
             default:
                 return $this->getErrorMessage($code);
-                break;
         }
     }
 

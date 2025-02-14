@@ -140,6 +140,7 @@ class CategoryNodeTree implements \IteratorAggregate
 
     /**
      * @inheritDoc
+     * @return \RecursiveIteratorIterator<CategoryNode>
      */
     public function getIterator(): \Traversable
     {

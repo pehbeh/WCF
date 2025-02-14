@@ -225,7 +225,7 @@ final class DateUtil
     ) {
         $years = $interval->format('%y');
         $months = $interval->format('%m');
-        $days = $interval->format('%d');
+        $days = (int)$interval->format('%d');
         $weeks = \floor($days / 7);
         $hours = $interval->format('%h');
         $minutes = $interval->format('%i');
@@ -444,9 +444,7 @@ final class DateUtil
         // split date
         $year = $month = $day = 0;
         $value = \explode('-', $date);
-        if (isset($value[0])) {
-            $year = \intval($value[0]);
-        }
+        $year = \intval($value[0]);
         if (isset($value[1])) {
             $month = \intval($value[1]);
         }

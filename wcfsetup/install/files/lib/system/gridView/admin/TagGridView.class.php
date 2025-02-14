@@ -4,11 +4,9 @@ namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\TagEditForm;
 use wcf\data\DatabaseObject;
-use wcf\data\DatabaseObjectList;
 use wcf\data\tag\Tag;
 use wcf\data\tag\TagList;
 use wcf\event\gridView\admin\TagGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\NumericFilter;
 use wcf\system\gridView\filter\SelectFilter;
@@ -117,7 +115,7 @@ final class TagGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): TagList
     {
         $list = new TagList();
         $list->sqlSelects = $this->subSelectUsageCount() . ' AS usageCount';
@@ -137,7 +135,7 @@ final class TagGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): TagGridViewInitialized
     {
         return new TagGridViewInitialized($this);
     }

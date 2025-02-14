@@ -370,14 +370,14 @@ class SmileyAddForm extends AbstractForm
         $statement->execute($conditionBuilder->getParameters());
 
         $aliases = \explode("\n", $this->aliases);
-        $aliases = \array_map('\mb_strtolower', $aliases);
+        $aliases = \array_map(\mb_strtolower(...), $aliases);
         while ($row = $statement->fetchArray()) {
             $known = [];
             if (!empty($row['aliases'])) {
                 $known = \explode("\n", $row['aliases']);
             }
             $known[] = $row['smileyCode'];
-            $known = \array_map('\mb_strtolower', $known);
+            $known = \array_map(\mb_strtolower(...), $known);
 
             if (\in_array(\mb_strtolower($this->smileyCode), $known)) {
                 throw new UserInputException('smileyCode', 'notUnique');

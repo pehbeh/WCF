@@ -102,8 +102,6 @@ final class DomBBCodeParser extends SingletonFactory
         // converted into its BBCode representation.
         $strayOpeningTags = \array_filter($this->bbcodesByAppearance);
         foreach ($strayOpeningTags as $element) {
-            \assert($element !== null);
-
             $this->insertBBCode($element);
         }
 
@@ -246,7 +244,7 @@ final class DomBBCodeParser extends SingletonFactory
 
             foreach ($bbcode->getAttributes() as $attribute) {
                 if ($attribute->useText && !isset($attributes[$attribute->attributeNo])) {
-                    $metacodeMarker->setAttribute('data-use-text', $attribute->attributeNo);
+                    $metacodeMarker->setAttribute('data-use-text', (string)$attribute->attributeNo);
                     $this->useTextNodes[] = [
                         'uuid' => $uuid,
                         'metacodeMarker' => $metacodeMarker,

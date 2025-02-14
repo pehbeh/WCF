@@ -34,8 +34,9 @@ class UserOptionCategoryEditor extends DatabaseObjectEditor implements IEditable
             $parameters['packageID'] = PACKAGE_ID;
         }
 
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return parent::create($parameters);
+        $object = parent::create($parameters);
+        \assert($object instanceof UserOptionCategory);
+        return $object;
     }
 
     /**

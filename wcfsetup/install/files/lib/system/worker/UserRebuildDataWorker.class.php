@@ -221,7 +221,7 @@ final class UserRebuildDataWorker extends AbstractLinearRebuildDataWorker
             $avatarList->readObjects();
             $resetAvatarCache = [];
 
-            $sql = "UPDATE wcf1_user 
+            $sql = "UPDATE wcf1_user
                     SET    avatarFileID = ?
                     WHERE  userID = ?";
             $avatarUpdateStatement = WCF::getDB()->prepare($sql);

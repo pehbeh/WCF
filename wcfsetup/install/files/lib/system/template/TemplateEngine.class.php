@@ -11,6 +11,7 @@ use wcf\system\event\EventHandler;
 use wcf\system\exception\SystemException;
 use wcf\system\Regex;
 use wcf\system\SingletonFactory;
+use wcf\system\template\plugin\IPrefilterTemplatePlugin;
 use wcf\system\WCF;
 use wcf\util\DirectoryUtil;
 use wcf\util\HeaderUtil;
@@ -198,7 +199,7 @@ class TemplateEngine extends SingletonFactory
 
     /**
      * all available template variables and those assigned during runtime
-     * @var mixed[][]
+     * @var array<string, mixed|array<string, mixed>>
      */
     protected $v = [];
 
@@ -402,8 +403,6 @@ class TemplateEngine extends SingletonFactory
 
     /**
      * Clears an assignment of template variables.
-     *
-     * @param mixed $variables
      */
     public function clearAssign(array $variables)
     {
@@ -846,7 +845,7 @@ class TemplateEngine extends SingletonFactory
     /**
      * Returns an array with all prefilters.
      *
-     * @return  string[]
+     * @return  (string|IPrefilterTemplatePlugin)[]
      */
     public function getPrefilters()
     {

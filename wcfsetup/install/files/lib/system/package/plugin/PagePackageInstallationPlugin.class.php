@@ -204,7 +204,7 @@ class PagePackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
                 // @deprecated
                 if (!empty($data['elements']['controllerCustomURL'])) {
                     $controllerCustomURL = $data['elements']['controllerCustomURL'];
-                    if ($controllerCustomURL && !RouteHandler::isValidCustomUrl($controllerCustomURL)) {
+                    if (!RouteHandler::isValidCustomUrl($controllerCustomURL)) {
                         throw new SystemException("Invalid custom url for page identifier '" . $data['attributes']['identifier'] . "'");
                     }
                 }
@@ -233,7 +233,6 @@ class PagePackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
 
             default:
                 throw new SystemException("Unknown type '{$pageType}' for page '{$identifier}");
-                break;
         }
 
         // get application package id
@@ -310,7 +309,6 @@ class PagePackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
         $content = $data['content'];
         unset($data['content']);
 
-        /** @var Page $page */
         if (!empty($row)) {
             // allow update of `controller`, `handler` and `excludeFromLandingPage`
             // only, prevents user modifications form being overwritten

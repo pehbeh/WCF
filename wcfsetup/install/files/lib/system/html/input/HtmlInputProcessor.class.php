@@ -26,12 +26,12 @@ class HtmlInputProcessor extends AbstractHtmlProcessor
     protected $embeddedContent = [];
 
     /**
-     * @var IHtmlInputFilter
+     * @var ?IHtmlInputFilter
      */
     protected $htmlInputFilter;
 
     /**
-     * @var HtmlInputNodeProcessor
+     * @var ?HtmlInputNodeProcessor
      */
     protected $htmlInputNodeProcessor;
 
@@ -311,6 +311,7 @@ class HtmlInputProcessor extends AbstractHtmlProcessor
                     // ignore one newline because a new paragraph with bbcodes is created
                     // using two subsequent newlines
                     $newlines--;
+                    // @phpstan-ignore identical.alwaysFalse
                     if ($newlines === 0) {
                         continue;
                     }

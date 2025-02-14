@@ -27,7 +27,7 @@ class AbstractCommentImporter extends AbstractImporter
 
     /**
      * object type name
-     * @var int
+     * @var string
      */
     protected $objectTypeName = '';
 

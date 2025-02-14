@@ -175,7 +175,7 @@ final class EmailNewActivationCodeForm extends AbstractFormBuilderForm
      */
     public function show()
     {
-        if (!(REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_USER)) {
+        if (!((int)REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_USER)) {
             throw new IllegalLinkException();
         }
 

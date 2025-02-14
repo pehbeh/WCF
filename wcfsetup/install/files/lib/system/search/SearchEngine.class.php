@@ -41,12 +41,12 @@ class SearchEngine extends SingletonFactory implements IContextAwareSearchEngine
     protected function init()
     {
         // get available object types
-        $this->availableObjectTypes = ObjectTypeCache::getInstance()
+        $availableObjectTypes = ObjectTypeCache::getInstance()
             ->getObjectTypes('com.woltlab.wcf.searchableObjectType');
 
         // get processors
-        foreach ($this->availableObjectTypes as &$objectType) {
-            $objectType = $objectType->getProcessor();
+        foreach ($availableObjectTypes as $key => $objectType) {
+            $this->availableObjectTypes[$key] = $objectType->getProcessor();
         }
     }
 
@@ -79,16 +79,12 @@ class SearchEngine extends SingletonFactory implements IContextAwareSearchEngine
     protected function getSearchEngine()
     {
         if ($this->searchEngine === null) {
-            $className = '';
             if (SEARCH_ENGINE != 'mysql') {
                 $className = 'wcf\system\search\\' . SEARCH_ENGINE . '\\' . \ucfirst(SEARCH_ENGINE) . 'SearchEngine';
                 if (!\class_exists($className)) {
-                    $className = '';
+                    $className = MysqlSearchEngine::class;
                 }
-            }
-
-            // fallback to MySQL
-            if (empty($className)) {
+            } else {
                 $className = MysqlSearchEngine::class;
             }
 

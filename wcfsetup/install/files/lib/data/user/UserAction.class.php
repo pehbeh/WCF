@@ -38,6 +38,7 @@ use wcf\util\UserRegistrationUtil;
  *
  * @method  UserEditor[]    getObjects()
  * @method  UserEditor  getSingleObject()
+ * @property-read UserEditor[] $objects
  */
 class UserAction extends AbstractDatabaseObjectAction implements IClipboardAction, ISearchAction
 {
@@ -586,7 +587,7 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
             $collator = new \Collator(WCF::getLanguage()->getLocale());
             \usort(
                 $list,
-                static fn (array $item1, array $item2) => $collator->compare($item1['label'], $item2['label'])
+                static fn(array $item1, array $item2) => $collator->compare($item1['label'], $item2['label'])
             );
         }
 
@@ -703,7 +704,7 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
             ],
         ]))->executeAction();
 
-        if (!(REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_ADMIN)) {
+        if (!((int)REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_ADMIN)) {
             $this->enable();
         }
 
@@ -745,7 +746,7 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
             'blacklistMatches' => '',
         ];
 
-        if (!(REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_USER)) {
+        if (!((int)REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_USER)) {
             $data['emailConfirmed'] = null;
         }
 
@@ -1134,9 +1135,7 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
     /**
      * @since 5.3
      */
-    public function validateSaveUserConsent()
-    {
-    }
+    public function validateSaveUserConsent() {}
 
     /**
      * @since 5.3
@@ -1165,7 +1164,7 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
             throw new PermissionDeniedException();
         }
 
-        if (!(REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_USER)) {
+        if (!((int)REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_USER)) {
             throw new IllegalLinkException();
         }
 

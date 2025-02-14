@@ -70,11 +70,13 @@ trait TLengthDatabaseTableColumn
      */
     protected function validateLength(int $length): void
     {
+        // @phpstan-ignore notIdentical.alwaysTrue
         if ($this->getMinimumLength() !== null && $length < $this->getMinimumLength()) {
             throw new \InvalidArgumentException(
                 "Given length is smaller than the minimum length '{$this->getMinimumLength()}'."
             );
         }
+        // @phpstan-ignore notIdentical.alwaysTrue
         if ($this->getMaximumLength() !== null && $length > $this->getMaximumLength()) {
             throw new \InvalidArgumentException(
                 "Given length is greater than the maximum length '{$this->getMaximumLength()}'."

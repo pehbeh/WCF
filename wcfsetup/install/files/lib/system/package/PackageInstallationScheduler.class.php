@@ -360,6 +360,9 @@ final class PackageInstallationScheduler
             return $filename;
         }
 
+        // I was unable to figure out how the `archive` key is used to determine
+        // if `false` is an acceptable value or if this should fail hard instead.
+        // @phpstan-ignore return.type
         return false;
     }
 

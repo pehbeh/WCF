@@ -4,12 +4,10 @@ namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\PaidSubscriptionUserEditForm;
 use wcf\acp\form\UserEditForm;
-use wcf\data\DatabaseObjectList;
 use wcf\data\paid\subscription\PaidSubscription;
 use wcf\data\paid\subscription\user\PaidSubscriptionUser;
 use wcf\data\paid\subscription\user\PaidSubscriptionUserList;
 use wcf\event\gridView\admin\PaidSubscriptionUserGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\cache\builder\PaidSubscriptionCacheBuilder;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\ObjectIdFilter;
@@ -95,7 +93,7 @@ final class PaidSubscriptionUserGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): PaidSubscriptionUserList
     {
         $list = new PaidSubscriptionUserList();
         $list->sqlSelects = "paid_subscription.title";
@@ -109,7 +107,7 @@ final class PaidSubscriptionUserGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): PaidSubscriptionUserGridViewInitialized
     {
         return new PaidSubscriptionUserGridViewInitialized($this);
     }

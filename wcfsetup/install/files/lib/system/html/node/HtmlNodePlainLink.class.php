@@ -48,7 +48,7 @@ class HtmlNodePlainLink
     protected bool $aloneInParagraph = true;
 
     /**
-     * @var \DOMElement
+     * @var ?\DOMElement
      */
     protected $topLevelParent;
 

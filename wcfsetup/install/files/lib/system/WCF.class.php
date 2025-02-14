@@ -10,6 +10,7 @@ use wcf\data\package\PackageEditor;
 use wcf\data\page\Page;
 use wcf\system\application\ApplicationHandler;
 use wcf\system\application\IApplication;
+use wcf\system\benchmark\Benchmark;
 use wcf\system\box\BoxHandler;
 use wcf\system\cache\builder\CoreObjectCacheBuilder;
 use wcf\system\cache\builder\PackageUpdateCacheBuilder;
@@ -31,6 +32,7 @@ use wcf\system\style\StyleHandler;
 use wcf\system\template\EmailTemplateEngine;
 use wcf\system\template\TemplateEngine;
 use wcf\system\user\storage\UserStorageHandler;
+use wcf\system\user\UserProfileHandler;
 use wcf\util\DirectoryUtil;
 use wcf\util\FileUtil;
 use wcf\util\StringUtil;
@@ -98,6 +100,9 @@ if (!\defined('NO_IMPORTS')) {
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @method static Benchmark getBenchmark()
+ * @method static UserProfileHandler getUserProfileHandler()
  */
 class WCF
 {
@@ -234,6 +239,7 @@ class WCF
     {
         try {
             // database has to be initialized
+            // @phpstan-ignore function.alreadyNarrowedType
             if (!\is_object(self::$dbObj)) {
                 return;
             }
@@ -253,6 +259,7 @@ class WCF
             }
 
             // update session
+            // @phpstan-ignore function.alreadyNarrowedType
             if (\is_object(self::getSession())) {
                 self::getSession()->update();
             }
@@ -358,11 +365,11 @@ class WCF
      * @param int $line
      * @throws  ErrorException
      */
-    final public static function handleError($severity, $message, $file, $line): void
+    final public static function handleError($severity, $message, $file, $line): bool
     {
         // this is necessary for the shut-up operator
         if (!(\error_reporting() & $severity)) {
-            return;
+            return true;
         }
 
         throw new ErrorException($message, 0, $severity, $file, $line);
@@ -412,6 +419,7 @@ class WCF
             if (!\is_writable($filename)) {
                 FileUtil::makeWritable($filename);
 
+                // @phpstan-ignore booleanNot.alwaysTrue
                 if (!\is_writable($filename)) {
                     throw new SystemException("The option file '" . $filename . "' is not writable.");
                 }
@@ -639,6 +647,7 @@ class WCF
                 $packageDir = FileUtil::getRealPath(WCF_DIR . $relativePath);
                 self::$autoloadDirectories[$abbreviation] = $packageDir . 'lib/';
 
+                // @phpstan-ignore if.alwaysFalse
                 if (\class_exists($className)) {
                     // the class can now be found, update the `packageDir` value
                     (new PackageEditor($package))->update(['packageDir' => $relativePath]);
@@ -825,7 +834,7 @@ class WCF
     final public static function autoload(string $className): void
     {
         $className = \strtr($className, '\\', '/');
-        if (($slashPos = \strpos($className, '/')) !== null) {
+        if (($slashPos = \strpos($className, '/')) !== false) {
             $applicationPrefix = \substr($className, 0, $slashPos);
             if (isset(self::$autoloadDirectories[$applicationPrefix])) {
                 $classPath = self::$autoloadDirectories[$applicationPrefix] . \substr($className, $slashPos + 1) . '.class.php';
@@ -849,7 +858,7 @@ class WCF
         // logic cannot be moved into a shared function, because it
         // measurably reduced autoloader performance.
         $className = \strtr($className, '\\', '/');
-        if (($slashPos = \strpos($className, '/')) !== null) {
+        if (($slashPos = \strpos($className, '/')) !== false) {
             $applicationPrefix = \substr($className, 0, $slashPos);
             if (isset(self::$autoloadDirectories[$applicationPrefix])) {
                 $classPath = self::$autoloadDirectories[$applicationPrefix] . \substr($className, $slashPos + 1) . '.class.php';
@@ -888,7 +897,7 @@ class WCF
      * Returns dynamically loaded core objects.
      *
      * @param array $arguments
-     * @return  object
+     * @return  object|null
      * @throws  SystemException
      */
     final public static function __callStatic(string $name, array $arguments)
@@ -913,6 +922,8 @@ class WCF
 
             return self::$coreObject[$className];
         }
+
+        return null;
     }
 
     /**

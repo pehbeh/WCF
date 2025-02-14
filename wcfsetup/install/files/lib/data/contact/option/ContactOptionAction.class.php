@@ -67,7 +67,7 @@ class ContactOptionAction extends CustomOptionAction implements ISortableAction
         /** @var ContactOptionHandler $optionHandler */
         $optionHandler = $this->parameters['optionHandler'];
 
-        /** @var AttachmentHandler $attachmentHandler */
+        /** @var ?AttachmentHandler $attachmentHandler */
         $attachmentHandler = (!empty($this->parameters['attachmentHandler'])) ? $this->parameters['attachmentHandler'] : null;
 
         /** @var ContactAttachment[] $attachments */

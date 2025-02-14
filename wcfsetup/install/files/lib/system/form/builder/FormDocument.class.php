@@ -74,7 +74,7 @@ class FormDocument implements IFormDocument
 
     /**
      * encoding type of this form
-     * @var null|
+     * @var ?string
      */
     protected $enctype = '';
 

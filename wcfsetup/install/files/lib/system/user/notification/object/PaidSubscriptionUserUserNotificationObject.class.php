@@ -29,7 +29,7 @@ class PaidSubscriptionUserUserNotificationObject extends DatabaseObjectDecorator
      */
     public function getAuthorID()
     {
-        return null;
+        return 0;
     }
 
     /**

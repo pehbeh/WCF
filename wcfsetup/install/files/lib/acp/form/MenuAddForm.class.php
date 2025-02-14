@@ -31,7 +31,7 @@ use wcf\system\language\LanguageFactory;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       3.0
  *
- * @property Menu $formObject
+ * @property ?Menu $formObject
  */
 class MenuAddForm extends AbstractFormBuilderForm
 {

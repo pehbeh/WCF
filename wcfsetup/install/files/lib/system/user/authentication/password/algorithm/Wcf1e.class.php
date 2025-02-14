@@ -118,16 +118,13 @@ final class Wcf1e implements IPasswordAlgorithm
     ): string {
         switch ($this->encryptionMethod) {
             case 'c':
-                return \crc32($string);
-                break;
+                return (string)\crc32($string);
 
             case 'm':
                 return \md5($string);
-                break;
 
             case 's':
                 return \sha1($string);
-                break;
 
             default:
                 throw new \BadMethodCallException("Unknown encryption used");

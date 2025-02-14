@@ -2,7 +2,6 @@
 
 namespace wcf\system\gridView\admin;
 
-use LogicException;
 use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectDecorator;
 use wcf\data\DatabaseObjectList;
@@ -12,7 +11,6 @@ use wcf\data\modification\log\ModificationLogList;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\data\package\Package;
 use wcf\event\gridView\admin\ModificationLogGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\SelectFormField;
 use wcf\system\gridView\AbstractGridView;
@@ -163,7 +161,7 @@ final class ModificationLogGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): ModificationLogList
     {
         return new ModificationLogList();
     }
@@ -210,7 +208,7 @@ final class ModificationLogGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): ModificationLogGridViewInitialized
     {
         return new ModificationLogGridViewInitialized($this);
     }

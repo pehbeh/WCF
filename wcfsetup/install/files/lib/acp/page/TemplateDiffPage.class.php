@@ -2,6 +2,7 @@
 
 namespace wcf\acp\page;
 
+use wcf\data\template\group\TemplateGroup;
 use wcf\data\template\group\TemplateGroupList;
 use wcf\data\template\Template;
 use wcf\data\template\TemplateList;
@@ -57,7 +58,7 @@ class TemplateDiffPage extends AbstractPage
 
     /**
      * template group hierarchy
-     * @var array
+     * @var array<int, array{group: ?TemplateGroup, hasTemplate: int|false}>
      */
     public $templateGroupHierarchy = [];
 
@@ -107,7 +108,7 @@ class TemplateDiffPage extends AbstractPage
             ];
             $templateGroup = $templateGroupList->search($templateGroup->parentTemplateGroupID);
         }
-        $this->templateGroupHierarchy[0] = ['group' => [], 'hasTemplate' => false];
+        $this->templateGroupHierarchy[0] = ['group' => null, 'hasTemplate' => false];
 
         // find matching templates in the hierarchy
         $templateList = new TemplateList();

@@ -48,6 +48,8 @@ final class BBCodeAttributesFormField extends AbstractFormField
         ) {
             $this->value = $this->getDocument()->getRequestData($this->getPrefixedId());
         }
+
+        return $this;
     }
 
     /**

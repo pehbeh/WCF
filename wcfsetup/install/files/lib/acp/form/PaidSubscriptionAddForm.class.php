@@ -59,7 +59,7 @@ class PaidSubscriptionAddForm extends AbstractForm
 
     /**
      * indicates if the subscription is disabled
-     * @var bool
+     * @var int
      */
     public $isDisabled = 0;
 
@@ -83,7 +83,7 @@ class PaidSubscriptionAddForm extends AbstractForm
 
     /**
      * indicates if the subscription is permanent
-     * @var bool
+     * @var int
      */
     public $subscriptionLengthPermanent = 0;
 
@@ -101,7 +101,7 @@ class PaidSubscriptionAddForm extends AbstractForm
 
     /**
      * indicates if the subscription is a recurring payment
-     * @var bool
+     * @var int
      */
     public $isRecurring = 0;
 

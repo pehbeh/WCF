@@ -67,13 +67,14 @@ use wcf\util\UserUtil;
  * @property-read   string $authData           data of the third party used for authentication
  * @property-read   int $likesReceived          cumulative result of likes (counting +1) the user's contents have received
  * @property-read   int|null $coverPhotoFileID
- * @property-read       int $disableCoverPhoto              is `1` if the user's cover photo has been disabled, otherwise `0`
+ * @property-read   int $disableCoverPhoto              is `1` if the user's cover photo has been disabled, otherwise `0`
  * @property-read   string $disableCoverPhotoReason    reason why the user's cover photo is disabled
  * @property-read   int $disableCoverPhotoExpires   timestamp at which the user's cover photo will automatically be enabled again
  * @property-read   int $articles           number of articles written by the user
- * @property-read       string $blacklistMatches               JSON string of an array with all matches in the blacklist, otherwise an empty string
- * @property-read       int $multifactorActive              is `1` if the use has enabled a second factor, otherwise `0`
- * @property-read       int $trophyPoints              total number of user's trophies in active categories
+ * @property-read   string $blacklistMatches               JSON string of an array with all matches in the blacklist, otherwise an empty string
+ * @property-read   int $multifactorActive              is `1` if the use has enabled a second factor, otherwise `0`
+ * @property-read   int $trophyPoints              total number of user's trophies in active categories
+ * @property-read   string $timezone
  */
 final class User extends DatabaseObject implements IPopoverObject, IRouteController, IUserContent
 {
@@ -183,6 +184,7 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
 
         // $isValid is always true at this point. However we intentionally use a variable
         // that defaults to false to prevent accidents during refactoring.
+        // @phpstan-ignore function.alreadyNarrowedType
         \assert($isValid);
 
         return $isValid;
@@ -422,7 +424,7 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
     /**
      * Returns true if this user is marked.
      *
-     * @return  bool
+     * @return int
      */
     public function isMarked()
     {
@@ -650,10 +652,7 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
     public function getBlacklistMatches()
     {
         if ($this->pendingActivation() && $this->blacklistMatches) {
-            $matches = JSON::decode($this->blacklistMatches);
-            if (\is_array($matches)) {
-                return $matches;
-            }
+            return JSON::decode($this->blacklistMatches);
         }
 
         return [];
@@ -697,7 +696,7 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
      */
     public function requiresEmailActivation()
     {
-        return REGISTER_ACTIVATION_METHOD & self::REGISTER_ACTIVATION_USER && $this->pendingActivation() && !$this->isEmailConfirmed();
+        return (int)REGISTER_ACTIVATION_METHOD & self::REGISTER_ACTIVATION_USER && $this->pendingActivation() && !$this->isEmailConfirmed();
     }
 
     /**
@@ -708,7 +707,7 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
      */
     public function requiresAdminActivation()
     {
-        return REGISTER_ACTIVATION_METHOD & self::REGISTER_ACTIVATION_ADMIN && $this->pendingActivation();
+        return (int)REGISTER_ACTIVATION_METHOD & self::REGISTER_ACTIVATION_ADMIN && $this->pendingActivation();
     }
 
     /**
@@ -719,7 +718,7 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
      */
     public function canEmailConfirm()
     {
-        return REGISTER_ACTIVATION_METHOD & self::REGISTER_ACTIVATION_USER && !$this->isEmailConfirmed();
+        return (int)REGISTER_ACTIVATION_METHOD & self::REGISTER_ACTIVATION_USER && !$this->isEmailConfirmed();
     }
 
     /**
@@ -730,7 +729,7 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
      */
     public function mustSelfEmailConfirm()
     {
-        return REGISTER_ACTIVATION_METHOD & self::REGISTER_ACTIVATION_USER;
+        return !!((int)REGISTER_ACTIVATION_METHOD & self::REGISTER_ACTIVATION_USER);
     }
 
     /**

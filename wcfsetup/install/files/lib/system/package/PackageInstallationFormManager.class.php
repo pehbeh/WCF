@@ -131,7 +131,7 @@ abstract class PackageInstallationFormManager
      *
      * @param PackageInstallationQueue $queue
      * @param string $formName
-     * @return  FormDocument
+     * @return ?FormDocument
      */
     public static function getForm(PackageInstallationQueue $queue, $formName)
     {

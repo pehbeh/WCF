@@ -132,7 +132,7 @@ class I18nValue
     /**
      * Returns the package id.
      *
-     * @return      string
+     * @return ?int
      */
     public function getPackageID()
     {

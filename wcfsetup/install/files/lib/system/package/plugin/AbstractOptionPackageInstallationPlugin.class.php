@@ -2,6 +2,7 @@
 
 namespace wcf\system\package\plugin;
 
+use DOMNode;
 use wcf\data\DatabaseObject;
 use wcf\data\IEditableCachedObject;
 use wcf\data\option\category\OptionCategory;
@@ -186,6 +187,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
             // get child elements
             $children = $xpath->query('child::*', $element);
             foreach ($children as $child) {
+                \assert($child instanceof \DOMElement);
                 $data[$child->tagName] = $child->nodeValue;
             }
 
@@ -240,6 +242,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
             $data = [];
             $children = $xpath->query('child::*', $element);
             foreach ($children as $child) {
+                \assert($child instanceof \DOMElement);
                 $data[$child->tagName] = $child->nodeValue;
             }
 
@@ -398,15 +401,14 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
     /**
      * @inheritDoc
      */
-    protected function handleDelete(array $items)
-    {
-    }
+    protected function handleDelete(array $items) {}
 
     /**
      * @inheritDoc
      */
     protected function prepareImport(array $data)
     {
+        return $data;
     }
 
     /**
@@ -414,6 +416,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
      */
     protected function findExistingItem(array $data)
     {
+        return null;
     }
 
     /**
@@ -448,7 +451,10 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
                         ->options(function () {
                             $categories = $this->getSortedCategories();
 
-                            $getDepth = static function (/** @var OptionCategory $category */ $category) use (
+                            $getDepth = static function (
+                                /** @var OptionCategory $category */
+                                $category
+                            ) use (
                                 $categories
                             ) {
                                 $depth = 0;
@@ -530,7 +536,10 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
                         ->options(function (): array {
                             $categories = $this->getSortedCategories();
 
-                            $getDepth = static function (/** @var OptionCategory $category */ $category) use (
+                            $getDepth = static function (
+                                /** @var OptionCategory $category */
+                                $category
+                            ) use (
                                 $categories
                             ) {
                                 $depth = 0;
@@ -767,7 +776,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
 
                 $showOrder = $element->getElementsByTagName('showorder')->item(0);
                 if ($showOrder !== null) {
-                    $data['showOrder'] = $showOrder->nodeValue;
+                    $data['showOrder'] = (int)$showOrder->nodeValue;
                 }
                 if ($saveData && $this->editedEntry === null) {
                     // only set explicit showOrder when adding new categories
@@ -842,7 +851,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
 
                     $showOrder = $element->getElementsByTagName('showorder')->item(0);
                     if ($showOrder !== null) {
-                        $data['showorder'] = $showOrder->nodeValue;
+                        $data['showorder'] = (int)$showOrder->nodeValue;
                     }
                     if ($this->editedEntry === null) {
                         // only set explicit showOrder when adding new categories
@@ -953,7 +962,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
     /**
      * Returns an option handler used for sorting.
      *
-     * @return  IOptionHandler
+     * @return  ?IOptionHandler
      * @see     OptionPackageInstallationPlugin::getSortOptionHandler()
      */
     protected function getSortOptionHandler()
@@ -1083,7 +1092,9 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
         $import = $xml->xpath()->query('/ns:data/ns:import')->item(0);
         if ($import === null) {
             $data = $xml->xpath()->query('/ns:data')->item(0);
+            \assert($data instanceof \DOMElement);
             $import = $xml->getDocument()->createElement('import');
+            \assert($import !== false);
             DOMUtil::prepend($import, $data);
         }
 
@@ -1274,6 +1285,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
             $xpath->registerNamespace('ns', $element->ownerDocument->documentElement->getAttribute('xmlns'));
 
             $options = $xpath->query('/ns:data/ns:import/ns:options')->item(0);
+            \assert($options instanceof \DOMElement);
 
             /** @var \DOMElement $option */
             foreach (DOMUtil::getElements($options, 'option') as $option) {

@@ -256,7 +256,7 @@ class ViewableLabelGroup extends DatabaseObjectDecorator implements \Countable, 
 
             return $this->current();
         } catch (SystemException $e) {
-            return;
+            return null;
         }
     }
 

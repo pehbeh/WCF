@@ -41,7 +41,7 @@ class UserOptionEditor extends DatabaseObjectEditor implements IEditableCachedOb
         );
 
         // add the default value to this column
-        if (isset($parameters['defaultValue']) && $parameters['defaultValue'] !== null) {
+        if (isset($parameters['defaultValue'])) {
             $sql = "UPDATE  wcf1_user_option_value
                     SET     userOption" . $userOption->optionID . " = ?";
             $statement = WCF::getDB()->prepare($sql);

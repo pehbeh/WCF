@@ -162,7 +162,7 @@ class ArticleImporter extends AbstractImporter
                         VALUES      (?, ?, ?, ?, ?)";
                 $statement = WCF::getDB()->prepare($sql);
                 $statement->execute([$objectTypeID, 0, 'Import', 0, TIME_NOW]);
-                $this->importCategoryID = WCF::getDB()->getInsertID("wcf1_category", 'categoryID');
+                $this->importCategoryID = (int)WCF::getDB()->getInsertID("wcf1_category", 'categoryID');
             }
         }
 

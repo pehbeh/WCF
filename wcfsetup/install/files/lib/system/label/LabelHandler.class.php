@@ -182,7 +182,7 @@ class LabelHandler extends SingletonFactory
         $accessibleLabelIDs = $this->getAccessibleLabelIDs();
 
         // delete previous labels
-        if (!$validatePermissions || ($validatePermissions && !empty($accessibleLabelIDs))) {
+        if (!$validatePermissions || $accessibleLabelIDs !== []) {
             $conditions = new PreparedStatementConditionBuilder();
             if ($validatePermissions) {
                 $conditions->add("labelID IN (?)", [$accessibleLabelIDs]);

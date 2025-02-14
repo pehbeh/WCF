@@ -16,6 +16,7 @@ use wcf\system\WCF;
  * @copyright   2001-2021 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.4
+ * @property ViewableModerationQueue[] $objects
  */
 class ModerationQueueActivationClipboardAction extends AbstractClipboardAction
 {
@@ -51,7 +52,7 @@ class ModerationQueueActivationClipboardAction extends AbstractClipboardAction
         $item = parent::execute($objects, $action);
 
         if ($item === null) {
-            return;
+            return null;
         }
 
         switch ($action->actionName) {

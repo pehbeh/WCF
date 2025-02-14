@@ -30,7 +30,7 @@ class CategoryEditor extends DatabaseObjectEditor implements IEditableCachedObje
      * correct new show order.
      *
      * @param int $parentCategoryID
-     * @param int $showOrder
+     * @param ?int $showOrder
      * @return  int
      */
     public function updateShowOrder($parentCategoryID, $showOrder)
@@ -129,8 +129,9 @@ class CategoryEditor extends DatabaseObjectEditor implements IEditableCachedObje
             $parameters['additionalData'] = \serialize([]);
         }
 
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return parent::create($parameters);
+        $object = parent::create($parameters);
+        \assert($object instanceof Category);
+        return $object;
     }
 
     /**
@@ -158,7 +159,7 @@ class CategoryEditor extends DatabaseObjectEditor implements IEditableCachedObje
      *
      * @param int $objectTypeID
      * @param int $parentCategoryID
-     * @param int $showOrder
+     * @param ?int $showOrder
      * @return  int
      */
     protected static function getShowOrder($objectTypeID, $parentCategoryID, $showOrder)

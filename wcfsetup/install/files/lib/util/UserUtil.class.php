@@ -162,8 +162,8 @@ final class UserUtil
         }
 
         $ipArray = \array_pad(\explode('.', $ip), 4, 0);
-        $part7 = \base_convert(($ipArray[0] * 256) + $ipArray[1], 10, 16);
-        $part8 = \base_convert(($ipArray[2] * 256) + $ipArray[3], 10, 16);
+        $part7 = \base_convert((string)(($ipArray[0] * 256) + $ipArray[1]), 10, 16);
+        $part8 = \base_convert((string)(($ipArray[2] * 256) + $ipArray[3]), 10, 16);
 
         return '::ffff:' . $part7 . ':' . $part8;
     }
@@ -189,8 +189,8 @@ final class UserUtil
             $ip = \substr($ip, 7);
             if (\preg_match('~^([a-f0-9]{1,4}):([a-f0-9]{1,4})$~', $ip, $matches)) {
                 $ip = [
-                    \base_convert($matches[1], 16, 10),
-                    \base_convert($matches[2], 16, 10),
+                    \intval(\base_convert($matches[1], 16, 10)),
+                    \intval(\base_convert($matches[2], 16, 10)),
                 ];
 
                 $ipParts = [];
@@ -283,7 +283,7 @@ final class UserUtil
             return null;
         }
 
-        if (!\is_array($data) || !isset($data['username']) || !isset($data['time'])) {
+        if (!isset($data['username']) || !isset($data['time'])) {
             return null;
         }
 

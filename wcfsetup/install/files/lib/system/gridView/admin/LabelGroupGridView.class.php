@@ -3,10 +3,8 @@
 namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\LabelGroupEditForm;
-use wcf\data\DatabaseObjectList;
 use wcf\data\label\group\I18nLabelGroupList;
 use wcf\event\gridView\admin\LabelGroupGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\I18nTextFilter;
 use wcf\system\gridView\filter\NumericFilter;
@@ -83,7 +81,7 @@ final class LabelGroupGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): I18nLabelGroupList
     {
         $list = new I18nLabelGroupList();
         if (!empty($list->sqlSelects)) {
@@ -100,7 +98,7 @@ final class LabelGroupGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): LabelGroupGridViewInitialized
     {
         return new LabelGroupGridViewInitialized($this);
     }

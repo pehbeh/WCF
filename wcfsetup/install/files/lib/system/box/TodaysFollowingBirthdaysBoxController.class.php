@@ -2,6 +2,7 @@
 
 namespace wcf\system\box;
 
+use wcf\system\user\UserProfileHandler;
 use wcf\system\WCF;
 
 /**
@@ -30,7 +31,6 @@ class TodaysFollowingBirthdaysBoxController extends TodaysBirthdaysBoxController
      */
     protected function filterUserIDs(&$userIDs)
     {
-        /** @noinspection PhpUndefinedMethodInspection */
-        $userIDs = \array_intersect($userIDs, WCF::getUserProfileHandler()->getFollowingUsers());
+        $userIDs = \array_intersect($userIDs, UserProfileHandler::getInstance()->getFollowingUsers());
     }
 }

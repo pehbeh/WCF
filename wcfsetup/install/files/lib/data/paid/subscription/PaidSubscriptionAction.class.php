@@ -15,6 +15,7 @@ use wcf\data\TDatabaseObjectToggle;
  *
  * @method  PaidSubscriptionEditor[]    getObjects()
  * @method  PaidSubscriptionEditor      getSingleObject()
+ * @property PaidSubscriptionEditor[] $objects
  */
 class PaidSubscriptionAction extends AbstractDatabaseObjectAction implements IToggleAction
 {

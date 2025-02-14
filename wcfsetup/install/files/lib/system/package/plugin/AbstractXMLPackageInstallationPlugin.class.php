@@ -104,6 +104,7 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
             // get attributes
             $attributes = $xpath->query('attribute::*', $element);
             foreach ($attributes as $attribute) {
+                \assert($attribute instanceof \DOMAttr);
                 $data['attributes'][$attribute->name] = $attribute->value;
             }
 
@@ -149,12 +150,14 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
             // fetch attributes
             $attributes = $xpath->query('attribute::*', $element);
             foreach ($attributes as $attribute) {
+                \assert($attribute instanceof \DOMAttr);
                 $data['attributes'][$attribute->name] = $attribute->value;
             }
 
             // fetch child elements
             $items = $xpath->query('child::*', $element);
             foreach ($items as $item) {
+                \assert($item instanceof \DOMElement);
                 $this->getElement($xpath, $data['elements'], $item);
             }
 
@@ -193,15 +196,9 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
         }
 
         if ($this instanceof IUniqueNameXMLPackageInstallationPlugin) {
-            $names = \array_map(function ($data) {
-                \assert($this instanceof IUniqueNameXMLPackageInstallationPlugin);
+            $names = \array_map(fn($data) => $this->getNameByData($data), $pipData);
 
-                return $this->getNameByData($data);
-            }, $pipData);
-
-            $validNames = \array_filter($names, static function ($name) {
-                return !empty($name);
-            });
+            $validNames = \array_filter($names);
 
             if ($validNames !== \array_unique($validNames)) {
                 throw new LogicException(
@@ -290,7 +287,7 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
      *
      * @param array $row
      * @param array $data
-     * @return  \wcf\data\IStorableObject
+     * @return  \wcf\data\IStorableObject|\wcf\data\DatabaseObjectEditor|null
      */
     protected function import(array $row, array $data)
     {
@@ -315,9 +312,7 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
      * Executed after all items would have been imported, use this hook if you've
      * overwritten import() to disable insert/update.
      */
-    protected function postImport()
-    {
-    }
+    protected function postImport() {}
 
     /**
      * Deletes the given items.
@@ -341,9 +336,7 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
      *
      * @param array $data
      */
-    protected function validateImport(array $data)
-    {
-    }
+    protected function validateImport(array $data) {}
 
     /**
      * Returns an array with a sql query and its parameters to find an existing item for updating
@@ -370,9 +363,7 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
     /**
      * Triggered after executing all delete and/or import actions.
      */
-    protected function cleanup()
-    {
-    }
+    protected function cleanup() {}
 
     /**
      * Loads the xml file into a string and returns this string.

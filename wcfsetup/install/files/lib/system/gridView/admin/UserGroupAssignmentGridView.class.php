@@ -4,12 +4,10 @@ namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\UserGroupAssignmentEditForm;
 use wcf\data\DatabaseObject;
-use wcf\data\DatabaseObjectList;
 use wcf\data\user\group\assignment\UserGroupAssignment;
 use wcf\data\user\group\assignment\UserGroupAssignmentList;
 use wcf\data\user\group\UserGroup;
 use wcf\event\gridView\admin\UserGroupAssignmentGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\SelectFilter;
 use wcf\system\gridView\filter\TextFilter;
@@ -95,13 +93,13 @@ final class UserGroupAssignmentGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): UserGroupAssignmentList
     {
         return new UserGroupAssignmentList();
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): UserGroupAssignmentGridViewInitialized
     {
         return new UserGroupAssignmentGridViewInitialized($this);
     }

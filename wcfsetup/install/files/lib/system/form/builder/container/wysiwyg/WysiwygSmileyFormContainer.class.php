@@ -76,6 +76,8 @@ class WysiwygSmileyFormContainer extends TabTabMenuFormContainer implements IWys
         if (\count($this->children()) > 1) {
             $this->addClass('messageTabMenu');
         }
+
+        return $this;
     }
 
     #[\Override]

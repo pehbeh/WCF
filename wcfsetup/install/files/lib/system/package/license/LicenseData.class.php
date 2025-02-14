@@ -22,8 +22,8 @@ final class LicenseData
      *              expiryDates?: array<string, int>,
      *              ckeditorLicenseKey?: string,
      *          } $license
-     * @param   array<string,string> $pluginstore 
-     * @param   array<string,string> $woltlab 
+     * @param   array<string,string> $pluginstore
+     * @param   array<string,string> $woltlab
      */
     public function __construct(
         public readonly array $license,
@@ -34,7 +34,7 @@ final class LicenseData
         $this->creationDate = new \DateTimeImmutable();
     }
 
-    public function getLicenseNumber(): ?string
+    public function getLicenseNumber(): ?int
     {
         return $this->license['licenseID'] ?? null;
     }

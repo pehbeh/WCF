@@ -16,7 +16,7 @@ use wcf\util\StringUtil;
  * @method  bool        expire($key, $ttl)
  * @method  string|bool get($key)
  * @method  int     hDel($key, $hashKey1, $hashKey2 = null, $hashKeyN = null)
- * @method  string      hGet($key, $hashKey)
+ * @method  mixed      hGet($key, $hashKey)
  * @method  int     hSet($key, $hashKey, $value)
  * @method  int     incr($key)
  * @method  array      info($option = null)

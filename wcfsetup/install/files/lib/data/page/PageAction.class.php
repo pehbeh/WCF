@@ -403,7 +403,7 @@ class PageAction extends AbstractDatabaseObjectAction implements ISearchAction, 
             }
         }
 
-        parent::delete();
+        $count = parent::delete();
 
         if (!empty($this->getObjectIDs())) {
             // delete page comments
@@ -416,6 +416,8 @@ class PageAction extends AbstractDatabaseObjectAction implements ISearchAction, 
             // delete embedded object references
             MessageEmbeddedObjectManager::getInstance()->removeObjects('com.woltlab.wcf.page.content', $pageContentIDs);
         }
+
+        return $count;
     }
 
     /**

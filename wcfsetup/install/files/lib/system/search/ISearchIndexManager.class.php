@@ -19,7 +19,7 @@ interface ISearchIndexManager
      * @param string $message
      * @param string $subject
      * @param int $time
-     * @param int $userID
+     * @param ?int $userID
      * @param string $username
      * @param int $languageID
      * @param string $metaData

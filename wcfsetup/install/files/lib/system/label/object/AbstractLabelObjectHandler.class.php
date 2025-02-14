@@ -92,6 +92,7 @@ abstract class AbstractLabelObjectHandler extends SingletonFactory implements IL
         $satisfiedGroups = [];
         foreach ($labelIDs as $groupID => $labelID) {
             // only one label per group is allowed
+            // @phpstan-ignore function.impossibleType
             if (\is_array($labelID)) {
                 $validationErrors[$groupID] = 'invalid';
                 continue;
@@ -159,6 +160,7 @@ abstract class AbstractLabelObjectHandler extends SingletonFactory implements IL
      */
     public function removeLabels($objectID, $validatePermissions = true)
     {
+        // @phpstan-ignore function.impossibleType
         $objectIDs = (\is_array($objectID)) ? $objectID : [$objectID];
         LabelHandler::getInstance()->removeLabels($this->objectTypeID, $objectIDs);
     }

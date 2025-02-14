@@ -20,12 +20,9 @@ final class AttachMetacodeUpcast extends AbstractImageMetacodeUpcast
     #[\Override]
     public function upcast(\DOMElement $element, array $attributes): void
     {
-        /**
-         * @var string $alignment
-         * @var string|bool|int $width
-         */
         $attachmentID = \intval($attributes[0]);
         $alignment = $attributes[1] ?? 'none';
+        /** @var string|bool|int $width */
         $width = $attributes[2] ?? 'auto';
         $attachment = AttachmentRuntimeCache::getInstance()->getObject($attachmentID);
         $parentLink = $element->parentNode;
@@ -42,10 +39,10 @@ final class AttachMetacodeUpcast extends AbstractImageMetacodeUpcast
         }
 
         if (\is_numeric($width) && $width > 0) {
-            $imgElement->setAttribute('width', \intval($width));
+            $imgElement->setAttribute('width', (string)\intval($width));
             $imgElement->setAttribute('data-width', \intval($width) . 'px');
         }
-        $imgElement->setAttribute('data-attachment-id', $attachmentID);
+        $imgElement->setAttribute('data-attachment-id', (string)$attachmentID);
         $imgElement->setAttribute('style', $this->getStyle($attachment, $width));
         if ($alignment === 'none') {
             $imgElement->setAttribute('class', 'image woltlabAttachment');

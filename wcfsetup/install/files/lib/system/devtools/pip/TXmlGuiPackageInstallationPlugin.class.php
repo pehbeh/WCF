@@ -333,6 +333,7 @@ trait TXmlGuiPackageInstallationPlugin
     protected function getElementByIdentifier(XML $xml, $identifier)
     {
         foreach ($this->getImportElements($xml->xpath()) as $element) {
+            \assert($element instanceof \DOMElement);
             if ($this->getElementIdentifier($element) === $identifier) {
                 return $element;
             }
@@ -458,6 +459,8 @@ XML;
 
     /**
      * @inheritDoc
+     *
+     * @return \DOMNodeList
      */
     protected function getImportElements(\DOMXPath $xpath)
     {
@@ -500,7 +503,7 @@ XML;
      */
     protected function getXmlFileLocation()
     {
-        /** @var DevtoolsProject $project */
+        \assert($this->installation instanceof DevtoolsPackageInstallationDispatcher);
         $project = $this->installation->getProject();
 
         return $project->path . ($project->getPackage()->package === 'com.woltlab.wcf' ? 'com.woltlab.wcf/' : '') . static::getDefaultFilename();
@@ -517,7 +520,9 @@ XML;
         $import = $xml->xpath()->query('/ns:data/ns:import')->item(0);
         if ($import === null) {
             $data = $xml->xpath()->query('/ns:data')->item(0);
+            \assert($data instanceof \DOMElement);
             $import = $xml->getDocument()->createElement('import');
+            \assert($import !== false);
             DOMUtil::prepend($import, $data);
         }
 
@@ -542,6 +547,7 @@ XML;
 
         $this->addFormFields($eventParameters['form']);
 
+        // @phpstan-ignore instanceof.alwaysTrue
         if (!($eventParameters['form'] instanceof IFormDocument)) {
             throw new \UnexpectedValueException('Form document is no longer a "' . IFormDocument::class . '" object.');
         }

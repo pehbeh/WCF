@@ -27,10 +27,7 @@ class MysqlSearchEngine extends AbstractSearchEngine
      */
     protected $ftMinWordLen;
 
-    /**
-     * @var int
-     */
-    private $minTokenSize;
+    private int $minTokenSize;
 
     /**
      * @inheritDoc

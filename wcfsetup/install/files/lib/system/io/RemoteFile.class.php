@@ -161,19 +161,19 @@ class RemoteFile extends File
      */
     public static function supportsSSL()
     {
-        if (static::$hasSSLSupport === null) {
-            static::$hasSSLSupport = false;
+        if (self::$hasSSLSupport === null) {
+            self::$hasSSLSupport = false;
 
             $transports = \stream_get_transports();
             foreach ($transports as $transport) {
                 if (\preg_match('~^(ssl(v[23])?|tls(v[0-9\.]+)?)$~', $transport)) {
-                    static::$hasSSLSupport = true;
+                    self::$hasSSLSupport = true;
                     break;
                 }
             }
         }
 
-        return static::$hasSSLSupport;
+        return self::$hasSSLSupport;
     }
 
     /**

@@ -4,9 +4,7 @@ namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\BBCodeMediaProviderEditForm;
 use wcf\data\bbcode\media\provider\BBCodeMediaProviderList;
-use wcf\data\DatabaseObjectList;
 use wcf\event\gridView\admin\BBCodeMediaProviderGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\ObjectIdFilter;
 use wcf\system\gridView\filter\TextFilter;
@@ -71,13 +69,13 @@ final class BBCodeMediaProviderGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): BBCodeMediaProviderList
     {
         return new BBCodeMediaProviderList();
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): BBCodeMediaProviderGridViewInitialized
     {
         return new BBCodeMediaProviderGridViewInitialized($this);
     }

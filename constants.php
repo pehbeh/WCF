@@ -15,6 +15,7 @@
 \define('RELATIVE_WCF_DIR', '');
 \define('TMP_DIR', '');
 \define('WCF_N', 1);
+\define('TIME_NOW', 0);
 \define('WCF_OPTION_INC_PHP_SUCCESS', true);
 
 // option constants
@@ -117,7 +118,7 @@
 \define('REGISTER_USERNAME_MAX_LENGTH', 25);
 \define('REGISTER_USERNAME_FORCE_ASCII', 2);
 \define('REGISTER_MIN_USER_AGE', 0);
-\define('REGISTER_ANTISPAM_ACTION', 0);
+\define('REGISTER_ANTISPAM_ACTION', 'disable');
 \define('GITHUB_PUBLIC_KEY', '');
 \define('GITHUB_PRIVATE_KEY', '');
 \define('TWITTER_PUBLIC_KEY', '');
@@ -224,3 +225,7 @@
 \define('FORMATTING_REMOVE_COLOR', 1);
 \define('FORMATTING_REMOVE_FONT', 1);
 \define('FORMATTING_REMOVE_SIZE', 1);
+\define('URL_UNFURLING_SAVE_IMAGES', 1);
+\define('SERVICE_WORKER_PRIVATE_KEY', '');
+\define('SERVICE_WORKER_PUBLIC_KEY', '');
+\define('RECAPTCHA_PRIVATEKEY_V3', '');

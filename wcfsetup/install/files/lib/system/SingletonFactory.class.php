@@ -15,7 +15,7 @@ abstract class SingletonFactory
 {
     /**
      * list of singletons
-     * @var SingletonFactory[]
+     * @var (static|false)[]
      */
     protected static $__singletonObjects = [];
 
@@ -30,6 +30,8 @@ abstract class SingletonFactory
 
     /**
      * Called within __construct(), override if necessary.
+     *
+     * @return void
      */
     protected function init()
     {

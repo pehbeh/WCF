@@ -71,7 +71,7 @@ final class WCFSetup extends WCF
 
     /**
      * indicates if developer mode is used to install
-     * @var bool
+     * @var int
      */
     protected static $developerMode = 0;
 
@@ -294,6 +294,9 @@ final class WCFSetup extends WCF
                 $this->calcProgress(21);
 
                 return $this->installPackages();
+
+            default:
+                throw new \LogicException('unreachable');
         }
     }
 
@@ -497,7 +500,6 @@ final class WCFSetup extends WCF
             // test connection
             try {
                 // check connection data
-                /** @var \wcf\system\database\Database $db */
                 try {
                     $db = new MySQLDatabase(
                         $dbHostWithoutPort,
@@ -529,7 +531,6 @@ final class WCFSetup extends WCF
 
                         case 1115: // work-around for older MySQL versions that don't know utf8mb4
                             throw new SystemException("Insufficient MySQL version. Version '8.0.30' or greater is needed.");
-                            break;
 
                         default:
                             throw $e;

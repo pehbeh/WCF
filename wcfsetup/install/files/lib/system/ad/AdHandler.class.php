@@ -105,7 +105,7 @@ class AdHandler extends SingletonFactory
     /**
      * Returns the list of available locations used to be used for selections.
      *
-     * @return  string[]
+     * @return array<string, array<int, string>>
      */
     public function getLocationSelection()
     {

@@ -34,6 +34,7 @@ use wcf\util\FileUtil;
  * @method  Media       create()
  * @method  MediaEditor[]   getObjects()
  * @method  MediaEditor getSingleObject()
+ * @property-read MediaEditor[] $objects
  */
 class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction, IUploadAction
 {
@@ -145,7 +146,7 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
      * Returns the data of the media file to be returned by AJAX requests.
      *
      * @param Media|ViewableMedia $media media files whose data will be returned
-     * @return  string[]
+     * @return mixed[]
      */
     protected function getMediaData($media)
     {
@@ -226,7 +227,7 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
     /**
      * Returns the dialog to manage media.
      *
-     * @return  string[]
+     * @return mixed[]
      */
     public function getManagementDialog()
     {
@@ -321,7 +322,7 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
     /**
      * Returns the template for the media editor.
      *
-     * @return  string[]
+     * @return mixed[]
      */
     public function getEditorDialog()
     {
@@ -628,9 +629,11 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
             $mediaEditor->deleteFiles();
         }
 
-        parent::delete();
+        $count = parent::delete();
 
         $this->unmarkItems();
+
+        return $count;
     }
 
     /**

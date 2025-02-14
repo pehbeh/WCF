@@ -39,7 +39,6 @@ abstract class AbstractIntDatabaseTableColumn extends AbstractDatabaseTableColum
         // which is done below.
         $data['length'] = null;
 
-        /** @var static $column */
         $column = parent::createFromData($name, $data);
 
         if ($length) {

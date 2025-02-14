@@ -107,7 +107,7 @@ abstract class AbstractMessageQuoteHandler extends SingletonFactory implements I
      * Returns a list of QuotedMessage objects.
      *
      * @param mixed[][] $data
-     * @return  QuotedMessage[]
+     * @return QuotedMessage[]
      */
     abstract protected function getMessages(array $data);
 }

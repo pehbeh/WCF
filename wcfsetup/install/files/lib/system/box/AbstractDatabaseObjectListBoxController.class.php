@@ -281,7 +281,7 @@ abstract class AbstractDatabaseObjectListBoxController extends AbstractBoxContro
     /**
      * Returns the database object list used to read the objects displayed in the box.
      *
-     * @return  DatabaseObjectList
+     * @return ?DatabaseObjectList
      */
     abstract protected function getObjectList();
 

@@ -59,7 +59,7 @@ final class PackageValidationArchive implements \RecursiveIterator
     /**
      * Creates a new package validation archive instance.
      */
-    public function __construct(string $archive, ?self $parent = null, int $depth = 0)
+    public function __construct(string $archive, int $depth = 0)
     {
         $this->archive = new PackageArchive($archive);
         $this->depth = $depth;
@@ -136,7 +136,7 @@ final class PackageValidationArchive implements \RecursiveIterator
                         $archive = $this->archive->extractTar($requirement['file']);
 
                         $index = \count($this->children);
-                        $this->children[$index] = new self($archive, $this, $this->depth + 1);
+                        $this->children[$index] = new self($archive, $this->depth + 1);
                         if (
                             !$this->children[$index]->validate(
                                 PackageValidationManager::VALIDATION_RECURSIVE,

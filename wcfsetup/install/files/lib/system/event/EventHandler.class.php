@@ -15,6 +15,7 @@ use wcf\system\SingletonFactory;
  * @author  Tim Duesterhus, Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @template T of object
  */
 final class EventHandler extends SingletonFactory
 {
@@ -24,17 +25,16 @@ final class EventHandler extends SingletonFactory
     public const DEFAULT_EVENT_NAME = ':default';
 
     /**
-     * @var array<string, EventListener>
+     * @var array<string, EventListener[]>
      */
     private array $actions = [];
 
     /**
-     * @var array<class-string, array<string, EventListener>>
+     * @var array<class-string, array<string, EventListener[]>>
      */
     private array $inheritedActions = [];
 
     /**
-     * @template T of object
      * @var array<string, array<class-string<T>, T>>
      */
     private array $actionsObjects = [];
@@ -45,13 +45,12 @@ final class EventHandler extends SingletonFactory
     private array $inheritedActionsObjects = [];
 
     /**
-     * @template T of object
      * @var array<class-string<T>, T>
      */
     private array $listenerObjects = [];
 
     /**
-     * @var array<class-string, callable>
+     * @var array<class-string, callable[]>
      */
     private array $psr14Listeners = [];
 
@@ -99,7 +98,6 @@ final class EventHandler extends SingletonFactory
                     continue;
                 }
 
-                /** @var EventListener $eventListener */
                 foreach ($this->inheritedActions[$member][$eventName] as $eventListener) {
                     if (
                         $eventListener->validateOptions()
@@ -162,6 +160,7 @@ final class EventHandler extends SingletonFactory
             } elseif ($actionObj instanceof IParameterizedEventListener) {
                 $actionObj->execute($eventObj, $className, $eventName, $parameters);
 
+                // @phpstan-ignore function.alreadyNarrowedType
                 if (!\is_array($parameters)) {
                     throw new \LogicException("'{$actionClassName}' breaks the '\$parameters' array.");
                 }
@@ -212,7 +211,6 @@ final class EventHandler extends SingletonFactory
             }
 
             $this->actionsObjects[$name] = [];
-            /** @var EventListener $eventListener */
             foreach ($this->actions[$name] as $eventListener) {
                 if (
                     $eventListener->validateOptions()

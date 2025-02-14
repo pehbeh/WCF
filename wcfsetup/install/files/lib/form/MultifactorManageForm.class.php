@@ -130,7 +130,7 @@ class MultifactorManageForm extends AbstractFormBuilderForm
 
         WCF::getDB()->beginTransaction();
 
-        /** @var Setup|null $setup */
+        /** @var ?Setup $setup */
         $setup = null;
         if ($this->setup) {
             $setup = $this->setup->lock();
@@ -142,10 +142,6 @@ class MultifactorManageForm extends AbstractFormBuilderForm
 
                 throw new NamedUserException('wcf.user.security.multifactor.error.setupAllocationFailed');
             }
-        }
-
-        if (!$setup) {
-            throw new \RuntimeException("Multifactor setup disappeared");
         }
 
         $this->returnData = $this->processor->processManagementForm($this->form, $setup);

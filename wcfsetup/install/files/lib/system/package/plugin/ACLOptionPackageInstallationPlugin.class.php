@@ -144,6 +144,7 @@ class ACLOptionPackageInstallationPlugin extends AbstractOptionPackageInstallati
             // get child elements
             $children = $xpath->query('child::*', $element);
             foreach ($children as $child) {
+                \assert($child instanceof \DOMElement);
                 $data[$child->tagName] = $child->nodeValue;
             }
 
@@ -230,6 +231,7 @@ class ACLOptionPackageInstallationPlugin extends AbstractOptionPackageInstallati
             $data = [];
             $children = $xpath->query('child::*', $element);
             foreach ($children as $child) {
+                \assert($child instanceof \DOMElement);
                 $data[$child->tagName] = $child->nodeValue;
             }
 
@@ -722,6 +724,7 @@ class ACLOptionPackageInstallationPlugin extends AbstractOptionPackageInstallati
             $xpath->registerNamespace('ns', $element->ownerDocument->documentElement->getAttribute('xmlns'));
 
             $options = $xpath->query('/ns:data/ns:import/ns:options')->item(0);
+            \assert($options instanceof \DOMElement);
 
             /** @var \DOMElement $option */
             foreach (DOMUtil::getElements($options, 'option') as $option) {

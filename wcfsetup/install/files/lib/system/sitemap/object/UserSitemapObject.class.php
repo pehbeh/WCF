@@ -41,6 +41,6 @@ class UserSitemapObject extends AbstractSitemapObjectObjectType
             return false;
         }
 
-        return PageCache::getInstance()->getPageByIdentifier('com.woltlab.wcf.User')->allowSpidersToIndex;
+        return !!PageCache::getInstance()->getPageByIdentifier('com.woltlab.wcf.User')->allowSpidersToIndex;
     }
 }

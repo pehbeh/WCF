@@ -256,7 +256,7 @@ class LabelGroupAddForm extends AbstractForm
     /**
      * Saves label group to object relations.
      *
-     * @param int $groupID
+     * @param ?int $groupID
      */
     protected function saveObjectTypeRelations($groupID)
     {

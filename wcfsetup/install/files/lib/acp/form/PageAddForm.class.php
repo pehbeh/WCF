@@ -55,7 +55,7 @@ class PageAddForm extends AbstractForm
 
     /**
      * true if created page is multi-lingual
-     * @var bool
+     * @var int
      */
     public $isMultilingual = 0;
 
@@ -79,7 +79,7 @@ class PageAddForm extends AbstractForm
 
     /**
      * true if page is disabled
-     * @var bool
+     * @var int
      */
     public $isDisabled = 0;
 
@@ -156,25 +156,25 @@ class PageAddForm extends AbstractForm
 
     /**
      * true if the page is available during offline mode
-     * @var bool
+     * @var int
      */
     public $availableDuringOfflineMode = 0;
 
     /**
      * true if the page is accessible for search spiders
-     * @var bool
+     * @var int
      */
     public $allowSpidersToIndex = 1;
 
     /**
      * true if page should be added to the main menu
-     * @var bool
+     * @var int
      */
     public $addPageToMainMenu = 0;
 
     /**
      * parent menu item id
-     * @var int
+     * @var ?int
      */
     public $parentMenuItemID;
 
@@ -185,7 +185,7 @@ class PageAddForm extends AbstractForm
     public $menuItems;
 
     /**
-     * @var bool
+     * @var int
      * @since   5.2
      */
     public $enableShareButtons = 0;
@@ -197,13 +197,13 @@ class PageAddForm extends AbstractForm
     public $presetPageID = 0;
 
     /**
-     * @var Page
+     * @var ?Page
      * @since   5.2
      */
     public $presetPage;
 
     /**
-     * @var bool
+     * @var int
      * @since   5.4
      */
     public $invertPermissions = 0;

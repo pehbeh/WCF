@@ -16,6 +16,8 @@ use wcf\system\WCF;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @property-read User[] $objects
  */
 class UserClipboardAction extends AbstractClipboardAction
 {
@@ -50,7 +52,7 @@ class UserClipboardAction extends AbstractClipboardAction
         $item = parent::execute($objects, $action);
 
         if ($item === null) {
-            return;
+            return null;
         }
 
         // handle actions
@@ -323,7 +325,7 @@ class UserClipboardAction extends AbstractClipboardAction
         // check permissions
         if (
             !WCF::getSession()->getPermission('admin.user.canEnableUser')
-            || !(REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_USER)
+            || !((int)REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_USER)
         ) {
             return [];
         }

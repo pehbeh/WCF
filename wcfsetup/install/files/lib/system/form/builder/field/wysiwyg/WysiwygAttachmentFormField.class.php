@@ -157,5 +157,7 @@ final class WysiwygAttachmentFormField extends AbstractFormField
                 $this->getAttachmentHandler()->setTmpHashes($tmpHash);
             }
         }
+
+        return $this;
     }
 }

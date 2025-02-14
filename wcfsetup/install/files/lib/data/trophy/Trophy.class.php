@@ -102,7 +102,6 @@ class Trophy extends DatabaseObject implements ITitledLinkObject, IRouteControll
                     'trophy' => $this,
                     'showTooltip' => $showTooltip,
                 ]);
-                break;
 
             case self::TYPE_BADGE:
                 return WCF::getTPL()->render('wcf', 'trophyBadge', [
@@ -110,7 +109,6 @@ class Trophy extends DatabaseObject implements ITitledLinkObject, IRouteControll
                     'trophy' => $this,
                     'showTooltip' => $showTooltip,
                 ]);
-                break;
 
             default:
                 $parameters = [
@@ -126,7 +124,6 @@ class Trophy extends DatabaseObject implements ITitledLinkObject, IRouteControll
                 }
 
                 throw new \LogicException("Unable to render the trophy with the type '" . $this->type . "'.");
-                break;
         }
     }
 

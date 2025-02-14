@@ -320,7 +320,7 @@ class HtmlInputNodeTextParser
 
     /**
      * @param string[] $usernames
-     * @return UserGroup[]
+     * @return array<int, string>
      * @since 5.2
      */
     protected function lookupGroups(array $usernames)
@@ -452,7 +452,7 @@ class HtmlInputNodeTextParser
                         // be encoded at all times according to RFC 1738.
                         $path = \preg_replace_callback(
                             '~[^0-9a-zA-Z$-_.+!*\'(),;/?:@=&]~',
-                            static fn (array $matches) => \rawurlencode($matches[0]),
+                            static fn(array $matches) => \rawurlencode($matches[0]),
                             $path
                         );
                         $uri = $uri->withPath($path);
@@ -592,13 +592,11 @@ class HtmlInputNodeTextParser
                     }
                 }
 
-                if (!empty($tmp)) {
-                    if ($tmp === '(?<=\s|^)(?:') {
-                        $tmp = '';
-                    } else {
-                        // close the pattern group
-                        $tmp .= ')(?=\s|$)';
-                    }
+                if ($tmp === '(?<=\s|^)(?:') {
+                    $tmp = '';
+                } else {
+                    // close the pattern group
+                    $tmp .= ')(?=\s|$)';
                 }
             }
 
@@ -684,13 +682,13 @@ class HtmlInputNodeTextParser
     protected function hasCodeParent(\DOMText $text)
     {
         $parent = $text;
-        /** @var \DOMElement $parent */
         while ($parent = $parent->parentNode) {
             $nodeName = $parent->nodeName;
             if ($nodeName === 'code' || $nodeName === 'kbd' || $nodeName === 'pre') {
                 return true;
             } elseif (
                 $nodeName === 'woltlab-metacode'
+                && $parent instanceof \DOMElement
                 && \in_array($parent->getAttribute('data-name'), $this->sourceBBCodes)
             ) {
                 return true;
@@ -710,7 +708,6 @@ class HtmlInputNodeTextParser
     protected function hasLinkParent(\DOMText $text)
     {
         $parent = $text;
-        /** @var \DOMElement $parent */
         while ($parent = $parent->parentNode) {
             $nodeName = $parent->nodeName;
             if ($nodeName === 'a') {

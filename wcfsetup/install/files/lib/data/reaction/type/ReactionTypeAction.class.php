@@ -47,7 +47,7 @@ class ReactionTypeAction extends AbstractDatabaseObjectAction implements ISortab
      */
     public function create()
     {
-        if (isset($this->parameters['data']['showOrder']) && $this->parameters['data']['showOrder'] !== null) {
+        if (isset($this->parameters['data']['showOrder'])) {
             $sql = "UPDATE  wcf1_reaction_type
                     SET     showOrder = showOrder + 1
                     WHERE   showOrder >= ?";
@@ -154,7 +154,7 @@ class ReactionTypeAction extends AbstractDatabaseObjectAction implements ISortab
             }
 
             // update show order
-            if (isset($this->parameters['data']['showOrder']) && $this->parameters['data']['showOrder'] !== null) {
+            if (isset($this->parameters['data']['showOrder'])) {
                 $sql = "UPDATE  wcf1_reaction_type
                         SET     showOrder = showOrder + 1
                         WHERE   showOrder >= ?
@@ -186,7 +186,7 @@ class ReactionTypeAction extends AbstractDatabaseObjectAction implements ISortab
     public function validateUpdatePosition()
     {
         // validate permissions
-        if (\is_array($this->permissionsUpdate) && \count($this->permissionsUpdate)) {
+        if ($this->permissionsUpdate !== []) {
             WCF::getSession()->checkPermissions($this->permissionsUpdate);
         } else {
             throw new PermissionDeniedException();

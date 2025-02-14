@@ -42,8 +42,8 @@ final class GridViewFilterAction implements RequestHandlerInterface
             throw new UserInputException('gridView', 'invalid');
         }
 
+        /** @var AbstractGridView $view */
         $view = new $parameters['gridView'](...$parameters['gridViewParameters']);
-        \assert($view instanceof AbstractGridView);
 
         if (!$view->isAccessible()) {
             throw new PermissionDeniedException();

@@ -10,6 +10,7 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Message\ResponseInterface;
 use ValueError;
 use wcf\system\io\http\RedirectGuard;
 use wcf\system\io\HttpFactory;
@@ -42,17 +43,12 @@ final class UnfurlResponse
     public const MAX_IMAGE_SIZE = (3 * (1 << 20));
 
     /**
-     * @var ClientInterface
+     * @var ?ClientInterface
      */
     private static $httpClient;
 
     /**
-     * @var string
-     */
-    private $url;
-
-    /**
-     * @var Response
+     * @var ResponseInterface
      */
     private $response;
 
@@ -107,7 +103,7 @@ final class UnfurlResponse
             ]);
             $response = self::getHttpClient()->send($request);
 
-            return new self($url, $response);
+            return new self($response);
         } catch (BadResponseException $e) {
             $response = $e->getResponse();
 
@@ -127,9 +123,8 @@ final class UnfurlResponse
      * @throws ParsingFailed If the body cannot be parsed (e.g. the url is an image).
      * @throws DownloadFailed If the url can not be downloaded. This can be a temporary error.
      */
-    private function __construct(string $url, Response $response)
+    private function __construct(ResponseInterface $response)
     {
-        $this->url = $url;
         $this->response = $response;
 
         $this->readBody();
@@ -299,7 +294,7 @@ final class UnfurlResponse
      * @throws DownloadFailed If the url can not be downloaded. This can be a temporary error.
      * @throws UrlInaccessible If the url is inaccessible (e.g. sends status code 403).
      */
-    public function getImage(): Response
+    public function getImage(): ResponseInterface
     {
         if (!$this->getImageUrl()) {
             throw new BadMethodCallException("This url does not have an image.");
@@ -326,7 +321,7 @@ final class UnfurlResponse
         }
     }
 
-    private static function isUrlInaccessible(Response $response): bool
+    private static function isUrlInaccessible(ResponseInterface $response): bool
     {
         switch ($response->getStatusCode()) {
             case 400: // Bad Request
@@ -336,7 +331,6 @@ final class UnfurlResponse
             case 404: // Not Found
             case 406: // Not Acceptable
                 return true;
-                break;
         }
 
         return false;

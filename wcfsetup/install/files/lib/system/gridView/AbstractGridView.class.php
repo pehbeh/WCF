@@ -379,7 +379,7 @@ abstract class AbstractGridView
      */
     public function countPages(): int
     {
-        return \ceil($this->countRows() / $this->getRowsPerPage());
+        return (int)\ceil($this->countRows() / $this->getRowsPerPage());
     }
 
     /**

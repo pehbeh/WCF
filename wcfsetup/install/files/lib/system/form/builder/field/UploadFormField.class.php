@@ -454,7 +454,7 @@ class UploadFormField extends AbstractFormField
                 $variableName = $this->getObjectProperty();
                 try {
                     $value = $this->readUploadLocations($data[$variableName] ?? null);
-                } catch (\InvalidArgumentException | \TypeError $e) {
+                } catch (\InvalidArgumentException $e) {
                     throw new \InvalidArgumentException(
                         \sprintf(
                             "The property %s must contain an array of strings with the valid file locations for field '%s'.",
@@ -550,6 +550,8 @@ class UploadFormField extends AbstractFormField
         } else {
             $this->values = $value;
         }
+
+        return $this;
     }
 
     /**

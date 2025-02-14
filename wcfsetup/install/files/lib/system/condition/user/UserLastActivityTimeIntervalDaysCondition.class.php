@@ -53,7 +53,7 @@ class UserLastActivityTimeIntervalDaysCondition extends AbstractSingleFieldCondi
             throw new InvalidObjectArgument($objectList, UserList::class, 'Object list');
         }
 
-        /** @noinspection PhpUndefinedFieldInspection */
+        // @phpstan-ignore property.notFound
         if ($this->object->ignoreZeroTime) {
             $objectList->getConditionBuilder()->add('user_table.lastActivityTime <> ?', [0]);
         }
@@ -81,6 +81,7 @@ class UserLastActivityTimeIntervalDaysCondition extends AbstractSingleFieldCondi
         }
 
         if (isset($conditionData['startDays'])) {
+            // @phpstan-ignore property.notFound
             if ($object->lastActivityTime > TIME_NOW - $conditionData['startDays'] * 24 * 3600) {
                 return false;
             }
@@ -94,6 +95,7 @@ class UserLastActivityTimeIntervalDaysCondition extends AbstractSingleFieldCondi
             return true;
         } elseif (
             isset($conditionData['endDays'])
+            // @phpstan-ignore property.notFound
             && $object->lastActivityTime < TIME_NOW - $conditionData['endDays'] * 24 * 3600
         ) {
             return false;

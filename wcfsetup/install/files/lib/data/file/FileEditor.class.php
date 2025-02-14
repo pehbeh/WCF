@@ -126,7 +126,7 @@ class FileEditor extends DatabaseObjectEditor
 
         $objectType = FileProcessor::getInstance()->getObjectType($objectTypeName);
         if ($objectType === null) {
-            return new \RuntimeException("The object type '{$objectTypeName}' is not valid.");
+            throw new \RuntimeException("The object type '{$objectTypeName}' is not valid.");
         }
 
         $mimeType = FileUtil::getMimeType($pathname);

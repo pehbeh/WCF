@@ -42,7 +42,7 @@ class StatDailyRebuildDataWorker extends AbstractRebuildDataWorker
     {
         $this->getStartDate();
 
-        $this->count = \ceil((TIME_NOW - $this->startDate) / 86400);
+        $this->count = (int)\ceil((TIME_NOW - $this->startDate) / 86400);
     }
 
     /**

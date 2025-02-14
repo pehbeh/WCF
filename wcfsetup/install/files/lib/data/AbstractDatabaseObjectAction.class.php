@@ -254,7 +254,7 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
     /**
      * Sets the database objects.
      *
-     * @param DatabaseObject[] $objects
+     * @param DatabaseObjectEditor[] $objects
      */
     public function setObjects(array $objects)
     {
@@ -293,7 +293,7 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
     public function validateCreate()
     {
         // validate permissions
-        if (\is_array($this->permissionsCreate) && !empty($this->permissionsCreate)) {
+        if ($this->permissionsCreate !== []) {
             WCF::getSession()->checkPermissions($this->permissionsCreate);
         } else {
             throw new PermissionDeniedException();
@@ -306,7 +306,7 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
     public function validateDelete()
     {
         // validate permissions
-        if (\is_array($this->permissionsDelete) && !empty($this->permissionsDelete)) {
+        if ($this->permissionsDelete !== []) {
             WCF::getSession()->checkPermissions($this->permissionsDelete);
         } else {
             throw new PermissionDeniedException();
@@ -328,7 +328,7 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
     public function validateUpdate()
     {
         // validate permissions
-        if (\is_array($this->permissionsUpdate) && !empty($this->permissionsUpdate)) {
+        if ($this->permissionsUpdate !== []) {
             WCF::getSession()->checkPermissions($this->permissionsUpdate);
         } else {
             throw new PermissionDeniedException();

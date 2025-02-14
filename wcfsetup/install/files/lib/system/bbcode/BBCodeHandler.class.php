@@ -29,7 +29,7 @@ class BBCodeHandler extends SingletonFactory
 
     /**
      * list of BBCodes disallowed for usage
-     * @var BBCode[]
+     * @var string[]
      */
     protected $disallowedBBCodes = [];
 
@@ -189,6 +189,7 @@ class BBCodeHandler extends SingletonFactory
      */
     public function getCodeBlockLanguages(): array
     {
+        /** @var string[] $highlighters */
         $highlighters = \explode("\n", StringUtil::unifyNewlines(\MESSAGE_PUBLIC_HIGHLIGHTERS));
         if ($highlighters !== []) {
             return $highlighters;

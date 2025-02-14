@@ -73,7 +73,7 @@ class UploadFile
 
     /**
      * The return value of `getimagesize`.
-     * @var array
+     * @var array|false
      */
     private $imageData;
 
@@ -135,7 +135,7 @@ class UploadFile
     public function getImage()
     {
         if (!$this->isImage() || !$this->viewableImage) {
-            return;
+            return null;
         }
 
         if ($this->processed) {

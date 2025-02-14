@@ -201,6 +201,8 @@ final class SourceCodeFormField extends AbstractFormField implements
         if ($this->getDocument()->hasRequestData($this->getPrefixedId())) {
             $this->value = $this->getDocument()->getRequestData($this->getPrefixedId());
         }
+
+        return $this;
     }
 
     /**

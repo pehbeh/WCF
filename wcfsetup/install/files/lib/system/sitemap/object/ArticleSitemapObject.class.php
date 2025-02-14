@@ -29,7 +29,7 @@ class ArticleSitemapObject extends AbstractSitemapObjectObjectType
      */
     public function canView(DatabaseObject $object)
     {
-        /** @var $object ArticleContent */
+        /** @var ArticleContent $object */
         return $object->getArticle()->canRead();
     }
 
@@ -42,6 +42,6 @@ class ArticleSitemapObject extends AbstractSitemapObjectObjectType
             return false;
         }
 
-        return PageCache::getInstance()->getPageByIdentifier('com.woltlab.wcf.Article')->allowSpidersToIndex;
+        return !!PageCache::getInstance()->getPageByIdentifier('com.woltlab.wcf.Article')->allowSpidersToIndex;
     }
 }

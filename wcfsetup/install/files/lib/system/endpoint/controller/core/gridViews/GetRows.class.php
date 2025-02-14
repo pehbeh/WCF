@@ -33,6 +33,7 @@ final class GetRows implements IController
         }
 
         $view = new $parameters->gridView(...$parameters->gridViewParameters);
+        // @phpstan-ignore function.alreadyNarrowedType, instanceof.alwaysTrue
         \assert($view instanceof AbstractGridView);
 
         if (!$view->isAccessible()) {

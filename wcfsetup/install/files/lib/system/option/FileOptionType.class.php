@@ -21,7 +21,7 @@ class FileOptionType extends AbstractOptionType
 {
     /**
      * upload handler for option files
-     * @var UploadHandler[]
+     * @var array<string, ?UploadHandler>
      */
     protected $uploadHandlers = [];
 

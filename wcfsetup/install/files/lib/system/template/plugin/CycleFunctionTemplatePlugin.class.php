@@ -89,5 +89,7 @@ class CycleFunctionTemplatePlugin implements IFunctionTemplatePlugin
         if ($print) {
             return $result;
         }
+
+        return '';
     }
 }

@@ -32,7 +32,7 @@ trait TUserLookupPageHandler
      * an `objectID => title` relation.
      *
      * @param string $searchString search string
-     * @return  string[]
+     * @return list<array<string, int|string>>
      * @see ILookupPageHandler::lookup()
      */
     public function lookup($searchString)

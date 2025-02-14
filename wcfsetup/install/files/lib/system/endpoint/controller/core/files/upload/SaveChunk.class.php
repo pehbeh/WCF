@@ -42,7 +42,7 @@ final class SaveChunk implements IController
             throw new UserInputException('chunk-checksum-sha256');
         }
 
-        $sequenceNo = $variables['sequenceNo'];
+        $sequenceNo = (int)$variables['sequenceNo'];
 
         // Check if this is a valid sequence no.
         if ($sequenceNo >= $fileTemporary->getChunkCount()) {

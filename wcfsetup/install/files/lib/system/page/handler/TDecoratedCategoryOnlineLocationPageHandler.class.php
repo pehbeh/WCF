@@ -47,7 +47,7 @@ trait TDecoratedCategoryOnlineLocationPageHandler
             throw new ParentClassException($className, AbstractDecoratedCategory::class);
         }
 
-        /** @var AbstractDecoratedCategory $category */
+        /** @var ?AbstractDecoratedCategory $category */
         /** @noinspection PhpUndefinedMethodInspection */
         $category = $className::getCategory($user->pageObjectID);
         if ($category === null) {
@@ -55,7 +55,7 @@ trait TDecoratedCategoryOnlineLocationPageHandler
         }
 
         if ($category instanceof IAccessibleObject && !$category->isAccessible()) {
-            return;
+            return '';
         }
 
         return WCF::getLanguage()->getDynamicVariable(

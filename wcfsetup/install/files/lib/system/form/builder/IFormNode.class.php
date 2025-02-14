@@ -273,6 +273,8 @@ interface IFormNode
      *
      * Note: A `IFormParentNode` object may only return `true` if all of its child
      * nodes are valid. A `IFormField` object is valid if its value is valid.
+     *
+     * @return void
      */
     public function validate();
 }

@@ -2,6 +2,7 @@
 
 namespace wcf\acp\form;
 
+use wcf\data\DatabaseObject;
 use wcf\data\IStorableObject;
 use wcf\data\package\Package;
 use wcf\data\package\PackageCache;
@@ -148,6 +149,7 @@ class TemplateAddForm extends AbstractFormBuilderForm
                                 }
 
                                 if ($this->formAction === 'edit') {
+                                    \assert($this->formObject instanceof DatabaseObject);
                                     $conditionBuilder->add('templateID <> ?', [$this->formObject->getObjectID()]);
                                 }
 
@@ -259,8 +261,13 @@ class TemplateAddForm extends AbstractFormBuilderForm
         parent::readData();
 
         if ($_POST === [] && isset($this->copiedTemplate)) {
-            $this->form->getNodeById('templateSource')->value($this->copiedTemplate->getSource());
-            $this->form->getNodeById('templateName')->value($this->copiedTemplate->templateName);
+            $templateSource = $this->form->getNodeById('templateSource');
+            \assert($templateSource instanceof SourceCodeFormField);
+            $templateSource->value($this->copiedTemplate->getSource());
+
+            $templateName = $this->form->getNodeById('templateName');
+            \assert($templateName instanceof TextFormField);
+            $templateName->value($this->copiedTemplate->templateName);
         }
     }
 }

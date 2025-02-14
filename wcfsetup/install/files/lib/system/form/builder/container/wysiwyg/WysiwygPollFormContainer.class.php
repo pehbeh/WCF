@@ -353,7 +353,7 @@ class WysiwygPollFormContainer extends FormContainer implements IObjectTypeFormN
         $this->isChangeableField = BooleanFormField::create($id . 'IsChangeable')
             ->label('wcf.poll.isChangeable');
 
-        /** @var IPollHandler $pollHandler */
+        /** @var ?IPollHandler $pollHandler */
         $pollHandler = null;
         if ($this->objectType !== null) {
             $pollHandler = $this->getObjectType()->getProcessor();
@@ -380,5 +380,7 @@ class WysiwygPollFormContainer extends FormContainer implements IObjectTypeFormN
             $this->getResultsRequireVoteField(),
             $this->getSortByVotesField(),
         ]);
+
+        return $this;
     }
 }

@@ -5,6 +5,7 @@ namespace wcf\system\gridView\admin;
 use wcf\acp\form\ArticleEditForm;
 use wcf\acp\form\UserEditForm;
 use wcf\data\article\AccessibleArticleList;
+use wcf\data\article\Article;
 use wcf\data\article\ViewableArticle;
 use wcf\data\category\CategoryNodeTree;
 use wcf\data\DatabaseObject;
@@ -30,6 +31,7 @@ use wcf\system\interaction\bulk\admin\ArticleBulkInteractions;
 use wcf\system\interaction\Divider;
 use wcf\system\interaction\EditInteraction;
 use wcf\system\WCF;
+use wcf\util\DateUtil;
 use wcf\util\StringUtil;
 
 /**
@@ -74,20 +76,30 @@ final class ArticleGridView extends AbstractGridView
                                     WCF::getLanguage()->get('wcf.message.status.deleted')
                                 );
                             }
-                            if ($row->publicationStatus == 0) {
+                            if ($row->publicationStatus === Article::UNPUBLISHED) {
                                 $badges .= \sprintf(
                                     '<span class="badge">%s</span>',
                                     WCF::getLanguage()->get('wcf.acp.article.publicationStatus.unpublished')
                                 );
                             }
-                            if ($row->publicationStatus == 2) {
+                            if ($row->publicationStatus === Article::DELAYED_PUBLICATION) {
+                                $dateTime = \IntlDateFormatter::formatObject(
+                                    WCF::getUser()->getLocalDate($row->publicationDate),
+                                    [
+                                        \IntlDateFormatter::LONG,
+                                        \IntlDateFormatter::SHORT,
+                                    ],
+                                    WCF::getLanguage()->getLocale()
+                                );
+
                                 $badges .= \sprintf(
                                     '<span class="badge" title="%s">%s</span>',
-                                    $row->publicationDate->format('H:i'),
+                                    $dateTime,
                                     WCF::getLanguage()->get('wcf.acp.article.publicationStatus.delayed')
                                 );
                             }
 
+                            // @phpstan-ignore property.notFound
                             $articleTitle = StringUtil::encodeHTML($row->title);
 
                             return \sprintf('<p>%s %s</p>%s', $badges, $articleTitle, $labels);
@@ -175,7 +187,7 @@ final class ArticleGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): AccessibleArticleList
     {
         $list = new AccessibleArticleList();
         $join = ' LEFT JOIN wcf1_article_content articleContent
@@ -199,7 +211,7 @@ final class ArticleGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): ArticleGridViewInitialized
     {
         return new ArticleGridViewInitialized($this);
     }

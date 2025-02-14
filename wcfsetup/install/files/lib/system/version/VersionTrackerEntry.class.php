@@ -33,7 +33,7 @@ class VersionTrackerEntry
     /**
      * VersionTrackerEntry constructor.
      *
-     * @param int $id id
+     * @param ?int $id id
      * @param array $data version data
      */
     public function __construct($id, array $data)

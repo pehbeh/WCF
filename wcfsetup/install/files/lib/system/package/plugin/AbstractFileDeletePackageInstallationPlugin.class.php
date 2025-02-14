@@ -176,6 +176,7 @@ abstract class AbstractFileDeletePackageInstallationPlugin extends AbstractXMLPa
     final protected function import(array $row, array $data)
     {
         // Does nothing, imports are not supported.
+        return null;
     }
 
     /**
@@ -271,7 +272,7 @@ abstract class AbstractFileDeletePackageInstallationPlugin extends AbstractXMLPa
     protected function fetchElementData(\DOMElement $element, $saveData)
     {
         return [
-            'application' => $element->getAttribute('application') ?? 'wcf',
+            'application' => $element->getAttribute('application') ?: 'wcf',
             $this->tagName => $element->nodeValue,
             'packageID' => $this->installation->getPackage()->packageID,
         ];
@@ -282,7 +283,7 @@ abstract class AbstractFileDeletePackageInstallationPlugin extends AbstractXMLPa
      */
     public function getElementIdentifier(\DOMElement $element)
     {
-        $app = $element->getAttribute('application') ?? 'wcf';
+        $app = $element->getAttribute('application') ?: 'wcf';
 
         return \sha1($app . '_' . $element->nodeValue);
     }
@@ -306,6 +307,7 @@ abstract class AbstractFileDeletePackageInstallationPlugin extends AbstractXMLPa
         $delete = $xml->xpath()->query('/ns:data/ns:delete')->item(0);
         if ($delete === null) {
             $data = $xml->xpath()->query('/ns:data')->item(0);
+            \assert($data instanceof \DOMElement);
             $delete = $xml->getDocument()->createElement('delete');
             DOMUtil::prepend($delete, $data);
         }
@@ -354,6 +356,8 @@ abstract class AbstractFileDeletePackageInstallationPlugin extends AbstractXMLPa
 
     /**
      * @inheritDoc
+     *
+     * @return void
      */
     final protected function deleteObject(\DOMElement $element)
     {

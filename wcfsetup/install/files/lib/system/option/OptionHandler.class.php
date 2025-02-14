@@ -347,7 +347,7 @@ class OptionHandler implements IOptionHandler
      * Returns a parsed option.
      *
      * @param string $optionName
-     * @return  array
+     * @return  ?array
      */
     protected function getOption($optionName)
     {
@@ -445,7 +445,7 @@ class OptionHandler implements IOptionHandler
      * Returns class name for option type.
      *
      * @param string $optionType
-     * @return  string
+     * @return  ?string
      * @throws  ImplementationException
      */
     protected function getClassName($optionType)
@@ -478,7 +478,7 @@ class OptionHandler implements IOptionHandler
 
         // validate class
         if (!$isValid) {
-            return;
+            return null;
         }
 
         if (!\is_subclass_of($className, IOptionType::class)) {

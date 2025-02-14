@@ -32,12 +32,6 @@ class MenuItemNode extends DatabaseObjectDecorator implements IObjectTreeNode
     protected bool $isActive = false;
 
     /**
-     * iterator position
-     * @var int
-     */
-    private int $position = 0;
-
-    /**
      * @inheritDoc
      */
     protected static $baseClass = MenuItem::class;
@@ -56,6 +50,7 @@ class MenuItemNode extends DatabaseObjectDecorator implements IObjectTreeNode
         }
         parent::__construct($menuItem);
 
+        // @phpstan-ignore assign.propertyType
         $this->parentNode = $parentNode;
         $this->depth = $depth;
     }
@@ -67,6 +62,7 @@ class MenuItemNode extends DatabaseObjectDecorator implements IObjectTreeNode
      */
     public function setChildren(array $children): void
     {
+        // @phpstan-ignore assign.propertyType
         $this->children = $children;
     }
 

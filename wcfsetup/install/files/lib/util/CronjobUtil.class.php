@@ -36,7 +36,7 @@ final class CronjobUtil
     /**
      * valid ranges for each known field (range for 'day of month' is missing
      * since it varies from month to month)
-     * @var int[]
+     * @var array<string, array{0: int, 1: int}>
      */
     public static $ranges = [
         'minute' => [0, 59],
@@ -196,9 +196,9 @@ final class CronjobUtil
             $timeBase = \mktime(0, 0, 1, (int)$date[1], (int)$date[0] + 1, (int)$date[2]);
         }
 
-        $day = \date('j', $timeBase);
-        $month = \date('n', $timeBase);
-        $year = \date('Y', $timeBase);
+        $day = (int)\date('j', $timeBase);
+        $month = (int)\date('n', $timeBase);
+        $year = (int)\date('Y', $timeBase);
 
         // calculate month of next execution and if its not the current one reset previous calculations
         $dateMonth = self::calculateMonth($month, $year, $values);
@@ -501,7 +501,7 @@ final class CronjobUtil
 
         $data = \explode('-', $value);
 
-        return self::calculateRange($data[0], $data[1], $step);
+        return self::calculateRange((int)$data[0], (int)$data[1], $step);
     }
 
     /**
@@ -607,19 +607,19 @@ final class CronjobUtil
                     && \preg_match('/^(((' . $pattern . ')-(' . $pattern . '))(\/' . $step . ')?)+$/', $testField)
                 ) {
                     $compare = \explode('-', $testField);
-                    $compareSlash = \explode('/', $compare['1']);
+                    $compareSlash = \explode('/', $compare[1]);
                     if (\count($compareSlash) == 2) {
-                        $compare['1'] = $compareSlash['0'];
+                        $compare[1] = $compareSlash[0];
                     }
 
                     // see if digits or names are being given.
-                    $left = \array_search(\mb_strtolower($compare['0']), $namesArr);
-                    $right = \array_search(\mb_strtolower($compare['1']), $namesArr);
+                    $left = \array_search(\mb_strtolower($compare[0]), $namesArr);
+                    $right = \array_search(\mb_strtolower($compare[1]), $namesArr);
                     if (!$left) {
-                        $left = $compare['0'];
+                        $left = $compare[0];
                     }
                     if (!$right) {
-                        $right = $compare['1'];
+                        $right = $compare[1];
                     }
                     // now check the values.
                     if (\intval($left) > \intval($right)) {

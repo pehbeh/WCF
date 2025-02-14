@@ -2,6 +2,8 @@
 
 namespace wcf\data\search;
 
+use wcf\data\user\UserProfile;
+
 /**
  * All search result objects should implement this interface.
  *
@@ -14,7 +16,7 @@ interface ISearchResultObject
     /**
      * Returns author's user profile.
      *
-     * @return  \wcf\data\user\UserProfile
+     * @return ?UserProfile
      */
     public function getUserProfile();
 

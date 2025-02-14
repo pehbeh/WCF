@@ -9,6 +9,7 @@ use wcf\system\cache\builder\UserGroupCacheBuilder;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\exception\SystemException;
 use wcf\system\WCF;
+use wcf\util\ArrayUtil;
 
 /**
  * Represents a user group.
@@ -68,7 +69,7 @@ class UserGroup extends DatabaseObject implements ITitledObject
 
     /**
      * group cache
-     * @var UserGroup[]
+     * @var array{groups: array<int, UserGroup>, types: array<int, int[]>}
      */
     protected static $cache;
 
@@ -79,7 +80,7 @@ class UserGroup extends DatabaseObject implements ITitledObject
     protected static $accessibleGroups;
 
     /**
-     * @var UserGroup|null
+     * @var UserGroup|false
      */
     protected static $ownerGroup = false;
 
@@ -114,7 +115,7 @@ class UserGroup extends DatabaseObject implements ITitledObject
      *
      * @param int[] $types
      * @param int[] $invalidGroupTypes
-     * @return  UserGroup[]
+     * @return array<int, UserGroup>
      */
     public static function getGroupsByType(array $types = [], array $invalidGroupTypes = [])
     {
@@ -156,7 +157,7 @@ class UserGroup extends DatabaseObject implements ITitledObject
      * Returns unique group by given type. Only works for the default user groups.
      *
      * @param int $type
-     * @return  UserGroup
+     * @return ?UserGroup
      * @throws  SystemException
      */
     public static function getGroupByType($type)
@@ -276,10 +277,10 @@ class UserGroup extends DatabaseObject implements ITitledObject
     public static function isAccessibleGroup(array $groupIDs = [])
     {
         if (self::$accessibleGroups === null) {
-            self::$accessibleGroups = \explode(
+            self::$accessibleGroups = ArrayUtil::toIntegerArray(\explode(
                 ',',
                 WCF::getSession()->getPermission('admin.user.accessibleGroups') ?: ''
-            );
+            ));
         }
 
         if (empty($groupIDs)) {
@@ -642,7 +643,7 @@ class UserGroup extends DatabaseObject implements ITitledObject
         $collator = new \Collator(WCF::getLanguage()->getLocale());
         \uasort(
             $userGroups,
-            static fn (self $groupA, self $groupB) => $collator->compare($groupA->getName(), $groupB->getName())
+            static fn(self $groupA, self $groupB) => $collator->compare($groupA->getName(), $groupB->getName())
         );
     }
 }

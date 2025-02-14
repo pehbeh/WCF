@@ -67,7 +67,7 @@ interface IFormFieldDependency
      * Returns the field the availability of the element dependents on or `null` if the field has
      * not been set yet.
      *
-     * @return  IFormField  field controlling element availability
+     * @return ?IFormField  field controlling element availability
      */
     public function getField();
 

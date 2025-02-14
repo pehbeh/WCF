@@ -25,6 +25,7 @@ use wcf\util\StringUtil;
  *
  * @method  ModerationQueueEditor[]     getObjects()
  * @method  ModerationQueueEditor       getSingleObject()
+ * @property-read ModerationQueueEditor[] $objects
  */
 class ModerationQueueAction extends AbstractDatabaseObjectAction
 {
@@ -41,7 +42,7 @@ class ModerationQueueAction extends AbstractDatabaseObjectAction
 
     /**
      * user object
-     * @var User
+     * @var ?User
      */
     public $user;
 
@@ -55,8 +56,9 @@ class ModerationQueueAction extends AbstractDatabaseObjectAction
             $this->parameters['data']['lastChangeTime'] = TIME_NOW;
         }
 
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return parent::create();
+        $object = parent::create();
+        \assert($object instanceof ModerationQueue);
+        return $object;
     }
 
     /**

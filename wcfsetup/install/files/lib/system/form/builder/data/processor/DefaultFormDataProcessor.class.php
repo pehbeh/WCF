@@ -44,7 +44,7 @@ final class DefaultFormDataProcessor extends AbstractFormDataProcessor
                 foreach ($node as $childNode) {
                     $this->getData($childNode, $data);
                 }
-            } elseif ($node instanceof IFormField && $node->isAvailable() && $node->hasSaveValue()) {
+            } elseif ($node instanceof IFormField && $node->hasSaveValue()) {
                 $data[$node->getObjectProperty()] = $node->getSaveValue();
             }
         }

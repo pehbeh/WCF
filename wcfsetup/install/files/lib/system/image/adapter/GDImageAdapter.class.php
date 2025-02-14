@@ -16,7 +16,7 @@ class GDImageAdapter implements IImageAdapter, IWebpImageAdapter
 {
     /**
      * active color
-     * @var int
+     * @var ?int
      */
     protected $color;
 
@@ -72,7 +72,7 @@ class GDImageAdapter implements IImageAdapter, IWebpImageAdapter
     /**
      * @inheritDoc
      */
-    public function load($image, $type = '')
+    public function load($image, $type = 0)
     {
         if (!$this->isImage($image)) {
             throw new SystemException("Image resource is invalid.");
@@ -260,7 +260,7 @@ class GDImageAdapter implements IImageAdapter, IWebpImageAdapter
             $this->colorData['red'],
             $this->colorData['green'],
             $this->colorData['blue'],
-            \round((1 - $opacity) * 127)
+            (int)\round((1 - $opacity) * 127)
         );
 
         // draw text
@@ -347,7 +347,7 @@ class GDImageAdapter implements IImageAdapter, IWebpImageAdapter
      */
     public function adjustFontSize($text, $margin, $font, $size)
     {
-        // does nothing
+        return 0;
     }
 
     /**
@@ -484,7 +484,7 @@ class GDImageAdapter implements IImageAdapter, IWebpImageAdapter
             0,
             $overlayImage->getWidth(),
             $overlayImage->getHeight(),
-            $opacity * 100
+            (int)\round($opacity * 100)
         );
     }
 
@@ -507,9 +507,6 @@ class GDImageAdapter implements IImageAdapter, IWebpImageAdapter
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct)
     {
-        if (!isset($pct)) {
-            return false;
-        }
         $pct /= 100;
         // Get image width and height
         $w = \imagesx($src_im);
@@ -544,7 +541,7 @@ class GDImageAdapter implements IImageAdapter, IWebpImageAdapter
                     ($colorxy >> 16) & 0xFF,
                     ($colorxy >> 8) & 0xFF,
                     $colorxy & 0xFF,
-                    \round($alpha)
+                    (int)\round($alpha)
                 );
                 // set pixel with the new color + opacity
                 if (!\imagesetpixel($src_im, $x, $y, $alphacolorxy)) {

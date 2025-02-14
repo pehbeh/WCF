@@ -22,7 +22,7 @@ trait TDefaultValueDatabaseTableColumn
      * Checks if the given default value is valid.
      *
      * @param mixed $defaultValue validated default value
-     * @throws  \InvalidArgumentException   if given default value is invalid
+     * @return void
      */
     protected function validateDefaultValue(mixed $defaultValue)
     {

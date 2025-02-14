@@ -26,14 +26,14 @@ class ProcessibleDatabaseObject extends DatabaseObject
 
     /**
      * processor this database object
-     * @var object
+     * @var ?object
      */
     protected $processor;
 
     /**
      * Returns the processor this database object.
      *
-     * @return  object
+     * @return  ?object
      * @throws  SystemException
      */
     public function getProcessor()

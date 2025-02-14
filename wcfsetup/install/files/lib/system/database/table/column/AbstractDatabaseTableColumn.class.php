@@ -117,7 +117,7 @@ abstract class AbstractDatabaseTableColumn implements IDatabaseTableColumn
     #[\Override]
     public function getType(): string
     {
-        if ($this->type === null) {
+        if (!isset($this->type)) {
             throw new \BadMethodCallException(
                 "Type of the database table column " . static::class . " has not been set yet"
             );
@@ -211,7 +211,7 @@ abstract class AbstractDatabaseTableColumn implements IDatabaseTableColumn
         }
 
         if ($column instanceof IEnumDatabaseTableColumn && !empty($data['enumValues'])) {
-            $values = \explode(',', $data['enumValues'] ?? '');
+            $values = \explode(',', $data['enumValues']);
 
             $values = \array_map(static function ($value) {
                 // trim one leading and one trailing `'`

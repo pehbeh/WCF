@@ -58,7 +58,7 @@ class QuotedMessage implements \Countable, \Iterator
 
     /**
      * list of index to object relation
-     * @var int[]
+     * @var list<string>
      */
     protected $indexToObject;
 

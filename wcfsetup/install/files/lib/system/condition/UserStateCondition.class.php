@@ -241,25 +241,25 @@ HTML;
      */
     public function setData(Condition $condition)
     {
-        /** @noinspection PhpUndefinedFieldInspection */
+        /** @var ?int $userIsBanned */
         $userIsBanned = $condition->userIsBanned;
         if ($condition->userIsBanned !== null) {
             $this->userIsBanned = $userIsBanned;
-            $this->userIsNotBanned = !$userIsBanned;
+            $this->userIsNotBanned = $userIsBanned ? 0 : 1;
         }
 
-        /** @noinspection PhpUndefinedFieldInspection */
+        /** @var ?int $userIsEnabled */
         $userIsEnabled = $condition->userIsEnabled;
         if ($condition->userIsEnabled !== null) {
             $this->userIsEnabled = $userIsEnabled;
-            $this->userIsDisabled = !$userIsEnabled;
+            $this->userIsDisabled = $userIsEnabled ? 0 : 1;
         }
 
-        /** @noinspection PhpUndefinedFieldInspection */
+        /** @var ?int $userIsEmailConfirmed */
         $userIsEmailConfirmed = $condition->userIsEmailConfirmed;
         if ($condition->userIsEmailConfirmed !== null) {
             $this->userIsEmailConfirmed = $userIsEmailConfirmed;
-            $this->userIsNotEmailConfirmed = !$userIsEmailConfirmed;
+            $this->userIsNotEmailConfirmed = $userIsEmailConfirmed ? 0 : 1;
         }
     }
 

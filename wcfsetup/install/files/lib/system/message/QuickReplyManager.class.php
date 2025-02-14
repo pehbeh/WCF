@@ -2,9 +2,9 @@
 
 namespace wcf\system\message;
 
+use wcf\data\AbstractDatabaseObjectAction;
 use wcf\data\DatabaseObjectDecorator;
 use wcf\data\IAttachmentMessageQuickReplyAction;
-use wcf\data\IDatabaseObjectAction;
 use wcf\data\IMessage;
 use wcf\data\IMessageQuickReplyAction;
 use wcf\data\IMessageQuickReplyParametersAction;
@@ -103,7 +103,7 @@ class QuickReplyManager extends SingletonFactory
      * Validates parameters for current request.
      *
      * @param IMessageQuickReplyAction $object
-     * @param mixed[][] $parameters
+     * @param mixed[] $parameters
      * @param string $containerClassName
      * @param string $containerDecoratorClassName
      * @throws  ParentClassException
@@ -202,7 +202,7 @@ class QuickReplyManager extends SingletonFactory
      *
      * @param IMessageQuickReplyAction $object
      * @param array $parameters
-     * @param string $containerActionClassName
+     * @param class-string<AbstractDatabaseObjectAction> $containerActionClassName
      * @param string $sortOrder
      * @param string $templateName
      * @param string $application
@@ -263,7 +263,6 @@ class QuickReplyManager extends SingletonFactory
             // calculate start index
             $startIndex = $count - (\count($messageList) - 1);
 
-            /** @noinspection PhpUndefinedMethodInspection */
             $tplVariables = [
                 'attachmentList' => $messageList->getAttachmentList(),
                 'container' => $this->container,
@@ -279,7 +278,6 @@ class QuickReplyManager extends SingletonFactory
 
             // update visit time (messages shouldn't occur as new upon next visit)
             if (\is_subclass_of($containerActionClassName, IVisitableObjectAction::class)) {
-                /** @var IDatabaseObjectAction $containerAction */
                 $containerAction = new $containerActionClassName(
                     [$this->container instanceof DatabaseObjectDecorator ? $this->container->getDecoratedObject() : $this->container],
                     'markAsRead'
@@ -288,6 +286,7 @@ class QuickReplyManager extends SingletonFactory
             }
 
             return [
+                // @phpstan-ignore property.notFound
                 'lastPostTime' => $message->time,
                 'objectID' => $message->getObjectID(),
                 'template' => WCF::getTPL()->render($application, $templateName, $tplVariables),

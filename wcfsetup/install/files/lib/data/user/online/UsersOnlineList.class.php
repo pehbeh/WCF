@@ -9,6 +9,7 @@ use wcf\data\user\TUserAvatarObjectList;
 use wcf\data\user\User;
 use wcf\data\user\UserProfile;
 use wcf\system\event\EventHandler;
+use wcf\system\user\UserProfileHandler;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 
@@ -213,8 +214,7 @@ class UsersOnlineList extends SessionList
                 break;
 
             case UserProfile::ACCESS_FOLLOWING:
-                /** @noinspection PhpUndefinedMethodInspection */
-                if (WCF::getUserProfileHandler()->isFollower($userID)) {
+                if (UserProfileHandler::getInstance()->isFollower($userID)) {
                     $data['result'] = true;
                 }
                 break;
@@ -255,8 +255,7 @@ class UsersOnlineList extends SessionList
                 break;
 
             case UserProfile::ACCESS_FOLLOWING:
-                /** @noinspection PhpUndefinedMethodInspection */
-                if (WCF::getUserProfileHandler()->isFollower($userOnline->userID)) {
+                if (UserProfileHandler::getInstance()->isFollower($userOnline->userID)) {
                     $data['result'] = true;
                 }
                 break;

@@ -35,7 +35,7 @@ use wcf\util\ImageUtil;
  * @property-read   string $packageName        package identifier used to export the style as a package or empty (thus style cannot be exported as package)
  * @property-read   int $isTainted      is `0` if the original declarations of an imported or installed style are not and cannot be altered, otherwise `1`
  * @property-read   int $hasFavicon     is `0` if the default favicon data should be used
- * @property-read   int $coverPhotoExtension    extension of the style's cover photo file
+ * @property-read   string $coverPhotoExtension    extension of the style's cover photo file
  * @property-read int $hasDarkMode
  */
 class Style extends DatabaseObject implements ITitledObject

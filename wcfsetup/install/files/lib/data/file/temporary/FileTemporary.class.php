@@ -34,7 +34,7 @@ class FileTemporary extends DatabaseObject
 
     public function getChunkSize(): int
     {
-        return \ceil($this->fileSize / $this->getChunkCount());
+        return (int)\ceil($this->fileSize / $this->getChunkCount());
     }
 
     public function hasChunk(int $sequenceNo): bool
@@ -81,6 +81,6 @@ class FileTemporary extends DatabaseObject
 
     public static function getNumberOfChunks(int $fileSize): int
     {
-        return \ceil($fileSize / FileProcessor::getInstance()->getOptimalChunkSize());
+        return (int)\ceil($fileSize / FileProcessor::getInstance()->getOptimalChunkSize());
     }
 }

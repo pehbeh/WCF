@@ -39,7 +39,6 @@ class EventListenerCacheBuilder extends AbstractCacheBuilder
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute();
 
-        /** @var EventListener $eventListener */
         while ($eventListener = $statement->fetchObject(EventListener::class)) {
             $eventNames = $eventListener->getEventNames();
             $environments = $eventListener->environment == 'all' ? ['admin', 'user'] : [$eventListener->environment];

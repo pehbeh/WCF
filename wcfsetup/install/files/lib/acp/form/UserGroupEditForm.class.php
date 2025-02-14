@@ -68,9 +68,7 @@ class UserGroupEditForm extends UserGroupAddForm
 
         $this->group = new UserGroupEditor($group);
 
-        /** @noinspection PhpUndefinedMethodInspection */
         $this->optionHandler->setUserGroup($group);
-        /** @noinspection PhpUndefinedMethodInspection */
         $this->optionHandler->init();
 
         $this->isUnmentionableGroup = $this->group->isUnmentionableGroup();
@@ -93,7 +91,7 @@ class UserGroupEditForm extends UserGroupAddForm
         parent::validate();
 
         if ($this->allowMention && $this->isUnmentionableGroup) {
-            $this->allowMention = false;
+            $this->allowMention = 0;
         }
     }
 

@@ -2,6 +2,7 @@
 
 namespace wcf\system\moderation\queue\report;
 
+use wcf\data\IUserContent;
 use wcf\data\moderation\queue\ViewableModerationQueue;
 use wcf\system\moderation\queue\IModerationQueueHandler;
 
@@ -34,7 +35,7 @@ interface IModerationQueueReportHandler extends IModerationQueueHandler
      * Returns reported object.
      *
      * @param int $objectID
-     * @return  \wcf\data\IUserContent
+     * @return  ?IUserContent
      */
     public function getReportedObject($objectID);
 }

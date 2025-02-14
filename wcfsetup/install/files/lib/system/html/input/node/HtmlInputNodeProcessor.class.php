@@ -26,7 +26,7 @@ class HtmlInputNodeProcessor extends AbstractHtmlNodeProcessor
 {
     /**
      * list of allowed CSS class names per tag name
-     * @var array<array>
+     * @var array<string, string|string[]>
      */
     public static $allowedClassNames = [
         'figure' => ['image', 'image-style-side', 'image-style-side-left'],
@@ -352,7 +352,7 @@ class HtmlInputNodeProcessor extends AbstractHtmlNodeProcessor
         }
 
         $appendToPreviousParagraph = static function ($node) {
-            /** @var \DOMElement $paragraph */
+            /** @var ?\DOMElement $paragraph */
             $paragraph = $node->previousSibling;
 
             if (!$paragraph || $paragraph->nodeName !== 'p') {

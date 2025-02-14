@@ -138,12 +138,18 @@ class BoxEditForm extends BoxAddForm
         // delete old conditions
         if ($this->box->objectTypeID) {
             $className = ObjectTypeCache::getInstance()->getObjectType($this->box->objectTypeID)->className;
-
-            /** @var IConditionBoxController $oldController */
             $oldController = new $className();
 
-            /** @noinspection PhpUndefinedMethodInspection */
-            if ($oldController instanceof IConditionBoxController && $oldController->getConditionDefinition() && (!$this->boxController || (!($this->boxController->getProcessor() instanceof IConditionBoxController)) || !$this->boxController->getProcessor()->getConditionDefinition())) {
+            if (
+                $oldController instanceof IConditionBoxController
+                && $oldController->getConditionDefinition()
+                && (
+                    !$this->boxController
+                    || (
+                        !($this->boxController->getProcessor() instanceof IConditionBoxController))
+                    || !$this->boxController->getProcessor()->getConditionDefinition()
+                )
+            ) {
                 ConditionHandler::getInstance()->deleteConditions(
                     $oldController->getConditionDefinition(),
                     [$this->box->boxID]
@@ -155,6 +161,7 @@ class BoxEditForm extends BoxAddForm
             // pass updated box to box controller as in `BoxAddForm::save()`
             $box = new Box($this->box->boxID);
             if ($this->boxController->getProcessor() instanceof IConditionBoxController) {
+                // @phpstan-ignore arguments.count
                 $this->boxController->getProcessor()->setBox($box, false);
             } else {
                 $this->boxController->getProcessor()->setBox($box);
@@ -179,7 +186,7 @@ class BoxEditForm extends BoxAddForm
             if ($this->isMultilingual) {
                 foreach (LanguageFactory::getInstance()->getLanguages() as $language) {
                     $this->content[$language->languageID] = isset($this->htmlInputProcessors[$language->languageID]) ?
-                    $this->htmlInputProcessors[$language->languageID]->getHtml() : '';
+                        $this->htmlInputProcessors[$language->languageID]->getHtml() : '';
                 }
             } else {
                 $this->content[0] = isset($this->htmlInputProcessors[0]) ?

@@ -82,7 +82,6 @@ class OptionACPSearchResultProvider extends AbstractCategorizedACPSearchResultPr
 
         $optionCategories = OptionCacheBuilder::getInstance()->getData([], 'categories');
 
-        /** @var Option $option */
         while ($option = $statement->fetchObject(Option::class)) {
             // category is not accessible
             if (!$this->isValid($option->categoryName)) {
@@ -95,6 +94,7 @@ class OptionACPSearchResultProvider extends AbstractCategorizedACPSearchResultPr
             }
 
             $link = LinkHandler::getInstance()->getLink('Option', [
+                // @phpstan-ignore property.notFound
                 'id' => $this->getCategoryID($this->getTopCategory($option->categoryName)->parentCategoryName),
             ], 'optionName=' . $option->optionName . '#category_' . $this->getCategoryName($option->categoryName));
             $categoryName = $option->categoryName;

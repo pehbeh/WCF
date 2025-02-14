@@ -3,6 +3,7 @@
 namespace wcf\system\box;
 
 use wcf\data\user\online\UsersOnlineList;
+use wcf\system\user\UserProfileHandler;
 use wcf\system\WCF;
 
 /**
@@ -31,10 +32,9 @@ class FollowingsOnlineBoxController extends AbstractDatabaseObjectListBoxControl
     protected function getObjectList()
     {
         $objectList = new UsersOnlineList();
-        /** @noinspection PhpUndefinedMethodInspection */
         $objectList->getConditionBuilder()->add(
             'session.userID IN (?)',
-            [WCF::getUserProfileHandler()->getFollowingUsers()]
+            [UserProfileHandler::getInstance()->getFollowingUsers()]
         );
 
         return $objectList;
@@ -53,8 +53,7 @@ class FollowingsOnlineBoxController extends AbstractDatabaseObjectListBoxControl
      */
     public function hasContent()
     {
-        /** @noinspection PhpUndefinedMethodInspection */
-        if (!MODULE_USERS_ONLINE || !WCF::getSession()->getPermission('user.profile.canViewUsersOnlineList') || empty(WCF::getUserProfileHandler()->getFollowingUsers())) {
+        if (!MODULE_USERS_ONLINE || !WCF::getSession()->getPermission('user.profile.canViewUsersOnlineList') || empty(UserProfileHandler::getInstance()->getFollowingUsers())) {
             return false;
         }
 

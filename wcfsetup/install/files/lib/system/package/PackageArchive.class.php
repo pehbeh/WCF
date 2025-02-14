@@ -31,7 +31,7 @@ class PackageArchive
 
     /**
      * tar archive object
-     * @var Tar
+     * @var ?Tar
      */
     protected $tar;
 
@@ -320,6 +320,7 @@ class PackageArchive
         if ($authorInformation !== null) {
             $elements = $xpath->query('child::*', $authorInformation);
             foreach ($elements as $element) {
+                \assert($element instanceof \DOMElement);
                 switch ($element->tagName) {
                     case 'author':
                     case 'authorurl':
@@ -376,6 +377,7 @@ class PackageArchive
             $data = ['name' => $element->nodeValue];
             $attributes = $xpath->query('attribute::*', $element);
             foreach ($attributes as $attribute) {
+                \assert($attribute instanceof \DOMAttr);
                 $data[$attribute->name] = $attribute->value;
             }
 
@@ -430,6 +432,7 @@ class PackageArchive
             $data = ['name' => $element->nodeValue];
             $attributes = $xpath->query('attribute::*', $element);
             foreach ($attributes as $attribute) {
+                \assert($attribute instanceof \DOMAttr);
                 $data[$attribute->name] = $attribute->value;
             }
 
@@ -457,6 +460,7 @@ class PackageArchive
             $data = ['name' => $element->nodeValue];
             $attributes = $xpath->query('attribute::*', $element);
             foreach ($attributes as $attribute) {
+                \assert($attribute instanceof \DOMAttr);
                 $data[$attribute->name] = $attribute->value;
             }
 
@@ -485,6 +489,8 @@ class PackageArchive
         // get instructions
         $elements = $xpath->query('./ns:instructions', $package);
         foreach ($elements as $element) {
+            \assert($element instanceof \DOMElement);
+
             $instructionData = [];
             $instructions = $xpath->query('./ns:instruction', $element);
             /** @var \DOMElement $instruction */
@@ -492,6 +498,7 @@ class PackageArchive
                 $data = [];
                 $attributes = $xpath->query('attribute::*', $instruction);
                 foreach ($attributes as $attribute) {
+                    \assert($attribute instanceof \DOMAttr);
                     $data[$attribute->name] = $attribute->value;
                 }
 
@@ -535,9 +542,7 @@ class PackageArchive
      */
     public function deleteArchive()
     {
-        if ($this->tar instanceof Tar) {
-            $this->tar->close();
-        }
+        $this->tar?->close();
 
         @\unlink($this->archive);
     }

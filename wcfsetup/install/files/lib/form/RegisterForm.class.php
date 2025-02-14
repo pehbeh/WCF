@@ -63,7 +63,7 @@ class RegisterForm extends UserAddForm
 
     /**
      * captcha object type object
-     * @var ObjectType
+     * @var ?ObjectType
      */
     public $captchaObjectType;
 
@@ -77,7 +77,7 @@ class RegisterForm extends UserAddForm
      * true if captcha is used
      * @var bool
      */
-    public $useCaptcha = REGISTER_USE_CAPTCHA;
+    public $useCaptcha = !!REGISTER_USE_CAPTCHA;
 
     /**
      * field names
@@ -409,8 +409,8 @@ class RegisterForm extends UserAddForm
         $addDefaultGroups = true;
         if (
             $this->spamCheckEvent->hasMatches()
-            || (REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_USER && !$registerVia3rdParty)
-            || (REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_ADMIN)
+            || ((int)REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_USER && !$registerVia3rdParty)
+            || ((int)REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_ADMIN)
         ) {
             $activationCode = UserRegistrationUtil::getActivationCode();
             $this->additionalFields['activationCode'] = $activationCode;
@@ -449,10 +449,10 @@ class RegisterForm extends UserAddForm
             $this->message = 'wcf.user.register.success';
 
             UserGroupAssignmentHandler::getInstance()->checkUsers([$user->userID]);
-        } elseif (REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_USER && !$this->spamCheckEvent->hasMatches()) {
+        } elseif ((int)REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_USER && !$this->spamCheckEvent->hasMatches()) {
             // registering via 3rdParty leads to instant activation
             if ($registerVia3rdParty) {
-                if (REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_ADMIN) {
+                if ((int)REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_ADMIN) {
                     $this->message = 'wcf.user.register.success.awaitActivation';
                 } else {
                     $this->message = 'wcf.user.register.success';
@@ -470,7 +470,7 @@ class RegisterForm extends UserAddForm
                 $email->send();
                 $this->message = 'wcf.user.register.success.needActivation';
             }
-        } elseif (REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_ADMIN || $this->spamCheckEvent->hasMatches()) {
+        } elseif ((int)REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_ADMIN || $this->spamCheckEvent->hasMatches()) {
             $this->message = 'wcf.user.register.success.awaitActivation';
         }
 

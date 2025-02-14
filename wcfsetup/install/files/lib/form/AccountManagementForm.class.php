@@ -370,11 +370,11 @@ class AccountManagementForm extends AbstractForm
             && $this->email != WCF::getUser()->email
             && $this->email != WCF::getUser()->newEmail
         ) {
-            if (!(REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_USER)) {
+            if (!((int)REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_USER)) {
                 // update email
                 $updateParameters['email'] = $this->email;
                 $success[] = 'wcf.user.changeEmail.success';
-            } elseif (REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_USER) {
+            } elseif ((int)REGISTER_ACTIVATION_METHOD & User::REGISTER_ACTIVATION_USER) {
                 // get reactivation code
                 $activationCode = UserRegistrationUtil::getActivationCode();
 
@@ -475,7 +475,7 @@ class AccountManagementForm extends AbstractForm
 
         $this->objectAction = new UserAction([WCF::getUser()], 'update', $data);
         $this->objectAction->executeAction();
-
+        // @phpstan-ignore isset.offset
         if (isset($updateParameters['newEmail']) && isset($updateParameters['reactivationCode'])) {
             // Use user list to allow overriding of the fields without duplicating logic
             $userList = new UserList();

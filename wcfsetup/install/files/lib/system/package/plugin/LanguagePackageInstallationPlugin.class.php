@@ -10,6 +10,7 @@ use wcf\data\language\item\LanguageItemList;
 use wcf\data\language\Language;
 use wcf\data\language\LanguageEditor;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
+use wcf\system\devtools\pip\DevtoolsPackageInstallationDispatcher;
 use wcf\system\devtools\pip\DevtoolsPipEntryList;
 use wcf\system\devtools\pip\IDevtoolsPipEntryList;
 use wcf\system\devtools\pip\IGuiPackageInstallationPlugin;
@@ -157,19 +158,18 @@ class LanguagePackageInstallationPlugin extends AbstractXMLPackageInstallationPl
 
             // save language
             if ($languageFile !== null) {
-                if ($xml = $this->readLanguage($languageFile)) {
-                    // get language object
-                    $languageEditor = new LanguageEditor(new Language(null, $installedLanguage));
+                $xml = $this->readLanguage($languageFile);
+                // get language object
+                $languageEditor = new LanguageEditor(new Language(null, $installedLanguage));
 
-                    // import xml
-                    // don't update language files if package is an application
-                    $languageEditor->updateFromXML(
-                        $xml,
-                        $this->installation->getPackageID(),
-                        !$this->installation->getPackage()->isApplication,
-                        $updateExistingItems
-                    );
-                }
+                // import xml
+                // don't update language files if package is an application
+                $languageEditor->updateFromXML(
+                    $xml,
+                    $this->installation->getPackageID(),
+                    !$this->installation->getPackage()->isApplication,
+                    $updateExistingItems
+                );
             }
         }
     }
@@ -294,7 +294,7 @@ class LanguagePackageInstallationPlugin extends AbstractXMLPackageInstallationPl
      */
     protected function prepareImport(array $data)
     {
-        // does nothing
+        return $data;
     }
 
     /**
@@ -302,7 +302,7 @@ class LanguagePackageInstallationPlugin extends AbstractXMLPackageInstallationPl
      */
     protected function findExistingItem(array $data)
     {
-        // does nothing
+        return null;
     }
 
     /**
@@ -534,6 +534,7 @@ class LanguagePackageInstallationPlugin extends AbstractXMLPackageInstallationPl
         ];
 
         if ($element->parentNode) {
+            \assert($element->parentNode instanceof \DOMElement);
             $languageCategory = $element->parentNode->getAttribute('name');
 
             if ($saveData) {
@@ -591,6 +592,7 @@ class LanguagePackageInstallationPlugin extends AbstractXMLPackageInstallationPl
                 $elementIdentifier = $this->getElementIdentifier($element);
 
                 if (!isset($entryData[$elementIdentifier])) {
+                    \assert($element->parentNode instanceof \DOMElement);
                     $entryData[$elementIdentifier] = [
                         'languageItem' => $element->getAttribute('name'),
                         'languageItemCategory' => $element->parentNode->getAttribute('name'),
@@ -660,6 +662,7 @@ XML;
     {
         $xmls = [];
 
+        \assert($this->installation instanceof DevtoolsPackageInstallationDispatcher);
         if ($createXmlFiles) {
             $directory = $this->installation->getProject()->path . ($this->installation->getProject()->isCore() ? 'wcfsetup/install/lang/' : 'language/');
             if (!\is_dir($directory)) {
@@ -818,16 +821,16 @@ XML;
                 throw new \LogicException("Unknown language category mode '{$data['languageCategoryIDMode']}'.");
         }
 
-        /** @var \DOMElement $import */
+        /** @var ?\DOMElement $import */
         $import = $document->getElementsByTagName('import')->item(0);
         if ($import === null) {
             $import = $document->createElement('import');
             DOMUtil::prepend($import, $document->documentElement);
         }
 
-        /** @var \DOMElement $languageCategory */
         foreach ($import->getElementsByTagName('category') as $languageCategory) {
-            if ($languageCategory instanceof \DOMElement && $languageCategory->getAttribute('name') === $languageCategoryName) {
+            /** @var \DOMElement $languageCategory */
+            if ($languageCategory->getAttribute('name') === $languageCategoryName) {
                 $languageCategory->appendChild($languageItem);
                 break;
             }

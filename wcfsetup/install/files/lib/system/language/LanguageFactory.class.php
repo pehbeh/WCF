@@ -91,12 +91,12 @@ class LanguageFactory extends SingletonFactory
      * language exists.
      *
      * @param string $languageCode
-     * @return  Language
+     * @return ?Language
      */
     public function getLanguageByCode($languageCode)
     {
         // called within WCFSetup
-        if ($this->cache === false || empty($this->cache['codes'])) {
+        if (empty($this->cache['codes'])) {
             $sql = "SELECT  languageID
                     FROM    wcf1_language
                     WHERE   languageCode = ?";

@@ -45,9 +45,6 @@ class ModerationQueueEditor extends DatabaseObjectEditor
         $data = ['status' => ModerationQueue::STATUS_REJECTED];
         if ($markAsJustified) {
             $additionalData = $this->getDecoratedObject()->additionalData;
-            if (!\is_array($additionalData)) {
-                $additionalData = [];
-            }
             $additionalData['markAsJustified'] = true;
 
             $data['additionalData'] = \serialize($additionalData);

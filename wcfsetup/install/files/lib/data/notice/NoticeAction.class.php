@@ -20,6 +20,7 @@ use wcf\system\WCF;
  *
  * @method  NoticeEditor[]      getObjects()
  * @method  NoticeEditor        getSingleObject()
+ * @property-read NoticeEditor[] $objects
  */
 class NoticeAction extends AbstractDatabaseObjectAction implements ISortableAction, IToggleAction
 {

@@ -41,7 +41,7 @@ class DevtoolsProject extends DatabaseObject
     protected $isCore;
 
     /**
-     * @var Package
+     * @var ?Package
      */
     protected $package;
 
@@ -51,7 +51,7 @@ class DevtoolsProject extends DatabaseObject
     protected $packageArchive;
 
     /**
-     * @var PackageValidationException
+     * @var ?PackageValidationException
      * @since   5.4
      */
     protected $packageValidationException;
@@ -163,7 +163,7 @@ class DevtoolsProject extends DatabaseObject
     }
 
     /**
-     * @return      Package
+     * @return      ?Package
      */
     public function getPackage()
     {

@@ -66,9 +66,10 @@ class BoxVersionTrackerProvider extends AbstractVersionTrackerProvider
      */
     public function getCurrentVersion(IVersionTrackerObject $object)
     {
+        \assert($object instanceof Box);
+
         $properties = $this->getTrackedProperties();
 
-        /** @var Box $object */
         $payload = [];
         foreach ($object->getBoxContents() as $languageID => $boxContent) {
             $payload[$languageID] = [];
@@ -90,9 +91,9 @@ class BoxVersionTrackerProvider extends AbstractVersionTrackerProvider
      */
     public function getTrackedData(IVersionTrackerObject $object)
     {
-        $data = [];
+        \assert($object instanceof BoxVersionTracker);
 
-        /** @var BoxVersionTracker $object */
+        $data = [];
         foreach ($object->getContent() as $content) {
             $languageID = $content->languageID ?: 0;
             $data[$languageID] = [];
@@ -110,7 +111,7 @@ class BoxVersionTrackerProvider extends AbstractVersionTrackerProvider
      */
     public function isI18n(IVersionTrackerObject $object)
     {
-        /** @var Box $object */
+        \assert($object instanceof Box);
         return $object->isMultilingual == 1;
     }
 

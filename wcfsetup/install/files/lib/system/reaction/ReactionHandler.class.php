@@ -190,20 +190,23 @@ class ReactionHandler extends SingletonFactory
             $this->cacheLikeableObjects($objectTypeName, [$objectID]);
         }
 
-        if (!isset($this->likeableObjectsCache[$objectTypeName][$objectID])) {
+        $likeableObject = $this->likeableObjectsCache[$objectTypeName][$objectID] ?? null;
+        if ($likeableObject === null) {
             throw new \InvalidArgumentException(
                 "Object with the object id '{$objectID}' for object type '{$objectTypeName}' is unknown."
             );
         }
 
-        if (!($this->likeableObjectsCache[$objectTypeName][$objectID] instanceof ILikeObject)) {
+        // @phpstan-ignore instanceof.alwaysTrue
+        if (!($likeableObject instanceof ILikeObject)) {
             throw new ImplementationException(
-                \get_class($this->likeableObjectsCache[$objectTypeName][$objectID]),
+                // @phpstan-ignore argument.type
+                \get_class($likeableObject),
                 ILikeObject::class
             );
         }
 
-        return $this->likeableObjectsCache[$objectTypeName][$objectID];
+        return $likeableObject;
     }
 
     /**
@@ -430,7 +433,7 @@ class ReactionHandler extends SingletonFactory
             throw $e;
         }
 
-        /** @noinspection PhpUnreachableStatementInspection */
+        // @phpstan-ignore deadCode.unreachable
         throw new \LogicException('Unreachable');
     }
 

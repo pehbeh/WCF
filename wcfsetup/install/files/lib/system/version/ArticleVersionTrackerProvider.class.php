@@ -67,9 +67,10 @@ class ArticleVersionTrackerProvider extends AbstractVersionTrackerProvider
      */
     public function getCurrentVersion(IVersionTrackerObject $object)
     {
+        \assert($object instanceof Article);
+
         $properties = $this->getTrackedProperties();
 
-        /** @var Article $object */
         $payload = [];
         foreach ($object->getArticleContents() as $languageID => $articleContent) {
             $payload[$languageID] = [];
@@ -91,9 +92,9 @@ class ArticleVersionTrackerProvider extends AbstractVersionTrackerProvider
      */
     public function getTrackedData(IVersionTrackerObject $object)
     {
-        $data = [];
+        \assert($object instanceof ArticleVersionTracker);
 
-        /** @var ArticleVersionTracker $object */
+        $data = [];
         foreach ($object->getContent() as $content) {
             $languageID = $content->languageID ?: 0;
             $data[$languageID] = [];
@@ -111,7 +112,7 @@ class ArticleVersionTrackerProvider extends AbstractVersionTrackerProvider
      */
     public function isI18n(IVersionTrackerObject $object)
     {
-        /** @var Article $object */
+        \assert($object instanceof Article);
         return $object->isMultilingual == 1;
     }
 

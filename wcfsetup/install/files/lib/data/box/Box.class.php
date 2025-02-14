@@ -51,7 +51,7 @@ use wcf\system\WCF;
  * @property-read   string|null $sortField      sort field of the objects shown in the box for `AbstractDatabaseObjectListBoxController` controllers or `null` otherwise
  * @property-read   string|null $sortOrder      sort order of the objects shown in the box for `AbstractDatabaseObjectListBoxController` controllers or `null` otherwise
  * @property-read   int $isDisabled     is `1` if the box is disabled and thus is not displayed, otherwise `0`
- * @property-read   bool $invertPermissions     is `1` if the permissions are inverted
+ * @property-read   int $invertPermissions     is `1` if the permissions are inverted
  */
 class Box extends DatabaseObject
 {
@@ -367,7 +367,7 @@ class Box extends DatabaseObject
     /**
      * Returns the menu shown in the box.
      *
-     * @return  Menu
+     * @return ?Menu
      */
     public function getMenu()
     {
@@ -547,11 +547,14 @@ class Box extends DatabaseObject
      */
     public function getControllerConditions(): array
     {
-        /** @noinspection PhpUndefinedMethodInspection */
-        if ($this->boxType === 'system' && $this->getController() instanceof IConditionBoxController && $this->getController()->getConditionDefinition()) {
-            /** @noinspection PhpUndefinedMethodInspection */
+        if ($this->boxType !== 'system') {
+            return [];
+        }
+
+        $controller = $this->getController();
+        if ($controller instanceof IConditionBoxController && $controller->getConditionDefinition()) {
             return ConditionHandler::getInstance()->getConditions(
-                $this->getController()->getConditionDefinition(),
+                $controller->getConditionDefinition(),
                 $this->boxID
             );
         }
@@ -634,7 +637,7 @@ class Box extends DatabaseObject
      * Returns the box with the given identifier.
      *
      * @param string $identifier
-     * @return  Box
+     * @return ?Box
      */
     public static function getBoxByIdentifier($identifier)
     {
@@ -651,7 +654,7 @@ class Box extends DatabaseObject
      * Returns the box with the given name.
      *
      * @param string $name
-     * @return  Box
+     * @return ?Box
      */
     public static function getBoxByName($name)
     {
@@ -668,7 +671,7 @@ class Box extends DatabaseObject
      * Returns the box with the menu id.
      *
      * @param int $menuID
-     * @return  Box
+     * @return ?Box
      */
     public static function getBoxByMenuID($menuID)
     {

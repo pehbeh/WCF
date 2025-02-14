@@ -91,8 +91,8 @@ interface IFileProcessor
      * Notifies the file processor that the list of provided file and thumbnail
      * ids have been deleted.
      *
-     * @param list<int> $files
-     * @param list<int> $thumbnails
+     * @param list<int> $fileIDs
+     * @param list<int> $thumbnailIDs
      */
     public function delete(array $fileIDs, array $thumbnailIDs): void;
 

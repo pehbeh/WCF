@@ -2,6 +2,7 @@
 
 namespace wcf\acp\form;
 
+use wcf\acp\action\FirstTimeSetupAction;
 use wcf\data\option\Option;
 use wcf\data\option\OptionAction;
 use wcf\system\exception\PermissionDeniedException;

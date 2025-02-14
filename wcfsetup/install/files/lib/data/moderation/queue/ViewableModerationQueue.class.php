@@ -230,7 +230,7 @@ class ViewableModerationQueue extends DatabaseObjectDecorator implements ILinkab
     {
         $definition = ObjectTypeCache::getInstance()->getDefinition(ObjectTypeCache::getInstance()->getObjectType($this->objectTypeID)->definitionID);
 
-        /** @noinspection PhpUndefinedFieldInspection */
+        // @phpstan-ignore property.notFound
         if ($definition->definitionName == 'com.woltlab.wcf.moderation.activation' && $this->getAffectedObject()->enableTime) {
             return WCF::getLanguage()->get('wcf.moderation.type.com.woltlab.wcf.moderation.activation.delayed');
         }
@@ -246,6 +246,7 @@ class ViewableModerationQueue extends DatabaseObjectDecorator implements ILinkab
         $definition = ObjectTypeCache::getInstance()->getDefinition(ObjectTypeCache::getInstance()->getObjectType($this->objectTypeID)->definitionID);
 
         if ($definition->definitionName === 'com.woltlab.wcf.moderation.activation') {
+            // @phpstan-ignore property.notFound
             if ($this->getAffectedObject()->enableTime) {
                 return FontAwesomeIcon::fromValues('clock');
             } else {

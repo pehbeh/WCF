@@ -399,15 +399,19 @@ class HtmlInputNodeWoltlabMetacodeMarker extends AbstractHtmlInputNode
             }
         }
 
+        \assert($parent instanceof \DOMElement);
         $element = DOMUtil::splitParentsUntil($start, $parent);
         if ($start !== $element) {
             DOMUtil::insertBefore($start, $element);
         }
 
         $commonAncestor = DOMUtil::getCommonAncestor($start, $end);
+        \assert($commonAncestor instanceof \DOMElement);
         $lastElement = DOMUtil::splitParentsUntil($end, $commonAncestor, false);
+        \assert($lastElement instanceof \DOMElement);
 
         $container = $start->ownerDocument->createElement('woltlab-metacode');
+        \assert($container !== false);
         $container->setAttribute('data-name', $name);
         $container->setAttribute('data-attributes', $attributes);
 
@@ -436,6 +440,7 @@ class HtmlInputNodeWoltlabMetacodeMarker extends AbstractHtmlInputNode
             DOMUtil::removeNode($end);
         } else {
             $commonAncestor = DOMUtil::getCommonAncestor($start, $end);
+            \assert($commonAncestor !== null);
 
             // This method doesn't behave nicely if the start and/or end node are
             // contained in other inline elements. HTMLPurifier guarantees well-
@@ -449,6 +454,7 @@ class HtmlInputNodeWoltlabMetacodeMarker extends AbstractHtmlInputNode
 
                 // Split the parent unless the element is the first child.
                 if ($parent->childNodes[0] !== $element) {
+                    \assert($parent->parentNode instanceof \DOMElement);
                     DOMUtil::splitParentsUntil($element, $parent->parentNode, true);
                 }
 
@@ -465,6 +471,7 @@ class HtmlInputNodeWoltlabMetacodeMarker extends AbstractHtmlInputNode
 
                 // Split the parent unless the element is the last child.
                 if ($parent->childNodes[\count($parent->childNodes) - 1] !== $element) {
+                    \assert($parent->parentNode instanceof \DOMElement);
                     DOMUtil::splitParentsUntil($element, $parent->parentNode, false);
                 }
 
@@ -472,6 +479,7 @@ class HtmlInputNodeWoltlabMetacodeMarker extends AbstractHtmlInputNode
                 $parent = $element->parentNode;
             }
 
+            \assert($commonAncestor instanceof \DOMElement);
             $endAncestor = DOMUtil::getParentBefore($end, $commonAncestor);
 
             $element = $this->wrapContent($name, $attributes, $start, $endAncestor);
@@ -483,7 +491,7 @@ class HtmlInputNodeWoltlabMetacodeMarker extends AbstractHtmlInputNode
             }
 
             while ($element = $element->nextSibling) {
-                if ($element->nodeType === \XML_TEXT_NODE) {
+                if (!($element instanceof \DOMElement)) {
                     // ignore text nodes between tags
                     continue;
                 }
@@ -494,7 +502,10 @@ class HtmlInputNodeWoltlabMetacodeMarker extends AbstractHtmlInputNode
                             $element->appendChild($element->ownerDocument->createTextNode(''));
                         }
 
-                        $this->wrapContent($name, $attributes, $element->childNodes->item(0), null);
+                        $firstChildNode = $element->childNodes->item(0);
+                        \assert($firstChildNode === null || $firstChildNode instanceof \DOMElement);
+
+                        $this->wrapContent($name, $attributes, $firstChildNode, null);
                     } else {
                         $this->wrapContent($name, $attributes, $element, null);
                     }
@@ -551,10 +562,6 @@ class HtmlInputNodeWoltlabMetacodeMarker extends AbstractHtmlInputNode
 
             while ($sibling = $element->previousSibling) {
                 DOMUtil::prepend($sibling, $element);
-
-                if ($sibling === $startNode) {
-                    break;
-                }
             }
         }
 

@@ -4,6 +4,8 @@ namespace wcf\system\user\activity\event;
 
 use wcf\data\comment\Comment;
 use wcf\data\comment\response\CommentResponse;
+use wcf\data\comment\response\ViewableCommentResponse;
+use wcf\data\comment\ViewableComment;
 use wcf\data\user\activity\event\ViewableUserActivityEvent;
 use wcf\data\user\UserProfile;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
@@ -35,13 +37,13 @@ trait TCommentResponseUserActivityEvent
 
     /**
      * comment objects the responses belongs to
-     * @var Comment[]
+     * @var (Comment|ViewableComment)[]
      */
     protected $comments = [];
 
     /**
      * comment response the comment response user activity events belong to
-     * @var CommentResponse[]
+     * @var (CommentResponse|ViewableCommentResponse)[]
      */
     protected $responses = [];
 

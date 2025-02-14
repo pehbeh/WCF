@@ -233,7 +233,7 @@ class RoutingCacheBuilder extends AbstractCacheBuilder
     /**
      * Returns the list of landing pages per application.
      *
-     * @return  string[]
+     * @return array<string, array{controller: string, routePart: string, className: string}>
      */
     protected function getLandingPages()
     {

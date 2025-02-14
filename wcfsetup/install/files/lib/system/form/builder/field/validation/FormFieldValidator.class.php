@@ -16,7 +16,7 @@ final class FormFieldValidator implements IFormFieldValidator
 {
     /**
      * id of the validator that has to be unique for each field
-     * @var
+     * @var string
      */
     protected $id;
 
@@ -43,7 +43,6 @@ final class FormFieldValidator implements IFormFieldValidator
                 . " parameters are expected for validator '{$id}'."
             );
         }
-        /** @var \ReflectionType $parameterType */
         $parameterType = $parameters[0]->getType();
         if (
             !(

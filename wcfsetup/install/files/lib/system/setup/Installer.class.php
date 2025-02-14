@@ -36,7 +36,7 @@ class Installer
 
     /**
      * file handler of the installed files
-     * @var \wcf\system\setup\IFileHandler
+     * @var ?\wcf\system\setup\IFileHandler
      */
     protected $fileHandler;
 
@@ -196,9 +196,7 @@ class Installer
      */
     protected function checkFiles(&$files)
     {
-        if ($this->fileHandler != null && $this->fileHandler instanceof IFileHandler) {
-            $this->fileHandler->checkFiles($files);
-        }
+        $this->fileHandler?->checkFiles($files);
     }
 
     /**
@@ -208,9 +206,7 @@ class Installer
      */
     protected function logFiles(&$files)
     {
-        if ($this->fileHandler != null && $this->fileHandler instanceof IFileHandler) {
-            $this->fileHandler->logFiles($files);
-        }
+        $this->fileHandler?->logFiles($files);
     }
 
     /**

@@ -2,10 +2,10 @@
 
 namespace wcf\system\view;
 
-use SystemException;
 use wcf\data\comment\StructuredCommentList;
 use wcf\system\comment\CommentHandler;
 use wcf\system\comment\manager\ICommentManager;
+use wcf\system\exception\SystemException;
 
 /**
  * Represents a comments view.

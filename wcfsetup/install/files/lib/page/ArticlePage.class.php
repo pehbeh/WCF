@@ -149,13 +149,13 @@ class ArticlePage extends AbstractArticlePage
             MetaTagHandler::getInstance()->addTag(
                 'og:image:width',
                 'og:image:width',
-                $this->articleContent->getTeaserImage()->getThumbnailWidth('large'),
+                (string)$this->articleContent->getTeaserImage()->getThumbnailWidth('large'),
                 true
             );
             MetaTagHandler::getInstance()->addTag(
                 'og:image:height',
                 'og:image:height',
-                $this->articleContent->getTeaserImage()->getThumbnailHeight('large'),
+                (string)$this->articleContent->getTeaserImage()->getThumbnailHeight('large'),
                 true
             );
         } elseif ($this->articleContent->getImage()) {
@@ -168,13 +168,13 @@ class ArticlePage extends AbstractArticlePage
             MetaTagHandler::getInstance()->addTag(
                 'og:image:width',
                 'og:image:width',
-                $this->articleContent->getImage()->getThumbnailWidth('large'),
+                (string)$this->articleContent->getImage()->getThumbnailWidth('large'),
                 true
             );
             MetaTagHandler::getInstance()->addTag(
                 'og:image:height',
                 'og:image:height',
-                $this->articleContent->getImage()->getThumbnailHeight('large'),
+                (string)$this->articleContent->getImage()->getThumbnailHeight('large'),
                 true
             );
         }

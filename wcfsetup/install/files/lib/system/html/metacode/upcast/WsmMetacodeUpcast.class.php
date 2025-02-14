@@ -20,11 +20,6 @@ final class WsmMetacodeUpcast extends AbstractImageMetacodeUpcast
     #[\Override]
     public function upcast(\DOMElement $element, array $attributes): void
     {
-        /**
-         * @var string $alignment
-         * @var string|int $width
-         * @var string $thumbnail
-         */
         $mediaID = \intval($attributes[0]);
         $thumbnail = $attributes[1] ?? 'original';
         $alignment = $attributes[2] ?? 'none';
@@ -43,10 +38,10 @@ final class WsmMetacodeUpcast extends AbstractImageMetacodeUpcast
             $imgElement->setAttribute('src', StringUtil::decodeHTML($media->getThumbnailLink($thumbnail)));
         }
         if ($width !== 'auto') {
-            $imgElement->setAttribute('width', \intval($width));
+            $imgElement->setAttribute('width', (string)\intval($width));
             $imgElement->setAttribute('data-width', \intval($width) . 'px');
         }
-        $imgElement->setAttribute('data-media-id', $mediaID);
+        $imgElement->setAttribute('data-media-id', (string)$mediaID);
         $imgElement->setAttribute('data-media-size', StringUtil::decodeHTML($thumbnail));
         $imgElement->setAttribute('style', $this->getStyle($media, $width, $thumbnail));
         if ($alignment === 'none') {

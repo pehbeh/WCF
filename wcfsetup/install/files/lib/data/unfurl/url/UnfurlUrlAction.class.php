@@ -75,7 +75,7 @@ class UnfurlUrlAction extends AbstractDatabaseObjectAction
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute($statementParameters);
 
-        return WCF::getDB()->getInsertID("wcf1_unfurl_url_image", "imageID");
+        return (int)WCF::getDB()->getInsertID("wcf1_unfurl_url_image", "imageID");
     }
 
     /**

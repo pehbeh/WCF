@@ -6,6 +6,7 @@ use wcf\acp\form\UserOptionListForm;
 use wcf\data\search\SearchEditor;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\exception\UserInputException;
+use wcf\system\option\ISearchableUserOption;
 use wcf\system\option\user\UserOptionHandler;
 use wcf\system\page\PageLocationManager;
 use wcf\system\request\LinkHandler;
@@ -215,8 +216,9 @@ class UserSearchForm extends UserOptionListForm
             $option = $option['object'];
 
             $value = $this->optionHandler->optionValues[$option->optionName] ?? null;
-            /** @noinspection PhpUndefinedMethodInspection */
-            $this->optionHandler->getTypeObject($option->optionType)->getCondition($this->conditions, $option, $value);
+            /** @var ISearchableUserOption $typeObject */
+            $typeObject = $this->optionHandler->getTypeObject($option->optionType);
+            $typeObject->getCondition($this->conditions, $option, $value);
         }
     }
 }

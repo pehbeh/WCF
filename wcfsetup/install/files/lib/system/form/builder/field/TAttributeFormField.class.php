@@ -20,7 +20,7 @@ trait TAttributeFormField
     protected $fieldAttributes = [];
 
     /**
-     * @var string[]
+     * @var array<string, string>
      */
     protected static $interfaceToFieldAttributeMap = [
         IAutoFocusFormField::class => 'autofocus',
@@ -39,7 +39,7 @@ trait TAttributeFormField
      * Returns the value of the additional attribute of the actual field element with the given name.
      *
      * @throws      \InvalidArgumentException       if the given attribute is invalid or no such attribute exists
-     * @return      static                          this form field
+     * @return      mixed
      */
     public function getFieldAttribute(string $name)
     {

@@ -193,7 +193,7 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
     }
 
     #[\Override]
-    public function getMaximumSize(array $context): ?int
+    public function getMaximumSize(array $context): int
     {
         /**
          * Reject the file if it is larger than 750 kB after resizing. A worst-case
@@ -208,7 +208,7 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
     }
 
     #[\Override]
-    public function getImageCropperConfiguration(): ?ImageCropperConfiguration
+    public function getImageCropperConfiguration(): ImageCropperConfiguration
     {
         return ImageCropperConfiguration::forExact(
             new ImageCropSize(UserAvatarFileProcessor::AVATAR_SIZE, UserAvatarFileProcessor::AVATAR_SIZE),

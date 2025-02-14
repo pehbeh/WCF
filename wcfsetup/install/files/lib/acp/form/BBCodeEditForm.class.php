@@ -183,10 +183,10 @@ class BBCodeEditForm extends BBCodeAddForm
             $this->bbcodeTag = $this->bbcode->bbcodeTag;
             $this->htmlOpen = $this->bbcode->htmlOpen;
             $this->htmlClose = $this->bbcode->htmlClose;
-            $this->isBlockElement = $this->bbcode->isBlockElement;
-            $this->isSourceCode = $this->bbcode->isSourceCode;
+            $this->isBlockElement = !!$this->bbcode->isBlockElement;
+            $this->isSourceCode = !!$this->bbcode->isSourceCode;
             $this->className = $this->bbcode->className;
-            $this->showButton = $this->bbcode->showButton;
+            $this->showButton = !!$this->bbcode->showButton;
             $this->wysiwygIcon = $this->bbcode->wysiwygIcon;
         }
     }

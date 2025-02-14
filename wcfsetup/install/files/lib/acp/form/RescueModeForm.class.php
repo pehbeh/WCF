@@ -41,7 +41,7 @@ final class RescueModeForm extends AbstractForm
     public $applications;
 
     /**
-     * @var string[][]
+     * @var array<int, string>
      */
     public $applicationValues = [];
 
@@ -108,6 +108,7 @@ final class RescueModeForm extends AbstractForm
         $floodExceeded = false;
         $floodControl = FloodControl::getInstance();
 
+        // @phpstan-ignore booleanOr.leftAlwaysFalse
         $floodExceeded = $floodExceeded || $floodControl->countGuestContent(
             'com.woltlab.wcf.rescueMode',
             UserUtil::getIpAddress(),

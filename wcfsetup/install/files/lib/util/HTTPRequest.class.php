@@ -73,7 +73,7 @@ final class HTTPRequest
     private $replyBody;
 
     /**
-     * @var ResponseInterface
+     * @var ?ResponseInterface
      */
     private $response;
 
@@ -98,13 +98,11 @@ final class HTTPRequest
         $language = WCF::getLanguage();
         $this->addHeader(
             'user-agent',
-            "HTTP.PHP (HTTPRequest.class.php; WoltLab Suite/" . WCF_VERSION . "; " . ($language ? $language->languageCode : 'en') . ")"
+            "HTTP.PHP (HTTPRequest.class.php; WoltLab Suite/" . WCF_VERSION . "; " . $language->languageCode . ")"
         );
         $this->addHeader('accept', '*/*');
         $this->addHeader('accept-encoding', 'identity');
-        if ($language) {
-            $this->addHeader('accept-language', $language->getFixedLanguageCode());
-        }
+        $this->addHeader('accept-language', $language->getFixedLanguageCode());
 
         if (isset($this->options['maxLength'])) {
             $this->addHeader('Range', 'bytes=0-' . ($this->options['maxLength'] - 1));
@@ -244,7 +242,7 @@ final class HTTPRequest
                         new HTTPException(
                             $this,
                             "Received status code '" . $this->response->getStatusCode() . "' from server",
-                            (string)$this->response->getStatusCode(),
+                            $this->response->getStatusCode(),
                             $e
                         )
                     );
@@ -256,12 +254,12 @@ final class HTTPRequest
                         new HTTPException(
                             $this,
                             "Received status code '" . $this->response->getStatusCode() . "' from server",
-                            (string)$this->response->getStatusCode(),
+                            $this->response->getStatusCode(),
                             $e
                         )
                     );
                 default:
-                    if (\substr($this->response->getStatusCode(), 0, 1) == '5') {
+                    if (\str_starts_with((string)$this->response->getStatusCode(), '5')) {
                         throw new HTTPServerErrorException(
                             "Received status code '" . $this->response->getStatusCode() . "' from server",
                             0,
@@ -269,7 +267,7 @@ final class HTTPRequest
                             new HTTPException(
                                 $this,
                                 "Received status code '" . $this->response->getStatusCode() . "' from server",
-                                (string)$this->response->getStatusCode(),
+                                $this->response->getStatusCode(),
                                 $e
                             )
                         );

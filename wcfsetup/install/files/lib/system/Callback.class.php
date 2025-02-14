@@ -16,14 +16,14 @@ final class Callback
 {
     /**
      * encapsulated callback
-     * @var callback
+     * @var callable
      */
     private $callback;
 
     /**
      * Creates new instance of Callback.
      *
-     * @param callback $callback
+     * @param callable $callback
      * @throws  SystemException
      */
     public function __construct($callback)

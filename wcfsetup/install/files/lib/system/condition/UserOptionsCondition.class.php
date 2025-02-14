@@ -8,6 +8,7 @@ use wcf\data\DatabaseObjectList;
 use wcf\data\user\User;
 use wcf\data\user\UserList;
 use wcf\system\exception\InvalidObjectArgument;
+use wcf\system\option\ISearchableConditionUserOption;
 use wcf\system\option\user\UserOptionHandler;
 use wcf\system\WCF;
 
@@ -58,8 +59,7 @@ class UserOptionsCondition extends AbstractMultipleFieldsCondition implements
             $option = $option['object'];
 
             if (isset($optionValues[$option->optionName])) {
-                /** @noinspection PhpUndefinedMethodInspection */
-                $this->optionHandler->getTypeObject($option->optionType)->addCondition(
+                $this->getTypeObject($option->optionType)->addCondition(
                     $objectList,
                     $option,
                     $optionValues[$option->optionName]
@@ -81,9 +81,8 @@ class UserOptionsCondition extends AbstractMultipleFieldsCondition implements
             $option = $option['object'];
 
             if (isset($optionValues[$option->optionName])) {
-                /** @noinspection PhpUndefinedMethodInspection */
                 if (
-                    !$this->optionHandler->getTypeObject($option->optionType)->checkUser(
+                    !$this->getTypeObject($option->optionType)->checkUser(
                         $user,
                         $option,
                         $optionValues[$option->optionName]
@@ -110,9 +109,7 @@ class UserOptionsCondition extends AbstractMultipleFieldsCondition implements
             $option = $option['object'];
 
             if (isset($optionValues[$option->optionName])) {
-                /** @noinspection PhpUndefinedMethodInspection */
-                $conditionData = $this->optionHandler
-                    ->getTypeObject($option->optionType)
+                $conditionData = $this->getTypeObject($option->optionType)
                     ->getConditionData($option, $optionValues[$option->optionName]);
                 if ($conditionData !== null) {
                     $data[$option->optionName] = $conditionData;
@@ -173,5 +170,13 @@ class UserOptionsCondition extends AbstractMultipleFieldsCondition implements
         }
 
         return $this->checkUser($condition, WCF::getUser());
+    }
+
+    private function getTypeObject(string $optionType): ISearchableConditionUserOption
+    {
+        $optionType = $this->optionHandler->getTypeObject($optionType);
+        \assert($optionType instanceof ISearchableConditionUserOption);
+
+        return $optionType;
     }
 }

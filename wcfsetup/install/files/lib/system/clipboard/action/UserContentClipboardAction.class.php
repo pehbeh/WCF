@@ -3,6 +3,7 @@
 namespace wcf\system\clipboard\action;
 
 use wcf\data\clipboard\action\ClipboardAction;
+use wcf\data\user\User;
 use wcf\data\user\UserContentAction;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
@@ -13,6 +14,8 @@ use wcf\system\WCF;
  * @author  Tim Duesterhus
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @property-read User[] $objects
  */
 class UserContentClipboardAction extends AbstractClipboardAction
 {
@@ -29,7 +32,7 @@ class UserContentClipboardAction extends AbstractClipboardAction
         $item = parent::execute($objects, $action);
 
         if ($item === null) {
-            return;
+            return null;
         }
 
         // handle actions

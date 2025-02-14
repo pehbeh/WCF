@@ -25,6 +25,7 @@ interface ICategoryType
      *
      * @param CategoryEditor $categoryEditor
      * @since   3.1
+     * @return void
      */
     public function beforeDeletion(CategoryEditor $categoryEditor);
 

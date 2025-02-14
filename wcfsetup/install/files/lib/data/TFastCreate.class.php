@@ -11,6 +11,7 @@ use wcf\system\WCF;
  * @copyright   2001-2021 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.4
+ * @deprecated 6.2 Moved into `DatabaseObjectEditor`.
  */
 trait TFastCreate
 {
@@ -20,7 +21,7 @@ trait TFastCreate
      * @see IEditableObject::create()
      * @return int|string
      */
-    public static function fastCreate(array $parameters)
+    public static function fastCreate(array $parameters): int|string
     {
         $keys = $values = '';
         $statementParameters = [];

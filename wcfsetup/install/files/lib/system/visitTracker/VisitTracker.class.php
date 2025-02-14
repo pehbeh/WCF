@@ -243,6 +243,7 @@ class VisitTracker extends SingletonFactory
     public function prune(): void
     {
         $visitLifetime = 120 * 86400;
+        // @phpstan-ignore function.alreadyNarrowedType, greater.alwaysTrue
         \assert($visitLifetime > self::LIFETIME);
 
         $sql = "DELETE FROM wcf1_tracked_visit

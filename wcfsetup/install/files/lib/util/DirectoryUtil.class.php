@@ -207,7 +207,7 @@ final class DirectoryUtil
 
             foreach ($it as $filename => $obj) {
                 // ignore . and ..
-                /** @noinspection PhpUndefinedMethodInspection */
+                /** @phpstan-ignore method.notFound */
                 if ($it->isDot()) {
                     continue;
                 }
@@ -244,7 +244,7 @@ final class DirectoryUtil
 
             foreach ($it as $filename => $obj) {
                 // ignore . and ..
-                /** @noinspection PhpUndefinedMethodInspection */
+                /** @phpstan-ignore method.notFound */
                 if ($it->isDot()) {
                     continue;
                 }

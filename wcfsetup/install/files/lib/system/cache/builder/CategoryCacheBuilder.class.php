@@ -31,7 +31,6 @@ class CategoryCacheBuilder extends AbstractCacheBuilder
             'objectTypeCategoryIDs' => [],
         ];
         foreach ($list as $category) {
-            /** @noinspection PhpUndefinedFieldInspection */
             $objectType = $category->objectType;
 
             if (!isset($data['objectTypeCategoryIDs'][$objectType])) {

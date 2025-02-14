@@ -62,7 +62,6 @@ class PackageACPSearchResultProvider implements IACPSearchResultProvider
             '%' . $query . '%',
         ], $conditions->getParameters()));
 
-        /** @var Package $package */
         while ($package = $statement->fetchObject(Package::class)) {
             $results[] = new ACPSearchResult($package->getName(), $package->getLink());
         }

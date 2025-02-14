@@ -25,6 +25,7 @@ use wcf\util\JSON;
  * @property-read   int $cumulativeLikes    number of likes of the liked object
  * @property-read   string $cachedUsers        serialized array with the ids and names of the three users who liked (+1) the object last
  * @property-read   string $cachedReactions    serialized array with the reactionTypeIDs and the count of the reactions
+ * @property-read   int $reactionTypeID
  */
 class LikeObject extends DatabaseObject
 {
@@ -176,7 +177,8 @@ class LikeObject extends DatabaseObject
         $data = [];
         foreach ($this->reactions as $reactionTypeID => $value) {
             $data[] = [
-                $reactionTypeID, $value['reactionCount'],
+                $reactionTypeID,
+                $value['reactionCount'],
             ];
         }
 

@@ -29,10 +29,11 @@ class FileSizeOptionType extends TextOptionType
         $number = \str_replace(WCF::getLanguage()->get('wcf.global.decimalPoint'), '.', $number);
 
         if (!\preg_match('~^(?:\d*)\.?\d+~', $number, $matches)) {
+            // @phpstan-ignore return.type
             return 0;
         }
 
-        $number = $matches[0];
+        $number = (float)$matches[0];
         if (\preg_match('/[kmgt]i?b$/i', $newValue, $multiplier)) {
             switch (\mb_strtolower($multiplier[0])) {
                 case 'tb':
@@ -62,6 +63,7 @@ class FileSizeOptionType extends TextOptionType
             }
         }
 
+        // @phpstan-ignore return.type
         return $number;
     }
 

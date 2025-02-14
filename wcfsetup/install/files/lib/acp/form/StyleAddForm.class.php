@@ -13,6 +13,7 @@ use wcf\system\event\EventHandler;
 use wcf\system\exception\SystemException;
 use wcf\system\exception\UserInputException;
 use wcf\system\file\upload\UploadField;
+use wcf\system\file\upload\UploadFile;
 use wcf\system\file\upload\UploadHandler;
 use wcf\system\image\ImageHandler;
 use wcf\system\language\I18nHandler;
@@ -112,9 +113,9 @@ class StyleAddForm extends AbstractForm
 
     /**
      * tainted style
-     * @var bool
+     * @var int
      */
-    public $isTainted = true;
+    public $isTainted = 1;
 
     /**
      * license name
@@ -170,13 +171,13 @@ class StyleAddForm extends AbstractForm
     public $tmpHash = '';
 
     /**
-     * @var string
+     * @var ?string
      */
     public $styleTestFileDir;
 
     /**
      * list of variables and their value
-     * @var string[]
+     * @var array<string, mixed>
      */
     public $variables = [];
 
@@ -199,7 +200,7 @@ class StyleAddForm extends AbstractForm
     public $uploads = [];
 
     /**
-     * @var UploadField[]
+     * @var array{}|array{added: UploadFile[], removed: UploadFile[]}
      * @since 5.3
      */
     public $customAssets = [];
@@ -513,7 +514,7 @@ class StyleAddForm extends AbstractForm
         $result = StyleCompiler::getInstance()->testStyle(
             $this->styleTestFileDir,
             $this->styleName,
-            false,
+            '',
             $variables
         );
 
@@ -590,6 +591,7 @@ class StyleAddForm extends AbstractForm
                     }
 
                     // Check again after scaling
+                    // @phpstan-ignore identical.alwaysFalse
                     if (($imageData = \getimagesize($fileLocation)) === false) {
                         throw new UserInputException($field, 'invalid');
                     }
@@ -895,7 +897,7 @@ class StyleAddForm extends AbstractForm
         $this->authorName = $this->authorURL = $this->copyright = $this->packageName = '';
         $this->license = $this->styleDate = $this->styleDescription = $this->styleName = $this->styleVersion = '';
         $this->setDefaultValues();
-        $this->isTainted = true;
+        $this->isTainted = 1;
         $this->templateGroupID = 0;
         $this->styleTestFileDir = null;
         $this->rebuildUploadFields();

@@ -4,11 +4,9 @@ namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\UserOptionEditForm;
 use wcf\data\DatabaseObject;
-use wcf\data\DatabaseObjectList;
 use wcf\data\user\option\UserOption;
 use wcf\data\user\option\UserOptionList;
 use wcf\event\gridView\admin\UserOptionGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\GridViewColumn;
 use wcf\system\gridView\GridViewRowLink;
@@ -99,7 +97,7 @@ final class UserOptionGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): UserOptionList
     {
         $list = new UserOptionList();
         $list->getConditionBuilder()->add(
@@ -115,7 +113,7 @@ final class UserOptionGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): UserOptionGridViewInitialized
     {
         return new UserOptionGridViewInitialized($this);
     }

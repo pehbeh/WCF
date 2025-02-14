@@ -25,7 +25,7 @@ class ImportWorker extends AbstractWorker
 
     /**
      * exporter object
-     * @var \wcf\system\exporter\IExporter
+     * @var ?\wcf\system\exporter\IExporter
      */
     protected $exporter;
 
@@ -89,7 +89,7 @@ class ImportWorker extends AbstractWorker
     {
         if (!$this->exporter) {
             $this->bootstrap();
-            \assert($this->exporter);
+            \assert($this->exporter !== null);
         }
 
         return $this->exporter;
@@ -119,7 +119,7 @@ class ImportWorker extends AbstractWorker
             $progress = 100;
         }
 
-        return \floor($progress);
+        return (int)\floor($progress);
     }
 
     /**

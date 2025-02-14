@@ -15,16 +15,12 @@ use wcf\system\WCF;
  */
 abstract class DatabaseObjectEditor extends DatabaseObjectDecorator implements IEditableObject
 {
-    use TFastCreate {
-        TFastCreate::fastCreate as private dboEditorCreateBase;
-    }
-
     /**
      * @inheritDoc
      */
     public static function create(array $parameters = [])
     {
-        return new static::$baseClass(static::dboEditorCreateBase($parameters));
+        return new static::$baseClass(static::fastCreate($parameters));
     }
 
     /**
@@ -136,5 +132,40 @@ abstract class DatabaseObjectEditor extends DatabaseObjectDecorator implements I
 
             throw $e;
         }
+    }
+
+    /**
+     * Creates the object and returns the ID.
+     */
+    public static function fastCreate(array $parameters): int|string
+    {
+        $keys = $values = '';
+        $statementParameters = [];
+        foreach ($parameters as $key => $value) {
+            if (!empty($keys)) {
+                $keys .= ',';
+                $values .= ',';
+            }
+
+            $keys .= $key;
+            $values .= '?';
+            $statementParameters[] = $value;
+        }
+
+        // save object
+        $sql = "INSERT INTO " . static::getDatabaseTableName() . "
+                            (" . $keys . ")
+                VALUES      (" . $values . ")";
+        $statement = WCF::getDB()->prepare($sql);
+        $statement->execute($statementParameters);
+
+        // return new object
+        if (static::getDatabaseTableIndexIsIdentity()) {
+            $id = WCF::getDB()->getInsertID(static::getDatabaseTableName(), static::getDatabaseTableIndexName());
+        } else {
+            $id = $parameters[static::getDatabaseTableIndexName()];
+        }
+
+        return $id;
     }
 }

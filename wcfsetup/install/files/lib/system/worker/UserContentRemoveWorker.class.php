@@ -45,7 +45,7 @@ class UserContentRemoveWorker extends AbstractWorker
     protected $data;
 
     /**
-     * @var null
+     * @var ?string[]
      */
     public $contentProviders;
 

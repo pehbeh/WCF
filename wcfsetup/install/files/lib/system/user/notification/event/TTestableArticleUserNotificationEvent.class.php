@@ -27,7 +27,6 @@ trait TTestableArticleUserNotificationEvent
      */
     public static function getTestArticle(Category $category, UserProfile $author)
     {
-        /** @var Article $article */
         return (new ArticleAction([], 'create', [
             'data' => [
                 'time' => TIME_NOW,

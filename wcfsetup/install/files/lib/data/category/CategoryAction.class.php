@@ -27,6 +27,7 @@ use wcf\system\WCF;
  * @method  Category        create()
  * @method  CategoryEditor[]    getObjects()
  * @method  CategoryEditor      getSingleObject()
+ * @property-read CategoryEditor[] $objects
  */
 class CategoryAction extends AbstractDatabaseObjectAction implements
     ISortableAction,
@@ -122,9 +123,9 @@ class CategoryAction extends AbstractDatabaseObjectAction implements
 
         $categoryID = $this->objects[0]->categoryID;
         if (\array_search($categoryID, $collapsedCategories) !== false) {
-            UserCollapsibleContentHandler::getInstance()->markAsOpened($objectTypeID, $categoryID);
+            UserCollapsibleContentHandler::getInstance()->markAsOpened($objectTypeID, (string)$categoryID);
         } else {
-            UserCollapsibleContentHandler::getInstance()->markAsCollapsed($objectTypeID, $categoryID);
+            UserCollapsibleContentHandler::getInstance()->markAsCollapsed($objectTypeID, (string)$categoryID);
         }
     }
 

@@ -21,12 +21,4 @@ abstract class AbstractCombinedTaggable extends AbstractTaggable implements ICom
     {
         return $this->getObjectListFor([$tag]);
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function getObjectListFor(array $tags)
-    {
-        return null;
-    }
 }

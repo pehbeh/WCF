@@ -16,7 +16,7 @@ use wcf\system\WCF;
 final class PackageUpdateUnauthorizedException extends UserException
 {
     /**
-     * @param string[] $responseHeaders
+     * @param string[][] $responseHeaders
      * @param mixed[] $packageUpdateVersion
      */
     public function __construct(

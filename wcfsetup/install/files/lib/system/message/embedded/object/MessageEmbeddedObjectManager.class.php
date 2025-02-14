@@ -56,7 +56,7 @@ class MessageEmbeddedObjectManager extends SingletonFactory
 
     /**
      * content language id
-     * @var int
+     * @var ?int
      */
     protected $contentLanguageID;
 
@@ -292,7 +292,7 @@ class MessageEmbeddedObjectManager extends SingletonFactory
     /**
      * Returns the content language id or null.
      *
-     * @return      int
+     * @return      ?int
      */
     public function getContentLanguageID()
     {
@@ -482,7 +482,7 @@ class MessageEmbeddedObjectManager extends SingletonFactory
     }
 
     /**
-     * @return      ISimpleMessageEmbeddedObjectHandler[];
+     * @return ISimpleMessageEmbeddedObjectHandler[]
      */
     public function getSimpleMessageEmbeddedObjectHandlers()
     {

@@ -25,13 +25,13 @@ class SimpleEmail
 
     /**
      * the text/plain version of the message body
-     * @var PlainTextMimePart
+     * @var ?PlainTextMimePart
      */
     private $textPlain;
 
     /**
      * the text/html version of the message body
-     * @var HtmlTextMimePart
+     * @var ?HtmlTextMimePart
      */
     private $textHtml;
 

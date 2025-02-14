@@ -13,9 +13,9 @@ use wcf\data\user\UserList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  User[]      getCachedObjects()
- * @method  User|null   getObject($objectID)
- * @method  User[]      getObjects(array $objectIDs)
+ * @method  (User|null)[]      getCachedObjects()
+ * @method  ?User   getObject($objectID)
+ * @method  (User|null)[]      getObjects(array $objectIDs)
  */
 class UserRuntimeCache extends AbstractRuntimeCache
 {

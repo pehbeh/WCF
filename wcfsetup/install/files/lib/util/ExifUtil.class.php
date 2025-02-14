@@ -124,7 +124,7 @@ final class ExifUtil
      * Returns the creation timestamp based on the given exif data.
      *
      * @param array $exifData
-     * @return  string
+     * @return  int
      */
     public static function getCreationTime(array $exifData)
     {
@@ -293,11 +293,11 @@ final class ExifUtil
     {
         $data = \explode('/', $rational);
         if (\count($data) == 1) {
-            return $data;
+            return $rational;
         }
 
-        $numerator = $data[0];
-        $denonimator = $data[1];
+        $numerator = (int)$data[0];
+        $denonimator = (int)$data[1];
         $gcd = self::gcd($numerator, $denonimator);
 
         // When the numerator equals 0 (e.g. 0/10), then the resulting GCD will

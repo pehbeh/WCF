@@ -24,6 +24,7 @@ final class ClassUtil
      */
     public static function equals($a, $b)
     {
+        // @phpstan-ignore function.alreadyNarrowedType
         if (!\is_object($a)) {
             return false;
         }
@@ -45,6 +46,7 @@ final class ClassUtil
     public static function isInstanceOf($className, $targetClass)
     {
         // validate parameters
+        // @phpstan-ignore function.alreadyNarrowedType
         if (!\is_string($className)) {
             return false;
         } elseif (!\class_exists($className)) {
@@ -57,6 +59,7 @@ final class ClassUtil
             );
         }
 
+        // @phpstan-ignore function.alreadyNarrowedType
         return \is_subclass_of($className, $targetClass);
     }
 
@@ -67,7 +70,7 @@ final class ClassUtil
      *
      * This method also supports decorated decorators.
      *
-     * @param string $className checked class
+     * @param object|string $className checked class
      * @param string $targetClass target class or interface
      * @return  bool
      */

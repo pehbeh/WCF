@@ -19,6 +19,7 @@ use wcf\system\WCF;
  *
  * @method  AdEditor[]  getObjects()
  * @method  AdEditor    getSingleObject()
+ * @property-read AdEditor[] $objects
  */
 class AdAction extends AbstractDatabaseObjectAction implements ISortableAction, IToggleAction
 {

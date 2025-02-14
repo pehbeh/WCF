@@ -47,7 +47,7 @@ class PollManager extends SingletonFactory
 
     /**
      * poll object
-     * @var Poll
+     * @var ?Poll
      */
     protected $poll;
 
@@ -462,7 +462,7 @@ class PollManager extends SingletonFactory
      * Returns the handler object for given object type. Returns false if object type (id)
      * is not found, or null if no handler is assigned.
      *
-     * @param int $objectTypeID
+     * @param ?int $objectTypeID
      * @param string $objectType
      * @return  mixed
      * @throws  SystemException

@@ -39,10 +39,7 @@ final class PackageEnableUpgradeOverrideForm extends AbstractFormBuilderForm
      */
     public $neededPermissions = ['admin.configuration.package.canUpdatePackage'];
 
-    /**
-     * @var bool
-     */
-    private $isEnabled;
+    private bool $isEnabled;
 
     /**
      * @inheritDoc
@@ -51,6 +48,7 @@ final class PackageEnableUpgradeOverrideForm extends AbstractFormBuilderForm
     {
         parent::readParameters();
 
+        // @phpstan-ignore identical.alwaysTrue
         if (WCF::AVAILABLE_UPGRADE_VERSION === null) {
             throw new IllegalLinkException();
         }
@@ -275,7 +273,7 @@ final class PackageEnableUpgradeOverrideForm extends AbstractFormBuilderForm
         $formData = $this->form->getData();
         if ($formData['data']['enable']) {
             $this->isEnabled = true;
-            RegistryHandler::getInstance()->set('com.woltlab.wcf', $overrideKey, \TIME_NOW);
+            RegistryHandler::getInstance()->set('com.woltlab.wcf', $overrideKey, (string)\TIME_NOW);
         } else {
             $this->isEnabled = false;
             RegistryHandler::getInstance()->delete('com.woltlab.wcf', $overrideKey);

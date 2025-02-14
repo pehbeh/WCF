@@ -211,7 +211,7 @@ class TagEngine extends SingletonFactory
 
         $tags = [];
         while ($tag = $statement->fetchObject(Tag::class)) {
-            /** @noinspection PhpUndefinedFieldInspection */
+            // @phpstan-ignore property.notFound
             $objectID = $tag->objectID;
             if (!isset($tags[$objectID])) {
                 $tags[$objectID] = [];

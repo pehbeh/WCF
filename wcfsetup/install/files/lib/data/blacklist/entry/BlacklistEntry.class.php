@@ -126,7 +126,7 @@ class BlacklistEntry extends DatabaseObject
                         FROM        wcf1_blacklist_entry
                         WHERE       type = ?
                         ORDER BY    occurrences DESC";
-                $statement = WCF::getDB()->prepare($sql, 1, \round($count * 0.9));
+                $statement = WCF::getDB()->prepare($sql, 1, (int)\round($count * 0.9));
                 $statement->execute([$type]);
 
                 $percentile[$type] = $statement->fetchSingleColumn();

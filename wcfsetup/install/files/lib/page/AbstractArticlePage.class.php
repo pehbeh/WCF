@@ -8,6 +8,7 @@ use wcf\data\article\ArticleEditor;
 use wcf\data\article\category\ArticleCategory;
 use wcf\data\article\content\ViewableArticleContent;
 use wcf\data\article\ViewableArticle;
+use wcf\data\attachment\GroupedAttachmentList;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\data\tag\Tag;
 use wcf\system\cache\runtime\ViewableArticleRuntimeCache;

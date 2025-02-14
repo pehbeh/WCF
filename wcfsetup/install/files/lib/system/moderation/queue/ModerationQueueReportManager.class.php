@@ -9,9 +9,9 @@ use wcf\data\object\type\ObjectTypeCache;
 use wcf\system\cache\builder\UserGroupOptionCacheBuilder;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
 use wcf\system\exception\InvalidObjectTypeException;
+use wcf\system\moderation\queue\report\IModerationQueueReportHandler;
 use wcf\system\request\LinkHandler;
 use wcf\system\user\notification\object\ModerationQueueUserNotificationObject;
-use wcf\system\user\notification\object\type\TMultiRecipientModerationQueueCommentUserNotificationObjectType;
 use wcf\system\user\notification\UserNotificationHandler;
 use wcf\system\WCF;
 
@@ -21,6 +21,7 @@ use wcf\system\WCF;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @method IModerationQueueReportHandler getProcessor(?string $objectType, ?int $objectTypeID = null)
  */
 class ModerationQueueReportManager extends AbstractModerationQueueManager
 {
@@ -258,7 +259,7 @@ class ModerationQueueReportManager extends AbstractModerationQueueManager
         }
         foreach ($userIDs as $userID) {
             $user = UserProfileRuntimeCache::getInstance()->getObject($userID);
-            ModerationQueueManager::getInstance()->setAssignment([$queue->queueID => 1], $user->getDecoratedObject());
+            ModerationQueueManager::getInstance()->setAssignment([$queue->queueID => true], $user->getDecoratedObject());
         }
 
         UserNotificationHandler::getInstance()->fireEvent(

@@ -56,19 +56,19 @@ class VersionTrackerListPage extends AbstractPage
 
     /**
      * left / old version
-     * @var VersionTrackerEntry
+     * @var ?VersionTrackerEntry
      */
     public $old;
 
     /**
      * right / new version id
-     * @var int
+     * @var int|string
      */
     public $newID = 0;
 
     /**
      * right / new version
-     * @var VersionTrackerEntry
+     * @var ?VersionTrackerEntry
      */
     public $new;
 

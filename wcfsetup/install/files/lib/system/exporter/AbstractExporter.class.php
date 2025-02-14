@@ -83,7 +83,7 @@ abstract class AbstractExporter implements IExporter
 
     /**
      * selected import data
-     * @var array
+     * @var string[]
      */
     protected $selectedData = [];
 
@@ -159,7 +159,7 @@ abstract class AbstractExporter implements IExporter
         $count = \call_user_func([$this, 'count' . $this->methods[$objectType]]);
         $limit = ($this->limits[$objectType] ?? $this->defaultLimit);
 
-        return \ceil($count / $limit);
+        return (int)\ceil($count / $limit);
     }
 
     /**

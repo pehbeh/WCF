@@ -37,13 +37,13 @@ final class ControllerMap extends SingletonFactory
     protected $customUrls;
 
     /**
-     * @var string[]
+     * @var string[][]
      */
     protected $landingPages;
 
     /**
      * list of <ControllerName> to <controller-name> mappings
-     * @var string[]
+     * @var array<string, string>
      */
     protected $lookupCache = [];
 
@@ -206,7 +206,7 @@ final class ControllerMap extends SingletonFactory
      * and url controller name or null if there was no match.
      *
      * @param int $pageID page id
-     * @param int $languageID content language id
+     * @param ?int $languageID content language id
      * @return  string[]|null
      */
     public function lookupCmsPage($pageID, $languageID)
@@ -235,11 +235,12 @@ final class ControllerMap extends SingletonFactory
         $routePart = $this->landingPages[$application]['routePart'];
 
         if (\preg_match('/^__WCF_CMS__(?P<pageID>\\d+)$/', $routePart, $matches)) {
-            $cmsPageData = $this->lookupCmsPage($matches['pageID'], 0);
+            $pageID = (int)$matches['pageID'];
+            $cmsPageData = $this->lookupCmsPage($pageID, 0);
             if ($cmsPageData === null) {
                 // page is multilingual
 
-                $cmsPageData = $this->lookupCmsPage($matches['pageID'], WCF::getLanguage()->languageID);
+                $cmsPageData = $this->lookupCmsPage($pageID, WCF::getLanguage()->languageID);
                 if ($cmsPageData === null) {
                     throw new SystemException("Unable to resolve CMS page");
                 }

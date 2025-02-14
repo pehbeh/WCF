@@ -30,7 +30,7 @@ class AbstractCategoryImporter extends AbstractImporter
 
     /**
      * object type name
-     * @var int
+     * @var string
      */
     protected $objectTypeName = '';
 
@@ -57,7 +57,7 @@ class AbstractCategoryImporter extends AbstractImporter
             }
 
             if (!empty($values)) {
-                /** @var Package $package */
+                /** @var ?Package $package */
                 $package = null;
                 if ($this->objectTypeID) {
                     $objectType = ObjectTypeCache::getInstance()->getObjectType($this->objectTypeID);

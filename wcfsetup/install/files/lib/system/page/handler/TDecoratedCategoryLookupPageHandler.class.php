@@ -81,7 +81,7 @@ trait TDecoratedCategoryLookupPageHandler
      * an `objectID => title` relation.
      *
      * @param string $searchString search string
-     * @return  string[]
+     * @return list<array<string, mixed>>
      * @see ILookupPageHandler::lookup()
      */
     public function lookup($searchString)
@@ -98,12 +98,14 @@ trait TDecoratedCategoryLookupPageHandler
         }
 
         $conditionBuilder = new PreparedStatementConditionBuilder();
-        /** @noinspection PhpUndefinedFieldInspection */
         $conditionBuilder->add(
             'category.objectTypeID = ?',
             [
-                ObjectTypeCache::getInstance()
-                    ->getObjectTypeIDByName('com.woltlab.wcf.category', $className::OBJECT_TYPE_NAME),
+                ObjectTypeCache::getInstance()->getObjectTypeIDByName(
+                    'com.woltlab.wcf.category',
+                    // @phpstan-ignore classConstant.notFound
+                    $className::OBJECT_TYPE_NAME
+                ),
             ]
         );
         $conditionBuilder->add(

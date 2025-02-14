@@ -65,7 +65,7 @@ final class UserCoverPhoto implements IUserCoverPhoto
     }
 
     #[\Override]
-    public function getObjectID(): ?int
+    public function getObjectID(): int
     {
         return $this->file->fileID;
     }

@@ -74,7 +74,7 @@ class StructuredCommentResponse extends DatabaseObjectDecorator
      * Returns a structured response.
      *
      * @param int $responseID
-     * @return  StructuredCommentResponse
+     * @return ?StructuredCommentResponse
      */
     public static function getResponse($responseID)
     {

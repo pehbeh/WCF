@@ -293,7 +293,6 @@ final class Regex
                     break;
                 case \PREG_NO_ERROR:
                     return $result;
-                    break;
                 default:
                     $error = 'Unknown error';
                     break;

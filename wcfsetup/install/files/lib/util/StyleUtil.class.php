@@ -23,7 +23,7 @@ final class StyleUtil
         $contents = \preg_replace('/background-position:\s*right/', 'background-position:left', $contents);
         $contents = \str_replace('wcf-background-position:left', 'background-position:right', $contents);
         $contents = \preg_replace_callback('/background-position:\s*([\d\.]+)%/', static function ($matches) {
-            return 'background-position:' . (100.0 - $matches[1]) . '%';
+            return 'background-position:' . (100.0 - \floatval($matches[1])) . '%';
         }, $contents);
 
         // background-image

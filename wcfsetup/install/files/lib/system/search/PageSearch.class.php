@@ -157,6 +157,6 @@ class PageSearch extends AbstractSearchProvider
      */
     public function isAccessible(): bool
     {
-        return SEARCH_ENABLE_PAGES;
+        return !!SEARCH_ENABLE_PAGES;
     }
 }

@@ -88,7 +88,7 @@ class MediaPage extends AbstractPage
             $mimeType = $this->media->fileType;
             $filesize = $this->media->filesize;
             $location = $this->media->getLocation();
-            $this->eTag = $this->mediaID;
+            $this->eTag = (string)$this->mediaID;
         }
 
         $this->eTag .= '_' . $this->media->fileHash;

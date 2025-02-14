@@ -13,9 +13,9 @@ use wcf\data\user\UserProfileList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  UserProfile[]    getCachedObjects()
+ * @method  (UserProfile|null)[]    getCachedObjects()
  * @method  UserProfile|null getObject($objectID)
- * @method  UserProfile[]    getObjects(array $objectIDs)
+ * @method  (UserProfile|null)[]    getObjects(array $objectIDs)
  */
 class UserProfileRuntimeCache extends AbstractRuntimeCache
 {

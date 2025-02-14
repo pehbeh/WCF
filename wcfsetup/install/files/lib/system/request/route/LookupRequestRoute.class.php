@@ -50,7 +50,7 @@ final class LookupRequestRoute implements IRequestRoute
 
         if (\preg_match($regex, $requestURL, $matches)) {
             $application = ApplicationHandler::getInstance()->getActiveApplication()->getAbbreviation();
-            if (!empty($matches['id'])) {
+            if (!empty($matches['controller'])) {
                 // check for static controller URLs
                 $this->routeData = ControllerMap::getInstance()->resolveCustomController(
                     $application,

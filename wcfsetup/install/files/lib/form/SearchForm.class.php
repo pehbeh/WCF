@@ -35,13 +35,12 @@ class SearchForm extends AbstractCaptchaForm
 
     /**
      * end date
-     * @var int
+     * @var string
      */
     public $endDate = '';
 
     /**
-     * true, if search should be modified
-     * @var bool
+     * @var ?Search
      */
     public $modifySearch;
 
@@ -123,7 +122,7 @@ class SearchForm extends AbstractCaptchaForm
 
     /**
      * start date
-     * @var int
+     * @var string
      */
     public $startDate = '';
 
@@ -329,7 +328,7 @@ class SearchForm extends AbstractCaptchaForm
         $this->results = SearchEngine::getInstance()->search(
             $this->query,
             $this->selectedObjectTypes,
-            $this->subjectOnly,
+            (bool)$this->subjectOnly,
             $this->searchIndexCondition,
             $this->additionalConditions,
             $this->sortField . ' ' . $this->sortOrder

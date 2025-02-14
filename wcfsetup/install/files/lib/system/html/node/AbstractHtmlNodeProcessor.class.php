@@ -42,7 +42,7 @@ abstract class AbstractHtmlNodeProcessor implements IHtmlNodeProcessor
 
     /**
      * XPath instance
-     * @var \DOMXPath
+     * @var ?\DOMXPath
      */
     protected $xpath;
 
@@ -313,6 +313,7 @@ abstract class AbstractHtmlNodeProcessor implements IHtmlNodeProcessor
 
         $elements = [];
         foreach ($this->getXPath()->query("//{$tagName}") as $element) {
+            /** @var \DOMElement $element */
             $elements[] = $element;
         }
 

@@ -298,6 +298,7 @@ final class FileUtil
         }
 
         $lastValue = \end($pathA);
+        // @phpstan-ignore identical.alwaysFalse
         if ($lastValue === '' || $lastValue === false) {
             $result[] = '';
         }

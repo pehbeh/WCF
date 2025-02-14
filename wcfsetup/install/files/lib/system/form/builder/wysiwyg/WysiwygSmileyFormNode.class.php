@@ -75,10 +75,12 @@ class WysiwygSmileyFormNode implements IFormChildNode
     public function smilies(array $smilies)
     {
         foreach ($smilies as $smiley) {
+            // @phpstan-ignore function.alreadyNarrowedType
             if (!\is_object($smiley)) {
                 throw new \InvalidArgumentException(
                     "Given value array contains invalid value of type " . \gettype($smiley) . " for field '{$this->getId()}'."
                 );
+            // @phpstan-ignore instanceof.alwaysTrue
             } elseif (!($smiley instanceof Smiley)) {
                 throw new \InvalidArgumentException(
                     "Given value array contains invalid object of class " . \get_class($smiley) . " for field '{$this->getId()}'."

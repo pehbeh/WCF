@@ -4,11 +4,9 @@ namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\StyleEditForm;
 use wcf\data\DatabaseObject;
-use wcf\data\DatabaseObjectList;
 use wcf\data\style\Style;
 use wcf\data\style\StyleList;
 use wcf\event\gridView\admin\StyleGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\TextFilter;
 use wcf\system\gridView\GridViewColumn;
@@ -132,7 +130,7 @@ final class StyleGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): StyleList
     {
         $list = new StyleList();
         $list->sqlSelects = "(
@@ -145,7 +143,7 @@ final class StyleGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function getInitializedEvent(): ?IPsr14Event
+    protected function getInitializedEvent(): StyleGridViewInitialized
     {
         return new StyleGridViewInitialized($this);
     }

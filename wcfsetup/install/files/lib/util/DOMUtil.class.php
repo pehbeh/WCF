@@ -132,7 +132,11 @@ final class DOMUtil
      */
     public static function getParentNode(\DOMNode $node): \DOMElement|\DOMDocument
     {
-        return $node->parentNode ?: $node->ownerDocument;
+        if ($node->parentNode instanceof \DOMElement) {
+            return $node->parentNode;
+        }
+
+        return $node->ownerDocument;
     }
 
     /**
@@ -147,6 +151,7 @@ final class DOMUtil
 
         $parent = $node;
         while ($parent = $parent->parentNode) {
+            /** @var \DOMElement $parent */
             $parents[] = $parent;
         }
 
@@ -415,7 +420,7 @@ final class DOMUtil
     public static function normalize(\DOMElement $element): void
     {
         $childNodes = self::getChildNodes($element);
-        /** @var \DOMNode $lastTextNode */
+        /** @var ?\DOMNode $lastTextNode */
         $lastTextNode = null;
         foreach ($childNodes as $childNode) {
             if ($childNode->nodeType !== \XML_TEXT_NODE) {

@@ -100,6 +100,7 @@ class BBCodePackageInstallationPlugin extends AbstractXMLPackageInstallationPlug
 
                 $attributeValues = $xpath->query('child::*', $attribute);
                 foreach ($attributeValues as $attributeValue) {
+                    \assert($attributeValue instanceof \DOMElement);
                     $nodeValue[$attributeNo][$attributeValue->tagName] = $attributeValue->nodeValue;
                 }
             }
@@ -517,7 +518,7 @@ class BBCodePackageInstallationPlugin extends AbstractXMLPackageInstallationPlug
 
         $form->appendChild(
             FormContainer::create('bbcodeAttributes')
-                ->attribute('data-ignore-dependencies', 1)
+                ->attribute('data-ignore-dependencies', '1')
                 ->label('wcf.acp.pip.bbcode.attributes')
                 ->appendChild(
                     BBCodeAttributesFormField::create()

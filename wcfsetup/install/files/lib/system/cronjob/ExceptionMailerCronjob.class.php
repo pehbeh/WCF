@@ -107,6 +107,6 @@ class ExceptionMailerCronjob extends AbstractCronjob
             'logPath' => WCF_DIR . 'log/',
         ])));
         $email->send();
-        RegistryHandler::getInstance()->set('com.woltlab.wcf', 'exceptionMailerTimestamp', TIME_NOW);
+        RegistryHandler::getInstance()->set('com.woltlab.wcf', 'exceptionMailerTimestamp', (string)\TIME_NOW);
     }
 }

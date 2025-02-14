@@ -230,7 +230,6 @@ class AJAXInvokeAction extends AbstractSecureAction
         // execute request
         $className = static::class;
 
-        /** @var AJAXInvokeAction $actionObject */
         $actionObject = new $className();
         $actionObject->enableDebugMode();
         $actionObject->__run();

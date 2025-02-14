@@ -132,9 +132,12 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
         $styleList->readObjects();
 
         foreach ($styleList as $style) {
-            \assert($style instanceof self);
+            // @phpstan-ignore function.impossibleType, instanceof.alwaysFalse
+            \assert($style instanceof StyleEditor);
             $style->delete();
         }
+
+        return \count($styleList);
     }
 
     /**
@@ -283,10 +286,12 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
 
         $categories = $xpath->query('/ns:style/*');
         foreach ($categories as $category) {
+            \assert($category instanceof \DOMElement);
             switch ($category->tagName) {
                 case 'author':
                     $elements = $xpath->query('child::*', $category);
                     foreach ($elements as $element) {
+                        \assert($element instanceof \DOMElement);
                         switch ($element->tagName) {
                             case 'authorname':
                                 $data['authorName'] = $element->nodeValue;
@@ -888,7 +893,7 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
         $location = WCF_DIR . $location;
 
         $index = null;
-        do {
+        for (;;) {
             $directory = $location . ($index === null ? '' : $index);
             if (!\is_dir($directory)) {
                 @\mkdir($directory, 0777, true);
@@ -898,10 +903,7 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
             }
 
             $index = ($index === null ? 2 : ($index + 1));
-        } while (true);
-
-        // this should never happen
-        throw new \LogicException();
+        }
     }
 
     /**
@@ -985,7 +987,7 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
             $xml->writeElement('license', $this->license);
         }
         if ($this->hasDarkMode) {
-            $xml->writeElement('hasDarkMode', 1);
+            $xml->writeElement('hasDarkMode', '1');
         }
         $xml->endElement();
 

@@ -28,7 +28,7 @@ class SuffixFormFieldContainer extends FormContainer
 
     /**
      * selection form field containing the suffix options
-     * @var ISelectionFormField
+     * @var ?ISelectionFormField
      */
     protected $suffixField;
 
@@ -118,7 +118,7 @@ class SuffixFormFieldContainer extends FormContainer
     /**
      * Returns the selection form field containing the suffix options.
      *
-     * @return  ISelectionFormField
+     * @return ?ISelectionFormField
      */
     public function getSuffixField()
     {

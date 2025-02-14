@@ -76,7 +76,7 @@ final class Psr15DialogForm extends FormDocument
      */
     public function validate()
     {
-        return $this->traitValidate();
+        $this->traitValidate();
     }
 
     /**

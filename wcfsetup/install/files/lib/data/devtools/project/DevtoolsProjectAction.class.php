@@ -6,6 +6,7 @@ use wcf\data\AbstractDatabaseObjectAction;
 use wcf\data\package\installation\queue\PackageInstallationQueue;
 use wcf\data\package\installation\queue\PackageInstallationQueueEditor;
 use wcf\system\devtools\pip\DevtoolsPip;
+use wcf\system\devtools\pip\IGuiPackageInstallationPlugin;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\WCF;
 use wcf\util\DirectoryUtil;
@@ -256,19 +257,21 @@ class DevtoolsProjectAction extends AbstractDatabaseObjectAction
 
         // read and validate entry type
         $this->readString('entryType', true);
+        $pip = $this->pip->getPip();
+        \assert($pip instanceof IGuiPackageInstallationPlugin);
         if ($this->parameters['entryType'] !== '') {
             try {
-                $this->pip->getPip()->setEntryType($this->parameters['entryType']);
+                $pip->setEntryType($this->parameters['entryType']);
             } catch (\InvalidArgumentException $e) {
                 throw new IllegalLinkException();
             }
-        } elseif (!empty($this->pip->getPip()->getEntryTypes())) {
+        } elseif (!empty($pip->getEntryTypes())) {
             throw new IllegalLinkException();
         }
 
         // read and validate identifier
         $this->readString('identifier');
-        $entryList = $this->pip->getPip()->getEntryList();
+        $entryList = $pip->getEntryList();
         if (!$entryList->hasEntry($this->parameters['identifier'])) {
             throw new IllegalLinkException();
         }
@@ -284,7 +287,9 @@ class DevtoolsProjectAction extends AbstractDatabaseObjectAction
      */
     public function deletePipEntry()
     {
-        $this->pip->getPip()->deleteEntry($this->parameters['identifier'], $this->parameters['addDeleteInstruction']);
+        $pip = $this->pip->getPip();
+        \assert($pip instanceof IGuiPackageInstallationPlugin);
+        $pip->deleteEntry($this->parameters['identifier'], $this->parameters['addDeleteInstruction']);
 
         return [
             'identifier' => $this->parameters['identifier'],

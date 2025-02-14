@@ -270,9 +270,13 @@ final class AttachmentBBCode extends AbstractBBCode
             return null;
         }
 
-        return MessageEmbeddedObjectManager::getInstance()->getObject(
+        $attachment = MessageEmbeddedObjectManager::getInstance()->getObject(
             'com.woltlab.wcf.attachment',
             $attachmentID
         );
+
+        \assert($attachment === null || $attachment instanceof Attachment);
+
+        return $attachment;
     }
 }

@@ -100,7 +100,7 @@ HTML;
     public function setData(Condition $condition)
     {
         $this->usesMobileBrowser = $condition->usesMobileBrowser;
-        $this->usesNoMobileBrowser = !$condition->usesMobileBrowser;
+        $this->usesNoMobileBrowser = $condition->usesMobileBrowser ? 0 : 1;
     }
 
     /**

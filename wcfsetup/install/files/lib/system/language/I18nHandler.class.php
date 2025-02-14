@@ -191,18 +191,9 @@ final class I18nHandler extends SingletonFactory
      * the given value is set for every available language.
      *
      * @param $forceAsPlainValue if `true`, the value is added as a plain value in any case
-     * @throws  SystemException
      */
     public function setValue(string $elementID, string $plainValue, bool $forceAsPlainValue = false): void
     {
-        if (!\is_string($plainValue)) {
-            throw new SystemException(
-                'Invalid argument for parameter $plainValue',
-                0,
-                'Expected string. ' . \ucfirst(\gettype($plainValue)) . ' given.'
-            );
-        }
-
         if (!$this->isPlainValue($elementID) && !$forceAsPlainValue) {
             $i18nValues = [];
             foreach ($this->availableLanguages as $language) {
@@ -395,7 +386,7 @@ final class I18nHandler extends SingletonFactory
     /**
      * Sets additional options for elements, required if updating values.
      *
-     * @param int $elementID
+     * @param string $elementID
      */
     public function setOptions($elementID, int $packageID, string $value, string $pattern): void
     {

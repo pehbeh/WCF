@@ -89,6 +89,7 @@ class MenuItemPackageInstallationPlugin extends AbstractXMLPackageInstallationPl
 
         if ($element->tagName === 'title') {
             if (empty($element->getAttribute('language'))) {
+                \assert($element->parentNode instanceof \DOMElement);
                 throw new SystemException("Missing required attribute 'language' for menu item '" . $element->parentNode->getAttribute('identifier') . "'");
             }
 

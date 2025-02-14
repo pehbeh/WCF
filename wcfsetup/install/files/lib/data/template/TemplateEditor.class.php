@@ -36,8 +36,9 @@ class TemplateEditor extends DatabaseObjectEditor
             $parameters['packageID'] = PACKAGE_ID;
         }
 
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return parent::create($parameters);
+        $object = parent::create($parameters);
+        \assert($object instanceof Template);
+        return $object;
     }
 
     /**

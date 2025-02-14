@@ -17,6 +17,7 @@ use wcf\system\WCF;
  *
  * @method  SmileyEditor[]  getObjects()
  * @method  SmileyEditor    getSingleObject()
+ * @property-read SmileyEditor[] $objects
  */
 class SmileyAction extends AbstractDatabaseObjectAction implements ISortableAction
 {
@@ -120,7 +121,7 @@ class SmileyAction extends AbstractDatabaseObjectAction implements ISortableActi
     public function validateUpdatePosition()
     {
         // validate permissions
-        if (\is_array($this->permissionsUpdate) && \count($this->permissionsUpdate)) {
+        if ($this->permissionsUpdate !== []) {
             WCF::getSession()->checkPermissions($this->permissionsUpdate);
         } else {
             throw new PermissionDeniedException();

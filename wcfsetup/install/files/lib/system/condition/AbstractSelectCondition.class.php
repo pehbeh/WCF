@@ -32,7 +32,7 @@ abstract class AbstractSelectCondition extends AbstractSingleFieldCondition
      * value of the "no selection" option
      * @var string
      */
-    const NO_SELECTION_VALUE = -1;
+    const NO_SELECTION_VALUE = '-1';
 
     /**
      * @inheritDoc
@@ -119,7 +119,7 @@ abstract class AbstractSelectCondition extends AbstractSingleFieldCondition
     public function readFormParameters()
     {
         if (isset($_POST[$this->fieldName])) {
-            $this->fieldValue = \intval($_POST[$this->fieldName]);
+            $this->fieldValue = (string)\intval($_POST[$this->fieldName]);
         }
     }
 

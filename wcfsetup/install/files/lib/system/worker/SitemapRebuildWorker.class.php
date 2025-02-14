@@ -58,7 +58,7 @@ class SitemapRebuildWorker extends AbstractRebuildDataWorker
 
     /**
      * The current temporary file as File object.
-     * @var File
+     * @var ?File
      */
     public $file;
 
@@ -121,7 +121,7 @@ class SitemapRebuildWorker extends AbstractRebuildDataWorker
                         }
 
                         $objectCount = $list->countObjects();
-                        $iterations = \ceil($objectCount / $this->limit);
+                        $iterations = (int)\ceil($objectCount / $this->limit);
                         if (($objectCount % $this->limit) === 0) {
                             // We need an additional iteration to finalize the sitemap.
                             $iterations++;

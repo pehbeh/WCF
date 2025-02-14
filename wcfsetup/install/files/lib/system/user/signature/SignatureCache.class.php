@@ -23,7 +23,7 @@ class SignatureCache extends SingletonFactory
 
     /**
      * cached signatures
-     * @var string
+     * @var array<int, string>
      */
     protected $signatures = [];
 

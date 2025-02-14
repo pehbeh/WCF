@@ -738,7 +738,7 @@ final class DatabaseTableChangeProcessor
     /**
      * Deletes a log entry.
      *
-     * @param array{sqlTable: string, ?sqlColumn: string, ?sqlIndex: string} $data
+     * @param array{sqlTable: string, sqlColumn?: string, sqlIndex?: string} $data
      */
     private function deleteLog(array $data): void
     {
@@ -897,7 +897,7 @@ final class DatabaseTableChangeProcessor
     /**
      * Finalizes a log entry after the relevant change has been executed.
      *
-     * @param array{sqlTable: string, ?sqlColumn: string, ?sqlIndex: string} $data
+     * @param array{sqlTable: string, sqlColumn?: string, sqlIndex?: string} $data
      */
     private function finalizeLog(array $data): void
     {
@@ -1045,7 +1045,7 @@ final class DatabaseTableChangeProcessor
     /**
      * Prepares a log entry before the relevant change has been executed.
      *
-     * @param array{sqlTable: string, ?sqlColumn: string, ?sqlIndex: string} $data
+     * @param array{sqlTable: string, sqlColumn?: string, sqlIndex?: string} $data
      */
     private function prepareLog(array $data): void
     {
@@ -1127,7 +1127,7 @@ final class DatabaseTableChangeProcessor
                         $abbreviation = \substr(
                             $abbreviationWithWcfNumber,
                             0,
-                            \strlen($abbreviationWithWcfNumber) - \strlen(\WCF_N)
+                            \strlen($abbreviationWithWcfNumber) - \strlen((string)\WCF_N)
                         );
 
                         // Throws an error only if the table has an unknown prefix.

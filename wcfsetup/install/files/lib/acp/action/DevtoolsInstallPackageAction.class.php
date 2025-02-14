@@ -53,7 +53,6 @@ final class DevtoolsInstallPackageAction extends InstallPackageAction
 
                 default:
                     throw new IllegalLinkException();
-                    break;
             }
         }
 

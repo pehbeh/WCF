@@ -159,7 +159,7 @@ final class RssFeedChannel
             $atomLink->addAttribute('type', 'application/rss+xml');
         }
 
-        $element->addChild('ttl', $this->ttl);
+        $element->addChild('ttl', (string)$this->ttl);
         $element->addChild('generator', 'WoltLab Suite' . (SHOW_VERSION_NUMBER ? ' ' . \WCF_VERSION : ''));
 
         foreach ($this->categories as $category) {

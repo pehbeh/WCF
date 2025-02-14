@@ -38,6 +38,7 @@ use wcf\system\WCF;
  *
  * @method  ArticleEditor[] getObjects()
  * @method  ArticleEditor   getSingleObject()
+ * @property-read ArticleEditor[] $objects
  */
 class ArticleAction extends AbstractDatabaseObjectAction
 {

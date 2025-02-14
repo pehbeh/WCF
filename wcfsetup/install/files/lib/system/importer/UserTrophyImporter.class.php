@@ -37,6 +37,7 @@ class UserTrophyImporter extends AbstractImporter
             return 0;
         }
 
+        /** @var UserTrophy $userTrophy */
         $userTrophy = UserTrophyEditor::create($data);
 
         if (isset($additionalData['i18n']['description'])) {

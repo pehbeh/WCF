@@ -5,7 +5,6 @@ namespace wcf\system\email;
 use ParagonIE\ConstantTime\Hex;
 use wcf\system\application\ApplicationHandler;
 use wcf\system\background\BackgroundQueueHandler;
-use wcf\system\background\job\AbstractBackgroundJob;
 use wcf\system\background\job\EmailDeliveryBackgroundJob;
 use wcf\system\email\mime\AbstractMimePart;
 use wcf\system\email\mime\IRecipientAwareMimePart;
@@ -25,13 +24,13 @@ class Email
 {
     /**
      * From header
-     * @var Mailbox
+     * @var ?Mailbox
      */
     protected $sender;
 
     /**
      * Reply-To header
-     * @var Mailbox
+     * @var ?Mailbox
      */
     protected $replyTo;
 
@@ -43,7 +42,7 @@ class Email
 
     /**
      * Message-Id header
-     * @var string
+     * @var ?string
      */
     protected $messageID;
 
@@ -61,21 +60,21 @@ class Email
 
     /**
      * List-Id header
-     * @var string
+     * @var ?string
      * @since 5.3
      */
     protected $listId;
 
     /**
      * Human readable part of the List-Id header
-     * @var string
+     * @var ?string
      * @since 5.3
      */
     protected $listIdHuman;
 
     /**
      * List-Unsubscribe URI
-     * @var string
+     * @var ?string
      * @since 5.3
      */
     protected $listUnsubscribe;
@@ -89,7 +88,7 @@ class Email
 
     /**
      * Date header
-     * @var \DateTime
+     * @var ?\DateTime
      */
     protected $date;
 
@@ -107,13 +106,13 @@ class Email
 
     /**
      * The body of this Email.
-     * @var AbstractMimePart
+     * @var ?AbstractMimePart
      */
     protected $body;
 
     /**
      * Mail host for use in the Message-Id
-     * @var string
+     * @var ?string
      */
     private static $host;
 
@@ -290,7 +289,7 @@ class Email
     /**
      * Sets the list-label part of the email's 'List-Id'.
      *
-     * @param string $listId
+     * @param ?string $listId
      * @param string $humanReadable
      * @throws  \DomainException
      * @since 5.3
@@ -332,7 +331,7 @@ class Email
     public function getListID()
     {
         if ($this->listId === null) {
-            return;
+            return null;
         }
 
         return ($this->listIdHuman ? $this->listIdHuman . ' ' : '') . '<' . $this->listId . '.list-id.' . self::getHost() . '>';
@@ -344,7 +343,7 @@ class Email
      * If $supportsOneClick is set to true the 'List-Unsubscribe-Post' header
      * with the value 'List-Unsubscribe=One-Click' is added.
      *
-     * @param string $uri
+     * @param ?string $uri
      * @param bool $supportsOneClick
      * @since 5.3
      */
@@ -645,10 +644,8 @@ class Email
                 return \quoted_printable_encode(
                     \str_replace("\n", "\r\n", StringUtil::unifyNewlines($this->body->getContent()))
                 );
-                break;
             case 'base64':
                 return \chunk_split(\base64_encode($this->body->getContent()));
-                break;
             case '':
                 return $this->body->getContent();
         }
@@ -657,9 +654,9 @@ class Email
     }
 
     /**
-     * Returns needed AbstractBackgroundJobs to deliver this email to every recipient.
+     * Returns needed EmailDeliveryBackgroundJob to deliver this email to every recipient.
      *
-     * @return  AbstractBackgroundJob[]
+     * @return  EmailDeliveryBackgroundJob[]
      */
     public function getJobs()
     {

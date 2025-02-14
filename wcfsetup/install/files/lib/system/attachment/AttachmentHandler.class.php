@@ -347,7 +347,7 @@ class AttachmentHandler implements \Countable
     {
         return $this->getFileProcessor()->toHtmlElement(
             $this->objectType->objectType,
-            $this->objectID ?? 0,
+            $this->objectID,
             \implode(',', $this->tmpHash),
             $this->parentObjectID
         );
@@ -356,7 +356,9 @@ class AttachmentHandler implements \Countable
     private function getFileProcessor(): AttachmentFileProcessor
     {
         if (!isset($this->fileProcessor)) {
-            $this->fileProcessor = FileProcessor::getInstance()->getProcessorByName('com.woltlab.wcf.attachment');
+            $fileProcessor = FileProcessor::getInstance()->getProcessorByName('com.woltlab.wcf.attachment');
+            \assert($fileProcessor instanceof AttachmentFileProcessor);
+            $this->fileProcessor = $fileProcessor;
         }
 
         return $this->fileProcessor;

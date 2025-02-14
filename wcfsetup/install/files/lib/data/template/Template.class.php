@@ -20,6 +20,7 @@ use wcf\system\WCF;
  * @property-read   string $application        abbreviation of the application to which the template belongs
  * @property-read   int|null $templateGroupID    id of the template group to which the template belongs or `null` if the template belongs to no template group
  * @property-read   int $lastModificationTime   timestamp at which the template has been edited the last time
+ * @property-read   string $templateGroupFolderName
  */
 class Template extends DatabaseObject
 {

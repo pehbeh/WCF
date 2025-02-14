@@ -186,10 +186,13 @@ class ListMetacodeConverter extends AbstractMetacodeConverter
      */
     protected function isInsideList(\DOMNode $node)
     {
-        /** @var \DOMElement $parent */
         $parent = $node;
         while ($parent = $parent->parentNode) {
-            if ($parent->nodeName === 'woltlab-metacode' && $parent->getAttribute('data-name') === 'list') {
+            if (
+                $parent->nodeName === 'woltlab-metacode'
+                && $parent instanceof \DOMElement
+                && $parent->getAttribute('data-name') === 'list'
+            ) {
                 return true;
             }
         }

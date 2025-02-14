@@ -31,9 +31,9 @@ interface ISearchEngine
      * @param string $orderBy
      * @param int $limit
      * @return  array{
-     *              fulltextCondition: ?PreparedStatementConditionBuilder
-     *              searchIndexCondition: ?PreparedStatementConditionBuilder
-     *              sql: string
+     *              fulltextCondition: ?PreparedStatementConditionBuilder,
+     *              searchIndexCondition: ?PreparedStatementConditionBuilder,
+     *              sql: string,
      *          }
      */
     public function getInnerJoin(
