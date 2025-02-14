@@ -2,12 +2,14 @@
 
 namespace wcf\system\interaction\admin;
 
+use wcf\acp\form\StyleExportForm;
 use wcf\data\style\Style;
 use wcf\event\interaction\admin\StyleInteractionCollecting;
 use wcf\system\event\EventHandler;
 use wcf\system\interaction\AbstractInteractionProvider;
 use wcf\system\interaction\DeleteInteraction;
 use wcf\system\interaction\InteractionConfirmationType;
+use wcf\system\interaction\LinkInteraction;
 use wcf\system\interaction\RpcInteraction;
 use wcf\system\WCF;
 
@@ -42,7 +44,8 @@ final class StyleInteractions extends AbstractInteractionProvider
                     ['style' => $object]
                 ),
                 invalidatesAllItems: true
-            )
+            ),
+            new LinkInteraction('export', StyleExportForm::class, 'wcf.acp.style.exportStyle')
         ]);
 
         EventHandler::getInstance()->fire(
