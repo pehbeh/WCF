@@ -2,7 +2,6 @@
 
 <link href="{@$__wcf->getPath()}acp/style/acpStyleEditor.css?v={LAST_UPDATE_TIME}" type="text/css" rel="stylesheet">
 
-{js application='wcf' acp='true' file='WCF.ACP.Style'}
 {include file='shared_colorPickerJavaScript'}
 
 <script data-relocate="true">
@@ -16,14 +15,6 @@
 	});
 	
 	$(function() {
-		{if $action == 'edit'}
-			new WCF.ACP.Style.CopyStyle({@$style->styleID});
-			
-			WCF.Language.addObject({
-				'wcf.acp.style.copyStyle.confirmMessage': '{jslang}wcf.acp.style.copyStyle.confirmMessage{/jslang}'
-			});
-		{/if}
-		
 		$('.jsUnitSelect').change(function(event) {
 			var $target = $(event.currentTarget);
 			$target.prev().attr('step', (($target.val() === 'em' || $target.val() === 'rem') ? '0.01' : '1'));
