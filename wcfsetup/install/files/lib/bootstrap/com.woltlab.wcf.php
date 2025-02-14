@@ -150,6 +150,7 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\CloseReport());
             $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\DeleteContent());
             $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\EnableContent());
+            $event->register(new \wcf\system\endpoint\controller\core\styles\AddDarkMode());
             $event->register(new \wcf\system\endpoint\controller\core\styles\CopyStyle());
             $event->register(new \wcf\system\endpoint\controller\core\styles\DeleteStyle());
             $event->register(new \wcf\system\endpoint\controller\core\styles\DisableStyle());

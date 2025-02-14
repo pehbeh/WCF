@@ -45,7 +45,15 @@ final class StyleInteractions extends AbstractInteractionProvider
                 ),
                 invalidatesAllItems: true
             ),
-            new LinkInteraction('export', StyleExportForm::class, 'wcf.acp.style.exportStyle')
+            new LinkInteraction('export', StyleExportForm::class, 'wcf.acp.style.exportStyle'),
+            new RpcInteraction(
+                'add-dark-mode',
+                'core/styles/%s/add-dark-mode',
+                'wcf.acp.style.addDarkMode',
+                InteractionConfirmationType::Custom,
+                'wcf.acp.style.addDarkMode.question',
+                static fn(Style $style) => !$style->hasDarkMode && $style->isTainted
+            )
         ]);
 
         EventHandler::getInstance()->fire(
