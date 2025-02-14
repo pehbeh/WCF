@@ -2,7 +2,7 @@ includes:
     - phpstan-baseline.neon
 
 parameters:
-    level: 5
+    level: 6
     paths:
         - wcfsetup/install/files
     excludePaths:
@@ -12,6 +12,7 @@ parameters:
         - constants.php
     ignoreErrors:
         - identifier: match.unhandled
+        - identifier: method.unused
         - identifier: new.static
         - identifier: trait.unused
     universalObjectCratesClasses:

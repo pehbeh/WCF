@@ -31,17 +31,15 @@ final class StringUtil
     /**
      * @deprecated 5.5 - Use \sha1() directly.
      */
-    public static function getHash($value)
+    public static function getHash(string $value): string
     {
         return \sha1($value);
     }
 
     /**
      * Returns a 40 character hexadecimal string generated using a CSPRNG.
-     *
-     * @return  string
      */
-    public static function getRandomID()
+    public static function getRandomID(): string
     {
         return Hex::encode(\random_bytes(20));
     }
@@ -73,10 +71,8 @@ final class StringUtil
 
     /**
      * Converts dos to unix newlines.
-     *
-     * @param string $string
      */
-    public static function unifyNewlines($string): string
+    public static function unifyNewlines(string $string): string
     {
         return \preg_replace("%(\r\n)|(\r)%", "\n", $string);
     }
@@ -84,10 +80,8 @@ final class StringUtil
     /**
      * Removes Unicode whitespace characters from the beginning
      * and ending of the given string.
-     *
-     * @param string $text
      */
-    public static function trim($text): string
+    public static function trim(string $text): string
     {
         // $boundaryCharacters can always be removed when appearing at either the beginning
         // or the end of the input.
@@ -142,13 +136,11 @@ final class StringUtil
 
     /**
      * Converts html special characters.
-     *
-     * @param string $string
      */
-    public static function encodeHTML($string): string
+    public static function encodeHTML(string $string): string
     {
         return @\htmlspecialchars(
-            (string)$string,
+            $string,
             \ENT_QUOTES | \ENT_SUBSTITUTE | \ENT_HTML401,
             'UTF-8'
         );
@@ -156,10 +148,8 @@ final class StringUtil
 
     /**
      * Converts javascript special characters.
-     *
-     * @param string $string
      */
-    public static function encodeJS($string): string
+    public static function encodeJS(string $string): string
     {
         $string = self::unifyNewlines($string);
 
@@ -168,10 +158,8 @@ final class StringUtil
 
     /**
      * Decodes html entities.
-     *
-     * @param string $string
      */
-    public static function decodeHTML($string): string
+    public static function decodeHTML(string $string): string
     {
         $string = \str_ireplace('&nbsp;', ' ', $string); // convert non-breaking spaces to ascii 32; not ascii 160
 
@@ -244,10 +232,8 @@ final class StringUtil
 
     /**
      * Replaces the MINUS-HYPHEN with the MINUS SIGN.
-     *
-     * @param mixed $number
      */
-    public static function formatNegative($number): string
+    public static function formatNegative(string $number): string
     {
         return \str_replace('-', self::MINUS, $number);
     }
@@ -255,9 +241,9 @@ final class StringUtil
     /**
      * Alias to php ucfirst() function with multibyte support.
      *
-     * @param string $string
+     * @deprecated 6.2 Use `\mb_ucfirst()` instead
      */
-    public static function firstCharToUpperCase($string): string
+    public static function firstCharToUpperCase(string $string): string
     {
         return \mb_strtoupper(\mb_substr($string, 0, 1)) . \mb_substr($string, 1);
     }
@@ -265,19 +251,17 @@ final class StringUtil
     /**
      * Alias to php lcfirst() function with multibyte support.
      *
-     * @param string $string
+     * @deprecated 6.2 Use `\mb_lcfirst()` instead
      */
-    public static function firstCharToLowerCase($string): string
+    public static function firstCharToLowerCase(string $string): string
     {
         return \mb_strtolower(\mb_substr($string, 0, 1)) . \mb_substr($string, 1);
     }
 
     /**
      * Alias to php mb_convert_case() function.
-     *
-     * @param string $string
      */
-    public static function wordsToUpperCase($string): string
+    public static function wordsToUpperCase(string $string): string
     {
         return \mb_convert_case($string, \MB_CASE_TITLE);
     }
@@ -287,13 +271,8 @@ final class StringUtil
      *
      * This function is considered to be slow, if $search contains
      * only ASCII characters, please use str_ireplace() instead.
-     *
-     * @param string $search
-     * @param string $replace
-     * @param string $subject
-     * @param int $count
      */
-    public static function replaceIgnoreCase($search, $replace, $subject, &$count = 0): string
+    public static function replaceIgnoreCase(string $search, string $replace, string $subject, int &$count = 0): string
     {
         $startPos = \mb_strpos(\mb_strtolower($subject), \mb_strtolower($search));
         if ($startPos === false) {
@@ -312,9 +291,10 @@ final class StringUtil
     }
 
     /**
+     * @return list<string>
      * @deprecated 5.5 Use \mb_str_split() instead.
      */
-    public static function split($string, $length = 1)
+    public static function split(string $string, int $length = 1): array
     {
         $result = [];
         for ($i = 0, $max = \mb_strlen($string); $i < $max; $i += $length) {
@@ -327,7 +307,7 @@ final class StringUtil
     /**
      * @deprecated 5.5 Use \str_starts_with() instead. If a case-insensitive comparison is desired, manually call \mb_strtolower on both parameters.
      */
-    public static function startsWith($haystack, $needle, $ci = false): bool
+    public static function startsWith(string $haystack, string $needle, bool $ci = false): bool
     {
         if ($ci) {
             $haystack = \mb_strtolower($haystack);
@@ -340,7 +320,7 @@ final class StringUtil
     /**
      * @deprecated 5.5 Use \str_ends_with() instead. If a case-insensitive comparison is desired, manually call \mb_strtolower on both parameters.
      */
-    public static function endsWith($haystack, $needle, $ci = false): bool
+    public static function endsWith(string $haystack, string $needle, bool $ci = false): bool
     {
         if ($ci) {
             $haystack = \mb_strtolower($haystack);
@@ -356,13 +336,8 @@ final class StringUtil
 
     /**
      * Alias to php str_pad function with multibyte support.
-     *
-     * @param string $input
-     * @param int $padLength
-     * @param string $padString
-     * @param int $padType
      */
-    public static function pad($input, $padLength, $padString = ' ', $padType = \STR_PAD_RIGHT): string
+    public static function pad(string $input, int $padLength, string  $padString = ' ', int $padType = \STR_PAD_RIGHT): string
     {
         $additionalPadding = \strlen($input) - \mb_strlen($input);
 
@@ -371,11 +346,8 @@ final class StringUtil
 
     /**
      * Unescapes escaped characters in a string.
-     *
-     * @param string $string
-     * @param string $chars
      */
-    public static function unescape($string, $chars = '"'): string
+    public static function unescape(string $string, string $chars = '"'): string
     {
         for ($i = 0, $j = \strlen($chars); $i < $j; $i++) {
             $string = \str_replace('\\' . $chars[$i], $chars[$i], $string);
@@ -386,10 +358,8 @@ final class StringUtil
 
     /**
      * Takes a numeric HTML entity value and returns the appropriate UTF-8 bytes.
-     *
-     * @param int $dec html entity value
      */
-    public static function getCharacter($dec): string
+    public static function getCharacter(int $dec): string
     {
         if ($dec < 128) {
             $utf = \chr($dec);
@@ -408,11 +378,8 @@ final class StringUtil
     /**
      * Converts UTF-8 to Unicode
      * @see     http://www1.tip.nl/~t876506/utf8tbl.html
-     *
-     * @param string $c
-     * @return  int
      */
-    public static function getCharValue($c)
+    public static function getCharValue(string $c): int
     {
         $ud = 0;
         if (\ord($c[0]) <= 127) {
@@ -442,10 +409,8 @@ final class StringUtil
 
     /**
      * Returns html entities of all characters in the given string.
-     *
-     * @param string $string
      */
-    public static function encodeAllChars($string): string
+    public static function encodeAllChars(string $string): string
     {
         $result = '';
         for ($i = 0, $j = \mb_strlen($string); $i < $j; $i++) {
@@ -458,10 +423,8 @@ final class StringUtil
 
     /**
      * Returns true if the given string contains only ASCII characters.
-     *
-     * @param string $string
      */
-    public static function isASCII($string): bool
+    public static function isASCII(string $string): bool
     {
         return !!\preg_match('/^[\x00-\x7F]*$/', $string);
     }
@@ -469,11 +432,8 @@ final class StringUtil
     /**
      * Returns true if the given string is utf-8 encoded.
      * @see     http://www.w3.org/International/questions/qa-forms-utf-8
-     *
-     * @param string $string
-     * @return  bool
      */
-    public static function isUTF8($string): bool
+    public static function isUTF8(string $string): bool
     {
         return !!\preg_match('/^(
 				[\x09\x0A\x0D\x20-\x7E]*		# ASCII
@@ -489,10 +449,8 @@ final class StringUtil
 
     /**
      * Escapes the closing cdata tag.
-     *
-     * @param string $string
      */
-    public static function escapeCDATA($string): string
+    public static function escapeCDATA(string $string): string
     {
         return \str_replace(']]>', ']]]]><![CDATA[>', $string);
     }
@@ -500,17 +458,15 @@ final class StringUtil
     /**
      * @deprecated 6.0 Use `\mb_convert_encoding()` directly.
      */
-    public static function convertEncoding($inCharset, $outCharset, $string): string
+    public static function convertEncoding(string $inCharset, string $outCharset, string $string): string
     {
         return \mb_convert_encoding($string, $outCharset, $inCharset);
     }
 
     /**
      * Strips HTML tags from a string.
-     *
-     * @param string $string
      */
-    public static function stripHTML($string): string
+    public static function stripHTML(string $string): string
     {
         $string = \preg_replace('~<!--(.*?)-->~', '', $string);
 
@@ -533,11 +489,8 @@ final class StringUtil
 
     /**
      * Returns false if the given word is forbidden by given word filter.
-     *
-     * @param string $word
-     * @param string $filter
      */
-    public static function executeWordFilter($word, $filter): bool
+    public static function executeWordFilter(string $word, string $filter): bool
     {
         $filter = self::trim($filter);
         $word = \mb_strtolower($word);
@@ -569,14 +522,13 @@ final class StringUtil
 
     /**
      * Truncates the given string to a certain number of characters.
-     *
-     * @param string $string string which shall be truncated
-     * @param int $length string length after truncating
-     * @param string $etc string to append when $string is truncated
-     * @param bool $breakWords should words be broken in the middle
      */
-    public static function truncate($string, $length = 80, $etc = self::HELLIP, $breakWords = false): string
-    {
+    public static function truncate(
+        string $string,
+        int $length = 80,
+        string $etc = self::HELLIP,
+        bool $breakWords = false
+    ): string {
         if ($length == 0) {
             return '';
         }
@@ -596,14 +548,13 @@ final class StringUtil
 
     /**
      * Truncates a string containing HTML code and keeps the HTML syntax intact.
-     *
-     * @param string $string string which shall be truncated
-     * @param int $length string length after truncating
-     * @param string $etc ending string which will be appended after truncating
-     * @param bool $breakWords if false words will not be split and the return string might be shorter than $length
      */
-    public static function truncateHTML($string, $length = 500, $etc = self::HELLIP, $breakWords = false): string
-    {
+    public static function truncateHTML(
+        string $string,
+        int $length = 500,
+        string $etc = self::HELLIP,
+        bool $breakWords = false
+    ): string {
         if (\mb_strlen(self::stripHTML($string)) <= $length) {
             return $string;
         }
@@ -696,14 +647,13 @@ final class StringUtil
 
     /**
      * Generates an anchor tag from given URL.
-     *
-     * @param string $url
-     * @param string $title
-     * @param bool $encodeTitle
-     * @param bool $isUgc true to add rel=ugc to the anchor tag
      */
-    public static function getAnchorTag($url, $title = '', $encodeTitle = true, $isUgc = false): string
-    {
+    public static function getAnchorTag(
+        string $url,
+        string $title = '',
+        bool $encodeTitle = true,
+        bool $isUgc = false
+    ): string {
         $url = self::trim($url);
 
         // cut visible url
@@ -729,11 +679,9 @@ final class StringUtil
     /**
      * Generates the attributes for an anchor tag from given URL.
      *
-     * @param string $url
-     * @param bool $isUgc true to add rel=ugc to the attributes
      * @since       5.3
      */
-    public static function getAnchorTagAttributes($url, $isUgc = false): string
+    public static function getAnchorTagAttributes(string $url, bool $isUgc = false): string
     {
         $external = true;
         if (ApplicationHandler::getInstance()->isInternalURL($url)) {
@@ -761,24 +709,16 @@ final class StringUtil
 
     /**
      * Splits given string into smaller chunks.
-     *
-     * @param string $string
-     * @param int $length
-     * @param string $break
      */
-    public static function splitIntoChunks($string, $length = 75, $break = "\r\n"): string
+    public static function splitIntoChunks(string $string, int $length = 75, string $break = "\r\n"): string
     {
         return \mb_ereg_replace('.{' . $length . '}', "\\0" . $break, $string);
     }
 
     /**
      * Simple multi-byte safe wordwrap() function.
-     *
-     * @param string $string
-     * @param int $width
-     * @param string $break
      */
-    public static function wordwrap($string, $width = 50, $break = ' '): string
+    public static function wordwrap(string $string, int $width = 50, string $break = ' '): string
     {
         $result = '';
         $substrings = \explode($break, $string);
@@ -811,10 +751,8 @@ final class StringUtil
 
     /**
      * Shortens numbers larger than 1000 by using unit suffixes.
-     *
-     * @param int $number
      */
-    public static function getShortUnit($number): string
+    public static function getShortUnit(int $number): string
     {
         $unitSuffix = '';
 
@@ -844,10 +782,9 @@ final class StringUtil
      * that the separator is just a comma, not a combination of whitespace and
      * a comma.
      *
-     * @param string $string
      * @since   3.1
      */
-    public static function normalizeCsv($string): string
+    public static function normalizeCsv(string $string): string
     {
         return \implode(',', ArrayUtil::trim(\explode(',', $string)));
     }

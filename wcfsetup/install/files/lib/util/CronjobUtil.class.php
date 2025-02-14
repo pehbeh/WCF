@@ -11,34 +11,31 @@ final class CronjobUtil
 {
     /**
      * indicates if day of month is restricted (not '*')
-     * @var bool
      */
-    protected static $domRestricted = false;
+    private static bool $domRestricted = false;
 
     /**
      * indicates if day of week is restricted (not '*')
-     * @var bool
      */
-    protected static $dowRestricted = false;
+    private static bool $dowRestricted = false;
 
     /**
      * result date
      * @var int[]
      */
-    protected static $result = [];
+    private static array $result = [];
 
     /**
      * time base used as reference for finding the next execution time
-     * @var int
      */
-    protected static $timeBase = 0;
+    private static int $timeBase = 0;
 
     /**
      * valid ranges for each known field (range for 'day of month' is missing
      * since it varies from month to month)
      * @var array<string, array{0: int, 1: int}>
      */
-    public static $ranges = [
+    public static array $ranges = [
         'minute' => [0, 59],
         'hour' => [0, 23],
         'dom' => [1, 31],
@@ -48,17 +45,15 @@ final class CronjobUtil
 
     /**
      * Calculates timestamp for next execution based on cron-like expressions and a given time base.
-     *
-     * @param string $minute
-     * @param string $hour
-     * @param string $dom
-     * @param string $month
-     * @param string $dow
-     * @param int $timeBase
-     * @return  int
      */
-    public static function calculateNextExec($minute, $hour, $dom, $month, $dow, $timeBase = TIME_NOW)
-    {
+    public static function calculateNextExec(
+        string $minute,
+        string $hour,
+        string $dom,
+        string $month,
+        string $dow,
+        int $timeBase = TIME_NOW
+    ): int {
         // using the native `date()` and `mktime()` functions is dangerous
         // unless we explicitly set the correct timezone
         $originalTimezone = \date_default_timezone_get();
@@ -146,9 +141,9 @@ final class CronjobUtil
     /**
      * Calculates the date of next execution.
      *
-     * @param array $values
+     * @param mixed[] $values
      */
-    protected static function calculateTime(array &$values)
+    private static function calculateTime(array &$values): void
     {
         self::calculateDay($values);
     }
@@ -156,12 +151,10 @@ final class CronjobUtil
     /**
      * Calculates the next month and year to match given criteria.
      *
-     * @param int $month
-     * @param int $year
-     * @param array $values
-     * @return      array
+     * @param mixed[] $values
+     * @return int[]
      */
-    protected static function calculateMonth($month, $year, array &$values)
+    private static function calculateMonth(int $month, int $year, array &$values): array
     {
         $index = self::findKey($month, $values['month']);
 
@@ -183,10 +176,10 @@ final class CronjobUtil
      * of month, and day of week. If both fields are restricted , that is not '*', the
      * command will be run when either field matches the current time. -- crontab(5)
      *
-     * @param array $values
+     * @param mixed[] $values
      * @see     \wcf\util\CronjobUtil::getDom()
      */
-    protected static function calculateDay(array &$values)
+    private static function calculateDay(array &$values): void
     {
         $addAnDay = self::calculateHour($values, self::$timeBase);
         $timeBase = self::$timeBase;
@@ -262,13 +255,10 @@ final class CronjobUtil
     /**
      * Calculates the date of next execution based upon a given set for day of week.
      *
-     * @param int $month
-     * @param int $year
-     * @param array $values
-     * @param int $day
-     * @return  array
+     * @param mixed[] $values
+     * @return int[]
      */
-    protected static function calculateDow($month, $year, array &$values, $day = 1)
+    private static function calculateDow(int $month, int $year, array &$values, int $day = 1): array
     {
         $days = \date('t', \mktime(0, 0, 1, $month, $day, $year));
 
@@ -294,13 +284,10 @@ final class CronjobUtil
     /**
      * Calculates the date of next execution based upon a given set for day of month.
      *
-     * @param int $month
-     * @param int $year
-     * @param array $values
-     * @param int $day
-     * @return  array
+     * @param mixed[] $values
+     * @return int[]
      */
-    protected static function calculateDom($month, $year, array &$values, $day = 1)
+    private static function calculateDom(int $month, int $year, array &$values, int $day = 1): array
     {
         $days = \date('t', \mktime(0, 0, 1, $month, $day, $year));
 
@@ -324,11 +311,9 @@ final class CronjobUtil
      * Calculates hour of next execution. Returns true if hour-declaration
      * has already elapsed, thus requiring at least one day to be added.
      *
-     * @param array $values
-     * @param int $timeBase
-     * @return  bool
+     * @param mixed[] $values
      */
-    protected static function calculateHour(array &$values, &$timeBase)
+    private static function calculateHour(array &$values, int &$timeBase): bool
     {
         $addAnDay = false;
 
@@ -367,12 +352,9 @@ final class CronjobUtil
      * Calculates minutes of next execution. Returns true if minute-declaration
      * has already elapsed, thus requiring at least one hour to be added.
      *
-     * @param array $values
-     * @param int $timeBase
-     * @param bool $addAnDay
-     * @return  bool
+     * @param mixed[] $values
      */
-    protected static function calculateMinute(array &$values, &$timeBase, $addAnDay)
+    private static function calculateMinute(array &$values, int &$timeBase, bool $addAnDay): bool
     {
         $addAnHour = false;
 
@@ -401,12 +383,9 @@ final class CronjobUtil
      * needle. If $continue is not set to false and foreach-loop is out of bounds,
      * then the array-index '0' is returned, referring the first item.
      *
-     * @param int $needle
-     * @param array $haystack
-     * @param bool $continue
-     * @return  mixed
+     * @param mixed[] $haystack
      */
-    protected static function findKey($needle, array &$haystack, $continue = true)
+    private static function findKey(int $needle, array &$haystack, bool $continue = true): int|string|bool
     {
         $index = \array_search($needle, $haystack);
 
@@ -429,11 +408,9 @@ final class CronjobUtil
     /**
      * Calculates all values matching possible expressions.
      *
-     * @param string $fieldName
-     * @param string $fieldValue
-     * @return  array
+     * @return int[]
      */
-    protected static function calculateValue($fieldName, $fieldValue)
+    private static function calculateValue(string $fieldName, string $fieldValue): array
     {
         $values = [];
 
@@ -467,10 +444,9 @@ final class CronjobUtil
     /**
      * Tries to parse list items separated by a comma.
      *
-     * @param string $fieldValue
-     * @return  array
+     * @return list<string>
      */
-    protected static function getListItems($fieldValue)
+    private static function getListItems(string $fieldValue): array
     {
         if (\str_contains($fieldValue, ',')) {
             return \explode(',', $fieldValue);
@@ -482,14 +458,13 @@ final class CronjobUtil
     /**
      * Parses a possible range of values including a step value.
      *
-     * @param string $value
-     * @return  array
+     * @return list<int>
      */
-    protected static function getRanges($value)
+    private static function getRanges(string $value): array
     {
         // this is a single value
         if (!\str_contains($value, '-')) {
-            return [$value];
+            return [(int)$value];
         }
 
         $step = 1;
@@ -507,12 +482,9 @@ final class CronjobUtil
     /**
      * Calculates all values for a given range.
      *
-     * @param int $startValue
-     * @param int $endValue
-     * @param int $step
-     * @return  array
+     * @return list<int>
      */
-    protected static function calculateRange($startValue, $endValue, $step = 1)
+    private static function calculateRange(int $startValue, int $endValue, int $step = 1): array
     {
         $values = [];
 
@@ -525,15 +497,14 @@ final class CronjobUtil
 
     /**
      * Validates all cronjob attributes.
-     *
-     * @param string $startMinute
-     * @param string $startHour
-     * @param string $startDom
-     * @param string $startMonth
-     * @param string $startDow
      */
-    public static function validate($startMinute, $startHour, $startDom, $startMonth, $startDow)
-    {
+    public static function validate(
+        string $startMinute,
+        string $startHour,
+        string $startDom,
+        string $startMonth,
+        string $startDow
+    ): void {
         self::validateAttribute('startMinute', $startMinute);
         self::validateAttribute('startHour', $startHour);
         self::validateAttribute('startDom', $startDom);
@@ -544,11 +515,9 @@ final class CronjobUtil
     /**
      * Validates a cronjob attribute.
      *
-     * @param string $name
-     * @param string $value
      * @throws  SystemException
      */
-    public static function validateAttribute($name, $value)
+    public static function validateAttribute(string $name, string $value): void
     {
         if ($value === '') {
             throw new SystemException("invalid value '" . $value . "' given for cronjob attribute '" . $name . "'");

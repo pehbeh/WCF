@@ -24,6 +24,7 @@ namespace wcf\util;
  *  query: string,
  *  fragment: string,
  * }
+ * @implements \ArrayAccess<int|string, int|string>
  */
 final class Url implements \ArrayAccess
 {
@@ -125,7 +126,7 @@ final class Url implements \ArrayAccess
     }
 
     #[\Override]
-    public function offsetGet(mixed $offset): mixed
+    public function offsetGet(mixed $offset): int|string
     {
         return $this->components[$this->getIndex($offset)];
     }

@@ -13,7 +13,8 @@ namespace wcf\util\exception;
 class CryptoException extends \Exception
 {
     /**
-     * @inheritDoc
+     * @param string $message
+     * @param ?\Throwable $previous
      */
     public function __construct($message, $previous = null)
     {

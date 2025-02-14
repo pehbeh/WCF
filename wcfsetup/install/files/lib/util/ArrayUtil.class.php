@@ -16,11 +16,10 @@ final class ArrayUtil
     /**
      * Applies StringUtil::trim() to all elements of the given array.
      *
-     * @param array|string $array
-     * @param bool $removeEmptyElements
-     * @return  array|string
+     * @param string[]|string $array
+     * @return string[]|string
      */
-    public static function trim($array, $removeEmptyElements = true)
+    public static function trim(array|string $array, bool $removeEmptyElements = true): array|string
     {
         if (!\is_array($array)) {
             return StringUtil::trim($array);
@@ -41,10 +40,10 @@ final class ArrayUtil
     /**
      * Applies intval() to all elements of the given array.
      *
-     * @param array|string $array
-     * @return  array|int
+     * @param string[]|string $array
+     * @return int[]|int
      */
-    public static function toIntegerArray($array)
+    public static function toIntegerArray(array|string $array): array|int
     {
         if (!\is_array($array)) {
             return \intval($array);
@@ -60,10 +59,10 @@ final class ArrayUtil
     /**
      * Converts html special characters in the given array.
      *
-     * @param array|string $array
-     * @return  array|string
+     * @param string[]|string $array
+     * @return string[]|string
      */
-    public static function encodeHTML($array)
+    public static function encodeHTML(array|string $array): array|string
     {
         if (!\is_array($array)) {
             return StringUtil::encodeHTML($array);
@@ -79,10 +78,10 @@ final class ArrayUtil
     /**
      * Applies stripslashes on all elements of the given array.
      *
-     * @param array|string $array
-     * @return  array|string
+     * @param string[]|string $array
+     * @return string[]|string
      */
-    public static function stripslashes($array)
+    public static function stripslashes(array|string $array): array|string
     {
         if (!\is_array($array)) {
             return \stripslashes($array);
@@ -98,11 +97,10 @@ final class ArrayUtil
     /**
      * Appends a suffix to all elements of the given array.
      *
-     * @param array $array
-     * @param string $suffix
-     * @return  array
+     * @param string[] $array
+     * @return string[]
      */
-    public static function appendSuffix($array, $suffix)
+    public static function appendSuffix(array $array, string $suffix): array
     {
         foreach ($array as $key => $value) {
             $array[$key] = $value . $suffix;
@@ -114,10 +112,10 @@ final class ArrayUtil
     /**
      * Converts dos to unix newlines.
      *
-     * @param array|string $array
-     * @return  array|string
+     * @param string[]|string $array
+     * @return string[]|string
      */
-    public static function unifyNewlines($array)
+    public static function unifyNewlines(array|string $array): array|string
     {
         if (!\is_array($array)) {
             return StringUtil::unifyNewlines($array);
@@ -132,14 +130,12 @@ final class ArrayUtil
 
     /**
      * Converts a array of strings to requested character encoding.
-     * @param string $inCharset
-     * @param string $outCharset
-     * @param array|string $array
-     * @return  array|string
-     * @see mb_convert_encoding()
      *
+     * @param string[]|string $array
+     * @return string[]|string
+     * @see mb_convert_encoding()
      */
-    public static function convertEncoding($inCharset, $outCharset, $array)
+    public static function convertEncoding(string $inCharset, string $outCharset, array|string $array): array|string
     {
         if (!\is_array($array)) {
             return StringUtil::convertEncoding($inCharset, $outCharset, $array);
@@ -155,12 +151,10 @@ final class ArrayUtil
     /**
      * Returns true when array1 has the same values as array2.
      *
-     * @param array $array1
-     * @param array $array2
-     * @param callable $callback
-     * @return  bool
+     * @param mixed[] $array1
+     * @param mixed[] $array2
      */
-    public static function compare(array $array1, array $array2, ?callable $callback = null)
+    public static function compare(array $array1, array $array2, ?callable $callback = null): bool
     {
         return static::compareHelper('value', $array1, $array2, $callback);
     }
@@ -168,12 +162,10 @@ final class ArrayUtil
     /**
      * Returns true when array1 has the same keys as array2.
      *
-     * @param array $array1
-     * @param array $array2
-     * @param callable $callback
-     * @return  bool
+     * @param mixed[] $array1
+     * @param mixed[] $array2
      */
-    public static function compareKey(array $array1, array $array2, ?callable $callback = null)
+    public static function compareKey(array $array1, array $array2, ?callable $callback = null): bool
     {
         return static::compareHelper('key', $array1, $array2, $callback);
     }
@@ -181,12 +173,10 @@ final class ArrayUtil
     /**
      * Compares array1 with array2 and returns true when they are identical.
      *
-     * @param array $array1
-     * @param array $array2
-     * @param callable $callback
-     * @return  bool
+     * @param mixed[] $array1
+     * @param mixed[] $array2
      */
-    public static function compareAssoc(array $array1, array $array2, ?callable $callback = null)
+    public static function compareAssoc(array $array1, array $array2, ?callable $callback = null): bool
     {
         return static::compareHelper('assoc', $array1, $array2, $callback);
     }
@@ -194,14 +184,11 @@ final class ArrayUtil
     /**
      * Does the actual comparison of the above compare methods.
      *
-     * @param string $method
-     * @param array $array1
-     * @param array $array2
-     * @param callable $callback
-     * @return  bool
+     * @param mixed[] $array1
+     * @param mixed[] $array2
      * @throws  SystemException
      */
-    protected static function compareHelper($method, array $array1, array $array2, ?callable $callback = null)
+    protected static function compareHelper(string $method, array $array1, array $array2, ?callable $callback = null): bool
     {
         // get function name
         $function = null;

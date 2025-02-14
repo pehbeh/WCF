@@ -14,7 +14,7 @@ final class MathUtil
     /**
      * @deprecated 5.5 - Use `\random_int()` or `\mt_rand()` directly.
      */
-    public static function getRandomValue($min = null, $max = null)
+    public static function getRandomValue(?int $min = null, ?int $max = null): int
     {
         // generate random value
         return ($min !== null && $max !== null) ? \mt_rand($min, $max) : \mt_rand();
@@ -24,11 +24,9 @@ final class MathUtil
      * Transforms the given latitude and longitude into cartesian coordinates
      * (x, y, z).
      *
-     * @param float $latitude
-     * @param float $longitude
-     * @return  float[]
+     * @return array{0: float, 1: float, 2: float}
      */
-    public static function latitudeLongitudeToCartesian($latitude, $longitude)
+    public static function latitudeLongitudeToCartesian(float $latitude, float $longitude): array
     {
         $lambda = $longitude * \M_PI / 180;
         $phi = $latitude * \M_PI / 180;
