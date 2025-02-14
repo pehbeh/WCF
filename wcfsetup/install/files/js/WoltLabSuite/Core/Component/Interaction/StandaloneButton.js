@@ -60,6 +60,9 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Api/Interactions/GetCo
             this.#container.addEventListener("interaction:invalidate", () => {
                 void this.#refreshContextMenu();
             });
+            this.#container.addEventListener("interaction:invalidate-all", () => {
+                void this.#refreshContextMenu();
+            });
             this.#container.addEventListener("interaction:remove", () => {
                 window.location.href = this.#redirectUrl;
             });

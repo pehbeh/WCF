@@ -2,6 +2,7 @@
 
 namespace wcf\acp\form;
 
+use wcf\acp\page\StyleListPage;
 use wcf\data\style\Style;
 use wcf\data\style\StyleAction;
 use wcf\data\style\StyleEditor;
@@ -10,7 +11,10 @@ use wcf\system\exception\IllegalLinkException;
 use wcf\system\exception\UserInputException;
 use wcf\system\file\upload\UploadFile;
 use wcf\system\file\upload\UploadHandler;
+use wcf\system\interaction\admin\StyleInteractions;
+use wcf\system\interaction\StandaloneInteractionContextMenuView;
 use wcf\system\language\I18nHandler;
+use wcf\system\request\LinkHandler;
 use wcf\system\style\StyleCompiler;
 use wcf\system\WCF;
 use wcf\util\FileUtil;
@@ -449,6 +453,11 @@ class StyleEditForm extends StyleAddForm
             'style' => $this->style,
             'styleID' => $this->styleID,
             'isDarkMode' => $this->isDarkMode,
+            'interactionContextMenu' => new StandaloneInteractionContextMenuView(
+                new StyleInteractions(),
+                $this->style,
+                LinkHandler::getInstance()->getControllerLink(StyleListPage::class)
+            ),
         ]);
     }
 }
