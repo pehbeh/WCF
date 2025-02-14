@@ -2931,8 +2931,8 @@ Abschnitte dürfen nicht leer sein und nur folgende Zeichen enthalten: <kbd>[a-z
 		<item name="wcf.acp.style.colors.toggleColorPalette"><![CDATA[Ansicht umschalten]]></item>
 		<item name="wcf.acp.style.colors.userPanel"><![CDATA[Benutzerleiste]]></item>
 		<item name="wcf.acp.style.copyright"><![CDATA[Copyright]]></item>
-		<item name="wcf.acp.style.copyStyle"><![CDATA[Stil kopieren]]></item>
-		<item name="wcf.acp.style.copyStyle.confirmMessage"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Willst du{else}Wollen Sie{/if} den Stil <span class="confirmationObject">{$style->styleName}</span> wirklich duplizieren?]]></item>
+		<item name="wcf.acp.style.copyStyle"><![CDATA[Stil duplizieren]]></item>
+		<item name="wcf.acp.style.copyStyle.confirmMessage"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Willst du{else}Wollen Sie{/if} „{$style->styleName}“ wirklich duplizieren?]]></item>
 		<item name="wcf.acp.style.coverPhoto"><![CDATA[Standard-Titelbild]]></item>
 		<item name="wcf.acp.style.coverPhoto.delete.confirmMessage"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Willst du{else}Wollen Sie{/if} das Standard-Titelbild dieses Stils wirklich löschen? Nach dem Löschen wird das allgemeine, Stil-unabhängige Standard-Titelbild verwendet.]]></item>
 		<item name="wcf.acp.style.coverPhoto.description"><![CDATA[Das Bild muss mindestens {$coverPhotoMinWidth} × {$coverPhotoMinHeight} Pixel groß sein, als Bildformate sind GIF, JPG, JPEG, PNG und WEBP zulässig.]]></item>

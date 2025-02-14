@@ -7,7 +7,9 @@ use wcf\event\interaction\admin\StyleInteractionCollecting;
 use wcf\system\event\EventHandler;
 use wcf\system\interaction\AbstractInteractionProvider;
 use wcf\system\interaction\DeleteInteraction;
+use wcf\system\interaction\InteractionConfirmationType;
 use wcf\system\interaction\RpcInteraction;
+use wcf\system\WCF;
 
 /**
  * Interaction provider for user ranks.
@@ -30,6 +32,17 @@ final class StyleInteractions extends AbstractInteractionProvider
                 isAvailableCallback: static fn(Style $object) => !$object->isDefault,
                 invalidatesAllItems: true
             ),
+            new RpcInteraction(
+                'copy',
+                'core/styles/%s/copy',
+                'wcf.acp.style.copyStyle',
+                InteractionConfirmationType::Custom,
+                static fn(Style $object) => WCF::getLanguage()->getDynamicVariable(
+                    'wcf.acp.style.copyStyle.confirmMessage',
+                    ['style' => $object]
+                ),
+                invalidatesAllItems: true
+            )
         ]);
 
         EventHandler::getInstance()->fire(
