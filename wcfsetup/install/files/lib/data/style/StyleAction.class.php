@@ -490,6 +490,8 @@ BROWSERCONFIG;
 
     /**
      * Validates parameters to copy a style.
+     *
+     * @deprecated 6.2
      */
     public function validateCopy()
     {
@@ -504,6 +506,7 @@ BROWSERCONFIG;
      * Copies a style.
      *
      * @return  string[]
+     * @deprecated 6.2 Use `wcf\system\style\command\CopyStyle` instead.
      */
     public function copy()
     {
