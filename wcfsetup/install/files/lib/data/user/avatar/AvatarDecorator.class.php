@@ -56,8 +56,8 @@ final class AvatarDecorator implements IUserAvatar, ISafeFormatAvatar
     public function getURL($size = null)
     {
         if ($this->avatar instanceof File) {
-            $thumbnail = $this->avatar->getThumbnail(UserAvatarFileProcessor::AVATAR_SIZE_2X)
-                ?? $this->avatar->getThumbnail(UserAvatarFileProcessor::AVATAR_SIZE);
+            $thumbnail = $this->avatar->getThumbnail((string)UserAvatarFileProcessor::AVATAR_SIZE_2X)
+                ?? $this->avatar->getThumbnail((string)UserAvatarFileProcessor::AVATAR_SIZE);
             if ($thumbnail !== null) {
                 return $thumbnail->getLink();
             }

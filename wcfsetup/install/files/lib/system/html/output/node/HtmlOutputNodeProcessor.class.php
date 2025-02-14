@@ -231,6 +231,7 @@ class HtmlOutputNodeProcessor extends AbstractHtmlNodeProcessor
 
         $nodes = [];
         foreach ($this->getXPath()->query('//text()') as $node) {
+            \assert($node instanceof \DOMText);
             $value = StringUtil::trim($node->textContent);
             if (empty($value)) {
                 // skip empty nodes

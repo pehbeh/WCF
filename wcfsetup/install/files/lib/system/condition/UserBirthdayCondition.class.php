@@ -91,7 +91,7 @@ HTML;
 
         $dateTime = new \DateTimeImmutable('now', WCF::getUser()->getTimeZone());
 
-        $userIDs = UserBirthdayCache::getInstance()->getBirthdays($dateTime->format('n'), $dateTime->format('j'));
+        $userIDs = UserBirthdayCache::getInstance()->getBirthdays((int)$dateTime->format('n'), (int)$dateTime->format('j'));
 
         return \in_array(WCF::getUser()->userID, $userIDs);
     }

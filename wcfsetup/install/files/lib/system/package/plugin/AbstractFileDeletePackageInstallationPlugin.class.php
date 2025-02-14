@@ -307,6 +307,7 @@ abstract class AbstractFileDeletePackageInstallationPlugin extends AbstractXMLPa
         $delete = $xml->xpath()->query('/ns:data/ns:delete')->item(0);
         if ($delete === null) {
             $data = $xml->xpath()->query('/ns:data')->item(0);
+            \assert($data instanceof \DOMElement);
             $delete = $xml->getDocument()->createElement('delete');
             DOMUtil::prepend($delete, $data);
         }

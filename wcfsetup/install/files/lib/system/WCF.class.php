@@ -365,11 +365,11 @@ class WCF
      * @param int $line
      * @throws  ErrorException
      */
-    final public static function handleError($severity, $message, $file, $line): void
+    final public static function handleError($severity, $message, $file, $line): true
     {
         // this is necessary for the shut-up operator
         if (!(\error_reporting() & $severity)) {
-            return;
+            return true;
         }
 
         throw new ErrorException($message, 0, $severity, $file, $line);

@@ -96,7 +96,7 @@ trait TSelectionFormField
      * callable returning an array. Each array value must be an array with the
      * following entries: `depth`, `label`, and `value`.
      *
-     * @param array|callable|DatabaseObjectList $options selectable options or callable returning the options
+     * @param array|callable|\Traversable|DatabaseObjectList $options selectable options or callable returning the options
      * @param bool $nestedOptions is `true` if the passed options are nested options
      * @param bool $labelLanguageItems is `true` if the labels should be treated as language items if possible
      * @return  static                  this field

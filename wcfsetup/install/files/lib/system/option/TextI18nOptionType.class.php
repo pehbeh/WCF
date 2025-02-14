@@ -40,7 +40,7 @@ class TextI18nOptionType extends TextOptionType implements II18nOptionType
      */
     public function validate(Option $option, $newValue)
     {
-        if (!I18nHandler::getInstance()->validateValue($option->optionName, $option->requireI18n, true)) {
+        if (!I18nHandler::getInstance()->validateValue($option->optionName, (bool)$option->requireI18n, true)) {
             throw new UserInputException($option->optionName, 'validationFailed');
         }
     }

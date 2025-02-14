@@ -6,6 +6,7 @@ use wcf\data\comment\CommentEditor;
 use wcf\data\comment\CommentList;
 use wcf\data\comment\response\CommentResponse;
 use wcf\data\comment\response\CommentResponseList;
+use wcf\data\comment\response\StructuredCommentResponse;
 use wcf\data\comment\StructuredComment;
 use wcf\data\comment\StructuredCommentList;
 use wcf\data\object\type\ObjectType;
@@ -654,7 +655,7 @@ class CommentHandler extends SingletonFactory
      * the given comment response list as confirmed for the active user.
      *
      * @param string $objectType comment object type name
-     * @param CommentResponse[] $responses comment responses whose notifications will be marked as read
+     * @param (CommentResponse|StructuredCommentResponse)[] $responses comment responses whose notifications will be marked as read
      *
      * @throws  \InvalidArgumentException       if invalid comment object type name is given
      * @since   5.2

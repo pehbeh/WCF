@@ -87,7 +87,7 @@ final class HtmlOutputNodeNormalizer
                 // is an uneven number in which case we need to remove one
                 // additional paragraph.
                 $totalNumberOfParagraphs = $offset + 1;
-                $numberOfParagraphsToRemove = \ceil($totalNumberOfParagraphs / 2);
+                $numberOfParagraphsToRemove = (int)\ceil($totalNumberOfParagraphs / 2);
 
                 $removeParagraphs = \array_slice($paragraphs, $i, $numberOfParagraphsToRemove);
                 foreach ($removeParagraphs as $paragraph) {
@@ -148,6 +148,7 @@ final class HtmlOutputNodeNormalizer
             }
         }
 
+        \assert($paragraphOrTableCell instanceof \DOMElement);
         if (!DOMUtil::isLastNode($br, $paragraphOrTableCell)) {
             return;
         }

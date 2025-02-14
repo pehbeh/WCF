@@ -14,14 +14,24 @@ namespace wcf\util;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       3.1
+ * @phpstan-type Components array{
+ *  scheme: string,
+ *  host: string,
+ *  port: int<0, 65535>,
+ *  user: string,
+ *  pass: string,
+ *  path: string,
+ *  query: string,
+ *  fragment: string,
+ * }
  */
 final class Url implements \ArrayAccess
 {
     /**
      * list of url components
-     * @var string[]
+     * @var Components
      */
-    private $components = [];
+    private array $components;
 
     /**
      * maps properties to the array indices
@@ -93,16 +103,14 @@ final class Url implements \ArrayAccess
     /**
      * Url constructor, object creation is only allowed through `Url::parse()`.
      *
-     * @param string[] $components
+     * @param Components $components
      */
     private function __construct(array $components)
     {
         $this->components = $components;
     }
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function offsetExists(mixed $offset): bool
     {
         // We're throwing an exception here, if `$offset` is an unknown property
@@ -116,25 +124,19 @@ final class Url implements \ArrayAccess
         return !empty($this->components[$this->getIndex($offset)]);
     }
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function offsetGet(mixed $offset): mixed
     {
         return $this->components[$this->getIndex($offset)];
     }
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function offsetUnset(mixed $offset): void
     {
         throw new \RuntimeException("Url components are immutable");
     }
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function offsetSet(mixed $offset, mixed $value): void
     {
         throw new \RuntimeException("Url components are immutable");

@@ -514,7 +514,7 @@ class StyleAddForm extends AbstractForm
         $result = StyleCompiler::getInstance()->testStyle(
             $this->styleTestFileDir,
             $this->styleName,
-            false,
+            '',
             $variables
         );
 

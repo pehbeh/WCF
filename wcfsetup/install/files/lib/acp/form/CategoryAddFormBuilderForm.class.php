@@ -248,7 +248,7 @@ abstract class CategoryAddFormBuilderForm extends AbstractFormBuilderForm
                     $processor->getLanguageVariable('parentCategoryID.description', true)
                 )
                 ->options($categoryNodeTree, true)
-                ->available($this->getObjectTypeProcessor()->getMaximumNestingLevel())
+                ->available((bool)$this->getObjectTypeProcessor()->getMaximumNestingLevel())
                 ->addValidator(
                     new FormFieldValidator(
                         'recursion',

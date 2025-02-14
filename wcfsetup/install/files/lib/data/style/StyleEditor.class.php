@@ -987,7 +987,7 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
             $xml->writeElement('license', $this->license);
         }
         if ($this->hasDarkMode) {
-            $xml->writeElement('hasDarkMode', 1);
+            $xml->writeElement('hasDarkMode', '1');
         }
         $xml->endElement();
 

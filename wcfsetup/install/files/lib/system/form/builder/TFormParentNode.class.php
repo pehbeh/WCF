@@ -32,8 +32,6 @@ trait TFormParentNode
     /**
      * Appends the given node to this node and returns this node.
      *
-     * @return  $this
-     *
      * @throws  \BadMethodCallException     if method is called with more than one parameter (might be mistakenly used instead of `appendChildren()`)
      */
     public function appendChild(IFormChildNode $child): static
@@ -53,7 +51,6 @@ trait TFormParentNode
      * Appends the given children to this node and returns this node.
      *
      * @param IFormChildNode[] $children appended children
-     * @return  $this
      */
     public function appendChildren(array $children): static
     {

@@ -273,7 +273,7 @@ final class PackageEnableUpgradeOverrideForm extends AbstractFormBuilderForm
         $formData = $this->form->getData();
         if ($formData['data']['enable']) {
             $this->isEnabled = true;
-            RegistryHandler::getInstance()->set('com.woltlab.wcf', $overrideKey, \TIME_NOW);
+            RegistryHandler::getInstance()->set('com.woltlab.wcf', $overrideKey, (string)\TIME_NOW);
         } else {
             $this->isEnabled = false;
             RegistryHandler::getInstance()->delete('com.woltlab.wcf', $overrideKey);

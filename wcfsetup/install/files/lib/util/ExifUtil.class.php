@@ -296,8 +296,8 @@ final class ExifUtil
             return $rational;
         }
 
-        $numerator = $data[0];
-        $denonimator = $data[1];
+        $numerator = (int)$data[0];
+        $denonimator = (int)$data[1];
         $gcd = self::gcd($numerator, $denonimator);
 
         // When the numerator equals 0 (e.g. 0/10), then the resulting GCD will

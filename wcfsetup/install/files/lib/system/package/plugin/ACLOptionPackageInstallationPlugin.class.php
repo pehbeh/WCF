@@ -724,6 +724,7 @@ class ACLOptionPackageInstallationPlugin extends AbstractOptionPackageInstallati
             $xpath->registerNamespace('ns', $element->ownerDocument->documentElement->getAttribute('xmlns'));
 
             $options = $xpath->query('/ns:data/ns:import/ns:options')->item(0);
+            \assert($options instanceof \DOMElement);
 
             /** @var \DOMElement $option */
             foreach (DOMUtil::getElements($options, 'option') as $option) {

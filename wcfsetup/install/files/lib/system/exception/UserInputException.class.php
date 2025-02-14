@@ -19,7 +19,7 @@ class UserInputException extends UserException
 
     /**
      * error type
-     * @var string
+     * @var string|mixed[]
      */
     protected $type;
 
@@ -33,7 +33,7 @@ class UserInputException extends UserException
      * Creates a new UserInputException.
      *
      * @param string $field affected formular field
-     * @param string $type kind of this error
+     * @param string|mixed[] $type kind of this error
      * @param array $variables additional variables for AJAX error handling
      */
     public function __construct($field = '', $type = 'empty', array $variables = [])
@@ -59,7 +59,7 @@ class UserInputException extends UserException
     /**
      * Returns the kind of this error.
      *
-     * @return  string
+     * @return  string|mixed[]
      */
     public function getType()
     {

@@ -16,9 +16,9 @@ class PackageCache extends SingletonFactory
 {
     /**
      * list of cached packages
-     * @var mixed[][]
+     * @var array{packages: array<int, Package>, packageIDs: array<string, int>}
      */
-    protected $packages = [];
+    protected array $packages;
 
     /**
      * @inheritDoc
@@ -32,7 +32,7 @@ class PackageCache extends SingletonFactory
      * Returns a specific package.
      *
      * @param int $packageID
-     * @return  Package|null
+     * @return ?Package
      */
     public function getPackage($packageID)
     {
@@ -43,7 +43,7 @@ class PackageCache extends SingletonFactory
      * Returns the id of a specific package or 'null' if not found.
      *
      * @param string $package
-     * @return  string|null
+     * @return ?int
      */
     public function getPackageID($package)
     {
@@ -53,7 +53,7 @@ class PackageCache extends SingletonFactory
     /**
      * Returns all packages.
      *
-     * @return  Package[]
+     * @return Package[]
      */
     public function getPackages()
     {

@@ -776,7 +776,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
 
                 $showOrder = $element->getElementsByTagName('showorder')->item(0);
                 if ($showOrder !== null) {
-                    $data['showOrder'] = $showOrder->nodeValue;
+                    $data['showOrder'] = (int)$showOrder->nodeValue;
                 }
                 if ($saveData && $this->editedEntry === null) {
                     // only set explicit showOrder when adding new categories
@@ -851,7 +851,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
 
                     $showOrder = $element->getElementsByTagName('showorder')->item(0);
                     if ($showOrder !== null) {
-                        $data['showorder'] = $showOrder->nodeValue;
+                        $data['showorder'] = (int)$showOrder->nodeValue;
                     }
                     if ($this->editedEntry === null) {
                         // only set explicit showOrder when adding new categories
@@ -1092,7 +1092,9 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
         $import = $xml->xpath()->query('/ns:data/ns:import')->item(0);
         if ($import === null) {
             $data = $xml->xpath()->query('/ns:data')->item(0);
+            \assert($data instanceof \DOMElement);
             $import = $xml->getDocument()->createElement('import');
+            \assert($import !== false);
             DOMUtil::prepend($import, $data);
         }
 
@@ -1283,6 +1285,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
             $xpath->registerNamespace('ns', $element->ownerDocument->documentElement->getAttribute('xmlns'));
 
             $options = $xpath->query('/ns:data/ns:import/ns:options')->item(0);
+            \assert($options instanceof \DOMElement);
 
             /** @var \DOMElement $option */
             foreach (DOMUtil::getElements($options, 'option') as $option) {

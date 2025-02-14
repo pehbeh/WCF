@@ -44,6 +44,7 @@ class CronjobEditor extends DatabaseObjectEditor implements IEditableCachedObjec
         }
 
         $cronjob = parent::create($parameters);
+        \assert($cronjob instanceof Cronjob);
 
         // save cronjob description
         if (!empty($descriptions)) {
@@ -51,7 +52,6 @@ class CronjobEditor extends DatabaseObjectEditor implements IEditableCachedObjec
             $cronjobEditor->saveDescriptions($descriptions);
         }
 
-        \assert($cronjob instanceof Cronjob);
         return $cronjob;
     }
 

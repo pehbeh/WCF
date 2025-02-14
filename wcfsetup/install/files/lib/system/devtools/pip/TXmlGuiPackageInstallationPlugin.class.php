@@ -333,9 +333,8 @@ trait TXmlGuiPackageInstallationPlugin
     protected function getElementByIdentifier(XML $xml, $identifier)
     {
         foreach ($this->getImportElements($xml->xpath()) as $element) {
+            \assert($element instanceof \DOMElement);
             if ($this->getElementIdentifier($element) === $identifier) {
-                \assert($element instanceof \DOMElement);
-
                 return $element;
             }
         }
@@ -460,6 +459,8 @@ XML;
 
     /**
      * @inheritDoc
+     *
+     * @return \DOMNodeList
      */
     protected function getImportElements(\DOMXPath $xpath)
     {
@@ -519,7 +520,9 @@ XML;
         $import = $xml->xpath()->query('/ns:data/ns:import')->item(0);
         if ($import === null) {
             $data = $xml->xpath()->query('/ns:data')->item(0);
+            \assert($data instanceof \DOMElement);
             $import = $xml->getDocument()->createElement('import');
+            \assert($import !== false);
             DOMUtil::prepend($import, $data);
         }
 

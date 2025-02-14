@@ -70,7 +70,7 @@ final class ClassUtil
      *
      * This method also supports decorated decorators.
      *
-     * @param string $className checked class
+     * @param object|string $className checked class
      * @param string $targetClass target class or interface
      * @return  bool
      */

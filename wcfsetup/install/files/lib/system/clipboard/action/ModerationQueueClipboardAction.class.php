@@ -12,6 +12,7 @@ use wcf\data\moderation\queue\ViewableModerationQueue;
  * @copyright   2001-2021 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.4
+ * @property ViewableModerationQueue[] $objects
  */
 class ModerationQueueClipboardAction extends AbstractClipboardAction
 {

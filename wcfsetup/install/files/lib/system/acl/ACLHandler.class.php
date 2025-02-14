@@ -301,7 +301,7 @@ class ACLHandler extends SingletonFactory
      *
      * @param int $objectTypeID
      * @param array $objectIDs
-     * @param string $categoryName
+     * @param ?string $categoryName
      * @param bool $settingsView
      * @return  array
      */
@@ -444,7 +444,7 @@ class ACLHandler extends SingletonFactory
      * Returns a list of options by object type id.
      *
      * @param int $objectTypeID
-     * @param string $categoryName
+     * @param ?string $categoryName
      * @return  ACLOptionList
      */
     public function getOptions($objectTypeID, $categoryName = '')
@@ -473,6 +473,7 @@ class ACLHandler extends SingletonFactory
      */
     public function removeValues($objectTypeID, array $objectIDs, ?ACLOptionCategory $category = null)
     {
+        \assert($category === null);
         $optionList = $this->getOptions($objectTypeID, $category);
         $options = $optionList->getObjects();
 

@@ -69,7 +69,7 @@ class HtmlNodeUnfurlLink extends HtmlNodePlainLink
         $uri = self::lowercaseHostname($uri);
         $urlID = self::findOrCreate($uri);
 
-        $link->link->setAttribute(self::UNFURL_URL_ID_ATTRIBUTE_NAME, $urlID);
+        $link->link->setAttribute(self::UNFURL_URL_ID_ATTRIBUTE_NAME, (string)$urlID);
     }
 
     private static function removeStyling(HtmlNodePlainLink $element): void

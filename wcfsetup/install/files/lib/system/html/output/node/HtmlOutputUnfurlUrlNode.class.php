@@ -47,7 +47,7 @@ class HtmlOutputUnfurlUrlNode extends AbstractHtmlOutputNode
 
         /** @var \DOMElement $element */
         foreach ($elements as $element) {
-            $attribute = $element->getAttribute(HtmlNodeUnfurlLink::UNFURL_URL_ID_ATTRIBUTE_NAME);
+            $attribute = (int)$element->getAttribute(HtmlNodeUnfurlLink::UNFURL_URL_ID_ATTRIBUTE_NAME);
             if (
                 !empty($attribute)
                 && MessageEmbeddedObjectManager::getInstance()->getObject('com.woltlab.wcf.unfurlUrl', $attribute) !== null

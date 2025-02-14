@@ -386,7 +386,7 @@ final class I18nHandler extends SingletonFactory
     /**
      * Sets additional options for elements, required if updating values.
      *
-     * @param int $elementID
+     * @param string $elementID
      */
     public function setOptions($elementID, int $packageID, string $value, string $pattern): void
     {

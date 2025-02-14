@@ -25,6 +25,12 @@ parameters:
 			path: wcfsetup/install/files/lib/acp/form/LanguageImportForm.class.php
 
 		-
+			message: '#^Parameter \#1 \$children of method wcf\\system\\form\\builder\\IFormParentNode\:\:appendChildren\(\) expects array\<wcf\\system\\form\\builder\\IFormChildNode\>, array\<int, wcf\\system\\form\\builder\\field\\PasswordFormField\|wcf\\system\\form\\builder\\field\\TextFormField\|wcf\\system\\form\\builder\\IObjectTypeFormNode\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: wcfsetup/install/files/lib/acp/form/LoginForm.class.php
+
+		-
 			message: '#^Property wcf\\acp\\page\\DevtoolsNotificationTestPage\:\:\$events \(array\<array\<wcf\\system\\user\\notification\\event\\ITestableUserNotificationEvent\>\>\) does not accept array\<array\<wcf\\system\\user\\notification\\event\\IUserNotificationEvent\>\>\.$#'
 			identifier: assign.propertyType
 			count: 3
@@ -41,6 +47,12 @@ parameters:
 			identifier: booleanAnd.rightAlwaysFalse
 			count: 1
 			path: wcfsetup/install/files/lib/acp/page/TemplateDiffPage.class.php
+
+		-
+			message: '#^Parameter \#1 \$children of method wcf\\system\\form\\builder\\FormDocument\:\:appendChildren\(\) expects array\<wcf\\system\\form\\builder\\IFormChildNode\>, array\<int, wcf\\system\\form\\builder\\field\\user\\UsernameFormField\|wcf\\system\\form\\builder\\IObjectTypeFormNode\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: wcfsetup/install/files/lib/action/GuestTokenDialogAction.class.php
 
 		-
 			message: '#^Method wcf\\data\\article\\ArticleAction\:\:delete\(\) should return int but returns array\<string, array\<int\>\|string\>\.$#'
@@ -91,6 +103,12 @@ parameters:
 			path: wcfsetup/install/files/lib/data/user/notification/event/UserNotificationEventAction.class.php
 
 		-
+			message: '#^Parameter \#1 \$children of method wcf\\system\\form\\builder\\container\\FormContainer\:\:appendChildren\(\) expects array\<wcf\\system\\form\\builder\\IFormChildNode\>, array\<int, wcf\\system\\form\\builder\\field\\TextFormField\|wcf\\system\\form\\builder\\IObjectTypeFormNode\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: wcfsetup/install/files/lib/form/LostPasswordForm.class.php
+
+		-
 			message: '#^Negated boolean expression is always true\.$#'
 			identifier: booleanNot.alwaysTrue
 			count: 1
@@ -105,6 +123,12 @@ parameters:
 		-
 			message: '#^Instanceof between wcf\\data\\search\\ISearchResultObject and wcf\\data\\search\\ISearchResultObject will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
+			count: 1
+			path: wcfsetup/install/files/lib/page/SearchResultPage.class.php
+
+		-
+			message: '#^Parameter \#1 \$className of class wcf\\system\\exception\\ImplementationException constructor expects string, false given\.$#'
+			identifier: argument.type
 			count: 1
 			path: wcfsetup/install/files/lib/page/SearchResultPage.class.php
 
@@ -277,6 +301,12 @@ parameters:
 			path: wcfsetup/install/files/lib/system/background/BackgroundQueueHandler.class.php
 
 		-
+			message: '#^Parameter \#1 \$className of class wcf\\system\\exception\\ParentClassException constructor expects string, false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/background/BackgroundQueueHandler.class.php
+
+		-
 			message: '#^Call to static method info\(\) on an unknown class phpline\\internal\\Log\.$#'
 			identifier: class.notFound
 			count: 2
@@ -377,6 +407,12 @@ parameters:
 			identifier: property.phpDocType
 			count: 1
 			path: wcfsetup/install/files/lib/system/condition/AbstractMultiSelectCondition.class.php
+
+		-
+			message: '#^Parameter \#2 \$array of function implode expects array\|null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/condition/AbstractObjectTextPropertyCondition.class.php
 
 		-
 			message: '#^Strict comparison using \=\=\= between array\<mixed\> and null will always evaluate to false\.$#'
@@ -859,12 +895,6 @@ parameters:
 			path: wcfsetup/install/files/lib/system/form/builder/field/MultipleSelectionFormField.class.php
 
 		-
-			message: '#^Instanceof between wcf\\data\\DatabaseObjectList and wcf\\data\\DatabaseObjectList will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: wcfsetup/install/files/lib/system/form/builder/field/MultipleSelectionFormField.class.php
-
-		-
 			message: '#^Result of && is always false\.$#'
 			identifier: booleanAnd.alwaysFalse
 			count: 2
@@ -907,12 +937,6 @@ parameters:
 			path: wcfsetup/install/files/lib/system/form/builder/field/RadioButtonFormField.class.php
 
 		-
-			message: '#^Instanceof between wcf\\data\\DatabaseObjectList and wcf\\data\\DatabaseObjectList will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: wcfsetup/install/files/lib/system/form/builder/field/RadioButtonFormField.class.php
-
-		-
 			message: '#^Result of && is always false\.$#'
 			identifier: booleanAnd.alwaysFalse
 			count: 2
@@ -931,12 +955,6 @@ parameters:
 			path: wcfsetup/install/files/lib/system/form/builder/field/SelectFormField.class.php
 
 		-
-			message: '#^Instanceof between wcf\\data\\DatabaseObjectList and wcf\\data\\DatabaseObjectList will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: wcfsetup/install/files/lib/system/form/builder/field/SelectFormField.class.php
-
-		-
 			message: '#^Result of && is always false\.$#'
 			identifier: booleanAnd.alwaysFalse
 			count: 2
@@ -946,12 +964,6 @@ parameters:
 			message: '#^Call to function is_callable\(\) with callable\(\)\: mixed will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 2
-			path: wcfsetup/install/files/lib/system/form/builder/field/SingleSelectionFormField.class.php
-
-		-
-			message: '#^Instanceof between wcf\\data\\DatabaseObjectList and wcf\\data\\DatabaseObjectList will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
 			path: wcfsetup/install/files/lib/system/form/builder/field/SingleSelectionFormField.class.php
 
 		-
@@ -1165,6 +1177,12 @@ parameters:
 			path: wcfsetup/install/files/lib/system/io/Zip.class.php
 
 		-
+			message: '#^Parameter \#2 \$callback of function uasort expects callable\(wcf\\data\\label\\group\\ViewableLabelGroup, wcf\\data\\label\\group\\ViewableLabelGroup\)\: int, array\{''wcf\\\\data\\\\label\\\\group\\\\LabelGroup'', ''sortLabelGroups''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: wcfsetup/install/files/lib/system/label/object/AbstractLabelObjectHandler.class.php
+
+		-
 			message: '#^Call to an undefined method wcf\\data\\DatabaseObjectList\:\:getAttachmentList\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -1285,12 +1303,6 @@ parameters:
 			path: wcfsetup/install/files/lib/system/package/plugin/ACPMenuPackageInstallationPlugin.class.php
 
 		-
-			message: '#^Instanceof between DOMElement and DOMElement will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: wcfsetup/install/files/lib/system/package/plugin/LanguagePackageInstallationPlugin.class.php
-
-		-
 			message: '#^Method wcf\\system\\package\\plugin\\LanguagePackageInstallationPlugin\:\:getEmptyXml\(\) invoked with 0 parameters, 1 required\.$#'
 			identifier: arguments.count
 			count: 1
@@ -1337,6 +1349,12 @@ parameters:
 			identifier: class.notFound
 			count: 3
 			path: wcfsetup/install/files/lib/util/CLIUtil.class.php
+
+		-
+			message: '#^Parameter \#1 \$iterator of class RecursiveIteratorIterator constructor expects T of IteratorAggregate\|RecursiveIterator, DirectoryIterator given\.$#'
+			identifier: argument.type
+			count: 2
+			path: wcfsetup/install/files/lib/util/DirectoryUtil.class.php
 
 		-
 			message: '#^Property wcf\\util\\DirectoryUtil\:\:\$fileObjects \(array\<DirectoryIterator\>\) does not accept array\<SplFileInfo\>\.$#'

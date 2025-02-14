@@ -48,7 +48,7 @@ final class UnfurlResponse
     private static $httpClient;
 
     /**
-     * @var Response
+     * @var ResponseInterface
      */
     private $response;
 
@@ -123,7 +123,7 @@ final class UnfurlResponse
      * @throws ParsingFailed If the body cannot be parsed (e.g. the url is an image).
      * @throws DownloadFailed If the url can not be downloaded. This can be a temporary error.
      */
-    private function __construct(Response $response)
+    private function __construct(ResponseInterface $response)
     {
         $this->response = $response;
 
@@ -321,7 +321,7 @@ final class UnfurlResponse
         }
     }
 
-    private static function isUrlInaccessible(Response $response): bool
+    private static function isUrlInaccessible(ResponseInterface $response): bool
     {
         switch ($response->getStatusCode()) {
             case 400: // Bad Request

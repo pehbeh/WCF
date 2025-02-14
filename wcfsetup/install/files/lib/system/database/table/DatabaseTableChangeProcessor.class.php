@@ -1127,7 +1127,7 @@ final class DatabaseTableChangeProcessor
                         $abbreviation = \substr(
                             $abbreviationWithWcfNumber,
                             0,
-                            \strlen($abbreviationWithWcfNumber) - \strlen(\WCF_N)
+                            \strlen($abbreviationWithWcfNumber) - \strlen((string)\WCF_N)
                         );
 
                         // Throws an error only if the table has an unknown prefix.

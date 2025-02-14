@@ -93,7 +93,7 @@ class TodaysBirthdaysBoxController extends AbstractDatabaseObjectListBoxControll
         $date = \explode('-', $now->format('Y-n-j'));
 
         // get user ids
-        $userIDs = UserBirthdayCache::getInstance()->getBirthdays($date[1], $date[2]);
+        $userIDs = UserBirthdayCache::getInstance()->getBirthdays((int)$date[1], (int)$date[2]);
         $this->filterUserIDs($userIDs);
 
         if (!empty($userIDs)) {

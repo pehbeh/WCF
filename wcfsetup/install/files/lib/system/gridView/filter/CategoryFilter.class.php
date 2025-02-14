@@ -41,6 +41,6 @@ class CategoryFilter extends AbstractFilter
     #[\Override]
     public function renderValue(string $value): string
     {
-        return CategoryHandler::getInstance()->getCategory($value)->getTitle();
+        return CategoryHandler::getInstance()->getCategory((int)$value)->getTitle();
     }
 }

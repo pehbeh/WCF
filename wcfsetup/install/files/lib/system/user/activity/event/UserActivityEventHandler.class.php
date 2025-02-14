@@ -152,7 +152,7 @@ class UserActivityEventHandler extends SingletonFactory
     /**
      * Removes an activity event.
      *
-     * @param int $objectType
+     * @param string $objectType
      * @param int $objectID
      * @param int $userID
      * @throws  SystemException

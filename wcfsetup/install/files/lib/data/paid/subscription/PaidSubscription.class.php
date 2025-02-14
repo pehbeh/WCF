@@ -63,7 +63,7 @@ class PaidSubscription extends DatabaseObject implements ITitledObject
                 $objectTypeID . ':' . WCF::getUser()->userID . ':' . $this->subscriptionID,
                 LinkHandler::getInstance()->getLink('PaidSubscriptionReturn'),
                 LinkHandler::getInstance()->getLink(),
-                $this->isRecurring,
+                (bool)$this->isRecurring,
                 $this->subscriptionLength,
                 $this->subscriptionLengthUnit
             );

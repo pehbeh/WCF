@@ -157,6 +157,7 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
             // fetch child elements
             $items = $xpath->query('child::*', $element);
             foreach ($items as $item) {
+                \assert($item instanceof \DOMElement);
                 $this->getElement($xpath, $data['elements'], $item);
             }
 

@@ -43,7 +43,7 @@ abstract class AbstractFormBuilderForm extends AbstractForm
 
     /**
      * updated object, not relevant for form action `create`
-     * @var IStorableObject
+     * @var ?IStorableObject
      */
     public $formObject;
 

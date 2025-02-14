@@ -127,6 +127,6 @@ trait TI18nDatabaseObjectAction
      */
     protected function getLanguageItem(DatabaseObject $object, string $regex): string
     {
-        return \str_replace('\d+', $object->getObjectID(), $regex);
+        return \str_replace('\d+', (string)$object->getObjectID(), $regex);
     }
 }

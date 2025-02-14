@@ -232,6 +232,7 @@ class PaidSubscriptionUserAction extends AbstractDatabaseObjectAction
         foreach ($this->getObjects() as $subscriptionUser) {
             $groupIDs = [];
             foreach (\explode(',', $subscriptionUser->getSubscription()->groupIDs) as $groupID) {
+                $groupID = (int)$groupID;
                 if (UserGroup::getGroupByID($groupID) !== null) {
                     $groupIDs[] = $groupID;
                 }
@@ -259,6 +260,7 @@ class PaidSubscriptionUserAction extends AbstractDatabaseObjectAction
         foreach ($this->getObjects() as $subscriptionUser) {
             $groupIDs = [];
             foreach (\explode(',', $subscriptionUser->getSubscription()->groupIDs) as $groupID) {
+                $groupID = (int)$groupID;
                 if (UserGroup::getGroupByID($groupID) !== null) {
                     $groupIDs[] = $groupID;
                 }

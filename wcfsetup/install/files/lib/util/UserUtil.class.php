@@ -162,8 +162,8 @@ final class UserUtil
         }
 
         $ipArray = \array_pad(\explode('.', $ip), 4, 0);
-        $part7 = \base_convert(($ipArray[0] * 256) + $ipArray[1], 10, 16);
-        $part8 = \base_convert(($ipArray[2] * 256) + $ipArray[3], 10, 16);
+        $part7 = \base_convert((string)(($ipArray[0] * 256) + $ipArray[1]), 10, 16);
+        $part8 = \base_convert((string)(($ipArray[2] * 256) + $ipArray[3]), 10, 16);
 
         return '::ffff:' . $part7 . ':' . $part8;
     }

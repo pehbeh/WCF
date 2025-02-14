@@ -5,7 +5,6 @@ namespace wcf\system\email;
 use ParagonIE\ConstantTime\Hex;
 use wcf\system\application\ApplicationHandler;
 use wcf\system\background\BackgroundQueueHandler;
-use wcf\system\background\job\AbstractBackgroundJob;
 use wcf\system\background\job\EmailDeliveryBackgroundJob;
 use wcf\system\email\mime\AbstractMimePart;
 use wcf\system\email\mime\IRecipientAwareMimePart;
@@ -655,9 +654,9 @@ class Email
     }
 
     /**
-     * Returns needed AbstractBackgroundJobs to deliver this email to every recipient.
+     * Returns needed EmailDeliveryBackgroundJob to deliver this email to every recipient.
      *
-     * @return  AbstractBackgroundJob[]
+     * @return  EmailDeliveryBackgroundJob[]
      */
     public function getJobs()
     {

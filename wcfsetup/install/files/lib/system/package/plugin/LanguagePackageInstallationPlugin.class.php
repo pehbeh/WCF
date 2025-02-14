@@ -829,7 +829,8 @@ XML;
         }
 
         foreach ($import->getElementsByTagName('category') as $languageCategory) {
-            if ($languageCategory instanceof \DOMElement && $languageCategory->getAttribute('name') === $languageCategoryName) {
+            /** @var \DOMElement $languageCategory */
+            if ($languageCategory->getAttribute('name') === $languageCategoryName) {
                 $languageCategory->appendChild($languageItem);
                 break;
             }

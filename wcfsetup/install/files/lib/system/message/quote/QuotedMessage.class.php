@@ -58,7 +58,7 @@ class QuotedMessage implements \Countable, \Iterator
 
     /**
      * list of index to object relation
-     * @var int[]
+     * @var list<string>
      */
     protected $indexToObject;
 
@@ -182,7 +182,7 @@ class QuotedMessage implements \Countable, \Iterator
      *
      * @see \Iterator::key()
      */
-    public function key(): int
+    public function key(): string
     {
         return $this->indexToObject[$this->index];
     }

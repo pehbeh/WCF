@@ -49,7 +49,7 @@ class Tag extends DatabaseObject implements IRouteController
      */
     public static function splitString($tags, $separators = ',;')
     {
-        return \array_unique(ArrayUtil::trim(\preg_split('/[' . \preg_quote($separators) . ']/', $tags)));
+        return \array_unique(ArrayUtil::trim(\preg_split('/[' . \preg_quote($separators, '/') . ']/', $tags)));
     }
 
     /**

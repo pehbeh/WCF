@@ -57,7 +57,7 @@ class TrophyCache extends SingletonFactory
      * Returns the trophy with the given trophyID.
      *
      * @param int[] $trophyIDs
-     * @return  Trophy[]
+     * @return (Trophy|null)[]
      */
     public function getTrophiesByID(array $trophyIDs)
     {

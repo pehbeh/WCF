@@ -21,8 +21,9 @@ use Psr\Http\Message\ServerRequestInterface;
 
 \set_error_handler(static function ($severity, $message, $file, $line) {
     if (!(\error_reporting() & $severity)) {
-        return;
+        return true;
     }
+
     throw new \ErrorException($message, 0, $severity, $file, $line);
 });
 

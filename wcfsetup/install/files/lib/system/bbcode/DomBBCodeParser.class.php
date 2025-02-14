@@ -244,7 +244,7 @@ final class DomBBCodeParser extends SingletonFactory
 
             foreach ($bbcode->getAttributes() as $attribute) {
                 if ($attribute->useText && !isset($attributes[$attribute->attributeNo])) {
-                    $metacodeMarker->setAttribute('data-use-text', $attribute->attributeNo);
+                    $metacodeMarker->setAttribute('data-use-text', (string)$attribute->attributeNo);
                     $this->useTextNodes[] = [
                         'uuid' => $uuid,
                         'metacodeMarker' => $metacodeMarker,

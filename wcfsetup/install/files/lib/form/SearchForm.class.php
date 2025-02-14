@@ -328,7 +328,7 @@ class SearchForm extends AbstractCaptchaForm
         $this->results = SearchEngine::getInstance()->search(
             $this->query,
             $this->selectedObjectTypes,
-            $this->subjectOnly,
+            (bool)$this->subjectOnly,
             $this->searchIndexCondition,
             $this->additionalConditions,
             $this->sortField . ' ' . $this->sortOrder

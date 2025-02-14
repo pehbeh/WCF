@@ -103,7 +103,7 @@ class SessionAction extends AbstractDatabaseObjectAction
                 UserStorageHandler::getInstance()->update(
                     WCF::getUser()->userID,
                     '__notification_lastRequestTime',
-                    TIME_NOW
+                    (string)\TIME_NOW
                 );
             }
         }
@@ -113,7 +113,7 @@ class SessionAction extends AbstractDatabaseObjectAction
 
         return [
             'keepAliveData' => $keepAliveData,
-            'lastRequestTimestamp' => TIME_NOW,
+            'lastRequestTimestamp' => \TIME_NOW,
             'pollData' => $pollData,
         ];
     }

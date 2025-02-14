@@ -17,6 +17,7 @@ use wcf\system\form\builder\field\CaptchaFormField;
 use wcf\system\form\builder\field\TextFormField;
 use wcf\system\form\builder\field\validation\FormFieldValidationError;
 use wcf\system\form\builder\field\validation\FormFieldValidator;
+use wcf\system\form\builder\IFormChildNode;
 use wcf\system\request\LinkHandler;
 use wcf\system\user\authentication\configuration\UserAuthenticationConfigurationFactory;
 use wcf\system\WCF;
@@ -68,7 +69,7 @@ final class LostPasswordForm extends AbstractFormBuilderForm
                             $this->validateUsername(...)
                         )),
                     CaptchaFormField::create()
-                        ->available(LOST_PASSWORD_USE_CAPTCHA)
+                        ->available(!!LOST_PASSWORD_USE_CAPTCHA)
                         ->objectType(CAPTCHA_TYPE)
                 ])
         );

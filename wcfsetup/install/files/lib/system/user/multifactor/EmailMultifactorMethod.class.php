@@ -183,7 +183,7 @@ final class EmailMultifactorMethod implements IMultifactorMethod
                 \TIME_NOW,
             ]);
 
-            $this->sendEmail($setup, $code);
+            $this->sendEmail($setup, (string)$code);
             $lastCode = \TIME_NOW;
         }
 

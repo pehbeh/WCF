@@ -39,10 +39,10 @@ final class AttachMetacodeUpcast extends AbstractImageMetacodeUpcast
         }
 
         if (\is_numeric($width) && $width > 0) {
-            $imgElement->setAttribute('width', \intval($width));
+            $imgElement->setAttribute('width', (string)\intval($width));
             $imgElement->setAttribute('data-width', \intval($width) . 'px');
         }
-        $imgElement->setAttribute('data-attachment-id', $attachmentID);
+        $imgElement->setAttribute('data-attachment-id', (string)$attachmentID);
         $imgElement->setAttribute('style', $this->getStyle($attachment, $width));
         if ($alignment === 'none') {
             $imgElement->setAttribute('class', 'image woltlabAttachment');

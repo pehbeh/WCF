@@ -196,9 +196,9 @@ final class CronjobUtil
             $timeBase = \mktime(0, 0, 1, (int)$date[1], (int)$date[0] + 1, (int)$date[2]);
         }
 
-        $day = \date('j', $timeBase);
-        $month = \date('n', $timeBase);
-        $year = \date('Y', $timeBase);
+        $day = (int)\date('j', $timeBase);
+        $month = (int)\date('n', $timeBase);
+        $year = (int)\date('Y', $timeBase);
 
         // calculate month of next execution and if its not the current one reset previous calculations
         $dateMonth = self::calculateMonth($month, $year, $values);
@@ -501,7 +501,7 @@ final class CronjobUtil
 
         $data = \explode('-', $value);
 
-        return self::calculateRange($data[0], $data[1], $step);
+        return self::calculateRange((int)$data[0], (int)$data[1], $step);
     }
 
     /**

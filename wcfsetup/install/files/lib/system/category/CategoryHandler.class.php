@@ -32,7 +32,7 @@ class CategoryHandler extends SingletonFactory
 
     /**
      * maps the names of the category object types to the object type ids
-     * @var int[]
+     * @var array<int, string>
      */
     protected $objectTypeIDs = [];
 

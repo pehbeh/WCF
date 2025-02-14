@@ -203,7 +203,7 @@ final class LabelFormField extends AbstractFormField implements IObjectTypeFormN
             $formFields[] = static::create($objectProperty . $labelGroup->groupID)
                 ->objectProperty($objectProperty)
                 ->objectType($objectType)
-                ->required($labelGroup->forceSelection)
+                ->required((bool)$labelGroup->forceSelection)
                 ->labelGroup($labelGroup);
         }
 

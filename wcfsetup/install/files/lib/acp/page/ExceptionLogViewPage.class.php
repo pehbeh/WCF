@@ -36,7 +36,7 @@ class ExceptionLogViewPage extends AbstractGridViewPage
 
     private function markNotificationsAsRead(): void
     {
-        RegistryHandler::getInstance()->set('com.woltlab.wcf', 'exceptionMailerTimestamp', TIME_NOW);
+        RegistryHandler::getInstance()->set('com.woltlab.wcf', 'exceptionMailerTimestamp', (string)\TIME_NOW);
     }
 
     #[\Override]

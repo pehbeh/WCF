@@ -326,7 +326,7 @@ final class UserStorageHandler extends SingletonFactory
                     break;
                 }
 
-                \usleep(\random_int(0, .1e6)); // 0 to .1 seconds
+                \usleep(\random_int(0, 100_000)); // 0 to .1 seconds
             }
         }
 

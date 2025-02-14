@@ -155,7 +155,7 @@ final class RssFeedItem
             $element->addChild('comments', $this->comments);
         }
         if (isset($this->slashComments)) {
-            $element->addChild('xmlns:slash:comments', $this->slashComments);
+            $element->addChild('xmlns:slash:comments', (string)$this->slashComments);
         }
         if (isset($this->guid)) {
             $guidElement = $element->addChild('guid', $this->guid);
@@ -180,7 +180,7 @@ final class RssFeedItem
             $enclosureElement = $element->addChild('enclosure');
             $enclosureElement->addAttribute('url', $this->enclosure->url);
             $enclosureElement->addAttribute('type', $this->enclosure->type);
-            $enclosureElement->addAttribute('length', $this->enclosure->length);
+            $enclosureElement->addAttribute('length', (string)$this->enclosure->length);
         }
 
         foreach ($this->categories as $category) {

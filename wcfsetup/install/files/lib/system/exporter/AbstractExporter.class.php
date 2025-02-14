@@ -83,7 +83,7 @@ abstract class AbstractExporter implements IExporter
 
     /**
      * selected import data
-     * @var array
+     * @var string[]
      */
     protected $selectedData = [];
 

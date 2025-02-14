@@ -18,7 +18,7 @@ class PackageValidationException extends SystemException
 {
     /**
      * list of additional details for each subtype
-     * @var string[]
+     * @var array<string, mixed>
      */
     protected $details = [];
 
@@ -233,7 +233,7 @@ class PackageValidationException extends SystemException
      * Creates a new PackageArchiveValidationException.
      *
      * @param int $code
-     * @param string[] $details
+     * @param array<string, mixed> $details
      */
     public function __construct($code, array $details = [])
     {
@@ -245,7 +245,7 @@ class PackageValidationException extends SystemException
     /**
      * Returns exception details.
      *
-     * @return  string[]
+     * @return array<string, mixed>
      */
     public function getDetails()
     {

@@ -193,7 +193,7 @@ class MenuItemAction extends AbstractDatabaseObjectAction implements ISortableAc
     {
         \assert($object instanceof MenuItem);
         if (\str_contains($regex, '\d+')) {
-            return \str_replace('\d+', $object->itemID, $regex);
+            return \str_replace('\d+', (string)$object->itemID, $regex);
         } else {
             return \str_replace(
                 '\w+',

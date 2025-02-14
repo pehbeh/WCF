@@ -89,7 +89,7 @@ class ImportWorker extends AbstractWorker
     {
         if (!$this->exporter) {
             $this->bootstrap();
-            \assert($this->exporter);
+            \assert($this->exporter !== null);
         }
 
         return $this->exporter;

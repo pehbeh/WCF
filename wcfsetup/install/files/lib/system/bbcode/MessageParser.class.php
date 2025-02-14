@@ -20,7 +20,7 @@ class MessageParser extends BBCodeParser
 {
     /**
      * list of smilies
-     * @var Smiley[]
+     * @var array<string, string>
      */
     protected $smilies = [];
 

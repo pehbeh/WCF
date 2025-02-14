@@ -518,7 +518,7 @@ class BBCodePackageInstallationPlugin extends AbstractXMLPackageInstallationPlug
 
         $form->appendChild(
             FormContainer::create('bbcodeAttributes')
-                ->attribute('data-ignore-dependencies', 1)
+                ->attribute('data-ignore-dependencies', '1')
                 ->label('wcf.acp.pip.bbcode.attributes')
                 ->appendChild(
                     BBCodeAttributesFormField::create()
