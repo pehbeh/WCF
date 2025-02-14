@@ -10,8 +10,8 @@ import * as Ajax from "../../../Ajax";
 import DomChangeListener from "../../../Dom/Change/Listener";
 import * as Language from "../../../Language";
 import * as UiConfirmation from "../../../Ui/Confirmation";
-import * as UiNotification from "../../../Ui/Notification";
 import { AjaxCallbackSetup } from "../../../Ajax/Data";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 interface AjaxResponse {
   actionName: string;
@@ -121,11 +121,11 @@ class AcpUiPageBoxOrder {
   _ajaxSuccess(data: AjaxResponse): void {
     switch (data.actionName) {
       case "updatePosition":
-        UiNotification.show();
+        showDefaultSuccessSnackbar();
         break;
 
       case "resetPosition":
-        UiNotification.show(undefined, () => {
+        showDefaultSuccessSnackbar().addEventListener("snackbar:close", () => {
           window.location.reload();
         });
         break;

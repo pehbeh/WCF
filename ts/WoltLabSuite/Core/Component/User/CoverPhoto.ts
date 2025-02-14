@@ -12,7 +12,6 @@ import { promiseMutex } from "WoltLabSuite/Core/Helper/PromiseMutex";
 import { wheneverFirstSeen } from "WoltLabSuite/Core/Helper/Selector";
 import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
 import { prepareRequest } from "WoltLabSuite/Core/Ajax/Backend";
-import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 import * as FormBuilderManager from "WoltLabSuite/Core/Form/Builder/Manager";
 import { fire as fireEvent } from "WoltLabSuite/Core/Event/Handler";
 import { getPhrase } from "WoltLabSuite/Core/Language";
@@ -20,6 +19,7 @@ import DomUtil from "WoltLabSuite/Core/Dom/Util";
 import { escapeHTML } from "WoltLabSuite/Core/StringUtil";
 import { registerCallback } from "WoltLabSuite/Core/Form/Builder/Field/Controller/FileProcessor";
 import WoltlabCoreFile from "WoltLabSuite/Core/Component/File/woltlab-core-file";
+import { showDefaultSuccessSnackbar } from "../Snackbar";
 
 type ResponseGetForm = {
   dialog: string;
@@ -92,7 +92,7 @@ export function setup(): void {
         }
       }
 
-      showNotification();
+      showDefaultSuccessSnackbar();
       fireEvent("com.woltlab.wcf.user", "coverPhoto", {
         url: coverPhotoUrl,
       });

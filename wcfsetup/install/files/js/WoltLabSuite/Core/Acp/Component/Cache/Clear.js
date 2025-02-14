@@ -6,11 +6,10 @@
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.1
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Ajax/Backend", "WoltLabSuite/Core/Component/Confirmation", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Ui/Notification"], function (require, exports, tslib_1, Backend_1, Confirmation_1, Language_1, UiNotification) {
+define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "WoltLabSuite/Core/Component/Confirmation", "WoltLabSuite/Core/Component/Snackbar", "WoltLabSuite/Core/Language"], function (require, exports, Backend_1, Confirmation_1, Snackbar_1, Language_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
-    UiNotification = tslib_1.__importStar(UiNotification);
     function initButton(button) {
         button.addEventListener("click", () => {
             void clearCache(button.dataset.endpoint);
@@ -20,7 +19,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Ajax/Backend", "WoltLa
         const result = await (0, Confirmation_1.confirmationFactory)().custom((0, Language_1.getPhrase)("wcf.acp.cache.clear.sure")).withoutMessage();
         if (result) {
             await (0, Backend_1.prepareRequest)(endpoint).post().fetchAsResponse();
-            UiNotification.show();
+            (0, Snackbar_1.showDefaultSuccessSnackbar)();
         }
     }
     function setup() {

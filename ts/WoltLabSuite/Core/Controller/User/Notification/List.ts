@@ -10,9 +10,9 @@
 
 import { dboAction } from "WoltLabSuite/Core/Ajax";
 import { confirmationFactory } from "WoltLabSuite/Core/Component/Confirmation";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 import { promiseMutex } from "WoltLabSuite/Core/Helper/PromiseMutex";
 import { getPhrase } from "WoltLabSuite/Core/Language";
-import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 
 function initMarkAllAsRead(): void {
   document.querySelector(".jsMarkAllAsConfirmed")?.addEventListener(
@@ -31,7 +31,7 @@ async function markAllAsRead(): Promise<void> {
 
   await dboAction("markAllAsConfirmed", "wcf\\data\\user\\notification\\UserNotificationAction").dispatch();
 
-  showNotification(undefined, () => {
+  showDefaultSuccessSnackbar().addEventListener("snackbar:close", () => {
     window.location.reload();
   });
 }

@@ -9,7 +9,6 @@
 
 import DomUtil from "../../../Dom/Util";
 import UiDropdownSimple from "../../../Ui/Dropdown/Simple";
-import * as UiNotification from "../../../Ui/Notification";
 import { confirmationFactory } from "../../Confirmation";
 import * as EventHandler from "../../../Event/Handler";
 import * as UiScroll from "../../../Ui/Scroll";
@@ -20,6 +19,7 @@ import { deleteResponse } from "WoltLabSuite/Core/Api/Comments/Responses/DeleteR
 import { editResponse } from "WoltLabSuite/Core/Api/Comments/Responses/EditResponse";
 import { renderResponse } from "WoltLabSuite/Core/Api/Comments/Responses/RenderResponse";
 import { updateResponse } from "WoltLabSuite/Core/Api/Comments/Responses/UpdateResponse";
+import { showDefaultSuccessSnackbar } from "../../Snackbar";
 
 export class WoltlabCoreCommentResponseElement extends HTMLParsedElement {
   parsedCallback() {
@@ -58,7 +58,7 @@ export class WoltlabCoreCommentResponseElement extends HTMLParsedElement {
     if (result) {
       (await deleteResponse(this.responseId)).unwrap();
 
-      UiNotification.show();
+      showDefaultSuccessSnackbar();
 
       this.dispatchEvent(new CustomEvent("delete"));
     }
@@ -129,7 +129,7 @@ export class WoltlabCoreCommentResponseElement extends HTMLParsedElement {
     DomUtil.setInnerHtml(this.querySelector<HTMLElement>(".htmlContent")!, template);
     this.#hideLoadingIndicator();
     this.#cancelEdit();
-    UiNotification.show();
+    showDefaultSuccessSnackbar();
   }
 
   #showLoadingIndicator(): void {

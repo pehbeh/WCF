@@ -8,7 +8,6 @@
  */
 
 import * as UiScroll from "../../Ui/Scroll";
-import * as UiNotification from "../../Ui/Notification";
 import { getPhrase } from "../../Language";
 import * as EventHandler from "../../Event/Handler";
 import DomUtil from "../../Dom/Util";
@@ -19,6 +18,7 @@ import { getGuestToken } from "../GuestTokenDialog";
 import User from "WoltLabSuite/Core/User";
 import { clearQuotesForEditor } from "WoltLabSuite/Core/Component/Quote/Storage";
 import { setActiveEditor } from "WoltLabSuite/Core/Component/Quote/Message";
+import { showSuccessSnackbar } from "../Snackbar";
 
 type CallbackInsertComment = (commentId: number) => void;
 
@@ -139,7 +139,7 @@ export class CommentAdd {
     }
 
     this.#callback(response.value.commentID);
-    UiNotification.show(getPhrase("wcf.global.success.add"));
+    showSuccessSnackbar(getPhrase("wcf.global.success.add"));
     this.#reset();
     this.#hideLoadingOverlay();
   }

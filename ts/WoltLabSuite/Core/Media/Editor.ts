@@ -9,7 +9,6 @@
 
 import { Media, MediaEditorCallbackObject } from "./Data";
 import { AjaxCallbackObject, AjaxCallbackSetup } from "../Ajax/Data";
-import * as UiNotification from "../Ui/Notification";
 import * as UiDialog from "../Ui/Dialog";
 import { DialogCallbackObject } from "../Ui/Dialog/Data";
 import * as LanguageChooser from "../Language/Chooser";
@@ -21,6 +20,7 @@ import * as Language from "../Language";
 import * as Ajax from "../Ajax";
 import MediaReplace from "./Replace";
 import { I18nValues } from "../Language/Input";
+import { showDefaultSuccessSnackbar } from "../Component/Snackbar";
 
 interface InitEditorData {
   returnValues: {
@@ -59,7 +59,7 @@ class MediaEditor implements AjaxCallbackObject {
   }
 
   public _ajaxSuccess(): void {
-    UiNotification.show();
+    showDefaultSuccessSnackbar();
 
     if (this._callbackObject._editorSuccess) {
       this._callbackObject._editorSuccess(this._media, this._oldCategoryId);

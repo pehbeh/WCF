@@ -6,7 +6,7 @@
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @woltlabExcludeBundle tiny
  */
-define(["require", "exports", "tslib", "../../Core", "sortablejs", "WoltLabSuite/Core/Ajax", "WoltLabSuite/Core/Ui/Notification", "WoltLabSuite/Core/Language"], function (require, exports, tslib_1, Core, sortablejs_1, Ajax_1, Notification_1, Language_1) {
+define(["require", "exports", "tslib", "../../Core", "sortablejs", "WoltLabSuite/Core/Ajax", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Component/Snackbar"], function (require, exports, tslib_1, Core, sortablejs_1, Ajax_1, Language_1, Snackbar_1) {
     "use strict";
     Core = tslib_1.__importStar(Core);
     sortablejs_1 = tslib_1.__importDefault(sortablejs_1);
@@ -101,7 +101,7 @@ define(["require", "exports", "tslib", "../../Core", "sortablejs", "WoltLabSuite
                 },
             }, this._options.additionalParameters);
             await (0, Ajax_1.dboAction)("updatePosition", this._options.className).payload(parameters).dispatch();
-            (0, Notification_1.show)((0, Language_1.getPhrase)("wcf.global.success.edit"));
+            (0, Snackbar_1.showSuccessSnackbar)((0, Language_1.getPhrase)("wcf.global.success.edit"));
         }
         #onMove(event) {
             if (this._options.maxNestingLevel === undefined) {

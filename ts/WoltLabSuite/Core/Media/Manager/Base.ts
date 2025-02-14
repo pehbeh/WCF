@@ -19,13 +19,13 @@ import * as UiDialog from "../../Ui/Dialog";
 import { DialogCallbackSetup, DialogCallbackObject } from "../../Ui/Dialog/Data";
 import * as Clipboard from "../../Controller/Clipboard";
 import UiPagination from "../../Ui/Pagination";
-import * as UiNotification from "../../Ui/Notification";
 import * as StringUtil from "../../StringUtil";
 import MediaManagerSearch from "./Search";
 import MediaUpload from "../Upload";
 import MediaEditor from "../Editor";
 import * as MediaClipboard from "../Clipboard";
 import { ObjectActionData } from "../../Ui/Object/Data";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 let mediaManagerCounter = 0;
 
@@ -397,7 +397,7 @@ abstract class MediaManager<TOptions extends MediaManagerOptions = MediaManagerO
       this.removeMedia(~~mediaId);
     });
 
-    UiNotification.show();
+    showDefaultSuccessSnackbar();
   }
 
   /**

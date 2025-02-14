@@ -13,8 +13,8 @@ import { MediaUploadAjaxResponseData, MediaUploadError, MediaUploadOptions } fro
 import MediaUpload from "./Upload";
 import * as Language from "../Language";
 import DomUtil from "../Dom/Util";
-import * as UiNotification from "../Ui/Notification";
 import * as DomChangeListener from "../Dom/Change/Listener";
+import { showDefaultSuccessSnackbar } from "../Component/Snackbar";
 
 class MediaReplace extends MediaUpload {
   protected readonly _mediaID: number;
@@ -71,7 +71,7 @@ class MediaReplace extends MediaUpload {
         // Remove existing error messages.
         DomUtil.innerError(this._buttonContainer, "");
 
-        UiNotification.show();
+        showDefaultSuccessSnackbar();
       } else {
         let error: MediaUploadError = data.returnValues.errors[internalFileId];
         if (!error) {

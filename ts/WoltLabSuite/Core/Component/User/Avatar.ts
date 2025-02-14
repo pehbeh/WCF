@@ -11,9 +11,9 @@
 import { promiseMutex } from "WoltLabSuite/Core/Helper/PromiseMutex";
 import { wheneverFirstSeen } from "WoltLabSuite/Core/Helper/Selector";
 import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
-import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 import { registerCallback } from "WoltLabSuite/Core/Form/Builder/Field/Controller/FileProcessor";
 import WoltlabCoreFile from "WoltLabSuite/Core/Component/File/woltlab-core-file";
+import { showDefaultSuccessSnackbar } from "../Snackbar";
 
 interface Result {
   avatar: string;
@@ -32,7 +32,7 @@ async function editAvatar(button: HTMLElement): Promise<void> {
 
       // In the ACP, the form should not be reloaded after changing the avatar.
       img.src = result.avatar;
-      showNotification();
+      showDefaultSuccessSnackbar();
     } else {
       window.location.reload();
     }
@@ -60,7 +60,7 @@ export function setup(): void {
       )!;
 
       avatarForm.querySelector<HTMLImageElement>("img.userAvatarImage")!.src = file.link!;
-      showNotification();
+      showDefaultSuccessSnackbar();
     });
   }
 

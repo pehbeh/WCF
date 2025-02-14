@@ -5,7 +5,7 @@
  * @copyright  2001-2019 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
-define(["require", "exports", "tslib", "../../../Ajax", "../../../Dom/Change/Listener", "../../../Language", "../../../Ui/Confirmation", "../../../Ui/Notification"], function (require, exports, tslib_1, Ajax, Listener_1, Language, UiConfirmation, UiNotification) {
+define(["require", "exports", "tslib", "../../../Ajax", "../../../Dom/Change/Listener", "../../../Language", "../../../Ui/Confirmation", "WoltLabSuite/Core/Component/Snackbar"], function (require, exports, tslib_1, Ajax, Listener_1, Language, UiConfirmation, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.init = init;
@@ -13,7 +13,6 @@ define(["require", "exports", "tslib", "../../../Ajax", "../../../Dom/Change/Lis
     Listener_1 = tslib_1.__importDefault(Listener_1);
     Language = tslib_1.__importStar(Language);
     UiConfirmation = tslib_1.__importStar(UiConfirmation);
-    UiNotification = tslib_1.__importStar(UiNotification);
     class AcpUiPageBoxOrder {
         pageId;
         pbo;
@@ -93,10 +92,10 @@ define(["require", "exports", "tslib", "../../../Ajax", "../../../Dom/Change/Lis
         _ajaxSuccess(data) {
             switch (data.actionName) {
                 case "updatePosition":
-                    UiNotification.show();
+                    (0, Snackbar_1.showDefaultSuccessSnackbar)();
                     break;
                 case "resetPosition":
-                    UiNotification.show(undefined, () => {
+                    (0, Snackbar_1.showDefaultSuccessSnackbar)().addEventListener("snackbar:close", () => {
                         window.location.reload();
                     });
                     break;

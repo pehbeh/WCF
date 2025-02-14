@@ -10,13 +10,13 @@
 import MediaManager from "./Manager/Base";
 import MediaManagerEditor from "./Manager/Editor";
 import * as Clipboard from "../Controller/Clipboard";
-import * as UiNotification from "../Ui/Notification";
 import * as EventHandler from "../Event/Handler";
 import { getPhrase } from "../Language";
 import * as Ajax from "../Ajax";
 import { AjaxCallbackObject, AjaxCallbackSetup } from "../Ajax/Data";
 import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
 import WoltlabCoreDialogElement from "WoltLabSuite/Core/Element/woltlab-core-dialog";
+import { showDefaultSuccessSnackbar } from "../Component/Snackbar";
 
 let _mediaManager: MediaManager;
 let _didInit = false;
@@ -47,7 +47,7 @@ class MediaClipboard implements AjaxCallbackObject {
       case "setCategory":
         this.#dialog?.close();
 
-        UiNotification.show();
+        showDefaultSuccessSnackbar();
 
         Clipboard.reload();
 

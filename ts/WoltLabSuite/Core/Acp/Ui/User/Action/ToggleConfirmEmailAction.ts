@@ -11,7 +11,7 @@ import AbstractUserAction from "./Abstract";
 import * as Ajax from "../../../../Ajax";
 import * as Core from "../../../../Core";
 import { AjaxCallbackSetup, DatabaseObjectActionResponse } from "../../../../Ajax/Data";
-import * as UiNotification from "../../../../Ui/Notification";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 export class ToggleConfirmEmailAction extends AbstractUserAction {
   public constructor(button: HTMLElement, userId: number, userDataElement: HTMLElement) {
@@ -56,7 +56,7 @@ export class ToggleConfirmEmailAction extends AbstractUserAction {
       }
     });
 
-    UiNotification.show();
+    showDefaultSuccessSnackbar();
   }
 }
 

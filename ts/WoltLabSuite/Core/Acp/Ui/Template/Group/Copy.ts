@@ -6,7 +6,7 @@
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 
-import * as UiNotification from "../../../../Ui/Notification";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
 
 interface Response {
@@ -21,9 +21,8 @@ export function init(): void {
 async function click(button: HTMLAnchorElement): Promise<void> {
   const result = await dialogFactory().usingFormBuilder().fromEndpoint<Response>(button.dataset.endpoint!);
   if (result.ok) {
-    UiNotification.show(undefined, () => {
+    showDefaultSuccessSnackbar().addEventListener("snackbar:close", () => {
       window.location.href = result.result.redirectURL;
     });
   }
 }
-

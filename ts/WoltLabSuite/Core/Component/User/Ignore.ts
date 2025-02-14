@@ -10,8 +10,8 @@
 import { promiseMutex } from "WoltLabSuite/Core/Helper/PromiseMutex";
 import { wheneverFirstSeen } from "WoltLabSuite/Core/Helper/Selector";
 import { getPhrase } from "WoltLabSuite/Core/Language";
-import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
+import { showDefaultSuccessSnackbar } from "../Snackbar";
 
 type Response = {
   type: number;
@@ -41,7 +41,7 @@ async function toggleIgnore(button: HTMLElement): Promise<void> {
       }
     }
 
-    showNotification();
+    showDefaultSuccessSnackbar();
   }
 }
 

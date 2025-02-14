@@ -9,8 +9,8 @@
 
 import { prepareRequest } from "WoltLabSuite/Core/Ajax/Backend";
 import { confirmationFactory } from "WoltLabSuite/Core/Component/Confirmation";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 import { getPhrase } from "WoltLabSuite/Core/Language";
-import * as UiNotification from "WoltLabSuite/Core/Ui/Notification";
 
 function initButton(button: HTMLButtonElement): void {
   button.addEventListener("click", () => {
@@ -22,7 +22,7 @@ async function clearCache(endpoint: string): Promise<void> {
   const result = await confirmationFactory().custom(getPhrase("wcf.acp.cache.clear.sure")).withoutMessage();
   if (result) {
     await prepareRequest(endpoint).post().fetchAsResponse();
-    UiNotification.show();
+    showDefaultSuccessSnackbar();
   }
 }
 

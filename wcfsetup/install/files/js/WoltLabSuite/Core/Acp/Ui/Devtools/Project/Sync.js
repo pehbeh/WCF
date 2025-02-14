@@ -1,10 +1,9 @@
-define(["require", "exports", "tslib", "../../../../Ajax", "../../../../Language", "../../../../Ui/Notification", "../../../../Component/Dialog"], function (require, exports, tslib_1, Ajax, Language, UiNotification, Dialog_1) {
+define(["require", "exports", "tslib", "../../../../Ajax", "../../../../Language", "../../../../Component/Dialog", "WoltLabSuite/Core/Component/Snackbar"], function (require, exports, tslib_1, Ajax, Language, Dialog_1, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.init = init;
     Ajax = tslib_1.__importStar(Ajax);
     Language = tslib_1.__importStar(Language);
-    UiNotification = tslib_1.__importStar(UiNotification);
     class AcpUiDevtoolsProjectSync {
         buttons = new Map();
         buttonStatus = new Map();
@@ -120,7 +119,7 @@ define(["require", "exports", "tslib", "../../../../Ajax", "../../../../Language
         syncNext() {
             if (this.queue.length === 0) {
                 this.buttonSyncAll.classList.remove("disabled");
-                UiNotification.show();
+                (0, Snackbar_1.showDefaultSuccessSnackbar)();
                 return;
             }
             const next = this.queue.shift();

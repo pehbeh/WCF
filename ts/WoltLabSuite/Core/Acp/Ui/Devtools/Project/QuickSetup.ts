@@ -10,9 +10,9 @@ import * as Ajax from "../../../../Ajax";
 import DomUtil from "../../../../Dom/Util";
 import * as Language from "../../../../Language";
 import UiDialog from "../../../../Ui/Dialog";
-import * as UiNotification from "../../../../Ui/Notification";
 import { AjaxCallbackObject, AjaxCallbackSetup } from "../../../../Ajax/Data";
 import { DialogCallbackObject, DialogCallbackSetup } from "../../../../Ui/Dialog/Data";
+import { showSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 interface AjaxResponse {
   returnValues: {
@@ -66,7 +66,7 @@ class AcpUiDevtoolsProjectQuickSetup implements AjaxCallbackObject, DialogCallba
 
     UiDialog.close(this);
 
-    UiNotification.show(data.returnValues.successMessage, () => {
+    showSuccessSnackbar(data.returnValues.successMessage).addEventListener("snackbar:close", () => {
       window.location.reload();
     });
   }

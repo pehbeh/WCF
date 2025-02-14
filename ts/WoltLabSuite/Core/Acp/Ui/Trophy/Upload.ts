@@ -6,10 +6,10 @@
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 import * as Core from "../../../Core";
 import DomUtil from "../../../Dom/Util";
 import * as Language from "../../../Language";
-import * as UiNotification from "../../../Ui/Notification";
 import Upload from "../../../Upload";
 import { UploadOptions } from "../../../Upload/Data";
 
@@ -57,7 +57,7 @@ class TrophyUpload extends Upload {
 
     this._target.innerHTML = `<img src="${data.returnValues.url}?timestamp=${Date.now()}" alt="">`;
 
-    UiNotification.show();
+    showDefaultSuccessSnackbar();
   }
 
   protected _failure(uploadId: number, data: AjaxResponseError): boolean {

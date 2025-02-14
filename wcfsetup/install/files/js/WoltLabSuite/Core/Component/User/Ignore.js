@@ -6,7 +6,7 @@
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.1
  */
-define(["require", "exports", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Ui/Notification", "WoltLabSuite/Core/Component/Dialog"], function (require, exports, PromiseMutex_1, Selector_1, Language_1, Notification_1, Dialog_1) {
+define(["require", "exports", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Component/Dialog", "../Snackbar"], function (require, exports, PromiseMutex_1, Selector_1, Language_1, Dialog_1, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
@@ -33,7 +33,7 @@ define(["require", "exports", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabS
                     button.querySelector("fa-icon")?.setIcon("eye-slash", true);
                 }
             }
-            (0, Notification_1.show)();
+            (0, Snackbar_1.showDefaultSuccessSnackbar)();
         }
     }
     function setup() {

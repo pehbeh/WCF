@@ -5,11 +5,9 @@
  * @copyright	2001-2019 WoltLab GmbH
  * @license	GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
-define(["require", "exports", "tslib", "../Language", "../Clipboard", "../Ui/Notification", "../Prism", "../Prism/Helper"], function (require, exports, tslib_1, Language, Clipboard, UiNotification, Prism_1, PrismHelper) {
+define(["require", "exports", "tslib", "../Clipboard", "../Prism", "../Prism/Helper", "../Component/Snackbar", "../Language"], function (require, exports, tslib_1, Clipboard, Prism_1, PrismHelper, Snackbar_1, Language_1) {
     "use strict";
-    Language = tslib_1.__importStar(Language);
     Clipboard = tslib_1.__importStar(Clipboard);
-    UiNotification = tslib_1.__importStar(UiNotification);
     Prism_1 = tslib_1.__importDefault(Prism_1);
     PrismHelper = tslib_1.__importStar(PrismHelper);
     async function waitForIdle() {
@@ -53,10 +51,10 @@ define(["require", "exports", "tslib", "../Language", "../Clipboard", "../Ui/Not
             button.type = "button";
             button.innerHTML = '<fa-icon size="24" name="copy"></fa-icon>';
             button.classList.add("jsTooltip");
-            button.title = Language.get("wcf.message.bbcode.code.copy");
+            button.title = (0, Language_1.getPhrase)("wcf.message.bbcode.code.copy");
             const clickCallback = async () => {
                 await Clipboard.copyElementTextToClipboard(this.codeContainer);
-                UiNotification.show(Language.get("wcf.message.bbcode.code.copy.success"));
+                (0, Snackbar_1.showSuccessSnackbar)((0, Language_1.getPhrase)("wcf.message.bbcode.code.copy.success"));
             };
             button.addEventListener("click", () => clickCallback());
             header.appendChild(button);

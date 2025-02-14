@@ -9,8 +9,8 @@
 import * as Ajax from "../../../../../../Ajax";
 import * as Language from "../../../../../../Language";
 import { ConfirmationCallbackParameters, show as showConfirmation } from "../../../../../../Ui/Confirmation";
-import * as UiNotification from "../../../../../../Ui/Notification";
 import { AjaxCallbackSetup } from "../../../../../../Ajax/Data";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 interface AjaxResponse {
   returnValues: {
@@ -63,7 +63,7 @@ class DevtoolsProjectPipEntryList {
    * Handles successful AJAX request.
    */
   _ajaxSuccess(data: AjaxResponse): void {
-    UiNotification.show();
+    showDefaultSuccessSnackbar();
 
     this.table.querySelectorAll("tbody > tr").forEach((pipEntry: HTMLTableRowElement) => {
       if (pipEntry.dataset.identifier === data.returnValues.identifier) {

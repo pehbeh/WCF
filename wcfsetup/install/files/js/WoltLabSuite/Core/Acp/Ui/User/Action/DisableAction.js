@@ -6,13 +6,12 @@
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       5.5
  */
-define(["require", "exports", "tslib", "../../../../Ajax", "../../../../Core", "../../../../Ui/Notification", "./Abstract", "../../../../Event/Handler"], function (require, exports, tslib_1, Ajax, Core, UiNotification, Abstract_1, EventHandler) {
+define(["require", "exports", "tslib", "../../../../Ajax", "../../../../Core", "./Abstract", "../../../../Event/Handler", "WoltLabSuite/Core/Component/Snackbar"], function (require, exports, tslib_1, Ajax, Core, Abstract_1, EventHandler, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DisableAction = void 0;
     Ajax = tslib_1.__importStar(Ajax);
     Core = tslib_1.__importStar(Core);
-    UiNotification = tslib_1.__importStar(UiNotification);
     Abstract_1 = tslib_1.__importDefault(Abstract_1);
     EventHandler = tslib_1.__importStar(EventHandler);
     class DisableAction extends Abstract_1.default {
@@ -51,7 +50,7 @@ define(["require", "exports", "tslib", "../../../../Ajax", "../../../../Core", "
                     }
                 }
             });
-            UiNotification.show();
+            (0, Snackbar_1.showDefaultSuccessSnackbar)();
             EventHandler.fire("com.woltlab.wcf.acp.user", "refresh", {
                 userIds: [this.userId],
             });

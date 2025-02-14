@@ -9,13 +9,13 @@
 import * as EventHandler from "../../../Event/Handler";
 import { ClipboardActionData } from "WoltLabSuite/Core/Controller/Clipboard/Data";
 import { dboAction } from "WoltLabSuite/Core/Ajax";
-import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 import UiDropdownSimple from "WoltLabSuite/Core/Ui/Dropdown/Simple";
 import BanHandler from "WoltLabSuite/Core/Acp/Ui/User/Action/Handler/Ban";
 import SendNewPassword from "WoltLabSuite/Core/Acp/Ui/User/Action/Handler/SendNewPassword";
 import { setup as setupClipboard, unmark as unmarkClipboard } from "WoltLabSuite/Core/Controller/Clipboard";
 import AcpUiUserList from "WoltLabSuite/Core/Acp/Ui/User/Editor";
 import { AcpUserContentRemoveClipboard } from "WoltLabSuite/Core/Acp/Ui/User/Content/Remove/Clipboard";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 function getUserElements(userIDs: number[]): HTMLElement[] {
   return Array.from(document.querySelectorAll<HTMLElement>(".jsUserRow")).filter((userRow) =>
@@ -32,7 +32,7 @@ function getDropdownMenu(userRow: HTMLElement): HTMLElement {
 function refresh(userIDs: number[]) {
   unmarkClipboard("com.woltlab.wcf.user", userIDs);
 
-  showNotification();
+  showDefaultSuccessSnackbar();
 
   EventHandler.fire("com.woltlab.wcf.acp.user", "refresh", {
     userIds: userIDs,

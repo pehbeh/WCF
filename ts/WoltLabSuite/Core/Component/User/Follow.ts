@@ -11,7 +11,7 @@ import { prepareRequest } from "WoltLabSuite/Core/Ajax/Backend";
 import { promiseMutex } from "WoltLabSuite/Core/Helper/PromiseMutex";
 import { wheneverFirstSeen } from "WoltLabSuite/Core/Helper/Selector";
 import { getPhrase } from "WoltLabSuite/Core/Language";
-import * as UiNotification from "WoltLabSuite/Core/Ui/Notification";
+import { showDefaultSuccessSnackbar } from "../Snackbar";
 
 async function toggleFollow(button: HTMLElement): Promise<void> {
   if (button.dataset.following !== "1") {
@@ -46,7 +46,7 @@ async function toggleFollow(button: HTMLElement): Promise<void> {
     }
   }
 
-  UiNotification.show();
+  showDefaultSuccessSnackbar();
 }
 
 export function setup(): void {

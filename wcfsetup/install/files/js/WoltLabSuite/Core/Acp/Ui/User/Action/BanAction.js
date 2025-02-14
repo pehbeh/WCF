@@ -6,14 +6,13 @@
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       5.5
  */
-define(["require", "exports", "tslib", "../../../../Core", "./Abstract", "./Handler/Ban", "../../../../Ui/Notification", "../../../../Event/Handler"], function (require, exports, tslib_1, Core, Abstract_1, Ban_1, UiNotification, EventHandler) {
+define(["require", "exports", "tslib", "../../../../Core", "./Abstract", "./Handler/Ban", "../../../../Event/Handler", "WoltLabSuite/Core/Component/Snackbar"], function (require, exports, tslib_1, Core, Abstract_1, Ban_1, EventHandler, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.BanAction = void 0;
     Core = tslib_1.__importStar(Core);
     Abstract_1 = tslib_1.__importDefault(Abstract_1);
     Ban_1 = tslib_1.__importDefault(Ban_1);
-    UiNotification = tslib_1.__importStar(UiNotification);
     EventHandler = tslib_1.__importStar(EventHandler);
     class BanAction extends Abstract_1.default {
         banHandler;
@@ -27,7 +26,7 @@ define(["require", "exports", "tslib", "../../../../Core", "./Abstract", "./Hand
                     this.banHandler.unban(() => {
                         this.userDataElement.dataset.banned = "false";
                         this.button.textContent = this.button.dataset.banMessage;
-                        UiNotification.show();
+                        (0, Snackbar_1.showDefaultSuccessSnackbar)();
                         EventHandler.fire("com.woltlab.wcf.acp.user", "refresh", {
                             userIds: [this.userId],
                         });
@@ -37,7 +36,7 @@ define(["require", "exports", "tslib", "../../../../Core", "./Abstract", "./Hand
                     this.banHandler.ban(() => {
                         this.userDataElement.dataset.banned = "true";
                         this.button.textContent = this.button.dataset.unbanMessage;
-                        UiNotification.show();
+                        (0, Snackbar_1.showDefaultSuccessSnackbar)();
                         EventHandler.fire("com.woltlab.wcf.acp.user", "refresh", {
                             userIds: [this.userId],
                         });

@@ -7,7 +7,7 @@
  * @module WoltLabSuite/Core/Acp/Ui/Style/DarkMode
  * @since 6.0
  */
-define(["require", "exports", "../../../Ajax/Backend", "../../../Component/Confirmation", "../../../Language", "../../../Ui/Notification"], function (require, exports, Backend_1, Confirmation_1, Language_1, Notification_1) {
+define(["require", "exports", "WoltLabSuite/Core/Component/Snackbar", "../../../Ajax/Backend", "../../../Component/Confirmation", "../../../Language"], function (require, exports, Snackbar_1, Backend_1, Confirmation_1, Language_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
@@ -16,7 +16,7 @@ define(["require", "exports", "../../../Ajax/Backend", "../../../Component/Confi
         if (ok) {
             const response = await (0, Backend_1.prepareRequest)(endpoint).post().fetchAsResponse();
             if (response?.ok) {
-                (0, Notification_1.show)(undefined, () => {
+                (0, Snackbar_1.showDefaultSuccessSnackbar)().addEventListener("snackbar:close", () => {
                     window.location.reload();
                 });
             }

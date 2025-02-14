@@ -6,14 +6,13 @@
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.0
  */
-define(["require", "exports", "tslib", "../../../Dom/Util", "../../../Language", "../../../Event/Handler", "../../../Ui/Scroll", "../../../Ui/Notification", "../../Ckeditor", "../../Ckeditor/Event", "WoltLabSuite/Core/User", "../../GuestTokenDialog", "WoltLabSuite/Core/Api/Comments/Responses/CreateResponse", "WoltLabSuite/Core/Component/Quote/Storage", "WoltLabSuite/Core/Component/Quote/Message"], function (require, exports, tslib_1, Util_1, Language_1, EventHandler, UiScroll, UiNotification, Ckeditor_1, Event_1, User_1, GuestTokenDialog_1, CreateResponse_1, Storage_1, Message_1) {
+define(["require", "exports", "tslib", "../../../Dom/Util", "../../../Language", "../../../Event/Handler", "../../../Ui/Scroll", "../../Ckeditor", "../../Ckeditor/Event", "WoltLabSuite/Core/User", "../../GuestTokenDialog", "WoltLabSuite/Core/Api/Comments/Responses/CreateResponse", "WoltLabSuite/Core/Component/Quote/Storage", "WoltLabSuite/Core/Component/Quote/Message", "../../Snackbar"], function (require, exports, tslib_1, Util_1, Language_1, EventHandler, UiScroll, Ckeditor_1, Event_1, User_1, GuestTokenDialog_1, CreateResponse_1, Storage_1, Message_1, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CommentResponseAdd = void 0;
     Util_1 = tslib_1.__importDefault(Util_1);
     EventHandler = tslib_1.__importStar(EventHandler);
     UiScroll = tslib_1.__importStar(UiScroll);
-    UiNotification = tslib_1.__importStar(UiNotification);
     User_1 = tslib_1.__importDefault(User_1);
     class CommentResponseAdd {
         container;
@@ -97,7 +96,7 @@ define(["require", "exports", "tslib", "../../../Dom/Util", "../../../Language",
                 return;
             }
             this.#callback(this.#commentId, response.value.responseID);
-            UiNotification.show((0, Language_1.getPhrase)("wcf.global.success.add"));
+            (0, Snackbar_1.showSuccessSnackbar)((0, Language_1.getPhrase)("wcf.global.success.add"));
             this.#reset();
             this.#hideLoadingOverlay();
         }

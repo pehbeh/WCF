@@ -6,11 +6,10 @@
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.1
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Ajax/Backend", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Ui/Notification"], function (require, exports, tslib_1, Backend_1, PromiseMutex_1, Selector_1, Language_1, UiNotification) {
+define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Language", "../Snackbar"], function (require, exports, Backend_1, PromiseMutex_1, Selector_1, Language_1, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
-    UiNotification = tslib_1.__importStar(UiNotification);
     async function toggleFollow(button) {
         if (button.dataset.following !== "1") {
             await (0, Backend_1.prepareRequest)(button.dataset.followUser)
@@ -42,7 +41,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Ajax/Backend", "WoltLa
                 button.querySelector("fa-icon")?.setIcon("circle-plus");
             }
         }
-        UiNotification.show();
+        (0, Snackbar_1.showDefaultSuccessSnackbar)();
     }
     function setup() {
         (0, Selector_1.wheneverFirstSeen)("[data-follow-user]", (button) => {

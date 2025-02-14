@@ -6,11 +6,10 @@
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.2
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Ajax", "WoltLabSuite/Core/Component/Confirmation", "WoltLabSuite/Core/Ui/Notification"], function (require, exports, tslib_1, Ajax_1, Confirmation_1, UiNotification) {
+define(["require", "exports", "WoltLabSuite/Core/Ajax", "WoltLabSuite/Core/Component/Confirmation", "WoltLabSuite/Core/Component/Snackbar"], function (require, exports, Ajax_1, Confirmation_1, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
-    UiNotification = tslib_1.__importStar(UiNotification);
     function initRevertButtons(container) {
         container.querySelectorAll(".jsRevertButton").forEach((button) => {
             button.addEventListener("click", async () => {
@@ -24,7 +23,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Ajax", "WoltLabSuite/C
     }
     async function revert(objectId) {
         await (0, Ajax_1.dboAction)("revert", "wcf\\data\\edit\\history\\entry\\EditHistoryEntryAction").objectIds([objectId]).dispatch();
-        UiNotification.show(undefined, () => {
+        (0, Snackbar_1.showDefaultSuccessSnackbar)().addEventListener("snackbar:close", () => {
             window.location.reload();
         });
     }

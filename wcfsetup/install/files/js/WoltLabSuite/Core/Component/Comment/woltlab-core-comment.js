@@ -6,13 +6,12 @@
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.0
  */
-define(["require", "exports", "tslib", "../../Dom/Util", "../../Ui/Dropdown/Simple", "../../Ui/Notification", "../Confirmation", "../../Ui/Scroll", "../../Event/Handler", "../../Language", "../Ckeditor", "WoltLabSuite/Core/Api/Comments/DeleteComment", "WoltLabSuite/Core/Api/Comments/EnableComment", "WoltLabSuite/Core/Api/Comments/EditComment", "WoltLabSuite/Core/Api/Comments/UpdateComment", "WoltLabSuite/Core/Api/Comments/RenderComment"], function (require, exports, tslib_1, Util_1, Simple_1, UiNotification, Confirmation_1, UiScroll, EventHandler, Language_1, Ckeditor_1, DeleteComment_1, EnableComment_1, EditComment_1, UpdateComment_1, RenderComment_1) {
+define(["require", "exports", "tslib", "../../Dom/Util", "../../Ui/Dropdown/Simple", "../Confirmation", "../../Ui/Scroll", "../../Event/Handler", "../../Language", "../Ckeditor", "WoltLabSuite/Core/Api/Comments/DeleteComment", "WoltLabSuite/Core/Api/Comments/EnableComment", "WoltLabSuite/Core/Api/Comments/EditComment", "WoltLabSuite/Core/Api/Comments/UpdateComment", "WoltLabSuite/Core/Api/Comments/RenderComment", "../Snackbar"], function (require, exports, tslib_1, Util_1, Simple_1, Confirmation_1, UiScroll, EventHandler, Language_1, Ckeditor_1, DeleteComment_1, EnableComment_1, EditComment_1, UpdateComment_1, RenderComment_1, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.WoltlabCoreCommentElement = void 0;
     Util_1 = tslib_1.__importDefault(Util_1);
     Simple_1 = tslib_1.__importDefault(Simple_1);
-    UiNotification = tslib_1.__importStar(UiNotification);
     UiScroll = tslib_1.__importStar(UiScroll);
     EventHandler = tslib_1.__importStar(EventHandler);
     class WoltlabCoreCommentElement extends HTMLParsedElement {
@@ -50,7 +49,7 @@ define(["require", "exports", "tslib", "../../Dom/Util", "../../Ui/Dropdown/Simp
             const result = await (0, Confirmation_1.confirmationFactory)().delete();
             if (result) {
                 (await (0, DeleteComment_1.deleteComment)(this.commentId)).unwrap();
-                UiNotification.show();
+                (0, Snackbar_1.showDefaultSuccessSnackbar)();
                 this.dispatchEvent(new CustomEvent("delete"));
             }
         }
@@ -106,7 +105,7 @@ define(["require", "exports", "tslib", "../../Dom/Util", "../../Ui/Dropdown/Simp
             Util_1.default.setInnerHtml(this.querySelector(".htmlContent"), template);
             this.#hideLoadingIndicator();
             this.#cancelEdit();
-            UiNotification.show();
+            (0, Snackbar_1.showDefaultSuccessSnackbar)();
         }
         #showLoadingIndicator() {
             let div = this.querySelector(".comment__loading");
