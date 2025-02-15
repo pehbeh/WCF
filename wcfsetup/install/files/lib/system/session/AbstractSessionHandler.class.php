@@ -43,6 +43,8 @@ abstract class AbstractSessionHandler extends SingletonFactory
 
     /**
      * Initializes this session.
+     *
+     * @return void
      */
     abstract protected function initSession();
 }

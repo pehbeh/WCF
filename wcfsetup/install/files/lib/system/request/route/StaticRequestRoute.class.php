@@ -34,6 +34,9 @@ class StaticRequestRoute extends DynamicRequestRoute
 
     /**
      * Always throws. This method only exists because StaticRequestRoute inherits from DynamicRequestRoute.
+     *
+     * @param boolean $isACP
+     * @return void
      */
     public function setIsACP($isACP)
     {
@@ -53,6 +56,7 @@ class StaticRequestRoute extends DynamicRequestRoute
      * for controllers requiring a custom set of additional parameters.
      *
      * @param bool $matchController
+     * @return void
      */
     public function setMatchController($matchController)
     {
@@ -64,6 +68,7 @@ class StaticRequestRoute extends DynamicRequestRoute
      *
      * @param string $application
      * @param string $controller
+     * @return void
      */
     public function setStaticController($application, $controller)
     {

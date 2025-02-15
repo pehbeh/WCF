@@ -122,6 +122,9 @@ class ArticleSearch extends AbstractSearchProvider
         return $conditionBuilder;
     }
 
+    /**
+     * @return list<int>
+     */
     private function getArticleCategoryIDs(int $categoryID): array
     {
         $categoryIDs = [];

@@ -57,6 +57,8 @@ class TagCloud
 
     /**
      * Loads the tag cloud cache.
+     *
+     * @return void
      */
     protected function loadCache()
     {

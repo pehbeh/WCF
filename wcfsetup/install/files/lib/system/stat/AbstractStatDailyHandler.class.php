@@ -74,6 +74,7 @@ abstract class AbstractStatDailyHandler implements IStatDailyHandler
      * Adds additional conditions to the given condition builder.
      *
      * @param PreparedStatementConditionBuilder $conditionBuilder
+     * @return void
      * @since   3.1
      */
     protected function addConditions(PreparedStatementConditionBuilder $conditionBuilder)

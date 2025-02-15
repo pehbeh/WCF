@@ -27,16 +27,25 @@ class TagEngine extends SingletonFactory
      *
      * @param string $objectType
      * @param int $objectID
-     * @param array $tags
+     * @param string[] $tags
      * @param int $languageID
      * @param bool $replace
+     * @return void
      */
     public function addObjectTags($objectType, $objectID, array $tags, $languageID, $replace = true)
     {
         $objectTypeID = $this->getObjectTypeID($objectType);
-        $tags = \array_unique(\array_reduce(ArrayUtil::trim(\array_map(static function ($tag) {
-            return \explode(',', $tag);
-        }, $tags)), 'array_merge', []));
+        $tags = \array_unique(
+            \array_reduce(
+                ArrayUtil::trim(
+                    \array_map(static function ($tag) {
+                        return \explode(',', $tag);
+                    }, $tags)
+                ),
+                'array_merge',
+                []
+            )
+        );
 
         // remove tags prior to apply the new ones (prevents duplicate entries)
         if ($replace) {
@@ -108,6 +117,7 @@ class TagEngine extends SingletonFactory
      * @param string $objectType
      * @param int $objectID
      * @param int $languageID
+     * @return void
      */
     public function deleteObjectTags($objectType, $objectID, $languageID = null)
     {
@@ -136,6 +146,7 @@ class TagEngine extends SingletonFactory
      *
      * @param string $objectType
      * @param int[] $objectIDs
+     * @return void
      */
     public function deleteObjects($objectType, array $objectIDs)
     {
@@ -172,7 +183,7 @@ class TagEngine extends SingletonFactory
      * @param string $objectType
      * @param int[] $objectIDs
      * @param int[] $languageIDs
-     * @return  array
+     * @return array<int, array<int, Tag>>
      */
     public function getObjectsTags($objectType, array $objectIDs, array $languageIDs = [])
     {
@@ -289,7 +300,7 @@ class TagEngine extends SingletonFactory
      *
      * @param string $objectType
      * @param Tag[] $tags
-     * @return array
+     * @return array{sql: string, parameters: mixed[]}
      * @since   5.2
      */
     public function getSubselectForObjectsByTags($objectType, array $tags)

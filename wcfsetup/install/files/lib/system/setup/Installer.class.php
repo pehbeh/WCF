@@ -59,6 +59,8 @@ class Installer
 
     /**
      * Creates the target directory if necessary.
+     *
+     * @return void
      */
     protected function createTargetDir()
     {
@@ -76,6 +78,7 @@ class Installer
      * Creates a directory in the target directory.
      *
      * @param string $dir
+     * @return void
      * @throws  SystemException
      */
     protected function createDir($dir)
@@ -96,6 +99,7 @@ class Installer
      * Touches a file in the target directory.
      *
      * @param string $file
+     * @return void
      */
     public function touchFile($file)
     {
@@ -109,6 +113,7 @@ class Installer
      * @param string $file
      * @param int $index
      * @param Tar $tar
+     * @return void
      */
     protected function createFile($file, $index, Tar $tar)
     {
@@ -120,6 +125,8 @@ class Installer
 
     /**
      * Starts the extracting of the files.
+     *
+     * @return void
      */
     protected function install()
     {
@@ -192,7 +199,8 @@ class Installer
     /**
      * Checks whether the given files overwriting locked existing files.
      *
-     * @param array $files
+     * @param list<string> $files
+     * @return void
      */
     protected function checkFiles(&$files)
     {
@@ -202,7 +210,8 @@ class Installer
     /**
      * Logs the given files.
      *
-     * @param array $files
+     * @param list<string> $files
+     * @return void
      */
     protected function logFiles(&$files)
     {
@@ -213,6 +222,7 @@ class Installer
      * Makes a file or directory writeable.
      *
      * @param string $target
+     * @return void
      */
     protected function makeWriteable($target)
     {

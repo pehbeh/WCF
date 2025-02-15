@@ -20,6 +20,9 @@ final class Request implements RequestHandlerInterface
 
     private readonly bool $isLandingPage;
 
+    /**
+     * @var array{cms?: array{pageID: int, languageID: int}}
+     */
     private readonly array $metaData;
 
     /**
@@ -28,6 +31,9 @@ final class Request implements RequestHandlerInterface
      */
     private $requestObject;
 
+    /**
+     * @param array{cms?: array{pageID: int, languageID: int}} $metaData
+     */
     public function __construct(string $className, array $metaData, bool $isLandingPage)
     {
         $this->className = $className;
@@ -76,7 +82,7 @@ final class Request implements RequestHandlerInterface
     /**
      * Returns request meta data.
      *
-     * @return  array
+     * @return array{cms?: array{pageID: int, languageID: int}}
      * @since   3.0
      */
     public function getMetaData()

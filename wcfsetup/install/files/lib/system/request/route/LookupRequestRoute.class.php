@@ -19,9 +19,9 @@ final class LookupRequestRoute implements IRequestRoute
 {
     /**
      * list of parsed route information
-     * @var array
+     * @var array{id?: string, title?: string, controller?: string, isDefaultController?: boolean}
      */
-    protected array $routeData = [];
+    private array $routeData = [];
 
     /**
      * @inheritDoc

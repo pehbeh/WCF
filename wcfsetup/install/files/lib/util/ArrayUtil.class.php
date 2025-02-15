@@ -16,8 +16,8 @@ final class ArrayUtil
     /**
      * Applies StringUtil::trim() to all elements of the given array.
      *
-     * @param string[]|string $array
-     * @return string[]|string
+     * @param mixed[]|string $array
+     * @return mixed[]|string
      */
     public static function trim(array|string $array, bool $removeEmptyElements = true): array|string
     {

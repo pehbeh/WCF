@@ -6,6 +6,7 @@ use wcf\data\search\ISearchResultObject;
 use wcf\data\search\Search;
 use wcf\page\SearchResultPage;
 use wcf\system\exception\ImplementationException;
+use wcf\system\exception\SystemException;
 
 /**
  * Provides the results of a full-text search.
@@ -17,35 +18,28 @@ use wcf\system\exception\ImplementationException;
  */
 final class SearchResultHandler
 {
-    /**
-     * @var Search
-     */
-    private $search;
+    private readonly Search $search;
 
     /**
-     * @var array
+     * @var array{
+     *  query: string,
+     *  objectTypeNames: string[],
+     *  results: list<array{objectID: int, objectType: string}>,
+     *  additionalData: array<string, mixed>
+     * }
      */
-    private $searchData;
+    private array $searchData;
 
     /**
-     * @var array
+     * @var list<ISearchResultObject>
      */
-    private $messages = [];
+    private array $messages = [];
 
-    /**
-     * @var int
-     */
-    private $startIndex = 0;
+    private int $startIndex = 0;
 
-    /**
-     * @var int
-     */
-    private $limit = 0;
+    private int $limit = 0;
 
-    /**
-     * @var int
-     */
-    private $endIndex = 0;
+    private int $endIndex = 0;
 
     public function __construct(Search $search, int $startIndex = 0, int $limit = SEARCH_RESULTS_PER_PAGE)
     {
@@ -74,6 +68,9 @@ final class SearchResultHandler
         $this->readMessages();
     }
 
+    /**
+     * @return list<ISearchResultObject>
+     */
     public function getSearchResults(): array
     {
         return $this->messages;
@@ -123,6 +120,9 @@ final class SearchResultHandler
         return $this->searchData['query'];
     }
 
+    /**
+     * @return array{templateName: string, application: string}
+     */
     public function getTemplateName(): array
     {
         if (\count($this->searchData['objectTypeNames']) === 1) {
@@ -157,6 +157,8 @@ final class SearchResultHandler
 
     /**
      * Will be removed with 6.0 once all search providers have switched to ISearchProvider.
+     *
+     * @return array{templateName: string, application: string}
      * @deprecated 5.5
      */
     private function getLegacyTemplateName(): array

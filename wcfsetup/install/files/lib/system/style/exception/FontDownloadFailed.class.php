@@ -12,11 +12,12 @@ namespace wcf\system\style\exception;
  */
 class FontDownloadFailed extends \Exception
 {
-    /**
-     * @var string
-     */
-    private $reason = '';
+    private string $reason = '';
 
+    /**
+     * @param string $message
+     * @param string $reason
+     */
     public function __construct($message, $reason = '', ?\Throwable $previous = null)
     {
         parent::__construct($message, 0, $previous);

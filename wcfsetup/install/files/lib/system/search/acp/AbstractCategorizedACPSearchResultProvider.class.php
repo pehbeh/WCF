@@ -90,6 +90,8 @@ abstract class AbstractCategorizedACPSearchResultProvider extends AbstractACPSea
 
     /**
      * Loads categories.
+     *
+     * @return void
      */
     protected function loadCategories()
     {

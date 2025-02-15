@@ -23,7 +23,7 @@ final class SetSynonym
         private readonly array $tags
     ) {}
 
-    public function __invoke()
+    public function __invoke(): void
     {
         $tagEditor = new TagEditor($this->mainTag);
 
