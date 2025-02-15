@@ -20,7 +20,12 @@ final class BulkProcessingWorker extends AbstractWorker
      * @inheritDoc
      */
     protected $limit = 100;
+
+    /**
+     * @var array<string, mixed>
+     */
     protected array $bulkProcessingData;
+
     protected IBulkProcessingAction $action;
 
     #[\Override]

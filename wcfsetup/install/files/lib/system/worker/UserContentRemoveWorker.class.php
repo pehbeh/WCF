@@ -129,7 +129,7 @@ class UserContentRemoveWorker extends AbstractWorker
     /**
      * Generate the data variable.
      */
-    private function generateData()
+    private function generateData(): void
     {
         $this->data = [
             'provider' => [],

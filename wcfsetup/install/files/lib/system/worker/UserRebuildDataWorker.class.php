@@ -30,6 +30,7 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
  * @method  UserList    getObjectList()
+ * @property UserList $objectList
  */
 final class UserRebuildDataWorker extends AbstractLinearRebuildDataWorker
 {

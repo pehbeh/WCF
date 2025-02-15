@@ -14,7 +14,7 @@ interface IWorker
     /**
      * Creates a new worker object with additional parameters
      *
-     * @param array $parameters
+     * @param mixed[] $parameters
      */
     public function __construct(array $parameters);
 
@@ -22,6 +22,7 @@ interface IWorker
      * Sets current loop count.
      *
      * @param int $loopCount
+     * @return void
      */
     public function setLoopCount($loopCount);
 
@@ -35,18 +36,22 @@ interface IWorker
 
     /**
      * Executes worker action.
+     *
+     * @return void
      */
     public function execute();
 
     /**
      * Returns parameters previously given within __construct().
      *
-     * @return  array
+     * @return  mixed[]
      */
     public function getParameters();
 
     /**
      * Validates parameters.
+     *
+     * @return void
      */
     public function validate();
 

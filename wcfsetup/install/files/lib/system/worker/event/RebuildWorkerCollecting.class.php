@@ -18,6 +18,9 @@ use wcf\system\worker\RegisteredWorker;
  */
 class RebuildWorkerCollecting implements IEvent
 {
+    /**
+     * @var \SplPriorityQueue<int, RegisteredWorker>
+     */
     private \SplPriorityQueue $queue;
 
     public function __construct()

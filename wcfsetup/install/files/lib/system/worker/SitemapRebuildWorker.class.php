@@ -269,6 +269,8 @@ class SitemapRebuildWorker extends AbstractRebuildDataWorker
 
     /**
      * Checks if the sitemap has to be rebuilt. If not, this method marks the sitemap as built.
+     *
+     * @return void
      */
     protected function checkCache()
     {
@@ -308,6 +310,7 @@ class SitemapRebuildWorker extends AbstractRebuildDataWorker
      * Writes the sitemap.xml index file and links all sitemaps.
      *
      * @param bool $closeFile Close a previously opened handle.
+     * @return void
      */
     protected function writeIndexFile($closeFile = true)
     {
@@ -335,6 +338,7 @@ class SitemapRebuildWorker extends AbstractRebuildDataWorker
      * Generates a new temporary file and appends the sitemap start.
      *
      * @param bool $closeFile Close a previously opened handle.
+     * @return void
      */
     protected function generateTmpFile($closeFile = true)
     {
@@ -351,6 +355,8 @@ class SitemapRebuildWorker extends AbstractRebuildDataWorker
 
     /**
      * Open the current temporary file.
+     *
+     * @return void
      */
     protected function openFile()
     {
@@ -363,6 +369,8 @@ class SitemapRebuildWorker extends AbstractRebuildDataWorker
 
     /**
      * Closes the current temporary file, iff a File is opened.
+     *
+     * @return void
      */
     protected function closeFile()
     {
@@ -377,6 +385,8 @@ class SitemapRebuildWorker extends AbstractRebuildDataWorker
      *
      * @param string $filename
      * @param int $packageID
+     *
+     * @return void
      */
     protected function finishSitemap($filename, $packageID)
     {
@@ -395,7 +405,7 @@ class SitemapRebuildWorker extends AbstractRebuildDataWorker
         $this->workerData['filesToPackage'][$packageID][] = 'sitemaps/' . $filename;
     }
 
-    private function registerSitemapFiles()
+    private function registerSitemapFiles(): void
     {
         $sql = "INSERT IGNORE INTO  wcf1_package_installation_file_log
                                     (packageID, filename, application)
@@ -417,6 +427,8 @@ class SitemapRebuildWorker extends AbstractRebuildDataWorker
 
     /**
      * Stores the current worker data in a session.
+     *
+     * @return void
      */
     protected function storeWorkerData()
     {
@@ -425,6 +437,8 @@ class SitemapRebuildWorker extends AbstractRebuildDataWorker
 
     /**
      * Load the current worker data and set the default values, if isn't any data stored.
+     *
+     * @return void
      */
     protected function loadWorkerData()
     {
@@ -485,10 +499,8 @@ class SitemapRebuildWorker extends AbstractRebuildDataWorker
 
     /**
      * Unlink the sitemap files for a given object type name.
-     *
-     * @param string $objectTypeName
      */
-    private function deleteSitemaps($objectTypeName)
+    private function deleteSitemaps(string $objectTypeName): void
     {
         $files = @\glob(self::getSitemapPath() . $objectTypeName . '*.xml');
         if (\is_array($files)) {
@@ -504,7 +516,7 @@ class SitemapRebuildWorker extends AbstractRebuildDataWorker
     /**
      * Saves the actual user and changes the session owner to a guest.
      */
-    private function changeUserToGuest()
+    private function changeUserToGuest(): void
     {
         $this->actualUser = WCF::getUser();
 
@@ -515,7 +527,7 @@ class SitemapRebuildWorker extends AbstractRebuildDataWorker
     /**
      * Changes the session back to the actual user.
      */
-    private function changeToActualUser()
+    private function changeToActualUser(): void
     {
         WCF::getSession()->changeUser($this->actualUser, true);
     }
@@ -523,7 +535,6 @@ class SitemapRebuildWorker extends AbstractRebuildDataWorker
     /**
      * Reads the columns changed by the user for this sitemap object from the registry.
      *
-     * @param ObjectType $object
      * @since       5.3
      */
     private function prepareSitemapObject(ObjectType $object): void

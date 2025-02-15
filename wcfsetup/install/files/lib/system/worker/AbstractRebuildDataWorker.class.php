@@ -97,6 +97,8 @@ abstract class AbstractRebuildDataWorker extends AbstractWorker implements IRebu
 
     /**
      * Initializes DatabaseObjectList instance.
+     *
+     * @return void
      */
     protected function initObjectList()
     {

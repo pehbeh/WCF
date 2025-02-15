@@ -17,7 +17,10 @@ use wcf\system\worker\RegisteredWorker;
  */
 final class RebuildWorkerCollecting extends \wcf\system\worker\event\RebuildWorkerCollecting implements IPsr14Event
 {
-    private \SplPriorityQueue $queue;
+    /**
+     * @var \SplPriorityQueue<int, RegisteredWorker>
+     */
+    private readonly \SplPriorityQueue $queue;
 
     public function __construct()
     {

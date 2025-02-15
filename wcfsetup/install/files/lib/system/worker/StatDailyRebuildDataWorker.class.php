@@ -89,6 +89,8 @@ class StatDailyRebuildDataWorker extends AbstractRebuildDataWorker
 
     /**
      * Determines the start timestamp.
+     *
+     * @return void
      */
     protected function getStartDate()
     {

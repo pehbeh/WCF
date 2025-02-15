@@ -19,7 +19,7 @@ class ImportWorker extends AbstractWorker
 {
     /**
      * import data
-     * @var array
+     * @var array<string, string|int>
      */
     protected $importData;
 
