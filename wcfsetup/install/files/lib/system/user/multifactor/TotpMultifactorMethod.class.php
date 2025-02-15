@@ -140,6 +140,7 @@ final class TotpMultifactorMethod implements IMultifactorMethod
                 } else {
                     $button = new class extends FormButton
                     {
+                        /** @var string */
                         protected $templateName = '__multifactorTotpDeviceNoDeleteButton';
                     };
                     $button->id('no-delete-' . $row['deviceID'])
@@ -155,6 +156,7 @@ final class TotpMultifactorMethod implements IMultifactorMethod
 
     /**
      * @inheritDoc
+     * @return array{action: string, deviceName: string}
      */
     public function processManagementForm(IFormDocument $form, Setup $setup): array
     {

@@ -17,6 +17,7 @@ interface IUserActivityEvent
      * Prepares a list of events for output.
      *
      * @param ViewableUserActivityEvent[] $events
+     * @return void
      */
     public function prepare(array $events);
 }

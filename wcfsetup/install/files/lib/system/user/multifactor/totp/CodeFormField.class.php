@@ -56,6 +56,7 @@ final class CodeFormField extends TextFormField
 
     /**
      * @inheritDoc
+     * @return array{value: mixed, minCounter: number}
      */
     public function getSaveValue(): array
     {

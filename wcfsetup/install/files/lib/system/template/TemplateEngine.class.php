@@ -4,6 +4,7 @@ namespace wcf\system\template;
 
 use Laminas\Diactoros\Stream;
 use Psr\Http\Message\StreamInterface;
+use wcf\data\template\group\TemplateGroup;
 use wcf\data\template\Template;
 use wcf\system\cache\builder\TemplateGroupCacheBuilder;
 use wcf\system\cache\builder\TemplateListenerCodeCacheBuilder;
@@ -11,6 +12,7 @@ use wcf\system\event\EventHandler;
 use wcf\system\exception\SystemException;
 use wcf\system\Regex;
 use wcf\system\SingletonFactory;
+use wcf\system\template\plugin\IBlockTemplatePlugin;
 use wcf\system\template\plugin\IPrefilterTemplatePlugin;
 use wcf\system\WCF;
 use wcf\util\DirectoryUtil;
@@ -187,7 +189,7 @@ class TemplateEngine extends SingletonFactory
 
     /**
      * cached list of known template groups
-     * @var array
+     * @var array<int, TemplateGroup>
      */
     protected $templateGroupCache = [];
 
@@ -240,8 +242,14 @@ class TemplateEngine extends SingletonFactory
      */
     protected $environment = 'user';
 
+    /**
+     * @var array<string, IBlockTemplatePlugin>
+     */
     protected $pluginObjects = [];
 
+    /**
+     * @var list<array{0: string, 1: list<string>}>
+     */
     protected $tagStack = [];
 
     private int $sharedTemplateGroupID;
@@ -264,6 +272,7 @@ class TemplateEngine extends SingletonFactory
      *
      * @param string $abbreviation
      * @param string $templatePath
+     * @return void
      */
     public function addApplication($abbreviation, $templatePath)
     {
@@ -274,6 +283,7 @@ class TemplateEngine extends SingletonFactory
      * Sets active language id.
      *
      * @param int $languageID
+     * @return void
      */
     public function setLanguageID($languageID)
     {
@@ -282,6 +292,8 @@ class TemplateEngine extends SingletonFactory
 
     /**
      * Assigns some system variables.
+     *
+     * @return void
      */
     protected function assignSystemVariables()
     {
@@ -300,6 +312,7 @@ class TemplateEngine extends SingletonFactory
      *
      * @param mixed $variable
      * @param mixed $value
+     * @return void
      */
     public function assign($variable, $value = '')
     {
@@ -321,6 +334,7 @@ class TemplateEngine extends SingletonFactory
      *
      * @param mixed $variable
      * @param mixed $value
+     * @return void
      */
     public function append($variable, $value = '')
     {
@@ -357,6 +371,7 @@ class TemplateEngine extends SingletonFactory
      *
      * @param mixed $variable
      * @param mixed $value
+     * @return void
      */
     public function prepend($variable, $value = '')
     {
@@ -393,6 +408,7 @@ class TemplateEngine extends SingletonFactory
      *
      * @param string $variable
      * @param mixed $value
+     * @return void
      */
     public function assignByRef($variable, &$value)
     {
@@ -403,6 +419,9 @@ class TemplateEngine extends SingletonFactory
 
     /**
      * Clears an assignment of template variables.
+     *
+     * @param string[] $variables
+     * @return void
      */
     public function clearAssign(array $variables)
     {
@@ -414,6 +433,8 @@ class TemplateEngine extends SingletonFactory
     /**
      * Clears assignment of all template variables. This should not be called
      * during runtime as it could leed to an unexpected behaviour.
+     *
+     * @return void
      */
     public function clearAllAssign()
     {
@@ -426,6 +447,7 @@ class TemplateEngine extends SingletonFactory
      * @param string $templateName
      * @param string $application
      * @param bool $sendHeaders
+     * @return void
      */
     public function display($templateName, $application = 'wcf', $sendHeaders = true)
     {
@@ -565,37 +587,37 @@ class TemplateEngine extends SingletonFactory
      * @param string $sourceFilename
      * @param string $compiledFilename
      * @param string $application
-     * @param array $metaData
+     * @param mixed[] $metaData
      * @return  bool
      */
     protected function isCompiled($templateName, $sourceFilename, $compiledFilename, $application, array $metaData)
     {
         if ($this->forceCompile || !\file_exists($compiledFilename)) {
             return false;
-        } else {
-            $sourceMTime = @\filemtime($sourceFilename);
-            $compileMTime = @\filemtime($compiledFilename);
+        }
 
-            if ($sourceMTime >= $compileMTime) {
-                return false;
-            } else {
-                // check for meta data
-                if (!empty($metaData['include'])) {
-                    foreach ($metaData['include'] as $application => $includedTemplates) {
-                        foreach ($includedTemplates as $includedTemplate) {
-                            $includedTemplateFilename = $this->getSourceFilename($includedTemplate, $application);
-                            $includedMTime = @\filemtime($includedTemplateFilename);
+        $sourceMTime = @\filemtime($sourceFilename);
+        $compileMTime = @\filemtime($compiledFilename);
 
-                            if ($includedMTime >= $compileMTime) {
-                                return false;
-                            }
-                        }
+        if ($sourceMTime >= $compileMTime) {
+            return false;
+        }
+
+        // check for meta data
+        if (!empty($metaData['include'])) {
+            foreach ($metaData['include'] as $application => $includedTemplates) {
+                foreach ($includedTemplates as $includedTemplate) {
+                    $includedTemplateFilename = $this->getSourceFilename($includedTemplate, $application);
+                    $includedMTime = @\filemtime($includedTemplateFilename);
+
+                    if ($includedMTime >= $compileMTime) {
+                        return false;
                     }
                 }
-
-                return true;
             }
         }
+
+        return true;
     }
 
     /**
@@ -604,7 +626,8 @@ class TemplateEngine extends SingletonFactory
      * @param string $templateName
      * @param string $sourceFilename
      * @param string $compiledFilename
-     * @param array $metaData
+     * @param array{application: string, data: string[], filename: string} $metaData
+     * @return void
      */
     protected function compileTemplate($templateName, $sourceFilename, $compiledFilename, array $metaData)
     {
@@ -661,6 +684,8 @@ class TemplateEngine extends SingletonFactory
 
     /**
      * Enables execution in sandbox.
+     *
+     * @return void
      */
     public function enableSandbox()
     {
@@ -673,6 +698,8 @@ class TemplateEngine extends SingletonFactory
 
     /**
      * Disables execution in sandbox.
+     *
+     * @return void
      */
     public function disableSandbox()
     {
@@ -690,7 +717,7 @@ class TemplateEngine extends SingletonFactory
      *
      * @param string $templateName
      * @param string $application
-     * @param array $variables
+     * @param array<string, mixed> $variables
      * @param bool $sandbox enables execution in sandbox
      * @return  string
      *
@@ -723,6 +750,7 @@ class TemplateEngine extends SingletonFactory
     /**
      * Returns the output of a template.
      *
+     * @param array<string, mixed> $variables
      * @since 6.2
      */
     public function render(string $application, string $templateName, array $variables): string
@@ -738,6 +766,7 @@ class TemplateEngine extends SingletonFactory
             \ob_start();
             $this->display($templateName, $application, false);
             $output = \ob_get_contents();
+            \assert($output !== false);
         } finally {
             \ob_end_clean();
         }
@@ -750,6 +779,7 @@ class TemplateEngine extends SingletonFactory
     /**
      * Renders the template into a fresh PSR-7 StreamInterface.
      *
+     * @param array<string, mixed> $variables
      * @since 6.0
      */
     public function fetchStream(
@@ -797,7 +827,7 @@ class TemplateEngine extends SingletonFactory
      * Executes a compiled template scripting source and returns the result.
      *
      * @param string $compiledSource
-     * @param array $variables
+     * @param array<string, mixed> $variables
      * @param bool $sandbox enables execution in sandbox
      * @return  string
      */
@@ -831,6 +861,7 @@ class TemplateEngine extends SingletonFactory
      * Deletes all compiled templates.
      *
      * @param string $compileDir
+     * @return void
      */
     public static function deleteCompiledTemplates($compileDir = '')
     {
@@ -866,6 +897,7 @@ class TemplateEngine extends SingletonFactory
      * Sets the active template group id.
      *
      * @param int $templateGroupID
+     * @return void
      */
     public function setTemplateGroupID($templateGroupID)
     {
@@ -878,6 +910,8 @@ class TemplateEngine extends SingletonFactory
 
     /**
      * Loads cached template group information.
+     *
+     * @return void
      */
     protected function loadTemplateGroupCache()
     {
@@ -888,6 +922,7 @@ class TemplateEngine extends SingletonFactory
      * Registers prefilters.
      *
      * @param string[] $prefilters
+     * @return void
      */
     public function registerPrefilter(array $prefilters)
     {
@@ -900,6 +935,7 @@ class TemplateEngine extends SingletonFactory
      * Removes a prefilter by its internal name.
      *
      * @param string $name internal prefilter identifier
+     * @return void
      */
     public function removePrefilter($name)
     {
@@ -910,6 +946,7 @@ class TemplateEngine extends SingletonFactory
      * Sets the dir for the compiled templates.
      *
      * @param string $compileDir
+     * @return void
      * @throws  SystemException
      */
     public function setCompileDir($compileDir)
@@ -926,8 +963,9 @@ class TemplateEngine extends SingletonFactory
      *
      * @param string $templateName
      * @param string $application
-     * @param array $variables
+     * @param array<string, mixed> $variables
      * @param bool $sandbox enables execution in sandbox
+     * @return void
      */
     protected function includeTemplate($templateName, $application, array $variables = [], $sandbox = true)
     {
@@ -965,6 +1003,8 @@ class TemplateEngine extends SingletonFactory
 
     /**
      * Loads template listener code.
+     *
+     * @return void
      */
     protected function loadTemplateListenerCode()
     {
@@ -1004,7 +1044,7 @@ class TemplateEngine extends SingletonFactory
      *
      * @param string $templateName
      * @param string $filename
-     * @return  array|null
+     * @return mixed[]|null
      */
     protected function getMetaData($templateName, $filename)
     {

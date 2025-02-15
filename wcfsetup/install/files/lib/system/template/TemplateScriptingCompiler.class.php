@@ -206,7 +206,7 @@ class TemplateScriptingCompiler
 
     /**
      * stack used to compile the capture tag
-     * @var array
+     * @var list<array{name: string, variable: string, append: boolean}>
      */
     protected $captureStack = [];
 
@@ -273,10 +273,10 @@ class TemplateScriptingCompiler
      *
      * @param string $identifier
      * @param string $sourceContent
-     * @param array $metaData
+     * @param array<string, string|null> $metaData
      * @param bool $isolated
-     * @return  array|bool
-     * @throws  SystemException
+     * @return array{meta: array{include: string[][]}, template: string}|bool
+     * @throws SystemException
      */
     public function compileString($identifier, $sourceContent, array $metaData = [], $isolated = false)
     {
@@ -393,7 +393,7 @@ class TemplateScriptingCompiler
      *
      * @param string $tag
      * @param string $identifier
-     * @param array $metaData
+     * @param string[] $metaData
      * @return  string
      * @throws  SystemException
      * @phpstan-impure
@@ -967,7 +967,7 @@ class TemplateScriptingCompiler
      *
      * @param string $includeTag
      * @param string $identifier
-     * @param array $metaData
+     * @param string[] $metaData
      * @return  string
      * @throws  SystemException
      */
@@ -1026,7 +1026,9 @@ class TemplateScriptingCompiler
             unset($args['sandbox']);
         }
 
-        $sandbox = ($sandbox === 'true' || $sandbox === true || $sandbox == 1);
+        if (\is_string($sandbox)) {
+            $sandbox = $sandbox === 'true' || $sandbox === '1';
+        }
 
         $staticInclude = true;
         if (
@@ -1124,7 +1126,7 @@ class TemplateScriptingCompiler
      *
      * @param string $tagArgs
      * @param string $tag
-     * @return  array
+     * @return array<string, string>
      * @throws  SystemException
      */
     public function parseTagArgs($tagArgs, $tag)
@@ -1177,7 +1179,7 @@ class TemplateScriptingCompiler
      * Takes an array created by TemplateCompiler::parseTagArgs() and creates
      * a string.
      *
-     * @param array $args
+     * @param array<string, string> $args
      * @return  string      $args
      */
     public static function makeArgString($args)
@@ -1433,7 +1435,7 @@ class TemplateScriptingCompiler
     /**
      * Compiles a modifier tag and returns the compiled PHP code.
      *
-     * @param array $data
+     * @param array{className: string, parameter: list<string>}|array{name: string, parameter: list<string>} $data
      * @return  string
      */
     protected function compileModifier($data)
@@ -1889,6 +1891,8 @@ class TemplateScriptingCompiler
 
     /**
      * Generates the regexp pattern.
+     *
+     * @return void
      */
     protected function buildPattern()
     {

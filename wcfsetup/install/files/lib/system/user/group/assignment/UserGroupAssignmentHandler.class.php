@@ -34,6 +34,7 @@ class UserGroupAssignmentHandler extends SingletonFactory
      * on purpose to make sure the latest data of the users are fetched.
      *
      * @param int[] $userIDs
+     * @return void
      */
     public function checkUsers(array $userIDs)
     {

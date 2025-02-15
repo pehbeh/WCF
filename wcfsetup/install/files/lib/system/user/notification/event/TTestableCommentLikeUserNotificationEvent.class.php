@@ -26,6 +26,7 @@ trait TTestableCommentLikeUserNotificationEvent
 
     /**
      * @inheritDoc
+     * @return LikeableComment
      */
     protected static function createTestLikeObject(UserProfile $recipient, UserProfile $author)
     {
@@ -48,6 +49,7 @@ trait TTestableCommentLikeUserNotificationEvent
 
     /**
      * @inheritDoc
+     * @return string
      */
     protected static function getTestLikeableObjectTypeName()
     {

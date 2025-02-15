@@ -82,6 +82,7 @@ interface IVersionTrackerProvider extends IObjectTypeProvider
      *
      * @param IVersionTrackerObject $object target object
      * @param VersionTrackerEntry $entry previous version
+     * @return void
      */
     public function revert(IVersionTrackerObject $object, VersionTrackerEntry $entry);
 }

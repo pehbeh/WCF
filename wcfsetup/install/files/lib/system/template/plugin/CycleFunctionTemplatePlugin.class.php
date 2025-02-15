@@ -19,7 +19,7 @@ class CycleFunctionTemplatePlugin implements IFunctionTemplatePlugin
 {
     /**
      * cycle data
-     * @var array
+     * @var array<string, string|array<string, string|int>>
      */
     protected $cycles = [];
 

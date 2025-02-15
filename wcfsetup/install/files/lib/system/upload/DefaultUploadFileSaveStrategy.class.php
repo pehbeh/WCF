@@ -40,7 +40,7 @@ class DefaultUploadFileSaveStrategy implements IUploadFileSaveStrategy
 
     /**
      * additional data stored with the default file data
-     * @var array
+     * @var mixed[]
      */
     public $data = [];
 
@@ -56,7 +56,7 @@ class DefaultUploadFileSaveStrategy implements IUploadFileSaveStrategy
      * - bool rotateImages: if true, images are automatically rotated
      * - bool generateThumbnails: if true, thumbnails are automatically generated after saving file
      *
-     * @var array
+     * @var mixed[]
      */
     public $options = [];
 
@@ -64,8 +64,8 @@ class DefaultUploadFileSaveStrategy implements IUploadFileSaveStrategy
      * Creates a new instance of DefaultUploadFileSaveStrategy.
      *
      * @param string $actionClassName
-     * @param array $options
-     * @param array $data
+     * @param mixed[] $options
+     * @param mixed[] $data
      * @throws  ImplementationException
      * @throws  ParentClassException
      */
@@ -287,6 +287,7 @@ class DefaultUploadFileSaveStrategy implements IUploadFileSaveStrategy
      * Generates thumbnails for the given file.
      *
      * @param IThumbnailFile $file
+     * @return void
      */
     public function generateThumbnails(IThumbnailFile $file)
     {

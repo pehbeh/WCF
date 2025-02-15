@@ -29,11 +29,7 @@ final class UserStorageHandler extends SingletonFactory
      */
     private $log = [];
 
-    /**
-     * redis instance
-     * @var ?Redis
-     */
-    private $redis;
+    private ?Redis $redis = null;
 
     /**
      * Checks whether Redis is available.
@@ -51,7 +47,7 @@ final class UserStorageHandler extends SingletonFactory
      *
      * @param int[] $userIDs
      */
-    public function loadStorage(array $userIDs)
+    public function loadStorage(array $userIDs): void
     {
         $this->validateUserIDs($userIDs);
 
@@ -175,7 +171,7 @@ final class UserStorageHandler extends SingletonFactory
     /**
      * Inserts new data records into database.
      */
-    public function update(int $userID, string $field, string $fieldValue)
+    public function update(int $userID, string $field, string $fieldValue): void
     {
         $this->validateUserIDs([$userID]);
 
@@ -202,7 +198,7 @@ final class UserStorageHandler extends SingletonFactory
      *
      * @param int[] $userIDs
      */
-    public function reset(array $userIDs, string $field)
+    public function reset(array $userIDs, string $field): void
     {
         $this->validateUserIDs($userIDs);
 
@@ -227,7 +223,7 @@ final class UserStorageHandler extends SingletonFactory
     /**
      * Removes a specific data record for all users.
      */
-    public function resetAll(string $field)
+    public function resetAll(string $field): void
     {
         if ($this->redis) {
             $this->redis->del($this->getRedisFieldName($field));
@@ -336,7 +332,7 @@ final class UserStorageHandler extends SingletonFactory
     /**
      * Removes the entire user storage data.
      */
-    public function clear()
+    public function clear(): void
     {
         if ($this->redis) {
             $this->redis->setnx('ush:_flush', TIME_NOW);
@@ -376,7 +372,7 @@ final class UserStorageHandler extends SingletonFactory
      * @param int[] $userIDs
      * @since 5.2
      */
-    private function validateUserIDs(array $userIDs)
+    private function validateUserIDs(array $userIDs): void
     {
         foreach ($userIDs as $userID) {
             if (!$userID) {

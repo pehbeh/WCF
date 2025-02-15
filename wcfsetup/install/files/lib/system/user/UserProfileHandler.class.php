@@ -37,7 +37,7 @@ class UserProfileHandler extends SingletonFactory
      * Delegates method calls to the user profile object.
      *
      * @param string $name
-     * @param array $arguments
+     * @param mixed[] $arguments
      * @return  mixed
      */
     public function __call($name, $arguments)
@@ -59,6 +59,8 @@ class UserProfileHandler extends SingletonFactory
 
     /**
      * Reloads the user profile object with data directly from the database.
+     *
+     * @return void
      */
     public function reloadUserProfile()
     {

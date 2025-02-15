@@ -19,7 +19,8 @@ class TemplateCompiler extends TemplateScriptingCompiler
      * @param string $templateName
      * @param string $sourceContent
      * @param string $compiledFilename
-     * @param array $metaData
+     * @param array<string, mixed> $metaData
+     * @return void
      */
     public function compile($templateName, $sourceContent, $compiledFilename, $metaData)
     {
@@ -46,7 +47,8 @@ class TemplateCompiler extends TemplateScriptingCompiler
      *
      * @param string $templateName
      * @param string $filename
-     * @param string $content
+     * @param mixed[] $content
+     * @return void
      */
     public function saveMetaData($templateName, $filename, $content)
     {

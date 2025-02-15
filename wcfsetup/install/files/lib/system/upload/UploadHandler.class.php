@@ -21,7 +21,7 @@ class UploadHandler
 
     /**
      * list of validation errors.
-     * @var array
+     * @var UploadFile[]
      */
     protected $erroneousFiles = [];
 
@@ -123,6 +123,7 @@ class UploadHandler
      * Saves the uploaded files.
      *
      * @param IUploadFileSaveStrategy $saveStrategy
+     * @return void
      */
     public function saveFiles(IUploadFileSaveStrategy $saveStrategy)
     {

@@ -27,6 +27,7 @@ interface IUserContentProvider
      * Delete the content for the given object ids.
      *
      * @param int[] $objectIDs
+     * @return void
      */
     public function deleteContent(array $objectIDs);
 }

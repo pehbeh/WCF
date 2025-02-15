@@ -106,7 +106,7 @@ class HtmlOptionsFunctionTemplatePlugin extends HtmlCheckboxesFunctionTemplatePl
      * Makes the HTML for an option group.
      *
      * @param ?string $key
-     * @param array|DatabaseObjectList $values
+     * @param array<string, string|array<string, string>>|DatabaseObjectList $values
      * @return  string
      */
     protected function makeOptionGroup($key, $values)

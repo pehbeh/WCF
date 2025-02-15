@@ -190,7 +190,7 @@ class StructuredCommentList extends CommentList
     /**
      * Fetches the like data.
      *
-     * @return  LikeObject[][]
+     * @return array{comment: LikeObject[], response?: LikeObject[]}
      */
     public function getLikeData()
     {

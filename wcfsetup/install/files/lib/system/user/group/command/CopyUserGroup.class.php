@@ -26,7 +26,7 @@ final class CopyUserGroup
     ) {
     }
 
-    public function __invoke()
+    public function __invoke(): UserGroup
     {
         // fetch user group option values
         if ($this->copyUserGroupOptions) {
