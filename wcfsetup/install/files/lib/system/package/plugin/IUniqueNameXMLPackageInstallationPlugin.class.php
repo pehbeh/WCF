@@ -15,6 +15,8 @@ interface IUniqueNameXMLPackageInstallationPlugin
 {
     /**
      * Returns the name of an element by the given data.
+     *
+     * @param mixed[] $data
      */
     public function getNameByData(array $data): string;
 }

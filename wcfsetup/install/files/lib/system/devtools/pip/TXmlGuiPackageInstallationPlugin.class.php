@@ -86,6 +86,7 @@ trait TXmlGuiPackageInstallationPlugin
      * Adds all fields to the given form to add or edit an entry.
      *
      * @param IFormDocument $form
+     * @return void
      */
     abstract protected function addFormFields(IFormDocument $form);
 
@@ -347,7 +348,7 @@ trait TXmlGuiPackageInstallationPlugin
      *
      * @param \DOMElement $element element whose data is returned
      * @param bool $saveData is `true` if data is intended to be saved and otherwise `false`
-     * @return  array
+     * @return array<string, int|string>
      */
     abstract protected function fetchElementData(\DOMElement $element, $saveData);
 
@@ -693,6 +694,7 @@ XML;
      * Sets the keys of the given (empty) entry list.
      *
      * @param IDevtoolsPipEntryList $entryList
+     * @return void
      */
     abstract protected function setEntryListKeys(IDevtoolsPipEntryList $entryList);
 

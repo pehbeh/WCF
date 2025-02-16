@@ -162,6 +162,8 @@ class ACPMenuPackageInstallationPlugin extends AbstractMenuPackageInstallationPl
 
     /**
      * @inheritDoc
+     * @param bool $saveData
+     * @return array<string, int|string>
      * @since   5.2
      */
     protected function fetchElementData(\DOMElement $element, $saveData)
@@ -187,6 +189,7 @@ class ACPMenuPackageInstallationPlugin extends AbstractMenuPackageInstallationPl
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      * @since   5.2
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)

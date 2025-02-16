@@ -20,7 +20,8 @@ interface IPaymentType
      * @param string $currency
      * @param string $transactionID
      * @param string $status
-     * @param array $transactionDetails
+     * @param mixed[] $transactionDetails
+     * @return void
      */
     public function processTransaction(
         $paymentMethodObjectTypeID,

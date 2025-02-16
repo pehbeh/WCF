@@ -317,7 +317,8 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
     /**
      * Deletes the given items.
      *
-     * @param array $items
+     * @param mixed[] $items
+     * @return void
      */
     abstract protected function handleDelete(array $items);
 
@@ -325,8 +326,8 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
      * Prepares import, use this to map xml tags and attributes
      * to their corresponding database fields.
      *
-     * @param array $data
-     * @return  array
+     * @param mixed[] $data
+     * @return mixed[]
      */
     abstract protected function prepareImport(array $data);
 
@@ -334,7 +335,8 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
      * Validates given item, e.g. checking for invalid values. If validation
      * fails you should throw an exception.
      *
-     * @param array $data
+     * @param mixed[] $data
+     * @return void
      */
     protected function validateImport(array $data) {}
 
@@ -342,8 +344,8 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
      * Returns an array with a sql query and its parameters to find an existing item for updating
      * or `null` if updates are not supported.
      *
-     * @param array $data
-     * @return  array|null
+     * @param mixed[] $data
+     * @return mixed[]|null
      */
     abstract protected function findExistingItem(array $data);
 
@@ -353,7 +355,8 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
      *
      * Attention: $data is passed by reference
      *
-     * @param array $data
+     * @param mixed[] $data
+     * @return void
      */
     protected function prepareCreate(array &$data)
     {
@@ -362,6 +365,8 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
 
     /**
      * Triggered after executing all delete and/or import actions.
+     *
+     * @return void
      */
     protected function cleanup() {}
 

@@ -443,6 +443,8 @@ class MenuPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
 
     /**
      * @inheritDoc
+     * @param bool $saveData
+     * @return array<string, int|string>
      * @since   5.2
      */
     protected function fetchElementData(\DOMElement $element, $saveData)
@@ -538,6 +540,7 @@ class MenuPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
 
     /**
      * @inheritDoc
+     * @return string
      * @since   5.2
      */
     public function getElementIdentifier(\DOMElement $element)
@@ -547,6 +550,7 @@ class MenuPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function setEntryListKeys(IDevtoolsPipEntryList $entryList)
@@ -558,6 +562,7 @@ class MenuPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      * @since   5.2
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)

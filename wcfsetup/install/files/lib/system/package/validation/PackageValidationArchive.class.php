@@ -15,6 +15,7 @@ use wcf\system\WCF;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @implements \RecursiveIterator<int, self>
  */
 final class PackageValidationArchive implements \RecursiveIterator
 {
@@ -22,7 +23,7 @@ final class PackageValidationArchive implements \RecursiveIterator
      * list of excluded packages grouped by package
      * @var string[][][]
      */
-    private static $excludedPackages = [];
+    private static array $excludedPackages = [];
 
     /**
      * package archive object
@@ -33,7 +34,7 @@ final class PackageValidationArchive implements \RecursiveIterator
      * list of direct requirements delivered by this package
      * @var PackageValidationArchive[]
      */
-    private $children = [];
+    private array $children = [];
 
     /**
      * nesting depth
@@ -47,9 +48,8 @@ final class PackageValidationArchive implements \RecursiveIterator
 
     /**
      * associated package object
-     * @var Package
      */
-    private $package;
+    private ?Package $package = null;
 
     /**
      * children pointer
@@ -68,10 +68,8 @@ final class PackageValidationArchive implements \RecursiveIterator
     /**
      * Validates this package and optionally it's delivered requirements. The set validation
      * mode will toggle between different checks.
-     *
-     * @param int $validationMode
      */
-    public function validate($validationMode, string $requiredVersion = ''): bool
+    public function validate(int $validationMode, string $requiredVersion = ''): bool
     {
         if ($validationMode !== PackageValidationManager::VALIDATION_EXCLUSION) {
             try {
@@ -201,10 +199,9 @@ final class PackageValidationArchive implements \RecursiveIterator
     /**
      * Validates if the package has suitable install or update instructions
      *
-     * @param int $validationMode
      * @throws  PackageValidationException
      */
-    private function validateInstructions(string $requiredVersion, $validationMode)
+    private function validateInstructions(string $requiredVersion, int $validationMode): void
     {
         $package = $this->getPackage();
 
@@ -258,11 +255,10 @@ final class PackageValidationArchive implements \RecursiveIterator
     /**
      * Validates install or update instructions against the corresponding PIP, unknown PIPs will be silently ignored.
      *
-     * @param string $type
      * @param mixed[][] $instructions
      * @throws  PackageValidationException
      */
-    private function validatePackageInstallationPlugins($type, array $instructions)
+    private function validatePackageInstallationPlugins(string $type, array $instructions): void
     {
         for ($i = 0, $length = \count($instructions); $i < $length; $i++) {
             $instruction = $instructions[$i];
@@ -290,7 +286,7 @@ final class PackageValidationArchive implements \RecursiveIterator
      *
      * @throws  PackageValidationException
      */
-    private function validateExclusion(string $package)
+    private function validateExclusion(string $package): void
     {
         $packageVersion = $this->archive->getPackageInfo('version');
 

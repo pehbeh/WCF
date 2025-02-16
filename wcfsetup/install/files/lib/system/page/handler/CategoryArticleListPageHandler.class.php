@@ -18,6 +18,7 @@ class CategoryArticleListPageHandler extends AbstractLookupPageHandler implement
     use TDecoratedCategoryOnlineLocationLookupPageHandler;
 
     /**
+     * @return string
      * @see TDecoratedCategoryLookupPageHandler::getDecoratedCategoryClass()
      */
     protected function getDecoratedCategoryClass()

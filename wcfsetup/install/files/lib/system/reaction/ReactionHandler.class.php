@@ -153,6 +153,7 @@ class ReactionHandler extends SingletonFactory
      *
      * @param string $objectTypeName
      * @param int[] $objectIDs
+     * @return void
      */
     public function cacheLikeableObjects($objectTypeName, array $objectIDs)
     {
@@ -256,7 +257,7 @@ class ReactionHandler extends SingletonFactory
      * like objects
      *
      * @param ObjectType $objectType
-     * @param array $objectIDs
+     * @param int[] $objectIDs
      * @return  int
      */
     public function loadLikeObjects(ObjectType $objectType, array $objectIDs)
@@ -309,8 +310,13 @@ class ReactionHandler extends SingletonFactory
      * @param User $user
      * @param int $reactionTypeID
      * @param int $time
-     * @return  array
-     * @throws  DatabaseQueryException
+     * @return array{
+     *  cachedReactions: array<int, int>,
+     *  reactionTypeID: ?int,
+     *  like?: Like,
+     *  likeObject: LikeObject|array{},
+     *  cumulativeLikes: int,
+     * }
      */
     public function react(ILikeObject $likeable, User $user, $reactionTypeID, $time = TIME_NOW)
     {
@@ -451,7 +457,7 @@ class ReactionHandler extends SingletonFactory
      * @param LikeObject $likeObject
      * @param Like $like
      * @param ReactionType $reactionType
-     * @return  array
+     * @return array{cumulativeLikes: int, cachedReactions: array<int, int>, likeObject: LikeObject}
      */
     private function updateLikeObject(
         ILikeObject $likeable,
@@ -548,6 +554,7 @@ class ReactionHandler extends SingletonFactory
      * @param LikeObject $likeObject
      * @param Like $like
      * @param ReactionType $reactionType
+     * @return void
      */
     private function updateUsersLikeCounter(
         ILikeObject $likeable,
@@ -579,7 +586,12 @@ class ReactionHandler extends SingletonFactory
      * @param ILikeObject $likeable
      * @param LikeObject $likeObject
      * @param User $user
-     * @return  array
+     * @return array{
+     *  cachedReactions: array<int, int>,
+     *  reactionTypeID: null,
+     *  likeObject: LikeObject|array{},
+     *  cumulativeLikes: ?int,
+     * }
      */
     public function revertReact(Like $like, ILikeObject $likeable, LikeObject $likeObject, User $user)
     {
@@ -641,7 +653,7 @@ class ReactionHandler extends SingletonFactory
      *
      * @param LikeObject $likeObject
      * @param Like $like
-     * @return  array
+     * @return array{cumulativeLikes: int, cachedReactions: array<int, int>, likeObject: LikeObject}
      */
     private function revertLikeObject(LikeObject $likeObject, Like $like)
     {
@@ -692,6 +704,7 @@ class ReactionHandler extends SingletonFactory
      * @param string $objectType
      * @param int[] $objectIDs
      * @param string[] $notificationObjectTypes
+     * @return void
      */
     public function removeReactions($objectType, array $objectIDs, array $notificationObjectTypes = [])
     {
@@ -783,7 +796,13 @@ class ReactionHandler extends SingletonFactory
      *
      * @param LikeObject $likeObject
      * @param User $user
-     * @return  array
+     * @return array{
+     *  likes: int,
+     *  dislikes: int,
+     *  cumulativeLikes: int,
+     *  reactionTypeID: int,
+     *  likeValue: int
+     * }
      */
     protected function loadLikeStatus(LikeObject $likeObject, User $user)
     {
@@ -840,8 +859,8 @@ class ReactionHandler extends SingletonFactory
     /**
      * Removes deleted reactions from the reaction counter for the like object table.
      *
-     * @param array $cachedReactions
-     * @return      array
+     * @param array<int, int> $cachedReactions
+     * @return array<int, int>
      */
     private function cleanUpCachedReactions(array $cachedReactions)
     {
@@ -856,7 +875,7 @@ class ReactionHandler extends SingletonFactory
 
     /**
      * @param string|null $cachedReactions
-     * @return array|null
+     * @return array{count: int, other: int, reaction: ?ReactionType}|null
      * @since 5.2
      */
     public function getTopReaction($cachedReactions)

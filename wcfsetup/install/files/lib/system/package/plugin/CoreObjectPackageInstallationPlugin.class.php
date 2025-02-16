@@ -139,6 +139,8 @@ class CoreObjectPackageInstallationPlugin extends AbstractXMLPackageInstallation
 
     /**
      * @inheritDoc
+     * @param bool $saveData
+     * @return array<string, int|string>
      * @since   5.2
      */
     protected function fetchElementData(\DOMElement $element, $saveData)
@@ -151,6 +153,7 @@ class CoreObjectPackageInstallationPlugin extends AbstractXMLPackageInstallation
 
     /**
      * @inheritDoc
+     * @return string
      * @since   5.2
      */
     public function getElementIdentifier(\DOMElement $element)
@@ -160,6 +163,7 @@ class CoreObjectPackageInstallationPlugin extends AbstractXMLPackageInstallation
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function setEntryListKeys(IDevtoolsPipEntryList $entryList)
