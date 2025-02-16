@@ -78,6 +78,7 @@ class ACPMenuPackageInstallationPlugin extends AbstractMenuPackageInstallationPl
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)

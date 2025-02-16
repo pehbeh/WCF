@@ -192,6 +192,7 @@ class UserNotificationEventPackageInstallationPlugin extends AbstractXMLPackageI
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -415,6 +416,7 @@ class UserNotificationEventPackageInstallationPlugin extends AbstractXMLPackageI
 
     /**
      * @inheritDoc
+     * @return ?\DOMElement
      * @since   5.2
      */
     protected function prepareDeleteXmlElement(\DOMElement $element)
@@ -433,6 +435,7 @@ class UserNotificationEventPackageInstallationPlugin extends AbstractXMLPackageI
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function deleteObject(\DOMElement $element)

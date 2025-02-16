@@ -306,6 +306,7 @@ abstract class AbstractFileDeletePackageInstallationPlugin extends AbstractXMLPa
 
     /**
      * @inheritDoc
+     * @return void
      */
     protected function insertNewXmlElement(XML $xml, \DOMElement $newElement)
     {
@@ -340,13 +341,14 @@ abstract class AbstractFileDeletePackageInstallationPlugin extends AbstractXMLPa
     /**
      * @inheritDoc
      */
-    final protected function prepareDeleteXmlElement(\DOMElement $element)
+    final protected function prepareDeleteXmlElement(\DOMElement $element): null
     {
         return null;
     }
 
     /**
      * @inheritDoc
+     * @return void
      */
     protected function saveObject(\DOMElement $newElement, ?\DOMElement $oldElement = null)
     {
@@ -380,6 +382,7 @@ abstract class AbstractFileDeletePackageInstallationPlugin extends AbstractXMLPa
 
     /**
      * @inheritDoc
+     * @return string
      */
     protected function getEmptyXml()
     {

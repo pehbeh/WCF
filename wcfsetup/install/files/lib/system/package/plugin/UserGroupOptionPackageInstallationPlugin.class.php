@@ -264,6 +264,7 @@ class UserGroupOptionPackageInstallationPlugin extends AbstractOptionPackageInst
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -364,6 +365,7 @@ class UserGroupOptionPackageInstallationPlugin extends AbstractOptionPackageInst
 
     /**
      * @inheritDoc
+     * @return UserGroupOptionHandler
      * @since   5.2
      */
     protected function getSortOptionHandler()

@@ -50,7 +50,7 @@ class ScriptPackageInstallationPlugin extends AbstractPackageInstallationPlugin
     /**
      * Runs the script with the given path.
      */
-    private function run(string $scriptPath)
+    private function run(string $scriptPath): mixed
     {
         return include($scriptPath);
     }

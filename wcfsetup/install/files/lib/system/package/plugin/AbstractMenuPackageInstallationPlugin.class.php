@@ -403,7 +403,10 @@ abstract class AbstractMenuPackageInstallationPlugin extends AbstractXMLPackageI
     /**
      * Returns data on the structure of the menu.
      *
-     * @return  array
+     * @return array{
+     *  levels: array<string, int>,
+     *  structure: array<string, array<string, ACPMenuItem>>
+     * }
      */
     protected function getMenuStructureData()
     {
@@ -423,9 +426,9 @@ abstract class AbstractMenuPackageInstallationPlugin extends AbstractXMLPackageI
 
         // for better IDE auto-completion, we use `ACPMenuItem`, but the
         // menu items can also belong to other menus
-        /** @var ACPMenuItem[] $menuItems */
+        /** @var array<string, ACPMenuItem> $menuItems */
         $menuItems = [];
-        /** @var ACPMenuItem[][] $menuStructure */
+        /** @var array<string, array<string, ACPMenuItem>> $menuStructure */
         $menuStructure = [];
         foreach ($menuItemList as $menuItem) {
             if (!isset($menuStructure[$menuItem->parentMenuItem])) {
@@ -436,6 +439,7 @@ abstract class AbstractMenuPackageInstallationPlugin extends AbstractXMLPackageI
             $menuItems[$menuItem->menuItem] = $menuItem;
         }
 
+        /** @var array<string, int> $menuItemLevels */
         $menuItemLevels = [];
         foreach ($menuStructure as $parentMenuItemName => $childMenuItems) {
             $menuItemsLevel = 1;

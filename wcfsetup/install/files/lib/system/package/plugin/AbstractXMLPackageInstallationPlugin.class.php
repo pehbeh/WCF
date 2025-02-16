@@ -89,6 +89,7 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
      * Deletes items.
      *
      * @param \DOMXPath $xpath
+     * @return void
      */
     protected function deleteItems(\DOMXPath $xpath)
     {
@@ -125,7 +126,7 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
 
     /**
      * @param \DOMXPath $xpath
-     * @return  \DOMNodeList
+     * @return  \DOMNodeList<\DOMElement>
      */
     protected function getImportElements(\DOMXPath $xpath)
     {
@@ -136,6 +137,7 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
      * Imports or updates items.
      *
      * @param \DOMXPath $xpath
+     * @return void
      */
     protected function importItems(\DOMXPath $xpath)
     {
@@ -218,8 +220,9 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
      * Sets element value from XPath.
      *
      * @param \DOMXPath $xpath
-     * @param array $elements
+     * @param array<string, mixed> $elements
      * @param \DOMElement $element
+     * @return void
      */
     protected function getElement(\DOMXPath $xpath, array &$elements, \DOMElement $element)
     {
@@ -285,8 +288,8 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
     /**
      * Inserts or updates new items.
      *
-     * @param array $row
-     * @param array $data
+     * @param array<string, mixed> $row
+     * @param array<string, mixed> $data
      * @return  \wcf\data\IStorableObject|\wcf\data\DatabaseObjectEditor|null
      */
     protected function import(array $row, array $data)
@@ -311,6 +314,8 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
     /**
      * Executed after all items would have been imported, use this hook if you've
      * overwritten import() to disable insert/update.
+     *
+     * @return void
      */
     protected function postImport() {}
 

@@ -99,6 +99,7 @@ class CoreObjectPackageInstallationPlugin extends AbstractXMLPackageInstallation
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -175,6 +176,7 @@ class CoreObjectPackageInstallationPlugin extends AbstractXMLPackageInstallation
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      * @since   5.2
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)
@@ -188,6 +190,7 @@ class CoreObjectPackageInstallationPlugin extends AbstractXMLPackageInstallation
 
     /**
      * @inheritDoc
+     * @return ?\DOMElement
      * @since   5.2
      */
     protected function prepareDeleteXmlElement(\DOMElement $element)
@@ -203,6 +206,7 @@ class CoreObjectPackageInstallationPlugin extends AbstractXMLPackageInstallation
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function deleteObject(\DOMElement $element)

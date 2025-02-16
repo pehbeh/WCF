@@ -347,6 +347,7 @@ class BBCodePackageInstallationPlugin extends AbstractXMLPackageInstallationPlug
 
     /**
      * @inheritDoc
+     * @return string
      * @since   5.2
      */
     protected function getXsdFilename()
@@ -356,6 +357,7 @@ class BBCodePackageInstallationPlugin extends AbstractXMLPackageInstallationPlug
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)

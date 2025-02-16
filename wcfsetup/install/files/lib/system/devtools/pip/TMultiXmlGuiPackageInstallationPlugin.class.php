@@ -254,6 +254,7 @@ trait TMultiXmlGuiPackageInstallationPlugin
 
     /**
      * @inheritDoc
+     * @return void
      */
     protected function deleteObject(\DOMElement $element)
     {

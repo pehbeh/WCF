@@ -16,14 +16,14 @@ interface IPackageInstallationPlugin
     /**
      * Executes the installation of this plugin.
      *
-     * @return void
+     * @return mixed
      */
     public function install();
 
     /**
      * Executes the update of this plugin.
      *
-     * @return void
+     * @return mixed
      */
     public function update();
 

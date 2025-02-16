@@ -236,6 +236,7 @@ class CronjobPackageInstallationPlugin extends AbstractXMLPackageInstallationPlu
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -325,7 +326,7 @@ class CronjobPackageInstallationPlugin extends AbstractXMLPackageInstallationPlu
     /**
      * @inheritDoc
      * @param bool $saveData
-     * @return array<string, int|string>
+     * @return array<string, mixed>
      * @since   5.2
      */
     protected function fetchElementData(\DOMElement $element, $saveData)

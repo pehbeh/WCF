@@ -61,7 +61,7 @@ class BoxPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin 
 
     /**
      * box contents
-     * @var array
+     * @var array<int, array<string, array{content?: string, title: string}>>
      */
     protected $content = [];
 
@@ -498,6 +498,7 @@ class BoxPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin 
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)

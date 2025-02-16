@@ -179,6 +179,7 @@ class OptionPackageInstallationPlugin extends AbstractOptionPackageInstallationP
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -348,6 +349,7 @@ class OptionPackageInstallationPlugin extends AbstractOptionPackageInstallationP
 
     /**
      * @inheritDoc
+     * @return OptionHandler
      * @since   5.2
      */
     protected function getSortOptionHandler()

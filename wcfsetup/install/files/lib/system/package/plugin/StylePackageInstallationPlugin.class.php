@@ -18,6 +18,7 @@ class StylePackageInstallationPlugin extends AbstractPackageInstallationPlugin
 {
     /**
      * @inheritDoc
+     * @var string
      */
     public $className = StyleEditor::class;
 

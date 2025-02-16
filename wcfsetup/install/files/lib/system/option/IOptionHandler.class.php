@@ -2,6 +2,8 @@
 
 namespace wcf\system\option;
 
+use wcf\data\option\Option;
+
 /**
  * Every option handler has to implement this interface.
  *
@@ -48,7 +50,7 @@ interface IOptionHandler
      *
      * @param string $categoryName
      * @param bool $inherit
-     * @return  array
+     * @return list<Option>
      */
     public function getCategoryOptions($categoryName = '', $inherit = true);
 

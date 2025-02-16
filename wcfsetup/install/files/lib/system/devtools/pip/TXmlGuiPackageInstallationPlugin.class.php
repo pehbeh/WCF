@@ -254,6 +254,7 @@ trait TXmlGuiPackageInstallationPlugin
      * Deletes the given element from database.
      *
      * @param \DOMElement $element
+     * @return void
      */
     protected function deleteObject(\DOMElement $element)
     {

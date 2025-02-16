@@ -71,12 +71,13 @@ class UserMenuPackageInstallationPlugin extends AbstractMenuPackageInstallationP
                 $solid === 'true' ? 'true' : 'false'
             );
         } else {
-            $elements[$element->tagName] = $element->nodeValue;
+            $elements[$element->tagName] = $element->textContent;
         }
     }
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)

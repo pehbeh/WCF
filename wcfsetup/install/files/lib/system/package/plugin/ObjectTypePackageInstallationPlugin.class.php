@@ -81,7 +81,7 @@ class ObjectTypePackageInstallationPlugin extends AbstractXMLPackageInstallation
 
     /**
      * data for object type definition-specific xml element children
-     * @var array
+     * @var array<string, mixed>
      */
     public $definitionElementChildren = [];
 
@@ -251,6 +251,7 @@ class ObjectTypePackageInstallationPlugin extends AbstractXMLPackageInstallation
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -956,6 +957,7 @@ class ObjectTypePackageInstallationPlugin extends AbstractXMLPackageInstallation
      *
      * @param IFormDocument $form
      * @param string $objectTypeDefinition
+     * @return void
      */
     public function addBulkProcessingActionFields(IFormDocument $form, $objectTypeDefinition)
     {
@@ -1012,6 +1014,7 @@ class ObjectTypePackageInstallationPlugin extends AbstractXMLPackageInstallation
      * @param string $objectTypeDefinition
      * @param bool $addConditionObject
      * @param bool $addConditionGroup
+     * @return void
      * @since   5.2
      */
     public function addConditionFields(
@@ -1255,6 +1258,7 @@ class ObjectTypePackageInstallationPlugin extends AbstractXMLPackageInstallation
 
     /**
      * @inheritDoc
+     * @return ?\DOMElement
      * @since   5.2
      */
     protected function prepareDeleteXmlElement(\DOMElement $element)
@@ -1275,6 +1279,7 @@ class ObjectTypePackageInstallationPlugin extends AbstractXMLPackageInstallation
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function deleteObject(\DOMElement $element)

@@ -1293,13 +1293,13 @@ parameters:
 		-
 			message: '#^Call to function assert\(\) with true will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
-			count: 1
+			count: 2
 			path: wcfsetup/install/files/lib/system/package/plugin/ACPMenuPackageInstallationPlugin.class.php
 
 		-
 			message: '#^Instanceof between DOMElement and DOMElement will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
-			count: 1
+			count: 2
 			path: wcfsetup/install/files/lib/system/package/plugin/ACPMenuPackageInstallationPlugin.class.php
 
 		-
@@ -1311,13 +1311,13 @@ parameters:
 		-
 			message: '#^Call to function assert\(\) with true will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
-			count: 1
+			count: 2
 			path: wcfsetup/install/files/lib/system/package/plugin/UserMenuPackageInstallationPlugin.class.php
 
 		-
 			message: '#^Instanceof between DOMElement and DOMElement will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
-			count: 1
+			count: 2
 			path: wcfsetup/install/files/lib/system/package/plugin/UserMenuPackageInstallationPlugin.class.php
 
 		-

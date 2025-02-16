@@ -357,6 +357,7 @@ class ACLOptionPackageInstallationPlugin extends AbstractOptionPackageInstallati
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -644,6 +645,7 @@ class ACLOptionPackageInstallationPlugin extends AbstractOptionPackageInstallati
 
     /**
      * @inheritDoc
+     * @return ?\DOMElement
      * @since   5.2
      */
     protected function prepareDeleteXmlElement(\DOMElement $element)
@@ -660,6 +662,7 @@ class ACLOptionPackageInstallationPlugin extends AbstractOptionPackageInstallati
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function deleteObject(\DOMElement $element)

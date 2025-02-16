@@ -46,7 +46,7 @@ class MenuPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
 
     /**
      * box meta data per menu
-     * @var array
+     * @var array<string, mixed>
      */
     public $boxData = [];
 
@@ -337,6 +337,7 @@ class MenuPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
