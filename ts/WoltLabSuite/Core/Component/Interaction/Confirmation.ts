@@ -29,11 +29,11 @@ export async function handleConfirmation(
   customMessage: string = "",
 ): Promise<ResultConfirmationWithReason> {
   if (confirmationType == ConfirmationType.SoftDelete) {
-    return await confirmationFactory().softDelete(objectName);
+    return await confirmationFactory().softDelete(objectName ? objectName : undefined);
   }
 
   if (confirmationType == ConfirmationType.SoftDeleteWithReason) {
-    return await confirmationFactory().softDelete(objectName, true);
+    return await confirmationFactory().softDelete(objectName ? objectName : undefined, true);
   }
 
   if (confirmationType == ConfirmationType.Restore) {
