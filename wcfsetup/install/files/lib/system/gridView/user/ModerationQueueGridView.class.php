@@ -47,7 +47,7 @@ final class ModerationQueueGridView extends AbstractGridView
                 ->label('wcf.global.title')
                 ->titleColumn()
                 ->renderer(
-                    new class extends DefaultColumnRenderer implements ILinkColumnRenderer {
+                    new class extends DefaultColumnRenderer {
                         #[\Override]
                         public function render(mixed $value, DatabaseObject $row): string
                         {
@@ -65,7 +65,7 @@ final class ModerationQueueGridView extends AbstractGridView
                                 $badge = '';
                             }
                             return <<<HTML
-                                <a href="{$link}">{$title}</a>{$badge}
+                                {$title}{$badge}
                             HTML;
                         }
                     }
