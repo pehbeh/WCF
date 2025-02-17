@@ -60,8 +60,8 @@ final class ModerationQueueInteractions extends AbstractInteractionProvider
                 InteractionConfirmationType::SoftDeleteWithReason,
                 isAvailableCallback: static function (ViewableModerationQueue $queue) {
                     $objectType = ObjectTypeCache::getInstance()->getObjectType($queue->objectTypeID);
-                    /** @var IModerationQueueHandler $processor */
                     $processor = $objectType->getProcessor();
+                    \assert($processor instanceof IModerationQueueHandler);
 
                     return $queue->canEdit()
                         && !$queue->isDone()
