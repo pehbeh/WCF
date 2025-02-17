@@ -8,6 +8,7 @@ use wcf\data\moderation\queue\ModerationQueue;
 use wcf\data\moderation\queue\ViewableModerationQueue;
 use wcf\data\moderation\queue\ViewableModerationQueueList;
 use wcf\data\object\type\ObjectTypeCache;
+use wcf\event\gridView\user\ModerationQueueGridViewInitialized;
 use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\SelectFormField;
 use wcf\system\gridView\AbstractGridView;
@@ -58,7 +59,7 @@ final class ModerationQueueGridView extends AbstractGridView
                             }
 
                             if ($row->getAffectedObject()->getUsername()) {
-                                return StringUtil::encodeHTML($row->getAffectedObject()->getUsername() ?? '');
+                                return StringUtil::encodeHTML($row->getAffectedObject()->getUsername());
                             }
 
                             return '';
@@ -283,8 +284,14 @@ final class ModerationQueueGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): DatabaseObjectList
+    protected function createObjectList(): ViewableModerationQueueList
     {
         return new ViewableModerationQueueList();
+    }
+
+    #[\Override]
+    protected function getInitializedEvent(): ModerationQueueGridViewInitialized
+    {
+        return new ModerationQueueGridViewInitialized($this);
     }
 }
