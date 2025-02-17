@@ -6,24 +6,18 @@
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.0
  */
-define(["require", "exports", "tslib", "../../Ajax", "../Notification"], function (require, exports, tslib_1, Ajax_1, UiNotification) {
+define(["require", "exports", "WoltLabSuite/Core/Component/Snackbar", "../../Ajax"], function (require, exports, Snackbar_1, Ajax_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
-    UiNotification = tslib_1.__importStar(UiNotification);
     async function markAllAsRead() {
         await (0, Ajax_1.dboAction)("markAllAsRead", "wcf\\data\\moderation\\queue\\ModerationQueueAction").dispatch();
-        document
-            .querySelectorAll("#wcf-system-gridView-user-ModerationQueueGridView_table .newMessageBadge")
-            .forEach((el) => {
-            el.remove();
-        });
-        document.querySelector("#outstandingModeration .badgeUpdate")?.remove();
-        UiNotification.show();
+        const gridViewTable = document.getElementById("wcf-system-gridView-user-ModerationQueueGridView_table");
+        gridViewTable.dispatchEvent(new CustomEvent("interaction:invalidate-all"));
+        (0, Snackbar_1.showDefaultSuccessSnackbar)();
     }
     function setup() {
-        document.querySelector(".markAllAsReadButton")?.addEventListener("click", (event) => {
-            event.preventDefault();
+        document.querySelector(".markAllAsReadButton")?.addEventListener("click", () => {
             void markAllAsRead();
         });
     }

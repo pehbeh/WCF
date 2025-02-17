@@ -7,26 +7,20 @@
  * @since 6.0
  */
 
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 import { dboAction } from "../../Ajax";
-import * as UiNotification from "../Notification";
 
 async function markAllAsRead(): Promise<void> {
   await dboAction("markAllAsRead", "wcf\\data\\moderation\\queue\\ModerationQueueAction").dispatch();
 
-  document
-    .querySelectorAll("#wcf-system-gridView-user-ModerationQueueGridView_table .newMessageBadge")
-    .forEach((el: HTMLElement) => {
-      el.remove();
-    });
-  document.querySelector("#outstandingModeration .badgeUpdate")?.remove();
+  const gridViewTable = document.getElementById("wcf-system-gridView-user-ModerationQueueGridView_table")!;
+  gridViewTable.dispatchEvent(new CustomEvent("interaction:invalidate-all"));
 
-  UiNotification.show();
+  showDefaultSuccessSnackbar();
 }
 
 export function setup(): void {
-  document.querySelector<HTMLButtonElement>(".markAllAsReadButton")?.addEventListener("click", (event) => {
-    event.preventDefault();
-
+  document.querySelector<HTMLButtonElement>(".markAllAsReadButton")?.addEventListener("click", () => {
     void markAllAsRead();
   });
 }
