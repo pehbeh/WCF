@@ -61,8 +61,8 @@ final class ModerationQueueBulkInteractions extends AbstractBulkInteractionProvi
                 InteractionConfirmationType::SoftDeleteWithReason,
                 isAvailableCallback: static function (ModerationQueue $queue) {
                     $objectType = ObjectTypeCache::getInstance()->getObjectType($queue->objectTypeID);
-                    /** @var IModerationQueueHandler $processor */
                     $processor = $objectType->getProcessor();
+                    \assert($processor instanceof IModerationQueueHandler);
 
                     return $queue->canEdit()
                         && !$queue->isDone()
