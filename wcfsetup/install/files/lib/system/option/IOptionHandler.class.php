@@ -25,14 +25,15 @@ interface IOptionHandler
     /**
      * Reads user input from given source array.
      *
-     * @param array $source
+     * @param mixed[] $source
+     * @return void
      */
     public function readUserInput(array &$source);
 
     /**
      * Validates user input, returns an array with all occurred errors.
      *
-     * @return  array
+     * @return array<string, mixed>
      */
     public function validate();
 
@@ -41,7 +42,7 @@ interface IOptionHandler
      *
      * @param string $parentCategoryName
      * @param int $level
-     * @return  array
+     * @return mixed[]
      */
     public function getOptionTree($parentCategoryName = '', $level = 0);
 
@@ -56,6 +57,8 @@ interface IOptionHandler
 
     /**
      * Initializes i18n support.
+     *
+     * @return void
      */
     public function readData();
 
@@ -64,12 +67,14 @@ interface IOptionHandler
      *
      * @param string $categoryName
      * @param string $optionPrefix
-     * @return  array
+     * @return array<int, mixed>
      */
     public function save($categoryName = null, $optionPrefix = null);
 
     /**
      * Initializes active options.
+     *
+     * @return void
      */
     public function init();
 }

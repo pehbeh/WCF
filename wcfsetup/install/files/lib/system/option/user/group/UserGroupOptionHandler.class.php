@@ -48,6 +48,7 @@ class UserGroupOptionHandler extends OptionHandler
      * Sets current user group.
      *
      * @param UserGroup $group
+     * @return void
      */
     public function setUserGroup(UserGroup $group)
     {

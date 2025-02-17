@@ -71,6 +71,8 @@ class FloatOptionType extends TextOptionType
 
     /**
      * Converts a localized string value into a float value.
+     *
+     * @param string $value
      */
     protected function toFloat($value): float
     {

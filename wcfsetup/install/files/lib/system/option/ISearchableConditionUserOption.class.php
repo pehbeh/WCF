@@ -22,6 +22,7 @@ interface ISearchableConditionUserOption extends ISearchableUserOption
      * @param UserList $userList
      * @param Option $option
      * @param mixed $value
+     * @return void
      */
     public function addCondition(UserList $userList, Option $option, $value);
 

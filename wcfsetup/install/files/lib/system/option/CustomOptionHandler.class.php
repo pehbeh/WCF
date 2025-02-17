@@ -13,6 +13,7 @@ use wcf\system\exception\UserInputException;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @phpstan-import-type ParsedOption from OptionHandler
  */
 abstract class CustomOptionHandler extends OptionHandler
 {
@@ -45,7 +46,7 @@ abstract class CustomOptionHandler extends OptionHandler
     /**
      * Returns the parsed options.
      *
-     * @return  array
+     * @return list<ParsedOption>
      */
     public function getOptions()
     {
@@ -72,6 +73,8 @@ abstract class CustomOptionHandler extends OptionHandler
 
     /**
      * Resets the option values.
+     *
+     * @return void
      */
     public function resetOptionValues()
     {
@@ -81,7 +84,7 @@ abstract class CustomOptionHandler extends OptionHandler
     /**
      * Returns the option values.
      *
-     * @return  array
+     * @return array<string, string>
      */
     public function getOptionValues()
     {
@@ -91,7 +94,8 @@ abstract class CustomOptionHandler extends OptionHandler
     /**
      * Sets the option values.
      *
-     * @param array $values
+     * @param array<string, string> $values
+     * @return void
      */
     public function setOptionValues(array $values)
     {
@@ -106,8 +110,9 @@ abstract class CustomOptionHandler extends OptionHandler
         $optionData = parent::getOption($optionName);
 
         if (isset($this->optionValues[$optionName])) {
-            /** @noinspection PhpUndefinedMethodInspection */
-            $optionData['object']->setOptionValue($this->optionValues[$optionName]);
+            $object = $optionData['object'];
+            \assert($object instanceof CustomOption);
+            $object->setOptionValue($this->optionValues[$optionName]);
         }
 
         return $optionData;

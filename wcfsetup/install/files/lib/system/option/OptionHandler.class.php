@@ -20,6 +20,13 @@ use wcf\util\StringUtil;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @phpstan-type ParsedOption array{
+ *  object: Option,
+ *  value: mixed,
+ *  html: string,
+ *  cssClassName: string,
+ *  hideLabelInSearch: bool,
+ * }|null
  */
 class OptionHandler implements IOptionHandler
 {
@@ -49,13 +56,13 @@ class OptionHandler implements IOptionHandler
 
     /**
      * category structure
-     * @var array
+     * @var mixed[]
      */
     public $cachedCategoryStructure;
 
     /**
      * option structure
-     * @var array
+     * @var mixed[]
      */
     public $cachedOptionToCategories;
 
@@ -112,7 +119,7 @@ class OptionHandler implements IOptionHandler
 
     /**
      * option values
-     * @var mixed[]
+     * @var array<string, string>
      */
     public $optionValues = [];
 
@@ -347,7 +354,7 @@ class OptionHandler implements IOptionHandler
      * Returns a parsed option.
      *
      * @param string $optionName
-     * @return  ?array
+     * @return ParsedOption
      */
     protected function getOption($optionName)
     {
@@ -370,7 +377,7 @@ class OptionHandler implements IOptionHandler
      * Wrapper function to preserve backwards compatibility with the visibility of `getOption()`.
      *
      * @param string $optionName
-     * @return array
+     * @return ParsedOption
      * @since 5.2
      */
     public function getSingleOption($optionName)
@@ -382,6 +389,7 @@ class OptionHandler implements IOptionHandler
      * Validates an option.
      *
      * @param Option $option
+     * @return void
      * @throws  UserInputException
      */
     protected function validateOption(Option $option)
@@ -413,6 +421,9 @@ class OptionHandler implements IOptionHandler
 
     /**
      * @inheritDoc
+     *
+     * @param string $type
+     * @return string
      */
     protected function getFormElement($type, Option $option)
     {
@@ -490,6 +501,8 @@ class OptionHandler implements IOptionHandler
 
     /**
      * Fetches all options and option categories from cache.
+     *
+     * @return void
      */
     protected function readCache()
     {
@@ -523,6 +536,7 @@ class OptionHandler implements IOptionHandler
      * Removes any option that is not listed in the provided list.
      *
      * @param string[] $optionNames
+     * @return void
      * @since 5.2
      */
     public function filterOptions(array $optionNames)
@@ -536,6 +550,7 @@ class OptionHandler implements IOptionHandler
      * Creates a list of all active options.
      *
      * @param string $parentCategoryName
+     * @return void
      */
     protected function loadActiveOptions($parentCategoryName)
     {
