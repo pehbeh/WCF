@@ -57,7 +57,7 @@ class PackageUninstallationNodeBuilder extends PackageInstallationNodeBuilder
     }
 
     /**
-     * @inheritDoc
+     * @return void
      */
     protected function buildUninstallationPluginNodes()
     {

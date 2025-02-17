@@ -11,6 +11,24 @@ use wcf\system\exception\NotImplementedException;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @phpstan-type ColumnDefinition array{
+ *  autoIncrement?: bool,
+ *  decimals?: int,
+ *  default?: string|int|float,
+ *  key?: string,
+ *  length?: int,
+ *  notNull?: bool,
+ *  type: string,
+ *  values?: string,
+ * }
+ * @phpstan-type ForeignKeyDefinition array{
+ *  columns: string,
+ *  referencedTable: string,
+ *  referencedColumns: string,
+ *  'ON DELETE'?: string,
+ *  'ON UPDATE'?: string,
+ * }
+ * @phpstan-type IndexDefinition array{type: string, columns: string}
  */
 abstract class DatabaseEditor
 {
@@ -78,8 +96,9 @@ abstract class DatabaseEditor
      * Creates a new database table.
      *
      * @param string $tableName
-     * @param array $columns
-     * @param array $indices
+     * @param list<array{name: string, data: ColumnDefinition}> $columns
+     * @param list<array{name: string, data: IndexDefinition|ForeignKeyDefinition}> $indices
+     * @return void
      */
     abstract public function createTable($tableName, $columns, $indices = []);
 
@@ -87,6 +106,7 @@ abstract class DatabaseEditor
      * Drops a database table.
      *
      * @param string $tableName
+     * @return void
      */
     abstract public function dropTable($tableName);
 
@@ -95,7 +115,8 @@ abstract class DatabaseEditor
      *
      * @param string $tableName
      * @param string $columnName
-     * @param array $columnData
+     * @param ColumnDefinition $columnData
+     * @return void
      */
     abstract public function addColumn($tableName, $columnName, $columnData);
 
@@ -105,7 +126,8 @@ abstract class DatabaseEditor
      * @param string $tableName
      * @param string $oldColumnName
      * @param string $newColumnName
-     * @param array $newColumnData
+     * @param ColumnDefinition $newColumnData
+     * @return void
      */
     abstract public function alterColumn($tableName, $oldColumnName, $newColumnName, $newColumnData);
 
@@ -114,6 +136,7 @@ abstract class DatabaseEditor
      *
      * @param string $tableName
      * @param array $alterData
+     * @return void
      */
     public function alterColumns($tableName, $alterData)
     {
@@ -125,6 +148,7 @@ abstract class DatabaseEditor
      *
      * @param string $tableName
      * @param string $columnName
+     * @return void
      */
     abstract public function dropColumn($tableName, $columnName);
 
@@ -133,7 +157,8 @@ abstract class DatabaseEditor
      *
      * @param string $tableName
      * @param string $indexName
-     * @param array $indexData
+     * @param IndexDefinition $indexData
+     * @return void
      */
     abstract public function addIndex($tableName, $indexName, $indexData);
 
@@ -142,7 +167,8 @@ abstract class DatabaseEditor
      *
      * @param string $tableName
      * @param string $indexName
-     * @param array $indexData
+     * @param ForeignKeyDefinition $indexData
+     * @return void
      */
     abstract public function addForeignKey($tableName, $indexName, $indexData);
 
@@ -151,6 +177,7 @@ abstract class DatabaseEditor
      *
      * @param string $tableName
      * @param string $indexName
+     * @return void
      */
     abstract public function dropIndex($tableName, $indexName);
 
@@ -158,6 +185,7 @@ abstract class DatabaseEditor
      * Drops existing primary keys.
      *
      * @param string $tableName
+     * @return void
      */
     abstract public function dropPrimaryKey($tableName);
 
@@ -166,6 +194,7 @@ abstract class DatabaseEditor
      *
      * @param string $tableName
      * @param string $indexName
+     * @return void
      */
     abstract public function dropForeignKey($tableName, $indexName);
 }

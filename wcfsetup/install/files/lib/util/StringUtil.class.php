@@ -137,8 +137,16 @@ final class StringUtil
     /**
      * Converts html special characters.
      */
-    public static function encodeHTML(string $string): string
+    public static function encodeHTML(?string $string): string
     {
+        // Until 6.1 this function implicitly casted values to string which made
+        // it possible to invoke it with null values. There is little value in
+        // breaking the compatibility therefore we will keep accepting those for
+        // the time being.
+        if ($string === null) {
+            return '';
+        }
+
         return @\htmlspecialchars(
             $string,
             \ENT_QUOTES | \ENT_SUBSTITUTE | \ENT_HTML401,

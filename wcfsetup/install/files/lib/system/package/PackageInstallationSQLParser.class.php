@@ -36,37 +36,37 @@ class PackageInstallationSQLParser extends SQLParser
 
     /**
      * list of existing database tables
-     * @var array
+     * @var string[]
      */
     protected $existingTables = [];
 
     /**
      * list of logged tables
-     * @var array
+     * @var array<string, int>
      */
     protected $knownTables = [];
 
     /**
      * list of conflicted database tables
-     * @var array
+     * @var array{'CREATE TABLE'?: list<string>}
      */
     protected $conflicts = [];
 
     /**
      * list of created/deleted tables
-     * @var array
+     * @var list<array{tableName: string, packageID: int, action: 'delete'|'insert'}>
      */
     protected $tableLog = [];
 
     /**
      * list of created/deleted columns
-     * @var array
+     * @var list<array{tableName: string, columnName: string, packageID: int, action: 'delete'|'insert'}>
      */
     protected $columnLog = [];
 
     /**
      * list of created/deleted indices
-     * @var array
+     * @var list<array{tableName: string, indexName: string, packageID: int, action: 'delete'|'insert'}>
      */
     protected $indexLog = [];
 
@@ -74,7 +74,6 @@ class PackageInstallationSQLParser extends SQLParser
      * Creates a new PackageInstallationSQLParser object.
      *
      * @param string $queries
-     * @param Package $package
      * @param string $action
      */
     public function __construct($queries, Package $package, $action = 'install')
@@ -88,7 +87,7 @@ class PackageInstallationSQLParser extends SQLParser
     /**
      * Performs a test of the given queries.
      *
-     * @return  array       conflicts
+     * @return array{'CREATE TABLE'?: list<string>} conflicts
      */
     public function test()
     {
@@ -115,6 +114,8 @@ class PackageInstallationSQLParser extends SQLParser
 
     /**
      * Logs executed sql queries
+     *
+     * @return void
      */
     public function log()
     {
@@ -196,6 +197,8 @@ class PackageInstallationSQLParser extends SQLParser
 
     /**
      * Fetches known sql tables and their owners from installation log.
+     *
+     * @return void
      */
     protected function getKnownTables()
     {

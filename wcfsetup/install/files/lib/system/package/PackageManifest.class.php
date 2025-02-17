@@ -15,6 +15,9 @@ use wcf\system\devtools\package\DevtoolsTar;
  * @copyright   2001-2022 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   6.0
+ * @phpstan-import-type Instruction from PackageArchive
+ * @phpstan-import-type VoidInstruction from PackageArchive
+ * @phpstan-type CleanInstruction array{type: string, value: string, attributes: array<string, string>}|array{0: PackageArchive::VOID_MARKER}
  */
 final class PackageManifest
 {
@@ -120,6 +123,9 @@ final class PackageManifest
         return $this->stringifyV1($manifest);
     }
 
+    /**
+     * @return array<string, string>
+     */
     private function getDisplayNames(): array
     {
         $displayNames = $this->archive->getPackageInfo('packageName');
@@ -128,6 +134,9 @@ final class PackageManifest
         return $displayNames;
     }
 
+    /**
+     * @return list<array{name: string, minversion: string}>
+     */
     private function getRequirements(): array
     {
         $requirements = $this->archive->getRequirements();
@@ -142,6 +151,9 @@ final class PackageManifest
         }, $requirements);
     }
 
+    /**
+     * @return list<array{name: string, version: string}>
+     */
     private function getExcludedPackages(): array
     {
         $exclusions = $this->archive->getExcludedPackages();
@@ -155,6 +167,10 @@ final class PackageManifest
         }, $exclusions);
     }
 
+    /**
+     * @param string[] $ignore
+     * @return array<string, string>
+     */
     private function getFiles(array $ignore = []): array
     {
         $tar = $this->archive->getTar();
@@ -178,11 +194,17 @@ final class PackageManifest
         return $files;
     }
 
+    /**
+     * @return CleanInstruction[]
+     */
     private function getInstallInstructions(): array
     {
         return $this->cleanInstructions($this->archive->getInstallInstructions());
     }
 
+    /**
+     * @return array<string, CleanInstruction[]>
+     */
     private function getUpdateInstructions(): array
     {
         $updateInstructions = $this->archive->getAllUpdateInstructions();
@@ -191,11 +213,19 @@ final class PackageManifest
         return \array_map($this->cleanInstructions(...), $updateInstructions);
     }
 
+    /**
+     * @param array{name: string} $a
+     * @param array{name: string} $b
+     */
     private function compareByName(array $a, array $b): int
     {
         return $a['name'] <=> $b['name'];
     }
 
+    /**
+     * @param Instruction[]|array{0: VoidInstruction} $instructions
+     * @return CleanInstruction[]
+     */
     private function cleanInstructions(array $instructions): array
     {
         // Note: The $instructions array *must not* be sorted. The order
@@ -225,6 +255,7 @@ final class PackageManifest
      * Attention: This method must not be modified. If a format change is required a
      * replacement method must be written.
      *
+     * @param mixed[]|string|int $data
      * @throws \UnexpectedValueException On non-representable data.
      */
     private function stringifyV1(array|string|int $data, int $depth = 0): string
