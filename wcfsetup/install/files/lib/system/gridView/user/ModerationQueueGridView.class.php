@@ -43,6 +43,33 @@ final class ModerationQueueGridView extends AbstractGridView
     public function __construct(?int $status = null)
     {
         $this->addColumns([
+            GridViewColumn::for('title')
+                ->label('wcf.global.title')
+                ->titleColumn()
+                ->renderer(
+                    new class extends DefaultColumnRenderer implements ILinkColumnRenderer {
+                        #[\Override]
+                        public function render(mixed $value, DatabaseObject $row): string
+                        {
+                            \assert($row instanceof ViewableModerationQueue);
+
+                            $link = StringUtil::encodeHTML($row->getLink());
+                            $title = StringUtil::encodeHTML($row->getTitle());
+
+                            if ($row->isNew()) {
+                                $badgeLabel = WCF::getLanguage()->get('wcf.message.new');
+                                $badge = <<<HTML
+                                    <span class="badge label newMessageBadge">{$badgeLabel}</span>
+                                HTML;
+                            } else {
+                                $badge = '';
+                            }
+                            return <<<HTML
+                                <a href="{$link}">{$title}</a>{$badge}
+                            HTML;
+                        }
+                    }
+                ),
             GridViewColumn::for("author")
                 ->label("wcf.moderation.username")
                 ->renderer(
@@ -71,33 +98,6 @@ final class ModerationQueueGridView extends AbstractGridView
                             \assert($row instanceof ViewableModerationQueue);
 
                             parent::prepare($row->getAffectedObject()->getUserID(), $row);
-                        }
-                    }
-                ),
-            GridViewColumn::for('title')
-                ->label('wcf.global.title')
-                ->titleColumn()
-                ->renderer(
-                    new class extends DefaultColumnRenderer implements ILinkColumnRenderer {
-                        #[\Override]
-                        public function render(mixed $value, DatabaseObject $row): string
-                        {
-                            \assert($row instanceof ViewableModerationQueue);
-
-                            $link = StringUtil::encodeHTML($row->getLink());
-                            $title = StringUtil::encodeHTML($row->getTitle());
-
-                            if ($row->isNew()) {
-                                $badgeLabel = WCF::getLanguage()->get('wcf.message.new');
-                                $badge = <<<HTML
-                                    <span class="badge label newMessageBadge">{$badgeLabel}</span>
-                                HTML;
-                            } else {
-                                $badge = '';
-                            }
-                            return <<<HTML
-                                <a href="{$link}">{$title}</a>{$badge}
-                            HTML;
                         }
                     }
                 ),
