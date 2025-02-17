@@ -79,17 +79,20 @@ abstract class MultipleLinkPage extends AbstractPage
     public $sortOrder = '';
 
     /**
-     * @inheritDoc
+     * Defines the number of records to return.
+     * @var int
      */
     public $sqlLimit = 0;
 
     /**
-     * @inheritDoc
+     * Defines the offset of the first row to return.
+     * @var int
      */
-    public $sqlOffset = '';
+    public $sqlOffset = 0;
 
     /**
-     * @inheritDoc
+     * Defines the sort of the result-set.
+     * @var string
      */
     public $sqlOrderBy = '';
 
