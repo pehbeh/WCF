@@ -121,7 +121,7 @@ class RecaptchaHandler implements ICaptchaHandler
         $request = new Request(
             'GET',
             \sprintf(
-                'https://www.google.com/recaptcha/api/siteverify?%s',
+                'https://www.recaptcha.net/recaptcha/api/siteverify?%s',
                 \http_build_query([
                     'secret' => $key,
                     'response' => $this->response,
