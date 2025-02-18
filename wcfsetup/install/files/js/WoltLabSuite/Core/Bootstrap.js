@@ -178,7 +178,7 @@ define(["require", "exports", "tslib", "./Core", "./Date/Picker", "./Devtools", 
                         if (iframe === null) {
                             continue;
                         }
-                        if (!iframe.src.startsWith("https://www.google.com/recaptcha/api")) {
+                        if (!iframe.src.startsWith("https://www.recaptcha.net/recaptcha/api")) {
                             continue;
                         }
                         if (iframe.parentElement?.parentElement?.parentElement === document.body) {
