@@ -16,10 +16,10 @@ define(["require", "exports", "WoltLabSuite/Core/Controller/Captcha"], function 
             recaptchaPromise = new Promise((resolve, reject) => {
                 const script = document.createElement("script");
                 if (recaptchaType === "v3") {
-                    script.src = `https://www.google.com/recaptcha/api.js?render=${publicKey}`;
+                    script.src = `https://www.recaptcha.net/recaptcha/api.js?render=${publicKey}`;
                 }
                 else {
-                    script.src = "https://www.google.com/recaptcha/api.js?render=explicit";
+                    script.src = "https://www.recaptcha.net/recaptcha/api.js?render=explicit";
                 }
                 script.async = true;
                 script.defer = true;

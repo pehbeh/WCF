@@ -217,7 +217,7 @@ export function setup(options: BoostrapOptions): void {
             continue;
           }
 
-          if (!iframe.src.startsWith("https://www.google.com/recaptcha/api")) {
+          if (!iframe.src.startsWith("https://www.recaptcha.net/recaptcha/api")) {
             continue;
           }
 
