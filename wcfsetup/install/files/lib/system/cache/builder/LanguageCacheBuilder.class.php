@@ -3,7 +3,9 @@
 namespace wcf\system\cache\builder;
 
 use wcf\data\DatabaseObject;
+use wcf\data\language\category\LanguageCategory;
 use wcf\data\language\category\LanguageCategoryList;
+use wcf\data\language\Language;
 use wcf\data\language\LanguageList;
 
 /**
@@ -12,6 +14,15 @@ use wcf\data\language\LanguageList;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @phpstan-type LanguageCache array{
+ *  codes: array<string, int>,
+ *  countryCodes: array<int, string>,
+ *  languages: array<int, Language>,
+ *  default: int,
+ *  categories: array<string, LanguageCategory>,
+ *  categoryIDs: array<int, string>,
+ *  multilingualismEnabled: bool,
+ * }
  */
 class LanguageCacheBuilder extends AbstractCacheBuilder
 {

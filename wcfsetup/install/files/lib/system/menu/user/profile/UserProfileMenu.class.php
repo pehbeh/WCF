@@ -45,6 +45,8 @@ class UserProfileMenu extends SingletonFactory
 
     /**
      * Loads cached menu items.
+     *
+     * @return void
      */
     protected function loadCache()
     {
@@ -56,6 +58,8 @@ class UserProfileMenu extends SingletonFactory
 
     /**
      * Checks the options and permissions of the menu items.
+     *
+     * @return void
      */
     protected function checkMenuItems()
     {

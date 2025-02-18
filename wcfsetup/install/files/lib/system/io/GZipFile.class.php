@@ -38,7 +38,7 @@ final class GZipFile extends File
      * Calls the specified function on the open file.
      *
      * @param string $function
-     * @param array $arguments
+     * @param mixed[] $arguments
      * @return  mixed
      * @throws  SystemException
      */

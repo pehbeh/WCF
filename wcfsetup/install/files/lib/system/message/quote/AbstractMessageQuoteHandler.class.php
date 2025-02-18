@@ -59,6 +59,7 @@ abstract class AbstractMessageQuoteHandler extends SingletonFactory implements I
 
     /**
      * @inheritDoc
+     * @param bool $renderAsString
      */
     public function renderQuotes(array $data, $render = true, $renderAsString = true)
     {
@@ -92,6 +93,7 @@ abstract class AbstractMessageQuoteHandler extends SingletonFactory implements I
      * Overrides the full quote flag for given message.
      *
      * @param QuotedMessage[] $messages
+     * @return void
      */
     protected function overrideIsFullQuote(array $messages)
     {

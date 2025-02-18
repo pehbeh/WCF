@@ -51,7 +51,7 @@ class RemoteFile extends File
      * @param string $host
      * @param int $port
      * @param int $timeout
-     * @param array $options
+     * @param array<string, mixed> $options
      * @throws  SystemException
      */
     public function __construct($host, $port, $timeout = 30, $options = [])
@@ -157,6 +157,7 @@ class RemoteFile extends File
     }
 
     /**
+     * @return bool
      * @deprecated 6.0 This method is effectively returning bogus data, because the majority of TLS communication uses Guzzle/cURL.
      */
     public static function supportsSSL()
@@ -177,6 +178,7 @@ class RemoteFile extends File
     }
 
     /**
+     * @return void
      * @deprecated 6.0 See RemoteFile::supportsSSL(). The implementation is a noop.
      */
     public static function disableSSL()

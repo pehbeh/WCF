@@ -15,7 +15,6 @@ use wcf\system\SingletonFactory;
  * @author  Tim Duesterhus, Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
- * @template T of object
  */
 final class EventHandler extends SingletonFactory
 {
@@ -35,7 +34,7 @@ final class EventHandler extends SingletonFactory
     private array $inheritedActions = [];
 
     /**
-     * @var array<string, array<class-string<T>, T>>
+     * @var array<string, array<class-string<object>, object>>
      */
     private array $actionsObjects = [];
 
@@ -45,7 +44,7 @@ final class EventHandler extends SingletonFactory
     private array $inheritedActionsObjects = [];
 
     /**
-     * @var array<class-string<T>, T>
+     * @var array<class-string<object>, object>
      */
     private array $listenerObjects = [];
 

@@ -24,6 +24,7 @@ class ArticleLabelObjectHandler extends AbstractLabelObjectHandler
      * Sets the label groups available for the categories with the given ids.
      *
      * @param int[] $categoryIDs
+     * @return void
      */
     public function setCategoryIDs($categoryIDs)
     {

@@ -19,6 +19,7 @@ interface IModerationQueueManager
      *
      * @param int $objectTypeID
      * @param ModerationQueue[] $queues
+     * @return void
      */
     public function assignQueues($objectTypeID, array $queues);
 
@@ -27,7 +28,7 @@ interface IModerationQueueManager
      *
      * @param string $objectType
      * @param int $objectID
-     * @return  bool
+     * @return bool
      */
     public function isValid($objectType, $objectID = null);
 
@@ -35,7 +36,7 @@ interface IModerationQueueManager
      * Returns link for viewing/editing objects for this moderation type.
      *
      * @param int $queueID
-     * @return  string
+     * @return string
      */
     public function getLink($queueID);
 
@@ -43,7 +44,7 @@ interface IModerationQueueManager
      * Returns object type id for given object type.
      *
      * @param string $objectType
-     * @return  int
+     * @return int
      */
     public function getObjectTypeID($objectType);
 
@@ -61,6 +62,7 @@ interface IModerationQueueManager
      *
      * @param int $objectTypeID
      * @param ViewableModerationQueue[] $objects
+     * @return void
      */
     public function populate($objectTypeID, array $objects);
 
@@ -68,7 +70,7 @@ interface IModerationQueueManager
      * Returns whether the affected content may be removed.
      *
      * @param ModerationQueue $queue
-     * @return  bool
+     * @return bool
      */
     public function canRemoveContent(ModerationQueue $queue);
 
@@ -78,6 +80,7 @@ interface IModerationQueueManager
      *
      * @param ModerationQueue $queue
      * @param string $message
+     * @return void
      */
     public function removeContent(ModerationQueue $queue, $message = '');
 }

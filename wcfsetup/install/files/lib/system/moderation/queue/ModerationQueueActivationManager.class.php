@@ -26,7 +26,7 @@ class ModerationQueueActivationManager extends AbstractModerationQueueManager
     /**
      * Enables affected content.
      *
-     * @param ModerationQueue $queue
+     * @return void
      */
     public function enableContent(ModerationQueue $queue)
     {
@@ -60,7 +60,8 @@ class ModerationQueueActivationManager extends AbstractModerationQueueManager
      *
      * @param string $objectType
      * @param int $objectID
-     * @param array $additionalData
+     * @param mixed[] $additionalData
+     * @return void
      * @throws  InvalidObjectTypeException
      */
     public function addModeratedContent($objectType, $objectID, array $additionalData = [])
@@ -88,8 +89,9 @@ class ModerationQueueActivationManager extends AbstractModerationQueueManager
      *
      * @param string $objectType
      * @param int[] $objectIDs
-     * @param   int[]   $containerIDs       format: `objectID => containerID`
-     * @param array $additionalData
+     * @param int[] $containerIDs       format: `objectID => containerID`
+     * @param mixed[] $additionalData
+     * @return void
      * @throws  InvalidObjectTypeException
      */
     public function addModeratedContents($objectType, array $objectIDs, array $containerIDs, array $additionalData = [])
@@ -111,6 +113,7 @@ class ModerationQueueActivationManager extends AbstractModerationQueueManager
      *
      * @param string $objectType
      * @param int[] $objectIDs
+     * @return void
      * @throws  InvalidObjectTypeException
      */
     public function removeModeratedContent($objectType, array $objectIDs)

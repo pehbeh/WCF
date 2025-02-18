@@ -18,12 +18,13 @@ use wcf\system\WCF;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @phpstan-import-type LanguageCache from LanguageCacheBuilder
  */
 class LanguageFactory extends SingletonFactory
 {
     /**
      * language cache
-     * @var mixed[]
+     * @var LanguageCache
      */
     protected $cache;
 
@@ -51,7 +52,7 @@ class LanguageFactory extends SingletonFactory
      * Returns a Language object for the language with the given id.
      *
      * @param int $languageID
-     * @return  Language|null
+     * @return ?Language
      */
     public function getLanguage($languageID)
     {
@@ -70,7 +71,7 @@ class LanguageFactory extends SingletonFactory
      * Returns the preferred language of the current user.
      *
      * @param int $languageID
-     * @return  Language
+     * @return ?Language
      */
     public function getUserLanguage($languageID = 0)
     {
@@ -117,7 +118,7 @@ class LanguageFactory extends SingletonFactory
      * Returns true if the language category with the given name exists.
      *
      * @param string $categoryName
-     * @return  bool
+     * @return bool
      */
     public function isValidCategory($categoryName)
     {
@@ -128,7 +129,7 @@ class LanguageFactory extends SingletonFactory
      * Returns the language category with the given name.
      *
      * @param string $categoryName
-     * @return  LanguageCategory|null
+     * @return ?LanguageCategory
      */
     public function getCategory($categoryName)
     {
@@ -139,7 +140,7 @@ class LanguageFactory extends SingletonFactory
      * Returns language category by id.
      *
      * @param int $languageCategoryID
-     * @return  LanguageCategory|null
+     * @return ?LanguageCategory
      */
     public function getCategoryByID($languageCategoryID)
     {
@@ -153,7 +154,7 @@ class LanguageFactory extends SingletonFactory
     /**
      * Returns a list of available language categories.
      *
-     * @return  LanguageCategory[]
+     * @return LanguageCategory[]
      */
     public function getCategories()
     {
@@ -162,6 +163,8 @@ class LanguageFactory extends SingletonFactory
 
     /**
      * Searches the preferred language of the current user.
+     *
+     * @return int
      */
     protected function findPreferredLanguage()
     {
@@ -171,24 +174,24 @@ class LanguageFactory extends SingletonFactory
             $availableLanguageCodes[] = $language->languageCode;
         }
 
-        // get default language
         $defaultLanguageCode = $this->cache['languages'][$this->cache['default']]->languageCode;
-
-        // get preferred language
         $languageCode = self::getPreferredLanguage($availableLanguageCodes, $defaultLanguageCode);
 
         // get language id of preferred language
         foreach ($this->cache['languages'] as $key => $language) {
-            if ($language->languageCode == $languageCode) {
+            if ($language->languageCode === $languageCode) {
                 return $key;
             }
         }
+
+        return 0;
     }
 
     /**
      * Determines the preferred language of the current user.
      *
      * @param string[] $availableLanguageCodes
+     * @return string
      */
     public static function getPreferredLanguage(array $availableLanguageCodes, string $defaultLanguageCode): string
     {
@@ -216,7 +219,7 @@ class LanguageFactory extends SingletonFactory
     /**
      * Returns the active scripting compiler object.
      *
-     * @return  TemplateScriptingCompiler
+     * @return TemplateScriptingCompiler
      */
     public function getScriptingCompiler()
     {
@@ -229,6 +232,8 @@ class LanguageFactory extends SingletonFactory
 
     /**
      * Loads the language cache.
+     *
+     * @return void
      */
     protected function loadCache()
     {
@@ -237,6 +242,8 @@ class LanguageFactory extends SingletonFactory
 
     /**
      * Clears languages cache.
+     *
+     * @return void
      */
     public function clearCache()
     {
@@ -248,7 +255,7 @@ class LanguageFactory extends SingletonFactory
      * Converts e.g. 'de-informal' to 'de'.
      *
      * @param string $languageCode
-     * @return  string      $languageCode
+     * @return string $languageCode
      */
     public static function fixLanguageCode($languageCode)
     {
@@ -258,8 +265,8 @@ class LanguageFactory extends SingletonFactory
     /**
      * Returns the default language object.
      *
-     * @return  Language
-     * @since   3.0
+     * @return Language
+     * @since 3.0
      */
     public function getDefaultLanguage()
     {
@@ -269,7 +276,7 @@ class LanguageFactory extends SingletonFactory
     /**
      * Returns the default language id
      *
-     * @return  int
+     * @return int
      */
     public function getDefaultLanguageID()
     {
@@ -279,7 +286,7 @@ class LanguageFactory extends SingletonFactory
     /**
      * Returns all available languages.
      *
-     * @return  Language[]
+     * @return Language[]
      */
     public function getLanguages()
     {
@@ -289,7 +296,7 @@ class LanguageFactory extends SingletonFactory
     /**
      * Returns all available content languages for given package.
      *
-     * @return  Language[]
+     * @return Language[]
      */
     public function getContentLanguages()
     {
@@ -306,8 +313,8 @@ class LanguageFactory extends SingletonFactory
     /**
      * Returns the list of content language ids.
      *
-     * @return      int[]
-     * @since       3.1
+     * @return int[]
+     * @since 3.1
      */
     public function getContentLanguageIDs()
     {
@@ -325,6 +332,7 @@ class LanguageFactory extends SingletonFactory
      * Makes given language the default language.
      *
      * @param int $languageID
+     * @return void
      */
     public function makeDefault($languageID)
     {
@@ -348,6 +356,8 @@ class LanguageFactory extends SingletonFactory
 
     /**
      * Removes language cache and compiled templates.
+     *
+     * @return void
      */
     public function deleteLanguageCache()
     {
@@ -362,7 +372,7 @@ class LanguageFactory extends SingletonFactory
     /**
      * Returns true if multilingualism is enabled.
      *
-     * @return  bool
+     * @return bool
      */
     public function multilingualismEnabled()
     {
@@ -372,7 +382,7 @@ class LanguageFactory extends SingletonFactory
     /**
      * Returns the number of phrases that have been automatically disabled in the past 7 days.
      *
-     * @return      int
+     * @return int
      */
     public function countRecentlyDisabledCustomValues()
     {

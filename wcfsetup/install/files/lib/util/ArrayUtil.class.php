@@ -40,10 +40,10 @@ final class ArrayUtil
     /**
      * Applies intval() to all elements of the given array.
      *
-     * @param string[]|string $array
+     * @param (string|int)[]|string|int $array
      * @return int[]|int
      */
-    public static function toIntegerArray(array|string $array): array|int
+    public static function toIntegerArray(array|string|int $array): array|int
     {
         if (!\is_array($array)) {
             return \intval($array);

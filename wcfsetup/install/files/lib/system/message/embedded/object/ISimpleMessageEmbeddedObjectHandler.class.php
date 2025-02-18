@@ -17,7 +17,7 @@ interface ISimpleMessageEmbeddedObjectHandler extends IMessageEmbeddedObjectHand
      * @param string $objectType object type identifier
      * @param int $objectID object id
      * @param int[] $values list of value ids
-     * @return      int[]       filtered list
+     * @return int[] filtered list
      */
     public function validateValues($objectType, $objectID, array $values);
 
@@ -28,8 +28,8 @@ interface ISimpleMessageEmbeddedObjectHandler extends IMessageEmbeddedObjectHand
      * @param string $objectType object type identifier
      * @param int $objectID object id
      * @param int $value value id
-     * @param array $attributes list of additional attributes
-     * @return      string|null     replacement string or null if value id is unknown
+     * @param array<string, string> $attributes list of additional attributes
+     * @return ?string replacement string or null if value id is unknown
      */
     public function replaceSimple($objectType, $objectID, $value, array $attributes);
 }

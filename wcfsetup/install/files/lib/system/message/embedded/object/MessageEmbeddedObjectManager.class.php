@@ -2,6 +2,7 @@
 
 namespace wcf\system\message\embedded\object;
 
+use wcf\data\DatabaseObject;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\exception\InvalidObjectTypeException;
@@ -20,13 +21,13 @@ class MessageEmbeddedObjectManager extends SingletonFactory
 {
     /**
      * caches message to embedded object assignments
-     * @var array
+     * @var array<int, array<int, array<int, int[]>>>
      */
     protected $messageEmbeddedObjects = [];
 
     /**
      * caches embedded objects
-     * @var array
+     * @var array<int, array<int, DatabaseObject>>
      */
     protected $embeddedObjects = [];
 
@@ -50,7 +51,7 @@ class MessageEmbeddedObjectManager extends SingletonFactory
 
     /**
      * list of embedded object handlers
-     * @var array
+     * @var array<int, IMessageEmbeddedObjectHandler>
      */
     protected $embeddedObjectHandlers;
 
@@ -62,7 +63,10 @@ class MessageEmbeddedObjectManager extends SingletonFactory
 
     /**
      * local cache for bulk operations
-     * @var mixed[][]
+     * @var array{
+     *  insert: list<array{0: int, 1: int, 2: int, 3: int}>,
+     *  remove: array<string, int[]>,
+     * }
      */
     protected $bulkData = [
         'insert' => [],
@@ -72,6 +76,12 @@ class MessageEmbeddedObjectManager extends SingletonFactory
     /**
      * A list of previous active message settings used to restore
      * the internal state in case of nested message processing.
+     *
+     * @var list<array{
+     *  activeMessageID: int,
+     *  activeMessageLanguageID: int,
+     *  activeMessageObjectTypeID: int,
+     * }>
      */
     protected $activeMessageHistory = [];
 
@@ -143,6 +153,8 @@ class MessageEmbeddedObjectManager extends SingletonFactory
     /**
      * Commits the bulk operation by performing all deletes and inserts
      * in one big transaction to save performance.
+     *
+     * @return void
      */
     public function commitBulkOperation()
     {
@@ -215,6 +227,7 @@ class MessageEmbeddedObjectManager extends SingletonFactory
      *
      * @param string $messageObjectType
      * @param int[] $messageIDs
+     * @return void
      */
     public function removeObjects($messageObjectType, array $messageIDs)
     {
@@ -237,6 +250,7 @@ class MessageEmbeddedObjectManager extends SingletonFactory
      * @param string $messageObjectType
      * @param int[] $messageIDs
      * @param int $contentLanguageID
+     * @return void
      * @throws  InvalidObjectTypeException
      */
     public function loadObjects($messageObjectType, array $messageIDs, $contentLanguageID = null)
@@ -305,6 +319,7 @@ class MessageEmbeddedObjectManager extends SingletonFactory
      * @param string $messageObjectType
      * @param int $messageID
      * @param int $languageID
+     * @return void
      */
     public function setActiveMessage($messageObjectType, $messageID, $languageID = null)
     {
@@ -324,6 +339,8 @@ class MessageEmbeddedObjectManager extends SingletonFactory
 
     /**
      * Restores the internal state in case of nested message processing.
+     *
+     * @return void
      */
     public function reset()
     {
@@ -375,7 +392,7 @@ class MessageEmbeddedObjectManager extends SingletonFactory
      * Returns all embedded objects of a specific type in the active message.
      *
      * @param string $embeddedObjectType
-     * @return  array
+     * @return list<DatabaseObject>
      */
     public function getObjects($embeddedObjectType)
     {
@@ -396,6 +413,7 @@ class MessageEmbeddedObjectManager extends SingletonFactory
     /**
      * Returns all embedded objects in a specific message.
      *
+     * @return list<DatabaseObject>
      * @since 6.2
      */
     public function getObjectsForMessage(string $messageObjectType, int $messageID): array
@@ -422,7 +440,7 @@ class MessageEmbeddedObjectManager extends SingletonFactory
      *
      * @param string $embeddedObjectType
      * @param int $objectID
-     * @return  \wcf\data\DatabaseObject|null
+     * @return ?DatabaseObject
      */
     public function getObject($embeddedObjectType, $objectID)
     {
@@ -456,6 +474,7 @@ class MessageEmbeddedObjectManager extends SingletonFactory
      * Temporarily registers a message, the parsed data will not be stored.
      *
      * @param HtmlInputProcessor $htmlInputProcessor html input processor
+     * @return void
      */
     public function registerTemporaryMessage(HtmlInputProcessor $htmlInputProcessor)
     {
@@ -467,7 +486,6 @@ class MessageEmbeddedObjectManager extends SingletonFactory
 
         $embeddedData = $htmlInputProcessor->getEmbeddedContent();
 
-        /** @var IMessageEmbeddedObjectHandler $handler */
         foreach ($this->getEmbeddedObjectHandlers() as $handler) {
             $objectIDs = $handler->parse($htmlInputProcessor, $embeddedData);
 

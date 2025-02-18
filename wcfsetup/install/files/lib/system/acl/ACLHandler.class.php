@@ -22,6 +22,11 @@ use wcf\util\JSON;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @phpstan-type Permissions array{
+ *  options: ACLOptionList,
+ *  group: array<int, array<int, array<int, int>>>,
+ *  user: array<int, array<int, array<int, int>>>,
+ * }
  */
 class ACLHandler extends SingletonFactory
 {
@@ -303,7 +308,7 @@ class ACLHandler extends SingletonFactory
      * @param array $objectIDs
      * @param ?string $categoryName
      * @param bool $settingsView
-     * @return  array
+     * @return Permissions
      */
     public function getPermissions($objectTypeID, array $objectIDs, $categoryName = '', $settingsView = false)
     {
@@ -361,9 +366,10 @@ class ACLHandler extends SingletonFactory
      *
      * @param ACLOptionList $optionList
      * @param string $type
-     * @param array $objectIDs
-     * @param array $data
+     * @param int[] $objectIDs
+     * @param mixed[] $data
      * @param bool $settingsView
+     * @param-out Permissions $data
      */
     protected function getValues(ACLOptionList $optionList, $type, array $objectIDs, array &$data, $settingsView)
     {
