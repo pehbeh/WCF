@@ -22,6 +22,9 @@ use wcf\util\StringUtil;
  */
 abstract class ObjectLinkColumnRenderer extends DefaultColumnRenderer implements ILinkColumnRenderer
 {
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function __construct(
         private readonly string $controllerClass = '',
         private readonly array $parameters = [],

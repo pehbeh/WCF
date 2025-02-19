@@ -3,7 +3,6 @@
 namespace wcf\system\gridView\renderer;
 
 use wcf\data\DatabaseObject;
-use wcf\util\StringUtil;
 
 /**
  * The default column renderer is automatically applied to all columns if no other renderers have been set.

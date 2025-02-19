@@ -78,6 +78,9 @@ final class ModificationLogGridView extends AbstractGridView
                 ])
                 ->filter(
                     new class($this->getAvailableActions()) implements IGridViewFilter {
+                        /**
+                         * @param array<string|int, string> $options
+                         */
                         public function __construct(private readonly array $options) {}
 
                         #[\Override]
@@ -166,6 +169,9 @@ final class ModificationLogGridView extends AbstractGridView
         return new ModificationLogList();
     }
 
+    /**
+     * @return IViewableModificationLog[]
+     */
     #[\Override]
     public function getRows(): array
     {
@@ -213,6 +219,9 @@ final class ModificationLogGridView extends AbstractGridView
         return new ModificationLogGridViewInitialized($this);
     }
 
+    /**
+     * @return array<string, string>
+     */
     private function getAvailableActions(): array
     {
         $packages = $actions = $availableActions = [];

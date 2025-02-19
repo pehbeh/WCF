@@ -46,6 +46,9 @@ final class CronjobLogGridView extends AbstractGridView
                 ->filter(new SelectFilter($availableCronjobs))
                 ->renderer([
                     new class($availableCronjobs) extends DefaultColumnRenderer {
+                        /**
+                         * @param array<int, string> $availableCronjobs
+                         */
                         public function __construct(private readonly array $availableCronjobs) {}
 
                         public function render(mixed $value, DatabaseObject $row): string
@@ -108,6 +111,9 @@ final class CronjobLogGridView extends AbstractGridView
         return new CronjobLogGridViewInitialized($this);
     }
 
+    /**
+     * @return array<int, string>
+     */
     private function getAvailableCronjobs(): array
     {
         $list = new I18nCronjobList();

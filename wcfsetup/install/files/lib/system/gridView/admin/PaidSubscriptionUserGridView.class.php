@@ -74,6 +74,9 @@ final class PaidSubscriptionUserGridView extends AbstractGridView
         $this->setSortField("userID");
     }
 
+    /**
+     * @return array<int, string>
+     */
     private function getAvailableSubscriptions(): array
     {
         $subscriptions = [];

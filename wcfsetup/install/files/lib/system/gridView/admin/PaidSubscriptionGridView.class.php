@@ -122,6 +122,9 @@ final class PaidSubscriptionGridView extends AbstractGridView
         $this->addRowLink(new GridViewRowLink(PaidSubscriptionEditForm::class));
     }
 
+    /**
+     * @return string[]
+     */
     private function getAvailableCurrencies(): array
     {
         $availableCurrencies = [];

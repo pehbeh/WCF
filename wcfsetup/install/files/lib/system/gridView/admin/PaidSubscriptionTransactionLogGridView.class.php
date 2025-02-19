@@ -120,6 +120,9 @@ final class PaidSubscriptionTransactionLogGridView extends AbstractGridView
         $this->setSortOrder("DESC");
     }
 
+    /**
+     * @return array<int, string>
+     */
     private function getAvailablePaymentMethods(): array
     {
         $paymentMethods = [];
@@ -130,6 +133,9 @@ final class PaidSubscriptionTransactionLogGridView extends AbstractGridView
         return $paymentMethods;
     }
 
+    /**
+     * @return array<int, string>
+     */
     private function getAvailableSubscriptions(): array
     {
         $subscriptions = [];

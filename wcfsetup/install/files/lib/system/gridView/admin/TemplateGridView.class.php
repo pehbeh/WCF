@@ -88,6 +88,9 @@ final class TemplateGridView extends AbstractGridView
         }
     }
 
+    /**
+     * @return array<string, Package>
+     */
     private function getApplications(): array
     {
         $applications = ApplicationHandler::getInstance()->getApplications();
@@ -146,6 +149,9 @@ final class TemplateGridView extends AbstractGridView
                 return $templateGroup->getTitle();
             }
 
+            /**
+             * @return list<array{depth: int, value: int, label: string}>
+             */
             private function getSelectOptions(): array
             {
                 $options = [

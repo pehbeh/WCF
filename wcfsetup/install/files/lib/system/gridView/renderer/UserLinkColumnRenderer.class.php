@@ -17,6 +17,9 @@ use wcf\util\StringUtil;
  */
 class UserLinkColumnRenderer extends ObjectLinkColumnRenderer
 {
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function __construct(
         string $controllerClass = '',
         array $parameters = [],

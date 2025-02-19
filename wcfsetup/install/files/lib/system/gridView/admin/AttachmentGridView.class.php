@@ -147,6 +147,9 @@ final class AttachmentGridView extends AbstractGridView
         $this->setSortField('uploadTime');
     }
 
+    /**
+     * @return array<string, string>
+     */
     private function getAvailableFileTypes(): array
     {
         $sql = "SELECT    DISTINCT file_table.mimeType

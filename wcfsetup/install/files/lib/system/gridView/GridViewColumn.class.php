@@ -86,6 +86,8 @@ final class GridViewColumn
 
     /**
      * Sets the renderer of this column.
+     *
+     * @param IColumnRenderer[]|IColumnRenderer $renderers
      */
     public function renderer(array|IColumnRenderer $renderers): static
     {
@@ -94,7 +96,6 @@ final class GridViewColumn
         }
 
         foreach ($renderers as $renderer) {
-            \assert($renderer instanceof IColumnRenderer);
             $this->renderer[] = $renderer;
         }
 

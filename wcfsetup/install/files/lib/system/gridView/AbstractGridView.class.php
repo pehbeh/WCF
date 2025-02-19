@@ -49,6 +49,9 @@ abstract class AbstractGridView
     private string $sortField = '';
     private string $sortOrder = 'ASC';
     private int $pageNo = 1;
+    /**
+     * @var array<string, string|int>
+     */
     private array $activeFilters = [];
     private string|int|null $objectIDFilter = null;
     private ?IInteractionProvider $interactionProvider = null;
@@ -111,6 +114,7 @@ abstract class AbstractGridView
 
     /**
      * Adds multiple new columns to the grid view.
+     *
      * @param GridViewColumn[] $columns
      */
     public function addColumns(array $columns): void
@@ -122,6 +126,7 @@ abstract class AbstractGridView
 
     /**
      * Returns all columns of the grid view.
+     *
      * @return GridViewColumn[]
      */
     public function getColumns(): array
@@ -131,6 +136,7 @@ abstract class AbstractGridView
 
     /**
      * Returns all visible (non-hidden) columns of the grid view.
+     *
      * @return GridViewColumn[]
      */
     public function getVisibleColumns(): array
@@ -154,6 +160,7 @@ abstract class AbstractGridView
 
     /**
      * Returns all columns that are sortable.
+     *
      * @return GridViewColumn[]
      */
     public function getSortableColumns(): array
@@ -163,6 +170,7 @@ abstract class AbstractGridView
 
     /**
      * Returns all columns that are filterable.
+     *
      * @return GridViewColumn[]
      */
     public function getFilterableColumns(): array
@@ -238,6 +246,7 @@ abstract class AbstractGridView
 
     /**
      * Returns the quick interactions.
+     *
      * @return IInteraction[]
      */
     public function getQuickInteractions(): array
@@ -517,6 +526,8 @@ abstract class AbstractGridView
 
     /**
      * Sets the active filter values.
+     *
+     * @param array<string, string|int> $filters
      */
     public function setActiveFilters(array $filters): void
     {
@@ -525,6 +536,8 @@ abstract class AbstractGridView
 
     /**
      * Returns the active filter values.
+     *
+     * @return array<string, string|int>
      */
     public function getActiveFilters(): array
     {
@@ -556,6 +569,8 @@ abstract class AbstractGridView
 
     /**
      * Gets the additional parameters of the grid view.
+     *
+     * @return mixed[]
      */
     public function getParameters(): array
     {
@@ -653,6 +668,8 @@ abstract class AbstractGridView
 
     /**
      * Returns the rows for the active page.
+     *
+     * @return DatabaseObject[]
      */
     public function getRows(): array
     {

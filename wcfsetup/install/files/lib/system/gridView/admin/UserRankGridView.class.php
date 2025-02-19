@@ -136,6 +136,9 @@ final class UserRankGridView extends AbstractGridView
         return new UserRankGridViewInitialized($this);
     }
 
+    /**
+     * @return array<int, string>
+     */
     private function getAvailableUserGroups(): array
     {
         $groups = [];

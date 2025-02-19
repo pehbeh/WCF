@@ -174,6 +174,9 @@ final class LanguageItemGridView extends AbstractGridView
         return new LanguageItemGridViewInitialized($this);
     }
 
+    /**
+     * @return array<int, string>
+     */
     private function getAvailableCategories(): array
     {
         $list = new LanguageCategoryList();
