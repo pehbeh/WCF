@@ -181,7 +181,7 @@ class HtmlInputNodeProcessor extends AbstractHtmlNodeProcessor
 
     /**
      * list of embedded content grouped by type
-     * @var array
+     * @var array<string, mixed[]>
      */
     protected $embeddedContent = [];
 
@@ -277,6 +277,7 @@ class HtmlInputNodeProcessor extends AbstractHtmlNodeProcessor
      * Enforces the maximum depth of nested quotes.
      *
      * @param int $depth
+     * @return void
      */
     public function enforceQuoteDepth($depth, bool $isFullQuote = false)
     {
@@ -336,6 +337,8 @@ class HtmlInputNodeProcessor extends AbstractHtmlNodeProcessor
     /**
      * Fixes malformed HTML with metacode markers and text being placed
      * outside of paragraphs.
+     *
+     * @return void
      */
     protected function fixDom()
     {
@@ -404,6 +407,8 @@ class HtmlInputNodeProcessor extends AbstractHtmlNodeProcessor
      * It is still possible to work around this by inserting useless text formats such
      * as bold to circumvent this check. The point of this method is to remove unintentional
      * and/or potentially unwanted whitespace, not guarding against people being jerks.
+     *
+     * @return void
      */
     protected function trim()
     {
@@ -567,7 +572,7 @@ class HtmlInputNodeProcessor extends AbstractHtmlNodeProcessor
     /**
      * Checks the input html for disallowed bbcodes and returns any matches.
      *
-     * @return      string[]        list of matched disallowed bbcodes
+     * @return string[] list of matched disallowed bbcodes
      */
     public function validate()
     {
@@ -630,7 +635,7 @@ class HtmlInputNodeProcessor extends AbstractHtmlNodeProcessor
     /**
      * Returns the raw text content of current document.
      *
-     * @return      string          raw text content
+     * @return string raw text content
      */
     public function getTextContent()
     {
@@ -660,7 +665,7 @@ class HtmlInputNodeProcessor extends AbstractHtmlNodeProcessor
     /**
      * Returns true if the message appears to be empty.
      *
-     * @return      bool         true if message appears to be empty
+     * @return bool true if message appears to be empty
      */
     public function appearsToBeEmpty()
     {
@@ -683,6 +688,8 @@ class HtmlInputNodeProcessor extends AbstractHtmlNodeProcessor
 
     /**
      * Processes embedded content.
+     *
+     * @return void
      */
     public function processEmbeddedContent()
     {
@@ -694,7 +701,7 @@ class HtmlInputNodeProcessor extends AbstractHtmlNodeProcessor
     /**
      * Returns the embedded content grouped by type.
      *
-     * @return      array
+     * @return mixed[]
      */
     public function getEmbeddedContent()
     {
@@ -705,7 +712,8 @@ class HtmlInputNodeProcessor extends AbstractHtmlNodeProcessor
      * Add embedded content for provided type.
      *
      * @param string $type type name
-     * @param array $data embedded content
+     * @param mixed[] $data embedded content
+     * @return void
      */
     public function addEmbeddedContent($type, array $data)
     {
@@ -718,6 +726,8 @@ class HtmlInputNodeProcessor extends AbstractHtmlNodeProcessor
 
     /**
      * Parses embedded content contained in metacode elements.
+     *
+     * @return void
      */
     protected function parseEmbeddedContent()
     {
@@ -764,6 +774,7 @@ class HtmlInputNodeProcessor extends AbstractHtmlNodeProcessor
      * those that are the only content in their line, are offered separately.
      *
      * @since 5.2
+     * @return void
      */
     protected function convertPlainLinks()
     {

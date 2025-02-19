@@ -27,7 +27,7 @@ interface ISimpleMessageEmbeddedObjectHandler extends IMessageEmbeddedObjectHand
      *
      * @param string $objectType object type identifier
      * @param int $objectID object id
-     * @param int $value value id
+     * @param string|int $value value id
      * @param array<string, string> $attributes list of additional attributes
      * @return ?string replacement string or null if value id is unknown
      */

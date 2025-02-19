@@ -370,7 +370,8 @@ final class SessionHandler extends SingletonFactory
     public function initSession(): void
     {
         // assign language
-        $this->languageID = $this->getVar('languageID') ?: $this->user->languageID;
+        $languageID = $this->getVar('languageID') ?: $this->user->languageID;
+        $this->languageID = $languageID ?: 0;
 
         // https://github.com/WoltLab/WCF/issues/2568
         if ($this->getVar('__wcfIsFirstVisit') === true) {
@@ -911,7 +912,7 @@ final class SessionHandler extends SingletonFactory
 
         // reset caches
         $this->groupData = null;
-        $this->languageID = $this->user->languageID;
+        $this->languageID = $this->user->languageID ?: 0;
 
         // change language
         WCF::setLanguage($this->languageID ?: 0);

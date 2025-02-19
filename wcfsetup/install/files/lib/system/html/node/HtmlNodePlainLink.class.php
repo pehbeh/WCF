@@ -2,6 +2,7 @@
 
 namespace wcf\system\html\node;
 
+use RuntimeException;
 use wcf\data\bbcode\BBCode;
 use wcf\data\ITitledObject;
 use wcf\system\Regex;
@@ -140,6 +141,7 @@ class HtmlNodePlainLink
      * Replaces the text content of the link with the object's title.
      *
      * @param ITitledObject $object
+     * @return void
      */
     public function setTitle(ITitledObject $object)
     {
@@ -154,7 +156,8 @@ class HtmlNodePlainLink
      * available for standalone links only.
      *
      * @param BBCode $bbcode
-     * @param int|null $overrideObjectID
+     * @param ?int $overrideObjectID
+     * @return void
      */
     public function replaceWithBBCode(BBCode $bbcode, $overrideObjectID = null)
     {
@@ -193,6 +196,9 @@ class HtmlNodePlainLink
         DOMUtil::replaceElement($this->link, $metacodeElement, false);
     }
 
+    /**
+     * @return void
+     */
     protected function markAsTainted()
     {
         if (!$this->pristine) {
@@ -242,6 +248,7 @@ class HtmlNodePlainLink
 
         if ($next !== null) {
             $ancestor = $topLevelParent->parentNode;
+            \assert($parent instanceof \DOMNode);
             \assert($ancestor instanceof \DOMElement);
             $replaceNode = DOMUtil::splitParentsUntil(
                 $parent,
@@ -251,6 +258,7 @@ class HtmlNodePlainLink
         }
         if ($previous !== null) {
             $ancestor = $topLevelParent->parentNode;
+            \assert($parent instanceof \DOMNode);
             \assert($ancestor instanceof \DOMElement);
             $replaceNode = DOMUtil::splitParentsUntil(
                 $parent,

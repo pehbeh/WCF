@@ -84,6 +84,9 @@ class UserGroupImporter extends AbstractImporter
         return $newGroupID;
     }
 
+    /**
+     * @return UserGroupOptionHandler
+     */
     protected function getOptionHandler()
     {
         $optionHandler = new UserGroupOptionHandler(false, '', '');

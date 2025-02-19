@@ -21,7 +21,7 @@ class HtmlInputProcessor extends AbstractHtmlProcessor
 {
     /**
      * list of embedded content grouped by type
-     * @var array
+     * @var array<string, mixed[]>
      */
     protected $embeddedContent = [];
 
@@ -48,6 +48,7 @@ class HtmlInputProcessor extends AbstractHtmlProcessor
      * @param string $objectType object type identifier
      * @param int $objectID object id
      * @param bool $convertFromBBCode interpret input as bbcode
+     * @return void
      */
     public function process($html, $objectType, $objectID = 0, $convertFromBBCode = false)
     {
@@ -80,6 +81,7 @@ class HtmlInputProcessor extends AbstractHtmlProcessor
      * to deal with HTML that has not been filtered previously.
      *
      * @param string $html html string
+     * @return void
      */
     public function processIntermediate($html)
     {
@@ -93,7 +95,8 @@ class HtmlInputProcessor extends AbstractHtmlProcessor
      * @param string $html html string
      * @param string $objectType object type identifier
      * @param int $objectID object id
-     * @since       3.1
+     * @return void
+     * @since 3.1
      */
     public function reprocess($html, $objectType, $objectID)
     {
@@ -150,7 +153,8 @@ class HtmlInputProcessor extends AbstractHtmlProcessor
      * @param string $html html string
      * @param string $objectType object type identifier
      * @param int $objectID object id
-     * @throws      \UnexpectedValueException
+     * @return void
+     * @throws \UnexpectedValueException
      */
     public function processEmbeddedContent($html, $objectType, $objectID)
     {
@@ -168,7 +172,7 @@ class HtmlInputProcessor extends AbstractHtmlProcessor
     /**
      * Checks the input html for disallowed bbcodes and returns any matches.
      *
-     * @return      string[]        list of matched disallowed bbcodes
+     * @return string[] list of matched disallowed bbcodes
      */
     public function validate()
     {
@@ -179,6 +183,7 @@ class HtmlInputProcessor extends AbstractHtmlProcessor
      * Enforces the maximum depth of nested quotes.
      *
      * @param int $depth
+     * @return void
      */
     public function enforceQuoteDepth($depth, bool $isFullQuote = false)
     {
@@ -188,7 +193,7 @@ class HtmlInputProcessor extends AbstractHtmlProcessor
     /**
      * Returns the parsed HTML ready to store.
      *
-     * @return      string  parsed html
+     * @return string parsed html
      */
     public function getHtml()
     {
@@ -198,7 +203,7 @@ class HtmlInputProcessor extends AbstractHtmlProcessor
     /**
      * Returns the raw text content of current document.
      *
-     * @return      string          raw text content
+     * @return string raw text content
      */
     public function getTextContent()
     {
@@ -208,7 +213,7 @@ class HtmlInputProcessor extends AbstractHtmlProcessor
     /**
      * Returns true if the message appears to be empty.
      *
-     * @return      bool         true if message appears to be empty
+     * @return bool true if message appears to be empty
      */
     public function appearsToBeEmpty()
     {
@@ -218,7 +223,7 @@ class HtmlInputProcessor extends AbstractHtmlProcessor
     /**
      * Returns the all embedded content data.
      *
-     * @return array
+     * @return array<string, mixed[]>
      */
     public function getEmbeddedContent()
     {
@@ -241,6 +246,7 @@ class HtmlInputProcessor extends AbstractHtmlProcessor
      * Sets the new object id.
      *
      * @param int $objectID object id
+     * @return void
      */
     public function setObjectID($objectID)
     {
@@ -249,6 +255,8 @@ class HtmlInputProcessor extends AbstractHtmlProcessor
 
     /**
      * Resets internal states and discards references to objects.
+     *
+     * @return void
      */
     protected function reset()
     {
@@ -257,7 +265,7 @@ class HtmlInputProcessor extends AbstractHtmlProcessor
     }
 
     /**
-     * @return  IHtmlInputFilter
+     * @return IHtmlInputFilter
      */
     protected function getHtmlInputFilter()
     {
@@ -272,7 +280,7 @@ class HtmlInputProcessor extends AbstractHtmlProcessor
      * Converts bbcodes using newlines into valid HTML.
      *
      * @param string $html html string
-     * @return      string          parsed html string
+     * @return string parsed html string
      */
     protected function convertToHtml($html)
     {

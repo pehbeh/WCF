@@ -69,6 +69,7 @@ class TableMetacodeConverter extends AbstractMetacodeConverter
      * Processes the rows of the table.
      *
      * @param \DOMElement $row
+     * @return void
      */
     protected function handleRow(\DOMElement $row)
     {

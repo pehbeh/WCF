@@ -98,6 +98,7 @@ class HtmlInputNodeImg extends AbstractHtmlInputNode
      *
      * @param \DOMElement $element
      * @param string $class
+     * @return void
      */
     protected function handleAttachment(\DOMElement $element, $class)
     {
@@ -255,6 +256,7 @@ class HtmlInputNodeImg extends AbstractHtmlInputNode
      * Replaces image element with smiley metacode element.
      *
      * @param \DOMElement $element
+     * @return void
      */
     protected function handleSmiley(\DOMElement $element)
     {

@@ -2,6 +2,7 @@
 
 namespace wcf\system\importer;
 
+use wcf\data\object\type\ObjectType;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\system\cache\CacheHandler;
 use wcf\system\database\exception\DatabaseException;
@@ -22,19 +23,19 @@ class ImportHandler extends SingletonFactory implements IAJAXInvokeAction
 {
     /**
      * id map cache
-     * @var array
+     * @var array<int, array<mixed, ?int>>
      */
     protected $idMappingCache = [];
 
     /**
      * list of available importers
-     * @var array
+     * @var array<string, ObjectType>
      */
     protected $objectTypes = [];
 
     /**
      * list of available importer processors
-     * @var array
+     * @var array<string, IImporter>
      */
     protected $importers = [];
 
@@ -68,8 +69,8 @@ class ImportHandler extends SingletonFactory implements IAJAXInvokeAction
      * Returns a data importer.
      *
      * @param string $type
-     * @return  IImporter
-     * @throws  SystemException
+     * @return IImporter
+     * @throws SystemException
      */
     public function getImporter($type)
     {
@@ -89,7 +90,7 @@ class ImportHandler extends SingletonFactory implements IAJAXInvokeAction
      *
      * @param string $type
      * @param mixed $oldID
-     * @return  int|null
+     * @return ?int
      */
     public function getNewID($type, $oldID)
     {
@@ -137,6 +138,7 @@ class ImportHandler extends SingletonFactory implements IAJAXInvokeAction
      * @param string $type
      * @param int $oldID
      * @param int $newID
+     * @return void
      */
     public function saveNewID($type, $oldID, $newID)
     {
@@ -167,6 +169,8 @@ class ImportHandler extends SingletonFactory implements IAJAXInvokeAction
 
     /**
      * Validates accessibility of resetMapping().
+     *
+     * @return void
      */
     public function validateResetMapping()
     {
@@ -179,6 +183,8 @@ class ImportHandler extends SingletonFactory implements IAJAXInvokeAction
 
     /**
      * Resets the mapping.
+     *
+     * @return void
      */
     public function resetMapping()
     {
@@ -193,6 +199,7 @@ class ImportHandler extends SingletonFactory implements IAJAXInvokeAction
      * Sets the user merge mode.
      *
      * @param int $mode
+     * @return void
      */
     public function setUserMergeMode($mode)
     {
@@ -202,7 +209,7 @@ class ImportHandler extends SingletonFactory implements IAJAXInvokeAction
     /**
      * Returns the user merge mode.
      *
-     * @return  int
+     * @return int
      */
     public function getUserMergeMode()
     {
@@ -213,6 +220,7 @@ class ImportHandler extends SingletonFactory implements IAJAXInvokeAction
      * Sets the import hash.
      *
      * @param string $hash
+     * @return void
      */
     public function setImportHash($hash)
     {

@@ -16,7 +16,7 @@ interface IMetacodeUpcast
      * Converts a known metacode into the HTML representation for use by CKEditor5.
      *
      * @param \DOMElement $element
-     * @param array $attributes list of attributes
+     * @param list<string> $attributes list of attributes
      */
     public function upcast(\DOMElement $element, array $attributes): void;
 
@@ -24,7 +24,7 @@ interface IMetacodeUpcast
      * Returns true if the given attributes are valid for this upcast.
      * If not, the metacode is converted to a text node with the bbcode output.
      *
-     * @param array $attributes
+     * @param list<string> $attributes
      * @return bool
      */
     public function hasValidAttributes(array $attributes): bool;
@@ -32,7 +32,7 @@ interface IMetacodeUpcast
     /**
      * Caches the object for the given attributes.
      *
-     * @param array $attributes
+     * @param list<string> $attributes
      */
     public function cacheObject(array $attributes): void;
 }

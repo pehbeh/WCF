@@ -27,7 +27,7 @@ class AbstractACLImporter extends AbstractImporter
 
     /**
      * available options
-     * @var array
+     * @var array<string, int>
      */
     protected $options = [];
 

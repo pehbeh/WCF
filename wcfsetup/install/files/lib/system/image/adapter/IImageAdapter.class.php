@@ -8,14 +8,16 @@ namespace wcf\system\image\adapter;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @template T of object
  */
 interface IImageAdapter
 {
     /**
      * Loads an image resource.
      *
-     * @param mixed $image
+     * @param T $image
      * @param int $type
+     * @return void
      */
     public function load($image, $type = 0);
 
@@ -23,6 +25,7 @@ interface IImageAdapter
      * Loads an image from file.
      *
      * @param string $file
+     * @return void
      */
     public function loadFile($file);
 
@@ -31,6 +34,7 @@ interface IImageAdapter
      *
      * @param int $width
      * @param int $height
+     * @return void
      */
     public function createEmptyImage($width, $height);
 
@@ -40,7 +44,7 @@ interface IImageAdapter
      * @param int $maxWidth
      * @param int $maxHeight
      * @param bool $preserveAspectRatio
-     * @return  mixed
+     * @return mixed
      */
     public function createThumbnail($maxWidth, $maxHeight, $preserveAspectRatio = true);
 
@@ -51,7 +55,8 @@ interface IImageAdapter
      * @param int $originY
      * @param int $width
      * @param int $height
-     * @see     \wcf\system\image\adapter\IImageAdapter::getImage()
+     * @return void
+     * @see \wcf\system\image\adapter\IImageAdapter::getImage()
      */
     public function clip($originX, $originY, $width, $height);
 
@@ -64,7 +69,8 @@ interface IImageAdapter
      * @param int $originHeight
      * @param int $targetWidth
      * @param int $targetHeight
-     * @see     \wcf\system\image\adapter\IImageAdapter::getImage()
+     * @return void
+     * @see \wcf\system\image\adapter\IImageAdapter::getImage()
      */
     public function resize($originX, $originY, $originWidth, $originHeight, $targetWidth, $targetHeight);
 
@@ -75,8 +81,9 @@ interface IImageAdapter
      * @param int $startY
      * @param int $endX
      * @param int $endY
-     * @see     \wcf\system\image\adapter\IImageAdapter::getImage()
-     * @see     \wcf\system\image\adapter\IImageAdapter::setColor()
+     * @return void
+     * @see \wcf\system\image\adapter\IImageAdapter::getImage()
+     * @see \wcf\system\image\adapter\IImageAdapter::setColor()
      */
     public function drawRectangle($startX, $startY, $endX, $endY);
 
@@ -89,8 +96,9 @@ interface IImageAdapter
      * @param string $font path to TrueType font file
      * @param int $size font size
      * @param float $opacity
-     * @see     \wcf\system\image\adapter\IImageAdapter::getImage()
-     * @see     \wcf\system\image\adapter\IImageAdapter::setColor()
+     * @return void
+     * @see \wcf\system\image\adapter\IImageAdapter::getImage()
+     * @see \wcf\system\image\adapter\IImageAdapter::setColor()
      */
     public function drawText($text, $x, $y, $font, $size, $opacity = 1.0);
 
@@ -106,6 +114,7 @@ interface IImageAdapter
      * @param string $font path to TrueType font file
      * @param int $size font size
      * @param float $opacity
+     * @return void
      */
     public function drawTextRelative($text, $position, $margin, $offsetX, $offsetY, $font, $size, $opacity = 1.0);
 
@@ -116,8 +125,7 @@ interface IImageAdapter
      * @param int $margin
      * @param string $font path to TrueType font file
      * @param int $size font size
-     * @return  int
-     * @return  bool
+     * @return bool
      */
     public function textFitsImage($text, $margin, $font, $size);
 
@@ -129,7 +137,7 @@ interface IImageAdapter
      * @param int $margin
      * @param string $font path to TrueType font file
      * @param int $size font size
-     * @return  int
+     * @return int
      */
     public function adjustFontSize($text, $margin, $font, $size);
 
@@ -139,13 +147,14 @@ interface IImageAdapter
      * @param int $red
      * @param int $green
      * @param int $blue
+     * @return void
      */
     public function setColor($red, $green, $blue);
 
     /**
      * Returns true if a color has been set.
      *
-     * @return  bool
+     * @return bool
      */
     public function hasColor();
 
@@ -155,42 +164,44 @@ interface IImageAdapter
      * @param int $red
      * @param int $green
      * @param int $blue
+     * @return void
      */
     public function setTransparentColor($red, $green, $blue);
 
     /**
      * Writes an image to disk.
      *
-     * @param mixed $image
+     * @param T $image
      * @param string $filename
+     * @return void
      */
     public function writeImage($image, $filename);
 
     /**
      * Returns image resource.
      *
-     * @return  mixed
+     * @return mixed
      */
     public function getImage();
 
     /**
      * Returns image width.
      *
-     * @return  int
+     * @return int
      */
     public function getWidth();
 
     /**
      * Returns image height
      *
-     * @return  int
+     * @return int
      */
     public function getHeight();
 
     /**
      * Returns the image type (GD only)
      *
-     * @return  int
+     * @return int
      */
     public function getType();
 
@@ -209,6 +220,7 @@ interface IImageAdapter
      * @param int $x
      * @param int $y
      * @param float $opacity
+     * @return void
      */
     public function overlayImage($file, $x, $y, $opacity);
 
@@ -219,12 +231,14 @@ interface IImageAdapter
      * @param string $position
      * @param int $margin
      * @param float $opacity
+     * @return void
      */
     public function overlayImageRelative($file, $position, $margin, $opacity);
 
     /**
      * Saves an image using a different file type.
      *
+     * @param T $image
      * @since 5.4
      */
     public function saveImageAs($image, string $filename, string $type, int $quality = 100): void;
@@ -232,7 +246,7 @@ interface IImageAdapter
     /**
      * Determines if an image adapter is supported.
      *
-     * @return  bool
+     * @return bool
      */
     public static function isSupported();
 }

@@ -10,6 +10,8 @@ namespace wcf\system\image\adapter;
  * @copyright 2001-2021 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 5.4
+ * @template T of object
+ * @extends IImageAdapter<T>
  */
 interface IWebpImageAdapter extends IImageAdapter
 {

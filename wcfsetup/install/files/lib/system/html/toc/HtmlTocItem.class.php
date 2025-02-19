@@ -9,18 +9,33 @@ namespace wcf\system\html\toc;
  * @copyright   2001-2019 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       5.2
+ * @implements \RecursiveIterator<int, self>
  */
 class HtmlTocItem implements \Countable, \RecursiveIterator
 {
-    /** @var HtmlTocItem[] */
+    /**
+     * @var HtmlTocItem[]
+     */
     protected $children = [];
 
+    /**
+     * @var string
+     */
     protected $id = '';
 
+    /**
+     * @var int
+     */
     protected $level = 0;
 
+    /**
+     * @var string
+     */
     protected $title = '';
 
+    /**
+     * @var int
+     */
     protected $depth = 0;
 
     /**
@@ -29,9 +44,16 @@ class HtmlTocItem implements \Countable, \RecursiveIterator
      */
     private $position = 0;
 
-    /** @var HtmlTocItem */
+    /**
+     * @var ?HtmlTocItem
+     */
     private $parent;
 
+    /**
+     * @param int $level
+     * @param string $id
+     * @param string $title
+     */
     public function __construct($level, $id, $title)
     {
         $this->level = $level;
@@ -39,11 +61,17 @@ class HtmlTocItem implements \Countable, \RecursiveIterator
         $this->title = $title;
     }
 
+    /**
+     * @return string
+     */
     public function getID()
     {
         return $this->id;
     }
 
+    /**
+     * @return int
+     */
     public function getLevel()
     {
         return $this->level;
@@ -62,25 +90,36 @@ class HtmlTocItem implements \Countable, \RecursiveIterator
         }, $this->title);
     }
 
+    /**
+     * @param HtmlTocItem $parent
+     * @return void
+     */
     public function setParent($parent)
     {
         $this->parent = $parent;
     }
 
     /**
-     * @return HtmlTocItem|null
+     * @return ?HtmlTocItem
      */
     public function getParent()
     {
         return $this->parent;
     }
 
+    /**
+     * @return void
+     */
     public function addChild(self $child)
     {
         $this->children[] = $child;
         $child->setParent($this);
     }
 
+    /**
+     * @param int $depth
+     * @return void
+     */
     public function setDepth($depth)
     {
         $this->depth = $depth;
@@ -170,7 +209,7 @@ class HtmlTocItem implements \Countable, \RecursiveIterator
     }
 
     /**
-     * @inheritDoc
+     * @return \RecursiveIterator<int, self>
      */
     public function getChildren(): \RecursiveIterator
     {
@@ -185,6 +224,9 @@ class HtmlTocItem implements \Countable, \RecursiveIterator
         return \count($this->children) > 0;
     }
 
+    /**
+     * @return \RecursiveIteratorIterator<$this>
+     */
     public function getIterator()
     {
         return new \RecursiveIteratorIterator($this, \RecursiveIteratorIterator::SELF_FIRST);

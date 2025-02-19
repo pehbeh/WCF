@@ -12,12 +12,13 @@ use wcf\system\exception\InvalidObjectTypeException;
  * @copyright   2001-2019 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       3.0
+ * @phpstan-type Context array{objectType: string, objectTypeID: int, objectID: int}
  */
 abstract class AbstractHtmlProcessor implements IHtmlProcessor
 {
     /**
      * message context data
-     * @var array
+     * @var Context
      */
     protected $context = [
         'objectType' => '',
@@ -30,7 +31,8 @@ abstract class AbstractHtmlProcessor implements IHtmlProcessor
      *
      * @param string $objectType object type identifier
      * @param int $objectID object id
-     * @throws      InvalidObjectTypeException
+     * @return void
+     * @throws InvalidObjectTypeException
      */
     public function setContext($objectType, $objectID)
     {
@@ -49,7 +51,7 @@ abstract class AbstractHtmlProcessor implements IHtmlProcessor
     /**
      * Returns the message context data.
      *
-     * @return      array           message context data
+     * @return Context message context data
      */
     public function getContext()
     {
