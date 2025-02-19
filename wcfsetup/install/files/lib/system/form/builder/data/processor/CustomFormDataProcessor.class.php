@@ -36,8 +36,8 @@ final class CustomFormDataProcessor extends AbstractFormDataProcessor
      * Initializes a new CustomFormFieldDataProcessor object.
      *
      * @param $id processor id primarily used for error messages, does not have to be unique
-     * @param callable(IFormDocument,array):array $formDataProcessor form data processor callable
-     * @param callable(IFormDocument,array,IStorableObject):array $objectDataProcessor object data processor callable
+     * @param callable(IFormDocument,mixed[]):mixed[] $formDataProcessor form data processor callable
+     * @param callable(IFormDocument,mixed[],IStorableObject):mixed[] $objectDataProcessor object data processor callable
      *
      * @throws  \InvalidArgumentException       if either id or processor callable are invalid
      */

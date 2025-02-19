@@ -32,7 +32,7 @@ class TemplateFormNode implements IFormChildNode
 
     /**
      * template variables passed to the template
-     * @var array
+     * @var array<string, mixed>
      */
     protected $variables = [];
 
@@ -41,9 +41,9 @@ class TemplateFormNode implements IFormChildNode
      * form node.
      *
      * @param string $application application abbreviation
-     * @return  static              this form node
+     * @return static this form node
      *
-     * @throws  \InvalidArgumentException   if no application with the given abbreviation exists
+     * @throws \InvalidArgumentException if no application with the given abbreviation exists
      */
     public function application($application)
     {
@@ -63,7 +63,7 @@ class TemplateFormNode implements IFormChildNode
      *
      * If no application has been set, `wcf` will be set and return.
      *
-     * @return  string      application abbreviation
+     * @return string application abbreviation
      */
     public function getApplication()
     {
@@ -89,9 +89,9 @@ class TemplateFormNode implements IFormChildNode
     /**
      * Returns the name of the template with the contents of the form node.
      *
-     * @return  string              name of template with form node contents
+     * @return string name of template with form node contents
      *
-     * @throws  \BadMethodCallException     if template name has not been set yet
+     * @throws \BadMethodCallException if template name has not been set yet
      */
     public function getTemplateName()
     {
@@ -107,7 +107,7 @@ class TemplateFormNode implements IFormChildNode
     /**
      * Returns the template variables passed to the template.
      *
-     * @return  array           template variables passed to template
+     * @return array<string, mixed> template variables passed to template
      */
     public function getVariables()
     {
@@ -118,7 +118,7 @@ class TemplateFormNode implements IFormChildNode
      * Sets the name of the template with the contents of the form node and returns this form node.
      *
      * @param string $templateName name of template with form node contents
-     * @return  static              this form node
+     * @return static this form node
      */
     public function templateName($templateName)
     {
@@ -138,8 +138,8 @@ class TemplateFormNode implements IFormChildNode
     /**
      * Sets the template variables passed to the template and returns this form node.
      *
-     * @param array $variables template variables passed to template
-     * @return  static          this form node
+     * @param array<string, mixed> $variables template variables passed to template
+     * @return static this form node
      */
     public function variables(array $variables)
     {

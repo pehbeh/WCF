@@ -20,23 +20,21 @@ trait TSelectionFormField
 {
     /**
      * structured options array used to generate the form field output
-     * @var null|array
+     * @var ?array<string|int, array{label: string, value: mixed, depth: int, isSelectable: bool}>
      */
     protected $nestedOptions;
 
     /**
      * possible options to select
-     * @var null|array
+     * @var ?mixed[]
      */
     protected $options;
 
     /**
      * Returns a structured array that can be used to generate the form field output.
      *
-     * Array elements are `value`, `label`, and `depth`.
-     *
-     * @return  array
-     * @throws  \BadMethodCallException     if nested options are not supported
+     * @return array<string|int, array{label: string, value: mixed, depth: int, isSelectable: bool}>
+     * @throws \BadMethodCallException if nested options are not supported
      */
     public function getNestedOptions()
     {
@@ -50,9 +48,9 @@ trait TSelectionFormField
     /**
      * Returns the selectable options of this field.
      *
-     * @return  array
+     * @return mixed[]
      *
-     * @throws  \BadMethodCallException     if no options have been set
+     * @throws \BadMethodCallException if no options have been set
      */
     public function getOptions()
     {
@@ -68,9 +66,9 @@ trait TSelectionFormField
      *
      * If the node's availability has not been explicitly set, `true` is returned.
      *
-     * @return  bool
+     * @return bool
      *
-     * @see     IFormNode::available()
+     * @see IFormNode::available()
      */
     public function isAvailable()
     {
@@ -96,13 +94,13 @@ trait TSelectionFormField
      * callable returning an array. Each array value must be an array with the
      * following entries: `depth`, `label`, and `value`.
      *
-     * @param array<string|int, mixed>|callable|\Traversable|DatabaseObjectList $options selectable options or callable returning the options
+     * @param array<string|int, mixed>|callable|\Traversable<mixed>|DatabaseObjectList $options selectable options or callable returning the options
      * @param bool $nestedOptions is `true` if the passed options are nested options
      * @param bool $labelLanguageItems is `true` if the labels should be treated as language items if possible
-     * @return  static                  this field
+     * @return static this field
      *
-     * @throws  \InvalidArgumentException   if given options are no array or callable or otherwise invalid
-     * @throws  \UnexpectedValueException   if callable does not return an array
+     * @throws \InvalidArgumentException if given options are no array or callable or otherwise invalid
+     * @throws \UnexpectedValueException if callable does not return an array
      */
     public function options($options, $nestedOptions = false, $labelLanguageItems = true)
     {
@@ -306,7 +304,7 @@ trait TSelectionFormField
     /**
      * Returns `true` if the field class supports nested options and `false` otherwise.
      *
-     * @return  bool
+     * @return bool
      */
     public function supportsNestedOptions()
     {

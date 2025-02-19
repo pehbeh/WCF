@@ -60,7 +60,7 @@ class TextFormField extends AbstractFormField implements
     }
 
     /**
-     * @inheritDoc
+     * @return string[]
      */
     protected function getValidInputModes(): array
     {
@@ -108,7 +108,8 @@ class TextFormField extends AbstractFormField implements
      * Checks the length of the given text with the given language.
      *
      * @param string $text validated text
-     * @param null|Language $language language of validated text or `null` for monolingual text
+     * @param ?Language $language language of validated text or `null` for monolingual text
+     * @return void
      */
     protected function validateText($text, ?Language $language = null)
     {

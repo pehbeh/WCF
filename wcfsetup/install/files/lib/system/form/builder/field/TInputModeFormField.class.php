@@ -46,6 +46,8 @@ trait TInputModeFormField
 
     /**
      * Returns all valid `inputmode` tokens.
+     *
+     * @return string[]
      */
     protected function getValidInputModes(): array
     {

@@ -17,19 +17,17 @@ interface ISelectionFormField extends IFormField
     /**
      * Returns a structured array that can be used to generate the form field output.
      *
-     * Array elements are `value`, `label`, and `depth`.
-     *
-     * @return  array
-     * @throws  \BadMethodCallException     if nested options are not supported
+     * @return ?array<string|int, array{label: string, value: mixed, depth: int, isSelectable: bool}>
+     * @throws \BadMethodCallException if nested options are not supported
      */
     public function getNestedOptions();
 
     /**
      * Returns the possible options of this field.
      *
-     * @return  array
+     * @return mixed[]
      *
-     * @throws  \BadMethodCallException     if no options have been set
+     * @throws \BadMethodCallException if no options have been set
      */
     public function getOptions();
 
@@ -51,20 +49,20 @@ interface ISelectionFormField extends IFormField
      * callable returning an array. Each array value must be an array with the
      * following entries: `depth`, `label`, and `value`.
      *
-     * @param array|callable|DatabaseObjectList $options selectable options or callable returning the options
+     * @param mixed[]|callable|DatabaseObjectList $options selectable options or callable returning the options
      * @param bool $nestedOptions is `true` if the passed options are nested options
      * @param bool $labelLanguageItems is `true` if the labels should be treated as language items if possible
-     * @return  static                  this field
+     * @return static this field
      *
-     * @throws  \InvalidArgumentException       if given options are no array or callable or otherwise invalid
-     * @throws  \UnexpectedValueException       if callable does not return an array
+     * @throws \InvalidArgumentException if given options are no array or callable or otherwise invalid
+     * @throws \UnexpectedValueException if callable does not return an array
      */
     public function options($options, $nestedOptions = false, $labelLanguageItems = true);
 
     /**
      * Returns `true` if the field class supports nested options and `false` otherwise.
      *
-     * @return  bool
+     * @return bool
      */
     public function supportsNestedOptions();
 }

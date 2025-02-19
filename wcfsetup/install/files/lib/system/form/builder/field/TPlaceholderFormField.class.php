@@ -24,7 +24,7 @@ trait TPlaceholderFormField
      * Returns the placeholder value of this field or `null` if no placeholder has
      * been set.
      *
-     * @return  null|string
+     * @return ?string
      */
     public function getPlaceholder()
     {
@@ -36,11 +36,11 @@ trait TPlaceholderFormField
      * and returns this element. If `null` is passed, the placeholder value is
      * removed.
      *
-     * @param null|string $languageItem language item containing the placeholder or `null` to unset description
-     * @param array $variables additional variables used when resolving the language item
-     * @return  static              this field
+     * @param ?string $languageItem language item containing the placeholder or `null` to unset description
+     * @param array<string, mixed> $variables additional variables used when resolving the language item
+     * @return static this field
      *
-     * @throws  \InvalidArgumentException   if the given value is no or otherwise invalid
+     * @throws \InvalidArgumentException if the given value is no or otherwise invalid
      */
     public function placeholder($languageItem = null, array $variables = [])
     {

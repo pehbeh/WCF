@@ -23,7 +23,7 @@ class ValueFormFieldDependency extends AbstractFormFieldDependency
 
     /**
      * possible values the field may have for the dependency to be met
-     * @var null|array
+     * @var ?array<string|int, mixed>
      */
     protected $values;
 
@@ -62,9 +62,9 @@ class ValueFormFieldDependency extends AbstractFormFieldDependency
     /**
      * Returns the possible values the field may have for the dependency to be met.
      *
-     * @return  array               possible field values
+     * @return array<string|int, mixed> possible field values
      *
-     * @throws  \BadMethodCallException     if no values have been set
+     * @throws \BadMethodCallException if no values have been set
      */
     public function getValues()
     {
@@ -79,7 +79,7 @@ class ValueFormFieldDependency extends AbstractFormFieldDependency
      * Returns `true` if the field value may not have any of the set values and
      * otherwise `false`.
      *
-     * @return  bool
+     * @return bool
      */
     public function isNegated()
     {
@@ -90,7 +90,7 @@ class ValueFormFieldDependency extends AbstractFormFieldDependency
      * Sets if the field value may not have any of the set values.
      *
      * @param bool $negate
-     * @return  static      $this       this dependency
+     * @return static $this this dependency
      */
     public function negate($negate = true)
     {
@@ -102,11 +102,11 @@ class ValueFormFieldDependency extends AbstractFormFieldDependency
     /**
      * Sets the possible values the field may have for the dependency to be met.
      *
-     * @param array|callable|DatabaseObjectList $values possible field values
-     * @return  static      $this                   this dependency
+     * @param array<string|int, mixed>|callable|DatabaseObjectList $values possible field values
+     * @return static $this this dependency
      *
-     * @throws  \InvalidArgumentException               if given value are no array, callable, DatabaseObjectList, or otherwise invalid
-     * @throws  \UnexpectedValueException               if callable does not return an array or a DatabaseObjectList
+     * @throws \InvalidArgumentException if given value are no array, callable, DatabaseObjectList, or otherwise invalid
+     * @throws \UnexpectedValueException if callable does not return an array or a DatabaseObjectList
      */
     public function values($values)
     {

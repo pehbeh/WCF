@@ -222,7 +222,7 @@ final class DevtoolsProjectInstructionsFormField extends AbstractFormField
     /**
      * @inheritDoc
      */
-    protected static function getDefaultId()
+    protected static function getDefaultId(): string
     {
         return 'instructions';
     }

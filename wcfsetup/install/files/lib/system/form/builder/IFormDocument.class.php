@@ -33,9 +33,9 @@ interface IFormDocument extends IFormParentNode
      * Sets the `action` property of the HTML `form` element and returns this document.
      *
      * @param string $action form action
-     * @return  static              this document
+     * @return static this document
      *
-     * @throws  \InvalidArgumentException   if the given action is invalid
+     * @throws \InvalidArgumentException if the given action is invalid
      */
     public function action($action);
 
@@ -44,7 +44,7 @@ interface IFormDocument extends IFormParentNode
      * document.
      *
      * @param IFormButton $button added button
-     * @return  static              this document
+     * @return static this document
      */
     public function addButton(IFormButton $button);
 
@@ -52,8 +52,8 @@ interface IFormDocument extends IFormParentNode
      * Sets whether the default button is added to the form during in the `build()` method.
      *
      * @param bool $addDefaultButton
-     * @return  static              this document
-     * @throws  \BadMethodCallException     if the form has already been built
+     * @return static this document
+     * @throws \BadMethodCallException if the form has already been built
      */
     public function addDefaultButton($addDefaultButton = true);
 
@@ -62,7 +62,7 @@ interface IFormDocument extends IFormParentNode
      * request and returns his document.
      *
      * @param bool $ajax
-     * @return  static      this document
+     * @return static this document
      */
     public function ajax($ajax = true);
 
@@ -73,16 +73,16 @@ interface IFormDocument extends IFormParentNode
      * perform actions that require the whole document having finished constructing
      * itself and every parent-child relationship being established.
      *
-     * @return  static              this document
+     * @return static this document
      *
-     * @throws  \BadMethodCallException     if this document has already been built
+     * @throws \BadMethodCallException if this document has already been built
      */
     public function build();
 
     /**
      * Returns `true` if the form data has been read via `readData()` and `false` otherwise.
      *
-     * @return  bool
+     * @return bool
      */
     public function didReadValues();
 
@@ -93,11 +93,11 @@ interface IFormDocument extends IFormParentNode
      * Unsetting the current error message causes `IFormDocument::getErrorMessage()` to
      * return the default error message.
      *
-     * @param null|string $languageItem language item containing the error message or `null` to unset error message
-     * @param array $variables additional variables used when resolving the language item
-     * @return  static              this document
+     * @param ?string $languageItem language item containing the error message or `null` to unset error message
+     * @param array<string, mixed> $variables additional variables used when resolving the language item
+     * @return static this document
      *
-     * @throws  \InvalidArgumentException   if the given form mode is invalid
+     * @throws \InvalidArgumentException if the given form mode is invalid
      */
     public function errorMessage($languageItem = null, array $variables = []);
 
@@ -105,19 +105,19 @@ interface IFormDocument extends IFormParentNode
      * Sets the form mode (see `self::FORM_MODE_*` constants).
      *
      * @param string $formMode form mode
-     * @return  static              this document
+     * @return static this document
      *
-     * @throws  \BadMethodCallException     if the form mode has already been set
-     * @throws  \InvalidArgumentException   if the given form mode is invalid
+     * @throws \BadMethodCallException if the form mode has already been set
+     * @throws \InvalidArgumentException if the given form mode is invalid
      */
     public function formMode($formMode);
 
     /**
      * Returns the `action` property of the HTML `form` element.
      *
-     * @return  string              form action
+     * @return string form action
      *
-     * @throws  \BadMethodCallException     if no action has been set and `isAjax()` is `false`
+     * @throws \BadMethodCallException if no action has been set and `isAjax()` is `false`
      */
     public function getAction();
 
@@ -125,16 +125,16 @@ interface IFormDocument extends IFormParentNode
      * Returns the button with the given id.
      *
      * @param string $buttonId id of requested button
-     * @return  IFormButton
+     * @return IFormButton
      *
-     * @throws  \InvalidArgumentException   if no such button exists
+     * @throws \InvalidArgumentException if no such button exists
      */
     public function getButton($buttonId);
 
     /**
      * Returns the buttons registered for this form document.
      *
-     * @return  IFormButton[]
+     * @return IFormButton[]
      */
     public function getButtons();
 
@@ -142,9 +142,9 @@ interface IFormDocument extends IFormParentNode
      * Returns the array passed as the `$parameters` argument of the constructor
      * of a database object action.
      *
-     * @return  array       data passed to database object action
+     * @return array<string, mixed> data passed to database object action
      *
-     * @throws  \BadMethodCallException     if the method is called before `readValues()` is called
+     * @throws \BadMethodCallException if the method is called before `readValues()` is called
      */
     public function getData();
 
@@ -156,7 +156,7 @@ interface IFormDocument extends IFormParentNode
      * Note: The data handler comes with `DefaultFormFieldDataProcessor` as its
      * initial data processor.
      *
-     * @return  IFormDataHandler    form data handler
+     * @return IFormDataHandler form data handler
      */
     public function getDataHandler();
 
@@ -165,7 +165,7 @@ interface IFormDocument extends IFormParentNode
      * `IFileFormField`, `multipart/form-data` is returned, otherwise `null`
      * is returned.
      *
-     * @return  null|string     form encoding type
+     * @return ?string form encoding type
      */
     public function getEnctype();
 
@@ -177,7 +177,7 @@ interface IFormDocument extends IFormParentNode
      * be displayed, use `IParentFormNode::hasValidationErrors()` and
      * `IFormDocument::showsErrorMessage()`.
      *
-     * @return  string
+     * @return string
      */
     public function getErrorMessage();
 
@@ -188,7 +188,7 @@ interface IFormDocument extends IFormParentNode
      * is added or an existing object is edited. If no form mode has been
      * explicitly set, `self::FORM_MODE_CREATE` is set and returned.
      *
-     * @return  string      form mode
+     * @return string form mode
      */
     public function getFormMode();
 
@@ -196,7 +196,7 @@ interface IFormDocument extends IFormParentNode
      * Returns the `method` property of the HTML `form` element. If no method
      * has been set, `post` is returned.
      *
-     * @return  string      form method
+     * @return string form method
      */
     public function getMethod();
 
@@ -206,7 +206,7 @@ interface IFormDocument extends IFormParentNode
      *
      * Note: If a prefix `foo` has been set, this method returns `foo_`.
      *
-     * @return  string      global form element prefix
+     * @return string global form element prefix
      */
     public function getPrefix();
 
@@ -215,10 +215,10 @@ interface IFormDocument extends IFormParentNode
      *
      * If no request data is set, `$_POST` will be set as the request data.
      *
-     * @param null|string $index array index of the returned data
-     * @return  array|mixed         request data of the form's fields or specific index data if index is given
+     * @param ?string $index array index of the returned data
+     * @return mixed[]|mixed request data of the form's fields or specific index data if index is given
      *
-     * @throws  \InvalidArgumentException   if invalid index is given
+     * @throws \InvalidArgumentException if invalid index is given
      */
     public function getRequestData($index = null);
 
@@ -228,7 +228,7 @@ interface IFormDocument extends IFormParentNode
      * By default, `wcf.global.form.add` or `wcf.global.form.edit` in the active user's language
      * is returned depending on the current form mode.
      *
-     * @return  string
+     * @return string
      */
     public function getSuccessMessage();
 
@@ -236,7 +236,7 @@ interface IFormDocument extends IFormParentNode
      * Returns `true` if a button with the given id exists and `false` otherwise.
      *
      * @param string $buttonId id of checked button
-     * @return  bool
+     * @return bool
      */
     public function hasButton($buttonId);
 
@@ -247,7 +247,7 @@ interface IFormDocument extends IFormParentNode
      * By default, the default button is added.
      * Each implementing class can define itself what it considers its default button.
      *
-     * @return  bool
+     * @return bool
      */
     public function hasDefaultButton();
 
@@ -257,8 +257,8 @@ interface IFormDocument extends IFormParentNode
      *
      * If no request data is set, `$_POST` will be set as the request data.
      *
-     * @param null|string $index array index of the returned data
-     * @return  bool
+     * @param ?string $index array index of the returned data
+     * @return bool
      */
     public function hasRequestData($index = null);
 
@@ -268,7 +268,7 @@ interface IFormDocument extends IFormParentNode
      *
      * By default, this method returns `false`.
      *
-     * @return  bool
+     * @return bool
      */
     public function isAjax();
 
@@ -278,7 +278,7 @@ interface IFormDocument extends IFormParentNode
      *
      * By default, the form document is not invalid.
      *
-     * @return  bool
+     * @return bool
      */
     public function isInvalid();
 
@@ -286,15 +286,15 @@ interface IFormDocument extends IFormParentNode
      * Sets if the form document is in invalid due to external factors.
      *
      * @param bool $invalid
-     * @return  static              this document
+     * @return static this document
      */
     public function invalid($invalid = true);
 
     /**
      * Returns `true` if the information about required fields has to be shown below the form.
      *
-     * @return  bool
-     * @since   5.3
+     * @return bool
+     * @since 5.3
      */
     public function needsRequiredFieldsInfo();
 
@@ -307,15 +307,15 @@ interface IFormDocument extends IFormParentNode
      *
      * @param IStorableObject $object updated object
      * @param bool $loadValues indicates if the object's values are loaded
-     * @return  static                  this document
+     * @return static this document
      */
     public function updatedObject(IStorableObject $object, $loadValues = true);
 
     /**
      * Sets whether required fields are marked in the output and returns this document.
      *
-     * @since       5.4
-     * @return      static      this document
+     * @since 5.4
+     * @return static this document
      */
     public function markRequiredFields(bool $markRequiredFields = true);
 
@@ -324,7 +324,7 @@ interface IFormDocument extends IFormParentNode
      *
      * By default, required fields are marked in the output.
      *
-     * @since       5.4
+     * @since 5.4
      */
     public function marksRequiredFields(): bool;
 
@@ -332,9 +332,9 @@ interface IFormDocument extends IFormParentNode
      * Sets the `method` property of the HTML `form` element and returns this document.
      *
      * @param string $method form method
-     * @return  static              this document
+     * @return static this document
      *
-     * @throws  \InvalidArgumentException   if the given method is invalid
+     * @throws \InvalidArgumentException if the given method is invalid
      */
     public function method($method);
 
@@ -346,19 +346,19 @@ interface IFormDocument extends IFormParentNode
      * It is only relevant when printing the form and reading the form values.
      *
      * @param string $prefix global form prefix
-     * @return  static              this document
+     * @return static this document
      *
-     * @throws  \InvalidArgumentException   if the given prefix is invalid
+     * @throws \InvalidArgumentException if the given prefix is invalid
      */
     public function prefix($prefix);
 
     /**
      * Sets the request data of the form's fields.
      *
-     * @param array $requestData request data of the form's fields
-     * @return  static              this document
+     * @param mixed[] $requestData request data of the form's fields
+     * @return static this document
      *
-     * @throws  \BadMethodCallException     if request data has already been set
+     * @throws \BadMethodCallException if request data has already been set
      */
     public function requestData(array $requestData);
 
@@ -366,7 +366,7 @@ interface IFormDocument extends IFormParentNode
      * Sets if the global form error message should be shown if the form has validation errors.
      *
      * @param bool $showErrorMessage
-     * @return  static                  this document
+     * @return static this document
      */
     public function showErrorMessage($showErrorMessage = true);
 
@@ -374,7 +374,7 @@ interface IFormDocument extends IFormParentNode
      * Sets if the global form success message should be shown.
      *
      * @param bool $showSuccessMessage
-     * @return  static                  this document
+     * @return static this document
      */
     public function showSuccessMessage($showSuccessMessage = true);
 
@@ -384,7 +384,7 @@ interface IFormDocument extends IFormParentNode
      *
      * By default, the global form error message is shown.
      *
-     * @return  bool
+     * @return bool
      */
     public function showsErrorMessage();
 
@@ -393,7 +393,7 @@ interface IFormDocument extends IFormParentNode
      *
      * By default, the global form error message is not shown.
      *
-     * @return  bool
+     * @return bool
      */
     public function showsSuccessMessage();
 
@@ -404,9 +404,9 @@ interface IFormDocument extends IFormParentNode
      * Unsetting the current success message causes `IFormDocument::getSuccessMessage()()` to
      * return the default success message.
      *
-     * @param null|string $languageItem language item containing the success message or `null` to unset error message
-     * @param array $variables additional variables used when resolving the language item
-     * @return  static              this document
+     * @param ?string $languageItem language item containing the success message or `null` to unset error message
+     * @param array<string, mixed> $variables additional variables used when resolving the language item
+     * @return static this document
      *
      * @throws  \InvalidArgumentException   if the given form mode is invalid
      */

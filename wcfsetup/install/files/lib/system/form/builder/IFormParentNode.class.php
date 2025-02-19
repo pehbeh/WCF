@@ -9,15 +9,16 @@ namespace wcf\system\form\builder;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.2
+ * @extends \RecursiveIterator<int, IFormChildNode>
  */
 interface IFormParentNode extends \Countable, IFormNode, \RecursiveIterator
 {
     /**
      * Appends the given node to this node and returns this node.
      *
-     * @return  $this
+     * @return $this
      *
-     * @throws  \BadMethodCallException     if method is called with multiple `IFormChildNode` as parameter (if mistakenly used instead of `appendChildren()`)
+     * @throws \BadMethodCallException if method is called with multiple `IFormChildNode` as parameter (if mistakenly used instead of `appendChildren()`)
      */
     public function appendChild(IFormChildNode $child): static;
 
@@ -25,14 +26,14 @@ interface IFormParentNode extends \Countable, IFormNode, \RecursiveIterator
      * Appends the given children to this node and returns this node.
      *
      * @param IFormChildNode[] $children
-     * @return  $this
+     * @return $this
      */
     public function appendChildren(array $children): static;
 
     /**
      * Returns all child nodes of this node.
      *
-     * @return  IFormChildNode[]
+     * @return IFormChildNode[]
      */
     public function children(): array;
 
@@ -47,7 +48,7 @@ interface IFormParentNode extends \Countable, IFormNode, \RecursiveIterator
      *
      * Note: A class cannot implement `\Iterator` and `\IteratorAggregate` at the same time.
      *
-     * @return  \RecursiveIteratorIterator  recursive iterator for this node
+     * @return \RecursiveIteratorIterator<$this> recursive iterator for this node
      */
     public function getIterator();
 
@@ -57,7 +58,7 @@ interface IFormParentNode extends \Countable, IFormNode, \RecursiveIterator
      * All descendants, not only the direct child nodes, are checked to find the
      * requested node.
      *
-     * @throws  \InvalidArgumentException   if the given id is invalid
+     * @throws \InvalidArgumentException if the given id is invalid
      */
     public function getNodeById(string $nodeId): ?IFormNode;
 
@@ -72,9 +73,9 @@ interface IFormParentNode extends \Countable, IFormNode, \RecursiveIterator
      *
      * @param $child inserted child node
      * @param $referenceNodeId id of the node after which the given node is inserted
-     * @return  $this
+     * @return $this
      *
-     * @throws  \InvalidArgumentException           if given node cannot be inserted or reference node id is invalid
+     * @throws \InvalidArgumentException if given node cannot be inserted or reference node id is invalid
      */
     public function insertAfter(IFormChildNode $child, string $referenceNodeId): static;
 
@@ -83,9 +84,9 @@ interface IFormParentNode extends \Countable, IFormNode, \RecursiveIterator
      *
      * @param $child inserted child node
      * @param $referenceNodeId id of the node before which the given node is inserted
-     * @return  $this
+     * @return $this
      *
-     * @throws  \InvalidArgumentException           if given node cannot be inserted or reference node id is invalid
+     * @throws \InvalidArgumentException if given node cannot be inserted or reference node id is invalid
      */
     public function insertBefore(IFormChildNode $child, string $referenceNodeId): static;
 
@@ -93,7 +94,7 @@ interface IFormParentNode extends \Countable, IFormNode, \RecursiveIterator
      * Reads the value of this node and its children from request data and
      * return this field.
      *
-     * @return  $this
+     * @   $this
      */
     public function readValues(): static;
 
@@ -102,7 +103,7 @@ interface IFormParentNode extends \Countable, IFormNode, \RecursiveIterator
      *
      * @param $child validated child node
      *
-     * @throws  \InvalidArgumentException       if given node cannot is an invalid child
+     * @throws \InvalidArgumentException if given node cannot is an invalid child
      */
     public function validateChild(IFormChildNode $child): void;
 }

@@ -64,7 +64,8 @@ class EmailFormField extends AbstractFormField implements
 
     /**
      * @inheritDoc
-     * @since       5.4
+     * @return string[]
+     * @since 5.4
      */
     protected function getValidAutoCompleteTokens(): array
     {
@@ -74,7 +75,7 @@ class EmailFormField extends AbstractFormField implements
     }
 
     /**
-     * @inheritDoc
+     * @return string[]
      */
     protected function getValidInputModes(): array
     {
@@ -114,7 +115,8 @@ class EmailFormField extends AbstractFormField implements
      * Validates the given email address in the given language.
      *
      * @param ?string $email validated email address
-     * @param null|Language $language language of validated email address or `null` for monolingual email address
+     * @param ?Language $language language of validated email address or `null` for monolingual email address
+     * @return void
      */
     protected function validateEmail($email, ?Language $language = null)
     {
@@ -133,7 +135,8 @@ class EmailFormField extends AbstractFormField implements
 
     /**
      * @inheritDoc
-     * @since       5.4
+     * @return string[]
+     * @since 5.4
      */
     protected static function getReservedFieldAttributes(): array
     {

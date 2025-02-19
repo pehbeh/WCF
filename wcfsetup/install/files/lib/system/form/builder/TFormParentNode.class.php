@@ -32,7 +32,7 @@ trait TFormParentNode
     /**
      * Appends the given node to this node and returns this node.
      *
-     * @throws  \BadMethodCallException     if method is called with more than one parameter (might be mistakenly used instead of `appendChildren()`)
+     * @throws \BadMethodCallException if method is called with more than one parameter (might be mistakenly used instead of `appendChildren()`)
      */
     public function appendChild(IFormChildNode $child): static
     {
@@ -85,7 +85,7 @@ trait TFormParentNode
     /**
      * Returns all child nodes of this node.
      *
-     * @return  IFormChildNode[]
+     * @return IFormChildNode[]
      */
     public function children(): array
     {
@@ -98,7 +98,7 @@ trait TFormParentNode
      *
      * This method is not meant to empty the value of input fields.
      *
-     * @return  $this
+     * @return $this
      */
     public function cleanup(): static
     {
@@ -146,7 +146,7 @@ trait TFormParentNode
     /**
      * Returns a recursive iterator for this node.
      *
-     * @return  \RecursiveIteratorIterator  recursive iterator for this node
+     * @return \RecursiveIteratorIterator<$this> recursive iterator for this node
      */
     public function getIterator()
     {
@@ -163,7 +163,7 @@ trait TFormParentNode
      * All descendants, not only the direct child nodes, are checked to find the
      * requested node.
      *
-     * @throws  \InvalidArgumentException   if the given id is invalid
+     * @throws \InvalidArgumentException if the given id is invalid
      */
     public function getNodeById(string $nodeId): ?IFormNode
     {
@@ -220,7 +220,7 @@ trait TFormParentNode
      * @param $referenceNodeId id of the node after which the given node is inserted
      * @return  $this
      *
-     * @throws  \InvalidArgumentException           if given node cannot be inserted or reference node id is invalid
+     * @throws \InvalidArgumentException if given node cannot be inserted or reference node id is invalid
      */
     public function insertAfter(IFormChildNode $child, string $referenceNodeId): static
     {
@@ -249,9 +249,9 @@ trait TFormParentNode
      * Inserts the given node before the node with the given id and returns this node.
      *
      * @param $referenceNodeId id of the node before which the given node is inserted
-     * @return  $this
+     * @return $this
      *
-     * @throws  \InvalidArgumentException           if given node cannot be inserted or reference node id is invalid
+     * @throws \InvalidArgumentException if given node cannot be inserted or reference node id is invalid
      */
     public function insertBefore(IFormChildNode $child, string $referenceNodeId): static
     {
@@ -296,7 +296,7 @@ trait TFormParentNode
      * Reads the value of this node and its children from request data and
      * return this field.
      *
-     * @return  $this
+     * @return $this
      */
     public function readValues(): static
     {

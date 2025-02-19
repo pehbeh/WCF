@@ -23,7 +23,7 @@ interface IFormDataHandler
      *
      * @param IFormDataProcessor $processor added field data processor
      *
-     * @return  static                      this data handler
+     * @return static this data handler
      */
     public function addProcessor(IFormDataProcessor $processor);
 
@@ -32,7 +32,7 @@ interface IFormDataHandler
      * array to a database object action.
      *
      * @param IFormDocument $document processed form document
-     * @return  array               data passed to database object action
+     * @return mixed[] data passed to database object action
      */
     public function getFormData(IFormDocument $document);
 
@@ -42,7 +42,7 @@ interface IFormDataHandler
      *
      * @param IFormDocument $document form document whose form field values will be set
      * @param IStorableObject $object object from which the data is extracted
-     * @return  array               processed object data
+     * @return mixed[] processed object data
      */
     public function getObjectData(IFormDocument $document, IStorableObject $object);
 }

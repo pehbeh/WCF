@@ -119,7 +119,7 @@ abstract class AbstractNumericFormField extends AbstractFormField implements
     }
 
     /**
-     * @inheritDoc
+     * @return string[]
      */
     protected function getValidInputModes(): array
     {
@@ -239,6 +239,7 @@ abstract class AbstractNumericFormField extends AbstractFormField implements
 
     /**
      * @inheritDoc
+     * @return string[]
      * @since       5.4
      */
     protected static function getReservedFieldAttributes(): array

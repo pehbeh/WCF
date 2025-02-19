@@ -16,6 +16,7 @@ class FloatFormField extends AbstractNumericFormField
 {
     /**
      * @inheritDoc
+     * @return string[]
      * @since       5.4
      */
     protected function getValidAutoCompleteTokens(): array
