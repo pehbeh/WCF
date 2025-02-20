@@ -779,7 +779,7 @@ final class WCFSetup extends WCF
         LanguageFactory::getInstance()->makeDefault($language->languageID);
 
         // rebuild language cache
-        (new LanguageCache())->reset();
+        (new LanguageCache())->rebuild();
 
         return $this->gotoNextStep('createUser');
     }

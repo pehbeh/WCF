@@ -18,7 +18,7 @@ use wcf\system\SingletonFactory;
 final class CoreObjectCache extends AbstractEagerCache
 {
     #[\Override]
-    protected function rebuild(): array
+    protected function getCacheData(): array
     {
         $coreObjectList = new CoreObjectList();
         $coreObjectList->readObjects();

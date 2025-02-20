@@ -32,7 +32,7 @@ abstract class AbstractEagerCache
         if (!\array_key_exists($key, AbstractEagerCache::$caches)) {
             $cache = CacheHandler::getInstance()->getCacheSource()->get($key, 0);
             if ($cache === null) {
-                $this->reset();
+                $this->rebuild();
             } else {
                 AbstractEagerCache::$caches[$key] = $cache;
             }
@@ -65,20 +65,20 @@ abstract class AbstractEagerCache
     }
 
     /**
-     * Rebuilds the cache and stores it in the cache source.
+     * Rebuilds the cache data and stores the updated data.
      */
-    final public function reset(): void
+    final public function rebuild(): void
     {
         $key = $this->getCacheKey();
-        AbstractEagerCache::$caches[$key] = $this->rebuild();
+        AbstractEagerCache::$caches[$key] = $this->getCacheData();
         CacheHandler::getInstance()->getCacheSource()->set($key, AbstractEagerCache::$caches[$key], 0);
     }
 
     /**
-     * Rebuilds the cache and returns it.
+     * Generates the cache data and returns it.
      * This method MUST NOT rely on any (runtime) cache at any point because those could be stale.
      *
      * @return T
      */
-    abstract protected function rebuild(): array | object;
+    abstract protected function getCacheData(): array | object;
 }

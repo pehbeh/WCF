@@ -85,7 +85,7 @@ class CoreObjectPackageInstallationPlugin extends AbstractXMLPackageInstallation
      */
     protected function cleanup()
     {
-        (new CoreObjectCache())->reset();
+        (new CoreObjectCache())->rebuild();
     }
 
     /**

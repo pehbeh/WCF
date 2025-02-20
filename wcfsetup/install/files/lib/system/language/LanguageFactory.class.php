@@ -216,7 +216,7 @@ class LanguageFactory extends SingletonFactory
      */
     public function clearCache()
     {
-        (new LanguageCache())->reset();
+        (new LanguageCache())->rebuild();
     }
 
     /**

@@ -20,7 +20,7 @@ use wcf\system\cache\eager\data\LanguageCacheData;
 final class LanguageCache extends AbstractEagerCache
 {
     #[\Override]
-    protected function rebuild(): LanguageCacheData
+    protected function getCacheData(): LanguageCacheData
     {
         $languageList = new LanguageList();
         $languageList->getConditionBuilder()->add('language.isDisabled = ?', [0]);
