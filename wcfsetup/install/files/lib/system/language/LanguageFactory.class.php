@@ -312,7 +312,8 @@ class LanguageFactory extends SingletonFactory
 
         // make this language to default
         $sql = "UPDATE  wcf1_language
-                SET     isDefault = 1
+                SET     isDefault = 1,
+                        isDisabled = 0
                 WHERE   languageID = ?";
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute([$languageID]);

@@ -925,7 +925,7 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
         $statement->execute([0]);
 
         // set current language as default language
-        $this->update(['isDefault' => 1]);
+        $this->update(['isDefault' => 1, 'isDisabled' => 0]);
 
         $this->clearCache();
     }
