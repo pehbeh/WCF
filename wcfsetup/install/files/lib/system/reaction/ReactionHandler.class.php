@@ -337,19 +337,26 @@ class ReactionHandler extends SingletonFactory
 
             if (!$like->likeID) {
                 // save like
-                $returnValues = (new ReactionAction([], 'create', [
-                    'data' => [
-                        'objectID' => $likeable->getObjectID(),
-                        'objectTypeID' => $likeable->getObjectType()->objectTypeID,
-                        'objectUserID' => $likeable->getUserID() ?: null,
-                        'userID' => $user->userID,
-                        'time' => $time,
-                        'likeValue' => 1,
-                        'reactionTypeID' => $reactionTypeID,
-                    ],
-                ]))->executeAction();
-
-                $like = $returnValues['returnValues'];
+                $sql = "INSERT INTO             wcf1_like
+                                                (objectID, objectTypeID, objectUserID, userID, time, likeValue, reactionTypeID)
+                        VALUES                  (?, ?, ?, ?, ?, ?, ?)
+                        ON DUPLICATE KEY UPDATE time = ?,
+                                                likeValue = ?,
+                                                reactionTypeID = ?";
+                $statement = WCF::getDB()->prepare($sql);
+                $statement->execute([
+                    $likeable->getObjectID(),
+                    $likeable->getObjectType()->objectTypeID,
+                    $likeable->getUserID() ?: null,
+                    $user->userID,
+                    $time,
+                    1,
+                    $reactionTypeID,
+                    $time,
+                    1,
+                    $reactionTypeID,
+                ]);
+                $like = new Like(WCF::getDB()->getInsertID("wcf1_like", "likeID"));
 
                 if ($likeable->getUserID()) {
                     UserActivityPointHandler::getInstance()->fireEvent(
@@ -503,18 +510,28 @@ class ReactionHandler extends SingletonFactory
             ];
 
             // create cache
-            $likeObjectActionReturnValues = (new LikeObjectAction([], 'create', [
-                'data' => [
-                    'objectTypeID' => $likeable->getObjectType()->objectTypeID,
-                    'objectID' => $likeable->getObjectID(),
-                    'objectUserID' => $likeable->getUserID() ?: null,
-                    'likes' => $cumulativeLikes,
-                    'dislikes' => 0,
-                    'cumulativeLikes' => $cumulativeLikes,
-                    'cachedReactions' => \serialize($cachedReactions),
-                ],
-            ]))->executeAction();
-            $likeObject = $likeObjectActionReturnValues['returnValues'];
+            $sql = "INSERT INTO             wcf1_like_object
+                                            (objectTypeID, objectID, objectUserID, likes, dislikes, cumulativeLikes, cachedReactions)
+                    VALUES                  (?, ?, ?, ?, ?, ?, ?)
+                    ON DUPLICATE KEY UPDATE likes = ?,
+                                            dislikes = ?,
+                                            cumulativeLikes = ?,
+                                            cachedReactions = ?";
+            $statement = WCF::getDB()->prepare($sql);
+            $statement->execute([
+                $likeable->getObjectType()->objectTypeID,
+                $likeable->getObjectID(),
+                $likeable->getUserID() ?: null,
+                $cumulativeLikes,
+                0,
+                $cumulativeLikes,
+                \serialize($cachedReactions),
+                $cumulativeLikes,
+                0,
+                $cumulativeLikes,
+                \serialize($cachedReactions),
+            ]);
+            $likeObject = new LikeObject(WCF::getDB()->getInsertID("wcf1_like_object", "likeObjectID"));
         }
 
         return [
