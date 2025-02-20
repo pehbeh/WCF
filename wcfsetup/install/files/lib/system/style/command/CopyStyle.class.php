@@ -24,7 +24,7 @@ final class CopyStyle
 {
     public function __construct(private readonly Style $style) {}
 
-    public function __invoke(): void
+    public function __invoke(): Style
     {
         $newStyle = $this->copyStyle($this->style);
         $this->handleI18n($newStyle);
@@ -34,6 +34,8 @@ final class CopyStyle
         EventHandler::getInstance()->fire(
             new StyleCopied($this->style, $newStyle)
         );
+
+        return $newStyle;
     }
 
     private function copyStyle(Style $style): Style
