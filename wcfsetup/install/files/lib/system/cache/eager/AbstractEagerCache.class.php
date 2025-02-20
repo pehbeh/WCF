@@ -9,21 +9,32 @@ use wcf\system\cache\CacheHandler;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @template T of array|object
  */
-abstract class AbstractEagerCache implements IEagerCache
+abstract class AbstractEagerCache
 {
+    /**
+     * @var array<string, T>
+     */
     private static array $caches = [];
     private string $cacheName;
 
-    #[\Override]
-    public function getCache(): array | object
+    /**
+     * Returns the cache.
+     *
+     * @return T
+     */
+    final public function getCache(): array | object
     {
         $key = $this->getCacheKey();
 
         if (!\array_key_exists($key, AbstractEagerCache::$caches)) {
-            AbstractEagerCache::$caches[$key] = CacheHandler::getInstance()->getCacheSource()->get($key, 0);
-            if (AbstractEagerCache::$caches[$key] === null) {
+            $cache = CacheHandler::getInstance()->getCacheSource()->get($key, 0);
+            if ($cache === null) {
                 $this->reset();
+            } else {
+                AbstractEagerCache::$caches[$key] = $cache;
             }
         }
 
@@ -53,13 +64,21 @@ abstract class AbstractEagerCache implements IEagerCache
         return $this->cacheName;
     }
 
-    #[\Override]
-    public function reset(): void
+    /**
+     * Rebuilds the cache and stores it in the cache source.
+     */
+    final public function reset(): void
     {
         $key = $this->getCacheKey();
         AbstractEagerCache::$caches[$key] = $this->rebuild();
         CacheHandler::getInstance()->getCacheSource()->set($key, AbstractEagerCache::$caches[$key], 0);
     }
 
-    abstract protected function rebuild(): mixed;
+    /**
+     * Rebuilds the cache and returns it.
+     * This method MUST NOT rely on any (runtime) cache at any point because those could be stale.
+     *
+     * @return T
+     */
+    abstract protected function rebuild(): array | object;
 }
