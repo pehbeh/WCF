@@ -54,8 +54,14 @@ abstract class AbstractEagerCache
 
             $parameters = [];
             foreach ($reflection->getProperties() as $property) {
-                $parameters[$property->getName()] = $property->getValue($this);
+                $value = $property->getValue($this);
+                if ($value === null) {
+                    continue;
+                }
+
+                $parameters[$property->getName()] = $value;
             }
+
             if ($parameters !== []) {
                 $this->cacheName .= '-' . CacheHandler::getInstance()->getCacheIndex($parameters);
             }
