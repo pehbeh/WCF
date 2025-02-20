@@ -5,7 +5,7 @@ namespace wcf\acp\form;
 use wcf\data\language\Language;
 use wcf\data\language\LanguageEditor;
 use wcf\form\AbstractForm;
-use wcf\system\cache\builder\LanguageCacheBuilder;
+use wcf\system\cache\eager\LanguageCache;
 use wcf\system\exception\UserInputException;
 use wcf\system\language\LanguageFactory;
 use wcf\system\WCF;
@@ -116,7 +116,7 @@ class LanguageMultilingualismForm extends AbstractForm
         LanguageEditor::enableMultilingualism(($this->enable == 1 ? $this->languageIDs : []));
 
         // clear cache
-        LanguageCacheBuilder::getInstance()->reset();
+        (new LanguageCache())->reset();
         $this->saved();
 
         // show success message

@@ -10,7 +10,7 @@ use wcf\data\language\SetupLanguage;
 use wcf\data\package\installation\queue\PackageInstallationQueueEditor;
 use wcf\data\user\User;
 use wcf\data\user\UserAction;
-use wcf\system\cache\builder\LanguageCacheBuilder;
+use wcf\system\cache\eager\LanguageCache;
 use wcf\system\database\Database;
 use wcf\system\database\exception\DatabaseException;
 use wcf\system\database\MySQLDatabase;
@@ -779,7 +779,7 @@ final class WCFSetup extends WCF
         LanguageFactory::getInstance()->makeDefault($language->languageID);
 
         // rebuild language cache
-        LanguageCacheBuilder::getInstance()->reset();
+        (new LanguageCache())->reset();
 
         return $this->gotoNextStep('createUser');
     }
