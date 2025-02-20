@@ -53,7 +53,11 @@ abstract class AbstractEagerCache
             );
 
             $parameters = [];
-            foreach ($reflection->getProperties() as $property) {
+            foreach ($reflection->getProperties(\ReflectionProperty::IS_READONLY) as $property) {
+                if (!$property->isInitialized($this)) {
+                    continue;
+                }
+
                 $value = $property->getValue($this);
                 if ($value === null) {
                     continue;
