@@ -12,8 +12,8 @@ use wcf\system\application\ApplicationHandler;
 use wcf\system\application\IApplication;
 use wcf\system\benchmark\Benchmark;
 use wcf\system\box\BoxHandler;
-use wcf\system\cache\builder\CoreObjectCacheBuilder;
 use wcf\system\cache\builder\PackageUpdateCacheBuilder;
+use wcf\system\cache\eager\CoreObjectCache;
 use wcf\system\database\MySQLDatabase;
 use wcf\system\event\EventHandler;
 use wcf\system\exception\ErrorException;
@@ -140,9 +140,10 @@ class WCF
 
     /**
      * list of cached core objects
-     * @var string[]
+     *
+     * @var CoreObjectCache
      */
-    protected static $coreObjectCache = [];
+    protected static CoreObjectCache $coreObjectCache;
 
     /**
      * database object
@@ -748,7 +749,7 @@ class WCF
             return;
         }
 
-        self::$coreObjectCache = CoreObjectCacheBuilder::getInstance()->getData();
+        self::$coreObjectCache = new CoreObjectCache();
     }
 
     /**
@@ -933,7 +934,11 @@ class WCF
      */
     final protected static function getCoreObject(string $className)
     {
-        return self::$coreObjectCache[$className] ?? null;
+        if (!isset(self::$coreObjectCache)) {
+            return null;
+        }
+
+        return self::$coreObjectCache->getCache()[$className] ?? null;
     }
 
     /**

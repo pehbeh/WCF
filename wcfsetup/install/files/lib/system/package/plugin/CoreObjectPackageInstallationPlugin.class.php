@@ -4,7 +4,7 @@ namespace wcf\system\package\plugin;
 
 use wcf\data\core\object\CoreObjectEditor;
 use wcf\data\core\object\CoreObjectList;
-use wcf\system\cache\builder\CoreObjectCacheBuilder;
+use wcf\system\cache\eager\CoreObjectCache;
 use wcf\system\devtools\pip\IDevtoolsPipEntryList;
 use wcf\system\devtools\pip\IGuiPackageInstallationPlugin;
 use wcf\system\devtools\pip\TXmlGuiPackageInstallationPlugin;
@@ -85,7 +85,7 @@ class CoreObjectPackageInstallationPlugin extends AbstractXMLPackageInstallation
      */
     protected function cleanup()
     {
-        CoreObjectCacheBuilder::getInstance()->reset();
+        (new CoreObjectCache())->reset();
     }
 
     /**
