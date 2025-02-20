@@ -21,6 +21,7 @@ use wcf\system\WCF;
  * @copyright 2001-2022 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.0
+ * @deprecated 6.2 Use `wcf\system\endpoint\controller\core\styles\AddDarkMode` instead.
  */
 final class StyleAddDarkModeAction implements RequestHandlerInterface
 {

@@ -7,12 +7,10 @@ use wcf\data\AbstractDatabaseObjectAction;
 use wcf\data\IToggleAction;
 use wcf\data\TDatabaseObjectToggle;
 use wcf\data\user\UserAction;
-use wcf\system\cache\builder\StyleCacheBuilder;
 use wcf\system\exception\PermissionDeniedException;
 use wcf\system\image\ImageHandler;
-use wcf\system\language\LanguageFactory;
-use wcf\system\Regex;
 use wcf\system\request\LinkHandler;
+use wcf\system\style\command\CopyStyle;
 use wcf\system\style\command\CreateManifest;
 use wcf\system\style\StyleHandler;
 use wcf\system\WCF;
@@ -490,6 +488,8 @@ BROWSERCONFIG;
 
     /**
      * Validates parameters to copy a style.
+     *
+     * @deprecated 6.2
      */
     public function validateCopy()
     {
@@ -504,129 +504,12 @@ BROWSERCONFIG;
      * Copies a style.
      *
      * @return  string[]
+     * @deprecated 6.2 Use `wcf\system\style\command\CopyStyle` instead.
      */
     public function copy()
     {
-        // get unique style name
-        $sql = "SELECT  styleName
-                FROM    wcf1_style
-                WHERE   styleName LIKE ?
-                    AND styleID <> ?";
-        $statement = WCF::getDB()->prepare($sql);
-        $statement->execute([
-            $this->styleEditor->styleName . '%',
-            $this->styleEditor->styleID,
-        ]);
-        $numbers = [];
-        $regEx = new Regex('\((\d+)\)$');
-        while ($row = $statement->fetchArray()) {
-            $styleName = $row['styleName'];
-
-            if ($regEx->match($styleName)) {
-                $matches = $regEx->getMatches();
-
-                // check if name matches the pattern 'styleName (x)'
-                if ($styleName == $this->styleEditor->styleName . ' (' . $matches[1] . ')') {
-                    $numbers[] = $matches[1];
-                }
-            }
-        }
-
-        $number = \count($numbers) ? \max($numbers) + 1 : 2;
-        $styleName = $this->styleEditor->styleName . ' (' . $number . ')';
-
-        // create the new style
-        $newStyle = StyleEditor::create([
-            'styleName' => $styleName,
-            'templateGroupID' => $this->styleEditor->templateGroupID,
-            'isDisabled' => 1, // newly created styles are disabled by default
-            'styleDescription' => $this->styleEditor->styleDescription,
-            'styleVersion' => $this->styleEditor->styleVersion,
-            'styleDate' => $this->styleEditor->styleDate,
-            'copyright' => $this->styleEditor->copyright,
-            'license' => $this->styleEditor->license,
-            'authorName' => $this->styleEditor->authorName,
-            'authorURL' => $this->styleEditor->authorURL,
-            'imagePath' => $this->styleEditor->imagePath,
-            'coverPhotoExtension' => $this->styleEditor->coverPhotoExtension,
-            'hasFavicon' => $this->styleEditor->hasFavicon,
-            'hasDarkMode' => $this->styleEditor->hasDarkMode,
-        ]);
-        $styleEditor = new StyleEditor($newStyle);
-
-        // check if style description uses i18n
-        if (\preg_match('~^wcf.style.styleDescription\d+$~', $newStyle->styleDescription)) {
-            $styleDescription = 'wcf.style.styleDescription' . $newStyle->styleID;
-
-            // delete any phrases that were the result of an import
-            $sql = "DELETE FROM wcf1_language_item
-                    WHERE       languageItem = ?";
-            $statement = WCF::getDB()->prepare($sql);
-            $statement->execute([$styleDescription]);
-
-            // copy language items
-            $sql = "INSERT INTO wcf1_language_item
-                                (languageID, languageItem, languageItemValue, languageItemOriginIsSystem, languageCategoryID, packageID)
-                    SELECT      languageID, '" . $styleDescription . "', languageItemValue, 0, languageCategoryID, packageID
-                    FROM        wcf1_language_item
-                    WHERE       languageItem = ?";
-            $statement = WCF::getDB()->prepare($sql);
-            $statement->execute([$newStyle->styleDescription]);
-
-            // update style description
-            $styleEditor->update([
-                'styleDescription' => $styleDescription,
-            ]);
-
-            LanguageFactory::getInstance()->deleteLanguageCache();
-        }
-
-        // copy style variables
-        $sql = "INSERT INTO             wcf1_style_variable_value
-                                        (styleID, variableID, variableValue, variableValueDarkMode)
-                SELECT                  {$newStyle->styleID}, variableID, variableValue, variableValueDarkMode
-                FROM                    wcf1_style_variable_value
-                WHERE                   styleID = ?
-                ON DUPLICATE KEY UPDATE variableValue = VALUES(variableValue),
-                                        variableValueDarkMode = VALUES(variableValueDarkMode)";
-        $statement = WCF::getDB()->prepare($sql);
-        $statement->execute([$this->styleEditor->styleID]);
-
-        // copy preview image
-        foreach (['image', 'image2x'] as $imageType) {
-            $image = $this->styleEditor->{$imageType};
-            if ($image) {
-                $styleEditor->update([
-                    $imageType => \preg_replace('/^style-\d+/', 'style-' . $styleEditor->styleID, $image),
-                ]);
-            }
-        }
-
-        // Copy asset path
-        $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator(
-                $this->styleEditor->getAssetPath(),
-                \FilesystemIterator::SKIP_DOTS
-            ),
-            \RecursiveIteratorIterator::SELF_FIRST
-        );
-        foreach ($iterator as $file) {
-            /** @var \SplFileInfo $file */
-            if ($file->isDir()) {
-                $relativePath = FileUtil::getRelativePath($this->styleEditor->getAssetPath(), $file->getPathname());
-            } elseif ($file->isFile()) {
-                $relativePath = FileUtil::getRelativePath($this->styleEditor->getAssetPath(), $file->getPath());
-            } else {
-                throw new \LogicException('Unreachable');
-            }
-            $targetFolder = $newStyle->getAssetPath() . $relativePath;
-            FileUtil::makePath($targetFolder);
-            if ($file->isFile()) {
-                \copy($file->getPathname(), $targetFolder . $file->getFilename());
-            }
-        }
-
-        StyleCacheBuilder::getInstance()->reset();
+        $command = new CopyStyle($this->styleEditor->getDecoratedObject());
+        $newStyle = $command();
 
         return [
             'redirectURL' => LinkHandler::getInstance()->getLink('StyleEdit', ['id' => $newStyle->styleID]),

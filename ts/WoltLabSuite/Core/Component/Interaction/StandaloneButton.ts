@@ -73,6 +73,10 @@ export class StandaloneButton {
       void this.#refreshContextMenu();
     });
 
+    this.#container.addEventListener("interaction:invalidate-all", () => {
+      void this.#refreshContextMenu();
+    });
+
     this.#container.addEventListener("interaction:remove", () => {
       window.location.href = this.#redirectUrl;
     });
