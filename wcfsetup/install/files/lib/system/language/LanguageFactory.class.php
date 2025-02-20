@@ -123,7 +123,7 @@ class LanguageFactory extends SingletonFactory
      */
     public function getCategoryByID($languageCategoryID)
     {
-        return $this->cache->getCategoryByID($languageCategoryID);
+        return $this->cache->getLanguageCategoryByID($languageCategoryID);
     }
 
     /**

@@ -60,7 +60,7 @@ final class LanguageCacheData
     /**
      * Returns the language category with the given category id.
      */
-    public function getCategoryByID(int $languageCategoryID): ?LanguageCategory
+    public function getLanguageCategoryByID(int $languageCategoryID): ?LanguageCategory
     {
         return $this->categories[$this->categoryIDs[$languageCategoryID] ?? null] ?? null;
     }
