@@ -61,8 +61,11 @@ final class LanguageCacheData
     public function getLanguageCategoryByID(int $languageCategoryID): ?LanguageCategory
     {
         $categoryName = $this->categoryIDs[$languageCategoryID] ?? null;
+        if ($categoryName === null) {
+            return null;
+        }
 
-        return $this->categories[$categoryName] ?? null;
+        return $this->getLanguageCategory($categoryName);
     }
 
     /**
@@ -70,7 +73,7 @@ final class LanguageCacheData
      */
     public function languageCategoryExists(string $categoryName): bool
     {
-        return isset($this->categories[$categoryName]);
+        return \array_key_exists($categoryName, $this->categories);
     }
 
     /**
