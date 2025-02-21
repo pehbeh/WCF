@@ -25,7 +25,7 @@ abstract class AbstractEagerCache
      *
      * @return T
      */
-    final public function getCache(): array | object
+    final public function getCache(): array|object
     {
         $key = $this->getCacheKey();
 
@@ -97,5 +97,5 @@ abstract class AbstractEagerCache
      *
      * @return T
      */
-    abstract protected function getCacheData(): array | object;
+    abstract protected function getCacheData(): array|object;
 }
