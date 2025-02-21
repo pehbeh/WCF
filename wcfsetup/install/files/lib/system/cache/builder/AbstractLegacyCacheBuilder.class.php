@@ -2,6 +2,7 @@
 
 namespace wcf\system\cache\builder;
 
+use wcf\system\cache\CacheHandler;
 use wcf\system\exception\SystemException;
 use wcf\system\SingletonFactory;
 
@@ -17,10 +18,18 @@ use wcf\system\SingletonFactory;
  */
 abstract class AbstractLegacyCacheBuilder extends SingletonFactory implements ICacheBuilder
 {
+    protected array $cache = [];
+
     #[\Override]
     public function getData(array $parameters = [], $arrayIndex = '')
     {
-        $cache = $this->rebuild($parameters);
+        $index = CacheHandler::getInstance()->getCacheIndex($parameters);
+        if (isset($this->cache[$index])) {
+            $cache = $this->cache[$index];
+        } else {
+            $cache = $this->rebuild($parameters);
+            $this->cache[$index] = $cache;
+        }
 
         if (!empty($arrayIndex)) {
             if (!\array_key_exists($arrayIndex, $cache)) {

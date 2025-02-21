@@ -80,8 +80,15 @@ abstract class AbstractEagerCache
     final public function rebuild(): void
     {
         $key = $this->getCacheKey();
-        AbstractEagerCache::$caches[$key] = $this->getCacheData();
-        CacheHandler::getInstance()->getCacheSource()->set($key, AbstractEagerCache::$caches[$key], 0);
+        $newCacheData = $this->getCacheData();
+
+        // The existing cache must not be overwritten, otherwise this can cause errors at runtime.
+        // The new data will be available at the next request.
+        if (!\array_key_exists($key, AbstractEagerCache::$caches)) {
+            AbstractEagerCache::$caches[$key] = $newCacheData;
+        }
+
+        CacheHandler::getInstance()->getCacheSource()->set($key, $newCacheData, 0);
     }
 
     /**
