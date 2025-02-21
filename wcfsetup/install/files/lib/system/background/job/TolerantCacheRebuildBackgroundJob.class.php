@@ -40,7 +40,7 @@ final class TolerantCacheRebuildBackgroundJob extends AbstractUniqueBackgroundJo
     #[\Override]
     public function queueAgain(): bool
     {
-        return \class_exists($this->cacheClass);
+        return false;
     }
 
     #[\Override]
