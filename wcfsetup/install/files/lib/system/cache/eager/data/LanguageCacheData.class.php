@@ -29,8 +29,6 @@ final class LanguageCacheData
         public readonly array $categoryIDs,
         public readonly bool $multilingualismEnabled
     ) {
-        \assert($this->default > 0);
-        \assert(\array_key_exists($this->default, $this->languages));
     }
 
     /**
@@ -62,6 +60,8 @@ final class LanguageCacheData
      */
     public function getLanguageCategoryByID(int $languageCategoryID): ?LanguageCategory
     {
-        return $this->categories[$this->categoryIDs[$languageCategoryID] ?? null] ?? null;
+        $categoryName = $this->categoryIDs[$languageCategoryID] ?? null;
+
+        return $this->categories[$categoryName] ?? null;
     }
 }

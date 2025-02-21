@@ -6,6 +6,7 @@ use wcf\data\DatabaseObject;
 use wcf\data\language\category\LanguageCategoryList;
 use wcf\data\language\LanguageList;
 use wcf\system\cache\eager\data\LanguageCacheData;
+use wcf\system\exception\SystemException;
 
 /**
  * Eager cache implementation for languages.
@@ -33,26 +34,20 @@ final class LanguageCache extends AbstractEagerCache
         $countryCodes = [];
 
         foreach ($languageList->getObjects() as $language) {
-            // default language
             if ($language->isDefault) {
                 $default = $language->languageID;
             }
 
-            // multilingualism
             if ($language->hasContent) {
                 $multilingualismEnabled = true;
             }
 
-            // language code to language id
             $codes[$language->languageCode] = $language->languageID;
-
-            // country code to language id
             $countryCodes[$language->languageID] = $language->countryCode;
         }
 
         DatabaseObject::sort($languages, 'languageName');
 
-        // get language categories
         $languageCategoryList = new LanguageCategoryList();
         $languageCategoryList->readObjects();
 
@@ -61,6 +56,10 @@ final class LanguageCache extends AbstractEagerCache
         foreach ($languageCategoryList->getObjects() as $languageCategory) {
             $categories[$languageCategory->languageCategory] = $languageCategory;
             $categoryIDs[$languageCategory->languageCategoryID] = $languageCategory->languageCategory;
+        }
+
+        if (!isset($languages[$default])) {
+            throw new SystemException('No default language defined!');
         }
 
         return new LanguageCacheData(
