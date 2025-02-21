@@ -6,15 +6,14 @@ use wcf\data\DatabaseObject;
 use wcf\data\language\category\LanguageCategoryList;
 use wcf\data\language\LanguageList;
 use wcf\system\cache\eager\data\LanguageCacheData;
-use wcf\system\exception\SystemException;
 
 /**
  * Eager cache implementation for languages.
  *
- * @author      Olaf Braun
- * @copyright   2001-2025 WoltLab GmbH
- * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
- * @since       6.2
+ * @author Olaf Braun
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
  *
  * @extends AbstractEagerCache<LanguageCacheData>
  */
@@ -59,7 +58,7 @@ final class LanguageCache extends AbstractEagerCache
         }
 
         if (!isset($languages[$default])) {
-            throw new SystemException('No default language defined!');
+            throw new \RuntimeException('No default language defined!');
         }
 
         return new LanguageCacheData(

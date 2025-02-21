@@ -7,11 +7,11 @@ use wcf\system\cache\eager\LanguageCache;
 /**
  * Caches languages and the id of the default language.
  *
- * @author      Olaf Braun, Marcel Werk
- * @copyright   2001-2025 WoltLab GmbH
- * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @author Olaf Braun, Marcel Werk
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @deprecated  6.2 use `LanguageCache` instead
+ * @deprecated 6.2 use `LanguageCache` instead
  */
 class LanguageCacheBuilder extends AbstractLegacyCacheBuilder
 {

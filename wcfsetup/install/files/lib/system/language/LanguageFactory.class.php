@@ -9,7 +9,6 @@ use wcf\data\language\Language;
 use wcf\data\language\LanguageEditor;
 use wcf\system\cache\eager\data\LanguageCacheData;
 use wcf\system\cache\eager\LanguageCache;
-use wcf\system\exception\SystemException;
 use wcf\system\SingletonFactory;
 use wcf\system\template\TemplateScriptingCompiler;
 use wcf\system\WCF;
@@ -17,8 +16,8 @@ use wcf\system\WCF;
 /**
  * Handles language related functions.
  *
- * @author  Alexander Ebert
- * @copyright   2001-2019 WoltLab GmbH
+ * @author  Olaf Braun, Alexander Ebert
+ * @copyright   2001-2025 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 class LanguageFactory extends SingletonFactory
@@ -73,18 +72,17 @@ class LanguageFactory extends SingletonFactory
      */
     public function getLanguageByCode(string $languageCode): ?Language
     {
-        $language = $this->getLanguageByCode($languageCode);
-        if ($language === null) {
+        if ($this->cache->codes === []) {
             // called within WCFSetup
             $sql = "SELECT  *
                     FROM    wcf1_language
                     WHERE   languageCode = ?";
             $statement = WCF::getDB()->prepare($sql);
             $statement->execute([$languageCode]);
-            $language = $statement->fetchObject(Language::class);
+            return $statement->fetchObject(Language::class);
+        } else {
+            return $this->getLanguageByCode($languageCode);
         }
-
-        return $language;
     }
 
     /**
@@ -92,7 +90,7 @@ class LanguageFactory extends SingletonFactory
      */
     public function isValidCategory(string $categoryName): bool
     {
-        return $this->cache->languageCategoryExists($categoryName);
+        return $this->cache->hasCategory($categoryName);
     }
 
     /**
@@ -100,7 +98,7 @@ class LanguageFactory extends SingletonFactory
      */
     public function getCategory(string $categoryName): ?LanguageCategory
     {
-        return $this->cache->getLanguageCategory($categoryName);
+        return $this->cache->getCategory($categoryName);
     }
 
     /**
@@ -108,7 +106,7 @@ class LanguageFactory extends SingletonFactory
      */
     public function getCategoryByID(int $languageCategoryID): ?LanguageCategory
     {
-        return $this->cache->getLanguageCategoryByID($languageCategoryID);
+        return $this->cache->getCategoryByID($languageCategoryID);
     }
 
     /**
@@ -138,7 +136,7 @@ class LanguageFactory extends SingletonFactory
             }
         }
 
-        throw new SystemException("No language found for language code '{$languageCode}'");
+        throw new \RuntimeException("No language found for language code '{$languageCode}'");
     }
 
     /**

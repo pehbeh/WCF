@@ -9,16 +9,19 @@ use wcf\system\SingletonFactory;
 /**
  * Provides a backwards compatible interface for ICacheBuilder classes that have been migrated to the eager or tolerant cache implementations.
  *
- * @author      Olaf Braun
- * @copyright   2001-2025 WoltLab GmbH
- * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @author Olaf Braun
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @since       6.2
- * @deprecated  6.2
+ * @since 6.2
+ * @deprecated 6.2
  */
 abstract class AbstractLegacyCacheBuilder extends SingletonFactory implements ICacheBuilder
 {
-    protected array $cache = [];
+    /**
+     * @var array<string, array<string|int, mixed>>
+     */
+    private array $cache = [];
 
     #[\Override]
     public function getData(array $parameters = [], $arrayIndex = '')

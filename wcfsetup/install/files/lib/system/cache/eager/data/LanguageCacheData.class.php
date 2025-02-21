@@ -8,10 +8,10 @@ use wcf\data\language\Language;
 /**
  * Language cache data structure.
  *
- * @author      Olaf Braun
- * @copyright   2001-2025 WoltLab GmbH
- * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
- * @since       6.2
+ * @author Olaf Braun
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
  */
 final class LanguageCacheData
 {
@@ -50,7 +50,7 @@ final class LanguageCacheData
     /**
      * Returns the language category with the given category name.
      */
-    public function getLanguageCategory(string $categoryName): ?LanguageCategory
+    public function getCategory(string $categoryName): ?LanguageCategory
     {
         return $this->categories[$categoryName] ?? null;
     }
@@ -58,20 +58,17 @@ final class LanguageCacheData
     /**
      * Returns the language category with the given category id.
      */
-    public function getLanguageCategoryByID(int $languageCategoryID): ?LanguageCategory
+    public function getCategoryByID(int $languageCategoryID): ?LanguageCategory
     {
         $categoryName = $this->categoryIDs[$languageCategoryID] ?? null;
         if ($categoryName === null) {
             return null;
         }
 
-        return $this->getLanguageCategory($categoryName);
+        return $this->getCategory($categoryName);
     }
 
-    /**
-     * Returns `true` if the language category with the given category name exists.
-     */
-    public function languageCategoryExists(string $categoryName): bool
+    public function hasCategory(string $categoryName): bool
     {
         return \array_key_exists($categoryName, $this->categories);
     }
@@ -79,7 +76,7 @@ final class LanguageCacheData
     /**
      * Return all content languages.
      *
-     * @return list<Language>
+     * @return array<int, Language>
      */
     public function getContentLanguages(): array
     {
@@ -96,10 +93,7 @@ final class LanguageCacheData
      */
     public function getContentLanguageIDs(): array
     {
-        return \array_map(
-            static fn(Language $language) => $language->languageID,
-            $this->getContentLanguages()
-        );
+        return \array_keys($this->getContentLanguages());
     }
 
     /**

@@ -5,10 +5,10 @@ namespace wcf\system\cache\eager;
 use wcf\system\cache\CacheHandler;
 
 /**
- * @author      Olaf Braun
- * @copyright   2001-2025 WoltLab GmbH
- * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
- * @since       6.2
+ * @author Olaf Braun
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
  *
  * @template T of array|object
  */
@@ -25,7 +25,7 @@ abstract class AbstractEagerCache
      *
      * @return T
      */
-    final public function getCache(): array | object
+    final public function getCache(): array|object
     {
         $key = $this->getCacheKey();
 
@@ -97,5 +97,5 @@ abstract class AbstractEagerCache
      *
      * @return T
      */
-    abstract protected function getCacheData(): array | object;
+    abstract protected function getCacheData(): array|object;
 }

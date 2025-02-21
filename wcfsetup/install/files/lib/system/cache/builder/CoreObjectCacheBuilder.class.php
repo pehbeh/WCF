@@ -7,11 +7,11 @@ use wcf\system\cache\eager\CoreObjectCache;
 /**
  * Caches the core objects.
  *
- * @author      Alexander Ebert
- * @copyright   2001-2019 WoltLab GmbH
- * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @author Olaf Braun, Alexander Ebert
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @deprecated  6.2 use `CoreObjectCache` instead
+ * @deprecated 6.2 use `CoreObjectCache` instead
  */
 class CoreObjectCacheBuilder extends AbstractLegacyCacheBuilder
 {
