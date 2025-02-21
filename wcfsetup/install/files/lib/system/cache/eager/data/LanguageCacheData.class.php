@@ -114,10 +114,11 @@ final class LanguageCacheData
      */
     public function getLanguageByCode(string $languageCode): ?Language
     {
-        if (isset($this->codes[$languageCode])) {
-            return $this->languages[$this->codes[$languageCode]];
+        $languageID = $this->codes[$languageCode] ?? null;
+        if ($languageID === null) {
+            return null;
         }
 
-        return null;
+        return $this->getLanguage($languageID);
     }
 }
