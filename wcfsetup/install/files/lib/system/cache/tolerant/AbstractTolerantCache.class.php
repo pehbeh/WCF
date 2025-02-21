@@ -103,11 +103,6 @@ abstract class AbstractTolerantCache
             $newCacheData,
             0
         );
-
-        BackgroundQueueHandler::getInstance()->enqueueAt(
-            [new TolerantCacheRebuildBackgroundJob(\get_class($this), $this->getProperties())],
-            $this->nextRebuildTime()
-        );
     }
 
     /**
@@ -117,10 +112,15 @@ abstract class AbstractTolerantCache
 
     final public function nextRebuildTime(): int
     {
-        $cacheTime = CacheHandler::getInstance()->getCacheSource()->getCacheLifetime($this->getCacheKey());
+        $cacheTime = CacheHandler::getInstance()->getCacheSource()->getExpirationTime(
+            $this->getCacheKey(),
+            $this->getLifetime()
+        );
+
         if ($cacheTime === null) {
             return \TIME_NOW;
         }
+
         return $cacheTime + ($this->getLifetime() - 60);
     }
 

@@ -186,7 +186,7 @@ class RedisCacheSource implements ICacheSource
     }
 
     #[\Override]
-    public function getCacheLifetime(string $cacheName): ?int
+    public function getExpirationTime(string $cacheName, int $maxLifetime): ?int
     {
         $parts = \explode('-', $cacheName, 2);
 
@@ -197,7 +197,15 @@ class RedisCacheSource implements ICacheSource
         }
 
         // -2 means that the key does not exist
+        if ($ttl === -2) {
+            return null;
+        }
+
         // -1 means that the key exists but does not have an expiration date.
-        return $ttl > 0 ? $ttl : null;
+        if ($ttl === -1) {
+            return \PHP_INT_MAX;
+        }
+
+        return $ttl;
     }
 }

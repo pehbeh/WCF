@@ -159,8 +159,12 @@ final class DiskCacheSource implements ICacheSource
     }
 
     #[\Override]
-    public function getCacheLifetime(string $cacheName): ?int
+    public function getExpirationTime(string $cacheName, int $maxLifetime): ?int
     {
+        if ($maxLifetime === 0) {
+            return \PHP_INT_MAX;
+        }
+
         $filename = $this->getFilename($cacheName);
 
         if (!\file_exists($filename)) {
@@ -171,6 +175,6 @@ final class DiskCacheSource implements ICacheSource
             return null;
         }
 
-        return \filemtime($filename);
+        return \filemtime($filename) + $maxLifetime;
     }
 }
