@@ -7,6 +7,7 @@ use Negotiation\LanguageNegotiator;
 use wcf\data\language\category\LanguageCategory;
 use wcf\data\language\Language;
 use wcf\data\language\LanguageEditor;
+use wcf\system\cache\eager\data\LanguageCacheData;
 use wcf\system\cache\eager\LanguageCache;
 use wcf\system\SingletonFactory;
 use wcf\system\template\TemplateScriptingCompiler;
@@ -24,7 +25,7 @@ class LanguageFactory extends SingletonFactory
     /**
      * language cache
      */
-    protected LanguageCache $cache;
+    protected LanguageCacheData $cache;
 
     /**
      * active template scripting compiler
@@ -45,7 +46,7 @@ class LanguageFactory extends SingletonFactory
      */
     public function getLanguage(int $languageID): ?Language
     {
-        return $this->cache->getCache()->getLanguage($languageID);
+        return $this->cache->getLanguage($languageID);
     }
 
     /**
@@ -78,7 +79,7 @@ class LanguageFactory extends SingletonFactory
     public function getLanguageByCode($languageCode)
     {
         // called within WCFSetup
-        if (empty($this->cache->getCache()->codes)) {
+        if (empty($this->cache->codes)) {
             $sql = "SELECT  languageID
                     FROM    wcf1_language
                     WHERE   languageCode = ?";
@@ -88,8 +89,8 @@ class LanguageFactory extends SingletonFactory
             if (isset($row['languageID'])) {
                 return new Language($row['languageID']);
             }
-        } elseif (isset($this->cache->getCache()->codes[$languageCode])) {
-            return $this->getLanguage($this->cache->getCache()->codes[$languageCode]);
+        } elseif (isset($this->cache->codes[$languageCode])) {
+            return $this->getLanguage($this->cache->codes[$languageCode]);
         }
 
         return null;
@@ -103,7 +104,7 @@ class LanguageFactory extends SingletonFactory
      */
     public function isValidCategory($categoryName)
     {
-        return isset($this->cache->getCache()->categories[$categoryName]);
+        return isset($this->cache->categories[$categoryName]);
     }
 
     /**
@@ -111,7 +112,7 @@ class LanguageFactory extends SingletonFactory
      */
     public function getCategory($categoryName): ?LanguageCategory
     {
-        return $this->cache->getCache()->getLanguageCategory($categoryName);
+        return $this->cache->getLanguageCategory($categoryName);
     }
 
     /**
@@ -122,7 +123,7 @@ class LanguageFactory extends SingletonFactory
      */
     public function getCategoryByID($languageCategoryID)
     {
-        return $this->cache->getCache()->getLanguageCategoryByID($languageCategoryID);
+        return $this->cache->getLanguageCategoryByID($languageCategoryID);
     }
 
     /**
@@ -132,7 +133,7 @@ class LanguageFactory extends SingletonFactory
      */
     public function getCategories()
     {
-        return $this->cache->getCache()->categories;
+        return $this->cache->categories;
     }
 
     /**
@@ -147,13 +148,13 @@ class LanguageFactory extends SingletonFactory
         }
 
         // get default language
-        $defaultLanguageCode = $this->cache->getCache()->languages[$this->cache->getCache()->default]->languageCode;
+        $defaultLanguageCode = $this->cache->languages[$this->cache->default]->languageCode;
 
         // get preferred language
         $languageCode = self::getPreferredLanguage($availableLanguageCodes, $defaultLanguageCode);
 
         // get language id of preferred language
-        foreach ($this->cache->getCache()->languages as $key => $language) {
+        foreach ($this->cache->languages as $key => $language) {
             if ($language->languageCode == $languageCode) {
                 return $key;
             }
@@ -207,7 +208,7 @@ class LanguageFactory extends SingletonFactory
      */
     protected function loadCache()
     {
-        $this->cache = new LanguageCache();
+        $this->cache = (new LanguageCache())->getCache();
     }
 
     /**
@@ -215,7 +216,7 @@ class LanguageFactory extends SingletonFactory
      */
     public function clearCache()
     {
-        $this->cache->rebuild();
+        (new LanguageCache())->rebuild();
     }
 
     /**
@@ -238,7 +239,7 @@ class LanguageFactory extends SingletonFactory
      */
     public function getDefaultLanguage()
     {
-        return $this->cache->getCache()->getDefaultLanguage();
+        return $this->cache->getDefaultLanguage();
     }
 
     /**
@@ -248,7 +249,7 @@ class LanguageFactory extends SingletonFactory
      */
     public function getDefaultLanguageID()
     {
-        return $this->cache->getCache()->default;
+        return $this->cache->default;
     }
 
     /**
@@ -258,7 +259,7 @@ class LanguageFactory extends SingletonFactory
      */
     public function getLanguages()
     {
-        return $this->cache->getCache()->languages;
+        return $this->cache->languages;
     }
 
     /**
@@ -329,7 +330,7 @@ class LanguageFactory extends SingletonFactory
     {
         LanguageEditor::deleteLanguageFiles();
 
-        foreach ($this->cache->getCache()->languages as $language) {
+        foreach ($this->cache->languages as $language) {
             $languageEditor = new LanguageEditor($language);
             $languageEditor->deleteCompiledTemplates();
         }
@@ -342,7 +343,7 @@ class LanguageFactory extends SingletonFactory
      */
     public function multilingualismEnabled()
     {
-        return $this->cache->getCache()->multilingualismEnabled;
+        return $this->cache->multilingualismEnabled;
     }
 
     /**

@@ -18,7 +18,6 @@ use wcf\system\database\MySQLDatabase;
 use wcf\system\event\EventHandler;
 use wcf\system\exception\ErrorException;
 use wcf\system\exception\IPrintableException;
-use wcf\system\exception\ParentClassException;
 use wcf\system\exception\SystemException;
 use wcf\system\language\LanguageFactory;
 use wcf\system\package\command\RebuildBootstrapper;
@@ -141,9 +140,9 @@ class WCF
     /**
      * list of cached core objects
      *
-     * @var CoreObjectCache
+     * @var array<string, class-string<SingletonFactory>>
      */
-    protected static CoreObjectCache $coreObjectCache;
+    protected static array $coreObjectCache;
 
     /**
      * database object
@@ -749,7 +748,7 @@ class WCF
             return;
         }
 
-        self::$coreObjectCache = new CoreObjectCache();
+        self::$coreObjectCache = (new CoreObjectCache())->getCache();
     }
 
     /**
@@ -915,10 +914,6 @@ class WCF
         }
 
         if (\class_exists($objectName)) {
-            if (!\is_subclass_of($objectName, SingletonFactory::class)) {
-                throw new ParentClassException($objectName, SingletonFactory::class);
-            }
-
             self::$coreObject[$className] = \call_user_func([$objectName, 'getInstance']);
 
             return self::$coreObject[$className];
@@ -930,15 +925,11 @@ class WCF
     /**
      * Searches for cached core object definition.
      *
-     * @return  string|null
+     * @return  class-string<SingletonFactory>|null
      */
     final protected static function getCoreObject(string $className)
     {
-        if (!isset(self::$coreObjectCache)) {
-            return null;
-        }
-
-        return self::$coreObjectCache->getCache()[$className] ?? null;
+        return self::$coreObjectCache[$className] ?? null;
     }
 
     /**
