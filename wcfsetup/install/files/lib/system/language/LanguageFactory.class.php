@@ -91,7 +91,7 @@ class LanguageFactory extends SingletonFactory
      */
     public function isValidCategory(string $categoryName): bool
     {
-        return $this->cache->languageCategoryExists($categoryName);
+        return $this->cache->hasCategory($categoryName);
     }
 
     /**
@@ -99,7 +99,7 @@ class LanguageFactory extends SingletonFactory
      */
     public function getCategory(string $categoryName): ?LanguageCategory
     {
-        return $this->cache->getLanguageCategory($categoryName);
+        return $this->cache->getCategory($categoryName);
     }
 
     /**
@@ -107,7 +107,7 @@ class LanguageFactory extends SingletonFactory
      */
     public function getCategoryByID(int $languageCategoryID): ?LanguageCategory
     {
-        return $this->cache->getLanguageCategoryByID($languageCategoryID);
+        return $this->cache->getCategoryByID($languageCategoryID);
     }
 
     /**
