@@ -17,8 +17,8 @@ use wcf\system\WCF;
 /**
  * Handles language related functions.
  *
- * @author  Alexander Ebert
- * @copyright   2001-2019 WoltLab GmbH
+ * @author  Olaf Braun, Alexander Ebert
+ * @copyright   2001-2025 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 class LanguageFactory extends SingletonFactory

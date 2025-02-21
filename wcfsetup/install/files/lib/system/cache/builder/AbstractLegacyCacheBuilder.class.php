@@ -9,12 +9,12 @@ use wcf\system\SingletonFactory;
 /**
  * Legacy implementation of the ICacheBuilder interface that has been migrated to a new EagerCache or AsyncCache.
  *
- * @author      Olaf Braun
- * @copyright   2001-2025 WoltLab GmbH
- * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @author Olaf Braun
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @since       6.2
- * @deprecated  6.2
+ * @since 6.2
+ * @deprecated 6.2
  */
 abstract class AbstractLegacyCacheBuilder extends SingletonFactory implements ICacheBuilder
 {

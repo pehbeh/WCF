@@ -8,10 +8,10 @@ use wcf\system\SingletonFactory;
 /**
  * Eager cache implementation for core objects.
  *
- * @author      Olaf Braun
- * @copyright   2001-2025 WoltLab GmbH
- * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
- * @since       6.2
+ * @author Olaf Braun
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
  *
  * @extends AbstractEagerCache<array<string, class-string<SingletonFactory>>>
  */
