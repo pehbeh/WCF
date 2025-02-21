@@ -18,7 +18,10 @@ use wcf\system\SingletonFactory;
  */
 abstract class AbstractLegacyCacheBuilder extends SingletonFactory implements ICacheBuilder
 {
-    protected array $cache = [];
+    /**
+     * @var array<string, array<string|int, mixed>>
+     */
+    private array $cache = [];
 
     #[\Override]
     public function getData(array $parameters = [], $arrayIndex = '')
