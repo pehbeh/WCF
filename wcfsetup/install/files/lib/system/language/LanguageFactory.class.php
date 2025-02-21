@@ -9,7 +9,6 @@ use wcf\data\language\Language;
 use wcf\data\language\LanguageEditor;
 use wcf\system\cache\eager\data\LanguageCacheData;
 use wcf\system\cache\eager\LanguageCache;
-use wcf\system\exception\SystemException;
 use wcf\system\SingletonFactory;
 use wcf\system\template\TemplateScriptingCompiler;
 use wcf\system\WCF;
@@ -138,7 +137,7 @@ class LanguageFactory extends SingletonFactory
             }
         }
 
-        throw new SystemException("No language found for language code '{$languageCode}'");
+        throw new \RuntimeException("No language found for language code '{$languageCode}'");
     }
 
     /**
