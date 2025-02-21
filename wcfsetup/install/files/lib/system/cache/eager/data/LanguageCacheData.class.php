@@ -64,4 +64,60 @@ final class LanguageCacheData
 
         return $this->categories[$categoryName] ?? null;
     }
+
+    /**
+     * Returns `true` if the language category with the given category name exists.
+     */
+    public function languageCategoryExists(string $categoryName): bool
+    {
+        return isset($this->categories[$categoryName]);
+    }
+
+    /**
+     * Return all content languages.
+     *
+     * @return list<Language>
+     */
+    public function getContentLanguages(): array
+    {
+        return \array_filter(
+            $this->languages,
+            static fn(Language $language) => \boolval($language->hasContent)
+        );
+    }
+
+    /**
+     * Return all content languages IDs.
+     *
+     * @return list<int>
+     */
+    public function getContentLanguageIDs(): array
+    {
+        return \array_map(
+            static fn(Language $language) => $language->languageID,
+            $this->getContentLanguages()
+        );
+    }
+
+    /**
+     * Return all language codes.
+     *
+     * @return list<string>
+     */
+    public function getLanguageCodes(): array
+    {
+        return \array_keys($this->codes);
+    }
+
+    /**
+     * Return language by given language code.
+     */
+    public function getLanguageByCode(string $languageCode): ?Language
+    {
+        if (isset($this->codes[$languageCode])) {
+            return $this->languages[$this->codes[$languageCode]];
+        }
+
+        return null;
+    }
 }

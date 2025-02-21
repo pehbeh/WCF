@@ -9,6 +9,7 @@ use wcf\data\language\Language;
 use wcf\data\language\LanguageEditor;
 use wcf\system\cache\eager\data\LanguageCacheData;
 use wcf\system\cache\eager\LanguageCache;
+use wcf\system\exception\SystemException;
 use wcf\system\SingletonFactory;
 use wcf\system\template\TemplateScriptingCompiler;
 use wcf\system\WCF;
@@ -51,14 +52,11 @@ class LanguageFactory extends SingletonFactory
 
     /**
      * Returns the preferred language of the current user.
-     *
-     * @param int $languageID
-     * @return  Language
      */
-    public function getUserLanguage($languageID = 0)
+    public function getUserLanguage(int $languageID = 0): Language
     {
         if ($languageID) {
-            $language = $this->getLanguage($languageID);
+            $language = $this->cache->getLanguage($languageID);
             if ($language !== null) {
                 return $language;
             }
@@ -66,62 +64,49 @@ class LanguageFactory extends SingletonFactory
 
         $languageID = $this->findPreferredLanguage();
 
-        return $this->getLanguage($languageID);
+        return $this->cache->getLanguage($languageID);
     }
 
     /**
      * Returns the language with the given language code or null if no such
      * language exists.
-     *
-     * @param string $languageCode
-     * @return ?Language
      */
-    public function getLanguageByCode($languageCode)
+    public function getLanguageByCode(string $languageCode): ?Language
     {
-        // called within WCFSetup
-        if (empty($this->cache->codes)) {
-            $sql = "SELECT  languageID
+        $language = $this->getLanguageByCode($languageCode);
+        if ($language === null) {
+            // called within WCFSetup
+            $sql = "SELECT  *
                     FROM    wcf1_language
                     WHERE   languageCode = ?";
             $statement = WCF::getDB()->prepare($sql);
             $statement->execute([$languageCode]);
-            $row = $statement->fetchArray();
-            if (isset($row['languageID'])) {
-                return new Language($row['languageID']);
-            }
-        } elseif (isset($this->cache->codes[$languageCode])) {
-            return $this->getLanguage($this->cache->codes[$languageCode]);
+            $language = $statement->fetchObject(Language::class);
         }
 
-        return null;
+        return $language;
     }
 
     /**
      * Returns true if the language category with the given name exists.
-     *
-     * @param string $categoryName
-     * @return  bool
      */
-    public function isValidCategory($categoryName)
+    public function isValidCategory(string $categoryName): bool
     {
-        return isset($this->cache->categories[$categoryName]);
+        return $this->cache->languageCategoryExists($categoryName);
     }
 
     /**
      * Returns the language category with the given name.
      */
-    public function getCategory($categoryName): ?LanguageCategory
+    public function getCategory(string $categoryName): ?LanguageCategory
     {
         return $this->cache->getLanguageCategory($categoryName);
     }
 
     /**
      * Returns language category by id.
-     *
-     * @param int $languageCategoryID
-     * @return  LanguageCategory|null
      */
-    public function getCategoryByID($languageCategoryID)
+    public function getCategoryByID(int $languageCategoryID): ?LanguageCategory
     {
         return $this->cache->getLanguageCategoryByID($languageCategoryID);
     }
@@ -131,7 +116,7 @@ class LanguageFactory extends SingletonFactory
      *
      * @return  LanguageCategory[]
      */
-    public function getCategories()
+    public function getCategories(): array
     {
         return $this->cache->categories;
     }
@@ -139,19 +124,12 @@ class LanguageFactory extends SingletonFactory
     /**
      * Searches the preferred language of the current user.
      */
-    protected function findPreferredLanguage()
+    protected function findPreferredLanguage(): int
     {
-        // get available language codes
-        $availableLanguageCodes = [];
-        foreach ($this->getLanguages() as $language) {
-            $availableLanguageCodes[] = $language->languageCode;
-        }
-
-        // get default language
-        $defaultLanguageCode = $this->cache->languages[$this->cache->default]->languageCode;
+        $defaultLanguageCode = $this->cache->getDefaultLanguage()->languageCode;
 
         // get preferred language
-        $languageCode = self::getPreferredLanguage($availableLanguageCodes, $defaultLanguageCode);
+        $languageCode = self::getPreferredLanguage($this->cache->getLanguageCodes(), $defaultLanguageCode);
 
         // get language id of preferred language
         foreach ($this->cache->languages as $key => $language) {
@@ -159,6 +137,8 @@ class LanguageFactory extends SingletonFactory
                 return $key;
             }
         }
+
+        throw new SystemException("No language found for language code '{$languageCode}'");
     }
 
     /**
@@ -191,10 +171,8 @@ class LanguageFactory extends SingletonFactory
 
     /**
      * Returns the active scripting compiler object.
-     *
-     * @return  TemplateScriptingCompiler
      */
-    public function getScriptingCompiler()
+    public function getScriptingCompiler(): TemplateScriptingCompiler
     {
         if ($this->scriptingCompiler === null) {
             $this->scriptingCompiler = new TemplateScriptingCompiler(WCF::getTPL());
@@ -206,7 +184,7 @@ class LanguageFactory extends SingletonFactory
     /**
      * Loads the language cache.
      */
-    protected function loadCache()
+    protected function loadCache(): void
     {
         $this->cache = (new LanguageCache())->getCache();
     }
@@ -214,7 +192,7 @@ class LanguageFactory extends SingletonFactory
     /**
      * Clears languages cache.
      */
-    public function clearCache()
+    public function clearCache(): void
     {
         (new LanguageCache())->rebuild();
     }
@@ -233,21 +211,17 @@ class LanguageFactory extends SingletonFactory
 
     /**
      * Returns the default language object.
-     *
-     * @return  Language
      * @since   3.0
      */
-    public function getDefaultLanguage()
+    public function getDefaultLanguage(): Language
     {
         return $this->cache->getDefaultLanguage();
     }
 
     /**
      * Returns the default language id
-     *
-     * @return  int
      */
-    public function getDefaultLanguageID()
+    public function getDefaultLanguageID(): int
     {
         return $this->cache->default;
     }
@@ -257,7 +231,7 @@ class LanguageFactory extends SingletonFactory
      *
      * @return  Language[]
      */
-    public function getLanguages()
+    public function getLanguages(): array
     {
         return $this->cache->languages;
     }
@@ -267,16 +241,9 @@ class LanguageFactory extends SingletonFactory
      *
      * @return  Language[]
      */
-    public function getContentLanguages()
+    public function getContentLanguages(): array
     {
-        $availableLanguages = [];
-        foreach ($this->getLanguages() as $languageID => $language) {
-            if ($language->hasContent) {
-                $availableLanguages[$languageID] = $language;
-            }
-        }
-
-        return $availableLanguages;
+        return $this->cache->getContentLanguages();
     }
 
     /**
@@ -285,24 +252,15 @@ class LanguageFactory extends SingletonFactory
      * @return      int[]
      * @since       3.1
      */
-    public function getContentLanguageIDs()
+    public function getContentLanguageIDs(): array
     {
-        $languageIDs = [];
-        foreach ($this->getLanguages() as $language) {
-            if ($language->hasContent) {
-                $languageIDs[] = $language->languageID;
-            }
-        }
-
-        return $languageIDs;
+        return $this->cache->getContentLanguageIDs();
     }
 
     /**
      * Makes given language the default language.
-     *
-     * @param int $languageID
      */
-    public function makeDefault($languageID)
+    public function makeDefault(int $languageID): void
     {
         // remove old default language
         $sql = "UPDATE  wcf1_language
@@ -326,7 +284,7 @@ class LanguageFactory extends SingletonFactory
     /**
      * Removes language cache and compiled templates.
      */
-    public function deleteLanguageCache()
+    public function deleteLanguageCache(): void
     {
         LanguageEditor::deleteLanguageFiles();
 
@@ -338,20 +296,16 @@ class LanguageFactory extends SingletonFactory
 
     /**
      * Returns true if multilingualism is enabled.
-     *
-     * @return  bool
      */
-    public function multilingualismEnabled()
+    public function multilingualismEnabled(): bool
     {
         return $this->cache->multilingualismEnabled;
     }
 
     /**
      * Returns the number of phrases that have been automatically disabled in the past 7 days.
-     *
-     * @return      int
      */
-    public function countRecentlyDisabledCustomValues()
+    public function countRecentlyDisabledCustomValues(): int
     {
         $sql = "SELECT  COUNT(*) AS count
                 FROM    wcf1_language_item
