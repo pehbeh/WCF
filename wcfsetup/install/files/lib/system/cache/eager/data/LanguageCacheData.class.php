@@ -68,9 +68,6 @@ final class LanguageCacheData
         return $this->getLanguageCategory($categoryName);
     }
 
-    /**
-     * Returns `true` if the language category with the given category name exists.
-     */
     public function languageCategoryExists(string $categoryName): bool
     {
         return \array_key_exists($categoryName, $this->categories);
@@ -79,7 +76,7 @@ final class LanguageCacheData
     /**
      * Return all content languages.
      *
-     * @return list<Language>
+     * @return array<int, Language>
      */
     public function getContentLanguages(): array
     {
@@ -96,10 +93,7 @@ final class LanguageCacheData
      */
     public function getContentLanguageIDs(): array
     {
-        return \array_map(
-            static fn(Language $language) => $language->languageID,
-            $this->getContentLanguages()
-        );
+        return \array_keys($this->getContentLanguages());
     }
 
     /**
