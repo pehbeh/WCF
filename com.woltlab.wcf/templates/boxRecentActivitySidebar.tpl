@@ -5,7 +5,7 @@
 			
 			<div class="sidebarItemTitle">
 				{if $event->getLink()}
-					<a href="{$event->getLink()}" class="recentActivityListItem__link">{unsafe:$event->getTitle()}</a>
+					<a href="{$event->getLink()}">{unsafe:$event->getTitle()}</a>
 				{else}
 					{unsafe:$event->getTitle()}
 				{/if}
