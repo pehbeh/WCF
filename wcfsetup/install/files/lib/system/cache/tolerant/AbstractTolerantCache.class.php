@@ -112,7 +112,7 @@ abstract class AbstractTolerantCache
 
     final public function nextRebuildTime(): int
     {
-        $cacheTime = CacheHandler::getInstance()->getCacheSource()->getExpirationTime(
+        $cacheTime = CacheHandler::getInstance()->getCacheSource()->getCreationTime(
             $this->getCacheKey(),
             $this->getLifetime()
         );

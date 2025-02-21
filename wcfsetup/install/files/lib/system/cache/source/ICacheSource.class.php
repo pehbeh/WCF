@@ -43,9 +43,8 @@ interface ICacheSource
     public function set($cacheName, $value, $maxLifetime);
 
     /**
-     * Returns the timestamp when the cache expires.
+     * Returns the timestamp when the cache was created.
      * Or `null` if the cache does not exist or is empty.
-     * `\PHP_INT_MAX` means the cache never expires.
      */
-    public function getExpirationTime(string $cacheName, int $maxLifetime): ?int;
+    public function getCreationTime(string $cacheName, int $maxLifetime): ?int;
 }
