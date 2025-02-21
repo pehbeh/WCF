@@ -119,7 +119,7 @@ class BoxEditForm extends BoxAddForm
             'cssClassName' => $this->cssClassName,
             'showHeader' => $this->showHeader,
             'isDisabled' => $this->isDisabled ? 1 : 0,
-            'linkPageID' => $this->linkPageID,
+            'linkPageID' => $this->linkPageID ?: null,
             'linkPageObjectID' => $this->linkPageObjectID ?: 0,
             'externalURL' => $this->externalURL,
             'invertPermissions' => $this->invertPermissions,

@@ -2,6 +2,7 @@
 
 namespace wcf\system\background\job;
 
+use wcf\system\cache\CacheHandler;
 use wcf\system\cache\tolerant\AbstractTolerantCache;
 
 /**
@@ -18,6 +19,16 @@ final class TolerantCacheRebuildBackgroundJob extends AbstractUniqueBackgroundJo
         /** @var array<string, mixed> */
         public readonly array $parameters = []
     ) {
+    }
+
+    public function identifier(): string
+    {
+        $identifier = $this->cacheClass;
+        if (!empty($this->parameters)) {
+            $identifier .= '-' . CacheHandler::getInstance()->getCacheIndex($this->parameters);
+        }
+
+        return $identifier;
     }
 
     #[\Override]

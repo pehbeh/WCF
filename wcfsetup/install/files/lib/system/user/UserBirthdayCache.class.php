@@ -2,7 +2,6 @@
 
 namespace wcf\system\user;
 
-use wcf\system\cache\builder\UserBirthdayCacheBuilder;
 use wcf\system\event\EventHandler;
 use wcf\system\SingletonFactory;
 
@@ -16,30 +15,21 @@ use wcf\system\SingletonFactory;
 class UserBirthdayCache extends SingletonFactory
 {
     /**
-     * loaded months
-     * @var int[]
-     */
-    protected $monthsLoaded = [];
-
-    /**
      * user birthdays
-     * @var int[][]
+     *
+     * @var array<int, array<int, list<int>>>
      */
-    protected $birthdays = [];
+    protected array $birthdays = [];
 
     /**
      * Loads the birthday cache.
      *
      * @param int $month
      */
-    protected function loadMonth($month)
+    protected function loadMonth(int $month): void
     {
-        if (!isset($this->monthsLoaded[$month])) {
-            $this->birthdays = \array_merge(
-                $this->birthdays,
-                UserBirthdayCacheBuilder::getInstance()->getData(['month' => $month])
-            );
-            $this->monthsLoaded[$month] = true;
+        if (!\array_key_exists($month, $this->birthdays)) {
+            $this->birthdays[$month] = (new \wcf\system\cache\tolerant\UserBirthdayCache($month))->getCache();
 
             $data = [
                 'birthdays' => $this->birthdays,
@@ -52,20 +42,12 @@ class UserBirthdayCache extends SingletonFactory
 
     /**
      * Returns the user birthdays for a specific day.
-     *
-     * @param int $month
-     * @param int $day
      * @return  int[]   list of user ids
      */
-    public function getBirthdays($month, $day)
+    public function getBirthdays(int $month, int $day): array
     {
         $this->loadMonth($month);
 
-        $index = ($month < 10 ? '0' : '') . $month . '-' . ($day < 10 ? '0' : '') . $day;
-        if (isset($this->birthdays[$index])) {
-            return $this->birthdays[$index];
-        }
-
-        return [];
+        return $this->birthdays[$month][$day] ?? [];
     }
 }

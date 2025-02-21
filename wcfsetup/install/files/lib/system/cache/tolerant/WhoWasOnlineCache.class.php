@@ -23,7 +23,6 @@ final class WhoWasOnlineCache extends AbstractTolerantCache
     #[\Override]
     protected function rebuildCacheData(): array
     {
-        $userIDs = [];
         $sql = "(
                     SELECT  userID
                     FROM    wcf1_user
@@ -36,10 +35,7 @@ final class WhoWasOnlineCache extends AbstractTolerantCache
                 )";
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute([TIME_NOW - 86400, TIME_NOW - USER_ONLINE_TIMEOUT]);
-        while ($userID = $statement->fetchColumn()) {
-            $userIDs[] = $userID;
-        }
 
-        return $userIDs;
+        return $statement->fetchAll(\PDO::FETCH_COLUMN);
     }
 }
