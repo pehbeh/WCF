@@ -12,20 +12,20 @@ use wcf\system\cache\CacheHandler;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.2
  *
- * @template T of array | object
+ * @template T of array|object
  */
 abstract class AbstractTolerantCache
 {
     /**
      * @var T
      */
-    private array | object $cache;
+    private array|object $cache;
     private string $cacheName;
 
     /**
      * @return T
      */
-    final public function getCache(): array | object
+    final public function getCache(): array|object
     {
         if (!isset($this->cache)) {
             $cache = CacheHandler::getInstance()->getCacheSource()->get(
@@ -108,7 +108,7 @@ abstract class AbstractTolerantCache
     /**
      * @return T
      */
-    abstract protected function rebuildCacheData(): array | object;
+    abstract protected function rebuildCacheData(): array|object;
 
     final public function nextRebuildTime(): int
     {
