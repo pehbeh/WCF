@@ -52,7 +52,6 @@ abstract class AbstractTolerantCache
     {
         if (!isset($this->cacheName)) {
             /* @see AbstractEagerCache::getCacheKey() */
-            $reflection = new \ReflectionClass($this);
             $this->cacheName = \str_replace(
                 ['\\', 'system_cache_tolerant_'],
                 ['_', ''],
@@ -105,7 +104,7 @@ abstract class AbstractTolerantCache
             0
         );
 
-        BackgroundQueueHandler::getInstance()->enqueueIn(
+        BackgroundQueueHandler::getInstance()->enqueueAt(
             [new TolerantCacheRebuildBackgroundJob(\get_class($this), $this->getProperties())],
             $this->nextRebuildTime()
         );

@@ -7,7 +7,7 @@ use wcf\system\exception\SystemException;
 use wcf\system\SingletonFactory;
 
 /**
- * Legacy implementation of the ICacheBuilder interface that has been migrated to a new EagerCache or AsyncCache.
+ * Legacy implementation of the ICacheBuilder interface that has been migrated to a new Eager-Cache or Tolerant-Cache.
  *
  * @author      Olaf Braun
  * @copyright   2001-2025 WoltLab GmbH
