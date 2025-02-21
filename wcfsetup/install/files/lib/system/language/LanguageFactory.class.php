@@ -53,7 +53,7 @@ class LanguageFactory extends SingletonFactory
     /**
      * Returns the preferred language of the current user.
      */
-    public function getUserLanguage(int $languageID = 0): Language
+    public function getUserLanguage(?int $languageID = null): Language
     {
         if ($languageID) {
             $language = $this->cache->getLanguage($languageID);
