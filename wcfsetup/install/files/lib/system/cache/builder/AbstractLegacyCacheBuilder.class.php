@@ -17,11 +17,6 @@ use wcf\system\SingletonFactory;
  */
 abstract class AbstractLegacyCacheBuilder extends SingletonFactory implements ICacheBuilder
 {
-    /**
-     * maximum cache lifetime in seconds, '0' equals infinite
-     */
-    protected int $maxLifetime = 0;
-
     #[\Override]
     public function getData(array $parameters = [], $arrayIndex = '')
     {
@@ -44,8 +39,8 @@ abstract class AbstractLegacyCacheBuilder extends SingletonFactory implements IC
     abstract protected function rebuild(array $parameters): array;
 
     #[\Override]
-    public function getMaxLifetime()
+    final public function getMaxLifetime()
     {
-        return $this->maxLifetime;
+        return 0;
     }
 }
