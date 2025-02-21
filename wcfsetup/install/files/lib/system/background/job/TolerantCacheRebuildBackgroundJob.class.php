@@ -44,12 +44,6 @@ final class TolerantCacheRebuildBackgroundJob extends AbstractUniqueBackgroundJo
     }
 
     #[\Override]
-    public function retryAfter()
-    {
-        return (new $this->cacheClass(...$this->parameters))->getLifetime();
-    }
-
-    #[\Override]
     public function perform()
     {
         if (!\class_exists($this->cacheClass)) {
