@@ -41,4 +41,9 @@ interface ICacheSource
      * @param int $maxLifetime
      */
     public function set($cacheName, $value, $maxLifetime);
+
+    /**
+     * Returns the cache lifetime for a specific cache.
+     */
+    public function getCacheLifetime(string $cacheName): ?int;
 }

@@ -184,4 +184,20 @@ class RedisCacheSource implements ICacheSource
     {
         return $this->redis;
     }
+
+    #[\Override]
+    public function getCacheLifetime(string $cacheName): ?int
+    {
+        $parts = \explode('-', $cacheName, 2);
+
+        if (isset($parts[1])) {
+            $ttl = $this->redis->ttl($this->getCacheName($parts[0]));
+        } else {
+            $ttl = $this->redis->ttl($this->getCacheName($cacheName));
+        }
+
+        // -2 means that the key does not exist
+        // -1 means that the key exists but does not have an expiration date.
+        return $ttl > 0 ? $ttl : null;
+    }
 }
