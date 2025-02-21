@@ -124,6 +124,9 @@ abstract class AbstractTolerantCache
         return $cacheTime + ($this->getLifetime() - 60);
     }
 
+    /**
+     * Return the lifetime of the cache in seconds.
+     */
     abstract public function getLifetime(): int;
 
     final public function needsRebuild(): bool
