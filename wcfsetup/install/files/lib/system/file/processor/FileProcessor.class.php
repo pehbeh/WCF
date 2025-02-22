@@ -4,7 +4,6 @@ namespace wcf\system\file\processor;
 
 use wcf\data\file\File;
 use wcf\data\file\FileEditor;
-use wcf\data\file\thumbnail\FileThumbnail;
 use wcf\data\file\thumbnail\FileThumbnailEditor;
 use wcf\data\file\thumbnail\FileThumbnailList;
 use wcf\data\object\type\ObjectType;
@@ -17,7 +16,6 @@ use wcf\system\exception\SystemException;
 use wcf\system\file\processor\exception\DamagedImage;
 use wcf\system\image\adapter\exception\ImageNotProcessable;
 use wcf\system\image\adapter\exception\ImageNotReadable;
-use wcf\system\image\adapter\ImageAdapter;
 use wcf\system\image\ImageHandler;
 use wcf\system\SingletonFactory;
 use wcf\system\WCF;
@@ -32,6 +30,7 @@ use function wcf\functions\exception\logThrowable;
  * @copyright 2001-2024 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.1
+ * @phpstan-type Context array<string, mixed>
  */
 final class FileProcessor extends SingletonFactory
 {
@@ -73,6 +72,9 @@ final class FileProcessor extends SingletonFactory
         return $this->objectTypes[$objectType] ?? null;
     }
 
+    /**
+     * @param Context $context
+     */
     public function getHtmlElement(IFileProcessor $fileProcessor, array $context): string
     {
         $allowedFileExtensions = $fileProcessor->getAllowedFileExtensions($context);
@@ -133,6 +135,9 @@ final class FileProcessor extends SingletonFactory
         );
     }
 
+    /**
+     * @param Context $context
+     */
     public function canAdopt(IFileProcessor $fileProcessor, File $file, array $context): bool
     {
         $objectType = $this->getObjectType($fileProcessor->getObjectTypeName());
@@ -309,6 +314,9 @@ final class FileProcessor extends SingletonFactory
         }
     }
 
+    /**
+     * @param File[] $files
+     */
     public function delete(array $files): void
     {
         $fileIDs = \array_column($files, 'fileID');
@@ -328,6 +336,9 @@ final class FileProcessor extends SingletonFactory
         }
     }
 
+    /**
+     * @param Context $context
+     */
     public function hasReachedUploadLimit(IFileProcessor $fileProcessor, array $context): bool
     {
         $isReplacement = $context['__replace'] ?? false;

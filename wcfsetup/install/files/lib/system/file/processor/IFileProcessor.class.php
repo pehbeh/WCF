@@ -17,6 +17,7 @@ use wcf\system\exception\UserInputException;
  * @copyright 2001-2024 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.1
+ * @phpstan-type Context array<string, mixed>
  */
 interface IFileProcessor
 {
@@ -26,6 +27,8 @@ interface IFileProcessor
      * The `$context` variable is echoed from the `<woltlab-core-file-upload>`
      * element and intended to provide additional context to make decisions. The
      * value is stored for use with the temporary file later.
+     *
+     * @param Context $context
      */
     public function acceptUpload(string $filename, int $fileSize, array $context): FileProcessorPreflightResult;
 
@@ -43,6 +46,8 @@ interface IFileProcessor
      * The `$file` can be assigned if one of the following conditions is met:
      * - The file has not yet been assigned to any object
      * - The file is already assigned to the object referenced by `$context`
+     *
+     * @param Context $context
      */
     public function canAdopt(File $file, array $context): bool;
 
@@ -52,6 +57,8 @@ interface IFileProcessor
      *
      * `$context` are the exact same values that have previously been passed to
      * `canAdopt()` before.
+     *
+     * @param Context $context
      */
     public function adopt(File $file, array $context): void;
 
@@ -82,7 +89,7 @@ interface IFileProcessor
      * implementation may opt out of this by returning `null` which means that
      * it does not track this for whatever reason.
      *
-     * @param array<string,string> $context
+     * @param Context $context
      * @return null|int Number of existing files or `null` if this should not be enforced
      */
     public function countExistingFiles(array $context): ?int;
@@ -101,6 +108,7 @@ interface IFileProcessor
      *
      * The special value '*' indicates that all file extensions are acceptable.
      *
+     * @param Context $context
      * @return list<string>
      */
     public function getAllowedFileExtensions(array $context): array;
@@ -115,15 +123,16 @@ interface IFileProcessor
      * Limits the maximum number of files that can be uploaded for the provided
      * context.
      *
-     * @return null|int Maximum number of files or `null` for an indefinite amount.
+     * @param Context $context
+     * @return ?int Maximum number of files or `null` for an indefinite amount.
      */
     public function getMaximumCount(array $context): ?int;
 
     /**
      * Limits the maximum size of an uploade file.
      *
-     * @param array<string,string> $context
-     * @return null|int Maximum size in bytes or null to disable the limit.
+     * @param Context $context
+     * @return ?int Maximum size in bytes or null to disable the limit.
      */
     public function getMaximumSize(array $context): ?int;
 
@@ -148,6 +157,8 @@ interface IFileProcessor
     /**
      * Returns additional meta data for this file that will be transmitted to
      * the client.
+     *
+     * @return array<string, mixed>
      */
     public function getUploadResponse(File $file): array;
 

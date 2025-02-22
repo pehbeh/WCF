@@ -26,7 +26,7 @@ abstract class AbstractHtmlInputNodeProcessorListener implements IParameterizedE
      *
      * @param HtmlInputNodeProcessor $processor
      * @param Regex $regex
-     * @return  int[]
+     * @return int[]
      */
     protected function getObjectIDs(HtmlInputNodeProcessor $processor, Regex $regex)
     {
@@ -48,7 +48,7 @@ abstract class AbstractHtmlInputNodeProcessorListener implements IParameterizedE
      *
      * @param string $link
      * @param string $defaultAnchor
-     * @return  Regex
+     * @return Regex
      */
     protected function getRegexFromLink($link, $defaultAnchor = '')
     {
@@ -66,6 +66,7 @@ abstract class AbstractHtmlInputNodeProcessorListener implements IParameterizedE
      * @param Regex $regex
      * @param ITitledObject[] $objects
      * @param string $bbcodeName
+     * @return void
      * @deprecated 5.2 Use `replaceLinks()` instead.
      */
     protected function replaceLinksWithBBCode(
@@ -84,7 +85,8 @@ abstract class AbstractHtmlInputNodeProcessorListener implements IParameterizedE
      * @param HtmlInputNodeProcessor $processor
      * @param Regex $regex
      * @param ITitledObject[] $objects
-     * @throws  ImplementationException
+     * @return void
+     * @throws ImplementationException
      * @deprecated 5.2 Use `replaceLinks()` instead.
      */
     protected function setObjectTitles(HtmlInputNodeProcessor $processor, Regex $regex, array $objects)
@@ -96,6 +98,7 @@ abstract class AbstractHtmlInputNodeProcessorListener implements IParameterizedE
      * @param HtmlInputNodeProcessor $processor
      * @param ITitledObject[] $objects
      * @param string $bbcodeName
+     * @return void
      */
     protected function replaceLinks(HtmlInputNodeProcessor $processor, array $objects, $bbcodeName = '')
     {

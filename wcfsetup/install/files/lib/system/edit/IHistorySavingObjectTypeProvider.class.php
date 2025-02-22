@@ -19,6 +19,7 @@ interface IHistorySavingObjectTypeProvider extends IObjectTypeProvider
      * older version of the given IHistorySavingObject.
      *
      * @param IHistorySavingObject $object
+     * @return void
      * @throws  PermissionDeniedException   if access is denied
      * @throws  \InvalidArgumentException   if given object has not be provided by this provider and thus cannot be checked by this method
      */
@@ -27,7 +28,7 @@ interface IHistorySavingObjectTypeProvider extends IObjectTypeProvider
     /**
      * Returns the identifier of the appropriate page menu item.
      *
-     * @return  string
+     * @return string
      * @deprecated  3.0
      */
     public function getActivePageMenuItem();

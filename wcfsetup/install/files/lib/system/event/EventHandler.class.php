@@ -76,9 +76,9 @@ final class EventHandler extends SingletonFactory
     /**
      * Executes all inherited listeners for the given event.
      *
-     * @param mixed $eventObj
+     * @param mixed[] $parameters
      */
-    private function executeInheritedActions($eventObj, string $eventName, string $className, string $name, array &$parameters)
+    private function executeInheritedActions(mixed $eventObj, string $eventName, string $className, string $name, array &$parameters): void
     {
         // create objects of the actions
         if (!isset($this->inheritedActionsObjects[$name])) {
@@ -139,11 +139,12 @@ final class EventHandler extends SingletonFactory
 
     /**
      * @param   (callable[])|((IParameterizedEventListener|ILegacyEventListener)[])     $eventListeners
+     * @param mixed[] $parameters
      * @since   5.5
      */
     private function executeListeners(
         array $eventListeners,
-        $eventObj,
+        mixed $eventObj,
         string $className,
         string $eventName,
         array &$parameters
@@ -179,9 +180,9 @@ final class EventHandler extends SingletonFactory
      * the next event listener and be available after execution of every
      * event listener.
      *
-     * @param mixed $eventObj
+     * @param mixed[] $parameters
      */
-    public function fireAction($eventObj, string $eventName, array &$parameters = [])
+    public function fireAction(mixed $eventObj, string $eventName, array &$parameters = []): void
     {
         // get class name
         if (\is_object($eventObj)) {

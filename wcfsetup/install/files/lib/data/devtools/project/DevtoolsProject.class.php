@@ -106,7 +106,7 @@ class DevtoolsProject extends DatabaseObject
     /**
      * Returns true if this project appears to be `WoltLab Suite Core`.
      *
-     * @return      bool
+     * @return bool
      */
     public function isCore()
     {
@@ -272,7 +272,7 @@ class DevtoolsProject extends DatabaseObject
      * Returns true if the path appears to point to `WoltLab Suite Core`.
      *
      * @param string $path
-     * @return      bool
+     * @return bool
      */
     public static function pathIsCore($path)
     {

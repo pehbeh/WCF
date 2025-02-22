@@ -930,7 +930,14 @@ final class DatabaseTableChangeProcessor
      * Returns the log entry for the given column or `null` if there is no explicit entry for
      * this column.
      *
-     * @since       5.4
+     * @return ?array{
+     *  packageID: int,
+     *  sqlTable: string,
+     *  sqlColumn: string,
+     *  sqlIndex: string,
+     *  isDone: 0|1
+     * }
+     * @since 5.4
      */
     private function getColumnLog(string $tableName, IDatabaseTableColumn $column): ?array
     {
@@ -1029,7 +1036,7 @@ final class DatabaseTableChangeProcessor
     /**
      * Prepares the log entry for adding the given foreign key.
      */
-    private function prepareForeignKeyLog(string $tableName, DatabaseTableForeignKey $foreignKey)
+    private function prepareForeignKeyLog(string $tableName, DatabaseTableForeignKey $foreignKey): void
     {
         $this->prepareLog(['sqlTable' => $tableName, 'sqlIndex' => $foreignKey->getName()]);
     }
@@ -1098,6 +1105,14 @@ final class DatabaseTableChangeProcessor
     /**
      * Checks if the relevant table layout changes can be executed and returns an array with information
      * on all validation errors.
+     *
+     * @return list<array{
+     *  tableName: string,
+     *  type: string,
+     *  columnName?: string,
+     *  columnNames?: string,
+     *  referencedTableName?: string,
+     * }>
      */
     public function validate(): array
     {

@@ -38,6 +38,7 @@ trait TMultiXmlGuiPackageInstallationPlugin
      * form.
      *
      * @param IFormDocument $form
+     * @return void
      */
     public function addEntry(IFormDocument $form)
     {
@@ -53,9 +54,7 @@ trait TMultiXmlGuiPackageInstallationPlugin
     /**
      * Creates a new XML element and insert it into the XML file.
      *
-     * @param XML $xml
-     * @param IFormDocument $form
-     * @return  \DOMElement
+     * @return \DOMElement
      */
     protected function createAndInsertNewXmlElement(XML $xml, IFormDocument $form)
     {
@@ -70,9 +69,8 @@ trait TMultiXmlGuiPackageInstallationPlugin
      * provided by the given form and returns the new identifier of the entry
      * (or the old identifier if it has not changed).
      *
-     * @param IFormDocument $form
      * @param string $identifier
-     * @return  string          new identifier
+     * @return string new identifier
      */
     public function editEntry(IFormDocument $form, $identifier)
     {
@@ -96,10 +94,8 @@ trait TMultiXmlGuiPackageInstallationPlugin
     /**
      * Replaces an edited element with a new element and returns the new element.
      *
-     * @param XML $xml
-     * @param IFormDocument $form
      * @param string $identifier
-     * @return  \DOMElement
+     * @return \DOMElement
      */
     protected function replaceXmlElement(XML $xml, IFormDocument $form, $identifier)
     {
@@ -115,7 +111,7 @@ trait TMultiXmlGuiPackageInstallationPlugin
     /**
      * Returns a list of all pip entries of this pip.
      *
-     * @return  IDevtoolsPipEntryList
+     * @return IDevtoolsPipEntryList
      */
     public function getEntryList()
     {
@@ -142,12 +138,13 @@ trait TMultiXmlGuiPackageInstallationPlugin
      * Returns the xml objects for this pip.
      *
      * @param bool $createXmlFiles if `true` and if a relevant XML file does not exist, it is created
-     * @return  XML[]
+     * @return XML[]
      */
     abstract protected function getProjectXmls($createXmlFiles = false);
 
     /**
      * @inheritDoc
+     * @return void
      */
     public function setEditedEntryIdentifier($identifier)
     {
@@ -168,7 +165,8 @@ trait TMultiXmlGuiPackageInstallationPlugin
     }
 
     /**
-     * @inheritDoc
+     * @param string $identifier
+     * @return bool
      */
     public function setEntryData($identifier, IFormDocument $document)
     {
@@ -215,7 +213,9 @@ trait TMultiXmlGuiPackageInstallationPlugin
     }
 
     /**
-     * @inheritDoc
+     * @param string $identifier
+     * @param bool $addDeleteInstruction
+     * @return void
      */
     public function deleteEntry($identifier, $addDeleteInstruction)
     {

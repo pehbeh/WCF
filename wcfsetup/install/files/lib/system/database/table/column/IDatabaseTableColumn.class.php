@@ -2,6 +2,8 @@
 
 namespace wcf\system\database\table\column;
 
+use wcf\system\database\editor\DatabaseEditor;
+
 /**
  * Represents a column of a database table.
  *
@@ -9,18 +11,28 @@ namespace wcf\system\database\table\column;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.2
+ * @phpstan-import-type ExistingColumnDefinition from DatabaseEditor
  */
 interface IDatabaseTableColumn
 {
     /**
      * Marks the column to be dropped and returns the column.
-     *
-     * @return  $this
      */
     public function drop(): static;
 
     /**
      * Returns the data used by `DatabaseEditor` to add the column to a table.
+     *
+     * @return array{
+     *  notNull: 0|1,
+     *  type: string,
+     *  default?: ?mixed,
+     *  autoIncrement?: 0|1,
+     *  key?: string,
+     *  decimals?: int,
+     *  values?: string,
+     *  length?: ?int,
+     * }
      */
     public function getData(): array;
 
@@ -32,7 +44,7 @@ interface IDatabaseTableColumn
     /**
      * Returns the new name of the column or `null` if the column's name is unchanged.
      *
-     * @since       5.4
+     * @since 5.4
      */
     public function getNewName(): ?string;
 
@@ -48,23 +60,18 @@ interface IDatabaseTableColumn
 
     /**
      * Sets the name of the column and returns the column.
-     *
-     * @return  $this
      */
     public function name(string $name): static;
 
     /**
      * Sets if the values of the column cannot be `null`.
-     *
-     * @return  $this
      */
     public function notNull(bool $notNull = true): static;
 
     /**
      * Sets the new name of the column and returns the column.
      *
-     * @since       5.4
-     * @return $this
+     * @since 5.4
      */
     public function renameTo(string $newName): static;
 
@@ -75,16 +82,13 @@ interface IDatabaseTableColumn
 
     /**
      * Returns a `DatabaseTableColumn` object with the given name.
-     *
-     * @return  $this
      */
     public static function create(string $name): static;
 
     /**
      * Returns a `DatabaseTableColumn` object with the given name and data.
      *
-     * @param array $data data returned by `DatabaseEditor::getColumns()`
-     * @return  $this
+     * @param ExistingColumnDefinition $data data returned by `DatabaseEditor::getColumns()`
      */
     public static function createFromData(string $name, array $data): static;
 }

@@ -50,6 +50,9 @@ final class RenderException implements IController
         }
     }
 
+    /**
+     * @return ?mixed[]
+     */
     private function getException(string $exceptionID): ?array
     {
         $logFile = $this->getLogFile($exceptionID);

@@ -15,14 +15,14 @@ class DevtoolsPipEntryList implements IDevtoolsPipEntryList
 {
     /**
      * pip entries
-     * @var array<array>
+     * @var array<string, array<string, mixed>>
      */
     protected $entries = [];
 
     /**
      * keys of the entries that can be used to display the entry list as a
      * table
-     * @var string[]
+     * @var array<string, string>
      */
     protected $keys;
 
@@ -146,10 +146,12 @@ class DevtoolsPipEntryList implements IDevtoolsPipEntryList
         }
 
         foreach ($keys as $key => $value) {
+            // @phpstan-ignore function.alreadyNarrowedType
             if (!\is_string($key)) {
                 throw new \InvalidArgumentException("Given key is no string, " . \gettype($key) . " given.");
             }
 
+            // @phpstan-ignore function.alreadyNarrowedType
             if (!\is_string($value)) {
                 throw new \InvalidArgumentException("Given value is no string, " . \gettype($value) . " given.");
             }

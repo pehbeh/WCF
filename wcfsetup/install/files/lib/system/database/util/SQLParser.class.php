@@ -45,6 +45,8 @@ class SQLParser
 
     /**
      * Executes the sql queries.
+     *
+     * @return void
      */
     public function execute()
     {
@@ -68,7 +70,8 @@ class SQLParser
      *
      * @param string $statement
      * @param string $query
-     * @throws  SystemException
+     * @return void
+     * @throws SystemException
      */
     protected function executeStatement($statement, $query)
     {

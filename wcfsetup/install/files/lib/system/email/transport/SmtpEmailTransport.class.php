@@ -23,58 +23,50 @@ final class SmtpEmailTransport implements IStatusReportingEmailTransport
 {
     /**
      * SMTP connection
-     * @var ?RemoteFile
      */
-    protected $connection;
+    private ?RemoteFile $connection = null;
 
     /**
      * host of the smtp server to use
-     * @var ?string
      */
-    protected $host;
+    private readonly string $host;
 
     /**
      * port to use
-     * @var ?int
      */
-    protected $port;
+    private readonly int $port;
 
     /**
      * username to use for authentication
-     * @var ?string
      */
-    protected $username;
+    private readonly string $username;
 
     /**
      * password corresponding to the username
-     * @var ?string
      */
-    protected $password;
+    private readonly string $password;
 
     /**
      * STARTTLS encryption level
-     * @var ?string
      */
-    protected $starttls;
+    private readonly string $starttls;
 
     /**
      * last value written to the server
-     * @var string
      */
-    protected $lastWrite = '';
+    private string $lastWrite = '';
 
     /**
      * ESMTP features advertised by the server
      * @var string[]
      */
-    protected $features = [];
+    private array $features = [];
 
     /**
      * if this property is an instance of \Exception email delivery will be locked
      * and the \Exception will be thrown when attempting to deliver() an email
-     * @var ?\Exception
      */
-    protected $locked;
+    private ?\Exception $locked = null;
 
     /**
      * Creates a new SmtpEmailTransport using the given host.
@@ -123,10 +115,8 @@ final class SmtpEmailTransport implements IStatusReportingEmailTransport
      * Tests the connection by establishing a connection and optionally
      * providing user credentials. Returns the error message or an empty
      * string on success.
-     *
-     * @return      string
      */
-    public function testConnection()
+    public function testConnection(): string
     {
         try {
             $this->connect(10);
@@ -165,11 +155,11 @@ final class SmtpEmailTransport implements IStatusReportingEmailTransport
      * Returns a tuple [ status code, reply text ].
      *
      * @param int[] $expectedCodes
-     * @return  array
-     * @throws  PermanentFailure
-     * @throws  TransientFailure
+     * @return array{0: ?int, 1: string}
+     * @throws PermanentFailure
+     * @throws TransientFailure
      */
-    protected function read(array $expectedCodes)
+    protected function read(array $expectedCodes): array
     {
         $truncateReply = static function ($reply) {
             return StringUtil::truncate(
@@ -283,10 +273,8 @@ final class SmtpEmailTransport implements IStatusReportingEmailTransport
 
     /**
      * Writes the given line to the server.
-     *
-     * @param string $data
      */
-    protected function write($data)
+    private function write(string $data): void
     {
         $this->lastWrite = $data;
         $this->connection->write($data . "\r\n");
@@ -296,10 +284,9 @@ final class SmtpEmailTransport implements IStatusReportingEmailTransport
      * Connects to the server and enables STARTTLS if available. Bails
      * out if STARTTLS is not available and connection is set to 'encrypt'.
      *
-     * @param int $overrideTimeout
-     * @throws  PermanentFailure
+     * @throws PermanentFailure
      */
-    protected function connect($overrideTimeout = null)
+    private function connect(?int $overrideTimeout = null): void
     {
         if ($overrideTimeout === null) {
             $this->connection = new RemoteFile($this->host, $this->port);
@@ -354,9 +341,9 @@ final class SmtpEmailTransport implements IStatusReportingEmailTransport
     /**
      * Enables STARTTLS on the connection.
      *
-     * @throws  TransientFailure
+     * @throws TransientFailure
      */
-    protected function starttls()
+    private function starttls(): void
     {
         $this->write("STARTTLS");
         $this->read([220]);
@@ -374,7 +361,7 @@ final class SmtpEmailTransport implements IStatusReportingEmailTransport
      * Performs SASL authentication using the credentials provided in the
      * constructor. Supported mechanisms are LOGIN and PLAIN.
      */
-    protected function auth()
+    private function auth(): void
     {
         if (!$this->username || !$this->password) {
             return;
@@ -443,7 +430,7 @@ final class SmtpEmailTransport implements IStatusReportingEmailTransport
     /**
      * Cleanly closes the connection to the server.
      */
-    protected function disconnect()
+    private function disconnect(): void
     {
         if ($this->connection) {
             try {
@@ -460,8 +447,8 @@ final class SmtpEmailTransport implements IStatusReportingEmailTransport
     /**
      * Delivers the given email using SMTP.
      *
-     * @throws  \Exception
-     * @throws  PermanentFailure
+     * @throws \Exception
+     * @throws PermanentFailure
      */
     public function deliver(Email $email, Mailbox $envelopeFrom, Mailbox $envelopeTo): string
     {

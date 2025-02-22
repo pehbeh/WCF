@@ -115,6 +115,7 @@ class UploadField
      * Sets the internalId for this field.
      *
      * @param string $internalId
+     * @return void
      */
     public function setInternalId($internalId)
     {
@@ -139,6 +140,7 @@ class UploadField
      * false it will clear the acceptable types if they are `image/*`.
      *
      * @param bool $imageOnly
+     * @return void
      */
     public function setImageOnly($imageOnly)
     {
@@ -165,8 +167,9 @@ class UploadField
      * use this option, outside the acp or check the file whether remote code is contained.
      *
      * @param bool $allowSvgImage
+     * @return void
      *
-     * @throws      \BadMethodCallException         if the imageOnly flag isn't set to true
+     * @throws \BadMethodCallException         if the imageOnly flag isn't set to true
      */
     public function setAllowSvgImage($allowSvgImage)
     {
@@ -193,9 +196,10 @@ class UploadField
      * - `image/*`
      * - `video/*`
      *
-     * @see         https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#Unique_file_type_specifiers
+     * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#Unique_file_type_specifiers
      * @param string[]|null $acceptableFiles
-     * @since       5.3
+     * @return void
+     * @since 5.3
      */
     public function setAcceptableFiles($acceptableFiles = null)
     {
@@ -205,8 +209,8 @@ class UploadField
     /**
      * Returns the acceptable file types.
      *
-     * @return      string[]|null
-     * @since       5.3
+     * @return string[]|null
+     * @since 5.3
      */
     public function getAcceptableFiles()
     {

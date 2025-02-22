@@ -45,6 +45,7 @@ class ConditionBuilder
      * Adds a new condition.
      *
      * @param mixed $condition
+     * @return void
      */
     public function add($condition)
     {
@@ -73,6 +74,7 @@ class ConditionBuilder
      * Enables / disables the where keyword.
      *
      * @param bool $enable
+     * @return void
      */
     public function enableWhereKeyword($enable = true)
     {

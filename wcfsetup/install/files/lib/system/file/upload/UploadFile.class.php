@@ -73,7 +73,7 @@ class UploadFile
 
     /**
      * The return value of `getimagesize`.
-     * @var array|false
+     * @var array{0: int, 1: int, 2: int, 3: string, bits: int, channels: int, mime: string}|false
      */
     private $imageData;
 
@@ -225,6 +225,7 @@ class UploadFile
      * sets the `processed` attribute to true.
      *
      * @param string $newLocation
+     * @return void
      */
     public function setProcessed($newLocation)
     {
@@ -240,6 +241,7 @@ class UploadFile
      * Sets the new image link of the file for processed files.
      *
      * @param string $link
+     * @return void
      */
     public function setImageLink($link)
     {

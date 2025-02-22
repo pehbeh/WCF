@@ -25,13 +25,17 @@ class MultipartAlternativeMimePart extends AbstractMultipartMimePart
      */
     protected function getConcatenatedParts($parts)
     {
-        /** @var \SplObjectStorage $parts */
+        \assert($parts instanceof \SplObjectStorage);
 
+        /** @var \SplPriorityQueue<int, AbstractMimePart> */
         $sortedParts = new \SplPriorityQueue();
 
         $parts->rewind();
         while ($parts->valid()) {
-            $sortedParts->insert($parts->current(), \PHP_INT_MAX - $parts->getInfo());
+            $part = $parts->current();
+            \assert($part instanceof AbstractMimePart);
+
+            $sortedParts->insert($part, \PHP_INT_MAX - $parts->getInfo());
             $parts->next();
         }
 

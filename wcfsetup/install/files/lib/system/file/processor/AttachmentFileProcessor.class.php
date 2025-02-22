@@ -277,6 +277,9 @@ final class AttachmentFileProcessor extends AbstractFileProcessor
         return $attachmentHandler?->getMaxSize();
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     private function getAttachmentHandlerFromContext(array $context): ?AttachmentHandler
     {
         try {

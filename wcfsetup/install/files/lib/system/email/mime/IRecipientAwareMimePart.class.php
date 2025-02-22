@@ -19,7 +19,8 @@ interface IRecipientAwareMimePart
      * Note: `null` is a valid parameter and denotes that this mime part should
      * not be individualized.
      *
-     * @param Mailbox $mailbox
+     * @param ?Mailbox $mailbox
+     * @return void
      */
     public function setRecipient(?Mailbox $mailbox = null);
 }

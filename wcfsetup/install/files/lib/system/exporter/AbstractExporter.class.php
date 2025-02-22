@@ -17,7 +17,7 @@ abstract class AbstractExporter implements IExporter
 {
     /**
      * additional data
-     * @var array
+     * @var array<string, mixed>
      */
     public $additionalData = [];
 
@@ -65,7 +65,7 @@ abstract class AbstractExporter implements IExporter
 
     /**
      * object type => method names
-     * @var array
+     * @var array<string, string>
      */
     protected $methods = [];
 

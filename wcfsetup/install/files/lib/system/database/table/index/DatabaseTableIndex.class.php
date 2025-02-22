@@ -176,7 +176,7 @@ final class DatabaseTableIndex
     /**
      * Returns a `DatabaseTableIndex` object with the given name and data.
      *
-     * @param array $data data returned by `DatabaseEditor::getIndexInformation()`
+     * @param array{type: string, columns: string[]} $data data returned by `DatabaseEditor::getIndexInformation()`
      */
     public static function createFromData(string $name, array $data): static
     {

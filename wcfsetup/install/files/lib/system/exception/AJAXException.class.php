@@ -62,6 +62,7 @@ class AJAXException extends LoggedException
      * @param mixed[] $returnValues
      * @param string $exceptionID
      * @param \Exception|\Throwable $previous
+     * @param array<string, mixed> $extraInformation
      */
     public function __construct(
         $message,

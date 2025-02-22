@@ -28,6 +28,7 @@ final class GetMessageAuthor implements IController
     {
         $parameters = Helper::mapApiParameters($request, GetMessageAuthorParameters::class);
 
+        // @phpstan-ignore argument.templateType
         $object = Helper::fetchObjectFromRequestParameter($parameters->objectID, $parameters->className);
         \assert($object instanceof IMessage && $object instanceof DatabaseObject);
 

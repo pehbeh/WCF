@@ -12,6 +12,9 @@ namespace wcf\system\database\statement;
  */
 class DebugPreparedStatement extends PreparedStatement
 {
+    /**
+     * @var bool
+     */
     protected $debugDidExecuteOnce = false;
 
     /**
@@ -109,7 +112,7 @@ class DebugPreparedStatement extends PreparedStatement
     /**
      * @inheritDoc
      */
-    protected function debugThrowIfNotExecutedBefore()
+    protected function debugThrowIfNotExecutedBefore(): void
     {
         if (!$this->debugDidExecuteOnce) {
             throw new \RuntimeException('Attempted to fetch data from a statement without executing it at least once.');

@@ -23,7 +23,7 @@ final class PhpEmailTransport implements IEmailTransport
      *
      * @throws  TransientFailure
      */
-    public function deliver(Email $email, Mailbox $envelopeFrom, Mailbox $envelopeTo)
+    public function deliver(Email $email, Mailbox $envelopeFrom, Mailbox $envelopeTo): void
     {
         $headers = \array_filter($email->getHeaders(), static function ($item) {
             // filter out headers that are either

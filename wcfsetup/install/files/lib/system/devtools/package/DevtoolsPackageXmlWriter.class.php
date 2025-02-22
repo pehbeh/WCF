@@ -18,7 +18,7 @@ class DevtoolsPackageXmlWriter
 {
     /**
      * data used to write the `package.xml` file
-     * @var array
+     * @var mixed[]
      */
     protected $packageXmlData;
 
@@ -51,7 +51,7 @@ class DevtoolsPackageXmlWriter
      * section or `false`, otherwise.
      *
      * @param string $string
-     * @return  bool
+     * @return bool
      */
     protected function requiresCdata($string)
     {
@@ -62,6 +62,8 @@ class DevtoolsPackageXmlWriter
 
     /**
      * Writes the `package.xml` file.
+     *
+     * @return void
      */
     public function write()
     {
