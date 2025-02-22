@@ -18,24 +18,28 @@ interface ICondition extends IDatabaseObjectProcessor
      * Returns the data saved with the condition used to check if the condition
      * is fulfilled. If null is returned, there is no condition to be created.
      *
-     * @return ?array
+     * @return ?mixed[]
      */
     public function getData();
 
     /**
      * Returns the output for setting up the condition.
      *
-     * @return  string
+     * @return string
      */
     public function getHTML();
 
     /**
      * Reads the form parameters of the condition.
+     *
+     * @return void
      */
     public function readFormParameters();
 
     /**
      * Resets the internally stored condition data.
+     *
+     * @return void
      */
     public function reset();
 
@@ -43,12 +47,14 @@ interface ICondition extends IDatabaseObjectProcessor
      * Extracts all needed data from the given condition to pre-fill the output
      * for editing the given condition.
      *
-     * @param Condition $condition
+     * @return void
      */
     public function setData(Condition $condition);
 
     /**
      * Validates the read condition data.
+     *
+     * @return void
      */
     public function validate();
 }

@@ -258,6 +258,7 @@ HTML;
      * Sets the selectable user groups.
      *
      * @param UserGroup[] $userGroups
+     * @return void
      */
     public function setUserGroups(array $userGroups)
     {

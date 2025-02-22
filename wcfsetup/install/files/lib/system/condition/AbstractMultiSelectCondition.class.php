@@ -18,7 +18,8 @@ abstract class AbstractMultiSelectCondition extends AbstractSelectCondition
 {
     /**
      * selected values
-     * @var array
+     * @var mixed[]
+     * @phpstan-ignore property.phpDocType
      */
     protected $fieldValue = [];
 

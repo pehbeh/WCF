@@ -25,9 +25,9 @@ final class CronjobScheduler extends SingletonFactory
 {
     /**
      * cached times of the next and after next cronjob execution
-     * @var int[]
+     * @var array{afterNextExec: int, nextExec: int}
      */
-    protected $cache = [];
+    private array $cache;
 
     /**
      * @inheritDoc
@@ -40,7 +40,7 @@ final class CronjobScheduler extends SingletonFactory
     /**
      * Executes outstanding cronjobs.
      */
-    public function executeCronjobs()
+    public function executeCronjobs(): void
     {
         // break if there are no outstanding cronjobs
         if ($this->cache['nextExec'] > TIME_NOW && $this->cache['afterNextExec'] > TIME_NOW) {
@@ -99,10 +99,8 @@ final class CronjobScheduler extends SingletonFactory
 
     /**
      * Returns the next execution time.
-     *
-     * @return  int
      */
-    public function getNextExec()
+    public function getNextExec(): int
     {
         return $this->cache['nextExec'];
     }
@@ -111,7 +109,7 @@ final class CronjobScheduler extends SingletonFactory
      * Resets any cronjobs that have previously failed to execute. Cronjobs that have failed too often will
      * be disabled automatically.
      */
-    private function resetFailedCronjobs()
+    private function resetFailedCronjobs(): void
     {
         WCF::getDB()->beginTransaction();
         /** @noinspection PhpUnusedLocalVariableInspection */
@@ -200,8 +198,10 @@ final class CronjobScheduler extends SingletonFactory
 
     /**
      * Loads outstanding cronjobs.
+     *
+     * @return CronjobEditor[]
      */
-    private function loadCronjobs()
+    private function loadCronjobs(): array
     {
         WCF::getDB()->beginTransaction();
         /** @noinspection PhpUnusedLocalVariableInspection */
@@ -257,7 +257,7 @@ final class CronjobScheduler extends SingletonFactory
      *
      * @throws  SystemException
      */
-    private function executeCronjob(CronjobEditor $cronjobEditor, CronjobLogEditor $logEditor)
+    private function executeCronjob(CronjobEditor $cronjobEditor, CronjobLogEditor $logEditor): void
     {
         $className = $cronjobEditor->className;
         if (!\class_exists($className)) {
@@ -279,10 +279,8 @@ final class CronjobScheduler extends SingletonFactory
 
     /**
      * Logs cronjob exec success or failure.
-     *
-     * @param \Throwable $exception
      */
-    private function logResult(CronjobLogEditor $logEditor, $exception = null)
+    private function logResult(CronjobLogEditor $logEditor, ?\Throwable $exception = null): void
     {
         if ($exception !== null) {
             \wcf\functions\exception\logThrowable($exception);
@@ -309,7 +307,7 @@ final class CronjobScheduler extends SingletonFactory
     /**
      * Loads the cached data for cronjob execution.
      */
-    private function loadCache()
+    private function loadCache(): void
     {
         $this->cache = CronjobCacheBuilder::getInstance()->getData();
     }
@@ -317,7 +315,7 @@ final class CronjobScheduler extends SingletonFactory
     /**
      * Clears the cronjob data cache.
      */
-    public static function clearCache()
+    public static function clearCache(): void
     {
         CronjobCacheBuilder::getInstance()->reset();
     }

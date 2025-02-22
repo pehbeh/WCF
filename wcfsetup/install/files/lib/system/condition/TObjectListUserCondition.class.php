@@ -17,7 +17,7 @@ use wcf\data\user\UserList;
 trait TObjectListUserCondition
 {
     /**
-     * @inheritDoc
+     * @return void
      */
     public function addUserCondition(Condition $condition, UserList $userList)
     {

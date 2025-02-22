@@ -403,12 +403,6 @@ parameters:
 			path: wcfsetup/install/files/lib/system/condition/AbstractMultiSelectCondition.class.php
 
 		-
-			message: '#^PHPDoc type array of property wcf\\system\\condition\\AbstractMultiSelectCondition\:\:\$fieldValue is not covariant with PHPDoc type string of overridden property wcf\\system\\condition\\AbstractSelectCondition\:\:\$fieldValue\.$#'
-			identifier: property.phpDocType
-			count: 1
-			path: wcfsetup/install/files/lib/system/condition/AbstractMultiSelectCondition.class.php
-
-		-
 			message: '#^Parameter \#2 \$array of function implode expects array\|null, string given\.$#'
 			identifier: argument.type
 			count: 1
