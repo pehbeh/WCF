@@ -55,6 +55,8 @@ abstract class AbstractRuntimeCache extends SingletonFactory implements IRuntime
 
     /**
      * Fetches the objects for the pending object ids.
+     *
+     * @return void
      */
     protected function fetchObjects()
     {

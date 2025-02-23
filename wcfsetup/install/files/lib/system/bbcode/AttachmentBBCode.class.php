@@ -61,6 +61,9 @@ final class AttachmentBBCode extends AbstractBBCode
         return StringUtil::getAnchorTag($attachment->getLink(), $attachment->filename);
     }
 
+    /**
+     * @param list<string> $attributes
+     */
     private function showImage(Attachment $attachment, string $outputType, array $attributes, bool $hasParentLink): string
     {
         $alignment = $attributes[1] ?? '';

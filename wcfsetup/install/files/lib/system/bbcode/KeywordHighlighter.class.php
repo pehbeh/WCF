@@ -95,6 +95,7 @@ class KeywordHighlighter extends SingletonFactory
      * Parses search keywords.
      *
      * @param string $keywordString
+     * @return void
      */
     protected function parseKeywords($keywordString)
     {

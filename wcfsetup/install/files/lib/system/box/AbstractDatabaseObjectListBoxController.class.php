@@ -144,9 +144,9 @@ abstract class AbstractDatabaseObjectListBoxController extends AbstractBoxContro
     /**
      * Adds fields to the given PIP GUI form to create a box for this controller.
      *
-     * @param IFormDocument $form
      * @param string $objectType
-     * @since   5.2
+     * @return void
+     * @since 5.2
      */
     public function addPipGuiFormFields(IFormDocument $form, $objectType)
     {
@@ -211,8 +211,8 @@ abstract class AbstractDatabaseObjectListBoxController extends AbstractBoxContro
      *
      * @param \DOMElement $element
      * @param bool $saveData
-     * @return  array
-     * @since   5.2
+     * @return array{sortField?: string, sortOrder?: string, limit?: string}
+     * @since 5.2
      */
     public function getPipGuiElementData(\DOMElement $element, $saveData = false)
     {
@@ -220,7 +220,7 @@ abstract class AbstractDatabaseObjectListBoxController extends AbstractBoxContro
         foreach (['sortField', 'sortOrder', 'limit'] as $optionalElementName) {
             $optionalElement = $element->getElementsByTagName($optionalElementName)->item(0);
             if ($optionalElement !== null) {
-                $data[$optionalElementName] = $optionalElement->nodeValue;
+                $data[$optionalElementName] = $optionalElement->textContent;
             }
         }
 
@@ -363,6 +363,8 @@ abstract class AbstractDatabaseObjectListBoxController extends AbstractBoxContro
 
     /**
      * Reads the displayed database objects.
+     *
+     * @return void
      */
     protected function readObjects()
     {
@@ -395,6 +397,7 @@ abstract class AbstractDatabaseObjectListBoxController extends AbstractBoxContro
      *
      * @param Box $box box object
      * @param bool $setConditionData if true, the condition object types are populated with the box conditions' data
+     * @return void
      */
     public function setBox(Box $box, $setConditionData = true)
     {
@@ -454,9 +457,8 @@ abstract class AbstractDatabaseObjectListBoxController extends AbstractBoxContro
     }
 
     /**
-     * @param \DOMElement $element
-     * @param IFormDocument $form
-     * @since   5.2
+     * @return void
+     * @since 5.2
      */
     public function writePipGuiEntry(\DOMElement $element, IFormDocument $form)
     {

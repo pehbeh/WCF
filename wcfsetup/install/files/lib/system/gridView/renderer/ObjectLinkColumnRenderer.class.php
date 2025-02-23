@@ -4,6 +4,7 @@ namespace wcf\system\gridView\renderer;
 
 use BadMethodCallException;
 use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectDecorator;
 use wcf\data\ILinkableObject;
 use wcf\data\ITitledObject;
 use wcf\system\cache\runtime\AbstractRuntimeCache;
@@ -19,6 +20,7 @@ use wcf\util\StringUtil;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ * @template T of DatabaseObject|DatabaseObjectDecorator
  */
 abstract class ObjectLinkColumnRenderer extends DefaultColumnRenderer implements ILinkColumnRenderer
 {
@@ -31,6 +33,9 @@ abstract class ObjectLinkColumnRenderer extends DefaultColumnRenderer implements
         private readonly string $titleLanguageItem = ''
     ) {}
 
+    /**
+     * @return AbstractRuntimeCache<T>
+     */
     protected abstract function getRuntimeCache(): AbstractRuntimeCache;
 
     #[\Override]

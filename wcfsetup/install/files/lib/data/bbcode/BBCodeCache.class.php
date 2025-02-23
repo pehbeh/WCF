@@ -17,7 +17,7 @@ class BBCodeCache extends SingletonFactory
 {
     /**
      * cached bbcodes
-     * @var BBCode[]
+     * @var array<string, BBCode>
      */
     protected $cachedBBCodes = [];
 
@@ -26,14 +26,13 @@ class BBCodeCache extends SingletonFactory
      */
     protected function init()
     {
-        // get bbcode cache
         $this->cachedBBCodes = BBCodeCacheBuilder::getInstance()->getData([], 'bbcodes');
     }
 
     /**
      * Returns all bbcodes.
      *
-     * @return  BBCode[]
+     * @return array<string, BBCode>
      */
     public function getBBCodes()
     {
@@ -44,7 +43,7 @@ class BBCodeCache extends SingletonFactory
      * Returns the BBCode with the given tag or `null` if no such BBCode exists.
      *
      * @param string $tag
-     * @return  BBCode|null
+     * @return ?BBCode
      */
     public function getBBCodeByTag($tag)
     {
@@ -55,7 +54,7 @@ class BBCodeCache extends SingletonFactory
      * Returns all attributes of a bbcode.
      *
      * @param string $tag
-     * @return  BBCodeAttribute[]
+     * @return list<BBCodeAttribute>
      */
     public function getBBCodeAttributes($tag)
     {

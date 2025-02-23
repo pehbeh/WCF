@@ -78,7 +78,7 @@ abstract class AbstractCommentListBoxController extends AbstractDatabaseObjectLi
     /**
      * Applies object type-specific filters to the comments.
      *
-     * @param ViewableCommentList $commentList
+     * @return void
      */
     abstract protected function applyObjectTypeFilters(ViewableCommentList $commentList);
 

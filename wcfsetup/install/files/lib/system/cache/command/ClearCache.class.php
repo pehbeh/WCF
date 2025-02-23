@@ -28,7 +28,7 @@ final class ClearCache
         $this->eventHandler = EventHandler::getInstance();
     }
 
-    public function __invoke()
+    public function __invoke(): void
     {
         OptionEditor::resetCache();
 

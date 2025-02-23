@@ -111,23 +111,16 @@ final class Regex
 
     /**
      * compiled regex
-     * @var string
      */
-    private $regex = '';
+    private string $regex = '';
 
     /**
      * last matches
-     * @var array
+     * @var array<string|int, mixed|mixed[]>|array{}
      */
-    private $matches = [];
+    private array $matches = [];
 
-    /**
-     * Creates a regex.
-     *
-     * @param string $regex
-     * @param int $modifier
-     */
-    public function __construct($regex, $modifier = self::MODIFIER_NONE)
+    public function __construct(string $regex, int $modifier = self::MODIFIER_NONE)
     {
         // escape delimiter
         $regex = \str_replace(self::REGEX_DELIMITER, '\\' . self::REGEX_DELIMITER, $regex);
@@ -159,28 +152,20 @@ final class Regex
         }
     }
 
-    /**
-     * @inheritDoc
-     */
-    public static function compile($regex, $modifier = self::MODIFIER_NONE)
+    public static function compile(string $regex, int $modifier = self::MODIFIER_NONE): self
     {
         return new self($regex, $modifier);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function __invoke($string)
+    public function __invoke(string $string): int
     {
         return $this->match($string);
     }
 
     /**
      * Checks whether the regex is syntactically correct.
-     *
-     * @return  bool
      */
-    public function isValid()
+    public function isValid(): bool
     {
         try {
             $this->match(''); // we don't care about the result, we only care about the exception
@@ -192,17 +177,15 @@ final class Regex
         }
     }
 
-    // @codingStandardsIgnoreStart
-
     /**
      * Checks whether the regex matches the given string.
      *
      * @param string $string string to match
      * @param bool $all indicates if all matches are collected
      * @param int $flags match flags
-     * @return    int                return value of preg_match(_all)
+     * @return int return value of preg_match(_all)
      */
-    public function match($string, $all = false, $flags = self::FLAGS_DEFAULT)
+    public function match(string $string, bool $all = false, int $flags = self::FLAGS_DEFAULT): int
     {
         $matchFlags = 0;
         if ($flags & self::CAPTURE_OFFSET) {
@@ -229,11 +212,9 @@ final class Regex
     /**
      * Replaces part of the string with the regex.
      *
-     * @param string $string
      * @param mixed $replacement replacement-string or closure
-     * @return    string
      */
-    public function replace($string, $replacement)
+    public function replace(string $string, mixed $replacement): string
     {
         if ($replacement instanceof Callback || $replacement instanceof \Closure) {
             return $this->checkResult(\preg_replace_callback($this->regex, $replacement, $string), 'replace');
@@ -245,11 +226,9 @@ final class Regex
     /**
      * Splits the string with the regex.
      *
-     * @param string $string
-     * @param int $flags
-     * @return    string[]
+     * @return string[]
      */
-    public function split($string, $flags = self::FLAGS_DEFAULT)
+    public function split(string $string, int $flags = self::FLAGS_DEFAULT): array
     {
         $splitFlags = 0;
         if ($flags & self::CAPTURE_OFFSET) {
@@ -265,17 +244,12 @@ final class Regex
         return $this->checkResult(\preg_split($this->regex, $string, -1, $splitFlags), 'split');
     }
 
-    // @codingStandardsIgnoreEnd
-
     /**
      * Checks whether there was success.
      *
-     * @param mixed $result
-     * @param string $method
-     * @return  mixed
-     * @throws  SystemException
+     * @throws SystemException
      */
-    private function checkResult($result, $method = '')
+    private function checkResult(mixed $result, string $method = ''): mixed
     {
         if ($result === false || $result === null) {
             switch (\preg_last_error()) {
@@ -309,19 +283,17 @@ final class Regex
     /**
      * Returns the matches of the last string.
      *
-     * @return  array
+     * @return array<string|int, mixed|mixed[]>
      */
-    public function getMatches()
+    public function getMatches(): array
     {
         return $this->matches;
     }
 
     /**
      * Returns the compiled regex.
-     *
-     * @return  string
      */
-    public function getRegex()
+    public function getRegex(): string
     {
         return $this->regex;
     }

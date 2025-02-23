@@ -3,6 +3,7 @@
 namespace wcf\system\cache\runtime;
 
 use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectDecorator;
 
 /**
  * Handles runtime caches to centrally store objects fetched during runtime for reuse.

@@ -22,6 +22,14 @@ use wcf\util\StringUtil;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  * @deprecated 6.1 use `DomBBCodeParser` instead
+ *
+ * @phpstan-type BBCodeTag array{
+ *  name: string,
+ *  closing: bool,
+ *  source: string,
+ *  attributes?: list<string>,
+ *  useText?: int,
+ * }
  */
 class HtmlBBCodeParser extends BBCodeParser
 {
@@ -54,7 +62,7 @@ class HtmlBBCodeParser extends BBCodeParser
 
     /**
      * list of open tags with name and uuid
-     * @var array
+     * @var list<array{name: string, uuid: string}>
      */
     protected $openTagIdentifiers = [];
 
@@ -105,6 +113,8 @@ class HtmlBBCodeParser extends BBCodeParser
      * Reverts tags to their source representation if they either
      * have no matching counter part (such as opening tags without
      * closing one), or if they're inside code bbcodes.
+     *
+     * @return void
      */
     protected function ignoreUnclosedTags()
     {
@@ -155,11 +165,13 @@ class HtmlBBCodeParser extends BBCodeParser
 
         // step 2) check if tags are properly opened and closed, incorrect nesting doesn't matter here
         foreach ($this->tagArray as $i => &$tag) {
+            // @phpstan-ignore offsetAccess.notFound
             if (!$tag['valid']) {
                 continue;
             }
 
             if ($tag['closing']) {
+                // @phpstan-ignore isset.offset
                 if (!isset($tag['matching'])) {
                     $tag['valid'] = false;
                 }
@@ -202,6 +214,7 @@ class HtmlBBCodeParser extends BBCodeParser
         $newTagArray = $newTextArray = [];
         $buffer = '';
         foreach ($this->tagArray as $i => $tag) {
+            // @phpstan-ignore if.alwaysFalse
             if ($tag['valid']) {
                 // cleanup
                 unset($tag['matching']);
@@ -316,9 +329,9 @@ class HtmlBBCodeParser extends BBCodeParser
      * Builds the bbcode output.
      *
      * @param string $name bbcode identifier
-     * @param array $attributes list of attributes
+     * @param list<string> $attributes list of attributes
      * @param \DOMElement $element element
-     * @return  string      parsed bbcode
+     * @return string parsed bbcode
      */
     public function getHtmlOutput($name, array $attributes, \DOMElement $element)
     {
@@ -337,6 +350,7 @@ class HtmlBBCodeParser extends BBCodeParser
 
                 return $processor->getParsedTag($openingTag, '<!-- META_CODE_INNER_CONTENT -->', $closingTag, $this);
             } else {
+                // @phpstan-ignore argument.type, argument.type
                 return parent::buildOpeningTag($openingTag) . '<!-- META_CODE_INNER_CONTENT -->' . parent::buildClosingTag($closingTag);
             }
         }
@@ -349,9 +363,9 @@ class HtmlBBCodeParser extends BBCodeParser
      * Builds a plain bbcode string, used for unknown bbcodes.
      *
      * @param string $name bbcode identifier
-     * @param array $attributes list of attributes
+     * @param array<int, ?string> $attributes list of attributes
      * @param bool $openingTagOnly only render the opening tag
-     * @return  string
+     * @return string
      */
     public function buildBBCodeTag($name, $attributes, $openingTagOnly = false)
     {
@@ -381,10 +395,10 @@ class HtmlBBCodeParser extends BBCodeParser
     /**
      * Compiles tag fragments into the custom HTML element.
      *
-     * @param array $openingTag opening tag data
+     * @param BBCodeTag $openingTag opening tag data
      * @param string $content content between opening and closing tag
-     * @param array $closingTag closing tag data
-     * @return  string  custom HTML element
+     * @param BBCodeTag $closingTag closing tag data
+     * @return string custom HTML element
      */
     protected function compileTag(array $openingTag, $content, array $closingTag)
     {
@@ -393,6 +407,7 @@ class HtmlBBCodeParser extends BBCodeParser
 
     /**
      * @inheritDoc
+     * @param BBCodeTag $tag
      */
     protected function buildOpeningTag(array $tag)
     {
@@ -401,7 +416,7 @@ class HtmlBBCodeParser extends BBCodeParser
             return $tag['source'];
         }
 
-        $index = (isset($tag['bufferPlaceholder'])) ? $tag['bufferPlaceholder'] : \count($this->openTagIdentifiers);
+        $index = \count($this->openTagIdentifiers);
 
         $uuid = StringUtil::getUUID();
         $this->openTagIdentifiers[$index] = [

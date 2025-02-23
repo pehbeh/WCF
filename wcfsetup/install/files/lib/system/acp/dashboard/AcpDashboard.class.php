@@ -86,6 +86,14 @@ final class AcpDashboard
         return $availableBoxes;
     }
 
+    /**
+     * @return array<string, array{
+     *  boxName: string,
+     *  userID: int,
+     *  enabled: int,
+     *  showOrder: int,
+     * }>
+     */
     public function getUserConfiguration(): array
     {
         $boxes = [];

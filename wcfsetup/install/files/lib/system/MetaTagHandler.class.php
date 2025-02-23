@@ -10,25 +10,27 @@ use wcf\util\StringUtil;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @implements \Iterator<string, string>
  */
 final class MetaTagHandler extends SingletonFactory implements \Countable, \Iterator
 {
     /**
      * current iterator index
      */
-    protected int $index = 0;
+    private int $index = 0;
 
     /**
      * list of index to object relation
-     * @var int[]
+     * @var list<string>
      */
-    protected $indexToObject = [];
+    private array $indexToObject = [];
 
     /**
      * list of meta tags
-     * @var array
+     * @var array<string, array{isProperty: bool, name: string, value: string}>
      */
-    protected $objects = [];
+    private array $objects = [];
 
     /**
      * @inheritDoc
@@ -112,7 +114,7 @@ final class MetaTagHandler extends SingletonFactory implements \Countable, \Iter
      *
      * @see \Iterator::key()
      */
-    public function key(): int
+    public function key(): string
     {
         return $this->indexToObject[$this->index];
     }

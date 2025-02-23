@@ -156,6 +156,7 @@ class TodaysBirthdaysBoxController extends AbstractDatabaseObjectListBoxControll
      * Filters given user ids.
      *
      * @param int[] $userIDs
+     * @return void
      */
     protected function filterUserIDs(&$userIDs)
     {

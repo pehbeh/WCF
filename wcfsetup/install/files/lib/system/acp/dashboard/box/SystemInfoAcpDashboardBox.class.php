@@ -11,6 +11,15 @@ use wcf\system\WCF;
  * @copyright   2001-2023 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.1
+ * @phpstan-type ServerInfo array{
+ *  os: string,
+ *  webserver: string,
+ *  mySQLVersion: string,
+ *  memoryLimit: string,
+ *  upload_max_filesize: string,
+ *  postMaxSize: string,
+ *  innodbFlushLogAtTrxCommit: int,
+ * }
  */
 final class SystemInfoAcpDashboardBox extends AbstractAcpDashboardBox
 {
@@ -32,6 +41,12 @@ final class SystemInfoAcpDashboardBox extends AbstractAcpDashboardBox
         return 'com.woltlab.wcf.systemInfo';
     }
 
+    /**
+     * @return array{
+     *  databaseName: string,
+     *  server: ServerInfo,
+     * }
+     */
     private function getVariables(): array
     {
         return [
@@ -48,6 +63,9 @@ final class SystemInfoAcpDashboardBox extends AbstractAcpDashboardBox
         return $statement->fetchSingleColumn();
     }
 
+    /**
+     * @return ServerInfo
+     */
     private function getServerInfo(): array
     {
         return [

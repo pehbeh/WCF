@@ -56,7 +56,11 @@ class SimpleAclHandler extends SingletonFactory
      *
      * @param string $objectType object type name
      * @param int $objectID object id
-     * @return      array           array containing the keys `allowAll`, `user` and `group`
+     * @return array{
+     *  allowAll: bool,
+     *  user: (User|null)[],
+     *  group: UserGroup[],
+     * }
      */
     public function getValues($objectType, $objectID)
     {
@@ -110,8 +114,9 @@ class SimpleAclHandler extends SingletonFactory
      *
      * @param string $objectType object type name
      * @param int $objectID object id
-     * @param array $values list of user and group ids
-     * @throws  \InvalidArgumentException
+     * @param array{allowAll?: bool, user?: (User|null)[], group?: UserGroup[]} $values list of user and group ids
+     * @return void
+     * @throws \InvalidArgumentException
      */
     public function setValues($objectType, $objectID, array $values)
     {
@@ -190,8 +195,8 @@ class SimpleAclHandler extends SingletonFactory
      * Processes the provided values and returns the final
      * values for template assignment.
      *
-     * @param array $rawValues acl values as provided (by the user input)
-     * @return      array   final values for template assignment
+     * @param mixed[] $rawValues acl values as provided (by the user input)
+     * @return array{allowAll: bool, user: (User|null)[], group: UserGroup[]} final values for template assignment
      */
     public function getOutputValues(array $rawValues)
     {

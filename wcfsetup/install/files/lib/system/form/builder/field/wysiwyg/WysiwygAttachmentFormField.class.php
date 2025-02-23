@@ -8,7 +8,6 @@ use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\IFormDocument;
 use wcf\system\form\builder\TWysiwygFormNode;
 use wcf\system\WCF;
-use wcf\util\StringUtil;
 
 /**
  * Represents the form field to manage attachments for a wysiwyg form container.
@@ -26,7 +25,7 @@ final class WysiwygAttachmentFormField extends AbstractFormField
 
     /**
      * attachment handler
-     * @var null|AttachmentHandler
+     * @var ?AttachmentHandler
      */
     protected $attachmentHandler;
 
@@ -57,8 +56,8 @@ final class WysiwygAttachmentFormField extends AbstractFormField
      * AJAX requests or by creating a new one. If the temporary hashes are read from session,
      * the session variable will be unregistered afterwards.
      *
-     * @param null|AttachmentHandler $attachmentHandler
-     * @return  WysiwygAttachmentFormField
+     * @param ?AttachmentHandler $attachmentHandler
+     * @return WysiwygAttachmentFormField
      */
     public function attachmentHandler(?AttachmentHandler $attachmentHandler = null)
     {
@@ -98,7 +97,7 @@ final class WysiwygAttachmentFormField extends AbstractFormField
      * Returns the attachment handler object for the uploaded attachments or `null` if no attachment
      * upload is supported.
      *
-     * @return  null|AttachmentHandler
+     * @return ?AttachmentHandler
      */
     public function getAttachmentHandler()
     {

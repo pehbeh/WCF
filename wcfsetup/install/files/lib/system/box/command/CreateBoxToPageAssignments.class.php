@@ -15,10 +15,12 @@ use wcf\system\WCF;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.1
- * @property-read array<string> $pageIdentifiers
  */
 final class CreateBoxToPageAssignments
 {
+    /**
+     * @param string[] $pageIdentifiers
+     */
     public function __construct(
         private readonly string $boxIdentifier,
         private readonly array $pageIdentifiers,
@@ -29,7 +31,7 @@ final class CreateBoxToPageAssignments
     /**
      * @throws \InvalidArgumentException
      */
-    public function __invoke()
+    public function __invoke(): void
     {
         $box = Box::getBoxByIdentifier($this->boxIdentifier);
         if ($box === null) {

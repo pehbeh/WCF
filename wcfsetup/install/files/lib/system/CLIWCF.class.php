@@ -96,10 +96,7 @@ class CLIWCF extends WCF
         }
     }
 
-    /**
-     * @inheritDoc
-     */
-    final public static function handleCLIException($e): never
+    final public static function handleCLIException(\Throwable $e): never
     {
         exit($e->getMessage() . "\n" . $e->getTraceAsString());
     }

@@ -17,14 +17,14 @@ use wcf\system\SingletonFactory;
  *  name: string,
  *  closing: bool,
  *  source: string,
- *  attributes?: list<string>
+ *  attributes?: list<string>,
  * }
  */
 class BBCodeParser extends SingletonFactory
 {
     /**
      * list of bbcodes
-     * @var BBCode[]
+     * @var array<string, BBCode>
      */
     protected $bbcodes = [];
 
@@ -47,7 +47,7 @@ class BBCodeParser extends SingletonFactory
     protected $parsedText = '';
 
     /**
-     * @var array<BBCodeTag>
+     * @var list<BBCodeTag>
      */
     protected $tagArray = [];
 
@@ -367,7 +367,7 @@ class BBCodeParser extends SingletonFactory
     /**
      * Builds the closing tag.
      *
-     * @param array{name: string} $tag
+     * @param BBCodeTag $tag
      * @return string
      */
     protected function buildClosingTag(array $tag)
@@ -382,7 +382,7 @@ class BBCodeParser extends SingletonFactory
     /**
      * Returns true if the given tag is allowed in the given list of open tags.
      *
-     * @param array $openTags
+     * @param mixed[] $openTags
      * @param string $tag
      * @param bool $closing
      * @return bool
@@ -397,7 +397,7 @@ class BBCodeParser extends SingletonFactory
     /**
      * Builds the parsed string.
      *
-     * @return bool
+     * @return void
      */
     public function buildParsedString()
     {
@@ -519,6 +519,7 @@ class BBCodeParser extends SingletonFactory
 
         // get bbcode tags
         \preg_match_all($pattern, $this->text, $matches);
+        // @phpstan-ignore assign.propertyType
         $this->tagArray = $matches[0];
         unset($matches);
 

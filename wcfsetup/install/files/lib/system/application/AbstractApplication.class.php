@@ -35,6 +35,7 @@ abstract class AbstractApplication extends SingletonFactory implements IApplicat
     protected $evaluationPluginStoreID = 0;
 
     /**
+     * @var bool
      * @deprecated 5.5 - This value is unused and will always be 'false'. The 'active' status is determined live.
      */
     protected $isActiveApplication = false;
@@ -122,6 +123,7 @@ abstract class AbstractApplication extends SingletonFactory implements IApplicat
     }
 
     /**
+     * @return void
      * @since 5.2
      * @deprecated 5.5 - This function is a noop. The 'active' status is determined live.
      */

@@ -18,7 +18,7 @@ interface IArticleDiscussionProvider
     /**
      * Returns the number of discussion items.
      *
-     * @return      int
+     * @return int
      */
     public function getDiscussionCount();
 
@@ -26,28 +26,28 @@ interface IArticleDiscussionProvider
      * Returns the simple phrase "X <discussions>" that is used for both the statistics
      * and the meta data in the article's headline.
      *
-     * @return      string
+     * @return string
      */
     public function getDiscussionCountPhrase();
 
     /**
      * Returns the permalink to the discussions or an empty string if there is none.
      *
-     * @return      string
+     * @return string
      */
     public function getDiscussionLink();
 
     /**
      * Renders the input and display section of the associated discussion.
      *
-     * @return      string
+     * @return string
      */
     public function renderDiscussions();
 
     /**
      * Sets the content object required for the separate discussions per article language.
      *
-     * @param ArticleContent $articleContent
+     * @return void
      */
     public function setArticleContent(ArticleContent $articleContent);
 
@@ -55,8 +55,7 @@ interface IArticleDiscussionProvider
      * Returning true will assign this provider to the article, otherwise the next
      * possible provider is being evaluated.
      *
-     * @param Article $article
-     * @return      bool
+     * @return bool
      */
     public static function isResponsible(Article $article);
 }

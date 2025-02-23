@@ -15,6 +15,14 @@ use wcf\util\StringUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @deprecated  5.2 Use the HTML based message processing instead.
+ *
+ * @phpstan-type BBCodeTagWithContent array{
+ *  name: string,
+ *  closing: bool,
+ *  source: string,
+ *  attributes?: list<string>,
+ *  content: string,
+ * }
  */
 class MessageParser extends BBCodeParser
 {
@@ -26,7 +34,7 @@ class MessageParser extends BBCodeParser
 
     /**
      * cached bbcodes
-     * @var array
+     * @var array<string, BBCodeTagWithContent>
      */
     protected $cachedCodes = [];
 
@@ -71,7 +79,7 @@ class MessageParser extends BBCodeParser
      * @param bool $enableHtml
      * @param bool $enableBBCodes
      * @param bool $doKeywordHighlighting
-     * @return  string      parsed message
+     * @return string parsed message
      */
     public function parse(
         $text,
@@ -141,7 +149,7 @@ class MessageParser extends BBCodeParser
      *
      * @param string $text
      * @param bool $enableHtml
-     * @return  string
+     * @return string
      */
     protected function parseSmilies($text, $enableHtml = false)
     {
@@ -160,7 +168,7 @@ class MessageParser extends BBCodeParser
      * Caches code bbcodes to avoid parsing of smileys and other bbcodes inside them.
      *
      * @param string $text
-     * @return  string
+     * @return string
      */
     protected function cacheCodes($text)
     {
@@ -180,8 +188,8 @@ class MessageParser extends BBCodeParser
     /**
      * Returns the hash for an matched code bbcode in the message.
      *
-     * @param array $matches
-     * @return  string
+     * @param list<string> $matches
+     * @return string
      */
     protected function cacheCodesCallback($matches)
     {
@@ -202,7 +210,7 @@ class MessageParser extends BBCodeParser
      * Reinserts cached code bbcodes.
      *
      * @param string $text
-     * @return  string
+     * @return string
      */
     protected function insertCachedCodes($text)
     {
@@ -251,7 +259,7 @@ class MessageParser extends BBCodeParser
      * Returns a text-only version of given message.
      *
      * @param string $message
-     * @return  string
+     * @return string
      */
     public function stripHTML($message)
     {
