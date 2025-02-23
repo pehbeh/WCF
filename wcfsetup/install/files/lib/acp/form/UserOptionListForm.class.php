@@ -28,7 +28,7 @@ abstract class UserOptionListForm extends AbstractOptionListForm
     /**
      * Returns a list of all available user groups.
      *
-     * @return  UserGroup[]
+     * @return UserGroup[]
      */
     protected function getAvailableGroups()
     {
@@ -38,7 +38,7 @@ abstract class UserOptionListForm extends AbstractOptionListForm
     /**
      * Returns the default form language id.
      *
-     * @return  int     $languageID
+     * @return int $languageID
      */
     protected function getDefaultFormLanguageID()
     {

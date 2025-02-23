@@ -188,6 +188,8 @@ class UserTrophyAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates the getGroupedUserTrophyList method.
+     *
+     * @return void
      */
     public function validateGetGroupedUserTrophyList()
     {
@@ -215,6 +217,8 @@ class UserTrophyAction extends AbstractDatabaseObjectAction
 
     /**
      * Returns a viewable user trophy list for a specific user.
+     *
+     * @return array{pageCount: int, title: string, template: string}
      */
     public function getGroupedUserTrophyList()
     {

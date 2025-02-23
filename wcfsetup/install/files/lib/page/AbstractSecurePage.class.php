@@ -23,6 +23,8 @@ abstract class AbstractSecurePage extends AbstractPage
 
     /**
      * Validates the security token.
+     *
+     * @return void
      */
     protected function checkSecurityToken()
     {

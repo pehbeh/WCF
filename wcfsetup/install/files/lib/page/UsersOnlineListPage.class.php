@@ -54,7 +54,7 @@ class UsersOnlineListPage extends SortablePage
 
     /**
      * page locations
-     * @var array
+     * @var mixed[]
      */
     public $locations = [];
 

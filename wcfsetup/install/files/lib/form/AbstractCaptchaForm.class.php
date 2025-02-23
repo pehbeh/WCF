@@ -108,6 +108,8 @@ abstract class AbstractCaptchaForm extends AbstractForm
 
     /**
      * Validates the captcha.
+     *
+     * @return void
      */
     protected function validateCaptcha()
     {

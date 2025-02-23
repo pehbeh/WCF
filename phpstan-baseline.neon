@@ -109,18 +109,6 @@ parameters:
 			path: wcfsetup/install/files/lib/form/LostPasswordForm.class.php
 
 		-
-			message: '#^Negated boolean expression is always true\.$#'
-			identifier: booleanNot.alwaysTrue
-			count: 1
-			path: wcfsetup/install/files/lib/page/AbstractPage.class.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between int and ''og\:description'' will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: wcfsetup/install/files/lib/page/AbstractPage.class.php
-
-		-
 			message: '#^Instanceof between wcf\\data\\search\\ISearchResultObject and wcf\\data\\search\\ISearchResultObject will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1

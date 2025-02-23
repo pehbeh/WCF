@@ -296,7 +296,7 @@ class LanguageFactory extends SingletonFactory
     /**
      * Returns all available content languages for given package.
      *
-     * @return Language[]
+     * @return array<int, Language>
      */
     public function getContentLanguages()
     {

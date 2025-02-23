@@ -5,7 +5,9 @@ namespace wcf\system\request;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use wcf\action\IAction;
 use wcf\http\LegacyPlaceholderResponse;
+use wcf\page\IPage;
 
 /**
  * Represents a page request.
@@ -25,11 +27,7 @@ final class Request implements RequestHandlerInterface
      */
     private readonly array $metaData;
 
-    /**
-     * request object
-     * @var object
-     */
-    private $requestObject;
+    private RequestHandlerInterface|IAction|IPage $requestObject;
 
     /**
      * @param array{cms?: array{pageID: int, languageID: int}} $metaData
@@ -46,7 +44,7 @@ final class Request implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        if ($this->requestObject === null) {
+        if (!isset($this->requestObject)) {
             $this->requestObject = new $this->className();
         }
 
@@ -83,20 +81,22 @@ final class Request implements RequestHandlerInterface
      * Returns request meta data.
      *
      * @return array{cms?: array{pageID: int, languageID: int}}
-     * @since   3.0
+     * @since 3.0
      */
-    public function getMetaData()
+    public function getMetaData(): array
     {
         return $this->metaData;
     }
 
     /**
      * Returns the current request object.
-     *
-     * @return  object
      */
-    public function getRequestObject()
+    public function getRequestObject(): RequestHandlerInterface|IAction|IPage|null
     {
+        if (!isset($this->requestObject)) {
+            return null;
+        }
+
         return $this->requestObject;
     }
 
@@ -123,10 +123,10 @@ final class Request implements RequestHandlerInterface
     /**
      * Returns the current page id.
      *
-     * @return  int     current page id or `0` if unknown
+     * @return int current page id or `0` if unknown
      * @deprecated 6.1 use `RequestHandler::getInstance()->getActivePageID()` instead
      */
-    public function getPageID()
+    public function getPageID(): int
     {
         return RequestHandler::getInstance()->getActivePageID() ?: 0;
     }

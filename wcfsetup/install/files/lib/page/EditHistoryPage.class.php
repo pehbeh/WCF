@@ -57,6 +57,7 @@ class EditHistoryPage extends AbstractPage
 
     /**
      * differences between both versions
+     * @var ?mixed[]
      */
     public ?array $diff = null;
 

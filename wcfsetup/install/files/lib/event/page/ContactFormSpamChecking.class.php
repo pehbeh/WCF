@@ -18,10 +18,12 @@ final class ContactFormSpamChecking implements IInterruptableEvent
 {
     use TInterruptableEvent;
 
+    /**
+     * @param string[] $messages
+     */
     public function __construct(
         public readonly string $email,
         public readonly string $ipAddress,
         public readonly array $messages,
-    ) {
-    }
+    ) {}
 }

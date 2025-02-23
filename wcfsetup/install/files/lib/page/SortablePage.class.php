@@ -62,6 +62,8 @@ abstract class SortablePage extends MultipleLinkPage
 
     /**
      * Validates the given sort field parameter.
+     *
+     * @return void
      */
     public function validateSortField()
     {
@@ -75,6 +77,8 @@ abstract class SortablePage extends MultipleLinkPage
 
     /**
      * Validates the given sort order parameter.
+     *
+     * @return void
      */
     public function validateSortOrder()
     {

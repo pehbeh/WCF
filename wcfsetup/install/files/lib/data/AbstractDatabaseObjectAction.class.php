@@ -47,7 +47,7 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
 
     /**
      * multi-dimensional array of parameters required by an action
-     * @var array
+     * @var mixed[]
      */
     protected $parameters = [];
 
@@ -83,7 +83,7 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
 
     /**
      * values returned by executed action
-     * @var mixed
+     * @var mixed|mixed[]
      */
     protected $returnValues;
 
@@ -111,8 +111,8 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
      *
      * @param mixed[] $objects
      * @param string $action
-     * @param array $parameters
-     * @throws  SystemException
+     * @param mixed[] $parameters
+     * @throws SystemException
      */
     public function __construct(array $objects, $action, array $parameters = [])
     {
@@ -161,6 +161,7 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
      *
      * @param string $baseClass
      * @param string $indexName
+     * @return void
      */
     protected function __init($baseClass, $indexName)
     {
@@ -227,6 +228,8 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
 
     /**
      * Resets cache of database object.
+     *
+     * @return void
      */
     protected function resetCache()
     {
@@ -255,6 +258,7 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
      * Sets the database objects.
      *
      * @param DatabaseObjectEditor[] $objects
+     * @return void
      */
     public function setObjects(array $objects)
     {
@@ -289,6 +293,8 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
 
     /**
      * Validates permissions and parameters.
+     *
+     * @return void
      */
     public function validateCreate()
     {
@@ -324,6 +330,8 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
 
     /**
      * Validates permissions and parameters.
+     *
+     * @return void
      */
     public function validateUpdate()
     {
@@ -347,7 +355,7 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
     /**
      * Creates new database object.
      *
-     * @return  DatabaseObject
+     * @return DatabaseObject
      */
     public function create()
     {
@@ -375,6 +383,8 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
 
     /**
      * Updates data.
+     *
+     * @return void
      */
     public function update()
     {
@@ -397,6 +407,8 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
 
     /**
      * Reads data by data id.
+     *
+     * @return void
      */
     protected function readObjects()
     {
@@ -425,8 +437,8 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
     /**
      * Returns a single object and throws a UserInputException if no or more than one object is given.
      *
-     * @return  DatabaseObjectEditor
-     * @throws  UserInputException
+     * @return DatabaseObjectEditor
+     * @throws UserInputException
      */
     protected function getSingleObject()
     {
@@ -449,6 +461,7 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
      * @param string $variableName
      * @param bool $allowEmpty
      * @param string $arrayIndex
+     * @return void
      */
     protected function readInteger($variableName, $allowEmpty = false, $arrayIndex = '')
     {
@@ -461,7 +474,8 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
      * @param string $variableName
      * @param bool $allowEmpty
      * @param string $arrayIndex
-     * @since   3.0
+     * @return void
+     * @since 3.0
      */
     protected function readIntegerArray($variableName, $allowEmpty = false, $arrayIndex = '')
     {
@@ -474,6 +488,7 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
      * @param string $variableName
      * @param bool $allowEmpty
      * @param string $arrayIndex
+     * @return void
      */
     protected function readString($variableName, $allowEmpty = false, $arrayIndex = '')
     {
@@ -486,7 +501,8 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
      * @param string $variableName
      * @param bool $allowEmpty
      * @param string $arrayIndex
-     * @since   3.0
+     * @return void
+     * @since 3.0
      */
     protected function readStringArray($variableName, $allowEmpty = false, $arrayIndex = '')
     {
@@ -499,6 +515,7 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
      * @param string $variableName
      * @param bool $allowEmpty
      * @param string $arrayIndex
+     * @return void
      */
     protected function readBoolean($variableName, $allowEmpty = false, $arrayIndex = '')
     {
@@ -511,6 +528,7 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
      * @param string $variableName
      * @param bool $allowEmpty
      * @param string $arrayIndex
+     * @return void
      */
     protected function readJSON($variableName, $allowEmpty = false, $arrayIndex = '')
     {
@@ -527,8 +545,9 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
      * @param string $arrayIndex
      * @param int $type
      * @param int $structure
-     * @throws  SystemException
-     * @throws  UserInputException
+     * @return void
+     * @throws SystemException
+     * @throws UserInputException
      */
     protected function readValue($variableName, $allowEmpty, $arrayIndex, $type, $structure)
     {
@@ -648,7 +667,7 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
     /**
      * Returns object class name.
      *
-     * @return  string
+     * @return string
      */
     public function getClassName()
     {
@@ -658,7 +677,7 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
     /**
      * Returns a list of currently loaded objects.
      *
-     * @return  DatabaseObjectEditor[]
+     * @return DatabaseObjectEditor[]
      */
     public function getObjects()
     {

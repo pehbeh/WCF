@@ -72,6 +72,8 @@ abstract class AbstractOptionListForm extends AbstractForm
 
     /**
      * Initializes the option handler.
+     *
+     * @return void
      */
     protected function initOptionHandler()
     {

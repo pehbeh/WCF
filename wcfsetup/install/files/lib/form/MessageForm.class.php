@@ -55,13 +55,13 @@ abstract class MessageForm extends AbstractCaptchaForm
 
     /**
      * list of available content languages
-     * @var Language[]
+     * @var array<int, Language>
      */
     public $availableContentLanguages = [];
 
     /**
      * list of default smilies
-     * @var Smiley[]
+     * @var array<int, Smiley>
      */
     public $defaultSmilies = [];
 
@@ -102,7 +102,7 @@ abstract class MessageForm extends AbstractCaptchaForm
 
     /**
      * list of smiley categories
-     * @var SmileyCategory[]
+     * @var array<int, SmileyCategory>
      */
     public $smileyCategories = [];
 
@@ -195,6 +195,8 @@ abstract class MessageForm extends AbstractCaptchaForm
 
     /**
      * Validates the message subject.
+     *
+     * @return void
      */
     protected function validateSubject()
     {
@@ -215,6 +217,8 @@ abstract class MessageForm extends AbstractCaptchaForm
 
     /**
      * Validates the message text.
+     *
+     * @return void
      */
     protected function validateText()
     {
@@ -261,6 +265,8 @@ abstract class MessageForm extends AbstractCaptchaForm
 
     /**
      * Validates content language id.
+     *
+     * @return void
      */
     protected function validateContentLanguage()
     {

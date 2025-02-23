@@ -141,7 +141,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * Counts the number of objects.
      *
-     * @return  int
+     * @return int
      */
     public function countObjects()
     {
@@ -157,6 +157,8 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
 
     /**
      * Reads the object ids from database.
+     *
+     * @return void
      */
     public function readObjectIDs()
     {
@@ -173,6 +175,8 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
 
     /**
      * Reads the objects from database.
+     *
+     * @return void
      */
     public function readObjects()
     {
@@ -227,7 +231,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * Returns the object ids of the list.
      *
-     * @return  int[]
+     * @return int[]
      */
     public function getObjectIDs()
     {
@@ -247,7 +251,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * Returns the objects of the list.
      *
-     * @return  DatabaseObject[]
+     * @return DatabaseObject[]
      */
     public function getObjects()
     {
@@ -257,7 +261,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * Returns the condition builder object.
      *
-     * @return  PreparedStatementConditionBuilder
+     * @return PreparedStatementConditionBuilder
      */
     public function getConditionBuilder()
     {
@@ -268,7 +272,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
      * Sets the condition builder dynamically.
      *
      * @param PreparedStatementConditionBuilder $conditionBuilder
-     * @since   5.3
+     * @since 5.3
      */
     public function setConditionBuilder(PreparedStatementConditionBuilder $conditionBuilder)
     {
@@ -278,7 +282,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * Returns the name of the database table.
      *
-     * @return  string
+     * @return string
      */
     public function getDatabaseTableName()
     {
@@ -288,7 +292,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * Returns the name of the database table.
      *
-     * @return  string
+     * @return string
      */
     public function getDatabaseTableIndexName()
     {
@@ -298,7 +302,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * Returns the name of the database table alias.
      *
-     * @return  string
+     * @return string
      */
     public function getDatabaseTableAlias()
     {
@@ -401,8 +405,8 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * Returns the only object in this list or `null` if the list is empty.
      *
-     * @return  DatabaseObject|null
-     * @throws  \BadMethodCallException     if list contains more than one object
+     * @return ?DatabaseObject
+     * @throws \BadMethodCallException     if list contains more than one object
      */
     public function getSingleObject()
     {

@@ -2,6 +2,7 @@
 
 namespace wcf\page;
 
+use wcf\data\paid\subscription\PaidSubscription;
 use wcf\data\paid\subscription\user\PaidSubscriptionUserList;
 use wcf\system\cache\builder\PaidSubscriptionCacheBuilder;
 use wcf\system\exception\PermissionDeniedException;
@@ -34,7 +35,7 @@ class PaidSubscriptionListPage extends AbstractPage
 
     /**
      * list of available paid subscriptions
-     * @var array
+     * @var array<int, PaidSubscription>
      */
     public $subscriptions = [];
 

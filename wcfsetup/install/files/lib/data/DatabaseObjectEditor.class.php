@@ -116,9 +116,9 @@ abstract class DatabaseObjectEditor extends DatabaseObjectDecorator implements I
     /**
      * Creates a new object, returns null if the row already exists.
      *
-     * @param array $parameters
-     * @return  IStorableObject|null
-     * @since       5.3
+     * @param array<string, mixed> $parameters
+     * @return ?IStorableObject
+     * @since 5.3
      */
     public static function createOrIgnore(array $parameters = [])
     {
@@ -136,6 +136,8 @@ abstract class DatabaseObjectEditor extends DatabaseObjectDecorator implements I
 
     /**
      * Creates the object and returns the ID.
+     *
+     * @param array<string, mixed> $parameters
      */
     public static function fastCreate(array $parameters): int|string
     {

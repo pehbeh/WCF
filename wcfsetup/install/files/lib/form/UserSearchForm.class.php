@@ -62,7 +62,7 @@ class UserSearchForm extends UserOptionListForm
 
     /**
      * option tree
-     * @var array
+     * @var mixed[]
      */
     public $optionTree = [];
 
@@ -105,6 +105,8 @@ class UserSearchForm extends UserOptionListForm
 
     /**
      * Reads option tree on page init.
+     *
+     * @return void
      */
     protected function readOptionTree()
     {
@@ -167,6 +169,8 @@ class UserSearchForm extends UserOptionListForm
 
     /**
      * Search for users which fit to the search values.
+     *
+     * @return void
      */
     protected function search()
     {
@@ -199,6 +203,8 @@ class UserSearchForm extends UserOptionListForm
 
     /**
      * Builds the static conditions.
+     *
+     * @return void
      */
     protected function buildStaticConditions()
     {
@@ -209,6 +215,8 @@ class UserSearchForm extends UserOptionListForm
 
     /**
      * Builds the dynamic conditions.
+     *
+     * @return void
      */
     protected function buildDynamicConditions()
     {

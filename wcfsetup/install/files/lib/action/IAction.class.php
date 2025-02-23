@@ -14,26 +14,36 @@ interface IAction
 {
     /**
      * Initializes this action.
+     *
+     * @return void
      */
     public function __run();
 
     /**
      * Reads the given parameters.
+     *
+     * @return void
      */
     public function readParameters();
 
     /**
      * Checks the modules of this action.
+     *
+     * @return void
      */
     public function checkModules();
 
     /**
      * Checks the permissions of this action.
+     *
+     * @return void
      */
     public function checkPermissions();
 
     /**
      * Executes this action.
+     *
+     * @return void
      */
     public function execute();
 }

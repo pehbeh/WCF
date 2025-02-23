@@ -5,6 +5,7 @@ namespace wcf\form;
 use wcf\data\search\keyword\SearchKeywordAction;
 use wcf\data\search\Search;
 use wcf\data\search\SearchAction;
+use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\exception\NamedUserException;
 use wcf\system\exception\PermissionDeniedException;
@@ -28,13 +29,11 @@ use wcf\util\StringUtil;
 class SearchForm extends AbstractCaptchaForm
 {
     /**
-     * list of additional conditions
-     * @var string[]
+     * @var array<string, PreparedStatementConditionBuilder>
      */
     public $additionalConditions = [];
 
     /**
-     * end date
      * @var string
      */
     public $endDate = '';
@@ -64,35 +63,33 @@ class SearchForm extends AbstractCaptchaForm
 
     /**
      * list of search results
-     * @var array
+     * @var list<array{objectID: int, objectType: string}>
      */
     public $results = [];
 
     /**
-     * @inheritDoc
+     * @var string
      */
     public $sortField = '';
 
     /**
-     * @inheritDoc
+     * @var string
      */
     public $sortOrder = '';
 
     /**
-     * user id
      * @var int
      */
     public $userID = 0;
 
     /**
-     * username
      * @var string
      */
     public $username = '';
 
     /**
      * parameters used for previous search
-     * @var array
+     * @var mixed[]
      */
     public $searchData = [];
 
@@ -103,8 +100,7 @@ class SearchForm extends AbstractCaptchaForm
     public $searchID = 0;
 
     /**
-     * PreparedStatementConditionBuilder object
-     * @var \wcf\system\database\util\PreparedStatementConditionBuilder
+     * @var PreparedStatementConditionBuilder
      */
     public $searchIndexCondition;
 
@@ -115,13 +111,11 @@ class SearchForm extends AbstractCaptchaForm
     public $searchHash = '';
 
     /**
-     * selected object types
      * @var string[]
      */
     public $selectedObjectTypes = [];
 
     /**
-     * start date
      * @var string
      */
     public $startDate = '';
@@ -342,6 +336,8 @@ class SearchForm extends AbstractCaptchaForm
 
     /**
      * Throws a NamedUserException on search failure.
+     *
+     * @return never
      */
     public function throwNoMatchesException()
     {
@@ -493,6 +489,8 @@ class SearchForm extends AbstractCaptchaForm
 
     /**
      * Sets the conditions for a search in the table of the selected object types.
+     *
+     * @return void
      */
     protected function getConditions()
     {
@@ -558,7 +556,7 @@ class SearchForm extends AbstractCaptchaForm
     /**
      * Returns user ids.
      *
-     * @return  int[]
+     * @return int[]
      */
     public function getUserIDs()
     {

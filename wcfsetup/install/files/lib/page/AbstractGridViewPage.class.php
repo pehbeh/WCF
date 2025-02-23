@@ -21,6 +21,10 @@ abstract class AbstractGridViewPage extends AbstractPage
     protected int $pageNo = 1;
     protected string $sortField = '';
     protected string $sortOrder = '';
+
+    /**
+     * @var mixed[]
+     */
     protected array $filters = [];
 
     #[\Override]

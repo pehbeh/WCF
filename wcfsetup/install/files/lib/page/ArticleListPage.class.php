@@ -69,7 +69,7 @@ class ArticleListPage extends SortablePage
 
     /**
      * url parameters
-     * @var array
+     * @var array<string, mixed>
      */
     public $controllerParameters = ['application' => 'wcf'];
 
@@ -202,6 +202,9 @@ class ArticleListPage extends SortablePage
         }
     }
 
+    /**
+     * @return void
+     */
     protected function applyFilters()
     {
         if ($this->user) {
