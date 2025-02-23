@@ -14,14 +14,15 @@ interface ICLICommand
     /**
      * Executes the command.
      *
-     * @param array $parameters
+     * @param mixed[] $parameters
+     * @return void
      */
     public function execute(array $parameters);
 
     /**
      * Returns true if the user is allowed to use this command.
      *
-     * @return  bool
+     * @return bool
      */
     public function canAccess();
 }

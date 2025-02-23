@@ -13,9 +13,7 @@ use wcf\data\file\FileList;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  *
- * @method  File[]      getCachedObjects()
- * @method  File|null   getObject($objectID)
- * @method  File[]      getObjects(array $objectIDs)
+ * @extends AbstractRuntimeCache<File>
  */
 class FileRuntimeCache extends AbstractRuntimeCache
 {

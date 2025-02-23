@@ -13,9 +13,7 @@ use wcf\data\article\ViewableArticleList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  (ViewableArticle|null)[]       getCachedObjects()
- * @method  ViewableArticle|null    getObject($objectID)
- * @method  (ViewableArticle|null)[]       getObjects(array $objectIDs)
+ * @extends AbstractRuntimeCache<ViewableArticle>
  */
 class ViewableArticleRuntimeCache extends AbstractRuntimeCache
 {

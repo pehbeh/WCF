@@ -157,6 +157,8 @@ class CategoryHandler extends SingletonFactory
 
     /**
      * Reloads the category cache.
+     *
+     * @return void
      */
     public function reloadCache()
     {

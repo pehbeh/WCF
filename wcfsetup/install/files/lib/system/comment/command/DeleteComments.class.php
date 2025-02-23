@@ -24,23 +24,27 @@ use wcf\system\user\notification\UserNotificationHandler;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.1
- *
- * @property-read int[] $commentIDs
- * @property-read Comment[] $comments
  */
 final class DeleteComments
 {
     private readonly ObjectType $objectType;
     private readonly ICommentManager $commentManager;
+    /**
+     * @var int[]
+     */
     private readonly array $commentIDs;
 
+    /**
+     * @param Comment[] $comments
+     */
     public function __construct(
         private readonly array $comments,
         private readonly bool $updateCounters = true,
     ) {
         $this->commentIDs = \array_column($this->comments, 'commentID');
-        $firstComment = \reset($this->comments);
-        \assert($firstComment !== false);
+        $firstCommentID = \array_key_first($this->comments);
+        \assert($firstCommentID !== null);
+        $firstComment = $this->comments[$firstCommentID];
         $this->objectType = CommentHandler::getInstance()->getObjectType($firstComment->objectTypeID);
         $this->commentManager = CommentHandler::getInstance()->getCommentManagerByID($firstComment->objectTypeID);
     }

@@ -93,7 +93,7 @@ class ImportCLICommand implements ICLICommand
 
     /**
      * list of supported data types
-     * @var array
+     * @var array<string, array<string, string>>
      */
     protected $supportedData = [];
 
@@ -204,6 +204,8 @@ class ImportCLICommand implements ICLICommand
 
     /**
      * Reads the database connection.
+     *
+     * @return void
      */
     protected function readDatabaseConnection()
     {
@@ -275,6 +277,8 @@ class ImportCLICommand implements ICLICommand
 
     /**
      * Reads the selected exporter.
+     *
+     * @return void
      */
     protected function readExporter()
     {
@@ -325,6 +329,8 @@ class ImportCLICommand implements ICLICommand
 
     /**
      * Reads the path to the file system.
+     *
+     * @return void
      */
     protected function readFileSystemPath()
     {
@@ -355,6 +361,8 @@ class ImportCLICommand implements ICLICommand
 
     /**
      * Reads the selected data which will be imported.
+     *
+     * @return void
      */
     protected function readSelectedData()
     {
@@ -511,6 +519,8 @@ class ImportCLICommand implements ICLICommand
 
     /**
      * Reads the user merge mode.
+     *
+     * @return void
      */
     protected function readUserMergeMode()
     {

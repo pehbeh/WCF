@@ -15,44 +15,40 @@ final class ClipboardEditorItem
 {
     /**
      * internal data
-     * @var array
+     * @var mixed[]
      */
-    protected $internalData = [];
+    private array $internalData = [];
 
     /**
      * item name
-     * @var string
      */
-    protected $name = '';
+    private string $name = '';
 
     /**
      * list of parameters passed to ClipboardProxyAction
-     * @var array
+     * @var mixed[]
      */
-    protected $parameters = [];
+    private array $parameters = [];
 
     /**
      * redirect url
-     * @var string
      */
-    protected $url = '';
+    private string $url = '';
 
     /**
      * Returns internal data.
      *
-     * @return  array
+     * @return mixed[]
      */
-    public function getInternalData()
+    public function getInternalData(): array
     {
         return $this->internalData;
     }
 
     /**
      * Returns item name.
-     *
-     * @return  string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -60,19 +56,17 @@ final class ClipboardEditorItem
     /**
      * Returns parameters passed to ClipboardProxyAction.
      *
-     * @return  array
+     * @return mixed[]
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
 
     /**
      * Returns redirect url.
-     *
-     * @return  string
      */
-    public function getURL()
+    public function getURL(): string
     {
         return $this->url;
     }
@@ -80,11 +74,9 @@ final class ClipboardEditorItem
     /**
      * Adds internal data, values will be left untouched by clipboard API.
      *
-     * @param string $name
-     * @param mixed $value
-     * @throws  SystemException
+     * @throws SystemException
      */
-    public function addInternalData($name, $value)
+    public function addInternalData(string $name, mixed $value): void
     {
         if (!\preg_match('~^[a-zA-Z]+$~', $name)) {
             throw new SystemException("internal data name '" . $name . "' is invalid");
@@ -100,11 +92,9 @@ final class ClipboardEditorItem
     /**
      * Adds an parameter passed to ClipboardProxyAction.
      *
-     * @param string $name
-     * @param mixed $value
-     * @throws  SystemException
+     * @throws SystemException
      */
-    public function addParameter($name, $value)
+    public function addParameter(string $name, mixed $value): void
     {
         if (!\preg_match('~^[a-zA-Z]+$~', $name)) {
             throw new SystemException("parameter name '" . $name . "' is invalid");
@@ -120,10 +110,9 @@ final class ClipboardEditorItem
     /**
      * Sets item name.
      *
-     * @param string $name
-     * @throws  SystemException
+     * @throws SystemException
      */
-    public function setName($name)
+    public function setName(string $name): void
     {
         if (!\preg_match('~^[a-zA-Z0-9\.-]+$~', $name)) {
             throw new SystemException("item name '" . $name . "' is invalid");
@@ -134,20 +123,16 @@ final class ClipboardEditorItem
 
     /**
      * Sets redirect url, session id will be appended.
-     *
-     * @param string $url
      */
-    public function setURL($url)
+    public function setURL(string $url): void
     {
         $this->url = $url;
     }
 
     /**
      * Returns number of affected items.
-     *
-     * @return  int
      */
-    public function getCount()
+    public function getCount(): int
     {
         if (isset($this->parameters['objectIDs'])) {
             return \count($this->parameters['objectIDs']);
