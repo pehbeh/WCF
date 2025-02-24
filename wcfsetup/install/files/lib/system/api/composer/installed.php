@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-6.2-symfony-cache-contracts',
-        'version' => 'dev-6.2-symfony-cache-contracts',
-        'reference' => '5da722a061dcd9fc7bf3988d96f620f51d8f437d',
+        'pretty_version' => '6.2.x-dev',
+        'version' => '6.2.9999999.9999999-dev',
+        'reference' => '27e0039fe2da411385e5965253b4b69fa9fe1fc4',
         'type' => 'project',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-6.2-symfony-cache-contracts',
-            'version' => 'dev-6.2-symfony-cache-contracts',
-            'reference' => '5da722a061dcd9fc7bf3988d96f620f51d8f437d',
+            'pretty_version' => '6.2.x-dev',
+            'version' => '6.2.9999999.9999999-dev',
+            'reference' => '27e0039fe2da411385e5965253b4b69fa9fe1fc4',
             'type' => 'project',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
