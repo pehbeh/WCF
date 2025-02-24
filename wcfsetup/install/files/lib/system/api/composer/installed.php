@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => '6.1.x-dev',
-        'version' => '6.1.9999999.9999999-dev',
-        'reference' => 'f6d552ab096fab333bc496eab61b60fbf1adb6f5',
+        'pretty_version' => 'dev-6.2-symfony-cache-contracts',
+        'version' => 'dev-6.2-symfony-cache-contracts',
+        'reference' => '5da722a061dcd9fc7bf3988d96f620f51d8f437d',
         'type' => 'project',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '6.1.x-dev',
-            'version' => '6.1.9999999.9999999-dev',
-            'reference' => 'f6d552ab096fab333bc496eab61b60fbf1adb6f5',
+            'pretty_version' => 'dev-6.2-symfony-cache-contracts',
+            'version' => 'dev-6.2-symfony-cache-contracts',
+            'reference' => '5da722a061dcd9fc7bf3988d96f620f51d8f437d',
             'type' => 'project',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -193,12 +193,27 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'psr/cache-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '2.0|3.0',
+            ),
+        ),
         'psr/clock' => array(
             'pretty_version' => '1.0.0',
             'version' => '1.0.0.0',
             'reference' => 'e41a24703d4560fd0acb709162f73b8adfc3aa0d',
             'type' => 'library',
             'install_path' => __DIR__ . '/../psr/clock',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'psr/container' => array(
+            'pretty_version' => '2.0.2',
+            'version' => '2.0.2.0',
+            'reference' => 'c71ecc56dfe541dbd90c5360474fbc405f8d5963',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../psr/container',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -294,6 +309,12 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'psr/simple-cache-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '1.0|2.0|3.0',
+            ),
+        ),
         'ralouphie/getallheaders' => array(
             'pretty_version' => '3.0.3',
             'version' => '3.0.3.0',
@@ -347,6 +368,30 @@
             'install_path' => __DIR__ . '/../spomky-labs/pki-framework',
             'aliases' => array(),
             'dev_requirement' => false,
+        ),
+        'symfony/cache' => array(
+            'pretty_version' => 'v6.4.18',
+            'version' => '6.4.18.0',
+            'reference' => 'b209751ed25f735ea90ca4c9c969d9413a17dfee',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/cache',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/cache-contracts' => array(
+            'pretty_version' => 'v3.5.1',
+            'version' => '3.5.1.0',
+            'reference' => '15a4f8e5cd3bce9aeafc882b1acab39ec8de2c1b',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/cache-contracts',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/cache-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '1.1|2.0|3.0',
+            ),
         ),
         'symfony/console' => array(
             'dev_requirement' => false,
@@ -414,6 +459,24 @@
             'reference' => 'e5493eb51311ab0b1cc2243416613f06ed8f18bd',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/polyfill-php84',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/service-contracts' => array(
+            'pretty_version' => 'v3.5.1',
+            'version' => '3.5.1.0',
+            'reference' => 'e53260aabf78fb3d63f8d79d69ece59f80d5eda0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/service-contracts',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/var-exporter' => array(
+            'pretty_version' => 'v6.4.13',
+            'version' => '6.4.13.0',
+            'reference' => '0f605f72a363f8743001038a176eeb2a11223b51',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/var-exporter',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
