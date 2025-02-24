@@ -2,44 +2,40 @@
 
 namespace wcf\system\cache;
 
-use wcf\system\cache\builder\ICacheBuilder;
-use wcf\system\cache\source\DiskCacheSource;
-use wcf\system\exception\SystemException;
+use Symfony\Component\Cache\Adapter\FilesystemTagAwareAdapter;
+use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
+use wcf\system\cache\adapter\DiskCacheAdapter;
+use wcf\system\cache\adapter\ICacheAdapter;
 use wcf\system\SingletonFactory;
 
 /**
  * Manages transparent cache access.
  *
- * @author  Alexander Ebert, Marcel Werk
- * @copyright   2001-2019 WoltLab GmbH
+ * @author  Olaf Braun, Alexander Ebert, Marcel Werk
+ * @copyright   2001-2025 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
-class CacheHandler extends SingletonFactory
+final class CacheHandler extends SingletonFactory
 {
-    /**
-     * cache source object
-     * @var \wcf\system\cache\source\ICacheSource
-     */
-    protected $cacheSource;
+    private TagAwareCacheInterface & TagAwareAdapterInterface $cache;
 
     /**
      * Creates a new CacheHandler object.
      */
     protected function init()
     {
-        // init cache source object
         try {
-            $className = 'wcf\system\cache\source\\' . \ucfirst(CACHE_SOURCE_TYPE) . 'CacheSource';
-            if (\class_exists($className)) {
-                $this->cacheSource = new $className();
-            } else {
-                // fallback to disk cache
-                $this->cacheSource = new DiskCacheSource();
+            $className = 'wcf\system\cache\adapter\\' . \ucfirst(CACHE_SOURCE_TYPE) . 'CacheAdapter';
+            if (!\is_subclass_of($className, ICacheAdapter::class)) {
+                $className = DiskCacheAdapter::class;
             }
-        } catch (SystemException $e) {
+
+            $this->cache = $className::getAdapter();
+        } catch (\Exception $e) {
             if (CACHE_SOURCE_TYPE != 'disk') {
                 // fallback to disk cache
-                $this->cacheSource = new DiskCacheSource();
+                $this->cache = DiskCacheAdapter::getAdapter();
             } else {
                 throw $e;
             }
@@ -47,95 +43,59 @@ class CacheHandler extends SingletonFactory
     }
 
     /**
-     * Flush cache for given resource.
-     *
-     * @param ICacheBuilder $cacheBuilder
-     * @param array $parameters
-     */
-    public function flush(ICacheBuilder $cacheBuilder, array $parameters)
-    {
-        $this->getCacheSource()->flush($this->getCacheName($cacheBuilder, $parameters), empty($parameters));
-    }
-
-    /**
      * Flushes the entire cache.
      */
-    public function flushAll()
+    public function flushAll(): void
     {
-        $this->getCacheSource()->flushAll();
+        $this->cache->clear();
     }
 
     /**
-     * Returns cached value for given resource, false if no cache exists.
+     * Returns the cache item for the given key.
      *
-     * @param ICacheBuilder $cacheBuilder
-     * @param array $parameters
-     * @return  mixed
+     * @template T of array|object
+     *
+     * @param ICacheCallback<T> $callback
+     *
+     * @return T
      */
-    public function get(ICacheBuilder $cacheBuilder, array $parameters)
+    public function get(string $key, ICacheCallback $callback, bool $forceRebuild = false): array|object
     {
-        return $this->getCacheSource()->get(
-            $this->getCacheName($cacheBuilder, $parameters),
-            $cacheBuilder->getMaxLifetime()
-        );
+        return $this->cache->get($key, $callback, $forceRebuild ? \INF : null);
     }
 
     /**
-     * Caches a value for given resource,
-     *
-     * @param ICacheBuilder $cacheBuilder
-     * @param array $parameters
-     * @param array $data
+     * Deletes the cache item for the given key.
      */
-    public function set(ICacheBuilder $cacheBuilder, array $parameters, array $data)
+    public function delete(string $key): bool
     {
-        $this->getCacheSource()->set(
-            $this->getCacheName($cacheBuilder, $parameters),
-            $data,
-            $cacheBuilder->getMaxLifetime()
-        );
+        return $this->cache->delete($key);
+    }
+
+    /**
+     * Invalidates the cache items with the associated tags.
+     *
+     * @param list<string> $tags
+     */
+    public function invalidateTags(array $tags): bool
+    {
+        return $this->cache->invalidateTags($tags);
     }
 
     /**
      * Returns cache index hash.
-     *
-     * @param array $parameters
-     * @return  string
      */
-    public function getCacheIndex(array $parameters)
+    public function getCacheIndex(array $parameters): string
     {
         return \sha1(\serialize($this->orderParameters($parameters)));
     }
 
     /**
-     * Builds cache name.
-     *
-     * @param ICacheBuilder $cacheBuilder
-     * @param array $parameters
-     * @return  string
+     * Returns the cache adapter.
      */
-    protected function getCacheName(ICacheBuilder $cacheBuilder, array $parameters = [])
+    public function getCacheAdapter(): TagAwareCacheInterface & TagAwareAdapterInterface
     {
-        $cacheName = \str_replace(
-            ['\\', 'system_cache_builder_'],
-            ['_', ''],
-            \get_class($cacheBuilder)
-        );
-        if (!empty($parameters)) {
-            $cacheName .= '-' . $this->getCacheIndex($parameters);
-        }
-
-        return $cacheName;
-    }
-
-    /**
-     * Returns the cache source object.
-     *
-     * @return  \wcf\system\cache\source\ICacheSource
-     */
-    public function getCacheSource()
-    {
-        return $this->cacheSource;
+        return $this->cache;
     }
 
     /**
@@ -162,7 +122,7 @@ class CacheHandler extends SingletonFactory
     {
         if (
             CACHE_SOURCE_TYPE != 'disk'
-            && \get_class(CacheHandler::getInstance()->getCacheSource()) === \wcf\system\cache\source\DiskCacheSource::class
+            && \get_class($this->cache) === FilesystemTagAwareAdapter::class
         ) {
             return false;
         }

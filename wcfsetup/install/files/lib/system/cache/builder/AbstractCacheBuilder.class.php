@@ -2,6 +2,7 @@
 
 namespace wcf\system\cache\builder;
 
+use Symfony\Contracts\Cache\ItemInterface;
 use wcf\system\cache\CacheHandler;
 use wcf\system\exception\SystemException;
 use wcf\system\SingletonFactory;
@@ -36,13 +37,16 @@ abstract class AbstractCacheBuilder extends SingletonFactory implements ICacheBu
 
         if (!isset($this->cache[$index])) {
             // fetch cache or rebuild if missing
-            $this->cache[$index] = CacheHandler::getInstance()->get($this, $parameters);
-            if ($this->cache[$index] === null) {
-                $this->cache[$index] = $this->rebuild($parameters);
+            $this->cache[$index] = CacheHandler::getInstance()->getCacheAdapter()->get(
+                $this->getCacheName($parameters),
+                function (ItemInterface $item) use ($parameters) {
+                    if ($this->getMaxLifetime() > 0) {
+                        $item->expiresAfter($this->getMaxLifetime());
+                    }
 
-                // update cache
-                CacheHandler::getInstance()->set($this, $parameters, $this->cache[$index]);
-            }
+                    return $this->rebuild($parameters);
+                }
+            );
         }
 
         if (!empty($arrayIndex)) {
@@ -69,7 +73,7 @@ abstract class AbstractCacheBuilder extends SingletonFactory implements ICacheBu
      */
     public function reset(array $parameters = [])
     {
-        CacheHandler::getInstance()->flush($this, $parameters);
+        CacheHandler::getInstance()->delete($this->getCacheName($parameters));
     }
 
     /**
@@ -78,4 +82,21 @@ abstract class AbstractCacheBuilder extends SingletonFactory implements ICacheBu
      * @param array $parameters
      */
     abstract protected function rebuild(array $parameters);
+
+    /**
+     * Builds cache name.
+     */
+    protected function getCacheName(array $parameters = []): string
+    {
+        $cacheName = \str_replace(
+            ['\\', 'system_cache_builder_'],
+            ['_', ''],
+            \get_class($this)
+        );
+        if (!empty($parameters)) {
+            $cacheName .= '-' . CacheHandler::getInstance()->getCacheIndex($parameters);
+        }
+
+        return $cacheName;
+    }
 }

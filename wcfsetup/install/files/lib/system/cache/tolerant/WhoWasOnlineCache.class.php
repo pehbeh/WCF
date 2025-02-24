@@ -2,6 +2,7 @@
 
 namespace wcf\system\cache\tolerant;
 
+use Symfony\Contracts\Cache\ItemInterface;
 use wcf\system\WCF;
 
 /**
@@ -15,14 +16,11 @@ use wcf\system\WCF;
 final class WhoWasOnlineCache extends AbstractTolerantCache
 {
     #[\Override]
-    public function getLifetime(): int
+    public function __invoke(ItemInterface $item): array
     {
-        return 600;
-    }
+        $item->expiresAfter(600);
+        $item->tag("user");
 
-    #[\Override]
-    protected function rebuildCacheData(): array
-    {
         $sql = "(
                     SELECT  userID
                     FROM    wcf1_user

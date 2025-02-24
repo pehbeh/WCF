@@ -2,9 +2,8 @@
 
 namespace wcf\system\cache\tolerant;
 
-use wcf\system\background\BackgroundQueueHandler;
-use wcf\system\background\job\TolerantCacheRebuildBackgroundJob;
 use wcf\system\cache\CacheHandler;
+use wcf\system\cache\ICacheCallback;
 
 /**
  * @author Olaf Braun
@@ -13,8 +12,9 @@ use wcf\system\cache\CacheHandler;
  * @since 6.2
  *
  * @template T of array|object
+ * @implements ICacheCallback<T>
  */
-abstract class AbstractTolerantCache
+abstract class AbstractTolerantCache implements ICacheCallback
 {
     /**
      * @var T
@@ -25,26 +25,15 @@ abstract class AbstractTolerantCache
     /**
      * @return T
      */
-    final public function getCache(): array|object
+    final public function get(): array|object
     {
         if (!isset($this->cache)) {
-            $cache = CacheHandler::getInstance()->getCacheSource()->get(
+            $this->cache = CacheHandler::getInstance()->get(
                 $this->getCacheKey(),
-                0,
+                $this,
             );
-
-            if ($cache === null) {
-                $this->rebuild();
-            } else {
-                $this->cache = $cache;
-            }
-
-            if ($this->needsRebuild()) {
-                BackgroundQueueHandler::getInstance()->enqueueIn(
-                    [new TolerantCacheRebuildBackgroundJob(\get_class($this), $this->getProperties())]
-                );
-            }
         }
+
         return $this->cache;
     }
 
@@ -88,49 +77,5 @@ abstract class AbstractTolerantCache
         }
 
         return $properties;
-    }
-
-    final public function rebuild(): void
-    {
-        $newCacheData = $this->rebuildCacheData();
-
-        if (!isset($this->cache)) {
-            $this->cache = $newCacheData;
-        }
-
-        CacheHandler::getInstance()->getCacheSource()->set(
-            $this->getCacheKey(),
-            $newCacheData,
-            0
-        );
-    }
-
-    /**
-     * @return T
-     */
-    abstract protected function rebuildCacheData(): array|object;
-
-    final public function nextRebuildTime(): int
-    {
-        $cacheTime = CacheHandler::getInstance()->getCacheSource()->getCreationTime(
-            $this->getCacheKey(),
-            $this->getLifetime()
-        );
-
-        if ($cacheTime === null) {
-            return \TIME_NOW;
-        }
-
-        return $cacheTime + ($this->getLifetime() - 60);
-    }
-
-    /**
-     * Return the lifetime of the cache in seconds.
-     */
-    abstract public function getLifetime(): int;
-
-    final public function needsRebuild(): bool
-    {
-        return TIME_NOW >= $this->nextRebuildTime();
     }
 }

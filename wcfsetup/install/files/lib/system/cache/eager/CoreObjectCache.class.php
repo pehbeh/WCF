@@ -2,6 +2,7 @@
 
 namespace wcf\system\cache\eager;
 
+use Symfony\Contracts\Cache\ItemInterface;
 use wcf\data\core\object\CoreObjectList;
 use wcf\system\SingletonFactory;
 
@@ -18,7 +19,7 @@ use wcf\system\SingletonFactory;
 final class CoreObjectCache extends AbstractEagerCache
 {
     #[\Override]
-    protected function getCacheData(): array
+    public function __invoke(ItemInterface $item): array
     {
         $coreObjectList = new CoreObjectList();
         $coreObjectList->readObjects();

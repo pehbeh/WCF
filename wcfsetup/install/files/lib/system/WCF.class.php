@@ -748,7 +748,7 @@ class WCF
             return;
         }
 
-        self::$coreObjectCache = (new CoreObjectCache())->getCache();
+        self::$coreObjectCache = (new CoreObjectCache())->get();
     }
 
     /**

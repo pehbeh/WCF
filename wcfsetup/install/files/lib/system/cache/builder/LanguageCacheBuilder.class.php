@@ -24,7 +24,7 @@ class LanguageCacheBuilder extends AbstractLegacyCacheBuilder
     #[\Override]
     public function rebuild(array $parameters): array
     {
-        $cacheData = (new LanguageCache())->getCache();
+        $cacheData = (new LanguageCache())->get();
 
         return [
             'codes' => $cacheData->codes,

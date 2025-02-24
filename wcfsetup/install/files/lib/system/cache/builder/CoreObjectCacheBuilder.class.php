@@ -24,6 +24,6 @@ class CoreObjectCacheBuilder extends AbstractLegacyCacheBuilder
     #[\Override]
     public function rebuild(array $parameters): array
     {
-        return (new CoreObjectCache())->getCache();
+        return (new CoreObjectCache())->get();
     }
 }

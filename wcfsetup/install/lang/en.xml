@@ -257,8 +257,8 @@
 		<item name="wcf.acp.cache.list.name"><![CDATA[Name]]></item>
 		<item name="wcf.acp.cache.list.perm"><![CDATA[Permissions]]></item>
 		<item name="wcf.acp.cache.list.size"><![CDATA[Size]]></item>
-		<item name="wcf.acp.cache.source.type.DiskCacheSource"><![CDATA[Filesystem]]></item>
-		<item name="wcf.acp.cache.source.type.RedisCacheSource"><![CDATA[Redis]]></item>
+		<item name="wcf.acp.cache.source.type.FilesystemTagAwareAdapter"><![CDATA[Filesystem]]></item>
+		<item name="wcf.acp.cache.source.type.RedisTagAwareAdapter"><![CDATA[Redis]]></item>
 		<item name="wcf.acp.cache.type.data"><![CDATA[Data]]></item>
 		<item name="wcf.acp.cache.type.language"><![CDATA[Languages]]></item>
 		<item name="wcf.acp.cache.type.style"><![CDATA[Styles]]></item>

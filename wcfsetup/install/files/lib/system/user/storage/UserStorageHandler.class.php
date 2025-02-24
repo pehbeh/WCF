@@ -2,8 +2,9 @@
 
 namespace wcf\system\user\storage;
 
+use Symfony\Component\Cache\Adapter\RedisTagAwareAdapter;
+use wcf\system\cache\adapter\RedisCacheAdapter;
 use wcf\system\cache\CacheHandler;
-use wcf\system\cache\source\RedisCacheSource;
 use wcf\system\database\Redis;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\SingletonFactory;
@@ -40,9 +41,9 @@ final class UserStorageHandler extends SingletonFactory
      */
     protected function init()
     {
-        $cacheSource = CacheHandler::getInstance()->getCacheSource();
-        if ($cacheSource instanceof RedisCacheSource) {
-            $this->redis = $cacheSource->getRedis();
+        $cacheSource = CacheHandler::getInstance()->getCacheAdapter();
+        if ($cacheSource instanceof RedisTagAwareAdapter) {
+            $this->redis = RedisCacheAdapter::getRedis();
         }
     }
 

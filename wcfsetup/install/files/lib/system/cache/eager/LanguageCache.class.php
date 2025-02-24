@@ -2,6 +2,7 @@
 
 namespace wcf\system\cache\eager;
 
+use Symfony\Contracts\Cache\ItemInterface;
 use wcf\data\DatabaseObject;
 use wcf\data\language\category\LanguageCategoryList;
 use wcf\data\language\LanguageList;
@@ -20,8 +21,10 @@ use wcf\system\cache\eager\data\LanguageCacheData;
 final class LanguageCache extends AbstractEagerCache
 {
     #[\Override]
-    protected function getCacheData(): LanguageCacheData
+    public function __invoke(ItemInterface $item): LanguageCacheData
     {
+        $item->tag('language');
+
         $languageList = new LanguageList();
         $languageList->getConditionBuilder()->add('language.isDisabled = ?', [0]);
         $languageList->readObjects();

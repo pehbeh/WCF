@@ -2,6 +2,7 @@
 
 namespace wcf\system\cache\tolerant;
 
+use Symfony\Contracts\Cache\ItemInterface;
 use wcf\data\user\User;
 use wcf\system\WCF;
 
@@ -20,14 +21,11 @@ final class UserBirthdayCache extends AbstractTolerantCache
     }
 
     #[\Override]
-    public function getLifetime(): int
+    public function __invoke(ItemInterface $item): array
     {
-        return 3600;
-    }
+        $item->expiresAfter(3600);
+        $item->tag("user");
 
-    #[\Override]
-    protected function rebuildCacheData(): array
-    {
         $userOptionID = User::getUserOptionID('birthday');
         if ($userOptionID === null) {
             // birthday profile field missing; skip
