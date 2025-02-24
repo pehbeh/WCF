@@ -53,22 +53,24 @@
 		</table>
 	</div>
 
-	<div class="gridView__pagination">
-		<woltlab-core-pagination id="{$view->getID()}_pagination" page="{$view->getPageNo()}" count="{$view->countPages()}"></woltlab-core-pagination>
-	</div>
+	<div class="gridView__footer">
+		{if $view->hasBulkInteractions()}
+			<div id="{$view->getID()}_selectionBar" class="gridView__selectionBar dropdown" hidden>
+				<button type="button" id="{$view->getID()}_bulkInteractionButton" class="button gridView__bulkInteractionButton dropdownToggle"></button>
+				<ul class="dropdownMenu">
+					<li class="disabled"><span>{lang}wcf.global.loading{/lang}</span></li>
+					<li class="dropdownDivider"></li>
+					<li>
+						<button type="button" id="{$view->getID()}_resetSelectionButton">{lang}wcf.clipboard.item.unmarkAll{/lang}</button>
+					</li>
+				</ul>
+			</div>
+		{/if}
 
-	{if $view->hasBulkInteractions()}
-		<div id="{$view->getID()}_selectionBar" class="gridView__selectionBar dropdown" hidden>
-			<button type="button" id="{$view->getID()}_bulkInteractionButton" class="button gridView__bulkInteractionButton dropdownToggle"></button>
-			<ul class="dropdownMenu">
-				<li class="disabled"><span>{lang}wcf.global.loading{/lang}</span></li>
-				<li class="dropdownDivider"></li>
-				<li>
-					<button type="button" id="{$view->getID()}_resetSelectionButton">{lang}wcf.clipboard.item.unmarkAll{/lang}</button>
-				</li>
-			</ul>
+		<div class="gridView__pagination">
+			<woltlab-core-pagination id="{$view->getID()}_pagination" page="{$view->getPageNo()}" count="{$view->countPages()}"></woltlab-core-pagination>
 		</div>
-	{/if}
+	</div>
 
 	<woltlab-core-notice type="info" id="{$view->getID()}_noItemsNotice"{if $view->countRows()} hidden{/if}>{lang}wcf.global.noItems{/lang}</woltlab-core-notice>
 </div>

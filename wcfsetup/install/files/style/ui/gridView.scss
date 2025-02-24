@@ -162,8 +162,24 @@
 	flex: 0 0 auto;
 }
 
+.gridView__footer {
+	background-color: var(--wcfContentContainerBackground);
+	bottom: 0;
+	display: flex;
+	gap: 10px;
+	position: sticky;
+	z-index: 2;
+}
+
 .gridView__pagination {
 	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-inline-start: auto;
+}
+
+.gridView__selectionBar {
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 .gridView__actionColumn__buttons {
