@@ -2,8 +2,10 @@
 
 namespace wcf\system\cache\tolerant;
 
+use Symfony\Contracts\Cache\CacheInterface;
 use wcf\system\cache\CacheHandler;
 use wcf\system\cache\ICacheCallback;
+use wcf\system\cache\ProxyAdapter;
 
 /**
  * @author Olaf Braun
@@ -28,7 +30,7 @@ abstract class AbstractTolerantCache implements ICacheCallback
     final public function get(): array|object
     {
         if (!isset($this->cache)) {
-            $this->cache = CacheHandler::getInstance()->get(
+            $this->cache = AbstractTolerantCache::getCacheAdapter()->get(
                 $this->getCacheKey(),
                 $this,
             );
@@ -55,6 +57,16 @@ abstract class AbstractTolerantCache implements ICacheCallback
         }
 
         return $this->cacheName;
+    }
+
+    private static function getCacheAdapter(): CacheInterface
+    {
+        static $cacheAdapter;
+        if (!isset($cacheAdapter)) {
+            $cacheAdapter = new ProxyAdapter(CacheHandler::getInstance()->getCacheAdapter());
+        }
+
+        return $cacheAdapter;
     }
 
     /**
