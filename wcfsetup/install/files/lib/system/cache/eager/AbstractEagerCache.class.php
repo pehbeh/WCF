@@ -5,6 +5,7 @@ namespace wcf\system\cache\eager;
 use wcf\system\cache\builder\AbstractCacheBuilder;
 use wcf\system\cache\CacheHandler;
 use wcf\system\cache\ICacheCallback;
+use wcf\util\ClassUtil;
 
 /**
  * @author Olaf Braun
@@ -53,19 +54,7 @@ abstract class AbstractEagerCache implements ICacheCallback
                 \get_class($this)
             );
 
-            $parameters = [];
-            foreach ($reflection->getProperties(\ReflectionProperty::IS_READONLY) as $property) {
-                if (!$property->isInitialized($this)) {
-                    continue;
-                }
-
-                $value = $property->getValue($this);
-                if ($value === null) {
-                    continue;
-                }
-
-                $parameters[$property->getName()] = $value;
-            }
+            $parameters = ClassUtil::getObjectProperties($this, \ReflectionProperty::IS_READONLY);
 
             if ($parameters !== []) {
                 $this->cacheName .= '-' . CacheHandler::getInstance()->getCacheIndex($parameters);
