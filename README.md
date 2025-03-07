@@ -16,7 +16,7 @@ If you would like to use CKEditor 5 yourself and are not building on top of Wolt
 
 Fancybox is a lightbox alternative created by Jānis Skarnelis.
 
-This repository includes a build artifact of Fancybox that is comerically licensed to WoltLab GmbH.
+This repository includes a build artifact of Fancybox that is commercially licensed to WoltLab GmbH.
 You may use this instance of Fancybox with any plugin or app built on top of WoltLab Suite Core only.
 
 If you would like to use Fancybox yourself and are not building on top of WoltLab Suite Core then please visit https://fancyapps.com/pricing/ to learn more.
