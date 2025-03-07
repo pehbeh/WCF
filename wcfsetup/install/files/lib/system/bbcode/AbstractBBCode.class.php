@@ -12,8 +12,8 @@ use wcf\data\DatabaseObjectDecorator;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  BBCode  getDecoratedObject()
  * @mixin   BBCode
+ * @extends DatabaseObjectDecorator<BBCode>
  */
 abstract class AbstractBBCode extends DatabaseObjectDecorator implements IBBCode
 {

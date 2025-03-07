@@ -13,6 +13,8 @@ interface IUserCoverPhoto
 {
     /**
      * Deletes this cover photo.
+     *
+     * @return void
      */
     public function delete();
 

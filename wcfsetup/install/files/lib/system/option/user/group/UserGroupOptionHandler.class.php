@@ -3,6 +3,7 @@
 namespace wcf\system\option\user\group;
 
 use wcf\data\option\Option;
+use wcf\data\user\group\option\category\UserGroupOptionCategory;
 use wcf\data\user\group\option\UserGroupOption;
 use wcf\data\user\group\UserGroup;
 use wcf\system\cache\builder\UserGroupOptionCacheBuilder;
@@ -17,6 +18,8 @@ use wcf\system\WCF;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @extends OptionHandler<UserGroupOption, UserGroupOptionCategory>
  */
 class UserGroupOptionHandler extends OptionHandler
 {

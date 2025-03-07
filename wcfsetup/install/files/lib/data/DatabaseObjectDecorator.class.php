@@ -10,6 +10,8 @@ use wcf\system\exception\SystemException;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template T extends DatabaseObject
  */
 abstract class DatabaseObjectDecorator extends DatabaseObject
 {
@@ -21,7 +23,7 @@ abstract class DatabaseObjectDecorator extends DatabaseObject
 
     /**
      * decorated object
-     * @var DatabaseObject
+     * @var T
      */
     protected $object;
 
@@ -30,7 +32,7 @@ abstract class DatabaseObjectDecorator extends DatabaseObject
     /**
      * Creates a new DatabaseObjectDecorator object.
      *
-     * @param DatabaseObject $object
+     * @param T $object
      * @throws SystemException
      */
     public function __construct(DatabaseObject $object)
@@ -140,7 +142,7 @@ abstract class DatabaseObjectDecorator extends DatabaseObject
     /**
      * Returns the decorated object
      *
-     * @return DatabaseObject
+     * @return T
      */
     public function getDecoratedObject()
     {

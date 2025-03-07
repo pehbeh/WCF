@@ -3,6 +3,7 @@
 namespace wcf\system\upload;
 
 use wcf\data\AbstractDatabaseObjectAction;
+use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectEditor;
 use wcf\data\IDatabaseObjectAction;
 use wcf\data\IFile;
@@ -247,7 +248,7 @@ class DefaultUploadFileSaveStrategy implements IUploadFileSaveStrategy
                 }
 
                 if (!empty($updateData)) {
-                    /** @var DatabaseObjectEditor $editor */
+                    /** @var DatabaseObjectEditor<DatabaseObject> $editor */
                     $editor = new $this->editorClassName($object);
                     $editor->update($updateData);
                 }
@@ -258,12 +259,12 @@ class DefaultUploadFileSaveStrategy implements IUploadFileSaveStrategy
                     throw $e;
                 }
 
-                /** @var DatabaseObjectEditor $editor */
+                /** @var DatabaseObjectEditor<DatabaseObject> $editor */
                 $editor = new $this->editorClassName($object);
                 $editor->delete();
             }
         } else {
-            /** @var DatabaseObjectEditor $editor */
+            /** @var DatabaseObjectEditor<DatabaseObject> $editor */
             $editor = new $this->editorClassName($object);
             $editor->delete();
         }
@@ -276,7 +277,7 @@ class DefaultUploadFileSaveStrategy implements IUploadFileSaveStrategy
                     throw $e;
                 }
 
-                /** @var DatabaseObjectEditor $editor */
+                /** @var DatabaseObjectEditor<DatabaseObject> $editor */
                 $editor = new $this->editorClassName($object);
                 $editor->delete();
             }

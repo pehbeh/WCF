@@ -40,6 +40,7 @@ abstract class AbstractForm extends AbstractPage implements IForm
     /**
      * database object action
      * @var AbstractDatabaseObjectAction
+     * @phpstan-ignore missingType.generics
      */
     public $objectAction;
 

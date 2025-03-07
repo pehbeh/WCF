@@ -25,8 +25,7 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method  UserTrophyEditor[]      getObjects()
- * @method  UserTrophyEditor        getSingleObject()
+ * @extends AbstractDatabaseObjectAction<UserTrophy, UserTrophyEditor>
  */
 class UserTrophyAction extends AbstractDatabaseObjectAction
 {
@@ -250,7 +249,7 @@ class UserTrophyAction extends AbstractDatabaseObjectAction
         $userTrophyList->sqlLimit = 10;
         $userTrophyList->sqlOffset = ($this->parameters['pageNo'] - 1) * 10;
         $userTrophyList->sqlOrderBy = 'time DESC';
-        $pageCount = \ceil($userTrophyList->countObjects() / 10);
+        $pageCount = (int)\ceil($userTrophyList->countObjects() / 10);
         $userTrophyList->readObjects();
 
         return [

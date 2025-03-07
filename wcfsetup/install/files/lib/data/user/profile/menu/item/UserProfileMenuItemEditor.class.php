@@ -14,8 +14,9 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserProfileMenuItem getDecoratedObject()
  * @mixin   UserProfileMenuItem
+ * @extends DatabaseObjectEditor<UserProfileMenuItem>
+ * @implements IEditableCachedObject<UserProfileMenuItem>
  */
 class UserProfileMenuItemEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {
@@ -30,11 +31,10 @@ class UserProfileMenuItemEditor extends DatabaseObjectEditor implements IEditabl
      */
     public static function create(array $parameters = [])
     {
-        // calculate show order
         $parameters['showOrder'] = self::getShowOrder($parameters['showOrder'] ?? 0);
 
         $object = parent::create($parameters);
-        \assert($object instanceof UserProfileMenuItem);
+
         return $object;
     }
 
@@ -69,6 +69,7 @@ class UserProfileMenuItemEditor extends DatabaseObjectEditor implements IEditabl
      * Updates show order for current menu item.
      *
      * @param int $showOrder
+     * @return void
      */
     protected function updateShowOrder($showOrder)
     {

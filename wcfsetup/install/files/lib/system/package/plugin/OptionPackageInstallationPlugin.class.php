@@ -349,12 +349,12 @@ class OptionPackageInstallationPlugin extends AbstractOptionPackageInstallationP
 
     /**
      * @inheritDoc
-     * @return OptionHandler
-     * @since   5.2
+     * @return OptionHandler<Option, OptionCategory>
+     * @since 5.2
      */
     protected function getSortOptionHandler()
     {
-        // reuse OptionHandler
+        // @phpstan-ignore return.type
         return new class(true) extends OptionHandler {
             /**
              * @inheritDoc

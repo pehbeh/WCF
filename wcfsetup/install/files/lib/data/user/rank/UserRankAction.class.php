@@ -14,9 +14,7 @@ use wcf\system\file\upload\UploadFile;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserRankEditor[]    getObjects()
- * @method  UserRankEditor      getSingleObject()
- * @property-read UserRankEditor[] $objects
+ * @extends AbstractDatabaseObjectAction<UserRank, UserRankEditor>
  */
 class UserRankAction extends AbstractDatabaseObjectAction
 {
@@ -142,6 +140,9 @@ class UserRankAction extends AbstractDatabaseObjectAction
         return $count;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getI18nSaveTypes(): array
     {
         return ['rankTitle' => 'wcf.user.rank.userRank\d+'];

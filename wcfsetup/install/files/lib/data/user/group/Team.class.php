@@ -12,8 +12,8 @@ use wcf\data\user\UserProfile;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserGroup   getDecoratedObject()
  * @mixin   UserGroup
+ * @extends DatabaseObjectDecorator<UserGroup>
  */
 class Team extends DatabaseObjectDecorator
 {
@@ -31,7 +31,7 @@ class Team extends DatabaseObjectDecorator
     /**
      * Adds a new member.
      *
-     * @param UserProfile $user
+     * @return void
      */
     public function addMember(UserProfile $user)
     {
@@ -41,7 +41,7 @@ class Team extends DatabaseObjectDecorator
     /**
      * Returns the list of user group members
      *
-     * @return  UserProfile[]
+     * @return UserProfile[]
      */
     public function getMembers()
     {

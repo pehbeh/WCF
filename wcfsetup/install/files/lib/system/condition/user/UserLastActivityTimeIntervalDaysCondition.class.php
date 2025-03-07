@@ -53,7 +53,6 @@ class UserLastActivityTimeIntervalDaysCondition extends AbstractSingleFieldCondi
             throw new InvalidObjectArgument($objectList, UserList::class, 'Object list');
         }
 
-        // @phpstan-ignore property.notFound
         if ($this->object->ignoreZeroTime) {
             $objectList->getConditionBuilder()->add('user_table.lastActivityTime <> ?', [0]);
         }

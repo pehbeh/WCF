@@ -3,7 +3,9 @@
 namespace wcf\system\message;
 
 use wcf\data\AbstractDatabaseObjectAction;
+use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectDecorator;
+use wcf\data\DatabaseObjectEditor;
 use wcf\data\IAttachmentMessageQuickReplyAction;
 use wcf\data\IMessage;
 use wcf\data\IMessageQuickReplyAction;
@@ -206,7 +208,7 @@ class QuickReplyManager extends SingletonFactory
      *
      * @param IMessageQuickReplyAction $object
      * @param mixed[] $parameters
-     * @param class-string<AbstractDatabaseObjectAction> $containerActionClassName
+     * @param class-string<AbstractDatabaseObjectAction<DatabaseObject, DatabaseObjectEditor<DatabaseObject>>> $containerActionClassName
      * @param string $sortOrder
      * @param string $templateName
      * @param string $application

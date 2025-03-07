@@ -14,11 +14,15 @@ interface ISortableAction
 {
     /**
      * Validates the 'updatePosition' action.
+     *
+     * @return void
      */
     public function validateUpdatePosition();
 
     /**
      * Updates the position of given objects.
+     *
+     * @return void
      */
     public function updatePosition();
 }

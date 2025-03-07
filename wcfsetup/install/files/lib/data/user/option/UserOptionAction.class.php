@@ -11,9 +11,7 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserOption      create()
- * @method  UserOptionEditor[]  getObjects()
- * @method  UserOptionEditor    getSingleObject()
+ * @extends AbstractDatabaseObjectAction<UserOption, UserOptionEditor>
  */
 class UserOptionAction extends AbstractDatabaseObjectAction
 {

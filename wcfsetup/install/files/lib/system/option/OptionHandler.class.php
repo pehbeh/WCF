@@ -2,6 +2,7 @@
 
 namespace wcf\system\option;
 
+use wcf\data\DatabaseObject;
 use wcf\data\option\category\OptionCategory;
 use wcf\data\option\Option;
 use wcf\system\application\ApplicationHandler;
@@ -20,8 +21,11 @@ use wcf\util\StringUtil;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template TOption of Option
+ * @template TOptionCategory of DatabaseObject
  * @phpstan-type ParsedOption array{
- *  object: Option,
+ *  object: TOption,
  *  value: mixed,
  *  html: string,
  *  cssClassName: string,
@@ -50,7 +54,7 @@ class OptionHandler implements IOptionHandler
 
     /**
      * list of all options
-     * @var Option[]
+     * @var TOption[]
      */
     public $cachedOptions;
 
@@ -101,7 +105,7 @@ class OptionHandler implements IOptionHandler
 
     /**
      * options of the active category
-     * @var Option[]
+     * @var TOption[]
      */
     public $options = [];
 
@@ -388,7 +392,7 @@ class OptionHandler implements IOptionHandler
     /**
      * Validates an option.
      *
-     * @param Option $option
+     * @param TOption $option
      * @return void
      * @throws  UserInputException
      */
@@ -593,7 +597,7 @@ class OptionHandler implements IOptionHandler
     /**
      * Checks the required permissions and options of an option.
      *
-     * @param Option $option
+     * @param TOption $option
      * @return  bool
      */
     protected function checkOption(Option $option)
@@ -604,7 +608,7 @@ class OptionHandler implements IOptionHandler
     /**
      * Checks visibility of an option.
      *
-     * @param Option $option
+     * @param TOption $option
      * @return  bool
      */
     protected function checkVisibility(Option $option)

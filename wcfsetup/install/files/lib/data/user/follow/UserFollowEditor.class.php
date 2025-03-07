@@ -11,9 +11,8 @@ use wcf\data\DatabaseObjectEditor;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static UserFollow  create(array $parameters = [])
- * @method      UserFollow  getDecoratedObject()
  * @mixin       UserFollow
+ * @extends DatabaseObjectEditor<UserFollow>
  */
 class UserFollowEditor extends DatabaseObjectEditor
 {

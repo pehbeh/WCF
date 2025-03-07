@@ -3,6 +3,8 @@
 namespace wcf\system\user\content\provider;
 
 use wcf\data\AbstractDatabaseObjectAction;
+use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectEditor;
 use wcf\data\DatabaseObjectList;
 use wcf\data\user\User;
 use wcf\system\exception\ImplementationException;
@@ -78,7 +80,9 @@ abstract class AbstractDatabaseUserContentProvider implements IUserContentProvid
             throw new ImplementationException($className, AbstractDatabaseObjectAction::class);
         }
 
-        /** @var AbstractDatabaseObjectAction $objectAction */
+        /**
+         * @var AbstractDatabaseObjectAction<DatabaseObject, DatabaseObjectEditor<DatabaseObject>> $objectAction
+         */
         $objectAction = new $className($objectIDs, 'delete');
         $objectAction->executeAction();
     }

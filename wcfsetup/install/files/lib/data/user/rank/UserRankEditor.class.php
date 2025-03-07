@@ -13,9 +13,9 @@ use wcf\system\cache\builder\UserRankCacheBuilder;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static UserRank    create(array $parameters = [])
- * @method      UserRank    getDecoratedObject()
- * @mixin       UserRank
+ * @mixin UserRank
+ * @extends DatabaseObjectEditor<UserRank>
+ * @implements IEditableCachedObject<UserRank>
  */
 class UserRankEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {

@@ -56,7 +56,6 @@ abstract class AbstractTimestampCondition extends AbstractSingleFieldCondition i
             throw new InvalidObjectArgument($objectList, $className, 'Object list');
         }
 
-        // @phpstan-ignore property.notFound
         if ($this->object->ignoreZeroTime) {
             $objectList->getConditionBuilder()->add(
                 $objectList->getDatabaseTableAlias() . '.' . $this->getPropertyName() . ' <> ?',

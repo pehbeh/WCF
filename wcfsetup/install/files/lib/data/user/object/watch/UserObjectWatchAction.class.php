@@ -15,9 +15,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserObjectWatch         create()
- * @method  UserObjectWatchEditor[]     getObjects()
- * @method  UserObjectWatchEditor       getSingleObject()
+ * @extends AbstractDatabaseObjectAction<UserObjectWatch, UserObjectWatchEditor>
  */
 class UserObjectWatchAction extends AbstractDatabaseObjectAction
 {
@@ -35,6 +33,8 @@ class UserObjectWatchAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates parameters to manage a subscription.
+     *
+     * @return void
      */
     public function validateManageSubscription()
     {
@@ -64,7 +64,7 @@ class UserObjectWatchAction extends AbstractDatabaseObjectAction
     /**
      * Returns a form to manage a subscription.
      *
-     * @return  array
+     * @return array{objectID: int, objectType: string, template: string}
      */
     public function manageSubscription()
     {
@@ -80,6 +80,8 @@ class UserObjectWatchAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates parameters to save subscription state.
+     *
+     * @return void
      */
     public function validateSaveSubscription()
     {
@@ -91,6 +93,8 @@ class UserObjectWatchAction extends AbstractDatabaseObjectAction
 
     /**
      * Saves subscription state.
+     *
+     * @return array{objectID: int, objectType: int, subscribe: 0|1|bool}
      */
     public function saveSubscription()
     {
@@ -132,6 +136,8 @@ class UserObjectWatchAction extends AbstractDatabaseObjectAction
 
     /**
      * Adds a subscription.
+     *
+     * @return void
      */
     public function subscribe()
     {
@@ -153,6 +159,8 @@ class UserObjectWatchAction extends AbstractDatabaseObjectAction
 
     /**
      * Removes a subscription.
+     *
+     * @return void
      */
     public function unsubscribe()
     {
@@ -179,6 +187,8 @@ class UserObjectWatchAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates the subscribe action.
+     *
+     * @return void
      */
     protected function __validateSubscribe()
     {
@@ -207,6 +217,8 @@ class UserObjectWatchAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates the subscribe action.
+     *
+     * @return void
      */
     public function validateSubscribe()
     {
@@ -219,6 +231,8 @@ class UserObjectWatchAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates the unsubscribe action.
+     *
+     * @return void
      */
     public function validateUnsubscribe()
     {

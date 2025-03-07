@@ -20,8 +20,8 @@ use wcf\util\JSON;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       3.1
  *
- * @method  PackageInstallationPlugin   getDecoratedObject()
  * @mixin   PackageInstallationPlugin
+ * @extends DatabaseObjectDecorator<PackageInstallationPlugin>
  */
 class DevtoolsPip extends DatabaseObjectDecorator
 {

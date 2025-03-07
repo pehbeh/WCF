@@ -8,6 +8,8 @@ namespace wcf\data;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template T of IStorableObject
  */
 interface IEditableObject extends IStorableObject
 {
@@ -15,7 +17,7 @@ interface IEditableObject extends IStorableObject
      * Creates a new object.
      *
      * @param array<string, mixed> $parameters
-     * @return IStorableObject
+     * @return T
      */
     public static function create(array $parameters = []);
 

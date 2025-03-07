@@ -15,7 +15,7 @@ use wcf\system\exception\NotImplementedException;
  *  autoIncrement?: bool|0|1,
  *  decimals?: int,
  *  default?: string|int|float,
- *  key?: string,
+ *  key?: string|false,
  *  length?: ?int,
  *  notNull?: bool|0|1,
  *  type: string,

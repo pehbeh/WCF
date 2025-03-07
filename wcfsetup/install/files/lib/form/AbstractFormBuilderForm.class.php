@@ -54,7 +54,8 @@ abstract class AbstractFormBuilderForm extends AbstractForm
 
     /**
      * name of the object action class performing the form action
-     * @var string
+     * @var class-string<AbstractDatabaseObjectAction>
+     * @phpstan-ignore missingType.generics
      */
     public $objectActionClass;
 

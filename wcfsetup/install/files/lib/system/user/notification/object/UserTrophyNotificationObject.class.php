@@ -12,8 +12,8 @@ use wcf\data\user\trophy\UserTrophy;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserTrophy  getDecoratedObject()
  * @mixin   UserTrophy
+ * @extends DatabaseObjectDecorator<UserTrophy>
  */
 class UserTrophyNotificationObject extends DatabaseObjectDecorator implements IUserNotificationObject
 {

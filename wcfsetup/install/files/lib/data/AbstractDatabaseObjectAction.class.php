@@ -18,6 +18,9 @@ use wcf\util\StringUtil;
  * @author  Alexander Ebert
  * @copyright   2001-2020 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template TDatabaseObject of DatabaseObject
+ * @template TDatabaseObjectEditor of DatabaseObjectEditor<TDatabaseObject>
  */
 abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, IDeleteAction
 {
@@ -41,7 +44,7 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
 
     /**
      * list of object editors
-     * @var DatabaseObjectEditor[]
+     * @var TDatabaseObjectEditor[]
      */
     protected $objects = [];
 
@@ -257,7 +260,7 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
     /**
      * Sets the database objects.
      *
-     * @param DatabaseObjectEditor[] $objects
+     * @param TDatabaseObjectEditor[] $objects
      * @return void
      */
     public function setObjects(array $objects)
@@ -355,7 +358,7 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
     /**
      * Creates new database object.
      *
-     * @return DatabaseObject
+     * @return TDatabaseObject
      */
     public function create()
     {
@@ -437,7 +440,7 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
     /**
      * Returns a single object and throws a UserInputException if no or more than one object is given.
      *
-     * @return DatabaseObjectEditor
+     * @return TDatabaseObjectEditor
      * @throws UserInputException
      */
     protected function getSingleObject()
@@ -677,7 +680,7 @@ abstract class AbstractDatabaseObjectAction implements IDatabaseObjectAction, ID
     /**
      * Returns a list of currently loaded objects.
      *
-     * @return DatabaseObjectEditor[]
+     * @return TDatabaseObjectEditor[]
      */
     public function getObjects()
     {

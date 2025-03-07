@@ -12,8 +12,8 @@ use wcf\data\user\menu\item\UserMenuItem;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserMenuItem    getDecoratedObject()
  * @mixin   UserMenuItem
+ * @extends DatabaseObjectDecorator<UserMenuItem>
  */
 class DefaultUserMenuItemProvider extends DatabaseObjectDecorator implements IUserMenuItemProvider
 {

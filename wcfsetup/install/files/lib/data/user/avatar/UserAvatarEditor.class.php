@@ -13,9 +13,8 @@ use wcf\util\ImageUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static UserAvatar  create(array $parameters = [])
- * @method      UserAvatar  getDecoratedObject()
  * @mixin       UserAvatar
+ * @extends DatabaseObjectEditor<UserAvatar>
  *
  * @deprecated 6.2
  */
@@ -49,7 +48,9 @@ class UserAvatarEditor extends DatabaseObjectEditor
                 WHERE   avatarID IN (" . \str_repeat('?,', \count($objectIDs) - 1) . "?)";
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute($objectIDs);
+        // @phpstan-ignore argument.templateType
         while ($avatar = $statement->fetchObject(self::$baseClass)) {
+            /** @var UserAvatar $avatar */
             $editor = new self($avatar);
             $editor->deleteFiles();
         }
@@ -59,6 +60,8 @@ class UserAvatarEditor extends DatabaseObjectEditor
 
     /**
      * Deletes avatar files.
+     *
+     * @return void
      */
     public function deleteFiles()
     {

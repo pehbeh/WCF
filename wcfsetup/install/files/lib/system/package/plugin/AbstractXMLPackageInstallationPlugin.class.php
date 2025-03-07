@@ -303,7 +303,7 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
             // update existing item
             $baseClass = \call_user_func([$this->className, 'getBaseClass']);
 
-            /** @var \wcf\data\DatabaseObjectEditor $itemEditor */
+            /** @var \wcf\data\DatabaseObjectEditor<\wcf\data\DatabaseObject> $itemEditor */
             $itemEditor = new $this->className(new $baseClass(null, $row));
             $itemEditor->update($data);
 
