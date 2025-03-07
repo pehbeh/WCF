@@ -70,7 +70,7 @@
 
 .userCard__footer {
 	border-top: 1px solid var(--wcfContentBorderInner);
-	padding: 10px;
+	padding: 10px 5px;
 }
 
 .userCard__content {
@@ -94,7 +94,7 @@
 .userCard__footer__stats {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
-	gap: 10px;
+	gap: 5px;
 }
 
 .userCard__footer__statsItem {
