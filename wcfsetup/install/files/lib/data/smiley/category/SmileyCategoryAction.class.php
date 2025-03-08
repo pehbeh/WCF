@@ -15,9 +15,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Category        create()
- * @method  CategoryEditor[]    getObjects()
- * @method  CategoryEditor      getSingleObject()
+ * @extends AbstractDatabaseObjectAction<Category, CategoryEditor>
  */
 class SmileyCategoryAction extends AbstractDatabaseObjectAction
 {
@@ -33,13 +31,14 @@ class SmileyCategoryAction extends AbstractDatabaseObjectAction
 
     /**
      * active smiley category
-     * @var SmileyCategory
+     * @var ?SmileyCategory
      */
     public $smileyCategory;
 
     /**
      * Validates smiley category id.
      *
+     * @return void
      * @deprecated 6.2 No longer in use.
      */
     public function validateGetSmilies()
@@ -54,7 +53,7 @@ class SmileyCategoryAction extends AbstractDatabaseObjectAction
     /**
      * Returns parsed template for smiley category's smilies.
      *
-     * @return  array
+     * @return array{smileyCategoryID: int, template: string}
      * @deprecated 6.2 No longer in use.
      */
     public function getSmilies()

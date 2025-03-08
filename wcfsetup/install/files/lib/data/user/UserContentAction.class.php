@@ -16,6 +16,8 @@ class UserContentAction extends UserAction
 {
     /**
      * Checks permissions to bulk revert.
+     *
+     * @return void
      */
     public function validateBulkRevert()
     {
@@ -24,6 +26,8 @@ class UserContentAction extends UserAction
 
     /**
      * Bulk reverts changes made to history saving objects.
+     *
+     * @return void
      */
     public function bulkRevert()
     {

@@ -13,8 +13,8 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Style   getDecoratedObject()
  * @mixin   Style
+ * @extends DatabaseObjectDecorator<Style>
  */
 class ActiveStyle extends DatabaseObjectDecorator
 {
@@ -27,7 +27,7 @@ class ActiveStyle extends DatabaseObjectDecorator
      * Returns full path to specified image.
      *
      * @param string $image
-     * @return  string
+     * @return string
      */
     public function getImage($image)
     {
@@ -50,7 +50,7 @@ class ActiveStyle extends DatabaseObjectDecorator
     /**
      * Returns page logo.
      *
-     * @return  string
+     * @return string
      */
     public function getPageLogo()
     {
@@ -64,7 +64,7 @@ class ActiveStyle extends DatabaseObjectDecorator
     /**
      * Returns mobile page logo.
      *
-     * @return  string
+     * @return string
      */
     public function getPageLogoMobile()
     {

@@ -36,9 +36,7 @@ use wcf\util\UserRegistrationUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserEditor[]    getObjects()
- * @method  UserEditor  getSingleObject()
- * @property-read UserEditor[] $objects
+ * @extends AbstractDatabaseObjectAction<User, UserEditor>
  */
 class UserAction extends AbstractDatabaseObjectAction implements IClipboardAction, ISearchAction
 {
@@ -74,6 +72,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Validates permissions and parameters.
+     *
+     * @return void
      */
     public function validateCreate()
     {
@@ -84,6 +84,7 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
      * Validates accessible groups.
      *
      * @param bool $ignoreOwnUser
+     * @return void
      * @throws  PermissionDeniedException
      * @throws  UserInputException
      */
@@ -161,6 +162,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Validates permissions and parameters.
+     *
+     * @return void
      */
     public function validateUpdate()
     {
@@ -195,6 +198,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Validates the ban action.
+     *
+     * @return void
      */
     public function validateBan()
     {
@@ -206,6 +211,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Validates the unban action.
+     *
+     * @return void
      */
     public function validateUnban()
     {
@@ -216,6 +223,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Bans users.
+     *
+     * @return string
      */
     public function ban()
     {
@@ -255,6 +264,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Unbans users.
+     *
+     * @return void
      */
     public function unban()
     {
@@ -276,7 +287,6 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * @inheritDoc
-     * @return  User
      */
     public function create()
     {
@@ -445,6 +455,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Remove users from given groups.
+     *
+     * @return void
      */
     public function removeFromGroups()
     {
@@ -475,6 +487,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Add users to given groups.
+     *
+     * @return void
      */
     public function addToGroups()
     {
@@ -637,6 +651,7 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
      * Unmarks users.
      *
      * @param int[] $userIDs
+     * @return void
      */
     protected function unmarkItems(array $userIDs = [])
     {
@@ -654,6 +669,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Validates the enable action.
+     *
+     * @return void
      */
     public function validateEnable()
     {
@@ -664,6 +681,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Validates the disable action.
+     *
+     * @return void
      */
     public function validateDisable()
     {
@@ -672,6 +691,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Validates the confirm email action.
+     *
+     * @return void
      * @since       5.3
      */
     public function validateConfirmEmail()
@@ -681,6 +702,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Validates the unconfirm email action.
+     *
+     * @return void
      * @since       5.3
      */
     public function validateUnconfirmEmail()
@@ -690,6 +713,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Marks the email address as confirmed. It also enables the user, iff the register method is user activation only.
+     *
+     * @return void
      * @since       5.3
      */
     public function confirmEmail()
@@ -713,6 +738,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Marks the email address as unconfirmed.
+     *
+     * @return void
      * @since       5.3
      */
     public function unconfirmEmail()
@@ -734,6 +761,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Enables users.
+     *
+     * @return void
      */
     public function enable()
     {
@@ -793,6 +822,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Disables users.
+     *
+     * @return void
      */
     public function disable()
     {
@@ -842,6 +873,7 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
                 WHERE       user_table.userID IN (" . \str_repeat('?,', \count($this->objectIDs) - 1) . "?)";
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute($this->objectIDs);
+        // @phpstan-ignore argument.templateType
         while ($object = $statement->fetchObject($baseClass)) {
             $this->objects[] = new $this->className($object);
         }
@@ -849,6 +881,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Validates the 'disableSignature' action.
+     *
+     * @return void
      */
     public function validateDisableSignature()
     {
@@ -860,6 +894,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Disables the signature of the handled users.
+     *
+     * @return void
      */
     public function disableSignature()
     {
@@ -885,6 +921,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Validates the 'enableSignature' action.
+     *
+     * @return void
      */
     public function validateEnableSignature()
     {
@@ -903,6 +941,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Enables the signature of the handled users.
+     *
+     * @return void
      */
     public function enableSignature()
     {
@@ -919,6 +959,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Validates the 'disableAvatar' action.
+     *
+     * @return void
      */
     public function validateDisableAvatar()
     {
@@ -930,6 +972,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Disables the avatar of the handled users.
+     *
+     * @return void
      */
     public function disableAvatar()
     {
@@ -956,6 +1000,7 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
     /**
      * Validates the 'disableCoverPhoto' action.
      *
+     * @return void
      * @since   5.2
      */
     public function validateDisableCoverPhoto()
@@ -969,6 +1014,7 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
     /**
      * Disables the cover photo of the handled users.
      *
+     * @return void
      * @since   5.2
      */
     public function disableCoverPhoto()
@@ -995,6 +1041,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Validates the 'enableAvatar' action.
+     *
+     * @return void
      */
     public function validateEnableAvatar()
     {
@@ -1013,6 +1061,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Enables the avatar of the handled users.
+     *
+     * @return void
      */
     public function enableAvatar()
     {
@@ -1030,6 +1080,7 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
     /**
      * Validates the 'enableCoverPhoto' action.
      *
+     * @return void
      * @since   5.2
      */
     public function validateEnableCoverPhoto()
@@ -1050,6 +1101,7 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
     /**
      * Enables the cover photo of the handled users.
      *
+     * @return void
      * @since   5.2
      */
     public function enableCoverPhoto()
@@ -1068,8 +1120,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
     /**
      * Returns the remove content dialog.
      *
-     * @return      String[]
-     * @since       5.2
+     * @return array{template: string}
+     * @since 5.2
      */
     public function prepareRemoveContent()
     {
@@ -1096,7 +1148,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
     /**
      * Validates the prepareRemoveContent method.
      *
-     * @since       5.2
+     * @return void
+     * @since 5.2
      */
     public function validatePrepareRemoveContent()
     {
@@ -1133,11 +1186,13 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
     }
 
     /**
+     * @return void
      * @since 5.3
      */
     public function validateSaveUserConsent() {}
 
     /**
+     * @return void
      * @since 5.3
      */
     public function saveUserConsent()
@@ -1151,6 +1206,7 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
     /**
      * Validates the 'resendActivationMail' action.
      *
+     * @return void
      * @throws  IllegalLinkException
      * @throws  PermissionDeniedException
      * @throws  UserInputException
@@ -1169,7 +1225,6 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
         }
 
         foreach ($this->objects as $object) {
-            /** @var UserEditor $object */
             if (!$object->canEmailConfirm()) {
                 throw new UserInputException('objectIDs');
             }
@@ -1178,6 +1233,8 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
 
     /**
      * Triggers a new activation email.
+     *
+     * @return void
      * @since   5.2
      */
     public function resendActivationMail()
@@ -1211,6 +1268,7 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
     }
 
     /**
+     * @return void
      * @since   5.2
      */
     public function validateDevtoolsSetLanguage()
@@ -1227,6 +1285,7 @@ class UserAction extends AbstractDatabaseObjectAction implements IClipboardActio
     }
 
     /**
+     * @return void
      * @since   5.2
      */
     public function devtoolsSetLanguage()

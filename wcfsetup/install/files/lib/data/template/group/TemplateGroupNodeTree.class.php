@@ -8,6 +8,8 @@ namespace wcf\data\template\group;
  * @author  Olaf Braun
  * @copyright   2001-2024 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @implements \IteratorAggregate<int, TemplateGroupNode>
  */
 final class TemplateGroupNodeTree implements \IteratorAggregate
 {
@@ -15,30 +17,26 @@ final class TemplateGroupNodeTree implements \IteratorAggregate
      * list of ids of template group which will not be included in the node tree
      * @var int[]
      */
-    protected array $excludedTemplateGroupIDs = [];
+    private array $excludedTemplateGroupIDs = [];
 
     /**
      * maximum depth considered when building the node tree
-     * @var int
      */
-    protected int $maxDepth = -1;
+    private int $maxDepth = -1;
 
     /**
      * id of the template group
-     * @var int
      */
-    protected int $parentTemplateGroupID = 0;
+    private int $parentTemplateGroupID = 0;
 
     /**
      * parent template group node
-     * @var TemplateGroupNode
      */
-    protected TemplateGroupNode $parentNode;
+    private TemplateGroupNode $parentNode;
 
     /**
      * Creates a new instance of TemplateGroupNodeTree.
      *
-     * @param int $parentTemplateGroupID
      * @param int[] $excludedTemplateGroupIDs
      */
     public function __construct(
@@ -53,14 +51,15 @@ final class TemplateGroupNodeTree implements \IteratorAggregate
      * Sets the maximum depth considered when building the node tree, defaults
      * to -1 which equals infinite.
      */
-    public function setMaxDepth(int $maxDepth)
+    public function setMaxDepth(int $maxDepth): void
     {
         $this->maxDepth = $maxDepth;
     }
 
     /**
-     * @inheritDoc
+     * @return \RecursiveIteratorIterator<TemplateGroupNode>
      */
+    #[\Override]
     public function getIterator(): \Traversable
     {
         if (!isset($this->parentNode)) {
@@ -73,7 +72,7 @@ final class TemplateGroupNodeTree implements \IteratorAggregate
     /**
      * Builds the template group node tree.
      */
-    protected function buildTree()
+    private function buildTree(): void
     {
         $this->parentNode = $this->getNode($this->parentTemplateGroupID);
         $this->buildTreeLevel($this->parentNode, $this->maxDepth);
@@ -81,11 +80,8 @@ final class TemplateGroupNodeTree implements \IteratorAggregate
 
     /**
      * Returns the template group node for the template group with the given id.
-     *
-     * @param int $templateGroupID
-     * @return  TemplateGroupNode
      */
-    protected function getNode(int $templateGroupID): TemplateGroupNode
+    private function getNode(int $templateGroupID): TemplateGroupNode
     {
         if (!$templateGroupID) {
             $templateGroup = new TemplateGroup(null, [
@@ -101,7 +97,7 @@ final class TemplateGroupNodeTree implements \IteratorAggregate
     /**
      * Builds a certain level of the tree.
      */
-    protected function buildTreeLevel(TemplateGroupNode $parentNode, int $depth = 0)
+    private function buildTreeLevel(TemplateGroupNode $parentNode, int $depth = 0): void
     {
         if ($this->maxDepth != -1 && $depth < 0) {
             return;
@@ -123,7 +119,7 @@ final class TemplateGroupNodeTree implements \IteratorAggregate
      * Returns true if the given template group node fulfils all relevant conditions
      * to be included in this tree.
      */
-    protected function isIncluded(TemplateGroupNode $templateGroupNode): bool
+    private function isIncluded(TemplateGroupNode $templateGroupNode): bool
     {
         return !\in_array(
             $templateGroupNode->templateGroupID,

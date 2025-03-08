@@ -15,8 +15,7 @@ use wcf\system\WCF;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       5.4
  *
- * @method  UnfurlUrlEditor[]   getObjects()
- * @method  UnfurlUrlEditor     getSingleObject()
+ * @extends AbstractDatabaseObjectAction<UnfurlUrl, UnfurlUrlEditor>
  */
 class UnfurlUrlAction extends AbstractDatabaseObjectAction
 {
@@ -53,6 +52,9 @@ class UnfurlUrlAction extends AbstractDatabaseObjectAction
         parent::update();
     }
 
+    /**
+     * @param array<string, int|float|string> $imageData
+     */
     private function saveImageData(array $imageData): int
     {
         $keys = $values = '';

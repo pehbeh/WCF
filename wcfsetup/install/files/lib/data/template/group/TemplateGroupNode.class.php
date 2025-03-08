@@ -13,8 +13,8 @@ use wcf\data\TObjectTreeNode;
  * @copyright   2001-2024 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  TemplateGroup    getDecoratedObject()
  * @mixin   TemplateGroup
+ * @extends DatabaseObjectDecorator<TemplateGroup>
  */
 final class TemplateGroupNode extends DatabaseObjectDecorator implements IObjectTreeNode
 {

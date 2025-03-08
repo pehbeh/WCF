@@ -11,10 +11,10 @@ use wcf\data\DatabaseObjectDecorator;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Tag getDecoratedObject()
  * @mixin   Tag
  *
  * @property-read   int|null $counter    number of the times the tag has been used for a certain object type or `null`
+ * @extends DatabaseObjectDecorator<Tag>
  */
 class TagCloudTag extends DatabaseObjectDecorator
 {
@@ -33,6 +33,7 @@ class TagCloudTag extends DatabaseObjectDecorator
      * Sets the weight of the tag.
      *
      * @param int $weight
+     * @return void
      */
     public function setWeight($weight)
     {
@@ -42,7 +43,7 @@ class TagCloudTag extends DatabaseObjectDecorator
     /**
      * Returns the weight of the tag.
      *
-     * @return  int
+     * @return int
      */
     public function getWeight()
     {

@@ -11,9 +11,7 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  StyleVariable       create()
- * @method  StyleVariableEditor[]   getObjects()
- * @method  StyleVariableEditor getSingleObject()
+ * @extends AbstractDatabaseObjectAction<StyleVariable, StyleVariableEditor>
  */
 class StyleVariableAction extends AbstractDatabaseObjectAction
 {

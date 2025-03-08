@@ -44,6 +44,8 @@ class SmileyCategory extends AbstractDecoratedCategory implements \Countable, IT
 
     /**
      * Loads associated smilies from cache.
+     *
+     * @return void
      */
     public function loadSmilies()
     {

@@ -27,9 +27,7 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method  TrophyEditor[]      getObjects()
- * @method  TrophyEditor        getSingleObject()
- * @property-read TrophyEditor[] $objects
+ * @extends AbstractDatabaseObjectAction<Trophy, TrophyEditor>
  */
 class TrophyAction extends AbstractDatabaseObjectAction implements IToggleAction, IUploadAction, ISortableAction
 {
@@ -52,7 +50,6 @@ class TrophyAction extends AbstractDatabaseObjectAction implements IToggleAction
 
     /**
      * @inheritDoc
-     * @return  Trophy
      */
     public function create()
     {
@@ -62,7 +59,6 @@ class TrophyAction extends AbstractDatabaseObjectAction implements IToggleAction
             unset($this->parameters['data']['showOrder']);
         }
 
-        /** @var Trophy $trophy */
         $trophy = parent::create();
 
         if (isset($this->parameters['tmpHash']) && $this->parameters['data']['type'] === Trophy::TYPE_IMAGE) {
@@ -284,7 +280,7 @@ class TrophyAction extends AbstractDatabaseObjectAction implements IToggleAction
     /**
      * Updates style preview image.
      *
-     * @param Trophy $trophy
+     * @return void
      */
     protected function updateTrophyImage(Trophy $trophy)
     {

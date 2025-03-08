@@ -42,18 +42,20 @@ class UserProfileAction extends UserAction
 
     /**
      * user profile object
-     * @var UserProfile
+     * @var ?UserProfile
      */
     public $userProfile;
 
     /**
      * uploaded file
-     * @var UploadFile
+     * @var ?UploadFile
      */
     public $uploadFile;
 
     /**
      * Validates parameters for signature preview.
+     *
+     * @return void
      */
     public function validateGetMessagePreview()
     {
@@ -63,8 +65,8 @@ class UserProfileAction extends UserAction
     /**
      * Returns a rendered signature preview.
      *
-     * @return  array
-     * @throws  UserInputException
+     * @return array{message: string, raw: string}
+     * @throws UserInputException
      */
     public function getMessagePreview()
     {
@@ -107,7 +109,8 @@ class UserProfileAction extends UserAction
     /**
      * Validates detailed activity point list
      *
-     * @throws  UserInputException
+     * @return void
+     * @throws UserInputException
      */
     public function validateGetDetailedActivityPointList()
     {
@@ -124,7 +127,7 @@ class UserProfileAction extends UserAction
     /**
      * Returns detailed activity point list.
      *
-     * @return  array
+     * @return array{template: string, userID: int}
      */
     public function getDetailedActivityPointList()
     {
@@ -167,8 +170,9 @@ class UserProfileAction extends UserAction
     /**
      * Validates parameters to begin profile inline editing.
      *
-     * @throws  PermissionDeniedException
-     * @throws  UserInputException
+     * @return void
+     * @throws PermissionDeniedException
+     * @throws UserInputException
      */
     public function validateBeginEdit()
     {
@@ -193,7 +197,7 @@ class UserProfileAction extends UserAction
     /**
      * Begins profile inline editing.
      *
-     * @return  array
+     * @return array{template: string}
      */
     public function beginEdit()
     {
@@ -211,7 +215,8 @@ class UserProfileAction extends UserAction
     /**
      * Validates parameters to save changes to user profile.
      *
-     * @throws  PermissionDeniedException
+     * @return void
+     * @throws PermissionDeniedException
      */
     public function validateSave()
     {
@@ -232,7 +237,7 @@ class UserProfileAction extends UserAction
     /**
      * Saves changes to user profile.
      *
-     * @return  array
+     * @return array{success: bool, template: string}
      */
     public function save()
     {
@@ -319,6 +324,8 @@ class UserProfileAction extends UserAction
 
     /**
      * Updates user ranks.
+     *
+     * @return void
      */
     public function updateUserRank()
     {
@@ -376,6 +383,8 @@ class UserProfileAction extends UserAction
 
     /**
      * Updates user online markings.
+     *
+     * @return void
      */
     public function updateUserOnlineMarking()
     {
@@ -462,6 +471,8 @@ class UserProfileAction extends UserAction
 
     /**
      * Updates the special trophies.
+     *
+     * @return void
      */
     public function updateSpecialTrophies()
     {
@@ -502,9 +513,8 @@ class UserProfileAction extends UserAction
     /**
      * Returns the user option handler object.
      *
-     * @param User $user
      * @param bool $editMode
-     * @return  UserOptionHandler
+     * @return UserOptionHandler
      */
     protected function getOptionHandler(User $user, $editMode = true)
     {

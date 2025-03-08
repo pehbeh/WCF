@@ -91,12 +91,6 @@ parameters:
 			path: wcfsetup/install/files/lib/data/comment/response/CommentResponseAction.class.php
 
 		-
-			message: '#^Property wcf\\data\\style\\StyleAction\:\:\$style \(wcf\\data\\style\\Style\) does not accept wcf\\data\\style\\StyleEditor\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: wcfsetup/install/files/lib/data/style/StyleAction.class.php
-
-		-
 			message: '#^While loop condition is always true\.$#'
 			identifier: while.alwaysTrue
 			count: 1

@@ -21,6 +21,8 @@ interface ISearchAction
 
     /**
      * Validates the "getSearchResultList" action.
+     *
+     * @return void
      */
     public function validateGetSearchResultList();
 }

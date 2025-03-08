@@ -39,11 +39,11 @@ use wcf\util\StringUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  User    getDecoratedObject()
  * @mixin   User
  * @property-read   int $sessionLastActivityTime
  * @property-read   bool $birthdayShowYear
  * @property-read   string $birthday
+ * @extends DatabaseObjectDecorator<User>
  */
 class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
 {
@@ -560,6 +560,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
      * Prepares the special trophies for the given user ids.
      *
      * @param int[] $userIDs
+     * @return void
      * @since       5.2
      */
     public static function prepareSpecialTrophies(array $userIDs)
@@ -624,7 +625,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
     /**
      * Returns the last activity time.
      *
-     * @return  int
+     * @return int
      */
     public function getLastActivityTime()
     {
@@ -635,7 +636,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
      * Returns a new user profile object.
      *
      * @param int $userID
-     * @return  UserProfile
+     * @return ?UserProfile
      * @deprecated  3.0, use UserProfileRuntimeCache::getObject()
      */
     public static function getUserProfile($userID)
@@ -647,7 +648,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
      * Returns a list of user profiles.
      *
      * @param int[] $userIDs
-     * @return  UserProfile[]
+     * @return (UserProfile|null)[]
      * @deprecated  3.0, use UserProfileRuntimeCache::getObjects()
      */
     public static function getUserProfiles(array $userIDs)
@@ -681,7 +682,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
      * Returns the user profiles of the users with the given names.
      *
      * @param string[] $usernames
-     * @return  array<string, UserProfile|null>
+     * @return array<string, UserProfile|null>
      */
     public static function getUserProfilesByUsername(array $usernames)
     {
@@ -784,7 +785,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
     /**
      * Returns true if current user profile is protected.
      *
-     * @return  bool
+     * @return bool
      */
     public function isProtected()
     {
@@ -795,7 +796,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
      * Returns the age of this user.
      *
      * @param int $year
-     * @return  int
+     * @return int
      */
     public function getAge($year = null)
     {
@@ -829,7 +830,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
      * Returns the formatted birthday of this user.
      *
      * @param int $year
-     * @return  string
+     * @return string
      */
     public function getBirthday($year = null)
     {
@@ -871,7 +872,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
     /**
      * Returns the age of user account in days.
      *
-     * @return  int
+     * @return int
      */
     public function getProfileAge()
     {
@@ -882,7 +883,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
      * Returns the value of the permission with the given name.
      *
      * @param string $permission
-     * @return  mixed       permission value
+     * @return mixed permission value
      */
     public function getPermission($permission)
     {
@@ -902,7 +903,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
      * compatibility, while preventing ACLs from overruling a 'Never' setting.
      *
      * @param string $permission
-     * @return      bool
+     * @return bool
      */
     public function getNeverPermission($permission)
     {
@@ -914,7 +915,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
     /**
      * Returns the user title of this user.
      *
-     * @return  string
+     * @return string
      */
     public function getUserTitle()
     {
@@ -943,6 +944,8 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
 
     /**
      * Loads group data from cache.
+     *
+     * @return void
      */
     protected function loadGroupData()
     {
@@ -952,7 +955,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
     /**
      * Returns the old username of this user.
      *
-     * @return  string
+     * @return string
      */
     public function getOldUsername()
     {
@@ -968,7 +971,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
     /**
      * Returns true if this user can edit his profile.
      *
-     * @return  bool
+     * @return bool
      */
     public function canEditOwnProfile()
     {
@@ -999,6 +1002,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
     }
 
     /**
+     * @return bool
      * @deprecated 5.4 This method is unused internally and redundant with `User::getAuthProvider()`.
      */
     public function isConnectedWithFacebook()
@@ -1007,6 +1011,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
     }
 
     /**
+     * @return bool
      * @deprecated 5.4 This method is unused internally and redundant with `User::getAuthProvider()`.
      */
     public function isConnectedWithGithub()
@@ -1015,6 +1020,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
     }
 
     /**
+     * @return bool
      * @deprecated 5.4 This method is unused internally and redundant with `User::getAuthProvider()`.
      */
     public function isConnectedWithGoogle()
@@ -1023,6 +1029,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
     }
 
     /**
+     * @return bool
      * @deprecated 5.4 This method is unused internally and redundant with `User::getAuthProvider()`.
      */
     public function isConnectedWithTwitter()
@@ -1033,7 +1040,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
     /**
      * Returns 3rd party auth provider name.
      *
-     * @return  string
+     * @return string
      */
     public function getAuthProvider()
     {
@@ -1043,7 +1050,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
     /**
      * Return true if the user's signature is visible.
      *
-     * @return  bool
+     * @return bool
      */
     public function showSignature()
     {
@@ -1069,7 +1076,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
     /**
      * Returns the parsed signature.
      *
-     * @return  string
+     * @return string
      */
     public function getSignature()
     {
@@ -1080,7 +1087,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
      * Returns the formatted value of the user option with the given name.
      *
      * @param string $name
-     * @return  mixed
+     * @return mixed
      */
     public function getFormattedUserOption($name)
     {
@@ -1103,7 +1110,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
      * Returns true, if the active user has access to the user option with the given name.
      *
      * @param string $name
-     * @return  bool
+     * @return bool
      */
     public function isVisibleOption($name)
     {
@@ -1115,7 +1122,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
     /**
      * Returns the formatted username.
      *
-     * @return  string
+     * @return string
      */
     public function getFormattedUsername()
     {
@@ -1134,7 +1141,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
     /**
      * Returns a HTML anchor link pointing to the decorated user.
      *
-     * @return  string
+     * @return string
      */
     public function getAnchorTag()
     {
@@ -1161,6 +1168,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
      * Sets the session-based last activity time.
      *
      * @param int $timestamp
+     * @return void
      */
     public function setSessionLastActivityTime($timestamp)
     {

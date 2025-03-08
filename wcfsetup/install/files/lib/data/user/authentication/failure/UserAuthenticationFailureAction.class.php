@@ -11,9 +11,7 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserAuthenticationFailure       create()
- * @method  UserAuthenticationFailureEditor[]   getObjects()
- * @method  UserAuthenticationFailureEditor     getSingleObject()
+ * @extends AbstractDatabaseObjectAction<UserAuthenticationFailure, UserAuthenticationFailureEditor>
  */
 class UserAuthenticationFailureAction extends AbstractDatabaseObjectAction
 {

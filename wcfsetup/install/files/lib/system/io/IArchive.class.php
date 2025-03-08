@@ -16,6 +16,7 @@ namespace wcf\system\io;
  *  offset: int,
  *  size: int,
  *  type: 'file'|'folder'|'symlink',
+ *  index: int,
  * }&mixed[]
  */
 interface IArchive

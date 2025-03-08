@@ -15,6 +15,7 @@ use wcf\system\exception\PermissionDeniedException;
  *
  * @method  Category    getDecoratedObject()
  * @mixin   Category
+ * @extends DatabaseObjectDecorator<Category>
  */
 abstract class AbstractDecoratedCategory extends DatabaseObjectDecorator
 {

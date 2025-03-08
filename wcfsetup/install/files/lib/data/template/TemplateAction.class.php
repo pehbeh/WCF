@@ -12,8 +12,7 @@ use wcf\system\language\LanguageFactory;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  TemplateEditor[]    getObjects()
- * @method  TemplateEditor      getSingleObject()
+ * @extends AbstractDatabaseObjectAction<Template, TemplateEditor>
  */
 class TemplateAction extends AbstractDatabaseObjectAction
 {

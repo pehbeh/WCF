@@ -13,9 +13,9 @@ use wcf\system\cache\builder\SmileyCacheBuilder;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static Smiley      create(array $parameters = [])
- * @method      Smiley      getDecoratedObject()
  * @mixin       Smiley
+ * @extends DatabaseObjectEditor<Smiley>
+ * @implements IEditableCachedObject<Smiley>
  */
 class SmileyEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {
