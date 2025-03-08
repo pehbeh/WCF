@@ -53,7 +53,7 @@ abstract class DatabaseObject implements IIDObject, IStorableObject
      * Creates a new instance of the DatabaseObject class.
      *
      * @param string|int|null $id
-     * @param mixed[]|false|null $row
+     * @param mixed[]|null $row
      * @param ?static $object
      */
     public function __construct($id, ?array $row = null, ?self $object = null)

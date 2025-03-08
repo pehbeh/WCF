@@ -14,18 +14,15 @@ interface IPopoverAction
 {
     /**
      * Validates the `getPopover` action.
+     *
+     * @return void
      */
     public function validateGetPopover();
 
     /**
      * Returns the requested popover for a specific object.
      *
-     * Return value:
-     *  [
-     *      'template' => '...'
-     *  ]
-     *
-     * @return  string[]
+     * @return array{template: string}
      */
     public function getPopover();
 }

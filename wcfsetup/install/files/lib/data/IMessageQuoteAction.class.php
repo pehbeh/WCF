@@ -15,37 +15,43 @@ interface IMessageQuoteAction
 {
     /**
      * Validates parameters to return a parsed template of all associated quotes.
+     *
+     * @return void
      */
     public function validateGetRenderedQuotes();
 
     /**
      * Returns the parsed template for all associated quotes.
      *
-     * @return  array
+     * @return mixed[]
      */
     public function getRenderedQuotes();
 
     /**
      * Validates parameters to quote an entire message.
+     *
+     * @return void
      */
     public function validateSaveFullQuote();
 
     /**
      * Quotes an entire message.
      *
-     * @return  array
+     * @return mixed[]
      */
     public function saveFullQuote();
 
     /**
      * Validates parameters to save a quote.
+     *
+     * @return void
      */
     public function validateSaveQuote();
 
     /**
      * Saves the quote message and returns the number of stored quotes.
      *
-     * @return  array
+     * @return mixed[]
      */
     public function saveQuote();
 }

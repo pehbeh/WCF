@@ -20,8 +20,7 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.2
  *
- * @method  ReactionTypeEditor[]        getObjects()
- * @method  ReactionTypeEditor      getSingleObject()
+ * @extends AbstractDatabaseObjectAction<ReactionType, ReactionTypeEditor>
  */
 class ReactionTypeAction extends AbstractDatabaseObjectAction implements ISortableAction, IToggleAction
 {

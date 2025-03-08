@@ -20,7 +20,7 @@ interface IFile extends IStorableObject
     /**
      * Returns the physical location of the file.
      *
-     * @return  string
+     * @return string
      */
     public function getLocation();
 }

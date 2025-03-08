@@ -10,9 +10,8 @@ use wcf\data\DatabaseObjectEditor;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.1
  *
- * @method  ServiceWorker     getDecoratedObject()
- * @method static ServiceWorker     create(array $parameters = [])
  * @mixin   ServiceWorker
+ * @extends DatabaseObjectEditor<ServiceWorker>
  */
 class ServiceWorkerEditor extends DatabaseObjectEditor
 {

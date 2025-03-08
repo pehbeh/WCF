@@ -2,6 +2,8 @@
 
 namespace wcf\action;
 
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * All action classes should implement this interface.
  * An action executes a user input without showing a result page or a form.
@@ -22,7 +24,7 @@ interface IAction
     /**
      * Reads the given parameters.
      *
-     * @return void
+     * @return void|ResponseInterface
      */
     public function readParameters();
 
@@ -43,7 +45,7 @@ interface IAction
     /**
      * Executes this action.
      *
-     * @return void
+     * @return void|ResponseInterface
      */
     public function execute();
 }

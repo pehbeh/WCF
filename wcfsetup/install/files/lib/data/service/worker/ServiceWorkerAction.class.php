@@ -10,9 +10,7 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.1
  *
- * @method  ServiceWorker         create()
- * @method  ServiceWorkerEditor[]     getObjects()
- * @method  ServiceWorkerEditor       getSingleObject()
+ * @extends AbstractDatabaseObjectAction<ServiceWorker, ServiceWorkerEditor>
  */
 class ServiceWorkerAction extends AbstractDatabaseObjectAction
 {

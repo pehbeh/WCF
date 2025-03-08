@@ -8,6 +8,9 @@ namespace wcf\data;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template T of DatabaseObject
+ * @extends \SeekableIterator<int, T>
  */
 interface ITraversableObject extends \SeekableIterator
 {

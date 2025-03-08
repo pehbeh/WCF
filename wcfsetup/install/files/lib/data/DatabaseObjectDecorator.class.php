@@ -11,7 +11,7 @@ use wcf\system\exception\SystemException;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @template T extends DatabaseObject
+ * @template T of DatabaseObject
  */
 abstract class DatabaseObjectDecorator extends DatabaseObject
 {
