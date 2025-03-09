@@ -14,8 +14,9 @@ use wcf\system\SingletonFactory;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
- * @template T of DatabaseObject|DatabaseObjectDecorator
- * @implements IRuntimeCache<T>
+ * @template TDatabaseObject of DatabaseObject|DatabaseObjectDecorator
+ * @template TDatabaseObjectList of DatabaseObjectList
+ * @implements IRuntimeCache<TDatabaseObject>
  */
 abstract class AbstractRuntimeCache extends SingletonFactory implements IRuntimeCache
 {
@@ -33,7 +34,7 @@ abstract class AbstractRuntimeCache extends SingletonFactory implements IRuntime
 
     /**
      * cached DatabaseObject objects
-     * @var T[]
+     * @var TDatabaseObject[]
      */
     protected $objects = [];
 
@@ -98,7 +99,7 @@ abstract class AbstractRuntimeCache extends SingletonFactory implements IRuntime
     /**
      * Returns a database object list object to fetch cached objects.
      *
-     * @return DatabaseObjectList
+     * @return TDatabaseObjectList
      */
     protected function getObjectList()
     {

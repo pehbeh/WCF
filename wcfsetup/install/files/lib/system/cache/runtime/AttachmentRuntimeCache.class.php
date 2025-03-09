@@ -13,7 +13,7 @@ use wcf\data\attachment\AttachmentList;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.1
  *
- * @extends AbstractRuntimeCache<Attachment>
+ * @extends AbstractRuntimeCache<Attachment, AttachmentList>
  */
 final class AttachmentRuntimeCache extends AbstractRuntimeCache
 {

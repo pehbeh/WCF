@@ -13,7 +13,7 @@ use wcf\data\article\content\ViewableArticleContentList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.2
  *
- * @extends AbstractRuntimeCache<ViewableArticleContent>
+ * @extends AbstractRuntimeCache<ViewableArticleContent, ViewableArticleContentList>
  */
 class ViewableArticleContentRuntimeCache extends AbstractRuntimeCache
 {

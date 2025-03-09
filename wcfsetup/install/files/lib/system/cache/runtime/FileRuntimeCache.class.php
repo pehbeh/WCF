@@ -13,7 +13,7 @@ use wcf\data\file\FileList;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  *
- * @extends AbstractRuntimeCache<File>
+ * @extends AbstractRuntimeCache<File, FileList>
  */
 class FileRuntimeCache extends AbstractRuntimeCache
 {

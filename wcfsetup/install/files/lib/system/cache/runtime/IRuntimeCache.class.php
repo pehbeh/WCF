@@ -12,7 +12,7 @@ use wcf\data\DatabaseObjectDecorator;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
- * @template T of DatabaseObject|DatabaseObjectDecorator
+ * @template TDatabaseObject of DatabaseObject|DatabaseObjectDecorator
  */
 interface IRuntimeCache
 {
@@ -37,7 +37,7 @@ interface IRuntimeCache
     /**
      * Returns all currently cached objects.
      *
-     * @return array<int, ?T>
+     * @return array<int, ?TDatabaseObject>
      */
     public function getCachedObjects();
 
@@ -47,7 +47,7 @@ interface IRuntimeCache
      * during this method call and the object, if existing, will be returned.
      *
      * @param int $objectID
-     * @return ?T
+     * @return ?TDatabaseObject
      */
     public function getObject($objectID);
 
@@ -58,7 +58,7 @@ interface IRuntimeCache
      * during this method call and the objects, if existing, will be returned.
      *
      * @param int[] $objectIDs
-     * @return array<int, ?T>
+     * @return array<int, ?TDatabaseObject>
      */
     public function getObjects(array $objectIDs);
 

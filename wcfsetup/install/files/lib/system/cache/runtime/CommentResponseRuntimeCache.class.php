@@ -13,7 +13,7 @@ use wcf\data\comment\response\CommentResponseList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @extends AbstractRuntimeCache<CommentResponse>
+ * @extends AbstractRuntimeCache<CommentResponse, CommentResponseList>
  */
 class CommentResponseRuntimeCache extends AbstractRuntimeCache
 {

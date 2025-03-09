@@ -13,7 +13,7 @@ use wcf\data\media\MediaList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @extends AbstractRuntimeCache<Media>
+ * @extends AbstractRuntimeCache<Media, MediaList>
  */
 class MediaRuntimeCache extends AbstractRuntimeCache
 {

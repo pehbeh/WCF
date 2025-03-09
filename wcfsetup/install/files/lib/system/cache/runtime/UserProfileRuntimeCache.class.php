@@ -13,7 +13,7 @@ use wcf\data\user\UserProfileList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @extends AbstractRuntimeCache<UserProfile>
+ * @extends AbstractRuntimeCache<UserProfile, UserProfileList>
  */
 class UserProfileRuntimeCache extends AbstractRuntimeCache
 {

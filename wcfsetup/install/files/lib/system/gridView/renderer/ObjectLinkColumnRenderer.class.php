@@ -20,7 +20,10 @@ use wcf\util\StringUtil;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
- * @template T of DatabaseObject|DatabaseObjectDecorator
+ *
+ * @template TDatabaseObject of DatabaseObject|DatabaseObjectDecorator
+ * @template TRuntimeCache of AbstractRuntimeCache
+ * @extends DefaultColumnRenderer<TDatabaseObject>
  */
 abstract class ObjectLinkColumnRenderer extends DefaultColumnRenderer implements ILinkColumnRenderer
 {
@@ -34,7 +37,7 @@ abstract class ObjectLinkColumnRenderer extends DefaultColumnRenderer implements
     ) {}
 
     /**
-     * @return AbstractRuntimeCache<T>
+     * @return TRuntimeCache
      */
     protected abstract function getRuntimeCache(): AbstractRuntimeCache;
 
