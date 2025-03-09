@@ -2,6 +2,7 @@
 
 namespace wcf\system\form\builder\field\dependency;
 
+use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 
 /**
@@ -102,7 +103,7 @@ class ValueFormFieldDependency extends AbstractFormFieldDependency
     /**
      * Sets the possible values the field may have for the dependency to be met.
      *
-     * @param array<string|int, mixed>|callable|DatabaseObjectList $values possible field values
+     * @param array<string|int, mixed>|callable|DatabaseObjectList<DatabaseObject> $values possible field values
      * @return static $this this dependency
      *
      * @throws \InvalidArgumentException if given value are no array, callable, DatabaseObjectList, or otherwise invalid

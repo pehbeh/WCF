@@ -6,7 +6,6 @@ use wcf\data\article\ArticleList;
 use wcf\data\DatabaseObjectList;
 use wcf\system\condition\AbstractMultiCategoryCondition;
 use wcf\system\condition\IObjectListCondition;
-use wcf\system\exception\InvalidObjectArgument;
 
 /**
  * Condition implementation for the category an article belongs to.
@@ -15,6 +14,8 @@ use wcf\system\exception\InvalidObjectArgument;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
+ *
+ * @implements IObjectListCondition<ArticleList>
  */
 class ArticleCategoryCondition extends AbstractMultiCategoryCondition implements IObjectListCondition
 {
@@ -38,10 +39,6 @@ class ArticleCategoryCondition extends AbstractMultiCategoryCondition implements
      */
     public function addObjectListCondition(DatabaseObjectList $objectList, array $conditionData)
     {
-        if (!($objectList instanceof ArticleList)) {
-            throw new InvalidObjectArgument($objectList, ArticleList::class, 'Object list');
-        }
-
         $objectList->getConditionBuilder()->add('article.categoryID IN (?)', [$conditionData[$this->fieldName]]);
     }
 }

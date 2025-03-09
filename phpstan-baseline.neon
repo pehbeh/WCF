@@ -1015,7 +1015,7 @@ parameters:
 			path: wcfsetup/install/files/lib/system/form/builder/field/acl/AclFormField.class.php
 
 		-
-			message: '#^Instanceof between wcf\\data\\DatabaseObjectList and wcf\\data\\DatabaseObjectList will always evaluate to true\.$#'
+			message: '#^Instanceof between wcf\\data\\DatabaseObjectList<wcf\\data\\DatabaseObject> and wcf\\data\\DatabaseObjectList will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: wcfsetup/install/files/lib/system/form/builder/field/dependency/ValueFormFieldDependency.class.php

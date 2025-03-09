@@ -9,7 +9,6 @@ use wcf\data\trophy\TrophyList;
 use wcf\data\user\trophy\UserTrophyList;
 use wcf\data\user\User;
 use wcf\data\user\UserList;
-use wcf\system\exception\InvalidObjectArgument;
 use wcf\system\exception\UserInputException;
 use wcf\system\WCF;
 use wcf\util\ArrayUtil;
@@ -21,6 +20,8 @@ use wcf\util\StringUtil;
  * @author  Joshua Ruesweg
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @implements IObjectListCondition<UserList>
  */
 class UserTrophyCondition extends AbstractMultipleFieldsCondition implements
     IContentCondition,
@@ -68,10 +69,6 @@ class UserTrophyCondition extends AbstractMultipleFieldsCondition implements
      */
     public function addObjectListCondition(DatabaseObjectList $objectList, array $conditionData)
     {
-        if (!($objectList instanceof UserList)) {
-            throw new InvalidObjectArgument($objectList, UserList::class, 'Object list');
-        }
-
         if (isset($conditionData['userTrophyIDs'])) {
             $objectList->getConditionBuilder()->add(
                 'user_table.userID IN (
@@ -210,7 +207,7 @@ HTML;
             $collator = new \Collator(WCF::getLanguage()->getLocale());
             \uasort(
                 $this->trophies,
-                static fn (Trophy $a, Trophy $b) => $collator->compare($a->getTitle(), $b->getTitle())
+                static fn(Trophy $a, Trophy $b) => $collator->compare($a->getTitle(), $b->getTitle())
             );
         }
 

@@ -22,6 +22,8 @@ use wcf\util\ClassUtil;
  * @copyright   2001-2020 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       5.3
+ *
+ * @implements IObjectListCondition<UserList>
  */
 class UserLastActivityTimeIntervalDaysCondition extends AbstractSingleFieldCondition implements
     IObjectCondition,
@@ -49,10 +51,6 @@ class UserLastActivityTimeIntervalDaysCondition extends AbstractSingleFieldCondi
      */
     public function addObjectListCondition(DatabaseObjectList $objectList, array $conditionData)
     {
-        if (!($objectList instanceof UserList)) {
-            throw new InvalidObjectArgument($objectList, UserList::class, 'Object list');
-        }
-
         if ($this->object->ignoreZeroTime) {
             $objectList->getConditionBuilder()->add('user_table.lastActivityTime <> ?', [0]);
         }

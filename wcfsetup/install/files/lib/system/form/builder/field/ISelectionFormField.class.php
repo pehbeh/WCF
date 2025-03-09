@@ -2,6 +2,7 @@
 
 namespace wcf\system\form\builder\field;
 
+use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 
 /**
@@ -49,7 +50,7 @@ interface ISelectionFormField extends IFormField
      * callable returning an array. Each array value must be an array with the
      * following entries: `depth`, `label`, and `value`.
      *
-     * @param mixed[]|callable|DatabaseObjectList $options selectable options or callable returning the options
+     * @param mixed[]|callable|DatabaseObjectList<DatabaseObject> $options selectable options or callable returning the options
      * @param bool $nestedOptions is `true` if the passed options are nested options
      * @param bool $labelLanguageItems is `true` if the labels should be treated as language items if possible
      * @return static this field

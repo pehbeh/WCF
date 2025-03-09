@@ -21,6 +21,8 @@ use wcf\util\StringUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @property-read bool $includeguests
+ *
+ * @implements IObjectListCondition<UserList|UsersOnlineList>
  */
 class UserGroupCondition extends AbstractMultipleFieldsCondition implements
     IContentCondition,
@@ -68,10 +70,6 @@ class UserGroupCondition extends AbstractMultipleFieldsCondition implements
      */
     public function addObjectListCondition(DatabaseObjectList $objectList, array $conditionData)
     {
-        if (!($objectList instanceof UserList) && !($objectList instanceof UsersOnlineList)) {
-            throw new \InvalidArgumentException("Object list is neither an instance of '" . UserList::class . "' nor of '" . UsersOnlineList::class . "', instance of '" . \get_class($objectList) . "' given.");
-        }
-
         $tableName = 'user_table';
         if ($objectList instanceof UsersOnlineList) {
             $tableName = 'session';
