@@ -2,6 +2,7 @@
 
 namespace wcf\system\worker;
 
+use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\data\ILinkableObject;
 use wcf\data\object\type\ObjectType;
@@ -25,6 +26,8 @@ use wcf\util\MessageUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
+ *
+ * @phpstan-ignore missingType.generics
  */
 class SitemapRebuildWorker extends AbstractRebuildDataWorker
 {
@@ -186,7 +189,7 @@ class SitemapRebuildWorker extends AbstractRebuildDataWorker
                 $this->deleteSitemaps($this->sitemapObjects[$this->workerData['sitemap']]->objectType);
             }
 
-            /** @var DatabaseObjectList $objectList */
+            /** @var DatabaseObjectList<DatabaseObject> $objectList */
             $objectList = $sitemapObject->getObjectList();
 
             if (SITEMAP_INDEX_TIME_FRAME > 0 && $sitemapObject->getLastModifiedColumn() !== null) {

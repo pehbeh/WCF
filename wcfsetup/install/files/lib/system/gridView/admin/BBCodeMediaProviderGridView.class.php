@@ -3,6 +3,7 @@
 namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\BBCodeMediaProviderEditForm;
+use wcf\data\bbcode\media\provider\BBCodeMediaProvider;
 use wcf\data\bbcode\media\provider\BBCodeMediaProviderList;
 use wcf\event\gridView\admin\BBCodeMediaProviderGridViewInitialized;
 use wcf\system\gridView\AbstractGridView;
@@ -25,6 +26,8 @@ use wcf\system\WCF;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @extends AbstractGridView<BBCodeMediaProvider, BBCodeMediaProviderList>
  */
 final class BBCodeMediaProviderGridView extends AbstractGridView
 {

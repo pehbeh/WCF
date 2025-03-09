@@ -15,6 +15,8 @@ use wcf\data\page\PageCache;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
+ *
+ * @phpstan-ignore missingType.generics
  */
 class ArticleCategorySitemapObject extends AbstractSitemapObjectObjectType
 {
@@ -28,6 +30,7 @@ class ArticleCategorySitemapObject extends AbstractSitemapObjectObjectType
 
     /**
      * @inheritDoc
+     * @return CategoryList
      */
     public function getObjectList()
     {

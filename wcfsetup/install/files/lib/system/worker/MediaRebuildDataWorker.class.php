@@ -13,7 +13,7 @@ use wcf\system\exception\SystemException;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  MediaList   getObjectList()
+ * @extends AbstractRebuildDataWorker<MediaList>
  */
 class MediaRebuildDataWorker extends AbstractRebuildDataWorker
 {

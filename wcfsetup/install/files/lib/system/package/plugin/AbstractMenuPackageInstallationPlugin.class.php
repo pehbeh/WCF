@@ -3,6 +3,7 @@
 namespace wcf\system\package\plugin;
 
 use wcf\data\acp\menu\item\ACPMenuItem;
+use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\page\IPage;
 use wcf\system\devtools\pip\IDevtoolsPipEntryList;
@@ -149,7 +150,7 @@ abstract class AbstractMenuPackageInstallationPlugin extends AbstractXMLPackageI
                         // replace `Editor` with `List`
                         $listClassName = \substr($this->className, 0, -6) . 'List';
 
-                        /** @var DatabaseObjectList $menuItemList */
+                        /** @var DatabaseObjectList<DatabaseObject> $menuItemList */
                         $menuItemList = new $listClassName();
                         $menuItemList->getConditionBuilder()->add('menuItem = ?', [$formField->getValue()]);
 
@@ -413,7 +414,7 @@ abstract class AbstractMenuPackageInstallationPlugin extends AbstractXMLPackageI
         // replace `Editor` with `List`
         $listClassName = \substr($this->className, 0, -6) . 'List';
 
-        /** @var DatabaseObjectList $menuItemList */
+        /** @var DatabaseObjectList<DatabaseObject> $menuItemList */
         $menuItemList = new $listClassName();
         $menuItemList->getConditionBuilder()->add('packageID IN (?)', [
             \array_merge(
@@ -430,6 +431,7 @@ abstract class AbstractMenuPackageInstallationPlugin extends AbstractXMLPackageI
         $menuItems = [];
         /** @var array<string, array<string, ACPMenuItem>> $menuStructure */
         $menuStructure = [];
+        /** @var ACPMenuItem $menuItem */
         foreach ($menuItemList as $menuItem) {
             if (!isset($menuStructure[$menuItem->parentMenuItem])) {
                 $menuStructure[$menuItem->parentMenuItem] = [];

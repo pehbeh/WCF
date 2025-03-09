@@ -3,6 +3,7 @@
 namespace wcf\system\sitemap\object;
 
 use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectList;
 
 /**
  * Abstract implementation of a sitemap object.
@@ -11,6 +12,10 @@ use wcf\data\DatabaseObject;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
+ *
+ * @template TDatabaseObject of DatabaseObject
+ * @template TDatabaseObjectList of DatabaseObjectList
+ * @implements ISitemapObjectObjectType<TDatabaseObject, TDatabaseObjectList>
  */
 abstract class AbstractSitemapObjectObjectType implements ISitemapObjectObjectType
 {

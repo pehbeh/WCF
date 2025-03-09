@@ -3,6 +3,7 @@
 namespace wcf\system\user\content\provider;
 
 use wcf\data\comment\Comment;
+use wcf\data\comment\CommentList;
 
 /**
  * User content provider for comments.
@@ -11,6 +12,8 @@ use wcf\data\comment\Comment;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.2
+ *
+ * @extends AbstractDatabaseUserContentProvider<CommentList>
  */
 class CommentUserContentProvider extends AbstractDatabaseUserContentProvider
 {

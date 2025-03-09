@@ -4,6 +4,7 @@ namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\LabelGroupEditForm;
 use wcf\data\label\group\I18nLabelGroupList;
+use wcf\data\label\group\LabelGroup;
 use wcf\event\gridView\admin\LabelGroupGridViewInitialized;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\I18nTextFilter;
@@ -26,6 +27,8 @@ use wcf\system\WCF;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @extends AbstractGridView<LabelGroup, I18nLabelGroupList>
  */
 final class LabelGroupGridView extends AbstractGridView
 {

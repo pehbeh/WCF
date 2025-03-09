@@ -2,6 +2,7 @@
 
 namespace wcf\system\user\notification\object\type;
 
+use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\data\object\type\AbstractObjectTypeProcessor;
 
@@ -39,7 +40,7 @@ class AbstractUserNotificationObjectType extends AbstractObjectTypeProcessor imp
     {
         $indexName = \call_user_func([static::$objectClassName, 'getDatabaseTableIndexName']);
 
-        /** @var DatabaseObjectList $objectList */
+        /** @var DatabaseObjectList<DatabaseObject> $objectList */
         $objectList = new static::$objectListClassName();
         $objectList->setObjectIDs($objectIDs);
         $objectList->sqlLimit = 0;

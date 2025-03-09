@@ -23,6 +23,9 @@ use wcf\util\StringUtil;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @template TDatabaseObject of DatabaseObject
+ * @template TDatabaseObjectList of DatabaseObjectList
  */
 abstract class AbstractGridView
 {
@@ -37,12 +40,17 @@ abstract class AbstractGridView
     private array $quickInteractions = [];
 
     /**
-     * @var DatabaseObject[]
+     * @var TDatabaseObject[]
      */
     protected array $objects;
 
     protected int $objectCount;
+
+    /**
+     * @var TDatabaseObjectList
+     */
     protected DatabaseObjectList $objectList;
+
     private GridViewRowLink $rowLink;
     private int $rowsPerPage = 20;
     private string $baseUrl = '';
@@ -274,6 +282,8 @@ abstract class AbstractGridView
 
     /**
      * Renders the given grid view column.
+     *
+     * @param TDatabaseObject $row
      */
     public function renderColumn(GridViewColumn $column, DatabaseObject $row): string
     {
@@ -349,6 +359,8 @@ abstract class AbstractGridView
 
     /**
      * Renders the interactions for the given row.
+     *
+     * @param TDatabaseObject $row
      */
     public function renderInteractionContextMenuButton(DatabaseObject $row): string
     {
@@ -361,6 +373,8 @@ abstract class AbstractGridView
 
     /**
      * Renders the interactions for the given row.
+     *
+     * @param TDatabaseObject $row
      */
     public function renderQuickInteractions(DatabaseObject $row): string
     {
@@ -377,6 +391,8 @@ abstract class AbstractGridView
 
     /**
      * Returns the row data for the given identifier.
+     *
+     * @param TDatabaseObject $row
      */
     protected function getData(DatabaseObject $row, string $identifer): mixed
     {
@@ -587,6 +603,8 @@ abstract class AbstractGridView
 
     /**
      * Returns the id for the given row.
+     *
+     * @param TDatabaseObject $row
      */
     public function getObjectID(DatabaseObject $row): string|int
     {
@@ -669,7 +687,7 @@ abstract class AbstractGridView
     /**
      * Returns the rows for the active page.
      *
-     * @return DatabaseObject[]
+     * @return TDatabaseObject[]
      */
     public function getRows(): array
     {
@@ -695,6 +713,8 @@ abstract class AbstractGridView
 
     /**
      * Returns the database object list.
+     *
+     * @return TDatabaseObjectList
      */
     public function getObjectList(): DatabaseObjectList
     {
@@ -753,6 +773,8 @@ abstract class AbstractGridView
 
     /**
      * Creates the database object list of this grid view.
+     *
+     * @return TDatabaseObjectList
      */
     protected abstract function createObjectList(): DatabaseObjectList;
 }

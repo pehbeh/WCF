@@ -15,7 +15,7 @@ use wcf\system\WCF;
  * @copyright 2001-2024 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  AttachmentList  getObjectList()
+ * @extends AbstractLinearRebuildDataWorker<AttachmentList>
  * @deprecated 6.1 Should be removed in 6.2 as its only purpose is to migrate to the new upload API.
  */
 class AttachmentRebuildDataWorker extends AbstractLinearRebuildDataWorker
@@ -42,8 +42,6 @@ class AttachmentRebuildDataWorker extends AbstractLinearRebuildDataWorker
         $defunctAttachmentIDs = [];
 
         foreach ($this->objectList as $attachment) {
-            \assert($attachment instanceof Attachment);
-
             if ($attachment->fileID !== null) {
                 $this->removeThumbnails($attachment);
 

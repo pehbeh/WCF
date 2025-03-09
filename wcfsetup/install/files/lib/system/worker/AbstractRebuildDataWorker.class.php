@@ -20,6 +20,9 @@ use wcf\system\WCF;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template T of DatabaseObjectList
+ * @implements IRebuildDataWorker<T>
  */
 abstract class AbstractRebuildDataWorker extends AbstractWorker implements IRebuildDataWorker
 {
@@ -31,7 +34,7 @@ abstract class AbstractRebuildDataWorker extends AbstractWorker implements IRebu
 
     /**
      * database object list
-     * @var DatabaseObjectList
+     * @var T
      */
     protected $objectList;
 
@@ -121,7 +124,7 @@ abstract class AbstractRebuildDataWorker extends AbstractWorker implements IRebu
      *
      * @param int[] $userIDs
      * @param string[] $permissions
-     * @return      mixed[]         permission value per user id
+     * @return mixed[] permission value per user id
      */
     protected function getBulkUserPermissions(array $userIDs, array $permissions)
     {
@@ -173,7 +176,7 @@ abstract class AbstractRebuildDataWorker extends AbstractWorker implements IRebu
      * @param mixed[] $userPermissions
      * @param int $userID
      * @param string $permission
-     * @return      mixed
+     * @return mixed
      */
     protected function getBulkUserPermissionValue(array &$userPermissions, $userID, $permission)
     {

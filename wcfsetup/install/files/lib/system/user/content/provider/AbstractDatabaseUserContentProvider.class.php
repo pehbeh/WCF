@@ -16,6 +16,9 @@ use wcf\system\exception\ImplementationException;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.2
+ *
+ * @template T of DatabaseObjectList
+ * @implements IUserContentProvider<T>
  */
 abstract class AbstractDatabaseUserContentProvider implements IUserContentProvider
 {
@@ -61,7 +64,7 @@ abstract class AbstractDatabaseUserContentProvider implements IUserContentProvid
             throw new ImplementationException($className, DatabaseObjectList::class);
         }
 
-        /** @var DatabaseObjectList $databaseObjectList */
+        /** @var T $databaseObjectList */
         $databaseObjectList = new $className();
         $tableAlias = \call_user_func([static::getDatabaseObjectClass(), 'getDatabaseTableAlias']);
         $databaseObjectList->getConditionBuilder()->add($tableAlias . '.userID = ?', [$user->userID]);

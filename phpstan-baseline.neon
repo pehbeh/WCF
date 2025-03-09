@@ -1153,7 +1153,7 @@ parameters:
 			path: wcfsetup/install/files/lib/system/label/object/AbstractLabelObjectHandler.class.php
 
 		-
-			message: '#^Call to an undefined method wcf\\data\\DatabaseObjectList\:\:getAttachmentList\(\)\.$#'
+			message: '#^Call to an undefined method wcf\\data\\DatabaseObjectList<wcf\\data\\DatabaseObject>\:\:getAttachmentList\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: wcfsetup/install/files/lib/system/message/QuickReplyManager.class.php

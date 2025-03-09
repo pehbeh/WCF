@@ -45,7 +45,7 @@ interface IMessageQuickReplyAction
      * Returns page no for given container object.
      *
      * @param TContainer $container
-     * @return int
+     * @return array{0: int, 1: int}
      */
     public function getPageNo(DatabaseObject $container);
 

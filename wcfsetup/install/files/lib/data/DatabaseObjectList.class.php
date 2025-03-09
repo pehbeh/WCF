@@ -13,6 +13,9 @@ use wcf\system\WCF;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template T of DatabaseObject
+ * @implements ITraversableObject<T>
  */
 abstract class DatabaseObjectList implements \Countable, ITraversableObject
 {
@@ -36,7 +39,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
 
     /**
      * result objects
-     * @var DatabaseObject[]
+     * @var T[]
      */
     public $objects = [];
 
@@ -106,9 +109,6 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
      */
     protected $indexToObject = [];
 
-    /**
-     * Creates a new DatabaseObjectList object.
-     */
     public function __construct()
     {
         // set class name
@@ -251,7 +251,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * Returns the objects of the list.
      *
-     * @return DatabaseObject[]
+     * @return T[]
      */
     public function getObjects()
     {
@@ -405,7 +405,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * Returns the only object in this list or `null` if the list is empty.
      *
-     * @return ?DatabaseObject
+     * @return ?T
      * @throws \BadMethodCallException     if list contains more than one object
      */
     public function getSingleObject()

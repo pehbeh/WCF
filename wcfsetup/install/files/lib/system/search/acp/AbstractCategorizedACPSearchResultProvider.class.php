@@ -101,7 +101,7 @@ abstract class AbstractCategorizedACPSearchResultProvider extends AbstractACPSea
         }
 
         // read categories
-        /** @var DatabaseObjectList $categoryList */
+        /** @var DatabaseObjectList<DatabaseObject> $categoryList */
         $categoryList = new $this->listClassName();
         $categoryList->readObjects();
 
@@ -112,10 +112,13 @@ abstract class AbstractCategorizedACPSearchResultProvider extends AbstractACPSea
             }
 
             // save level 1 categories
+            // @phpstan-ignore property.notFound
             if ($category->parentCategoryName == '') {
+                // @phpstan-ignore property.notFound
                 $this->topCategories[] = $category->categoryName;
             }
 
+            // @phpstan-ignore property.notFound
             $this->categories[$category->categoryName] = $category;
         }
 

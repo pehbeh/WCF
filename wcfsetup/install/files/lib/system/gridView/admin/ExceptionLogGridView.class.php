@@ -23,6 +23,8 @@ use wcf\util\ExceptionLogUtil;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @extends AbstractGridView<DatabaseObject, DatabaseObjectList>
  */
 final class ExceptionLogGridView extends AbstractGridView
 {
@@ -219,6 +221,9 @@ final class ExceptionLogGridView extends AbstractGridView
         return new ExceptionLogGridViewInitialized($this);
     }
 
+    /**
+     * @return DatabaseObjectList<DatabaseObject>
+     */
     #[\Override]
     protected function createObjectList(): DatabaseObjectList
     {

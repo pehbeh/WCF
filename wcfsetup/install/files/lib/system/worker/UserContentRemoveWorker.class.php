@@ -2,6 +2,8 @@
 
 namespace wcf\system\worker;
 
+use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectList;
 use wcf\data\object\type\ObjectType;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\data\user\group\UserGroup;
@@ -177,7 +179,7 @@ class UserContentRemoveWorker extends AbstractWorker
 
         foreach ($contentProviders as $contentProvider) {
             foreach ($this->users as $user) {
-                /** @var IUserContentProvider $processor */
+                /** @var IUserContentProvider<DatabaseObjectList<DatabaseObject>> $processor */
                 $processor = $contentProvider->getProcessor();
                 $contentList = $processor->getContentListForUser($user);
                 $count = $contentList->countObjects();
@@ -216,7 +218,7 @@ class UserContentRemoveWorker extends AbstractWorker
         $provideKey = \array_shift($providerIDs);
         $currentItem = $this->data['provider'][$provideKey];
 
-        /** @var IUserContentProvider $processor */
+        /** @var IUserContentProvider<DatabaseObjectList<DatabaseObject>> $processor */
         $processor = ObjectTypeCache::getInstance()->getObjectType($currentItem['objectTypeID'])->getProcessor();
         $user = new User($currentItem['userID']);
 

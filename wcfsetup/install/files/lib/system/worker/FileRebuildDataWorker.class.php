@@ -17,8 +17,7 @@ use function wcf\functions\exception\logThrowable;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.1
  *
- * @method FileList getObjectList()
- * @property-read FileList $objectList
+ * @extends AbstractLinearRebuildDataWorker<FileList>
  */
 final class FileRebuildDataWorker extends AbstractLinearRebuildDataWorker
 {
