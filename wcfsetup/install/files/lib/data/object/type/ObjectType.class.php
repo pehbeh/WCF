@@ -25,7 +25,7 @@ use wcf\system\SingletonFactory;
  * @property-read   int $packageID      id of the package the which delivers the object type
  * @property-read   string $objectType     textual identifier of the object type
  * @property-read   string $className      PHP class name of the object type processor (implementing the interface forced by the object type definition)
- * @property-read   array $additionalData     array with additional data of the object type
+ * @property-read   mixed[] $additionalData     array with additional data of the object type
  */
 class ObjectType extends ProcessibleDatabaseObject
 {

@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  ModificationLog     current()
- * @method  ModificationLog[]   getObjects()
- * @method  ModificationLog|null    getSingleObject()
- * @method  ModificationLog|null    search($objectID)
- * @property    ModificationLog[] $objects
+ * @extends DatabaseObjectList<ModificationLog>
  */
 class ModificationLogList extends DatabaseObjectList
 {

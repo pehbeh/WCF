@@ -47,7 +47,7 @@ class VersionTracker extends SingletonFactory
     {
         $objectType = $this->getObjectType($objectTypeName);
 
-        /** @var IVersionTrackerProvider $processor */
+        /** @var IVersionTrackerProvider<DatabaseObject> $processor */
         $processor = $objectType->getProcessor();
         $data = $processor->getTrackedData($object);
 

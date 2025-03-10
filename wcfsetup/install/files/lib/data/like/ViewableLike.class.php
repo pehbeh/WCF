@@ -17,6 +17,7 @@ use wcf\system\WCF;
  *
  * @method  Like    getDecoratedObject()
  * @mixin   Like
+ * @extends DatabaseObjectDecorator<Like>
  */
 class ViewableLike extends DatabaseObjectDecorator
 {
@@ -58,6 +59,8 @@ class ViewableLike extends DatabaseObjectDecorator
 
     /**
      * Marks this like as accessible for current user.
+     *
+     * @return void
      */
     public function setIsAccessible()
     {
@@ -77,7 +80,7 @@ class ViewableLike extends DatabaseObjectDecorator
     /**
      * Sets user profile.
      *
-     * @param UserProfile $userProfile
+     * @return void
      * @deprecated  3.0
      */
     public function setUserProfile(UserProfile $userProfile)
@@ -103,6 +106,7 @@ class ViewableLike extends DatabaseObjectDecorator
      * Sets like description.
      *
      * @param string $description
+     * @return void
      */
     public function setDescription($description)
     {
@@ -123,6 +127,7 @@ class ViewableLike extends DatabaseObjectDecorator
      * Sets like title.
      *
      * @param string $title
+     * @return void
      */
     public function setTitle($title)
     {
@@ -153,6 +158,7 @@ class ViewableLike extends DatabaseObjectDecorator
      * Sets the description of the object type displayed in the list of likes.
      *
      * @param string $name
+     * @return void
      * @since   3.1
      */
     public function setObjectTypeDescription($name)

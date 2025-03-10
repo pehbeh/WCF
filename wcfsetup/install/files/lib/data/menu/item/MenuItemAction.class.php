@@ -21,8 +21,7 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  MenuItemEditor[]    getObjects()
- * @method  MenuItemEditor      getSingleObject()
+ * @extends AbstractDatabaseObjectAction<MenuItem, MenuItemEditor>
  */
 class MenuItemAction extends AbstractDatabaseObjectAction implements ISortableAction, IToggleAction
 {
@@ -168,6 +167,9 @@ class MenuItemAction extends AbstractDatabaseObjectAction implements ISortableAc
         WCF::getDB()->commitTransaction();
     }
 
+    /**
+     * @return array<string, string>
+     */
     #[\Override]
     public function getI18nSaveTypes(): array
     {

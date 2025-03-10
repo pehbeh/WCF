@@ -12,10 +12,6 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since        5.2
  *
- * @method  LikeObject  create()
- * @method  LikeObject[]    getObjects()
- * @method  LikeObject  getSingleObject()
+ * @extends AbstractDatabaseObjectAction<LikeObject, LikeObjectEditor>
  */
-class LikeObjectAction extends AbstractDatabaseObjectAction
-{
-}
+class LikeObjectAction extends AbstractDatabaseObjectAction {}

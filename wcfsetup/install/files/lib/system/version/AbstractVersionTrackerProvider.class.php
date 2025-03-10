@@ -2,6 +2,7 @@
 
 namespace wcf\system\version;
 
+use wcf\data\DatabaseObject;
 use wcf\data\IVersionTrackerObject;
 use wcf\data\object\type\AbstractObjectTypeProvider;
 use wcf\system\WCF;
@@ -13,6 +14,10 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
+ *
+ * @template TDatabaseObject of DatabaseObject
+ * @extends AbstractObjectTypeProvider<TDatabaseObject>
+ * @implements IVersionTrackerProvider<TDatabaseObject>
  */
 abstract class AbstractVersionTrackerProvider extends AbstractObjectTypeProvider implements IVersionTrackerProvider
 {

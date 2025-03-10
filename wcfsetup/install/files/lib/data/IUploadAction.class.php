@@ -22,7 +22,7 @@ interface IUploadAction
     /**
      * Saves uploaded files and returns the data of the uploaded files.
      *
-     * @return array{url: string}
+     * @return mixed[]
      */
     public function upload();
 }

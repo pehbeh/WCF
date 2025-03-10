@@ -13,8 +13,9 @@ use wcf\data\object\type\ObjectType;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  LikeObject  getDecoratedObject()
  * @mixin   LikeObject
+ * @template TLikeObject of LikeObject
+ * @extends DatabaseObjectDecorator<TLikeObject>
  */
 abstract class AbstractLikeObject extends DatabaseObjectDecorator implements ILikeObject
 {

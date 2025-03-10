@@ -31,10 +31,7 @@ use wcf\util\FileUtil;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  Media       create()
- * @method  MediaEditor[]   getObjects()
- * @method  MediaEditor getSingleObject()
- * @property-read MediaEditor[] $objects
+ * @extends AbstractDatabaseObjectAction<Media, MediaEditor>
  */
 class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction, IUploadAction
 {
@@ -126,6 +123,8 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
 
     /**
      * Generates thumbnails.
+     *
+     * @return void
      */
     public function generateThumbnails()
     {
@@ -209,6 +208,8 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
 
     /**
      * Validates the 'getManagementDialog' action.
+     *
+     * @return void
      */
     public function validateGetManagementDialog()
     {
@@ -260,8 +261,7 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
     /**
      * Returns the complete i18n data of the media files in the given list.
      *
-     * @param MediaList $mediaList
-     * @return  array
+     * @return mixed[]|array{}
      */
     protected function getI18nMediaData(MediaList $mediaList)
     {
@@ -307,6 +307,8 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
 
     /**
      * Validates the 'getEditorDialog' action.
+     *
+     * @return void
      */
     public function validateGetEditorDialog()
     {
@@ -641,6 +643,7 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
      * all media files currently loaded are unmarked.
      *
      * @param int[] $mediaIDs ids of the media files to be unmarked
+     * @return void
      */
     protected function unmarkItems(array $mediaIDs = [])
     {
@@ -661,6 +664,7 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
     /**
      * Validates the `getSetCategoryDialog` action.
      *
+     * @return void
      * @throws  PermissionDeniedException   if user is not allowed to set category of media files
      * @throws  IllegalLinkException        if no media file categories exist
      */
@@ -678,7 +682,7 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
     /**
      * Returns the dialog to set the category of multiple media files.
      *
-     * @return  string[]
+     * @return array{template: string}
      */
     public function getSetCategoryDialog()
     {
@@ -695,6 +699,7 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
     /**
      * Validates the `setCategory` action.
      *
+     * @return void
      * @throws  PermissionDeniedException   if user is not allowed to edit a requested media file
      * @throws  UserInputException      if no object ids are given
      */
@@ -723,6 +728,8 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
 
     /**
      * Sets the category of multiple media files.
+     *
+     * @return void
      */
     public function setCategory()
     {
@@ -744,7 +751,8 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
     /**
      * Validates the `replaceFile` action.
      *
-     * @since       5.3
+     * @return void
+     * @since 5.3
      */
     public function validateReplaceFile()
     {
@@ -761,8 +769,15 @@ class MediaAction extends AbstractDatabaseObjectAction implements ISearchAction,
     /**
      * Replaces the actual file of a media file.
      *
-     * @return      array
-     * @since       5.3
+     * @return array{
+     *  errors: array<int, array{
+     *      filename: string,
+     *      filesize: int,
+     *      errorType: string,
+     *  }>,
+     *  media: array<int, mixed[]>,
+     * }
+     * @since 5.3
      */
     public function replaceFile()
     {

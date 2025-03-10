@@ -28,9 +28,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  PackageInstallationPlugin       create()
- * @method  PackageInstallationPluginEditor[]   getObjects()
- * @method  PackageInstallationPluginEditor     getSingleObject()
+ * @extends AbstractDatabaseObjectAction<PackageInstallationPlugin, PackageInstallationPluginEditor>
  */
 class PackageInstallationPluginAction extends AbstractDatabaseObjectAction
 {
@@ -62,8 +60,9 @@ class PackageInstallationPluginAction extends AbstractDatabaseObjectAction
     /**
      * Validates parameters to invoke a single PIP.
      *
-     * @throws      PermissionDeniedException
-     * @throws      UserInputException
+     * @return void
+     * @throws PermissionDeniedException
+     * @throws UserInputException
      */
     public function validateInvoke()
     {

@@ -16,9 +16,7 @@ use wcf\util\FileUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Option      create()
- * @method  OptionEditor[]  getObjects()
- * @method  OptionEditor    getSingleObject()
+ * @extends AbstractDatabaseObjectAction<Option, OptionEditor>
  */
 class OptionAction extends AbstractDatabaseObjectAction
 {
@@ -57,6 +55,8 @@ class OptionAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates permissions and parameters.
+     *
+     * @return void
      */
     public function validateImport()
     {
@@ -65,6 +65,8 @@ class OptionAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates permissions and parameters.
+     *
+     * @return void
      */
     public function validateUpdateAll()
     {
@@ -73,6 +75,8 @@ class OptionAction extends AbstractDatabaseObjectAction
 
     /**
      * Imports options.
+     *
+     * @return void
      */
     public function import()
     {
@@ -82,6 +86,8 @@ class OptionAction extends AbstractDatabaseObjectAction
 
     /**
      * Updates the value of all given options.
+     *
+     * @return void
      */
     public function updateAll()
     {
@@ -92,7 +98,8 @@ class OptionAction extends AbstractDatabaseObjectAction
     /**
      * Validates the basic SMTP connection parameters.
      *
-     * @throws      UserInputException
+     * @return void
+     * @throws UserInputException
      */
     public function validateEmailSmtpTest()
     {
@@ -114,7 +121,7 @@ class OptionAction extends AbstractDatabaseObjectAction
     /**
      * Runs a simple test of the SMTP connection.
      *
-     * @return      string[]
+     * @return array{validationResult: string}
      */
     public function emailSmtpTest()
     {
@@ -129,6 +136,9 @@ class OptionAction extends AbstractDatabaseObjectAction
         return ['validationResult' => $smtp->testConnection()];
     }
 
+    /**
+     * @return void
+     */
     public function validateGenerateRewriteRules()
     {
         WCF::getSession()->checkPermissions(['admin.configuration.canEditOption']);

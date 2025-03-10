@@ -34,6 +34,8 @@ class ModerationQueueReportAction extends ModerationQueueAction
 
     /**
      * Validates parameters to delete reported content.
+     *
+     * @return void
      */
     public function validateRemoveContent()
     {
@@ -50,6 +52,8 @@ class ModerationQueueReportAction extends ModerationQueueAction
 
     /**
      * Deletes reported content.
+     *
+     * @return void
      */
     public function removeContent()
     {
@@ -67,6 +71,8 @@ class ModerationQueueReportAction extends ModerationQueueAction
 
     /**
      * Validates parameters to mark this report as done.
+     *
+     * @return void
      */
     public function validateRemoveReport()
     {
@@ -96,6 +102,8 @@ class ModerationQueueReportAction extends ModerationQueueAction
 
     /**
      * Removes this report by marking it as done without further processing.
+     *
+     * @return void
      */
     public function removeReport()
     {
@@ -110,6 +118,8 @@ class ModerationQueueReportAction extends ModerationQueueAction
 
     /**
      * Validates parameters to prepare a report.
+     *
+     * @return void
      */
     public function validatePrepareReport()
     {
@@ -145,6 +155,8 @@ class ModerationQueueReportAction extends ModerationQueueAction
 
     /**
      * Prepares a report.
+     *
+     * @return array{alreadyReported: 0|1, template: string}
      */
     public function prepareReport()
     {
@@ -168,6 +180,8 @@ class ModerationQueueReportAction extends ModerationQueueAction
 
     /**
      * Validates parameters for reporting.
+     *
+     * @return void
      */
     public function validateReport()
     {
@@ -192,6 +206,8 @@ class ModerationQueueReportAction extends ModerationQueueAction
 
     /**
      * Reports an item.
+     *
+     * @return array{reported: 1}
      */
     public function report()
     {

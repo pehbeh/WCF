@@ -10,6 +10,8 @@ use wcf\data\DatabaseObject;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template TDatabaseObject of DatabaseObject
  */
 interface IObjectTypeProvider
 {
@@ -17,7 +19,7 @@ interface IObjectTypeProvider
      * Returns an object by its ID.
      *
      * @param int $objectID
-     * @return  DatabaseObject
+     * @return TDatabaseObject
      */
     public function getObjectByID($objectID);
 
@@ -25,7 +27,7 @@ interface IObjectTypeProvider
      * Returns objects by their IDs.
      *
      * @param int[] $objectIDs
-     * @return  DatabaseObject[]
+     * @return TDatabaseObject[]
      */
     public function getObjectsByIDs(array $objectIDs);
 }

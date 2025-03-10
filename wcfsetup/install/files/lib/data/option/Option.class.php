@@ -31,7 +31,7 @@ use wcf\util\StringUtil;
  * @property-read   string $options        comma separated list of options of which at least one needs to be enabled for the option to be editable
  * @property-read   int $supportI18n        is `1` if the option supports different values for all available languages, otherwise `0`
  * @property-read   int $requireI18n        is `1` if `$supportI18n = 1` and the option's value has to explicitly set for all values so that the `monolingual` option is not available, otherwise `0`
- * @property-read   array $additionalData     array with additional data of the option
+ * @property-read   mixed[] $additionalData     array with additional data of the option
  */
 class Option extends DatabaseObject
 {
@@ -69,7 +69,7 @@ class Option extends DatabaseObject
     /**
      * Returns a list of options.
      *
-     * @return  static[]
+     * @return static[]
      */
     public static function getOptions(): array
     {
@@ -105,7 +105,7 @@ class Option extends DatabaseObject
      * Parses enableOptions.
      *
      * @param string $optionData
-     * @return  array
+     * @return array{disableOptions: string, enableOptions: string}
      */
     public static function parseEnableOptions($optionData)
     {
@@ -138,7 +138,7 @@ class Option extends DatabaseObject
     /**
      * Returns a list of the available options.
      *
-     * @return  array
+     * @return array<string, string>
      */
     public function parseSelectOptions()
     {
@@ -161,7 +161,7 @@ class Option extends DatabaseObject
     /**
      * Returns a list of the enable options.
      *
-     * @return  array
+     * @return array<string, string>
      */
     public function parseMultipleEnableOptions()
     {
@@ -189,7 +189,7 @@ class Option extends DatabaseObject
     /**
      * Returns true if option is visible
      *
-     * @return  bool
+     * @return bool
      */
     public function isVisible()
     {
@@ -207,7 +207,7 @@ class Option extends DatabaseObject
     /**
      * Returns the constant name.
      *
-     * @return  string
+     * @return string
      */
     public function getConstantName()
     {
@@ -218,6 +218,7 @@ class Option extends DatabaseObject
      * Allows modifications of select options.
      *
      * @param string $selectOptions
+     * @return void
      */
     public function modifySelectOptions($selectOptions)
     {
@@ -228,6 +229,7 @@ class Option extends DatabaseObject
      * Allows modifications of enable options.
      *
      * @param string $enableOptions
+     * @return void
      */
     public function modifyEnableOptions($enableOptions)
     {
@@ -238,6 +240,7 @@ class Option extends DatabaseObject
      * Allows modifications of hidden option.
      *
      * @param string $hiddenOption
+     * @return void
      */
     public function modifyHiddenOption($hiddenOption)
     {

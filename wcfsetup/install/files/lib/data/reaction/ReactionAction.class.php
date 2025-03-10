@@ -3,6 +3,7 @@
 namespace wcf\data\reaction;
 
 use wcf\data\AbstractDatabaseObjectAction;
+use wcf\data\DatabaseObject;
 use wcf\data\like\ILikeObjectTypeProvider;
 use wcf\data\like\IRestrictedLikeObjectTypeProvider;
 use wcf\data\like\Like;
@@ -62,7 +63,7 @@ class ReactionAction extends AbstractDatabaseObjectAction
 
     /**
      * like object type provider object
-     * @var ILikeObjectTypeProvider
+     * @var ILikeObjectTypeProvider<DatabaseObject>
      */
     public $objectTypeProvider;
 

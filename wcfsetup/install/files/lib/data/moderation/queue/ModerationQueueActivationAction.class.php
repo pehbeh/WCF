@@ -30,6 +30,8 @@ class ModerationQueueActivationAction extends ModerationQueueAction
 
     /**
      * Validates parameters to enable content.
+     *
+     * @return void
      */
     public function validateEnableContent()
     {
@@ -50,6 +52,8 @@ class ModerationQueueActivationAction extends ModerationQueueAction
 
     /**
      * Enables content.
+     *
+     * @return void
      */
     public function enableContent()
     {
@@ -68,6 +72,8 @@ class ModerationQueueActivationAction extends ModerationQueueAction
 
     /**
      * Validates parameters to delete reported content.
+     *
+     * @return void
      */
     public function validateRemoveContent()
     {
@@ -83,6 +89,8 @@ class ModerationQueueActivationAction extends ModerationQueueAction
 
     /**
      * Deletes reported content.
+     *
+     * @return void
      */
     public function removeContent()
     {

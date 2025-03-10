@@ -176,7 +176,7 @@ class MenuItemNodeTree
     /**
      * Returns the iterable node list.
      *
-     * @return  \RecursiveIteratorIterator
+     * @return \RecursiveIteratorIterator<MenuItemNode>
      */
     public function getNodeList()
     {

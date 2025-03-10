@@ -129,7 +129,7 @@ class EditHistoryPage extends AbstractPage
             throw new IllegalLinkException();
         }
 
-        /** @var IHistorySavingObjectTypeProvider $processor */
+        /** @var IHistorySavingObjectTypeProvider<DatabaseObject> $processor */
         $processor = $this->objectType->getProcessor();
 
         /** @var (DatabaseObject&IHistorySavingObject) $object */

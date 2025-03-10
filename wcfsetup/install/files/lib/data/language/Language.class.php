@@ -128,6 +128,8 @@ class Language extends DatabaseObject
 
     /**
      * Executes template scripting in a language variable.
+     *
+     * @param array<string, mixed> $variables
      */
     public function getDynamicVariable(string $item, array $variables = [], bool $optional = false): string
     {

@@ -65,7 +65,11 @@ class Media extends DatabaseObject implements ILinkableObject, IRouteController,
 
     /**
      * data of the different thumbnail sizes
-     * @var array
+     * @var array<string, array{
+     *  height: int,
+     *  retainDimensions: bool|int,
+     *  width: int,
+     * }>
      */
     protected static $thumbnailSizes = [
         'tiny' => [

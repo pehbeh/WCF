@@ -23,9 +23,7 @@ use wcf\util\StringUtil;
  * @copyright   2001-2020 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  ModerationQueueEditor[]     getObjects()
- * @method  ModerationQueueEditor       getSingleObject()
- * @property-read ModerationQueueEditor[] $objects
+ * @extends AbstractDatabaseObjectAction<ModerationQueue, ModerationQueueEditor>
  */
 class ModerationQueueAction extends AbstractDatabaseObjectAction
 {
@@ -48,7 +46,6 @@ class ModerationQueueAction extends AbstractDatabaseObjectAction
 
     /**
      * @inheritDoc
-     * @return  ModerationQueue
      */
     public function create()
     {
@@ -56,9 +53,7 @@ class ModerationQueueAction extends AbstractDatabaseObjectAction
             $this->parameters['data']['lastChangeTime'] = TIME_NOW;
         }
 
-        $object = parent::create();
-        \assert($object instanceof ModerationQueue);
-        return $object;
+        return parent::create();
     }
 
     /**
@@ -75,6 +70,8 @@ class ModerationQueueAction extends AbstractDatabaseObjectAction
 
     /**
      * Marks a list of objects as done.
+     *
+     * @return void
      */
     public function markAsDone()
     {
@@ -101,6 +98,7 @@ class ModerationQueueAction extends AbstractDatabaseObjectAction
     }
 
     /**
+     * @return void
      * @since 5.5
      */
     public function validateGetModerationQueueData(): void
@@ -109,6 +107,15 @@ class ModerationQueueAction extends AbstractDatabaseObjectAction
     }
 
     /**
+     * @return array{items: list<array{
+     *  content: string,
+     *  image: string,
+     *  isUnread: bool,
+     *  link: string,
+     *  objectId: int,
+     *  time: int,
+     *  usernames: string[],
+     * }>, totalCount: int}
      * @since 5.5
      */
     public function getModerationQueueData(): array
@@ -134,6 +141,7 @@ class ModerationQueueAction extends AbstractDatabaseObjectAction
     }
 
     /**
+     * @return array{queues: list<ViewableModerationQueue>, totalCount: int}
      * @since 5.5
      * @deprecated 5.5 This method will be merged with `getModerationQueueData`
      */
@@ -220,6 +228,8 @@ class ModerationQueueAction extends AbstractDatabaseObjectAction
 
     /**
      * Marks queue entries as read.
+     *
+     * @return void|array{markAsRead: int, totalCount: int}
      */
     public function markAsRead()
     {
@@ -253,7 +263,7 @@ class ModerationQueueAction extends AbstractDatabaseObjectAction
     }
 
     /**
-     * @inheritDoc
+     * @return void
      */
     public function validateMarkAsRead()
     {
@@ -270,6 +280,8 @@ class ModerationQueueAction extends AbstractDatabaseObjectAction
 
     /**
      * Marks all queue entries as read.
+     *
+     * @return array{markAllAsRead: bool}
      */
     public function markAllAsRead()
     {
@@ -285,6 +297,8 @@ class ModerationQueueAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates the mark all as read action.
+     *
+     * @return void
      */
     public function validateMarkAllAsRead()
     {

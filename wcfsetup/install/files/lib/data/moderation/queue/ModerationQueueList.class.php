@@ -2,6 +2,8 @@
 
 namespace wcf\data\moderation\queue;
 
+use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectDecorator;
 use wcf\data\DatabaseObjectList;
 
 /**
@@ -11,11 +13,8 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  ModerationQueue     current()
- * @method  ModerationQueue[]   getObjects()
- * @method  ModerationQueue|null    getSingleObject()
- * @method  ModerationQueue|null    search($objectID)
- * @property    ModerationQueue[] $objects
+ * @template-covariant TDatabaseObject of DatabaseObject|DatabaseObjectDecorator<DatabaseObject> = ModerationQueue
+ * @extends DatabaseObjectList<TDatabaseObject>
  */
 class ModerationQueueList extends DatabaseObjectList
 {

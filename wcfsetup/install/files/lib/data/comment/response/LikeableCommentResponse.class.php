@@ -18,8 +18,8 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  CommentResponse     getDecoratedObject()
  * @mixin   CommentResponse
+ * @extends AbstractLikeObject<CommentResponse>
  */
 class LikeableCommentResponse extends AbstractLikeObject implements IReactionObject
 {

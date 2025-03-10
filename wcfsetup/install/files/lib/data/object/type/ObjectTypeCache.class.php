@@ -23,7 +23,7 @@ class ObjectTypeCache extends SingletonFactory
 
     /**
      * object type definition ids grouped by category name
-     * @var array<string, list<ObjectTypeDefinition>>
+     * @var array<string, list<int>>
      */
     protected $definitionsByCategory = [];
 
@@ -91,7 +91,7 @@ class ObjectTypeCache extends SingletonFactory
      * category name is invalid.
      *
      * @param string $categoryName
-     * @return ObjectTypeDefinition[]|null
+     * @return array<int, ObjectTypeDefinition>|null
      */
     public function getDefinitionsByCategory($categoryName)
     {
@@ -159,7 +159,7 @@ class ObjectTypeCache extends SingletonFactory
      *
      * @param string $definitionName
      * @param string $objectTypeName
-     * @return  int|null
+     * @return ?int
      */
     public function getObjectTypeIDByName($definitionName, $objectTypeName)
     {
@@ -173,6 +173,8 @@ class ObjectTypeCache extends SingletonFactory
 
     /**
      * Resets and reloads the object type cache.
+     *
+     * @return void
      */
     public function resetCache()
     {

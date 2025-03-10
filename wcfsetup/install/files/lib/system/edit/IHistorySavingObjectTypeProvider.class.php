@@ -2,6 +2,7 @@
 
 namespace wcf\system\edit;
 
+use wcf\data\DatabaseObject;
 use wcf\data\object\type\IObjectTypeProvider;
 use wcf\system\exception\PermissionDeniedException;
 
@@ -11,6 +12,9 @@ use wcf\system\exception\PermissionDeniedException;
  * @author  Tim Duesterhus
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template TDatabaseObject of DatabaseObject
+ * @extends IObjectTypeProvider<DatabaseObject>
  */
 interface IHistorySavingObjectTypeProvider extends IObjectTypeProvider
 {

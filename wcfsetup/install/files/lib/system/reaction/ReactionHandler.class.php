@@ -2,6 +2,7 @@
 
 namespace wcf\system\reaction;
 
+use wcf\data\DatabaseObject;
 use wcf\data\like\ILikeObjectTypeProvider;
 use wcf\data\like\Like;
 use wcf\data\like\LikeList;
@@ -164,7 +165,7 @@ class ReactionHandler extends SingletonFactory
             );
         }
 
-        /** @var ILikeObjectTypeProvider $objectTypeProcessor */
+        /** @var ILikeObjectTypeProvider<DatabaseObject> $objectTypeProcessor */
         $objectTypeProcessor = $objectType->getProcessor();
 
         $objects = $objectTypeProcessor->getObjectsByIDs($objectIDs);

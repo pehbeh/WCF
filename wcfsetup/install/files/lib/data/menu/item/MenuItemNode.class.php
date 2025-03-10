@@ -14,8 +14,8 @@ use wcf\data\TObjectTreeNode;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  MenuItem    getDecoratedObject()
  * @mixin   MenuItem
+ * @extends DatabaseObjectDecorator<MenuItem>
  */
 class MenuItemNode extends DatabaseObjectDecorator implements IObjectTreeNode
 {

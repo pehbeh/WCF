@@ -17,8 +17,8 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  Article getDecoratedObject()
  * @mixin   Article
+ * @extends AbstractLikeObject<Article>
  */
 class LikeableArticle extends AbstractLikeObject implements IReactionObject
 {

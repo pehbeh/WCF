@@ -17,8 +17,7 @@ use wcf\system\exception\PermissionDeniedException;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  MenuEditor[]    getObjects()
- * @method  MenuEditor  getSingleObject()
+ * @extends AbstractDatabaseObjectAction<Menu, MenuEditor>
  */
 class MenuAction extends AbstractDatabaseObjectAction
 {
@@ -108,6 +107,9 @@ class MenuAction extends AbstractDatabaseObjectAction
         }
     }
 
+    /**
+     * @return array<string, string>
+     */
     #[\Override]
     public function getI18nSaveTypes(): array
     {

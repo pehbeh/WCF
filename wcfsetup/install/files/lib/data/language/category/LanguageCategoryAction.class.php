@@ -11,9 +11,7 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  LanguageCategory        create()
- * @method  LanguageCategoryEditor[]    getObjects()
- * @method  LanguageCategoryEditor      getSingleObject()
+ * @extends AbstractDatabaseObjectAction<LanguageCategory, LanguageCategoryEditor>
  */
 class LanguageCategoryAction extends AbstractDatabaseObjectAction
 {
