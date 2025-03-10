@@ -12,11 +12,7 @@ use wcf\system\database\util\PreparedStatementConditionBuilder;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  PackageUpdate       current()
- * @method  PackageUpdate[]     getObjects()
- * @method  PackageUpdate|null  getSingleObject()
- * @method  PackageUpdate|null  search($objectID)
- * @property    PackageUpdate[] $objects
+ * @extends DatabaseObjectList<PackageUpdate>
  */
 class PackageUpdateList extends DatabaseObjectList
 {
@@ -27,6 +23,7 @@ class PackageUpdateList extends DatabaseObjectList
 
     /**
      * @inheritDoc
+     * @param bool $useSqlOr
      */
     public function __construct($useSqlOr = false)
     {

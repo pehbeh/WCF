@@ -11,9 +11,7 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  PackageUpdateVersion        create()
- * @method  PackageUpdateVersionEditor[]    getObjects()
- * @method  PackageUpdateVersionEditor  getSingleObject()
+ * @extends AbstractDatabaseObjectAction<PackageUpdateVersion, PackageUpdateVersionEditor>
  */
 class PackageUpdateVersionAction extends AbstractDatabaseObjectAction
 {

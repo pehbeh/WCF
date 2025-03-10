@@ -14,9 +14,14 @@ use wcf\system\WCF;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @template TGridView of AbstractGridView
  */
 abstract class AbstractGridViewPage extends AbstractPage
 {
+    /**
+     * @var TGridView
+     */
     protected AbstractGridView $gridView;
     protected int $pageNo = 1;
     protected string $sortField = '';
@@ -88,6 +93,8 @@ abstract class AbstractGridViewPage extends AbstractPage
 
     /**
      * Returns the grid view instance for the rendering of this page.
+     *
+     * @return TGridView
      */
     protected abstract function createGridView(): AbstractGridView;
 }

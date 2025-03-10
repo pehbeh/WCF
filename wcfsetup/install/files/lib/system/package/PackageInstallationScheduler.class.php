@@ -33,7 +33,7 @@ use wcf\util\FileUtil;
  *  action: 'install',
  * }|array{
  *  packageName: string,
- *  fromVersion: string,
+ *  fromversion: string,
  *  toVersion: string,
  *  package: string,
  *  packageID: int,

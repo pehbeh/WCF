@@ -12,9 +12,8 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static Poll    create(array $parameters = [])
- * @method      Poll    getDecoratedObject()
  * @mixin       Poll
+ * @extends DatabaseObjectEditor<Poll>
  */
 class PollEditor extends DatabaseObjectEditor
 {
@@ -25,6 +24,8 @@ class PollEditor extends DatabaseObjectEditor
 
     /**
      * Calculates poll votes.
+     *
+     * @return void
      */
     public function calculateVotes()
     {
@@ -53,6 +54,8 @@ class PollEditor extends DatabaseObjectEditor
 
     /**
      * Increase votes by one.
+     *
+     * @return void
      */
     public function increaseVotes()
     {

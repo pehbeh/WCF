@@ -43,6 +43,7 @@ class SmileyCategoryAction extends AbstractDatabaseObjectAction
      */
     public function validateGetSmilies()
     {
+        // @phpstan-ignore argument.type
         $this->smileyCategory = new SmileyCategory($this->getSingleObject()->getDecoratedObject());
 
         if ($this->smileyCategory->isDisabled) {

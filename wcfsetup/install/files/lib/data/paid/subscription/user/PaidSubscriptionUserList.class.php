@@ -11,12 +11,6 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  PaidSubscriptionUser        current()
- * @method  PaidSubscriptionUser[]      getObjects()
- * @method  PaidSubscriptionUser|null   getSingleObject()
- * @method  PaidSubscriptionUser|null   search($objectID)
- * @property    PaidSubscriptionUser[] $objects
+ * @extends DatabaseObjectList<PaidSubscriptionUser>
  */
-class PaidSubscriptionUserList extends DatabaseObjectList
-{
-}
+class PaidSubscriptionUserList extends DatabaseObjectList {}

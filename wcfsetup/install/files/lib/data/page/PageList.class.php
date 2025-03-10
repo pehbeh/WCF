@@ -12,11 +12,7 @@ use wcf\data\DatabaseObjectList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  Page        current()
- * @method  Page[]      getObjects()
- * @method  Page|null   getSingleObject()
- * @method  Page|null   search($objectID)
- * @property    Page[] $objects
+ * @extends DatabaseObjectList<Page>
  */
 class PageList extends DatabaseObjectList
 {

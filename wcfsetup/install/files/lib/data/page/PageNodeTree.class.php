@@ -110,7 +110,7 @@ class PageNodeTree
     /**
      * Returns the iterable node list.
      *
-     * @return  \RecursiveIteratorIterator
+     * @return  \RecursiveIteratorIterator<PageNode>
      */
     public function getNodeList()
     {

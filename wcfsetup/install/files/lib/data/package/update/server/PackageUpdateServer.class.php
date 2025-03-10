@@ -37,7 +37,7 @@ class PackageUpdateServer extends DatabaseObject
 
     /**
      * API meta data
-     * @var array
+     * @var mixed[]
      */
     protected $metaData = [];
 
@@ -45,6 +45,8 @@ class PackageUpdateServer extends DatabaseObject
      * Restricts the package server selection to include only
      * official package servers in case a secure download is
      * requested.
+     *
+     * @var bool
      */
     private static $secureMode = false;
 
@@ -170,6 +172,7 @@ class PackageUpdateServer extends DatabaseObject
     }
 
     /**
+     * @param string $serverURL
      * @deprecated 6.0 This method was only used in PackageUpdateServerAddForm.
      */
     public static function isValidServerURL($serverURL): bool
@@ -305,7 +308,7 @@ class PackageUpdateServer extends DatabaseObject
     /**
      * Returns API meta data.
      *
-     * @return  array
+     * @return mixed[]
      */
     public function getMetaData()
     {

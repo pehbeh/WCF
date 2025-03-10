@@ -4,8 +4,6 @@ namespace wcf\system\bulk\processing\user;
 
 use wcf\data\DatabaseObjectList;
 use wcf\data\user\UserAction;
-use wcf\data\user\UserList;
-use wcf\system\exception\InvalidObjectArgument;
 use wcf\system\WCF;
 
 /**
@@ -23,10 +21,6 @@ class DeleteUserBulkProcessingAction extends AbstractUserBulkProcessingAction
      */
     public function executeAction(DatabaseObjectList $objectList)
     {
-        if (!($objectList instanceof UserList)) {
-            throw new InvalidObjectArgument($objectList, UserList::class, 'Object list');
-        }
-
         $users = $this->getAccessibleUsers($objectList);
 
         if (!empty($users)) {

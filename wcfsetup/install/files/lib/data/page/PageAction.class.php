@@ -29,8 +29,7 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  PageEditor[]    getObjects()
- * @method  PageEditor  getSingleObject()
+ * @extends AbstractDatabaseObjectAction<Page, PageEditor>
  */
 class PageAction extends AbstractDatabaseObjectAction implements ISearchAction, ISortableAction, IToggleAction
 {
@@ -345,6 +344,8 @@ class PageAction extends AbstractDatabaseObjectAction implements ISearchAction, 
 
     /**
      * Validates parameters to search for a page by its internal name.
+     *
+     * @return void
      */
     public function validateSearch()
     {
@@ -354,7 +355,11 @@ class PageAction extends AbstractDatabaseObjectAction implements ISearchAction, 
     /**
      * Searches for a page by its internal name.
      *
-     * @return      array   list of matching pages
+     * @return list<array{
+     *  displayLink: string,
+     *  name: string,
+     *  pageID: int,
+     * }> list of matching pages
      */
     public function search()
     {
@@ -503,6 +508,8 @@ class PageAction extends AbstractDatabaseObjectAction implements ISearchAction, 
 
     /**
      * Validates parameters to reset the custom box positions for provided page.
+     *
+     * @return void
      */
     public function validateResetPosition()
     {
@@ -513,6 +520,8 @@ class PageAction extends AbstractDatabaseObjectAction implements ISearchAction, 
 
     /**
      * Resets the custom box positions for provided page.
+     *
+     * @return void
      */
     public function resetPosition()
     {

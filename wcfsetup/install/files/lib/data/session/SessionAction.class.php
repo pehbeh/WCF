@@ -16,6 +16,7 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
  * @extends AbstractDatabaseObjectAction<Session, SessionEditor>
+ * @phpstan-ignore generics.notSubtype
  */
 class SessionAction extends AbstractDatabaseObjectAction
 {

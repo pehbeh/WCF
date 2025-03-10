@@ -11,12 +11,6 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserNotification        current()
- * @method  UserNotification[]      getObjects()
- * @method  UserNotification|null       getSingleObject()
- * @method  UserNotification|null       search($objectID)
- * @property    UserNotification[] $objects
+ * @extends DatabaseObjectList<UserNotification>
  */
-class UserNotificationList extends DatabaseObjectList
-{
-}
+class UserNotificationList extends DatabaseObjectList {}

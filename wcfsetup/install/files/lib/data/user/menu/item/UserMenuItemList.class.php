@@ -11,12 +11,6 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserMenuItem        current()
- * @method  UserMenuItem[]      getObjects()
- * @method  UserMenuItem|null   getSingleObject()
- * @method  UserMenuItem|null   search($objectID)
- * @property    UserMenuItem[] $objects
+ * @extends DatabaseObjectList<UserMenuItem>
  */
-class UserMenuItemList extends DatabaseObjectList
-{
-}
+class UserMenuItemList extends DatabaseObjectList {}

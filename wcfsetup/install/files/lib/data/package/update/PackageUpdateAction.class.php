@@ -26,9 +26,17 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  PackageUpdate       create()
- * @method  PackageUpdateEditor[]   getObjects()
- * @method  PackageUpdateEditor getSingleObject()
+ * @phpstan-type QueueEntry array{
+ *  template: string,
+ *  type: 'authorizationRequired',
+ * }|array{
+ *  template: string,
+ *  type: 'conflict',
+ * }|array{
+ *  queueID: int,
+ *  type: 'queue',
+ * }
+ * @extends AbstractDatabaseObjectAction<PackageUpdate, PackageUpdateEditor>
  */
 class PackageUpdateAction extends AbstractDatabaseObjectAction
 {
@@ -50,6 +58,8 @@ class PackageUpdateAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates parameters to search for installable packages.
+     *
+     * @return void
      */
     public function validateSearch()
     {
@@ -61,7 +71,7 @@ class PackageUpdateAction extends AbstractDatabaseObjectAction
     /**
      * Returns a result list of a search for installable packages.
      *
-     * @return  array
+     * @return mixed[]
      */
     public function search()
     {
@@ -270,7 +280,7 @@ class PackageUpdateAction extends AbstractDatabaseObjectAction
      * @param string|null $minVersion
      * @param string[] $installedPackages
      * @param string[] $excludedPackagesOfInstalledPackages
-     * @return      string[][]
+     * @return string[][]
      */
     protected function canInstall(
         $packageUpdateID,
@@ -496,8 +506,8 @@ class PackageUpdateAction extends AbstractDatabaseObjectAction
      * Returns a result list for a previous search.
      *
      * @param PackageUpdateServer[] $updateServers
-     * @param array $updateData
-     * @return  array
+     * @param mixed[] $updateData
+     * @return array{count: int, template: string}
      */
     protected function getResultList(array $updateServers, array $updateData)
     {
@@ -578,6 +588,8 @@ class PackageUpdateAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates permissions to search for updates.
+     *
+     * @return void
      */
     public function validateSearchForUpdates()
     {
@@ -593,7 +605,7 @@ class PackageUpdateAction extends AbstractDatabaseObjectAction
     /**
      * Searches for updates.
      *
-     * @return  array
+     * @return array{url: string}
      */
     public function searchForUpdates()
     {
@@ -612,6 +624,8 @@ class PackageUpdateAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates parameters to perform a system update.
+     *
+     * @return void
      */
     public function validatePrepareUpdate()
     {
@@ -657,7 +671,7 @@ class PackageUpdateAction extends AbstractDatabaseObjectAction
     /**
      * Prepares a system update.
      *
-     * @return  array
+     * @return QueueEntry
      */
     public function prepareUpdate()
     {
@@ -666,6 +680,8 @@ class PackageUpdateAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates parameters to prepare a package installation.
+     *
+     * @return void
      */
     public function validatePrepareInstallation()
     {
@@ -695,13 +711,16 @@ class PackageUpdateAction extends AbstractDatabaseObjectAction
     /**
      * Prepares a package installation.
      *
-     * @return  array
+     * @return QueueEntry
      */
     public function prepareInstallation()
     {
         return $this->createQueue('install');
     }
 
+    /**
+     * @return void
+     */
     public function validateRefreshDatabase()
     {
         WCF::getSession()->checkPermissions(['admin.configuration.package.canInstallPackage']);
@@ -713,6 +732,9 @@ class PackageUpdateAction extends AbstractDatabaseObjectAction
         }
     }
 
+    /**
+     * @return void
+     */
     public function refreshDatabase()
     {
         PackageUpdateDispatcher::getInstance()->refreshPackageDatabase();
@@ -722,8 +744,8 @@ class PackageUpdateAction extends AbstractDatabaseObjectAction
      * Creates a new package installation queue.
      *
      * @param string $queueType
-     * @return  array
-     * @throws  SystemException
+     * @return QueueEntry
+     * @throws SystemException
      */
     protected function createQueue($queueType)
     {

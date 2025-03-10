@@ -15,6 +15,8 @@ use wcf\system\WCF;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template TDatabaseObjectList of DatabaseObjectList
  */
 abstract class MultipleLinkPage extends AbstractPage
 {
@@ -55,8 +57,7 @@ abstract class MultipleLinkPage extends AbstractPage
     public $endIndex = 0;
 
     /**
-     * DatabaseObjectList object
-     * @var DatabaseObjectList
+     * @var TDatabaseObjectList
      */
     public $objectList;
 

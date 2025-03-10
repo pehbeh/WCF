@@ -6,8 +6,6 @@ use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\data\user\group\UserGroup;
 use wcf\data\user\UserEditor;
-use wcf\data\user\UserList;
-use wcf\system\exception\InvalidObjectArgument;
 use wcf\system\exception\UserInputException;
 use wcf\system\user\storage\UserStorageHandler;
 use wcf\system\WCF;
@@ -60,10 +58,6 @@ abstract class AbstractUserGroupsUserBulkProcessingAction extends AbstractUserBu
      */
     public function executeAction(DatabaseObjectList $objectList)
     {
-        if (!($objectList instanceof UserList)) {
-            throw new InvalidObjectArgument($objectList, UserList::class, 'Object list');
-        }
-
         $users = $this->getAccessibleUsers($objectList);
 
         if (!empty($users)) {

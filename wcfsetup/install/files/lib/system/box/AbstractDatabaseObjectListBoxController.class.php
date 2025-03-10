@@ -27,6 +27,8 @@ use wcf\util\StringUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
+ *
+ * @template TDatabaseObjectList of DatabaseObjectList
  */
 abstract class AbstractDatabaseObjectListBoxController extends AbstractBoxController implements IConditionBoxController
 {
@@ -81,7 +83,7 @@ abstract class AbstractDatabaseObjectListBoxController extends AbstractBoxContro
 
     /**
      * database object list used to read the objects displayed in the box
-     * @var DatabaseObjectList
+     * @var TDatabaseObjectList
      */
     public $objectList;
 
@@ -281,7 +283,7 @@ abstract class AbstractDatabaseObjectListBoxController extends AbstractBoxContro
     /**
      * Returns the database object list used to read the objects displayed in the box.
      *
-     * @return ?DatabaseObjectList
+     * @return ?TDatabaseObjectList
      */
     abstract protected function getObjectList();
 

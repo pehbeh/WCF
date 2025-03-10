@@ -58,7 +58,7 @@ class PaidSubscriptionUser extends DatabaseObject
     /**
      * Sets the paid subscription object.
      *
-     * @param PaidSubscription $subscription
+     * @return void
      */
     public function setSubscription(PaidSubscription $subscription)
     {

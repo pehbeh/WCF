@@ -2,6 +2,7 @@
 
 namespace wcf\page;
 
+use wcf\data\DatabaseObjectList;
 use wcf\system\event\EventHandler;
 use wcf\system\WCF;
 
@@ -12,6 +13,9 @@ use wcf\system\WCF;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template TDatabaseObjectList of DatabaseObjectList
+ * @extends MultipleLinkPage<TDatabaseObjectList>
  */
 abstract class SortablePage extends MultipleLinkPage
 {

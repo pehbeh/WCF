@@ -11,12 +11,6 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserAuthenticationFailure       current()
- * @method  UserAuthenticationFailure[]     getObjects()
- * @method  UserAuthenticationFailure|null      getSingleObject()
- * @method  UserAuthenticationFailure|null      search($objectID)
- * @property    UserAuthenticationFailure[] $objects
+ * @extends DatabaseObjectList<UserAuthenticationFailure>
  */
-class UserAuthenticationFailureList extends DatabaseObjectList
-{
-}
+class UserAuthenticationFailureList extends DatabaseObjectList {}

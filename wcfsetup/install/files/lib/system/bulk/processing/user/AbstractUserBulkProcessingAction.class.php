@@ -16,6 +16,8 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
+ *
+ * @extends AbstractBulkProcessingAction<UserList>
  */
 abstract class AbstractUserBulkProcessingAction extends AbstractBulkProcessingAction
 {
@@ -31,8 +33,7 @@ abstract class AbstractUserBulkProcessingAction extends AbstractBulkProcessingAc
      * Returns all users who the active user can access due to their user group
      * association.
      *
-     * @param UserList $userList
-     * @return  User[]
+     * @return array<int, User>
      */
     protected function getAccessibleUsers(UserList $userList)
     {

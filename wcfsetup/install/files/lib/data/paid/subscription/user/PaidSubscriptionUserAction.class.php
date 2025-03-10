@@ -17,8 +17,7 @@ use wcf\util\DateUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  PaidSubscriptionUserEditor[]    getObjects()
- * @method  PaidSubscriptionUserEditor  getSingleObject()
+ * @extends AbstractDatabaseObjectAction<PaidSubscriptionUser, PaidSubscriptionUserEditor>
  */
 class PaidSubscriptionUserAction extends AbstractDatabaseObjectAction
 {
@@ -39,7 +38,6 @@ class PaidSubscriptionUserAction extends AbstractDatabaseObjectAction
 
     /**
      * @inheritDoc
-     * @return  PaidSubscriptionUser
      */
     public function create()
     {
@@ -62,7 +60,6 @@ class PaidSubscriptionUserAction extends AbstractDatabaseObjectAction
             $this->parameters['data']['isActive'] = 1;
         }
 
-        /** @var PaidSubscriptionUser $subscriptionUser */
         $subscriptionUser = parent::create();
 
         // update group memberships
@@ -92,6 +89,8 @@ class PaidSubscriptionUserAction extends AbstractDatabaseObjectAction
 
     /**
      * Extends an existing subscription.
+     *
+     * @return void
      */
     public function extend()
     {
@@ -138,6 +137,8 @@ class PaidSubscriptionUserAction extends AbstractDatabaseObjectAction
 
     /**
      * Revokes an existing subscription.
+     *
+     * @return void
      */
     public function revoke()
     {
@@ -172,6 +173,8 @@ class PaidSubscriptionUserAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates the revoke action.
+     *
+     * @return void
      */
     public function validateRevoke()
     {
@@ -188,6 +191,8 @@ class PaidSubscriptionUserAction extends AbstractDatabaseObjectAction
 
     /**
      * Restores an existing subscription.
+     *
+     * @return void
      */
     public function restore()
     {
@@ -206,6 +211,8 @@ class PaidSubscriptionUserAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates the restore action.
+     *
+     * @return void
      */
     public function validateRestore()
     {
@@ -222,6 +229,8 @@ class PaidSubscriptionUserAction extends AbstractDatabaseObjectAction
 
     /**
      * Applies group memberships.
+     *
+     * @return void
      */
     public function addGroupMemberships()
     {
@@ -250,6 +259,8 @@ class PaidSubscriptionUserAction extends AbstractDatabaseObjectAction
 
     /**
      * Removes group memberships.
+     *
+     * @return void
      */
     public function removeGroupMemberships()
     {

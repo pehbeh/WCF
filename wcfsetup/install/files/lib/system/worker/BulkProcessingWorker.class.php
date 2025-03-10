@@ -2,6 +2,8 @@
 
 namespace wcf\system\worker;
 
+use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectList;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\system\bulk\processing\IBulkProcessingAction;
 use wcf\system\exception\PermissionDeniedException;
@@ -26,6 +28,9 @@ final class BulkProcessingWorker extends AbstractWorker
      */
     protected array $bulkProcessingData;
 
+    /**
+     * @var IBulkProcessingAction<DatabaseObjectList<DatabaseObject>>
+     */
     protected IBulkProcessingAction $action;
 
     #[\Override]

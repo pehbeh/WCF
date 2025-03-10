@@ -12,12 +12,6 @@ use wcf\data\DatabaseObjectList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method  Trophy      current()
- * @method  Trophy[]    getObjects()
- * @method  Trophy|null getSingleObject()
- * @method  Trophy|null search($objectID)
- * @property    Trophy[] $objects
+ * @extends DatabaseObjectList<Trophy>
  */
-class TrophyList extends DatabaseObjectList
-{
-}
+class TrophyList extends DatabaseObjectList {}

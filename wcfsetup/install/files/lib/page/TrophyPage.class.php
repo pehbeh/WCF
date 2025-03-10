@@ -27,7 +27,7 @@ use wcf\util\StringUtil;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @property    UserTrophyList $objectList
+ * @extends MultipleLinkPage<UserTrophyList>
  */
 class TrophyPage extends MultipleLinkPage
 {

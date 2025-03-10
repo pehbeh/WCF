@@ -5,6 +5,8 @@ namespace wcf\system\package\plugin;
 use wcf\data\box\Box;
 use wcf\data\box\BoxEditor;
 use wcf\data\box\BoxList;
+use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectList;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\data\page\PageNode;
 use wcf\data\page\PageNodeTree;
@@ -645,7 +647,7 @@ class BoxPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin 
         // add box controller-specific form fields
         foreach (ObjectTypeCache::getInstance()->getObjectTypes('com.woltlab.wcf.boxController') as $objectType) {
             if (\is_subclass_of($objectType->className, AbstractDatabaseObjectListBoxController::class)) {
-                /** @var AbstractDatabaseObjectListBoxController $boxController */
+                /** @var AbstractDatabaseObjectListBoxController<DatabaseObjectList<DatabaseObject>> $boxController */
                 $boxController = new $objectType->className();
 
                 $boxController->addPipGuiFormFields($form, $objectType->objectType);
@@ -736,7 +738,7 @@ class BoxPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin 
                     AbstractDatabaseObjectListBoxController::class
                 )
             ) {
-                /** @var AbstractDatabaseObjectListBoxController $boxController */
+                /** @var AbstractDatabaseObjectListBoxController<DatabaseObjectList<DatabaseObject>> $boxController */
                 $boxController = new $objectType->className();
 
                 $objectTypeData = $boxController->getPipGuiElementData($element, $saveData);
@@ -941,7 +943,7 @@ class BoxPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin 
                     AbstractDatabaseObjectListBoxController::class
                 )
             ) {
-                /** @var AbstractDatabaseObjectListBoxController $boxController */
+                /** @var AbstractDatabaseObjectListBoxController<DatabaseObjectList<DatabaseObject>> $boxController */
                 $boxController = new $objectType->className();
 
                 $boxController->writePipGuiEntry($box, $form);

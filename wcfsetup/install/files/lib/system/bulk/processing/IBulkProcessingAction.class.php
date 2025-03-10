@@ -11,6 +11,8 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
+ *
+ * @template TDatabaseObjectList of DatabaseObjectList
  */
 interface IBulkProcessingAction
 {
@@ -18,6 +20,7 @@ interface IBulkProcessingAction
      * Executes the bulk processing action on all objects in the given object
      * list.
      *
+     * @param TDatabaseObjectList $objectList
      * @return void
      * @throws \InvalidArgumentException if given object list cannot be handled by the action
      */
@@ -34,7 +37,7 @@ interface IBulkProcessingAction
      * Returns an object list which will be populated with conditions to read
      * the processed objects.
      *
-     * @return DatabaseObjectList
+     * @return TDatabaseObjectList
      */
     public function getObjectList();
 

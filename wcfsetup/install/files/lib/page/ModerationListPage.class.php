@@ -18,7 +18,7 @@ use wcf\util\HeaderUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    ViewableModerationQueueList $objectList
+ * @extends SortablePage<ViewableModerationQueueList>
  */
 class ModerationListPage extends SortablePage
 {

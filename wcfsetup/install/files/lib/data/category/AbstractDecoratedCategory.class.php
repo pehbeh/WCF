@@ -13,33 +13,33 @@ use wcf\system\exception\PermissionDeniedException;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Category    getDecoratedObject()
- * @mixin   Category
- * @extends DatabaseObjectDecorator<Category>
+ * @mixin Category
+ * @template-covariant TCategory = Category
+ * @extends DatabaseObjectDecorator<TCategory>
  */
 abstract class AbstractDecoratedCategory extends DatabaseObjectDecorator
 {
     /**
      * list of child categories of this category
-     * @var Category[]
+     * @var TCategory[]
      */
     protected $childCategories;
 
     /**
      * list of all child categories of this category
-     * @var Category[]
+     * @var TCategory[]
      */
     protected $allChildCategories;
 
     /**
      * list of all parent category generations of this category
-     * @var AbstractDecoratedCategory[]
+     * @var static[]
      */
     protected $parentCategories;
 
     /**
      * parent category of this category
-     * @var ?AbstractDecoratedCategory
+     * @var ?static
      */
     protected $parentCategory;
 
@@ -130,7 +130,7 @@ abstract class AbstractDecoratedCategory extends DatabaseObjectDecorator
      * category exists.
      *
      * @param int $categoryID
-     * @return  AbstractDecoratedCategory|null
+     * @return ?static
      */
     public static function getCategory($categoryID)
     {

@@ -34,9 +34,7 @@ use wcf\util\StringUtil;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.2
  *
- * @method  Like        create()
- * @method  LikeEditor[]    getObjects()
- * @method  LikeEditor  getSingleObject()
+ * @extends AbstractDatabaseObjectAction<Like, LikeEditor>
  */
 class ReactionAction extends AbstractDatabaseObjectAction
 {
@@ -76,6 +74,8 @@ class ReactionAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates parameters to fetch like details.
+     *
+     * @return void
      */
     public function validateGetReactionDetails()
     {
@@ -89,7 +89,7 @@ class ReactionAction extends AbstractDatabaseObjectAction
     /**
      * Returns like details.
      *
-     * @return  string[]
+     * @return array{template: string, title: string}
      */
     public function getReactionDetails()
     {
@@ -127,6 +127,8 @@ class ReactionAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates permissions for given object.
+     *
+     * @return void
      */
     protected function validateObjectParameters()
     {
@@ -157,7 +159,13 @@ class ReactionAction extends AbstractDatabaseObjectAction
     /**
      * React on an given object with the given reactionType.
      *
-     * @return array
+     * @return array{
+     *  reactions: array<int, int>,
+     *  objectID: int,
+     *  objectType: string,
+     *  reactionTypeID: int,
+     *  reputationCount: int,
+     * }
      */
     public function react()
     {
@@ -179,6 +187,8 @@ class ReactionAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates the 'react' method.
+     *
+     * @return void
      */
     public function validateReact()
     {
@@ -228,6 +238,8 @@ class ReactionAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates parameters to load reactions.
+     *
+     * @return void
      */
     public function validateLoad()
     {
@@ -254,7 +266,7 @@ class ReactionAction extends AbstractDatabaseObjectAction
     /**
      * Loads a list of reactions.
      *
-     * @return  array
+     * @return array{lastLikeTime: int, template: string}|array{}
      */
     public function load()
     {
@@ -289,6 +301,8 @@ class ReactionAction extends AbstractDatabaseObjectAction
 
     /**
      * Copies likes from one object id to another.
+     *
+     * @return void
      */
     public function copy()
     {

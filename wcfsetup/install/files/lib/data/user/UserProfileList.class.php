@@ -11,11 +11,7 @@ use wcf\system\cache\runtime\FileRuntimeCache;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserProfile     current()
- * @method  UserProfile[]       getObjects()
- * @method  UserProfile|null    getSingleObject()
- * @method  UserProfile|null    search($objectID)
- * @property    UserProfile[] $objects
+ * @extends UserList<UserProfile>
  */
 class UserProfileList extends UserList
 {

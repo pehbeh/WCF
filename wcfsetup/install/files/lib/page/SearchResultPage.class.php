@@ -2,6 +2,8 @@
 
 namespace wcf\page;
 
+use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectList;
 use wcf\data\search\ISearchResultObject;
 use wcf\data\search\Search;
 use wcf\system\event\EventHandler;
@@ -20,6 +22,8 @@ use wcf\util\HeaderUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @deprecated 5.5
+ *
+ * @extends MultipleLinkPage<DatabaseObjectList<DatabaseObject>>
  */
 class SearchResultPage extends MultipleLinkPage
 {
@@ -199,16 +203,12 @@ class SearchResultPage extends MultipleLinkPage
     /**
      * @inheritDoc
      */
-    protected function initObjectList()
-    {
-    }
+    protected function initObjectList() {}
 
     /**
      * @inheritDoc
      */
-    protected function readObjects()
-    {
-    }
+    protected function readObjects() {}
 
     /**
      * @inheritDoc

@@ -11,12 +11,6 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserIgnore      current()
- * @method  UserIgnore[]        getObjects()
- * @method  UserIgnore|null     getSingleObject()
- * @method  UserIgnore|null     search($objectID)
- * @property    UserIgnore[] $objects
+ * @extends DatabaseObjectList<UserIgnore>
  */
-class UserIgnoreList extends DatabaseObjectList
-{
-}
+class UserIgnoreList extends DatabaseObjectList {}

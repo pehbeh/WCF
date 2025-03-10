@@ -54,7 +54,7 @@ class PaidSubscriptionTransactionLog extends DatabaseObject
     /**
      * Returns transaction details.
      *
-     * @return  array
+     * @return mixed[]
      */
     public function getTransactionDetails()
     {
