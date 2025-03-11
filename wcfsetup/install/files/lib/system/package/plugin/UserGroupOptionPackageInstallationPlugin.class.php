@@ -273,9 +273,7 @@ class UserGroupOptionPackageInstallationPlugin extends AbstractOptionPackageInst
         if ($this->entryType === 'options') {
             /** @var IFormContainer $dataContainer */
             $dataContainer = $form->getNodeById('data');
-
-            /** @var SingleSelectionFormField $optionType */
-            $optionType = $form->getNodeById('optionType');
+            $optionType = $form->getFormField('optionType');
 
             $dataContainer->appendChildren([
                 MultilineTextFormField::create('adminDefaultValue')

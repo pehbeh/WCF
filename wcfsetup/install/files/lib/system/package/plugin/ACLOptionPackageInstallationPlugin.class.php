@@ -419,8 +419,7 @@ class ACLOptionPackageInstallationPlugin extends AbstractOptionPackageInstallati
             ->addValidator(new FormFieldValidator(
                 'nameUniqueness',
                 function (SingleSelectionFormField $formField) use ($entryType) {
-                    /** @var TextFormField $nameField */
-                    $nameField = $formField->getDocument()->getNodeById('name');
+                    $nameField = $formField->getDocument()->getFormField('name');
 
                     if (
                         $formField->getDocument()->getFormMode() === IFormDocument::FORM_MODE_CREATE

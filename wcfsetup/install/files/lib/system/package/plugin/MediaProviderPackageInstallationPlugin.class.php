@@ -180,8 +180,7 @@ class MediaProviderPackageInstallationPlugin extends AbstractXMLPackageInstallat
                 ->label('wcf.acp.pip.mediaProvider.html')
                 ->description('wcf.acp.pip.mediaProvider.html.description')
                 ->addValidator(new FormFieldValidator('className', static function (MultilineTextFormField $formField) {
-                    /** @var ClassNameFormField $className */
-                    $className = $formField->getDocument()->getNodeById('className');
+                    $className = $formField->getDocument()->getFormField('className');
 
                     if ($formField->getSaveValue() && $className->getSaveValue()) {
                         $formField->addValidationError(
@@ -195,8 +194,7 @@ class MediaProviderPackageInstallationPlugin extends AbstractXMLPackageInstallat
                 ->addValidator(new FormFieldValidator(
                     'noClassName',
                     static function (MultilineTextFormField $formField) {
-                        /** @var ClassNameFormField $className */
-                        $className = $formField->getDocument()->getNodeById('className');
+                        $className = $formField->getDocument()->getFormField('className');
 
                         if ($formField->getSaveValue() === '' && $className->getSaveValue() === '') {
                             $formField->addValidationError(

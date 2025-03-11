@@ -70,8 +70,7 @@ class TagAddForm extends AbstractFormBuilderForm
                         ->maximumLength(TAGGING_MAX_TAG_LENGTH)
                         ->addValidator(
                             new FormFieldValidator('duplicateTagValidator', function (TextFormField $field) {
-                                $languageIDFormField = $field->getDocument()->getNodeById('languageID');
-                                \assert($languageIDFormField instanceof SingleSelectionFormField);
+                                $languageIDFormField = $field->getDocument()->getFormField('languageID');
                                 $languageID = $languageIDFormField->getValue();
 
                                 $tag = Tag::getTag($field->getValue(), $languageID);

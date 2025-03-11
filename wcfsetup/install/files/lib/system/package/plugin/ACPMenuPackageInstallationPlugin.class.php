@@ -89,8 +89,7 @@ class ACPMenuPackageInstallationPlugin extends AbstractMenuPackageInstallationPl
 
         // add menu item icon form field
 
-        /** @var SingleSelectionFormField $parentMenuItemFormField */
-        $parentMenuItemFormField = $form->getNodeById('parentMenuItem');
+        $parentMenuItemFormField = $form->getFormField('parentMenuItem');
 
         $menuItemLevels = ['' => 0] + $this->getMenuStructureData()['levels'];
 
@@ -115,8 +114,7 @@ class ACPMenuPackageInstallationPlugin extends AbstractMenuPackageInstallationPl
 
         // add additional data to default fields
 
-        /** @var TextFormField $menuItemFormField */
-        $menuItemFormField = $form->getNodeById('menuItem');
+        $menuItemFormField = $form->getFormField('menuItem');
         $menuItemFormField
             ->description('wcf.acp.pip.acpMenu.menuItem.description')
             ->addValidator(FormFieldValidatorUtil::getRegularExpressionValidator(
@@ -124,8 +122,7 @@ class ACPMenuPackageInstallationPlugin extends AbstractMenuPackageInstallationPl
                 'wcf.acp.pip.acpMenu.menuItem'
             ));
 
-        /** @var TextFormField $menuItemControllerFormField */
-        $menuItemControllerFormField = $form->getNodeById('menuItemController');
+        $menuItemControllerFormField = $form->getFormField('menuItemController');
         $menuItemControllerFormField->addValidator(new FormFieldValidator(
             'acpController',
             static function (TextFormField $formField) {
@@ -154,8 +151,7 @@ class ACPMenuPackageInstallationPlugin extends AbstractMenuPackageInstallationPl
         }));
 
         foreach (['menuItemController', 'menuItemLink'] as $nodeId) {
-            /** @var TextFormField $formField */
-            $formField = $form->getNodeById($nodeId);
+            $formField = $form->getFormField($nodeId);
             $formField->addDependency(
                 ValueFormFieldDependency::create('parentMenuItem')
                     ->field($parentMenuItemFormField)

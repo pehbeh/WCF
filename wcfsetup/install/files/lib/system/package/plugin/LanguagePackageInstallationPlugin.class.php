@@ -414,8 +414,7 @@ class LanguagePackageInstallationPlugin extends AbstractXMLPackageInstallationPl
                     'wcf.acp.language.item.languageItem'
                 ))
                 ->addValidator(new FormFieldValidator('languageCategory', static function (TextFormField $formField) {
-                    /** @var RadioButtonFormField $languageCategoryIDMode */
-                    $languageCategoryIDMode = $formField->getDocument()->getNodeById('languageCategoryIDMode');
+                    $languageCategoryIDMode = $formField->getDocument()->getFormField('languageCategoryIDMode');
 
                     switch ($languageCategoryIDMode->getSaveValue()) {
                         case 'automatic':
@@ -442,9 +441,7 @@ class LanguagePackageInstallationPlugin extends AbstractXMLPackageInstallationPl
                             break;
 
                         case 'selection':
-                            /** @var SingleSelectionFormField $languageCategoryID */
-                            $languageCategoryID = $formField->getDocument()->getNodeById('languageCategoryID');
-
+                            $languageCategoryID = $formField->getDocument()->getFormField('languageCategoryID');
                             $languageCategory = LanguageFactory::getInstance()->getCategoryByID($languageCategoryID->getSaveValue());
 
                             if (\strpos($formField->getSaveValue(), $languageCategory->languageCategory . '.') !== 0) {
@@ -459,9 +456,7 @@ class LanguagePackageInstallationPlugin extends AbstractXMLPackageInstallationPl
                             break;
 
                         case 'new':
-                            /** @var TextFormField $languageCategory */
-                            $languageCategory = $formField->getDocument()->getNodeById('languageCategory');
-
+                            $languageCategory = $formField->getDocument()->getFormField('languageCategory');
                             if (\strpos($formField->getSaveValue(), $languageCategory->getSaveValue() . '.') !== 0) {
                                 $formField->addValidationError(
                                     new FormFieldValidationError(

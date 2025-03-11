@@ -424,8 +424,7 @@ class MenuPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
                 ->saveValueType(ItemListFormField::SAVE_VALUE_TYPE_SSV),
         ]);
 
-        /** @var BooleanFormField $createBox */
-        $createBox = $form->getNodeById('createBox');
+        $createBox = $form->getFormField('createBox');
         foreach (
             [
                 'boxPosition',

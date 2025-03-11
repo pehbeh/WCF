@@ -102,9 +102,7 @@ class LanguageItemAddForm extends AbstractFormBuilderForm
                     ->addValidator(new FormFieldValidator(
                         'languageCategory',
                         static function (TextFormField $formField) {
-                            /** @var RadioButtonFormField $languageCategoryIDMode */
-                            $languageCategoryIDMode = $formField->getDocument()->getNodeById('languageCategoryIDMode');
-
+                            $languageCategoryIDMode = $formField->getDocument()->getFormField('languageCategoryIDMode');
                             switch ($languageCategoryIDMode->getSaveValue()) {
                                 case 'automatic':
                                     $languageItemPieces = \explode('.', $formField->getSaveValue());
@@ -130,9 +128,7 @@ class LanguageItemAddForm extends AbstractFormBuilderForm
                                     break;
 
                                 case 'selection':
-                                    /** @var SingleSelectionFormField $languageCategoryID */
-                                    $languageCategoryID = $formField->getDocument()->getNodeById('languageCategoryID');
-
+                                    $languageCategoryID = $formField->getDocument()->getFormField('languageCategoryID');
                                     if ($languageCategory = LanguageFactory::getInstance()->getCategoryByID($languageCategoryID->getSaveValue())) {
                                         if (
                                             \strpos(
@@ -187,13 +183,10 @@ class LanguageItemAddForm extends AbstractFormBuilderForm
                     $parameters['data']['languageItemOriginIsSystem'] = 0;
                     $parameters['data']['isCustomLanguageItem'] = 1;
 
-                    /** @var RadioButtonFormField $languageCategoryIDMode */
-                    $languageCategoryIDMode = $document->getNodeById('languageCategoryIDMode');
-
+                    $languageCategoryIDMode = $document->getFormField('languageCategoryIDMode');
                     // automatically determine language item
                     if ($languageCategoryIDMode->getSaveValue() === 'automatic') {
-                        /** @var TextFormField $languageItemField */
-                        $languageItemField = $document->getNodeById('languageItem');
+                        $languageItemField = $document->getFormField('languageItem');
                         $languageItemPieces = \explode('.', $languageItemField->getSaveValue());
 
                         $category = LanguageFactory::getInstance()->getCategory(
@@ -217,8 +210,8 @@ class LanguageItemAddForm extends AbstractFormBuilderForm
             )
         );
 
-        /** @var RadioButtonFormField $modeField */
         $modeField = $dataContainer->getNodeById('languageCategoryIDMode');
+        \assert($modeField instanceof RadioButtonFormField);
 
         $dataContainer->getNodeById('languageCategoryID')->addDependency(
             ValueFormFieldDependency::create('mode')

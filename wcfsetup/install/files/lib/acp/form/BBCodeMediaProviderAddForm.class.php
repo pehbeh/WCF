@@ -88,8 +88,7 @@ class BBCodeMediaProviderAddForm extends AbstractFormBuilderForm
                         ->description('wcf.acp.bbcode.mediaProvider.html.description')
                         ->addValidator(
                             new FormFieldValidator('emptyValidator', function (MultilineTextFormField $formField) {
-                                $classNameFormField = $formField->getDocument()->getNodeById('className');
-                                \assert($classNameFormField instanceof ClassNameFormField);
+                                $classNameFormField = $formField->getDocument()->getFormField('className');
 
                                 if (empty($formField->getValue()) && empty($classNameFormField->getValue())) {
                                     $formField->addValidationError(

@@ -233,8 +233,7 @@ class EventListenerPackageInstallationPlugin extends AbstractXMLPackageInstallat
                 ->required()
                 ->addValidator(new FormFieldValidator('callable', static function (ClassNameFormField $formField) {
                     $listenerClassName = $formField->getValue();
-                    /** @var TextFormField $eventClassNameField */
-                    $eventClassNameField = $formField->getDocument()->getNodeById('eventClassName');
+                    $eventClassNameField = $formField->getDocument()->getFormField('eventClassName');
                     $eventClassName = $eventClassNameField->getValue();
 
                     if (\is_subclass_of($eventClassName, IEvent::class)) {
@@ -307,10 +306,8 @@ class EventListenerPackageInstallationPlugin extends AbstractXMLPackageInstallat
      */
     public function setEntryData($identifier, IFormDocument $document): bool
     {
-        $options = $document->getNodeById('options');
-        \assert($options instanceof OptionFormField);
-        $permissions = $document->getNodeById('permissions');
-        \assert($permissions instanceof UserGroupOptionFormField);
+        $options = $document->getFormField('options');
+        $permissions = $document->getFormField('permissions');
 
         $result = $this->traitSetEntryData($identifier, $document);
 
@@ -331,10 +328,8 @@ class EventListenerPackageInstallationPlugin extends AbstractXMLPackageInstallat
      */
     public function editEntry(IFormDocument $form, $identifier)
     {
-        $options = $form->getNodeById('options');
-        \assert($options instanceof OptionFormField);
-        $permissions = $form->getNodeById('permissions');
-        \assert($permissions instanceof UserGroupOptionFormField);
+        $options = $form->getFormField('options');
+        $permissions = $form->getFormField('permissions');
 
         $result = $this->traitEditEntry($form, $identifier);
 

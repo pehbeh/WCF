@@ -159,8 +159,7 @@ class MenuItemAddForm extends AbstractFormBuilderForm
                         ->addFieldClass('short')
                         ->addValidator(
                             new FormFieldValidator('requiredObjectIDValidator', function (IntegerFormField $formField) {
-                                $pageFormField = $this->form->getNodeById('pageID');
-                                \assert($pageFormField instanceof SingleSelectionFormField);
+                                $pageFormField = $this->form->getFormField('pageID');
                                 $pageID = $pageFormField->getValue();
                                 $page = new Page($pageID);
                                 $pageObjectID = $formField->getValue();
