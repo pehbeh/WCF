@@ -58,7 +58,7 @@ class BoxListPage extends AbstractGridViewPage
     }
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): AbstractGridView
     {
         return new BoxGridView();
     }

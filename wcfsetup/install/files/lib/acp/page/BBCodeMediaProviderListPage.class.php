@@ -33,7 +33,7 @@ class BBCodeMediaProviderListPage extends AbstractGridViewPage
     public $templateName = 'bbcodeMediaProviderList';
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): AbstractGridView
     {
         return new BBCodeMediaProviderGridView();
     }

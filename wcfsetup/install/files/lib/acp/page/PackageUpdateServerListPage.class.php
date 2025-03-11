@@ -28,7 +28,7 @@ class PackageUpdateServerListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.configuration.package.canEditServer'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): AbstractGridView
     {
         return new PackageUpdateServerGridView();
     }

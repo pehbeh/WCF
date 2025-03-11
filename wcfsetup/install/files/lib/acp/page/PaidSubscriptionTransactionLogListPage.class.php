@@ -33,7 +33,7 @@ class PaidSubscriptionTransactionLogListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.paidSubscription.canManageSubscription'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): AbstractGridView
     {
         return new PaidSubscriptionTransactionLogGridView();
     }

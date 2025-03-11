@@ -40,7 +40,7 @@ class ExceptionLogViewPage extends AbstractGridViewPage
     }
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): AbstractGridView
     {
         return new ExceptionLogGridView(true);
     }

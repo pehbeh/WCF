@@ -33,7 +33,7 @@ class UserAuthenticationFailureListPage extends AbstractGridViewPage
     public $neededModules = ['ENABLE_USER_AUTHENTICATION_FAILURE'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): AbstractGridView
     {
         return new UserAuthenticationFailureGridView();
     }

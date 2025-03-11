@@ -33,7 +33,7 @@ class TagListPage extends AbstractGridViewPage
     public $neededModules = ['MODULE_TAGGING'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): AbstractGridView
     {
         return new TagGridView();
     }

@@ -33,7 +33,7 @@ class UserRankListPage extends AbstractGridViewPage
     public $neededModules = ['MODULE_USER_RANK'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): AbstractGridView
     {
         return new UserRankGridView();
     }

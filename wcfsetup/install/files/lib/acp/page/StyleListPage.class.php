@@ -28,7 +28,7 @@ class StyleListPage  extends AbstractGridViewPage
     public $neededPermissions = ['admin.style.canManageStyle'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): AbstractGridView
     {
         return new StyleGridView();
     }

@@ -28,7 +28,7 @@ class CronjobLogListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.management.canManageCronjob'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): AbstractGridView
     {
         return new CronjobLogGridView();
     }

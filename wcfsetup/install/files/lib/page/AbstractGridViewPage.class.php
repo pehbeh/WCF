@@ -62,7 +62,7 @@ abstract class AbstractGridViewPage extends AbstractPage
 
     protected function initGridView(): void
     {
-        $this->gridView = $this->createGridViewController();
+        $this->gridView = $this->createGridView();
         if (!$this->gridView->isAccessible()) {
             throw new PermissionDeniedException();
         }
@@ -85,5 +85,5 @@ abstract class AbstractGridViewPage extends AbstractPage
     /**
      * Returns the grid view instance for the rendering of this page.
      */
-    protected abstract function createGridViewController(): AbstractGridView;
+    protected abstract function createGridView(): AbstractGridView;
 }

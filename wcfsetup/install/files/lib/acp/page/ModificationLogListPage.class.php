@@ -29,7 +29,7 @@ class ModificationLogListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.management.canViewLog'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): AbstractGridView
     {
         return new ModificationLogGridView();
     }

@@ -70,7 +70,7 @@ class ArticleListPage extends AbstractGridViewPage
     }
 
     #[\Override]
-    protected function createGridViewController(): ArticleGridView
+    protected function createGridView(): ArticleGridView
     {
         return new ArticleGridView();
     }

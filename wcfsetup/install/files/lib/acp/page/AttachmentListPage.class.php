@@ -28,7 +28,7 @@ class AttachmentListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.attachment.canManageAttachment'];
 
     #[\Override]
-    protected function createGridViewController(): AttachmentGridView
+    protected function createGridView(): AttachmentGridView
     {
         return new AttachmentGridView();
     }

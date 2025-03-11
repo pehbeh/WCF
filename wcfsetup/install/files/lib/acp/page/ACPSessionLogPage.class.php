@@ -64,7 +64,7 @@ class ACPSessionLogPage extends AbstractGridViewPage
     }
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): AbstractGridView
     {
         return new ACPSessionGridView($this->sessionLog->sessionLogID);
     }

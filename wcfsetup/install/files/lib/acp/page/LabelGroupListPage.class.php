@@ -23,7 +23,7 @@ class LabelGroupListPage extends AbstractGridViewPage
     public $activeMenuItem = 'wcf.acp.menu.link.label.group.list';
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): AbstractGridView
     {
         return new LabelGroupGridView();
     }

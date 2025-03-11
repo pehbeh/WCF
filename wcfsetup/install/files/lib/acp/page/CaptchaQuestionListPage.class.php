@@ -28,7 +28,7 @@ class CaptchaQuestionListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.captcha.canManageCaptchaQuestion'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): AbstractGridView
     {
         return new CaptchaQuestionGridView();
     }

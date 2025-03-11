@@ -28,7 +28,7 @@ class TemplateListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.template.canManageTemplate'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): AbstractGridView
     {
         return new TemplateGridView(TemplateGridView::DEFAULT_TEMPLATE_GROUP_ID);
     }

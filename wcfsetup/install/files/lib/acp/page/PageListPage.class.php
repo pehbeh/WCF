@@ -58,7 +58,7 @@ class PageListPage extends AbstractGridViewPage
     }
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): AbstractGridView
     {
         return new PageGridView();
     }

@@ -28,7 +28,7 @@ class LanguageListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.language.canManageLanguage'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): AbstractGridView
     {
         return new LanguageGridView();
     }

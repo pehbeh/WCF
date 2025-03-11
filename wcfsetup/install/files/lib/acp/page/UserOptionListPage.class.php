@@ -28,7 +28,7 @@ class UserOptionListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.user.canManageUserOption'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): AbstractGridView
     {
         return new UserOptionGridView();
     }

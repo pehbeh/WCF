@@ -33,7 +33,7 @@ class BBCodeListPage extends AbstractGridViewPage
     public $templateName = 'bbcodeList';
 
     #[\Override]
-    public function createGridViewController(): AbstractGridView
+    public function createGridView(): AbstractGridView
     {
         return new BBCodeGridView();
     }
