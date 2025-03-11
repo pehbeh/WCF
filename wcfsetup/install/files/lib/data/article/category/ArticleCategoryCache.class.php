@@ -21,12 +21,14 @@ class ArticleCategoryCache extends SingletonFactory
 {
     /**
      * number of total articles
-     * @var int[]
+     * @var array<int, int>
      */
     protected $articles;
 
     /**
      * Calculates the number of articles.
+     *
+     * @return void
      */
     protected function initArticles()
     {

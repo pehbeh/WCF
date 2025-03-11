@@ -14,9 +14,7 @@ use wcf\data\TI18nDatabaseObjectAction;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  CaptchaQuestionEditor[]     getObjects()
- * @method  CaptchaQuestionEditor       getSingleObject()
- * @property    CaptchaQuestionEditor[] $objects
+ * @extends AbstractDatabaseObjectAction<CaptchaQuestion, CaptchaQuestionEditor>
  */
 class CaptchaQuestionAction extends AbstractDatabaseObjectAction implements IToggleAction
 {
@@ -33,6 +31,9 @@ class CaptchaQuestionAction extends AbstractDatabaseObjectAction implements ITog
      */
     protected $permissionsUpdate = ['admin.captcha.canManageCaptchaQuestion'];
 
+    /**
+     * @return array<string, string>
+     */
     #[\Override]
     public function getI18nSaveTypes(): array
     {

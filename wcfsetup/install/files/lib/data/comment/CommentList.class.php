@@ -2,6 +2,7 @@
 
 namespace wcf\data\comment;
 
+use wcf\data\DatabaseObjectDecorator;
 use wcf\data\DatabaseObjectList;
 
 /**
@@ -11,11 +12,8 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Comment     current()
- * @method  Comment[]   getObjects()
- * @method  Comment|null    getSingleObject()
- * @method  Comment|null    search($objectID)
- * @property    Comment[] $objects
+ * @template-covariant TDatabaseObject of Comment|DatabaseObjectDecorator<Comment> = Comment
+ * @extends DatabaseObjectList<TDatabaseObject>
  */
 class CommentList extends DatabaseObjectList
 {

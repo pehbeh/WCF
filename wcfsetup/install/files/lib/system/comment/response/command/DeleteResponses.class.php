@@ -2,6 +2,7 @@
 
 namespace wcf\system\comment\response\command;
 
+use wcf\data\comment\Comment;
 use wcf\data\comment\CommentEditor;
 use wcf\data\comment\CommentList;
 use wcf\data\comment\response\CommentResponse;
@@ -128,6 +129,7 @@ final class DeleteResponses
         $commentList = new CommentList();
         $commentList->setObjectIDs(\array_unique($commentIDs));
         $commentList->readObjects();
+        ///** @var array<int, Comment> */
         $comments = $commentList->getObjects();
 
         foreach ($comments as $comment) {

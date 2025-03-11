@@ -3,6 +3,7 @@
 namespace wcf\data\object\type;
 
 use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectDecorator;
 use wcf\data\DatabaseObjectList;
 
 /**
@@ -12,7 +13,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @template TDatabaseObject of DatabaseObject
+ * @template TDatabaseObject of DatabaseObject|DatabaseObjectDecorator
  * @implements IObjectTypeProvider<TDatabaseObject>
  */
 abstract class AbstractObjectTypeProvider implements IObjectTypeProvider

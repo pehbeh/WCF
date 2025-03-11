@@ -11,11 +11,7 @@ use wcf\data\object\type\ObjectTypeCache;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  AdministrativeAttachment    current()
- * @method  AdministrativeAttachment[]  getObjects()
- * @method  AdministrativeAttachment|null   getSingleObject()
- * @method  AdministrativeAttachment|null   search($objectID)
- * @property    AdministrativeAttachment[] $objects
+ * @extends AttachmentList<AdministrativeAttachment>
  */
 class AdministrativeAttachmentList extends AttachmentList
 {

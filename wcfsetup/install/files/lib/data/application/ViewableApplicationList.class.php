@@ -9,11 +9,7 @@ namespace wcf\data\application;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  ViewableApplication     current()
- * @method  ViewableApplication[]       getObjects()
- * @method  ViewableApplication|null    getSingleObject()
- * @method  ViewableApplication|null    search($objectID)
- * @property    ViewableApplication[] $objects
+ * @extends ApplicationList<ViewableApplication>
  */
 class ViewableApplicationList extends ApplicationList
 {

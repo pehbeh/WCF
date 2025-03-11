@@ -14,11 +14,7 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  Box     current()
- * @method  Box[]       getObjects()
- * @method  Box|null    getSingleObject()
- * @method  Box|null    search($objectID)
- * @property    Box[] $objects
+ * @extends DatabaseObjectList<Box>
  */
 class BoxList extends DatabaseObjectList
 {
@@ -63,6 +59,7 @@ class BoxList extends DatabaseObjectList
      * Enables/disables the loading of box content objects.
      *
      * @param bool $enable
+     * @return void
      */
     public function enableContentLoading($enable = true)
     {

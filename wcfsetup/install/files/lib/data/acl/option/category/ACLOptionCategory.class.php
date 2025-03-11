@@ -16,6 +16,4 @@ use wcf\data\DatabaseObject;
  * @property-read   int $objectTypeID       id of the `com.woltlab.wcf.acl` object type
  * @property-read   string $categoryName       name and textual identifier of the acl option category
  */
-class ACLOptionCategory extends DatabaseObject
-{
-}
+class ACLOptionCategory extends DatabaseObject {}

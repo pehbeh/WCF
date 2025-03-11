@@ -34,7 +34,7 @@ interface IThumbnailFile extends IFile
      *
      * @return array<string, array{
      *  height: int,
-     *  retainDimensions: bool|0|1,
+     *  retainDimensions: bool|int,
      *  width: int,
      * }>
      */

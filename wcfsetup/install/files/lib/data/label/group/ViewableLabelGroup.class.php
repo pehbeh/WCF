@@ -19,7 +19,6 @@ use wcf\system\WCF;
  * @mixin   LabelGroup
  * @extends DatabaseObjectDecorator<LabelGroup>
  * @implements ITraversableObject<Label>
- * @phpstan-ignore generics.notSubtype
  */
 class ViewableLabelGroup extends DatabaseObjectDecorator implements \Countable, ITraversableObject
 {

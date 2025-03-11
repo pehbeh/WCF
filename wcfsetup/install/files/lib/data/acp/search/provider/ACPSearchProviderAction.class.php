@@ -13,9 +13,7 @@ use wcf\system\search\acp\ACPSearchHandler;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  ACPSearchProvider       create()
- * @method  ACPSearchProviderEditor[]   getObjects()
- * @method  ACPSearchProviderEditor     getSingleObject()
+ * @extends AbstractDatabaseObjectAction<ACPSearchProvider, ACPSearchProviderEditor>
  */
 class ACPSearchProviderAction extends AbstractDatabaseObjectAction implements ISearchAction
 {

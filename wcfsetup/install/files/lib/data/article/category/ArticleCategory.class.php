@@ -44,7 +44,7 @@ class ArticleCategory extends AbstractDecoratedCategory implements IAccessibleOb
     /**
      * acl permissions of this category grouped by the id of the user they
      * belong to
-     * @var array
+     * @var array<int, array<string, mixed>>
      */
     protected $userPermissions = [];
 
@@ -72,7 +72,8 @@ class ArticleCategory extends AbstractDecoratedCategory implements IAccessibleOb
     }
 
     /**
-     * @inheritDoc
+     * @param string $permission
+     * @return mixed
      */
     public function getPermission($permission, ?User $user = null)
     {

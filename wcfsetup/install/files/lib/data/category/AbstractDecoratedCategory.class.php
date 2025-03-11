@@ -14,20 +14,22 @@ use wcf\system\exception\PermissionDeniedException;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
  * @mixin Category
- * @template-covariant TCategory = Category
+ * @template TCategory of Category = Category
  * @extends DatabaseObjectDecorator<TCategory>
  */
 abstract class AbstractDecoratedCategory extends DatabaseObjectDecorator
 {
     /**
      * list of child categories of this category
-     * @var TCategory[]
+     *
+     * @var static[]
      */
     protected $childCategories;
 
     /**
      * list of all child categories of this category
-     * @var TCategory[]
+     *
+     * @var static[]
      */
     protected $allChildCategories;
 
@@ -49,7 +51,8 @@ abstract class AbstractDecoratedCategory extends DatabaseObjectDecorator
     protected static $baseClass = Category::class;
 
     /**
-     * @inheritDoc
+     * @param string[] $permissions
+     * @return void
      */
     public function checkPermissions(array $permissions)
     {
@@ -61,7 +64,7 @@ abstract class AbstractDecoratedCategory extends DatabaseObjectDecorator
     }
 
     /**
-     * @inheritDoc
+     * @return array<int, static>
      */
     public function getChildCategories()
     {
@@ -76,7 +79,7 @@ abstract class AbstractDecoratedCategory extends DatabaseObjectDecorator
     }
 
     /**
-     * @inheritDoc
+     * @return array<int, static>
      */
     public function getAllChildCategories()
     {
@@ -91,7 +94,7 @@ abstract class AbstractDecoratedCategory extends DatabaseObjectDecorator
     }
 
     /**
-     * @inheritDoc
+     * @return array<int, static>
      */
     public function getParentCategories()
     {
@@ -106,7 +109,7 @@ abstract class AbstractDecoratedCategory extends DatabaseObjectDecorator
     }
 
     /**
-     * @inheritDoc
+     * @return static
      */
     public function getParentCategory()
     {
@@ -118,7 +121,7 @@ abstract class AbstractDecoratedCategory extends DatabaseObjectDecorator
     }
 
     /**
-     * @inheritDoc
+     * @return bool
      */
     public function isParentCategory(self $category)
     {

@@ -11,9 +11,7 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  ACLOptionCategory       create()
- * @method  ACLOptionCategoryEditor[]   getObjects()
- * @method  ACLOptionCategoryEditor     getSingleObject()
+ * @extends AbstractDatabaseObjectAction<ACLOptionCategory, ACLOptionCategoryEditor>
  */
 class ACLOptionCategoryAction extends AbstractDatabaseObjectAction
 {

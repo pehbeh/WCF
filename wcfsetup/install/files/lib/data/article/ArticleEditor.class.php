@@ -13,9 +13,8 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method static Article     create(array $parameters = [])
- * @method      Article     getDecoratedObject()
  * @mixin       Article
+ * @extends DatabaseObjectEditor<Article>
  */
 class ArticleEditor extends DatabaseObjectEditor
 {
@@ -27,8 +26,9 @@ class ArticleEditor extends DatabaseObjectEditor
     /**
      * Updates the article counter of the given user ids.
      *
-     * @param int[] $users user id => article counter increase/decrease
-     * @since       5.2
+     * @param array<int, int> $users user id => article counter increase/decrease
+     * @return void
+     * @since 5.2
      */
     public static function updateArticleCounter(array $users)
     {

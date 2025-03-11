@@ -16,6 +16,7 @@ use wcf\system\WCF;
  *
  * @template-covariant TDatabaseObject of DatabaseObject|DatabaseObjectDecorator<DatabaseObject>
  * @implements ITraversableObject<TDatabaseObject>
+ * @phpstan-ignore generics.variance
  */
 abstract class DatabaseObjectList implements \Countable, ITraversableObject
 {
@@ -40,6 +41,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * result objects
      * @var TDatabaseObject[]
+     * @phpstan-ignore generics.variance
      */
     public $objects = [];
 
@@ -195,6 +197,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
                             " . (!empty($this->sqlOrderBy) ? "ORDER BY " . $this->sqlOrderBy : '');
             $statement = WCF::getDB()->prepare($sql);
             $statement->execute($this->objectIDs);
+            // @phpstan-ignore argument.templateType
             $this->objects = $statement->fetchObjects(($this->objectClassName ?: $this->className));
         } else {
             $sql = "SELECT  " . (!empty($this->sqlSelects) ? $this->sqlSelects . ($this->useQualifiedShorthand ? ',' : '') : '') . "
@@ -205,6 +208,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
                     " . (!empty($this->sqlOrderBy) ? "ORDER BY " . $this->sqlOrderBy : '');
             $statement = WCF::getDB()->prepare($sql, $this->sqlLimit, $this->sqlOffset);
             $statement->execute($this->getConditionBuilder()->getParameters());
+            // @phpstan-ignore argument.templateType
             $this->objects = $statement->fetchObjects(($this->objectClassName ?: $this->className));
         }
 
@@ -242,6 +246,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
      * Sets the object ids.
      *
      * @param int[] $objectIDs
+     * @return void
      */
     public function setObjectIDs(array $objectIDs)
     {
@@ -271,7 +276,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * Sets the condition builder dynamically.
      *
-     * @param PreparedStatementConditionBuilder $conditionBuilder
+     * @return void
      * @since 5.3
      */
     public function setConditionBuilder(PreparedStatementConditionBuilder $conditionBuilder)

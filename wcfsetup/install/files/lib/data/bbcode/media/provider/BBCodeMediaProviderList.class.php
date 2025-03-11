@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  BBCodeMediaProvider     current()
- * @method  BBCodeMediaProvider[]       getObjects()
- * @method  BBCodeMediaProvider|null    getSingleObject()
- * @method  BBCodeMediaProvider|null    search($objectID)
- * @property    BBCodeMediaProvider[] $objects
+ * @extends DatabaseObjectList<BBCodeMediaProvider>
  */
 class BBCodeMediaProviderList extends DatabaseObjectList
 {

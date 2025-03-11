@@ -27,7 +27,6 @@ class ACPSessionEditor extends DatabaseObjectEditor
 
     /**
      * @inheritDoc
-     * @return  ACPSession
      */
     public static function create(array $parameters = [])
     {
@@ -35,9 +34,7 @@ class ACPSessionEditor extends DatabaseObjectEditor
             $parameters['userID'] = null;
         }
 
-        $object = parent::create($parameters);
-        \assert($object instanceof ACPSession);
-        return $object;
+        return parent::create($parameters);
     }
 
     /**
@@ -53,6 +50,8 @@ class ACPSessionEditor extends DatabaseObjectEditor
     }
 
     /**
+     * @param int[] $userIDs
+     * @return void
      * @deprecated 5.4 - Sessions are managed via the SessionHandler.
      */
     public static function deleteUserSessions(array $userIDs = [])
@@ -69,6 +68,8 @@ class ACPSessionEditor extends DatabaseObjectEditor
     }
 
     /**
+     * @param int $timestamp
+     * @return void
      * @deprecated 5.4 - Sessions are managed via the SessionHandler.
      */
     public static function deleteExpiredSessions($timestamp)

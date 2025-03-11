@@ -12,11 +12,7 @@ use wcf\data\I18nDatabaseObjectList;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  *
- * @method      LabelGroup        current()
- * @method      LabelGroup[]      getObjects()
- * @method      LabelGroup|null   getSingleObject()
- * @method      LabelGroup|null   search($objectID)
- * @property    LabelGroup[] $objects
+ * @extends I18nDatabaseObjectList<LabelGroup>
  */
 class I18nLabelGroupList extends I18nDatabaseObjectList
 {

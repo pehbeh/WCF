@@ -24,10 +24,10 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method          Article                 getDecoratedObject()
  * @method          ArticleContent|ViewableArticleContent|null   getArticleContent()
  * @mixin           Article
  * @property-read   int|null $visitTime  last time the active user has visited the time or `null` if object has not been fetched via `ViewableArticleList` or if the active user is a guest
+ * @extends DatabaseObjectDecorator<Article>
  */
 class ViewableArticle extends DatabaseObjectDecorator
 {
@@ -114,7 +114,7 @@ class ViewableArticle extends DatabaseObjectDecorator
     /**
      * Sets the article's content.
      *
-     * @param ViewableArticleContent $articleContent
+     * @return void
      */
     public function setArticleContent(ViewableArticleContent $articleContent)
     {
@@ -193,7 +193,7 @@ class ViewableArticle extends DatabaseObjectDecorator
     /**
      * Adds a label.
      *
-     * @param Label $label
+     * @return void
      */
     public function addLabel(Label $label)
     {

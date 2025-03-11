@@ -15,9 +15,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Application     create()
- * @method  ApplicationEditor[] getObjects()
- * @method  ApplicationEditor   getSingleObject()
+ * @extends AbstractDatabaseObjectAction<Application, ApplicationEditor>
  */
 class ApplicationAction extends AbstractDatabaseObjectAction
 {
@@ -34,6 +32,8 @@ class ApplicationAction extends AbstractDatabaseObjectAction
 
     /**
      * Assigns a list of applications to a group and computes cookie domain.
+     *
+     * @return void
      */
     public function rebuild()
     {
@@ -71,6 +71,8 @@ class ApplicationAction extends AbstractDatabaseObjectAction
 
     /**
      * Marks an application as tainted, prevents loading it during uninstallation.
+     *
+     * @return void
      */
     public function markAsTainted()
     {

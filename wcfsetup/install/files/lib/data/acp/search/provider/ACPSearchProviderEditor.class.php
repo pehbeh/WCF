@@ -11,9 +11,8 @@ use wcf\data\DatabaseObjectEditor;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static ACPSearchProvider   create(array $parameters = [])
- * @method      ACPSearchProvider   getDecoratedObject()
  * @mixin       ACPSearchProvider
+ * @extends DatabaseObjectEditor<ACPSearchProvider>
  */
 class ACPSearchProviderEditor extends DatabaseObjectEditor
 {

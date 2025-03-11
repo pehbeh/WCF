@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  BBCodeAttribute     current()
- * @method  BBCodeAttribute[]   getObjects()
- * @method  BBCodeAttribute|null    getSingleObject()
- * @method  BBCodeAttribute|null    search($objectID)
- * @property    BBCodeAttribute[] $objects
+ * @extends DatabaseObjectList<BBCodeAttribute>
  */
 class BBCodeAttributeList extends DatabaseObjectList
 {

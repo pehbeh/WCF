@@ -29,7 +29,7 @@ use wcf\system\WCF;
  * @property-read   int $showOrder      position of the category in relation to its siblings
  * @property-read   int $time           timestamp at which the comment has been created
  * @property-read   int $isDisabled     is `1` if the category is disabled and thus neither accessible nor selectable, otherwise `0`
- * @property-read   array $additionalData     array with additional data of the category
+ * @property-read   mixed[] $additionalData     array with additional data of the category
  */
 class Category extends ProcessibleDatabaseObject implements IPermissionObject, IRouteController
 {
@@ -60,7 +60,7 @@ class Category extends ProcessibleDatabaseObject implements IPermissionObject, I
     /**
      * acl permissions of this category grouped by the id of the user they
      * belong to
-     * @var array
+     * @var array<int, array<string, int>>
      */
     protected $userPermissions = [];
 

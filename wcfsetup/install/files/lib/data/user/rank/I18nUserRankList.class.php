@@ -12,11 +12,7 @@ use wcf\data\I18nDatabaseObjectList;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.0
  *
- * @method      UserRank        current()
- * @method      UserRank[]      getObjects()
- * @method      UserRank|null   getSingleObject()
- * @method      UserRank|null   search($objectID)
- * @property    UserRank[]      $objects
+ * @extends I18nDatabaseObjectList<UserRank>
  */
 class I18nUserRankList extends I18nDatabaseObjectList
 {

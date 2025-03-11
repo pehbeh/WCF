@@ -9,7 +9,7 @@ namespace wcf\data;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @template TDatabaseObject of DatabaseObjectDecorator<DatabaseObject>
+ * @template TDatabaseObject of DatabaseObject|DatabaseObjectDecorator<DatabaseObject>
  * @extends \SeekableIterator<int, TDatabaseObject>
  */
 interface ITraversableObject extends \SeekableIterator

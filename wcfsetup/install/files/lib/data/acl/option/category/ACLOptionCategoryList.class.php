@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  ACLOptionCategory       current()
- * @method  ACLOptionCategory[]     getObjects()
- * @method  ACLOptionCategory|null      getSingleObject()
- * @method  ACLOptionCategory|null      search($objectID)
- * @property    ACLOptionCategory[] $objects
+ * @extends DatabaseObjectList<ACLOptionCategory>
  */
 class ACLOptionCategoryList extends DatabaseObjectList
 {

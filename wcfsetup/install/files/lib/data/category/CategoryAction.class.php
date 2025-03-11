@@ -24,10 +24,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Category        create()
- * @method  CategoryEditor[]    getObjects()
- * @method  CategoryEditor      getSingleObject()
- * @property-read CategoryEditor[] $objects
+ * @extends AbstractDatabaseObjectAction<Category, CategoryEditor>
  */
 class CategoryAction extends AbstractDatabaseObjectAction implements
     ISortableAction,

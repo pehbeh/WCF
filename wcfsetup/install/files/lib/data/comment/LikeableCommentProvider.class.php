@@ -16,8 +16,8 @@ use wcf\system\like\IViewableLikeProvider;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  LikeableComment     getObjectByID($objectID)
- * @method  LikeableComment[]   getObjectsByIDs(array $objectIDs)
+ * @extends AbstractObjectTypeProvider<LikeableComment>
+ * @implements ILikeObjectTypeProvider<LikeableComment>
  */
 class LikeableCommentProvider extends AbstractObjectTypeProvider implements
     ILikeObjectTypeProvider,
@@ -80,9 +80,9 @@ class LikeableCommentProvider extends AbstractObjectTypeProvider implements
 
         foreach ($likeData as $objectTypeID => $likes) {
             $objectType = CommentHandler::getInstance()->getObjectType($objectTypeID);
-            if (CommentHandler::getInstance()->getCommentManager($objectType->objectType) instanceof IViewableLikeProvider) {
-                /** @noinspection PhpUndefinedMethodInspection */
-                CommentHandler::getInstance()->getCommentManager($objectType->objectType)->prepare($likes);
+            $commentManager = CommentHandler::getInstance()->getCommentManager($objectType->objectType);
+            if ($commentManager instanceof IViewableLikeProvider) {
+                $commentManager->prepare($likes);
             }
         }
     }

@@ -17,9 +17,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Attachment      create()
- * @method  AttachmentEditor[]  getObjects()
- * @method  AttachmentEditor    getSingleObject()
+ * @extends AbstractDatabaseObjectAction<Attachment, AttachmentEditor>
  */
 class AttachmentAction extends AbstractDatabaseObjectAction
 {
@@ -36,7 +34,7 @@ class AttachmentAction extends AbstractDatabaseObjectAction
 
     /**
      * current data, used to communicate with event listeners.
-     * @var array
+     * @var mixed[]
      */
     public $eventData = [];
 
@@ -65,6 +63,7 @@ class AttachmentAction extends AbstractDatabaseObjectAction
     /**
      * Generates thumbnails.
      *
+     * @return void
      * @deprecated 6.1
      */
     public function generateThumbnails()
@@ -74,6 +73,8 @@ class AttachmentAction extends AbstractDatabaseObjectAction
 
     /**
      * Copies attachments from one object id to another.
+     *
+     * @return array{attachmentIDs: array<int, int>}
      */
     public function copy()
     {

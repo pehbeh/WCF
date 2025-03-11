@@ -3,6 +3,8 @@
 namespace wcf\data\clipboard\item;
 
 use wcf\data\AbstractDatabaseObjectAction;
+use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectEditor;
 use wcf\system\clipboard\ClipboardEditorItem;
 use wcf\system\clipboard\ClipboardHandler;
 use wcf\system\event\EventHandler;
@@ -16,6 +18,8 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
+ *
+ * @extends AbstractDatabaseObjectAction<DatabaseObject, DatabaseObjectEditor<DatabaseObject>>
  */
 class ClipboardItemAction extends AbstractDatabaseObjectAction
 {
@@ -31,7 +35,8 @@ class ClipboardItemAction extends AbstractDatabaseObjectAction
      * This is a heavily modified constructor which behaves differently from other DBOActions,
      * primarily because this class just masquerades as a regular DBOAction.
      *
-     * @inheritDoc
+     * @param object[] $objects
+     * @param mixed[] $parameters
      */
     public function __construct(array $objects, $action, array $parameters = [])
     {
@@ -44,6 +49,8 @@ class ClipboardItemAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates parameters to set an item as marked.
+     *
+     * @return void
      */
     public function validateMark()
     {
@@ -68,6 +75,8 @@ class ClipboardItemAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates parameters to unset an item as marked.
+     *
+     * @return void
      */
     public function validateUnmark()
     {
@@ -88,6 +97,8 @@ class ClipboardItemAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates parameters to fetch the list of marked items.
+     *
+     * @return void
      */
     public function validateGetMarkedItems()
     {
@@ -106,6 +117,8 @@ class ClipboardItemAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates parameters to unmark all items of a type.
+     *
+     * @return void
      */
     public function validateUnmarkAll()
     {
@@ -126,6 +139,8 @@ class ClipboardItemAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates generic parameters used for most clipboard actions.
+     *
+     * @return void
      */
     protected function validateDefaultParameters()
     {
@@ -136,6 +151,8 @@ class ClipboardItemAction extends AbstractDatabaseObjectAction
 
     /**
      * Reads the object type and sets the internal object type id.
+     *
+     * @return void
      */
     protected function readObjectType()
     {

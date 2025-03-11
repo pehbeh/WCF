@@ -15,13 +15,13 @@ class UncachedCategoryNodeTree extends CategoryNodeTree
 {
     /**
      * locally cached categories
-     * @var Category[]
+     * @var array<int, Category>
      */
     protected $categoryCache = [];
 
     /**
      * locally cached category ids grouped by the id of their parent category
-     * @var array
+     * @var array<int, list<int>>
      */
     protected $categoryStructureCache = [];
 
@@ -52,7 +52,7 @@ class UncachedCategoryNodeTree extends CategoryNodeTree
     /**
      * @inheritDoc
      */
-    protected function getCategory($categoryID)
+    protected function getCategory(int $categoryID)
     {
         return $this->categoryCache[$categoryID];
     }

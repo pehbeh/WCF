@@ -16,7 +16,6 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @extends AbstractDecoratedCategory<SmileyCategory>
  * @phpstan-ignore missingType.generics
  */
 class SmileyCategory extends AbstractDecoratedCategory implements \Countable, ITraversableObject

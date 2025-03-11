@@ -75,11 +75,20 @@ class BlacklistEntry extends DatabaseObject
         return $matches;
     }
 
+    /**
+     * @param string $string
+     * @return string
+     */
     protected static function getHash($string)
     {
         return \hash('sha256', $string, true);
     }
 
+    /**
+     * @param string $type
+     * @param int $occurrences
+     * @return bool
+     */
     protected static function isMatch($type, $occurrences)
     {
         $setting = [
@@ -107,6 +116,10 @@ class BlacklistEntry extends DatabaseObject
         return false;
     }
 
+    /**
+     * @param string $type
+     * @return int
+     */
     protected static function get90Percentile($type)
     {
         static $percentile = [];

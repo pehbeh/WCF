@@ -17,11 +17,7 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  ViewableArticle     current()
- * @method  ViewableArticle[]   getObjects()
- * @method  ViewableArticle|null    getSingleObject()
- * @method  ViewableArticle|null    search($objectID)
- * @property    ViewableArticle[] $objects
+ * @extends ArticleList<ViewableArticle>
  */
 class ViewableArticleList extends ArticleList
 {
@@ -130,6 +126,7 @@ class ViewableArticleList extends ArticleList
      * Enables/disables the loading of article content objects.
      *
      * @param bool $enable
+     * @return void
      */
     public function enableContentLoading($enable = true)
     {

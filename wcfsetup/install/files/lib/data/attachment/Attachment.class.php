@@ -61,7 +61,7 @@ class Attachment extends DatabaseObject implements ILinkableObject, IRouteContro
 
     /**
      * user permissions for attachment access
-     * @var bool[]
+     * @var array<string, bool>
      */
     protected $permissions = [];
 
@@ -151,7 +151,8 @@ class Attachment extends DatabaseObject implements ILinkableObject, IRouteContro
     /**
      * Sets the permissions for attachment access.
      *
-     * @param bool[] $permissions
+     * @param array<string, bool> $permissions
+     * @return void
      */
     public function setPermissions(array $permissions)
     {
@@ -210,6 +211,7 @@ class Attachment extends DatabaseObject implements ILinkableObject, IRouteContro
      * include the `.bin` suffix.
      *
      * @since   5.2
+     * @return void
      * @deprecated 6.1 This will no longer be required once the attachments have been migrated.
      */
     public function migrateStorage()
@@ -282,6 +284,8 @@ class Attachment extends DatabaseObject implements ILinkableObject, IRouteContro
 
     /**
      * Marks this attachment as embedded.
+     *
+     * @return void
      */
     public function markAsEmbedded()
     {

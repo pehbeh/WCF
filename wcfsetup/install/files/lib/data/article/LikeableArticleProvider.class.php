@@ -16,8 +16,8 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  LikeableArticle     getObjectByID($objectID)
- * @method  LikeableArticle[]       getObjectsByIDs(array $objectIDs)
+ * @extends AbstractObjectTypeProvider<LikeableArticle>
+ * @implements ILikeObjectTypeProvider<LikeableArticle>
  */
 class LikeableArticleProvider extends AbstractObjectTypeProvider implements
     ILikeObjectTypeProvider,

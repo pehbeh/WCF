@@ -329,7 +329,6 @@ class ModerationQueueManager extends SingletonFactory
         if (\count($queueList)) {
             $queues = [];
             foreach ($queueList as $queue) {
-                \assert($queue instanceof ModerationQueue);
                 if (!isset($queues[$queue->objectTypeID])) {
                     $queues[$queue->objectTypeID] = [];
                 }

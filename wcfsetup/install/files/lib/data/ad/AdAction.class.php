@@ -17,9 +17,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  AdEditor[]  getObjects()
- * @method  AdEditor    getSingleObject()
- * @property-read AdEditor[] $objects
+ * @extends AbstractDatabaseObjectAction<Ad, AdEditor>
  */
 class AdAction extends AbstractDatabaseObjectAction implements ISortableAction, IToggleAction
 {

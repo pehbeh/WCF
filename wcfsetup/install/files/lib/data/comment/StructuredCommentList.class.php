@@ -17,11 +17,7 @@ use wcf\system\reaction\ReactionHandler;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  StructuredComment       current()
- * @method  StructuredComment[]     getObjects()
- * @method  StructuredComment|null      getSingleObject()
- * @method  StructuredComment|null      search($objectID)
- * @property    StructuredComment[] $objects
+ * @extends CommentList<StructuredComment>
  */
 class StructuredCommentList extends CommentList
 {
@@ -190,7 +186,7 @@ class StructuredCommentList extends CommentList
     /**
      * Fetches the like data.
      *
-     * @return array{comment: LikeObject[], response?: LikeObject[]}
+     * @return array{comment: LikeObject[], response?: LikeObject[]}|array{}
      */
     public function getLikeData()
     {
