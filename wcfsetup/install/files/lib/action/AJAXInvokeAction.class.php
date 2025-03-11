@@ -121,6 +121,8 @@ class AJAXInvokeAction extends AbstractSecureAction
 
     /**
      * Invokes action method.
+     *
+     * @return void
      */
     protected function invoke()
     {
@@ -160,6 +162,8 @@ class AJAXInvokeAction extends AbstractSecureAction
 
     /**
      * Sends JSON-Encoded response.
+     *
+     * @return mixed
      */
     protected function sendResponse()
     {
@@ -181,6 +185,8 @@ class AJAXInvokeAction extends AbstractSecureAction
 
     /**
      * Enables debug mode.
+     *
+     * @return void
      */
     public function enableDebugMode()
     {
@@ -203,7 +209,7 @@ class AJAXInvokeAction extends AbstractSecureAction
      *  )
      * )
      *
-     * @param array $data
+     * @param array<string, mixed> $data
      * @return  AJAXInvokeAction
      * @throws  SystemException
      */

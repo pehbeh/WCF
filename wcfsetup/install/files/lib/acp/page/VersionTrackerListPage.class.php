@@ -2,6 +2,7 @@
 
 namespace wcf\acp\page;
 
+use wcf\data\DatabaseObject;
 use wcf\data\IVersionTrackerObject;
 use wcf\data\language\Language;
 use wcf\page\AbstractPage;
@@ -39,7 +40,7 @@ class VersionTrackerListPage extends AbstractPage
     public $objectType = '';
 
     /**
-     * @var IVersionTrackerProvider
+     * @var IVersionTrackerProvider<DatabaseObject>
      */
     public $objectTypeProcessor;
 
@@ -74,7 +75,7 @@ class VersionTrackerListPage extends AbstractPage
 
     /**
      * differences between both versions
-     * @var array
+     * @var mixed[]
      */
     public $diffs = [];
 

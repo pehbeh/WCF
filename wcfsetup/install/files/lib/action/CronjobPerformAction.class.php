@@ -3,7 +3,6 @@
 namespace wcf\action;
 
 use Laminas\Diactoros\Response\EmptyResponse;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use wcf\system\cronjob\CronjobScheduler;
@@ -19,7 +18,7 @@ use wcf\system\WCF;
  */
 final class CronjobPerformAction implements RequestHandlerInterface
 {
-    public function handle(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): EmptyResponse
     {
         CronjobScheduler::getInstance()->executeCronjobs();
 

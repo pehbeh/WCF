@@ -159,6 +159,9 @@ final class FileDownloadAction implements RequestHandlerInterface
             ->withHeader('etag', $eTag);
     }
 
+    /**
+     * @return array{0: ?int, 1: ?int}
+     */
     private function parseRangeHeader(ServerRequestInterface $request, int $fileSize): array
     {
         $startByte = 0;

@@ -17,7 +17,7 @@ interface IAction
     /**
      * Initializes this action.
      *
-     * @return void
+     * @return void|ResponseInterface
      */
     public function __run();
 

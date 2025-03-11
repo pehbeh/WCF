@@ -38,7 +38,7 @@ final class NotificationDisableAction extends AbstractAction
     /**
      * @inheritDoc
      */
-    public function readParameters()
+    public function readParameters(): RedirectResponse
     {
         parent::readParameters();
 

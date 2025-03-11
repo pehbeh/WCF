@@ -9,17 +9,17 @@ namespace wcf\system\user\authentication\oauth;
  * @copyright   2001-2021 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.4
- * @implements \ArrayAccess<string, string>
+ * @implements \ArrayAccess<string, string|array<string, string>>
  */
 final class User implements \ArrayAccess
 {
     /**
-     * @var array<string, string>
+     * @var array<string, string|array<string, string>>
      */
     private array $data = [];
 
     /**
-     * @param array<string, string> $data
+     * @param array<string, string|array<string, string>> $data
      */
     public function __construct(array $data)
     {

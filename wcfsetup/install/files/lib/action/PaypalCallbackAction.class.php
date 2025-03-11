@@ -5,6 +5,7 @@ namespace wcf\action;
 use GuzzleHttp\Psr7\Request;
 use Laminas\Diactoros\Response\EmptyResponse;
 use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Message\ResponseInterface;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\system\io\HttpFactory;
 use wcf\system\payment\type\IPaymentType;
@@ -22,7 +23,7 @@ final class PaypalCallbackAction extends AbstractAction
     /**
      * @inheritDoc
      */
-    public function execute()
+    public function execute(): ResponseInterface
     {
         parent::execute();
 

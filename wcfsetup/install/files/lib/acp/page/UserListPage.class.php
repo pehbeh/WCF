@@ -2,6 +2,8 @@
 
 namespace wcf\acp\page;
 
+use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectList;
 use wcf\data\user\group\UserGroup;
 use wcf\data\user\option\ViewableUserOption;
 use wcf\data\user\User;
@@ -25,6 +27,8 @@ use wcf\util\StringUtil;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @extends SortablePage<DatabaseObjectList<DatabaseObject>>
  */
 class UserListPage extends SortablePage
 {

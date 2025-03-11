@@ -3,6 +3,7 @@
 namespace wcf\action;
 
 use Laminas\Diactoros\Response\JsonResponse;
+use Psr\Http\Message\ResponseInterface;
 use wcf\util\HeaderUtil;
 
 /**
@@ -20,7 +21,7 @@ final class CoreRewriteTestAction extends AbstractAction
     /**
      * @inheritDoc
      */
-    public function execute()
+    public function execute(): ResponseInterface
     {
         parent::execute();
 

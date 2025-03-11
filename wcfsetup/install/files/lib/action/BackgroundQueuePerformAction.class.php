@@ -24,7 +24,7 @@ final class BackgroundQueuePerformAction extends AbstractAction
     /**
      * @inheritDoc
      */
-    public function execute()
+    public function execute(): JsonResponse
     {
         parent::execute();
 
