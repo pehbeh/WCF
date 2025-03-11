@@ -12,9 +12,9 @@ use wcf\data\DatabaseObjectEditor;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method static CustomOption    create(array $parameters = [])
- * @method      CustomOption    getDecoratedObject()
  * @mixin       CustomOption
+ * @template TCustomOption of CustomOption = CustomOption
+ * @extends DatabaseObjectEditor<TCustomOption>
  */
 abstract class CustomOptionEditor extends DatabaseObjectEditor
 {

@@ -10,9 +10,7 @@ use wcf\system\file\processor\FileProcessor;
  * @copyright 2001-2023 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method File create()
- * @method FileEditor[] getObjects()
- * @method FileEditor getSingleObject()
+ * @extends AbstractDatabaseObjectAction<File, FileEditor>
  */
 class FileAction extends AbstractDatabaseObjectAction
 {
@@ -26,7 +24,12 @@ class FileAction extends AbstractDatabaseObjectAction
         }
 
         if ($this->objects !== []) {
-            FileProcessor::getInstance()->delete($this->objects);
+            FileProcessor::getInstance()->delete(
+                \array_map(
+                    static fn(FileEditor $editor) => $editor->getDecoratedObject(),
+                    $this->objects
+                )
+            );
         }
 
         return parent::delete();

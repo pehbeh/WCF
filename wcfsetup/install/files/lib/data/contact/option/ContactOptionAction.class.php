@@ -25,9 +25,6 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
- *
- * @method  ContactOptionEditor[]   getObjects()
- * @method  ContactOptionEditor getSingleObject()
  */
 class ContactOptionAction extends CustomOptionAction implements ISortableAction
 {
@@ -58,6 +55,8 @@ class ContactOptionAction extends CustomOptionAction implements ISortableAction
 
     /**
      * Sends an email to the selected recipient.
+     *
+     * @return void
      */
     public function send()
     {

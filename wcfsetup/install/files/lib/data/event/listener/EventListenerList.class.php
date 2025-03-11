@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  EventListener       current()
- * @method  EventListener[]     getObjects()
- * @method  EventListener|null  getSingleObject()
- * @method  EventListener|null  search($objectID)
- * @property    EventListener[] $objects
+ * @extends DatabaseObjectList<EventListener>
  */
 class EventListenerList extends DatabaseObjectList
 {

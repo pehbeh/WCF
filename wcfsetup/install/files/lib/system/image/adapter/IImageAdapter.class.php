@@ -171,8 +171,8 @@ interface IImageAdapter
     /**
      * Writes an image to disk.
      *
-     * @param T $image
-     * @param string $filename
+     * @param T|string $image
+     * @param ?string $filename
      * @return void
      */
     public function writeImage($image, $filename);

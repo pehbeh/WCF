@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2021 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  EmailLogEntry        current()
- * @method  EmailLogEntry[]      getObjects()
- * @method  EmailLogEntry|null       getSingleObject()
- * @method  EmailLogEntry|null       search($objectID)
- * @property    EmailLogEntry[] $objects
+ * @extends DatabaseObjectList<EmailLogEntry>
  */
 class EmailLogEntryList extends DatabaseObjectList
 {

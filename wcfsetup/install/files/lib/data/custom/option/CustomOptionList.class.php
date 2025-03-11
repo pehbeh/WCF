@@ -12,11 +12,7 @@ use wcf\data\DatabaseObjectList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method  CustomOption        current()
- * @method  CustomOption[]      getObjects()
- * @method  CustomOption|null   getSingleObject()
- * @method  CustomOption|null   search($objectID)
- * @property    CustomOption[] $objects
+ * @extends DatabaseObjectList<CustomOption>
  */
 abstract class CustomOptionList extends DatabaseObjectList
 {

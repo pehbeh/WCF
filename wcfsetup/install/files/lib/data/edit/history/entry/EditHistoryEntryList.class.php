@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  EditHistoryEntry        current()
- * @method  EditHistoryEntry[]      getObjects()
- * @method  EditHistoryEntry|null       getSingleObject()
- * @method  EditHistoryEntry|null       search($objectID)
- * @property    EditHistoryEntry[] $objects
+ * @extends DatabaseObjectList<EditHistoryEntry>
  */
 class EditHistoryEntryList extends DatabaseObjectList
 {

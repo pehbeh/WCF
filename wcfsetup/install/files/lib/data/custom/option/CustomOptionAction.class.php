@@ -14,9 +14,7 @@ use wcf\data\TDatabaseObjectToggle;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method  CustomOption        create()
- * @method  CustomOptionEditor[]    getObjects()
- * @method  CustomOptionEditor  getSingleObject()
+ * @extends AbstractDatabaseObjectAction<CustomOption, CustomOptionEditor>
  */
 abstract class CustomOptionAction extends AbstractDatabaseObjectAction implements IToggleAction
 {

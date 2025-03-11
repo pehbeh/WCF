@@ -106,6 +106,7 @@ abstract class CustomOption extends Option implements ITitledObject
      * Sets the value of this option.
      *
      * @param string $value
+     * @return void
      */
     public function setOptionValue($value)
     {

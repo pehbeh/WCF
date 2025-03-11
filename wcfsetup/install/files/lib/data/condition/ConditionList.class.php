@@ -11,12 +11,6 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Condition       current()
- * @method  Condition[]     getObjects()
- * @method  Condition|null      getSingleObject()
- * @method  Condition|null      search($objectID)
- * @property    Condition[] $objects
+ * @extends DatabaseObjectList<Condition>
  */
-class ConditionList extends DatabaseObjectList
-{
-}
+class ConditionList extends DatabaseObjectList {}

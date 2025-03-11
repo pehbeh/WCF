@@ -17,8 +17,7 @@ use wcf\util\StringUtil;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.3
  *
- * @method  DevtoolsMissingLanguageItemEditor[] getObjects()
- * @method  DevtoolsMissingLanguageItemEditor   getSingleObject()
+ * @extends AbstractDatabaseObjectAction<DevtoolsMissingLanguageItem, DevtoolsMissingLanguageItemEditor>
  */
 class DevtoolsMissingLanguageItemAction extends AbstractDatabaseObjectAction implements IDeleteAction
 {
@@ -29,6 +28,8 @@ class DevtoolsMissingLanguageItemAction extends AbstractDatabaseObjectAction imp
 
     /**
      * Logs a missing language item.
+     *
+     * @return void
      */
     public function logLanguageItem()
     {
@@ -102,6 +103,8 @@ class DevtoolsMissingLanguageItemAction extends AbstractDatabaseObjectAction imp
 
     /**
      * Validates the `clearLog` action.
+     *
+     * @return void
      */
     public function validateClearLog()
     {
@@ -114,6 +117,8 @@ class DevtoolsMissingLanguageItemAction extends AbstractDatabaseObjectAction imp
 
     /**
      * Removes all entries from the missing language item log.
+     *
+     * @return void
      */
     public function clearLog()
     {

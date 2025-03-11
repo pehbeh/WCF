@@ -85,12 +85,6 @@ parameters:
 			path: wcfsetup/install/files/lib/data/comment/CommentAction.class.php
 
 		-
-			message: '#^Property wcf\\data\\comment\\response\\CommentResponseAction\:\:\$response \(wcf\\data\\comment\\response\\CommentResponse\) does not accept wcf\\data\\comment\\response\\CommentResponseEditor\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: wcfsetup/install/files/lib/data/comment/response/CommentResponseAction.class.php
-
-		-
 			message: '#^While loop condition is always true\.$#'
 			identifier: while.alwaysTrue
 			count: 1

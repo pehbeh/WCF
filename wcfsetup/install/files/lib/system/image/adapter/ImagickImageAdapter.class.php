@@ -383,7 +383,6 @@ class ImagickImageAdapter implements IImageAdapter, ISingleFrameImageAdapter, IW
      */
     public function writeImage($image, $filename)
     {
-        // @phpstan-ignore instanceof.alwaysTrue
         if (!($image instanceof \Imagick)) {
             throw new SystemException("Given image is not a valid Imagick-object.");
         }

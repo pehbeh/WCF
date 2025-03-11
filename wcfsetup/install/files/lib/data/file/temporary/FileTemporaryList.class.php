@@ -10,11 +10,7 @@ use wcf\data\DatabaseObjectList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.1
  *
- * @method FileTemporary current()
- * @method FileTemporary[] getObjects()
- * @method FileTemporary|null getSingleObject()
- * @method FileTemporary|null search($objectID)
- * @property FileTemporary[] $objects
+ * @extends DatabaseObjectList<FileTemporary>
  */
 class FileTemporaryList extends DatabaseObjectList
 {

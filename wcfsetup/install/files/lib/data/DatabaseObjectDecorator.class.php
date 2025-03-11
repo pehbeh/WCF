@@ -11,7 +11,7 @@ use wcf\system\exception\SystemException;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @template T of DatabaseObject
+ * @template TDatabaseObject of DatabaseObject
  */
 abstract class DatabaseObjectDecorator extends DatabaseObject
 {
@@ -23,16 +23,12 @@ abstract class DatabaseObjectDecorator extends DatabaseObject
 
     /**
      * decorated object
-     * @var T
+     * @var TDatabaseObject
      */
     protected $object;
 
-    /** @noinspection PhpMissingParentConstructorInspection */
-
     /**
-     * Creates a new DatabaseObjectDecorator object.
-     *
-     * @param T $object
+     * @param TDatabaseObject $object
      * @throws SystemException
      */
     public function __construct(DatabaseObject $object)
@@ -142,7 +138,7 @@ abstract class DatabaseObjectDecorator extends DatabaseObject
     /**
      * Returns the decorated object
      *
-     * @return T
+     * @return TDatabaseObject
      */
     public function getDecoratedObject()
     {

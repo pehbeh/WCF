@@ -12,10 +12,7 @@ use wcf\data\DatabaseObjectList;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       5.2
  *
- * @method ContactAttachment current()
- * @method ContactAttachment[] getObjects()
- * @method ContactAttachment|null search($objectID)
- * @property ContactAttachment[] $objects
+ * @extends DatabaseObjectList<ContactAttachment>
  */
 class ContactAttachmentList extends DatabaseObjectList
 {

@@ -12,9 +12,8 @@ use wcf\data\DatabaseObjectEditor;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method static ContactRecipient    create(array $parameters = [])
- * @method      ContactRecipient    getDecoratedObject()
  * @mixin       ContactRecipient
+ * @extends DatabaseObjectEditor<ContactRecipient>
  */
 class ContactRecipientEditor extends DatabaseObjectEditor
 {

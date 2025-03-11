@@ -14,9 +14,9 @@ use wcf\system\cache\builder\ContactOptionCacheBuilder;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method static ContactOption   create(array $parameters = [])
- * @method      ContactOption   getDecoratedObject()
  * @mixin       ContactOption
+ * @extends CustomOptionEditor<ContactOption>
+ * @implements IEditableCachedObject<ContactOption>
  */
 class ContactOptionEditor extends CustomOptionEditor implements IEditableCachedObject
 {

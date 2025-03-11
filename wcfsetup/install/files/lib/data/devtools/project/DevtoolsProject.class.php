@@ -225,7 +225,7 @@ class DevtoolsProject extends DatabaseObject
     /**
      * Sets the package that belongs to this project.
      *
-     * @param Package $package
+     * @return void
      * @throws  \InvalidArgumentException   if the identifier of the given package does not match
      * @since   5.2
      */

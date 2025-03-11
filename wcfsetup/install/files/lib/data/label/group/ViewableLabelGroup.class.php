@@ -16,8 +16,10 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  LabelGroup  getDecoratedObject()
  * @mixin   LabelGroup
+ * @extends DatabaseObjectDecorator<LabelGroup>
+ * @implements ITraversableObject<Label>
+ * @phpstan-ignore generics.notSubtype
  */
 class ViewableLabelGroup extends DatabaseObjectDecorator implements \Countable, ITraversableObject
 {
@@ -56,7 +58,7 @@ class ViewableLabelGroup extends DatabaseObjectDecorator implements \Countable, 
     /**
      * Adds a label.
      *
-     * @param Label $label
+     * @return void
      */
     public function addLabel(Label $label)
     {
@@ -67,7 +69,8 @@ class ViewableLabelGroup extends DatabaseObjectDecorator implements \Countable, 
     /**
      * Sets group permissions.
      *
-     * @param array $permissions
+     * @param mixed[] $permissions
+     * @return void
      */
     public function setGroupPermissions(array $permissions)
     {
@@ -77,7 +80,8 @@ class ViewableLabelGroup extends DatabaseObjectDecorator implements \Countable, 
     /**
      * Sets user permissions.
      *
-     * @param array $permissions
+     * @param mixed[] $permissions
+     * @return void
      */
     public function setUserPermissions(array $permissions)
     {
@@ -139,7 +143,7 @@ class ViewableLabelGroup extends DatabaseObjectDecorator implements \Countable, 
     /**
      * Returns a list of label ids.
      *
-     * @return  int[]
+     * @return int[]
      */
     public function getLabelIDs()
     {
@@ -149,7 +153,7 @@ class ViewableLabelGroup extends DatabaseObjectDecorator implements \Countable, 
     /**
      * Returns a list of labels.
      *
-     * @return  Label[]
+     * @return Label[]
      */
     public function getLabels()
     {
@@ -160,7 +164,7 @@ class ViewableLabelGroup extends DatabaseObjectDecorator implements \Countable, 
      * Returns a label by id.
      *
      * @param int $labelID
-     * @return  Label|null
+     * @return ?Label
      */
     public function getLabel($labelID)
     {

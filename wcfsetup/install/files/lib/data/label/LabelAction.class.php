@@ -16,8 +16,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  LabelEditor[]   getObjects()
- * @method  LabelEditor getSingleObject()
+ * @extends AbstractDatabaseObjectAction<Label, LabelEditor>
  */
 class LabelAction extends AbstractDatabaseObjectAction implements ISortableAction
 {
@@ -165,6 +164,9 @@ class LabelAction extends AbstractDatabaseObjectAction implements ISortableActio
         WCF::getDB()->commitTransaction();
     }
 
+    /**
+     * @return array<string, string>
+     */
     #[\Override]
     public function getI18nSaveTypes(): array
     {
