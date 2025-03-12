@@ -38,8 +38,13 @@ export function setup(editorId: string): void {
     uploadButton.insertAdjacentElement("afterend", fileList);
   }
 
+  let showOrder = -1;
   uploadButton.addEventListener("uploadStart", (event: CustomEvent<WoltlabCoreFileElement>) => {
     fileToAttachment(fileList, event.detail, editor);
+
+    const context = JSON.parse(uploadButton.dataset.context!) as Record<string, unknown>;
+    context.showOrder = ++showOrder;
+    uploadButton.dataset.context = JSON.stringify(context);
   });
 
   listenToCkeditor(editor)
@@ -80,6 +85,11 @@ export function setup(editorId: string): void {
   if (existingFiles !== null) {
     existingFiles.querySelectorAll("woltlab-core-file").forEach((file) => {
       fileToAttachment(fileList, file, editor);
+
+      const attachmentShowOrder = file.data?.showOrder;
+      if (typeof attachmentShowOrder === "number") {
+        showOrder = Math.max(showOrder, attachmentShowOrder);
+      }
     });
 
     existingFiles.remove();

@@ -37,7 +37,8 @@ final class AttachmentFileProcessor extends AbstractFileProcessor
             return [];
         }
 
-        return $attachmentHandler->getAllowedExtensions();    }
+        return $attachmentHandler->getAllowedExtensions();
+    }
 
     #[\Override]
     public function canAdopt(File $file, array $context): bool
@@ -62,6 +63,8 @@ final class AttachmentFileProcessor extends AbstractFileProcessor
             $tmpHash = '';
         }
 
+        $showOrder = $this->getShowOrderFromContext($context);
+
         AttachmentEditor::fastCreate([
             'objectTypeID' => $attachmentHandler->getObjectType()->objectTypeID,
             'objectID' => $objectID,
@@ -69,6 +72,7 @@ final class AttachmentFileProcessor extends AbstractFileProcessor
             'fileID' => $file->fileID,
             'userID' => WCF::getUser()->userID ?: null,
             'uploadTime' => \TIME_NOW,
+            'showOrder' => $showOrder,
         ]);
     }
 
@@ -293,6 +297,19 @@ final class AttachmentFileProcessor extends AbstractFileProcessor
             $parameters->parentObjectID,
         );
     }
+
+    private function getShowOrderFromContext(array $context): int
+    {
+        try {
+            $parameters = Helper::mapQueryParameters($context, AttachmentFileProcessorContext::class);
+        } catch (MappingError) {
+            return 0;
+        }
+
+        \assert($parameters instanceof AttachmentFileProcessorContext);
+
+        return $parameters->showOrder;
+    }
 }
 
 /** @internal */
@@ -309,5 +326,8 @@ final class AttachmentFileProcessorContext
         public readonly int $parentObjectID,
 
         public readonly string $tmpHash,
+
+        /** @var non-negative-int */
+        public readonly int $showOrder = 0,
     ) {}
 }

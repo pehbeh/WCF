@@ -28,8 +28,12 @@ define(["require", "exports", "./Entry", "../Ckeditor/Event"], function (require
             fileList.classList.add("fileList");
             uploadButton.insertAdjacentElement("afterend", fileList);
         }
+        let showOrder = -1;
         uploadButton.addEventListener("uploadStart", (event) => {
             fileToAttachment(fileList, event.detail, editor);
+            const context = JSON.parse(uploadButton.dataset.context);
+            context.showOrder = ++showOrder;
+            uploadButton.dataset.context = JSON.stringify(context);
         });
         (0, Event_1.listenToCkeditor)(editor)
             .uploadAttachment((payload) => {
@@ -66,6 +70,10 @@ define(["require", "exports", "./Entry", "../Ckeditor/Event"], function (require
         if (existingFiles !== null) {
             existingFiles.querySelectorAll("woltlab-core-file").forEach((file) => {
                 fileToAttachment(fileList, file, editor);
+                const attachmentShowOrder = file.data?.showOrder;
+                if (typeof attachmentShowOrder === "number") {
+                    showOrder = Math.max(showOrder, attachmentShowOrder);
+                }
             });
             existingFiles.remove();
         }
