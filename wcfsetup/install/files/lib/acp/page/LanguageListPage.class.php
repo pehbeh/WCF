@@ -14,7 +14,7 @@ use wcf\system\gridView\admin\LanguageGridView;
  *
  * @extends AbstractGridViewPage<LanguageGridView>
  */
-class LanguageListPage extends AbstractGridViewPage
+final class LanguageListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

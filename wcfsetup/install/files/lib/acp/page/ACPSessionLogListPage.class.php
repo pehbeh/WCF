@@ -14,7 +14,7 @@ use wcf\system\gridView\admin\ACPSessionLogGridView;
  *
  * @extends AbstractGridViewPage<ACPSessionLogGridView>
  */
-class ACPSessionLogListPage extends AbstractGridViewPage
+final class ACPSessionLogListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

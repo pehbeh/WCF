@@ -14,7 +14,7 @@ use wcf\system\gridView\admin\UserAuthenticationFailureGridView;
  *
  * @extends AbstractGridViewPage<UserAuthenticationFailureGridView>
  */
-class UserAuthenticationFailureListPage extends AbstractGridViewPage
+final class UserAuthenticationFailureListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

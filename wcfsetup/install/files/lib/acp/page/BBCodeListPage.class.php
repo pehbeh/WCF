@@ -14,7 +14,7 @@ use wcf\system\gridView\admin\BBCodeGridView;
  *
  * @extends AbstractGridViewPage<BBCodeGridView>
  */
-class BBCodeListPage extends AbstractGridViewPage
+final class BBCodeListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

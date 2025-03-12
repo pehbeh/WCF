@@ -14,7 +14,7 @@ use wcf\system\gridView\admin\TemplateGroupGridView;
  *
  * @extends AbstractGridViewPage<TemplateGroupGridView>
  */
-class TemplateGroupListPage extends AbstractGridViewPage
+final class TemplateGroupListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

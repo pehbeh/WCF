@@ -15,7 +15,7 @@ use wcf\system\registry\RegistryHandler;
  *
  * @extends AbstractGridViewPage<ExceptionLogGridView>
  */
-class ExceptionLogViewPage extends AbstractGridViewPage
+final class ExceptionLogViewPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

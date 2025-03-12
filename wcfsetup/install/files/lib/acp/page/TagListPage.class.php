@@ -14,7 +14,7 @@ use wcf\system\gridView\admin\TagGridView;
  *
  * @extends AbstractGridViewPage<TagGridView>
  */
-class TagListPage extends AbstractGridViewPage
+final class TagListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

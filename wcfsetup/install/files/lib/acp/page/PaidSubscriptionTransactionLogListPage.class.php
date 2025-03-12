@@ -14,7 +14,7 @@ use wcf\system\gridView\admin\PaidSubscriptionTransactionLogGridView;
  *
  * @extends AbstractGridViewPage<PaidSubscriptionTransactionLogGridView>
  */
-class PaidSubscriptionTransactionLogListPage extends AbstractGridViewPage
+final class PaidSubscriptionTransactionLogListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

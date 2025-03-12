@@ -14,7 +14,7 @@ use wcf\system\gridView\admin\EmailLogGridView;
  *
  * @extends AbstractGridViewPage<EmailLogGridView>
  */
-class EmailLogListPage extends AbstractGridViewPage
+final class EmailLogListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

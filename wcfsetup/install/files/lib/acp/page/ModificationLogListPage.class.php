@@ -15,7 +15,7 @@ use wcf\system\gridView\admin\ModificationLogGridView;
  * @since       5.2
  * @extends AbstractGridViewPage<ModificationLogGridView>
  */
-class ModificationLogListPage extends AbstractGridViewPage
+final class ModificationLogListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

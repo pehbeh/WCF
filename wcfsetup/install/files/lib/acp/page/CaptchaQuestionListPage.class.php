@@ -14,7 +14,7 @@ use wcf\system\gridView\admin\CaptchaQuestionGridView;
  *
  * @extends AbstractGridViewPage<CaptchaQuestionGridView>
  */
-class CaptchaQuestionListPage extends AbstractGridViewPage
+final class CaptchaQuestionListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

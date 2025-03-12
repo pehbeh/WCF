@@ -14,7 +14,7 @@ use wcf\system\gridView\admin\UserGroupGridView;
  *
  * @extends AbstractGridViewPage<UserGroupGridView>
  */
-class UserGroupListPage extends AbstractGridViewPage
+final class UserGroupListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

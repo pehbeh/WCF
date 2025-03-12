@@ -14,7 +14,7 @@ use wcf\system\gridView\admin\PackageUpdateServerGridView;
  *
  * @extends AbstractGridViewPage<PackageUpdateServerGridView>
  */
-class PackageUpdateServerListPage extends AbstractGridViewPage
+final class PackageUpdateServerListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

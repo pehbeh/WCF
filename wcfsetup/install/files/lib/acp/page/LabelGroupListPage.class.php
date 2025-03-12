@@ -14,7 +14,7 @@ use wcf\system\gridView\admin\LabelGroupGridView;
  *
  * @extends AbstractGridViewPage<LabelGroupGridView>
  */
-class LabelGroupListPage extends AbstractGridViewPage
+final class LabelGroupListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

@@ -17,7 +17,7 @@ use wcf\system\WCF;
  *
  * @extends AbstractGridViewPage<BoxGridView>
  */
-class BoxListPage extends AbstractGridViewPage
+final class BoxListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

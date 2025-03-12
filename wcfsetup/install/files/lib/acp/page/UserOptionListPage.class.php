@@ -14,7 +14,7 @@ use wcf\system\gridView\admin\UserOptionGridView;
  *
  * @extends AbstractGridViewPage<UserOptionGridView>
  */
-class UserOptionListPage extends AbstractGridViewPage
+final class UserOptionListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

@@ -14,7 +14,7 @@ use wcf\system\gridView\admin\PaidSubscriptionGridView;
  *
  * @extends AbstractGridViewPage<PaidSubscriptionGridView>
  */
-class PaidSubscriptionListPage extends AbstractGridViewPage
+final class PaidSubscriptionListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

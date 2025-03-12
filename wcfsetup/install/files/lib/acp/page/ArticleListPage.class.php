@@ -17,7 +17,7 @@ use wcf\system\WCF;
  *
  * @extends AbstractGridViewPage<ArticleGridView>
  */
-class ArticleListPage extends AbstractGridViewPage
+final class ArticleListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

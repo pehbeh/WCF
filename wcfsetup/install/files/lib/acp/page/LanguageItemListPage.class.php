@@ -15,7 +15,7 @@ use wcf\system\WCF;
  *
  * @extends AbstractGridViewPage<LanguageItemGridView>
  */
-class LanguageItemListPage extends AbstractGridViewPage
+final class LanguageItemListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

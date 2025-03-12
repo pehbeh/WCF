@@ -14,7 +14,7 @@ use wcf\system\gridView\admin\UserRankGridView;
  *
  * @extends AbstractGridViewPage<UserRankGridView>
  */
-class UserRankListPage extends AbstractGridViewPage
+final class UserRankListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

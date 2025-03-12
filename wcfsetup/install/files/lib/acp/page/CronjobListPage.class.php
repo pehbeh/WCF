@@ -14,7 +14,7 @@ use wcf\system\gridView\admin\CronjobGridView;
  *
  * @extends AbstractGridViewPage<CronjobGridView>
  */
-class CronjobListPage extends AbstractGridViewPage
+final class CronjobListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

@@ -18,7 +18,7 @@ use wcf\system\WCF;
  *
  * @extends AbstractGridViewPage<ACPSessionGridView>
  */
-class ACPSessionLogPage extends AbstractGridViewPage
+final class ACPSessionLogPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

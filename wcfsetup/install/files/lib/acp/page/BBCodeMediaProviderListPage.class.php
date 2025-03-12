@@ -14,7 +14,7 @@ use wcf\system\gridView\admin\BBCodeMediaProviderGridView;
  *
  * @extends AbstractGridViewPage<BBCodeMediaProviderGridView>
  */
-class BBCodeMediaProviderListPage extends AbstractGridViewPage
+final class BBCodeMediaProviderListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

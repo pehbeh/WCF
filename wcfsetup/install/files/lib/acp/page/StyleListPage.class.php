@@ -14,7 +14,7 @@ use wcf\system\gridView\admin\StyleGridView;
  *
  * @extends AbstractGridViewPage<StyleGridView>
  */
-class StyleListPage  extends AbstractGridViewPage
+final class StyleListPage  extends AbstractGridViewPage
 {
     /**
      * @inheritDoc

@@ -15,7 +15,7 @@ use wcf\system\gridView\admin\MenuGridView;
  *
  * @extends AbstractGridViewPage<MenuGridView>
  */
-class MenuListPage extends AbstractGridViewPage
+final class MenuListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
