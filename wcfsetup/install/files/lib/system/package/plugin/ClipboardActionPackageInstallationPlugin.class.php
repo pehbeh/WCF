@@ -217,8 +217,7 @@ class ClipboardActionPackageInstallationPlugin extends AbstractXMLPackageInstall
                 ->required()
                 ->implementedInterface(IClipboardAction::class)
                 ->addValidator(new FormFieldValidator('uniqueness', function (ClassNameFormField $formField) {
-                    /** @var TextFormField $actionNameFormField */
-                    $actionNameFormField = $formField->getDocument()->getNodeById('actionName');
+                    $actionNameFormField = $formField->getDocument()->getFormField('actionName');
 
                     if (
                         $formField->getDocument()->getFormMode() === IFormDocument::FORM_MODE_CREATE
@@ -306,7 +305,7 @@ class ClipboardActionPackageInstallationPlugin extends AbstractXMLPackageInstall
     {
         return \sha1(
             $element->getElementsByTagName('actionclassname')->item(0)->nodeValue . '/'
-            . $element->getAttribute('name')
+                . $element->getAttribute('name')
         );
     }
 

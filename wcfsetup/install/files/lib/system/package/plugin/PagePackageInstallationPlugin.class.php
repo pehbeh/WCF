@@ -547,9 +547,7 @@ class PagePackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
                 ->addValidator(new FormFieldValidator(
                     'selfParent',
                     static function (SingleSelectionFormField $formField) {
-                        /** @var TextFormField $identifier */
-                        $identifier = $formField->getDocument()->getNodeById('identifier');
-
+                        $identifier = $formField->getDocument()->getFormField('identifier');
                         if ($identifier->getSaveValue() === $formField->getValue()) {
                             $formField->addValidationError(
                                 new FormFieldValidationError(
@@ -624,9 +622,7 @@ class PagePackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
         ]);
 
         // dependencies
-
-        /** @var RadioButtonFormField $pageType */
-        $pageType = $form->getNodeById('pageType');
+        $pageType = $form->getFormField('pageType');
         foreach (['controller', 'handler', 'requireObjectID'] as $systemElement) {
             $form->getNodeById($systemElement)->addDependency(
                 ValueFormFieldDependency::create('pageType')

@@ -190,8 +190,7 @@ class OptionPackageInstallationPlugin extends AbstractOptionPackageInstallationP
 
         switch ($this->entryType) {
             case 'options':
-                /** @var SingleSelectionFormField $optionType */
-                $optionType = $form->getNodeById('optionType');
+                $optionType = $form->getFormField('optionType');
 
                 /** @var TextFormField $optionNameField */
                 $optionNameField = $dataContainer->getNodeById('optionName');
@@ -252,8 +251,8 @@ class OptionPackageInstallationPlugin extends AbstractOptionPackageInstallationP
                 ));
 
                 // add `hidden` pseudo-category
-                /** @var SingleSelectionFormField $categoryName */
                 $categoryName = $form->getNodeById('categoryName');
+                \assert($categoryName instanceof SingleSelectionFormField);
                 $options = $categoryName->getNestedOptions();
                 $options[] = [
                     'depth' => 0,

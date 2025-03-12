@@ -112,8 +112,7 @@ final class LicenseEditForm extends AbstractFormBuilderForm
                         ->value($serialNo)
                         ->placeholder('XXXX-XXXX-XXXX-XXXX-XXXX')
                         ->addValidator(new FormFieldValidator('serialNo', function (TextFormField $serialNo) {
-                            $licenseNo = $serialNo->getDocument()->getNodeById('licenseNo');
-                            \assert($licenseNo instanceof TextFormField);
+                            $licenseNo = $serialNo->getDocument()->getFormField('licenseNo');
 
                             try {
                                 $this->licenseData = $this->licenseApi->fetchFromRemote([

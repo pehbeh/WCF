@@ -95,9 +95,7 @@ class UserMenuPackageInstallationPlugin extends AbstractMenuPackageInstallationP
 
         // add menu item icon form field
 
-        /** @var SingleSelectionFormField $parentMenuItemFormField */
-        $parentMenuItemFormField = $form->getNodeById('parentMenuItem');
-
+        $parentMenuItemFormField = $form->getFormField('parentMenuItem');
         $dataContainer->appendChild(IconFormField::create('iconClassName')
             ->objectProperty('iconclassname')
             ->label('wcf.acp.pip.userMenu.iconClassName')
@@ -112,8 +110,7 @@ class UserMenuPackageInstallationPlugin extends AbstractMenuPackageInstallationP
 
         // add additional data to default fields
 
-        /** @var TextFormField $menuItemFormField */
-        $menuItemFormField = $form->getNodeById('menuItem');
+        $menuItemFormField = $form->getFormField('menuItem');
         $menuItemFormField
             ->description('wcf.acp.pip.userMenu.menuItem.description')
             ->addValidator(FormFieldValidatorUtil::getRegularExpressionValidator(
@@ -133,8 +130,7 @@ class UserMenuPackageInstallationPlugin extends AbstractMenuPackageInstallationP
         }));
 
         foreach (['menuItemController', 'menuItemLink'] as $nodeId) {
-            /** @var TextFormField $formField */
-            $formField = $form->getNodeById($nodeId);
+            $formField = $form->getFormField($nodeId);
             $formField->addDependency(
                 ValueFormFieldDependency::create('parentMenuItem')
                     ->field($parentMenuItemFormField)

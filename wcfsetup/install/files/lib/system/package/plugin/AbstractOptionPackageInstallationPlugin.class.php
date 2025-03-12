@@ -2,7 +2,6 @@
 
 namespace wcf\system\package\plugin;
 
-use DOMNode;
 use wcf\data\DatabaseObject;
 use wcf\data\IEditableCachedObject;
 use wcf\data\option\category\OptionCategory;
@@ -627,8 +626,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
                         )),
                 ]);
 
-                /** @var SingleSelectionFormField $optionType */
-                $optionType = $form->getNodeById('optionType');
+                $optionType = $form->getFormField('optionType');
 
                 // add option-specific fields
                 $dataContainer->appendChildren([

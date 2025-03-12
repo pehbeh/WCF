@@ -261,8 +261,8 @@ class UserOptionPackageInstallationPlugin extends AbstractOptionPackageInstallat
 
         if ($this->entryType === 'options') {
             // add `hidden` pseudo-category
-            /** @var SingleSelectionFormField $categoryName */
             $categoryName = $form->getNodeById('categoryName');
+            \assert($categoryName instanceof SingleSelectionFormField);
             $options = $categoryName->getNestedOptions();
             $options[] = [
                 'depth' => 0,
@@ -274,9 +274,7 @@ class UserOptionPackageInstallationPlugin extends AbstractOptionPackageInstallat
             /** @var IFormContainer $dataContainer */
             $dataContainer = $form->getNodeById('data');
 
-            /** @var SingleSelectionFormField $optionType */
-            $optionType = $form->getNodeById('optionType');
-
+            $optionType = $form->getFormField('optionType');
             $selectOptions = MultilineTextFormField::create('selectOptions')
                 ->objectProperty('selectoptions')
                 ->label('wcf.acp.pip.abstractOption.options.selectOptions')

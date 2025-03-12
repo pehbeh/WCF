@@ -238,14 +238,9 @@ class TemplateListenerPackageInstallationPlugin extends AbstractXMLPackageInstal
                 ])
                 ->value('user')
                 ->addValidator(new FormFieldValidator('uniqueness', function (SingleSelectionFormField $formField) {
-                    /** @var TextFormField $nameField */
-                    $nameField = $formField->getDocument()->getNodeById('name');
-
-                    /** @var SingleSelectionFormField $templateNameFormField */
-                    $templateNameFormField = $formField->getDocument()->getNodeById('frontendTemplateName');
-
-                    /** @var SingleSelectionFormField $acpTemplateNameFormField */
-                    $acpTemplateNameFormField = $formField->getDocument()->getNodeById('acpTemplateName');
+                    $nameField = $formField->getDocument()->getFormField('name');
+                    $templateNameFormField = $formField->getDocument()->getFormField('frontendTemplateName');
+                    $acpTemplateNameFormField = $formField->getDocument()->getFormField('acpTemplateName');
 
                     if (
                         $formField->getDocument()->getFormMode() === IFormDocument::FORM_MODE_CREATE
@@ -267,17 +262,11 @@ class TemplateListenerPackageInstallationPlugin extends AbstractXMLPackageInstal
                         );
 
                         if ($formField->getSaveValue() === 'admin') {
-                            /** @var SingleSelectionFormField $templateNameField */
-                            $templateNameField = $formField->getDocument()->getNodeById('acpTemplateName');
-
-                            /** @var SingleSelectionFormField $eventNameField */
-                            $eventNameField = $formField->getDocument()->getNodeById('acp_' . $templateNameField->getSaveValue() . '_eventName');
+                            $templateNameField = $formField->getDocument()->getFormField('acpTemplateName');
+                            $eventNameField = $formField->getDocument()->getFormField('acp_' . $templateNameField->getSaveValue() . '_eventName');
                         } else {
-                            /** @var SingleSelectionFormField $templateNameField */
-                            $templateNameField = $formField->getDocument()->getNodeById('frontendTemplateName');
-
-                            /** @var SingleSelectionFormField $eventNameField */
-                            $eventNameField = $formField->getDocument()->getNodeById($templateNameField->getSaveValue() . '_eventName');
+                            $templateNameField = $formField->getDocument()->getFormField('frontendTemplateName');
+                            $eventNameField = $formField->getDocument()->getFormField($templateNameField->getSaveValue() . '_eventName');
                         }
 
                         $templateName = $templateNameField->getSaveValue();
@@ -325,8 +314,7 @@ class TemplateListenerPackageInstallationPlugin extends AbstractXMLPackageInstal
                 ),
         ]);
 
-        /** @var SingleSelectionFormField $frontendTemplateName */
-        $frontendTemplateName = $form->getNodeById('frontendTemplateName');
+        $frontendTemplateName = $form->getFormField('frontendTemplateName');
         foreach ($templateEvents as $templateName => $events) {
             $dataContainer->appendChild(
                 SingleSelectionFormField::create($templateName . '_eventName')
@@ -343,8 +331,7 @@ class TemplateListenerPackageInstallationPlugin extends AbstractXMLPackageInstal
             );
         }
 
-        /** @var SingleSelectionFormField $acpTemplateName */
-        $acpTemplateName = $form->getNodeById('acpTemplateName');
+        $acpTemplateName = $form->getFormField('acpTemplateName');
         foreach ($acpTemplateEvents as $templateName => $events) {
             $dataContainer->appendChild(
                 SingleSelectionFormField::create('acp_' . $templateName . '_eventName')
@@ -447,9 +434,9 @@ class TemplateListenerPackageInstallationPlugin extends AbstractXMLPackageInstal
     {
         return \sha1(
             $element->getElementsByTagName('templatename')->item(0)->nodeValue . '/'
-            . $element->getElementsByTagName('eventname')->item(0)->nodeValue . '/'
-            . $element->getElementsByTagName('environment')->item(0)->nodeValue . '/'
-            . $element->getAttribute('name')
+                . $element->getElementsByTagName('eventname')->item(0)->nodeValue . '/'
+                . $element->getElementsByTagName('environment')->item(0)->nodeValue . '/'
+                . $element->getAttribute('name')
         );
     }
 
@@ -460,11 +447,9 @@ class TemplateListenerPackageInstallationPlugin extends AbstractXMLPackageInstal
     public function setEntryData($identifier, IFormDocument $document)
     {
         if ($this->defaultSetEntryData($identifier, $document)) {
-            $options = $document->getNodeById('options');
-            \assert($options instanceof OptionFormField);
-            $permissions = $document->getNodeById('permissions');
-            \assert($permissions instanceof UserGroupOptionFormField);
-    
+            $options = $document->getFormField('options');
+            $permissions = $document->getFormField('permissions');
+
             if (!$options->getValue()) {
                 $options->available(false);
             }
@@ -476,21 +461,19 @@ class TemplateListenerPackageInstallationPlugin extends AbstractXMLPackageInstal
 
             switch ($data['environment']) {
                 case 'admin':
-                    $templateName = $document->getNodeById('acpTemplateName');
-                    $eventName = $document->getNodeById('acp_' . $data['templateName'] . '_eventName');
+                    $templateName = $document->getFormField('acpTemplateName');
+                    $eventName = $document->getFormField('acp_' . $data['templateName'] . '_eventName');
                     break;
 
                 case 'user':
-                    $templateName = $document->getNodeById('frontendTemplateName');
-                    $eventName = $document->getNodeById($data['templateName'] . '_eventName');
+                    $templateName = $document->getFormField('frontendTemplateName');
+                    $eventName = $document->getFormField($data['templateName'] . '_eventName');
                     break;
 
                 default:
                     throw new \LogicException("Unknown environment '{$data['environment']}'.");
             }
 
-            \assert($templateName instanceof SingleSelectionFormField);
-            \assert($eventName instanceof SingleSelectionFormField);
             $templateName->value($data['templateName']);
             $eventName->value($data['eventName']);
 
@@ -505,10 +488,8 @@ class TemplateListenerPackageInstallationPlugin extends AbstractXMLPackageInstal
      */
     public function editEntry(IFormDocument $form, $identifier)
     {
-        $options = $form->getNodeById('options');
-        \assert($options instanceof OptionFormField);
-        $permissions = $form->getNodeById('permissions');
-        \assert($permissions instanceof UserGroupOptionFormField);
+        $options = $form->getFormField('options');
+        $permissions = $form->getFormField('permissions');
 
         $result = $this->traitEditEntry($form, $identifier);
 

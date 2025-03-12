@@ -401,9 +401,7 @@ class MenuItemPackageInstallationPlugin extends AbstractXMLPackageInstallationPl
                 ),
         ]);
 
-        /** @var SingleSelectionFormField $menuField */
-        $menuField = $form->getNodeById('menu');
-
+        $menuField = $form->getFormField('menu');
         foreach ($menuList as $menu) {
             $dataContainer->insertBefore(
                 SingleSelectionFormField::create('parentMenuItem' . $menu->menuID)

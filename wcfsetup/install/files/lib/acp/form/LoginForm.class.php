@@ -132,8 +132,7 @@ class LoginForm extends AbstractFormBuilderForm
 
     protected function validatePassword(PasswordFormField $passwordFormField): void
     {
-        $usernameFormField = $this->form->getNodeById('username');
-        \assert($usernameFormField instanceof TextFormField);
+        $usernameFormField = $this->form->getFormField('username');
         $validationError = null;
 
         try {

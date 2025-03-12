@@ -233,8 +233,7 @@ class UserNotificationEventPackageInstallationPlugin extends AbstractXMLPackageI
                 })
                 // validate the uniqueness of the `name` field after knowing that the selected object type is valid
                 ->addValidator(new FormFieldValidator('nameUniqueness', function (SingleSelectionFormField $formField) {
-                    /** @var TextFormField $nameField */
-                    $nameField = $formField->getDocument()->getNodeById('eventName');
+                    $nameField = $formField->getDocument()->getFormField('eventName');
 
                     if (
                         $formField->getDocument()->getFormMode() === IFormDocument::FORM_MODE_CREATE
@@ -368,7 +367,7 @@ class UserNotificationEventPackageInstallationPlugin extends AbstractXMLPackageI
     {
         return \sha1(
             $element->getElementsByTagName('name')->item(0)->nodeValue . '/'
-            . $element->getElementsByTagName('objecttype')->item(0)->nodeValue
+                . $element->getElementsByTagName('objecttype')->item(0)->nodeValue
         );
     }
 

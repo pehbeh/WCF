@@ -286,8 +286,7 @@ class ObjectTypePackageInstallationPlugin extends AbstractXMLPackageInstallation
                     FormFieldValidatorUtil::getDotSeparatedStringValidator('wcf.acp.pip.objectType.objectType', 4)
                 )
                 ->addValidator(new FormFieldValidator('uniqueness', function (TextFormField $formField) {
-                    /** @var SingleSelectionFormField $definitionIDField */
-                    $definitionIDField = $formField->getDocument()->getNodeById('definitionID');
+                    $definitionIDField = $formField->getDocument()->getFormField('definitionID');
 
                     $definitionID = $definitionIDField->getSaveValue();
                     if ($definitionID) {
@@ -325,8 +324,7 @@ class ObjectTypePackageInstallationPlugin extends AbstractXMLPackageInstallation
                 ->addValidator(new FormFieldValidator(
                     'implementsInterface',
                     static function (TextFormField $formField) {
-                        /** @var SingleSelectionFormField $definitionIDField */
-                        $definitionIDField = $formField->getDocument()->getNodeById('definitionID');
+                        $definitionIDField = $formField->getDocument()->getFormField('definitionID');
 
                         $definitionID = $definitionIDField->getSaveValue();
                         if ($definitionID) {
@@ -802,8 +800,7 @@ class ObjectTypePackageInstallationPlugin extends AbstractXMLPackageInstallation
                     ->required()
                     ->addValidator(new FormFieldValidator('columnExists', static function (TextFormField $formField) {
                         if ($formField->getValue()) {
-                            /** @var TextFormField $tableName */
-                            $tableName = $formField->getDocument()->getNodeById('versionTrackerObjectTypeTableName');
+                            $tableName = $formField->getDocument()->getFormField('versionTrackerObjectTypeTableName');
 
                             if (empty($tableName->getValidationErrors())) {
                                 // table name has already been validated and table exists
@@ -900,9 +897,7 @@ class ObjectTypePackageInstallationPlugin extends AbstractXMLPackageInstallation
      */
     public function getObjectTypeDefinitionDataContainer(IFormDocument $form, $definitionName)
     {
-        /** @var SingleSelectionFormField $definitionIDField */
-        $definitionIDField = $form->getNodeById('definitionID');
-
+        $definitionIDField = $form->getFormField('definitionID');
         $definitionPieces = \explode('.', $definitionName);
 
         $formContainer = FormContainer::create(
@@ -1090,9 +1085,7 @@ class ObjectTypePackageInstallationPlugin extends AbstractXMLPackageInstallation
             }
         }
 
-        /** @var TextFormField $className */
-        $className = $dataContainer->getDocument()->getNodeById('className');
-
+        $className = $dataContainer->getDocument()->getFormField('className');
         // `UserGroupCondition`
         $dataContainer->appendChild(
             BooleanFormField::create($prefix . 'UserGroupIncludeGuests')
@@ -1235,8 +1228,7 @@ class ObjectTypePackageInstallationPlugin extends AbstractXMLPackageInstallation
         // set dynamic descriptions here instead of relying on the JavaScript
         // code to avoid delayed appearance of the descriptions
 
-        /** @var SingleSelectionFormField $definitionID */
-        $definitionID = $document->getNodeById('definitionID');
+        $definitionID = $document->getFormField('definitionID');
         $objectTypeDefinition = ObjectTypeCache::getInstance()->getDefinition($definitionID->getSaveValue());
 
         $definitionID->description(
@@ -1245,8 +1237,7 @@ class ObjectTypePackageInstallationPlugin extends AbstractXMLPackageInstallation
                 . '.description'
         );
 
-        /** @var ClassNameFormField $className */
-        $className = $document->getNodeById('className');
+        $className = $document->getFormField('className');
         if ($objectTypeDefinition->interfaceName) {
             $className->description(
                 'wcf.form.field.className.description.interface',

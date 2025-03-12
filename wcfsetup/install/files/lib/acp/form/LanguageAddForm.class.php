@@ -136,9 +136,7 @@ class LanguageAddForm extends AbstractFormBuilderForm
                                     return;
                                 }
 
-                                $languageCodeField = $formField->getDocument()->getNodeById('languageCode');
-                                \assert($languageCodeField instanceof TextFormField);
-
+                                $languageCodeField = $formField->getDocument()->getFormField('languageCode');
                                 [$languageCode] = \explode('_', $formField->getValue());
                                 if ($languageCodeField->getValue() !== $languageCode) {
                                     $formField->addValidationError(
