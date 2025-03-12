@@ -1094,6 +1094,7 @@ class ObjectTypePackageInstallationPlugin extends AbstractXMLPackageInstallation
         }
 
         $className = $dataContainer->getDocument()->getFormField('className');
+        \assert($className instanceof TextFormField);
         // `UserGroupCondition`
         $dataContainer->appendChild(
             BooleanFormField::create($prefix . 'UserGroupIncludeGuests')
