@@ -4,6 +4,7 @@ namespace wcf\system\package\plugin;
 
 use wcf\data\event\listener\EventListenerEditor;
 use wcf\data\event\listener\EventListenerList;
+use wcf\event\IPsr14Event;
 use wcf\system\cache\builder\EventListenerCacheBuilder;
 use wcf\system\devtools\pip\IDevtoolsPipEntryList;
 use wcf\system\devtools\pip\IGuiPackageInstallationPlugin;
@@ -236,7 +237,7 @@ class EventListenerPackageInstallationPlugin extends AbstractXMLPackageInstallat
                     $eventClassNameField = $formField->getDocument()->getFormField('eventClassName');
                     $eventClassName = $eventClassNameField->getValue();
 
-                    if (\is_subclass_of($eventClassName, IEvent::class)) {
+                    if (\is_subclass_of($eventClassName, IEvent::class) || \is_subclass_of($eventClassName, IPsr14Event::class)) {
                         if (!\is_callable(new $listenerClassName())) {
                             $formField->addValidationError(
                                 new FormFieldValidationError(
