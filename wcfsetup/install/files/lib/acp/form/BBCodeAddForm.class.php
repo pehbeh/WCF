@@ -157,6 +157,8 @@ class BBCodeAddForm extends AbstractForm
 
     /**
      * Reads the form parameter for the button label.
+     *
+     * @return void
      */
     protected function readButtonLabelFormParameter()
     {
@@ -225,6 +227,8 @@ class BBCodeAddForm extends AbstractForm
 
     /**
      * Validates the bbcode tag usage.
+     *
+     * @return void
      * @throws UserInputException
      */
     protected function validateBBCodeTagUsage()

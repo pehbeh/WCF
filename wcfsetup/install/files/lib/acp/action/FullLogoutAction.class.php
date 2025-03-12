@@ -19,7 +19,7 @@ final class FullLogoutAction extends LogoutAction
     /**
      * @inheritDoc
      */
-    public function execute()
+    public function execute(): RedirectResponse
     {
         AbstractSecureAction::execute();
 

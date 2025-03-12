@@ -35,18 +35,34 @@ final class LicensePage extends AbstractPage
 
     private LicenseData $licenseData;
 
+    /**
+     * @var array<string, array<string, string>>
+     */
     private array $availablePackages = [];
 
+    /**
+     * @var array<string, Package>
+     */
     private array $installedPackages;
 
+    /**
+     * @var array<string|int, mixed>
+     */
     private array $installablePackages = [];
 
+    /**
+     * @var array<string, PackageUpdate>
+     */
     private array $packageUpdates = [];
 
+    /**
+     * @var array<string, string>
+     */
     private array $requiresLicenseExtension = [];
 
     private const CURRENT_MAJOR = '6.0';
 
+    #[\Override]
     public function readData()
     {
         parent::readData();
@@ -143,6 +159,7 @@ final class LicensePage extends AbstractPage
         }
     }
 
+    #[\Override]
     public function assignVariables()
     {
         parent::assignVariables();
@@ -158,6 +175,7 @@ final class LicensePage extends AbstractPage
     }
 
     /**
+     * @param string[] $identifiers
      * @return array<string, Package>
      */
     private function getInstalledPackages(array $identifiers): array
@@ -183,6 +201,10 @@ final class LicensePage extends AbstractPage
         return $packages;
     }
 
+    /**
+     * @param string[] $identifiers
+     * @return string[]
+     */
     private function removeUnknownPackages(array $identifiers): array
     {
         if ($identifiers === []) {
@@ -201,6 +223,7 @@ final class LicensePage extends AbstractPage
     }
 
     /**
+     * @param string[] $packages
      * @return array<string, PackageUpdate>
      */
     private function getPackageUpdates(array $packages): array
@@ -221,7 +244,12 @@ final class LicensePage extends AbstractPage
         return $packageUpdates;
     }
 
-    // Stolen from PackageUpdateAction::search() and slightly modified.
+    /**
+     * Stolen from PackageUpdateAction::search() and slightly modified.
+     *
+     * @param string[] $identifiers
+     * @return array<string|int, mixed>
+     */
     private function getInstallablePackages(array $identifiers): array
     {
         $availableUpdateServers = \array_filter(

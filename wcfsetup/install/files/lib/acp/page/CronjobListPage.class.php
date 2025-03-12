@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\CronjobGridView;
 
 /**
@@ -13,7 +12,7 @@ use wcf\system\gridView\admin\CronjobGridView;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    CronjobGridView $gridView
+ * @extends AbstractGridViewPage<CronjobGridView>
  */
 class CronjobListPage extends AbstractGridViewPage
 {
@@ -28,7 +27,7 @@ class CronjobListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.management.canManageCronjob'];
 
     #[\Override]
-    protected function createGridView(): AbstractGridView
+    protected function createGridView(): CronjobGridView
     {
         return new CronjobGridView();
     }

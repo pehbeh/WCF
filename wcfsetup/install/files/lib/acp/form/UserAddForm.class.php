@@ -351,7 +351,6 @@ class UserAddForm extends UserOptionListForm
         $this->signature = $this->disableSignatureReason = '';
         $this->groupIDs = [];
         $this->languageID = $this->getDefaultFormLanguageID();
-        \assert($this->optionHandler instanceof UserOptionHandler);
         $this->optionHandler->resetOptionValues();
         // Reload attachment handler to reset the uploaded attachments.
         $this->attachmentHandler = new AttachmentHandler(

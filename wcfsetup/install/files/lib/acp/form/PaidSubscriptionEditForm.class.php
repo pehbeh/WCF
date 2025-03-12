@@ -72,6 +72,9 @@ class PaidSubscriptionEditForm extends PaidSubscriptionAddForm
         }
     }
 
+    /**
+     * @return void
+     */
     protected function getAvailableSubscriptions()
     {
         $subscriptionList = new PaidSubscriptionList();

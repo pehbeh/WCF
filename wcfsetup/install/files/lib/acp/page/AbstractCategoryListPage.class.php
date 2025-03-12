@@ -116,6 +116,8 @@ abstract class AbstractCategoryListPage extends AbstractPage
 
     /**
      * Checks if the active user has the needed permissions to view this list.
+     *
+     * @return void
      */
     protected function checkCategoryPermissions()
     {
@@ -126,6 +128,8 @@ abstract class AbstractCategoryListPage extends AbstractPage
 
     /**
      * Reads the categories.
+     *
+     * @return void
      */
     protected function readCategories()
     {

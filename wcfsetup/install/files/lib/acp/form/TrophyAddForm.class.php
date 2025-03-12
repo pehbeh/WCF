@@ -278,6 +278,8 @@ class TrophyAddForm extends AbstractAcpForm
 
     /**
      * Validates the trophy type.
+     *
+     * @return void
      */
     protected function validateType()
     {

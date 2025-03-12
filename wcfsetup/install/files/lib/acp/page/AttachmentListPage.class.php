@@ -13,7 +13,7 @@ use wcf\system\WCF;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    AttachmentGridView $gridView
+ * @extends AbstractGridViewPage<AttachmentGridView>
  */
 class AttachmentListPage extends AbstractGridViewPage
 {
@@ -43,6 +43,9 @@ class AttachmentListPage extends AbstractGridViewPage
         ]);
     }
 
+    /**
+     * @return array{count: int, size: int, downloads: int}
+     */
     private function getAttachmentStats(): array
     {
         $sql = "SELECT  COUNT(*) AS count,

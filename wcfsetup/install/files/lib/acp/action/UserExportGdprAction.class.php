@@ -3,6 +3,7 @@
 namespace wcf\acp\action;
 
 use Laminas\Diactoros\Response\JsonResponse;
+use Psr\Http\Message\ResponseInterface;
 use wcf\action\AbstractAction;
 use wcf\data\package\PackageCache;
 use wcf\data\user\cover\photo\DefaultUserCoverPhoto;
@@ -35,7 +36,7 @@ final class UserExportGdprAction extends AbstractAction
     /**
      * export data
      *
-     * @var array
+     * @var mixed[]
      */
     public $data = [];
 
@@ -149,7 +150,7 @@ final class UserExportGdprAction extends AbstractAction
     /**
      * @inheritDoc
      */
-    public function execute()
+    public function execute(): ResponseInterface
     {
         // you MUST NOT use the `execute` event to provide data, use `export` (see below) instead!
         parent::execute();
@@ -249,7 +250,7 @@ final class UserExportGdprAction extends AbstractAction
      * @param string $ipAddressColumn
      * @param string $timeColumn
      * @param string $userIDColumn
-     * @return      array
+     * @return mixed[]
      */
     public function exportIpAddresses($databaseTable, $ipAddressColumn, $timeColumn, $userIDColumn)
     {
@@ -263,6 +264,11 @@ final class UserExportGdprAction extends AbstractAction
         return $this->fetchIpAddresses($statement, $ipAddressColumn, $timeColumn);
     }
 
+    /**
+     * @param string $tableName
+     * @param string $userIDColumn
+     * @return mixed[]
+     */
     protected function dumpTable($tableName, $userIDColumn)
     {
         $sql = "SELECT  *
@@ -279,6 +285,11 @@ final class UserExportGdprAction extends AbstractAction
         return $data;
     }
 
+    /**
+     * @param string $ipAddressColumn
+     * @param string $timeColumn
+     * @return array{ipAddress: string, time: mixed}[]
+     */
     protected function fetchIpAddresses(PreparedStatement $statement, $ipAddressColumn, $timeColumn)
     {
         $ipAddresses = [];
@@ -297,6 +308,9 @@ final class UserExportGdprAction extends AbstractAction
         return $ipAddresses;
     }
 
+    /**
+     * @return array{session: mixed[], acpSessionLog: mixed[]}
+     */
     protected function exportSessionIpAddresses()
     {
         $data = [
@@ -323,6 +337,9 @@ final class UserExportGdprAction extends AbstractAction
         return $data;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function exportUser()
     {
         $data = ['languageCode' => $this->user->getLanguage()->getFixedLanguageCode()];
@@ -351,6 +368,9 @@ final class UserExportGdprAction extends AbstractAction
         return $data;
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function exportUserOptions()
     {
         $optionHandler = new UserOptionHandler(false, '', '');
@@ -365,6 +385,11 @@ final class UserExportGdprAction extends AbstractAction
         return $data;
     }
 
+    /**
+     * @param mixed[] &$data
+     * @param mixed[] $optionTree
+     * @return void
+     */
     protected function exportUserOptionCategory(array &$data, array $optionTree)
     {
         if (!empty($optionTree['options'])) {

@@ -19,7 +19,8 @@ use wcf\util\HeaderUtil;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.0
  *
- * @property OptionHandler $optionHandler
+ * @phpstan-import-type ParsedOption from OptionHandler
+ * @extends AbstractOptionListForm<OptionHandler>
  */
 final class FirstTimeSetupOptionsForm extends AbstractOptionListForm
 {
@@ -30,7 +31,7 @@ final class FirstTimeSetupOptionsForm extends AbstractOptionListForm
 
     /**
      * list of options
-     * @var array
+     * @var ParsedOption[]
      */
     public $options = [];
 

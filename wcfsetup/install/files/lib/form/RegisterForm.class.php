@@ -190,7 +190,6 @@ class RegisterForm extends UserAddForm
      */
     protected function initOptionHandler()
     {
-        \assert($this->optionHandler instanceof UserOptionHandler);
         $this->optionHandler->setInRegistration();
         parent::initOptionHandler();
     }

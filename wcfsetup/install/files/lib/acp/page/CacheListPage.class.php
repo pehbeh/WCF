@@ -35,13 +35,24 @@ class CacheListPage extends AbstractPage
 
     /**
      * contains a list of cache resources
-     * @var array
+     * @var array<string, array<string, list<array{
+     *  filename: string,
+     *  filesize: int,
+     *  mtime: int,
+     *  perm: string,
+     *  writeable: bool,
+     * }>>>
      */
     public $caches = [];
 
     /**
      * contains general cache information
-     * @var array
+     * @var array{
+     *  source: string,
+     *  version: string,
+     *  size: int,
+     *  files: int,
+     * }|array{}
      */
     public $cacheData = [];
 
@@ -109,8 +120,9 @@ class CacheListPage extends AbstractPage
      *
      * @param string $cacheType
      * @param string $cacheDir
-     * @param Regex $ignore
+     * @param ?Regex $ignore
      * @param string $extension
+     * @return void
      */
     protected function readCacheFiles($cacheType, $cacheDir, ?Regex $ignore = null, $extension = 'php')
     {

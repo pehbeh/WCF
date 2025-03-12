@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\BoxGridView;
 use wcf\system\language\LanguageFactory;
 use wcf\system\WCF;
@@ -16,7 +15,7 @@ use wcf\system\WCF;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @property    BoxGridView $gridView
+ * @extends AbstractGridViewPage<BoxGridView>
  */
 class BoxListPage extends AbstractGridViewPage
 {
@@ -58,7 +57,7 @@ class BoxListPage extends AbstractGridViewPage
     }
 
     #[\Override]
-    protected function createGridView(): AbstractGridView
+    protected function createGridView(): BoxGridView
     {
         return new BoxGridView();
     }

@@ -78,7 +78,7 @@ class StyleAddForm extends AbstractForm
 
     /**
      * list of available template groups
-     * @var TemplateGroup[]
+     * @var array<int, string>
      */
     public $availableTemplateGroups = [];
 
@@ -89,7 +89,7 @@ class StyleAddForm extends AbstractForm
     public $availableUnits = ['px', 'pt', 'rem', 'em', '%'];
 
     /**
-     * @var array
+     * @var array<string, string|string[]>
      */
     public $colorCategories = [];
 
@@ -107,7 +107,7 @@ class StyleAddForm extends AbstractForm
 
     /**
      * list of global variables
-     * @var array
+     * @var string[]
      */
     public $globals = [];
 
@@ -233,6 +233,7 @@ class StyleAddForm extends AbstractForm
     }
 
     /**
+     * @return array<string, mixed[]>
      * @since   5.3
      */
     protected function getUploadFields()
@@ -279,6 +280,7 @@ class StyleAddForm extends AbstractForm
     }
 
     /**
+     * @return void
      * @since   5.3
      */
     protected function rebuildUploadFields()
@@ -419,6 +421,7 @@ class StyleAddForm extends AbstractForm
     }
 
     /**
+     * @return void
      * @since   5.3
      */
     protected function downloadGoogleFont()
@@ -501,6 +504,8 @@ class StyleAddForm extends AbstractForm
 
     /**
      * Validates the individual scss.
+     *
+     * @return void
      * @throws      UserInputException
      * @since       5.3
      */
@@ -531,6 +536,7 @@ class StyleAddForm extends AbstractForm
     /**
      * Disallow the use of `com.woltlab.*` for package names to avoid accidental collisions.
      *
+     * @return void
      * @throws      UserInputException
      */
     protected function enforcePackageNameRestriction()
@@ -542,6 +548,7 @@ class StyleAddForm extends AbstractForm
     }
 
     /**
+     * @return void
      * @since   5.3
      */
     protected function validateUploads()
@@ -620,6 +627,7 @@ class StyleAddForm extends AbstractForm
      * the style editor itself, it will be silently discarded.
      *
      * @param string $variableName
+     * @return void
      * @throws      UserInputException
      */
     protected function parseOverrides($variableName = 'overrideScss')
@@ -720,6 +728,8 @@ class StyleAddForm extends AbstractForm
 
     /**
      * Sets available variables
+     *
+     * @return void
      */
     protected function setVariables()
     {
@@ -820,6 +830,8 @@ class StyleAddForm extends AbstractForm
 
     /**
      * Reads style variable values.
+     *
+     * @return void
      */
     protected function readStyleVariables()
     {
@@ -953,6 +965,9 @@ class StyleAddForm extends AbstractForm
         ]);
     }
 
+    /**
+     * @return void
+     */
     protected function setDefaultValues()
     {
         $this->authorName = WCF::getUser()->username;

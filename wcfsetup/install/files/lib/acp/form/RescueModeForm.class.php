@@ -62,6 +62,9 @@ final class RescueModeForm extends AbstractForm
      */
     public $username = '';
 
+    /**
+     * @var string
+     */
     public $domainName = '';
 
     private const ALLOWED_ATTEMPTS_PER_10M = 3;
@@ -72,6 +75,7 @@ final class RescueModeForm extends AbstractForm
 
     /**
      * @inheritDoc
+     * @phpstan-ignore return.unusedType
      */
     public function __run()
     {
@@ -160,6 +164,8 @@ final class RescueModeForm extends AbstractForm
 
     /**
      * Validates the user access data.
+     *
+     * @return void
      */
     protected function validateUser()
     {
@@ -215,6 +221,9 @@ final class RescueModeForm extends AbstractForm
         }
     }
 
+    /**
+     * @return void
+     */
     protected function validateApplications()
     {
         $usedPaths = [];

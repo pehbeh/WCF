@@ -139,7 +139,7 @@ class PageAddForm extends AbstractForm
 
     /**
      * acl values
-     * @var array
+     * @var mixed[]
      */
     public $aclValues = [];
 
@@ -245,6 +245,7 @@ class PageAddForm extends AbstractForm
     /**
      * Reads basic page parameters controlling type and i18n.
      *
+     * @return void
      * @throws  IllegalLinkException
      */
     protected function readPageType()
@@ -394,6 +395,8 @@ class PageAddForm extends AbstractForm
 
     /**
      * Validates page name.
+     *
+     * @return void
      */
     protected function validateName()
     {
@@ -408,6 +411,7 @@ class PageAddForm extends AbstractForm
     /**
      * Validates page type.
      *
+     * @return void
      * @throws  UserInputException
      */
     protected function validatePageType()
@@ -424,6 +428,7 @@ class PageAddForm extends AbstractForm
     /**
      * Validates parent page id.
      *
+     * @return void
      * @throws  UserInputException
      */
     protected function validateParentPageID()
@@ -443,6 +448,7 @@ class PageAddForm extends AbstractForm
     /**
      * Validates package id.
      *
+     * @return void
      * @throws  UserInputException
      */
     protected function validateApplicationPackageID()
@@ -455,6 +461,7 @@ class PageAddForm extends AbstractForm
     /**
      * Validates custom urls.
      *
+     * @return void
      * @throws  UserInputException
      */
     protected function validateCustomUrls()
@@ -482,6 +489,7 @@ class PageAddForm extends AbstractForm
      *
      * @param int $languageID
      * @param string $customURL
+     * @return void
      *
      * @throws  UserInputException
      */
@@ -524,6 +532,7 @@ class PageAddForm extends AbstractForm
     /**
      * Validates page title.
      *
+     * @return void
      * @throws UserInputException
      */
     protected function validateTitle()
@@ -546,6 +555,7 @@ class PageAddForm extends AbstractForm
     /**
      * Validates parent menu item id.
      *
+     * @return void
      * @throws  UserInputException
      */
     protected function validateParentMenuItemID()
@@ -561,6 +571,7 @@ class PageAddForm extends AbstractForm
     /**
      * Validates box ids.
      *
+     * @return void
      * @throws  UserInputException
      */
     protected function validateBoxIDs()

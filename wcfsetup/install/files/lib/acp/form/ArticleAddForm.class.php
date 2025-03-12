@@ -202,7 +202,7 @@ class ArticleAddForm extends AbstractForm
 
     /**
      * maps the label group ids to the article category ids
-     * @var array
+     * @var array<int, list<int>>
      */
     public $labelGroupsToCategories = [];
 
@@ -258,6 +258,8 @@ class ArticleAddForm extends AbstractForm
 
     /**
      * Reads basic article parameters controlling i18n.
+     *
+     * @return void
      */
     protected function readMultilingualSetting()
     {
@@ -352,6 +354,8 @@ class ArticleAddForm extends AbstractForm
 
     /**
      * Reads the box images.
+     *
+     * @return void
      */
     protected function readImages()
     {
@@ -477,6 +481,8 @@ class ArticleAddForm extends AbstractForm
 
     /**
      * Validates the selected labels.
+     *
+     * @return void
      */
     protected function validateLabelIDs()
     {
@@ -638,6 +644,8 @@ class ArticleAddForm extends AbstractForm
 
     /**
      * Sets the default values of properties.
+     *
+     * @return void
      */
     protected function setDefaultValues()
     {

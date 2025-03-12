@@ -118,6 +118,7 @@ class PaidSubscriptionUserAddForm extends AbstractForm
     /**
      * Validates given username.
      *
+     * @return void
      * @throws UserInputException
      */
     protected function validateUsername()
@@ -134,6 +135,7 @@ class PaidSubscriptionUserAddForm extends AbstractForm
     /**
      * Validates given end date.
      *
+     * @return void
      * @throws UserInputException
      */
     protected function validateEndDate()
@@ -195,6 +197,8 @@ class PaidSubscriptionUserAddForm extends AbstractForm
 
     /**
      * Sets the default value for the end date.
+     *
+     * @return void
      */
     protected function setDefaultEndDate()
     {

@@ -22,8 +22,8 @@ use wcf\util\StringUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @template TOption of Option
- * @template TOptionCategory of DatabaseObject
+ * @template TOption of Option = Option
+ * @template TOptionCategory of DatabaseObject = OptionCategory
  * @phpstan-type ParsedOption array{
  *  object: TOption,
  *  value: mixed,

@@ -75,7 +75,7 @@ final class UninstallPackageAction extends AbstractSecureAction
         }
     }
 
-    public function execute()
+    public function execute(): ResponseInterface
     {
         parent::execute();
 

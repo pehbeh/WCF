@@ -68,6 +68,7 @@ class UserContentRevertChangesForm extends AbstractForm
         // get object type id
         $this->objectTypeID = ClipboardHandler::getInstance()->getObjectTypeID('com.woltlab.wcf.user');
         // get user
+        // @phpstan-ignore assign.propertyType
         $this->users = ClipboardHandler::getInstance()->getMarkedItems($this->objectTypeID);
         if (empty($this->users)) {
             throw new IllegalLinkException();

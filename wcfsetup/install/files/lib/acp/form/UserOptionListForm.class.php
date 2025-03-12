@@ -12,6 +12,8 @@ use wcf\system\option\user\UserOptionHandler;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @extends AbstractOptionListForm<UserOptionHandler>
  */
 abstract class UserOptionListForm extends AbstractOptionListForm
 {

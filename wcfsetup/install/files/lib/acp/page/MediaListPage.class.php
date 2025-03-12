@@ -2,6 +2,7 @@
 
 namespace wcf\acp\page;
 
+use wcf\data\category\CategoryNode;
 use wcf\data\category\CategoryNodeTree;
 use wcf\data\media\ViewableMediaList;
 use wcf\page\SortablePage;
@@ -18,7 +19,7 @@ use wcf\util\StringUtil;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @property    ViewableMediaList $objectList
+ * @extends SortablePage<ViewableMediaList>
  */
 class MediaListPage extends SortablePage
 {
@@ -35,7 +36,7 @@ class MediaListPage extends SortablePage
 
     /**
      * node tree with all available media categories
-     * @var \RecursiveIteratorIterator
+     * @var \RecursiveIteratorIterator<CategoryNode>
      */
     public $categoryList;
 

@@ -2,9 +2,7 @@
 
 namespace wcf\acp\page;
 
-use wcf\data\user\group\assignment\UserGroupAssignmentList;
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\UserGroupAssignmentGridView;
 
 /**
@@ -14,7 +12,7 @@ use wcf\system\gridView\admin\UserGroupAssignmentGridView;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    UserGroupAssignmentList $objectList
+ * @extends AbstractGridViewPage<UserGroupAssignmentGridView>
  */
 class UserGroupAssignmentListPage extends AbstractGridViewPage
 {
@@ -29,7 +27,7 @@ class UserGroupAssignmentListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.user.canManageGroupAssignment'];
 
     #[\Override]
-    protected function createGridView(): AbstractGridView
+    protected function createGridView(): UserGroupAssignmentGridView
     {
         return new UserGroupAssignmentGridView();
     }

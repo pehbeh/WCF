@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\LanguageGridView;
 
 /**
@@ -13,7 +12,7 @@ use wcf\system\gridView\admin\LanguageGridView;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    LanguageGridView $gridView
+ * @extends AbstractGridViewPage<LanguageGridView>
  */
 class LanguageListPage extends AbstractGridViewPage
 {
@@ -28,7 +27,7 @@ class LanguageListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.language.canManageLanguage'];
 
     #[\Override]
-    protected function createGridView(): AbstractGridView
+    protected function createGridView(): LanguageGridView
     {
         return new LanguageGridView();
     }

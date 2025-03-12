@@ -213,7 +213,9 @@ class UserOptionHandler extends OptionHandler
         $optionData = parent::getOption($optionName);
 
         if (!$this->editMode && !$this->searchMode) {
-            $optionData['object'] = new ViewableUserOption($optionData['object']);
+            /** @var UserOption $option */
+            $option = $optionData['object'];
+            $optionData['object'] = new ViewableUserOption($option);
             if ($this->user !== null) {
                 $optionData['object']->setOptionValue($this->user);
             }

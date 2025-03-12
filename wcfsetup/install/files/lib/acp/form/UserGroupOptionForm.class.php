@@ -62,7 +62,7 @@ class UserGroupOptionForm extends AbstractForm
 
     /**
      * list of values per user group
-     * @var array
+     * @var mixed[]
      */
     public $values = [];
 

@@ -354,7 +354,6 @@ class OptionPackageInstallationPlugin extends AbstractOptionPackageInstallationP
      */
     protected function getSortOptionHandler()
     {
-        // @phpstan-ignore return.type
         return new class(true) extends OptionHandler {
             /**
              * @inheritDoc
