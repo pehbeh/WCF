@@ -14,9 +14,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  SearchKeyword       create()
- * @method  SearchKeywordEditor[]   getObjects()
- * @method  SearchKeywordEditor getSingleObject()
+ * @extends AbstractDatabaseObjectAction<SearchKeyword, SearchKeywordEditor>
  */
 class SearchKeywordAction extends AbstractDatabaseObjectAction implements ISearchAction
 {
@@ -68,6 +66,8 @@ class SearchKeywordAction extends AbstractDatabaseObjectAction implements ISearc
 
     /**
      * Inserts a new keyword if it does not already exist, or updates it if it does.
+     *
+     * @return void
      * @since 5.2
      */
     public function registerSearch()

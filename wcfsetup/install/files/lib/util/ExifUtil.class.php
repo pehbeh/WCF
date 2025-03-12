@@ -79,10 +79,9 @@ final class ExifUtil
      * Returns the exif data of the image at the given location or an empty
      * array if the exif data can't be read.
      *
-     * @param string $filename
-     * @return  array
+     * @return mixed[]
      */
-    public static function getExifData($filename)
+    public static function getExifData(string $filename): array
     {
         if (\function_exists('exif_read_data')) {
             $exifData = @\exif_read_data($filename, '', true);
@@ -97,10 +96,9 @@ final class ExifUtil
     /**
      * Returns the name of the used camera based on the given exif data.
      *
-     * @param array $exifData
-     * @return  string
+     * @param mixed[] $exifData
      */
-    public static function getCamera(array $exifData)
+    public static function getCamera(array $exifData): string
     {
         $camera = '';
         if (isset($exifData['IFD0'])) {
@@ -123,10 +121,9 @@ final class ExifUtil
     /**
      * Returns the creation timestamp based on the given exif data.
      *
-     * @param array $exifData
-     * @return  int
+     * @param mixed[] $exifData
      */
-    public static function getCreationTime(array $exifData)
+    public static function getCreationTime(array $exifData): int
     {
         $creationTime = 0;
         if (isset($exifData['EXIF'])) {
@@ -149,10 +146,9 @@ final class ExifUtil
      * Returns the longitude of the place the image with the given exif data
      * was taken.
      *
-     * @param array $exifData
-     * @return  float
+     * @param mixed[] $exifData
      */
-    public static function getLongitude(array $exifData)
+    public static function getLongitude(array $exifData): float
     {
         $longitude = 0;
         if (isset($exifData['GPS']) && isset($exifData['GPS']['GPSLongitudeRef']) && isset($exifData['GPS']['GPSLongitude'])) {
@@ -176,10 +172,9 @@ final class ExifUtil
      * Returns the latitude of the place the image with the given exif data
      * was taken.
      *
-     * @param array $exifData
-     * @return  float
+     * @param mixed[] $exifData
      */
-    public static function getLatitude(array $exifData)
+    public static function getLatitude(array $exifData): int|float
     {
         $latitude = 0;
         if (isset($exifData['GPS']) && isset($exifData['GPS']['GPSLatitudeRef']) && isset($exifData['GPS']['GPSLatitude'])) {
@@ -202,10 +197,10 @@ final class ExifUtil
     /**
      * Returns the formats exif data.
      *
-     * @param array $rawExifData
-     * @return  array
+     * @param mixed[] $rawExifData
+     * @return array<string, string|int|float>
      */
-    public static function getFormattedExifData(array $rawExifData)
+    public static function getFormattedExifData(array $rawExifData): array
     {
         $exifData = [];
 
@@ -236,10 +231,9 @@ final class ExifUtil
     /**
      * Returns the orientation of the image based on the given exif data.
      *
-     * @param array $exifData
-     * @return  int
+     * @param mixed[] $exifData
      */
-    public static function getOrientation(array $exifData)
+    public static function getOrientation(array $exifData): int
     {
         $orientation = self::ORIENTATION_ORIGINAL;
         if (isset($exifData['IFD0']['Orientation'])) {
@@ -312,7 +306,7 @@ final class ExifUtil
     /**
      * Implements the Euclidian Algorithm to calculate the GCD.
      */
-    private static function gcd(int $a, int $b)
+    private static function gcd(int $a, int $b): int
     {
         while ($b != 0) {
             $t = $b;

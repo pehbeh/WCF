@@ -3,6 +3,7 @@
 namespace wcf\system\view;
 
 use wcf\data\comment\StructuredCommentList;
+use wcf\data\like\object\LikeObject;
 use wcf\system\comment\CommentHandler;
 use wcf\system\comment\manager\ICommentManager;
 use wcf\system\exception\SystemException;
@@ -64,11 +65,15 @@ final class CommentsView
         return $this->commentList;
     }
 
+
     public function getLastCommentTime(): int
     {
         return $this->commentList->getMinCommentTime();
     }
 
+    /**
+     * @return array{}|array{comment: LikeObject[], response?: LikeObject[]}
+     */
     public function getLikeData(): array
     {
         if (!MODULE_LIKE) {

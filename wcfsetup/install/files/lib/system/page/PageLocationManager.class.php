@@ -16,6 +16,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
+ * @phpstan-type Location array{identifier: string, link: string, pageID: int, pageObjectID: int, title: string, useAsParentLocation: bool}
  */
 class PageLocationManager extends SingletonFactory
 {
@@ -27,13 +28,11 @@ class PageLocationManager extends SingletonFactory
 
     /**
      * list of locations with descending priority
-     * @var array
+     * @var list<Location>
      */
     protected $stack = [];
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function init()
     {
         $pageID = $pageObjectID = 0;
@@ -78,6 +77,7 @@ class PageLocationManager extends SingletonFactory
      * @param int $pageObjectID page object id
      * @param ITitledLinkObject $locationObject optional label for breadcrumbs usage
      * @param bool $useAsParentLocation
+     * @return void
      * @throws  SystemException
      */
     public function addParentLocation(
@@ -124,7 +124,7 @@ class PageLocationManager extends SingletonFactory
     /**
      * Returns the list of locations with descending priority.
      *
-     * @return  array
+     * @return list<Location>
      */
     public function getLocations()
     {
@@ -139,6 +139,8 @@ class PageLocationManager extends SingletonFactory
 
     /**
      * Adds all parents as defined through the page configuration.
+     *
+     * @return void
      */
     protected function addParents()
     {

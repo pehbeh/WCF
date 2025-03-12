@@ -2,6 +2,7 @@
 
 namespace wcf\system\html\output\node;
 
+use wcf\data\user\UserProfile;
 use wcf\system\application\ApplicationHandler;
 use wcf\system\html\node\AbstractHtmlNodeProcessor;
 use wcf\system\message\embedded\object\MessageEmbeddedObjectManager;
@@ -97,6 +98,7 @@ class HtmlOutputNodeWoltlabQuote extends AbstractHtmlOutputNode
         if ($data['author'] && !$externalQuoteLink) {
             $quoteAuthorLC = \mb_strtolower(StringUtil::decodeHTML($data['author']));
             foreach (MessageEmbeddedObjectManager::getInstance()->getObjects('com.woltlab.wcf.quote') as $user) {
+                \assert($user instanceof UserProfile);
                 if (\mb_strtolower($user->username) == $quoteAuthorLC) {
                     $quoteAuthorObject = $user;
                     break;

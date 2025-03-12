@@ -2,7 +2,6 @@
 
 namespace wcf\system\bbcode;
 
-use wcf\data\smiley\Smiley;
 use wcf\data\smiley\SmileyCache;
 use wcf\system\event\EventHandler;
 use wcf\system\SingletonFactory;
@@ -25,19 +24,19 @@ class SimpleMessageParser extends SingletonFactory
 
     /**
      * list of smilies
-     * @var Smiley[]
+     * @var array<string, string>
      */
     protected $smilies = [];
 
     /**
      * cached URLs
-     * @var string[]
+     * @var array<string, string>
      */
     protected $cachedURLs = [];
 
     /**
      * cached e-mails
-     * @var string[]
+     * @var array<string, string>
      */
     protected $cachedEmails = [];
 
@@ -63,7 +62,6 @@ class SimpleMessageParser extends SingletonFactory
                     continue;
                 }
 
-                /** @var Smiley $smiley */
                 foreach ($categorySmilies as $smiley) {
                     foreach ($smiley->smileyCodes as $smileyCode) {
                         $this->smilies[$smileyCode] = $smiley->getHtml();
@@ -80,7 +78,7 @@ class SimpleMessageParser extends SingletonFactory
      * @param string $message
      * @param bool $parseURLs
      * @param bool $parseSmilies
-     * @return  string
+     * @return string
      */
     public function parse($message, $parseURLs = true, $parseSmilies = true)
     {
@@ -126,7 +124,7 @@ class SimpleMessageParser extends SingletonFactory
      * Parses urls.
      *
      * @param string $text
-     * @return  string      text
+     * @return string text
      */
     public function parseURLs($text)
     {
@@ -138,9 +136,9 @@ class SimpleMessageParser extends SingletonFactory
 				www\.(?:' . static::$illegalChars . '\.)+
 				(?:[a-z]{2,63}(?=\b))			# tld
 			)
-			
+
 			(?::\d+)?					# port
-			
+
 			(?:
 				/
 				[^!.,?;"\'<>()\[\]{}\s]*
@@ -172,8 +170,8 @@ class SimpleMessageParser extends SingletonFactory
     /**
      * Returns the hash for an matched URL in the message.
      *
-     * @param array $matches
-     * @return  string
+     * @param list<string> $matches
+     * @return string
      */
     protected function cacheURLsCallback($matches)
     {
@@ -186,8 +184,8 @@ class SimpleMessageParser extends SingletonFactory
     /**
      * Returns the hash for an matched e-mail in the message.
      *
-     * @param array $matches
-     * @return  string
+     * @param list<string> $matches
+     * @return string
      */
     protected function cacheEmailsCallback($matches)
     {
@@ -201,7 +199,7 @@ class SimpleMessageParser extends SingletonFactory
      * Reinserts cached URLs and e-mails.
      *
      * @param string $text
-     * @return  string
+     * @return string
      */
     protected function insertCachedURLs($text)
     {
@@ -227,7 +225,7 @@ class SimpleMessageParser extends SingletonFactory
      * Parses smiley codes.
      *
      * @param string $text
-     * @return  string      text
+     * @return string text
      */
     public function parseSmilies($text)
     {

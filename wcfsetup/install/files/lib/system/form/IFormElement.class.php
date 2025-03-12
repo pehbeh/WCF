@@ -11,17 +11,12 @@ namespace wcf\system\form;
  */
 interface IFormElement
 {
-    /**
-     * Creates a new object of type FormElement.
-     *
-     * @param IFormElementContainer $parent
-     */
     public function __construct(IFormElementContainer $parent);
 
     /**
      * Returns form element description.
      *
-     * @return  string
+     * @return string
      */
     public function getDescription();
 
@@ -29,13 +24,14 @@ interface IFormElement
      * Sets form element description.
      *
      * @param string $description
+     * @return void
      */
     public function setDescription($description);
 
     /**
      * Returns label.
      *
-     * @return  string
+     * @return string
      */
     public function getLabel();
 
@@ -43,13 +39,14 @@ interface IFormElement
      * Sets label.
      *
      * @param string $label
+     * @return void
      */
     public function setLabel($label);
 
     /**
      * Returns element's parent container element.
      *
-     * @return  IFormElementContainer
+     * @return IFormElementContainer
      */
     public function getParent();
 
@@ -57,7 +54,7 @@ interface IFormElement
      * Returns HTML-representation of current form element.
      *
      * @param string $formName
-     * @return  string
+     * @return string
      */
     public function getHTML($formName);
 
@@ -65,13 +62,14 @@ interface IFormElement
      * Sets localized error message.
      *
      * @param string $error
+     * @return void
      */
     public function setError($error);
 
     /**
      * Returns localized error message, empty if no error occurred.
      *
-     * @return  string
+     * @return string
      */
     public function getError();
 }

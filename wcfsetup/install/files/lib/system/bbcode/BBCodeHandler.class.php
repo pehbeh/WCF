@@ -135,6 +135,7 @@ class BBCodeHandler extends SingletonFactory
      * Sets the disallowed BBCodes.
      *
      * @param string[] $bbCodes
+     * @return void
      */
     public function setDisallowedBBCodes(array $bbCodes)
     {

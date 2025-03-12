@@ -255,6 +255,7 @@ HTML;
     /**
      * Checks if the values for `greaterThan` and `lessThan` are conflicting.
      *
+     * @return void
      * @throws  UserInputException      if values for `greaterThan` and `lessThan` are conflicting
      * @since   3.0
      */

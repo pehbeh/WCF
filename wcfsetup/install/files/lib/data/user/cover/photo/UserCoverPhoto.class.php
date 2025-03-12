@@ -72,6 +72,11 @@ final class UserCoverPhoto implements IUserCoverPhoto
 
     /**
      * Returns the minimum and maximum dimensions for cover photos.
+     *
+     * @return array{
+     *  max: array{height: int, width: int},
+     *  min: array{height: int, width: int},
+     * }
      */
     public static function getCoverPhotoDimensions(): array
     {
@@ -90,7 +95,6 @@ final class UserCoverPhoto implements IUserCoverPhoto
     /**
      * Returns the location of a user's cover photo before WCF6.2.
      */
-    /** @noinspection PhpUndefinedFieldInspection */
     public static function getLegacyLocation(User $user, bool $forceWebP): ?string
     {
         if (!$user->coverPhotoHash || !$user->coverPhotoExtension) {

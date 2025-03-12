@@ -21,7 +21,7 @@ use wcf\util\StringUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    LabelList $objectList
+ * @extends SortablePage<LabelList>
  */
 class LabelListPage extends SortablePage
 {

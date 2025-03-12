@@ -17,31 +17,31 @@ class ObjectTypeCache extends SingletonFactory
 {
     /**
      * object type definitions
-     * @var ObjectTypeDefinition[]
+     * @var array<int, ObjectTypeDefinition>
      */
     protected $definitions = [];
 
     /**
      * object type definition ids grouped by category name
-     * @var int[][]
+     * @var array<string, list<int>>
      */
     protected $definitionsByCategory = [];
 
     /**
      * object type definitions sorted by name
-     * @var ObjectTypeDefinition[]
+     * @var array<string, ObjectTypeDefinition>
      */
     protected $definitionsByName = [];
 
     /**
      * object types
-     * @var ObjectType[]
+     * @var array<int, ObjectType>
      */
     protected $objectTypes = [];
 
     /**
      * object types grouped by definition
-     * @var array
+     * @var array<string, array<string, ObjectType>>
      */
     protected $groupedObjectTypes = [];
 
@@ -67,7 +67,7 @@ class ObjectTypeCache extends SingletonFactory
      * object type definition exists.
      *
      * @param int $definitionID
-     * @return  ObjectTypeDefinition|null
+     * @return ?ObjectTypeDefinition
      */
     public function getDefinition($definitionID)
     {
@@ -79,7 +79,7 @@ class ObjectTypeCache extends SingletonFactory
      * such object type definition exists.
      *
      * @param string $definitionName
-     * @return  ObjectTypeDefinition|null
+     * @return ?ObjectTypeDefinition
      */
     public function getDefinitionByName($definitionName)
     {
@@ -91,7 +91,7 @@ class ObjectTypeCache extends SingletonFactory
      * category name is invalid.
      *
      * @param string $categoryName
-     * @return  ObjectTypeDefinition[]|null
+     * @return array<int, ObjectTypeDefinition>|null
      */
     public function getDefinitionsByCategory($categoryName)
     {
@@ -112,7 +112,7 @@ class ObjectTypeCache extends SingletonFactory
      * exists.
      *
      * @param int $objectTypeID
-     * @return  ObjectType|null
+     * @return ?ObjectType
      */
     public function getObjectType($objectTypeID)
     {
@@ -123,7 +123,7 @@ class ObjectTypeCache extends SingletonFactory
      * Returns the list of object type with the given definition name.
      *
      * @param string $definitionName
-     * @return  ObjectType[]
+     * @return array<string, ObjectType>
      */
     public function getObjectTypes($definitionName)
     {
@@ -140,7 +140,7 @@ class ObjectTypeCache extends SingletonFactory
      *
      * @param string $definitionName
      * @param string $objectTypeName
-     * @return  ObjectType|null
+     * @return ?ObjectType
      */
     public function getObjectTypeByName($definitionName, $objectTypeName)
     {
@@ -159,7 +159,7 @@ class ObjectTypeCache extends SingletonFactory
      *
      * @param string $definitionName
      * @param string $objectTypeName
-     * @return  int|null
+     * @return ?int
      */
     public function getObjectTypeIDByName($definitionName, $objectTypeName)
     {
@@ -173,6 +173,8 @@ class ObjectTypeCache extends SingletonFactory
 
     /**
      * Resets and reloads the object type cache.
+     *
+     * @return void
      */
     public function resetCache()
     {

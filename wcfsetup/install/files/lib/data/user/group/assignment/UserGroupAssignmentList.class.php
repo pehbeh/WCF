@@ -11,12 +11,6 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserGroupAssignment     current()
- * @method  UserGroupAssignment[]       getObjects()
- * @method  UserGroupAssignment|null    getSingleObject()
- * @method  UserGroupAssignment|null    search($objectID)
- * @property    UserGroupAssignment[] $objects
+ * @extends DatabaseObjectList<UserGroupAssignment>
  */
-class UserGroupAssignmentList extends DatabaseObjectList
-{
-}
+class UserGroupAssignmentList extends DatabaseObjectList {}

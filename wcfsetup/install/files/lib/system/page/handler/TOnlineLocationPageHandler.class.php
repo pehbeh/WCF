@@ -19,7 +19,7 @@ use wcf\data\user\online\UserOnline;
 trait TOnlineLocationPageHandler
 {
     /**
-     * @inheritDoc
+     * @return string
      */
     public function getOnlineLocation(Page $page, UserOnline $user)
     {
@@ -27,7 +27,7 @@ trait TOnlineLocationPageHandler
     }
 
     /**
-     * @inheritDoc
+     * @return void
      */
     public function prepareOnlineLocation(Page $page, UserOnline $user)
     {

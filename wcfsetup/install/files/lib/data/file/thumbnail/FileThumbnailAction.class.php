@@ -10,9 +10,7 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.1
  *
- * @method FileThumbnail create()
- * @method FileThumbnailEditor[] getObjects()
- * @method FileThumbnailEditor getSingleObject()
+ * @extends AbstractDatabaseObjectAction<FileThumbnail, FileThumbnailEditor>
  */
 class FileThumbnailAction extends AbstractDatabaseObjectAction
 {

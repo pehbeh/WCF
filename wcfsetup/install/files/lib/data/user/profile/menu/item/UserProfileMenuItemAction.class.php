@@ -20,9 +20,7 @@ use wcf\util\ArrayUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserProfileMenuItem     create()
- * @method  UserProfileMenuItemEditor[] getObjects()
- * @method  UserProfileMenuItemEditor   getSingleObject()
+ * @extends AbstractDatabaseObjectAction<UserProfileMenuItem, UserProfileMenuItemEditor>
  */
 class UserProfileMenuItemAction extends AbstractDatabaseObjectAction implements ISortableAction
 {
@@ -44,6 +42,8 @@ class UserProfileMenuItemAction extends AbstractDatabaseObjectAction implements 
 
     /**
      * Validates menu item.
+     *
+     * @return void
      */
     public function validateGetContent()
     {
@@ -71,6 +71,8 @@ class UserProfileMenuItemAction extends AbstractDatabaseObjectAction implements 
 
     /**
      * Returns content for given menu item.
+     *
+     * @return array{template: string}
      */
     public function getContent()
     {

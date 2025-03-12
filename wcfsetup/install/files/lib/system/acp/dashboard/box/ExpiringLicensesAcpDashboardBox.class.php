@@ -18,7 +18,12 @@ use wcf\system\WCF;
 final class ExpiringLicensesAcpDashboardBox extends AbstractAcpDashboardBox
 {
     private ?LicenseData $licenseData;
+
+    /**
+     * @var array<string, int>
+     */
     private array $expiredLicenses;
+
     private bool $fetchLicenseDataFailed = false;
 
     #[\Override]
@@ -33,6 +38,9 @@ final class ExpiringLicensesAcpDashboardBox extends AbstractAcpDashboardBox
         return $this->getExpiredLicenses() !== [] || $this->fetchLicenseDataFailed;
     }
 
+    /**
+     * @return array<string, int>
+     */
     private function getExpiredLicenses(): array
     {
         if (!isset($this->expiredLicenses)) {

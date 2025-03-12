@@ -11,9 +11,8 @@ use wcf\data\DatabaseObjectEditor;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static ModificationLog     create(array $parameters = [])
- * @method      ModificationLog     getDecoratedObject()
  * @mixin       ModificationLog
+ * @extends DatabaseObjectEditor<ModificationLog>
  */
 class ModificationLogEditor extends DatabaseObjectEditor
 {

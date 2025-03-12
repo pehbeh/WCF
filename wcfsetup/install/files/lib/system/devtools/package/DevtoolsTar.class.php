@@ -16,11 +16,13 @@ class DevtoolsTar extends Tar
 {
     /**
      * list of virtual files
-     * @var string[]
+     * @var array<string, string>
      */
     protected $files = [];
 
-    /** @noinspection PhpMissingParentConstructorInspection @inheritDoc */
+    /**
+     * @param array<string, string> $files
+     */
     public function __construct(array $files)
     {
         $this->files = $files;
@@ -30,6 +32,8 @@ class DevtoolsTar extends Tar
      * Resets the internal file list for re-use, because the devtools use
      * the same instance over and over to avoid some otherwise awkward
      * changes to the code.
+     *
+     * @return void
      */
     public function reset()
     {
@@ -42,6 +46,7 @@ class DevtoolsTar extends Tar
      *
      * @param string $filename
      * @param string $fullPath
+     * @return void
      */
     public function registerFile($filename, $fullPath)
     {
@@ -117,7 +122,7 @@ class DevtoolsTar extends Tar
     /**
      * Returns all files in the virtual file list.
      *
-     * @return  string[]
+     * @return string[]
      */
     public function getFiles()
     {
@@ -128,6 +133,7 @@ class DevtoolsTar extends Tar
      * Sets all files in the virtual file list.
      *
      * @param string[] $files
+     * @return void
      */
     public function setFiles(array $files)
     {

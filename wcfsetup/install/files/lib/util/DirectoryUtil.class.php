@@ -195,7 +195,7 @@ final class DirectoryUtil
     /**
      * Fills the list of available files
      */
-    protected function scanFiles()
+    protected function scanFiles(): void
     {
         // value is cached
         if (!empty($this->files)) {
@@ -232,7 +232,7 @@ final class DirectoryUtil
     /**
      * Fills the list of available files, with DirectoryIterator object as value
      */
-    protected function scanFileObjects()
+    protected function scanFileObjects(): void
     {
         // value is cached
         if (!empty($this->fileObjects)) {
@@ -271,9 +271,8 @@ final class DirectoryUtil
      *
      * @param callable $callback
      * @param Regex $pattern callback is only applied to files matching the given pattern
-     * @return  bool
      */
-    public function executeCallback(callable $callback, ?Regex $pattern = null)
+    public function executeCallback(callable $callback, ?Regex $pattern = null): bool
     {
         if ($pattern !== null) {
             $files = $this->getFileObjects(self::SORT_NONE, $pattern);
@@ -291,7 +290,7 @@ final class DirectoryUtil
     /**
      * Recursive remove of directory.
      */
-    public function removeAll()
+    public function removeAll(): void
     {
         $this->removePattern(new Regex('.'));
 
@@ -306,7 +305,7 @@ final class DirectoryUtil
      * @param bool $negativeMatch should the pattern be inversed
      * @throws  SystemException
      */
-    public function removePattern(Regex $pattern, $negativeMatch = false)
+    public function removePattern(Regex $pattern, $negativeMatch = false): void
     {
         if (!$this->recursive) {
             throw new SystemException('Removing of files only works in recursive mode');
@@ -332,10 +331,9 @@ final class DirectoryUtil
     /**
      * Calculates the size of the directory.
      *
-     * @return  int     directory size in bytes
      * @throws  SystemException
      */
-    public function getSize()
+    public function getSize(): int
     {
         if (!$this->recursive) {
             throw new SystemException('Calculating of size only works in recursive mode');
@@ -357,7 +355,7 @@ final class DirectoryUtil
     /**
      * Clears the caches of the current instance
      */
-    public function clearCaches()
+    public function clearCaches(): void
     {
         // clear cached list of files
         $this->files = [];

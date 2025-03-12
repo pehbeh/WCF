@@ -122,7 +122,7 @@ class FormDocument implements IFormDocument
 
     /**
      * request data of the form's field
-     * @var null|array
+     * @var ?mixed[]
      */
     protected $requestData;
 
@@ -259,6 +259,8 @@ class FormDocument implements IFormDocument
 
     /**
      * Creates the default button for this form document.
+     *
+     * @return void
      */
     protected function createDefaultButton()
     {

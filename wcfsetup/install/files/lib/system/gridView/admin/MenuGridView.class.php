@@ -6,6 +6,7 @@ use wcf\acp\form\MenuEditForm;
 use wcf\data\box\Box;
 use wcf\data\DatabaseObject;
 use wcf\data\menu\I18nMenuList;
+use wcf\data\menu\Menu;
 use wcf\event\gridView\admin\MenuGridViewInitialized;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\I18nTextFilter;
@@ -30,6 +31,8 @@ use wcf\system\WCF;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @extends AbstractGridView<Menu, I18nMenuList>
  */
 final class MenuGridView extends AbstractGridView
 {

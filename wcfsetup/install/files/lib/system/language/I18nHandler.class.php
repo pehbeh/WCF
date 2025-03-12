@@ -98,7 +98,8 @@ final class I18nHandler extends SingletonFactory
     /**
      * Reads plain and i18n values from request data.
      *
-     * @param $requestData used request data (if `null`, `$_POST` is used)
+     * @param mixed[] $requestData used request data (if `null`, `$_POST` is used)
+     * @return void
      * @throws  SystemException
      */
     public function readValues(?array $requestData = null): void
@@ -269,6 +270,7 @@ final class I18nHandler extends SingletonFactory
      * Saves language variable for i18n.
      *
      * @param string|string[] $elementID either the id of the element or externally passed array `languageID => value`
+     * @return void
      */
     public function save($elementID, string $languageVariable, string $languageCategory, int $packageID = PACKAGE_ID)
     {

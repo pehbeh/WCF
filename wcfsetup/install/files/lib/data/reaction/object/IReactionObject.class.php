@@ -17,7 +17,7 @@ interface IReactionObject
     /**
      * Sends a notification for this reaction.
      *
-     * @param Like $like
+     * @return void
      */
     public function sendNotification(Like $like);
 }

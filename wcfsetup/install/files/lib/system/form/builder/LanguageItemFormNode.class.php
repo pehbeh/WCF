@@ -19,13 +19,13 @@ class LanguageItemFormNode implements IFormChildNode
 
     /**
      * language item shown in the form node
-     * @var null|string
+     * @var ?string
      */
     protected $languageItem;
 
     /**
      * template variables passed to the language item
-     * @var array
+     * @var array<string ,mixed>
      */
     protected $variables = [];
 
@@ -40,7 +40,7 @@ class LanguageItemFormNode implements IFormChildNode
     /**
      * Returns the name of the language item shown in the form node.
      *
-     * @throws      \BadMethodCallException         if language item has not been set yet
+     * @throws \BadMethodCallException if language item has not been set yet
      */
     public function getLanguageItem(): string
     {
@@ -53,6 +53,8 @@ class LanguageItemFormNode implements IFormChildNode
 
     /**
      * Returns the template variables passed to the language item.
+     *
+     * @return array<string, mixed>
      */
     public function getVariables(): array
     {
@@ -62,7 +64,7 @@ class LanguageItemFormNode implements IFormChildNode
     /**
      * Sets the language item shown in the form node and returns this form node.
      *
-     * @return      static  this form field
+     * @return static this form field
      */
     public function languageItem(string $languageItem)
     {
@@ -82,7 +84,8 @@ class LanguageItemFormNode implements IFormChildNode
     /**
      * Sets the template variables passed to the language item and returns this form node.
      *
-     * @return      static      this form field
+     * @param array<string, mixed> $variables
+     * @return static this form field
      */
     public function variables(array $variables)
     {

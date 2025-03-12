@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  CronjobLog      current()
- * @method  CronjobLog[]        getObjects()
- * @method  CronjobLog|null     getSingleObject()
- * @method  CronjobLog|null     search($objectID)
- * @property    CronjobLog[] $objects
+ * @extends DatabaseObjectList<CronjobLog>
  */
 class CronjobLogList extends DatabaseObjectList
 {

@@ -80,8 +80,9 @@ class UserOptionPackageInstallationPlugin extends AbstractOptionPackageInstallat
 
     /**
      * @inheritDoc
+     * @param array<string, string|int|null> $category
      */
-    protected function saveCategory($category, $categoryXML = null)
+    protected function saveCategory($category)
     {
         // use for create and update
         $data = [
@@ -253,6 +254,7 @@ class UserOptionPackageInstallationPlugin extends AbstractOptionPackageInstallat
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -397,6 +399,8 @@ class UserOptionPackageInstallationPlugin extends AbstractOptionPackageInstallat
 
     /**
      * @inheritDoc
+     * @param bool $saveData
+     * @return array<string, int|string>
      * @since   5.2
      */
     protected function fetchElementData(\DOMElement $element, $saveData)
@@ -445,6 +449,7 @@ class UserOptionPackageInstallationPlugin extends AbstractOptionPackageInstallat
 
     /**
      * @inheritDoc
+     * @return UserOptionHandler
      * @since   5.2
      */
     protected function getSortOptionHandler()
@@ -482,6 +487,7 @@ class UserOptionPackageInstallationPlugin extends AbstractOptionPackageInstallat
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      * @since   5.2
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)

@@ -20,8 +20,7 @@ use wcf\util\FileUtil;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method  DevtoolsProjectEditor[] getObjects()
- * @method  DevtoolsProjectEditor   getSingleObject()
+ * @extends AbstractDatabaseObjectAction<DevtoolsProject, DevtoolsProjectEditor>
  */
 class DevtoolsProjectAction extends AbstractDatabaseObjectAction
 {
@@ -56,14 +55,12 @@ class DevtoolsProjectAction extends AbstractDatabaseObjectAction
 
     /**
      * @inheritDoc
-     * @return  DevtoolsProject
      * @since   5.2
      */
     public function create()
     {
         $this->parameters['data']['path'] = FileUtil::addTrailingSlash($this->parameters['data']['path']);
 
-        /** @var DevtoolsProject $project */
         $project = parent::create();
 
         // ensure that the project directory exists
@@ -87,6 +84,7 @@ class DevtoolsProjectAction extends AbstractDatabaseObjectAction
     /**
      * Validates the 'quickSetup' action.
      *
+     * @return void
      * @throws  IllegalLinkException
      */
     public function validateQuickSetup()
@@ -103,7 +101,12 @@ class DevtoolsProjectAction extends AbstractDatabaseObjectAction
     /**
      * Quickly setups multiple projects by scanning a directory.
      *
-     * @return  array
+     * @return array{
+     *  successMessage: string,
+     * }|array{
+     *  errorMessage: string,
+     *  errorType: string,
+     * }
      */
     public function quickSetup()
     {
@@ -182,6 +185,7 @@ class DevtoolsProjectAction extends AbstractDatabaseObjectAction
     /**
      * Checks if the `installPackage` action can be executed.
      *
+     * @return void
      * @throws  IllegalLinkException
      * @since   5.2
      */
@@ -199,8 +203,8 @@ class DevtoolsProjectAction extends AbstractDatabaseObjectAction
     /**
      * Installs a package that is currently only available as a project.
      *
-     * @return  int[]       id of the package installation queue for the
-     * @since   5.2
+     * @return array{isApplication: int, queueID: int}
+     * @since 5.2
      */
     public function installPackage()
     {
@@ -227,6 +231,7 @@ class DevtoolsProjectAction extends AbstractDatabaseObjectAction
     /**
      * Checks if the `deletePipEntry` action can be executed.
      *
+     * @return void
      * @throws  IllegalLinkException
      * @since   5.2
      */

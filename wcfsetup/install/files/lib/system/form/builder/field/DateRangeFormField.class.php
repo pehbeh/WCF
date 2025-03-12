@@ -74,6 +74,8 @@ class DateRangeFormField extends AbstractFormField implements
 
     /**
      * Sets if not only the date, but also the time can be set.
+     *
+     * @param bool $supportsTime
      */
     public function supportTime($supportsTime = true): static
     {

@@ -72,6 +72,7 @@ final class LinkHandler extends SingletonFactory
      * Important: The controller class is not checked if it actually exists.
      * That check happens during the runtime.
      *
+     * @param array<string, mixed> $parameters
      * @throws  \InvalidArgumentException   if the passed string is no controller class name
      * @since   5.2
      */
@@ -93,6 +94,8 @@ final class LinkHandler extends SingletonFactory
 
     /**
      * Returns a relative link.
+     *
+     * @param array<string, mixed> $parameters
      */
     public function getLink(?string $controller = null, array $parameters = [], string $url = ''): string
     {

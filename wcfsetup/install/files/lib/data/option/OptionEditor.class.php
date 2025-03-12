@@ -19,9 +19,9 @@ use wcf\util\FileUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static Option      create(array $parameters = [])
- * @method      Option      getDecoratedObject()
  * @mixin       Option
+ * @extends DatabaseObjectEditor<Option>
+ * @implements IEditableCachedObject<Option>
  */
 class OptionEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {
@@ -39,7 +39,8 @@ class OptionEditor extends DatabaseObjectEditor implements IEditableCachedObject
     /**
      * Imports the given options.
      *
-     * @param array $options name to value
+     * @param array<string, string|int|float> $options name to value
+     * @return void
      */
     public static function import(array $options)
     {
@@ -63,7 +64,8 @@ class OptionEditor extends DatabaseObjectEditor implements IEditableCachedObject
     /**
      * Updates the values of the given options.
      *
-     * @param array $options id to value
+     * @param array<int, string|int|float> $options id to value
+     * @return void
      */
     public static function updateAll(array $options)
     {
@@ -137,6 +139,8 @@ class OptionEditor extends DatabaseObjectEditor implements IEditableCachedObject
 
     /**
      * Rebuilds the option file.
+     *
+     * @return void
      */
     public static function rebuild()
     {

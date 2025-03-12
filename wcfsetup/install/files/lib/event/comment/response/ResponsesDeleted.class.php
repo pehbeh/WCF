@@ -12,11 +12,12 @@ use wcf\event\IPsr14Event;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.1
- *
- * @property-read CommentResponse[] $responses
  */
 final class ResponsesDeleted implements IPsr14Event
 {
+    /**
+     * @param CommentResponse[] $responses
+     */
     public function __construct(
         public readonly array $responses,
     ) {}

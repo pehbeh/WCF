@@ -11,9 +11,7 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  ACPSession      create()
- * @method  ACPSessionEditor[]  getObjects()
- * @method  ACPSessionEditor    getSingleObject()
+ * @extends AbstractDatabaseObjectAction<ACPSession, ACPSessionEditor>
  * @deprecated  5.4 Distinct ACP sessions have been removed. This class is preserved due to its use in legacy sessions.
  */
 class ACPSessionAction extends AbstractDatabaseObjectAction

@@ -13,9 +13,9 @@ use wcf\system\cache\builder\BBCodeCacheBuilder;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static BBCode      create(array $parameters = [])
- * @method      BBCode      getDecoratedObject()
  * @mixin       BBCode
+ * @extends DatabaseObjectEditor<BBCode>
+ * @implements IEditableCachedObject<BBCode>
  */
 class BBCodeEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {

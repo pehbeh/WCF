@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Poll        current()
- * @method  Poll[]      getObjects()
- * @method  Poll|null   getSingleObject()
- * @method  Poll|null   search($objectID)
- * @property    Poll[] $objects
+ * @extends DatabaseObjectList<Poll>
  */
 class PollList extends DatabaseObjectList
 {

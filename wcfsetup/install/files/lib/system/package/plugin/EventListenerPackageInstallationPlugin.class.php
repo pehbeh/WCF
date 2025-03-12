@@ -171,6 +171,7 @@ class EventListenerPackageInstallationPlugin extends AbstractXMLPackageInstallat
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -346,6 +347,8 @@ class EventListenerPackageInstallationPlugin extends AbstractXMLPackageInstallat
 
     /**
      * @inheritDoc
+     * @param bool $saveData
+     * @return array<string, int|string>
      * @since   5.2
      */
     protected function fetchElementData(\DOMElement $element, $saveData)
@@ -398,6 +401,7 @@ class EventListenerPackageInstallationPlugin extends AbstractXMLPackageInstallat
 
     /**
      * @inheritDoc
+     * @return string
      * @since   5.2
      */
     public function getElementIdentifier(\DOMElement $element)
@@ -407,6 +411,7 @@ class EventListenerPackageInstallationPlugin extends AbstractXMLPackageInstallat
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function setEntryListKeys(IDevtoolsPipEntryList $entryList)
@@ -420,6 +425,7 @@ class EventListenerPackageInstallationPlugin extends AbstractXMLPackageInstallat
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      * @since   5.2
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)

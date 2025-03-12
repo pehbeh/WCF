@@ -98,6 +98,11 @@ class HtmlInputNodeFont extends AbstractHtmlInputNode
         }
     }
 
+    /**
+     * @param string $property
+     * @param string $value
+     * @return void
+     */
     protected function convertToSpan(\DOMElement $element, $property, $value)
     {
         $span = $element->ownerDocument->createElement('span');

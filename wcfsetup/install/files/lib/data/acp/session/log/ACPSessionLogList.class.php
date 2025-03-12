@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  ACPSessionLog       current()
- * @method  ACPSessionLog[]     getObjects()
- * @method  ACPSessionLog|null  getSingleObject()
- * @method  ACPSessionLog|null  search($objectID)
- * @property    ACPSessionLog[] $objects
+ * @extends DatabaseObjectList<ACPSessionLog>
  */
 class ACPSessionLogList extends DatabaseObjectList
 {

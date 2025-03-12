@@ -14,9 +14,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserGroupOption         create()
- * @method  UserGroupOptionEditor[]     getObjects()
- * @method  UserGroupOptionEditor       getSingleObject()
+ * @extends AbstractDatabaseObjectAction<UserGroupOption, UserGroupOptionEditor>
  */
 class UserGroupOptionAction extends AbstractDatabaseObjectAction
 {
@@ -27,6 +25,8 @@ class UserGroupOptionAction extends AbstractDatabaseObjectAction
 
     /**
      * Updates option values for given option id.
+     *
+     * @return void
      */
     public function updateValues()
     {

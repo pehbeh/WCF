@@ -12,9 +12,8 @@ use wcf\data\DatabaseObjectEditor;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method static DevtoolsProject create(array $parameters = [])
- * @method      DevtoolsProject getDecoratedObject()
  * @mixin       DevtoolsProject
+ * @extends DatabaseObjectEditor<DevtoolsProject>
  */
 class DevtoolsProjectEditor extends DatabaseObjectEditor
 {

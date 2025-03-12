@@ -242,8 +242,9 @@ class LanguagePackageInstallationPlugin extends AbstractXMLPackageInstallationPl
      * Deletes categories which where changed by an update or uninstallation
      * in case they are now empty.
      *
-     * @param array $categoryIDs
+     * @param int[] $categoryIDs
      * @param int $packageID
+     * @return void
      */
     protected function deleteEmptyCategories(array $categoryIDs, $packageID)
     {
@@ -341,6 +342,7 @@ class LanguagePackageInstallationPlugin extends AbstractXMLPackageInstallationPl
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -516,6 +518,8 @@ class LanguagePackageInstallationPlugin extends AbstractXMLPackageInstallationPl
 
     /**
      * @inheritDoc
+     * @param bool $saveData
+     * @return array<string, int|string>
      * @since   5.2
      */
     protected function fetchElementData(\DOMElement $element, $saveData)
@@ -560,6 +564,7 @@ class LanguagePackageInstallationPlugin extends AbstractXMLPackageInstallationPl
 
     /**
      * @inheritDoc
+     * @return string
      * @since   5.2
      */
     public function getElementIdentifier(\DOMElement $element)
@@ -629,6 +634,8 @@ class LanguagePackageInstallationPlugin extends AbstractXMLPackageInstallationPl
 
     /**
      * @inheritDoc
+     * @param string $languageCode
+     * @return string
      * @since   5.2
      */
     protected function getEmptyXml($languageCode)
@@ -694,6 +701,7 @@ XML;
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function saveObject(\DOMElement $newElement, ?\DOMElement $oldElement = null)
@@ -748,6 +756,7 @@ XML;
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function setEntryListKeys(IDevtoolsPipEntryList $entryList)
@@ -766,6 +775,7 @@ XML;
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      * @since   5.2
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)
@@ -844,6 +854,7 @@ XML;
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      * @since   5.2
      */
     protected function createAndInsertNewXmlElement(XML $xml, IFormDocument $form)
@@ -853,6 +864,8 @@ XML;
 
     /**
      * @inheritDoc
+     * @param string $identifier
+     * @return \DOMElement
      * @since   5.2
      */
     protected function replaceXmlElement(XML $xml, IFormDocument $form, $identifier)
@@ -874,6 +887,7 @@ XML;
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function deleteObject(\DOMElement $element)
@@ -890,6 +904,7 @@ XML;
 
     /**
      * @inheritDoc
+     * @return bool
      * @since   5.2
      */
     protected function sanitizeXmlFileAfterDeleteEntry(\DOMDocument $document)

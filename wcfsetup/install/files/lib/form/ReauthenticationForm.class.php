@@ -97,6 +97,7 @@ class ReauthenticationForm extends AbstractFormBuilderForm
     }
 
     /**
+     * @return void
      * @deprecated 5.5 Use `getRedirectResponse()` and the PSR-7 layer instead.
      */
     protected function performRedirect()

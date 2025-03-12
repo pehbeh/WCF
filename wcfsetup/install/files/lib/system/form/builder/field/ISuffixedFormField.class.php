@@ -15,7 +15,7 @@ interface ISuffixedFormField extends IFormField
     /**
      * Returns the suffix of this field or `null` if no suffix has been set.
      *
-     * @return  null|string
+     * @return ?string
      */
     public function getSuffix();
 
@@ -23,11 +23,11 @@ interface ISuffixedFormField extends IFormField
      * Sets the suffix of this field using the given language item and returns
      * this element. If `null` is passed, the suffix is removed.
      *
-     * @param null|string $languageItem language item containing the suffix or `null` to unset suffix
-     * @param array $variables additional variables used when resolving the language item
-     * @return  static              this field
+     * @param ?string $languageItem language item containing the suffix or `null` to unset suffix
+     * @param array<string, mixed> $variables additional variables used when resolving the language item
+     * @return static this field
      *
-     * @throws  \InvalidArgumentException   if the given language item is invalid
+     * @throws \InvalidArgumentException if the given language item is invalid
      */
     public function suffix($languageItem = null, array $variables = []);
 }

@@ -11,9 +11,8 @@ use wcf\data\DatabaseObjectEditor;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static PackageUpdate   create(array $parameters = [])
- * @method      PackageUpdate   getDecoratedObject()
  * @mixin       PackageUpdate
+ * @extends DatabaseObjectEditor<PackageUpdate>
  */
 class PackageUpdateEditor extends DatabaseObjectEditor
 {

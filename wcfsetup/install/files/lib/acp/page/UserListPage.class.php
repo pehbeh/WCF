@@ -2,7 +2,10 @@
 
 namespace wcf\acp\page;
 
+use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectList;
 use wcf\data\user\group\UserGroup;
+use wcf\data\user\option\UserOption;
 use wcf\data\user\option\ViewableUserOption;
 use wcf\data\user\User;
 use wcf\data\user\UserProfile;
@@ -25,6 +28,8 @@ use wcf\util\StringUtil;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @extends SortablePage<DatabaseObjectList<DatabaseObject>>
  */
 class UserListPage extends SortablePage
 {
@@ -42,7 +47,7 @@ class UserListPage extends SortablePage
 
     /**
      * applies special CSS classes for selected columns
-     * @var array
+     * @var array<string, string>
      */
     public $columnStyling = [
         'registrationDate' => 'columnDate',
@@ -87,7 +92,7 @@ class UserListPage extends SortablePage
 
     /**
      * list of available user option names
-     * @var array
+     * @var array<string, ViewableUserOption>
      */
     public $options = [];
 
@@ -253,6 +258,8 @@ class UserListPage extends SortablePage
 
     /**
      * Fetches the list of results.
+     *
+     * @return void
      */
     protected function readUsers()
     {
@@ -367,6 +374,8 @@ class UserListPage extends SortablePage
 
     /**
      * Fetches the result of the search with the given search id.
+     *
+     * @return void
      */
     protected function readSearchResult()
     {
@@ -396,19 +405,21 @@ class UserListPage extends SortablePage
 
     /**
      * Fetches the user options from cache.
+     *
+     * @return void
      */
     protected function readUserOptions()
     {
-        $this->options = UserOptionCacheBuilder::getInstance()->getData([], 'options');
-
-        foreach ($this->options as &$option) {
-            $option = new ViewableUserOption($option);
-        }
-        unset($option);
+        $this->options = \array_map(
+            static fn(UserOption $option) => new ViewableUserOption($option),
+            UserOptionCacheBuilder::getInstance()->getData([], 'options')
+        );
     }
 
     /**
      * Reads the column heads.
+     *
+     * @return void
      */
     protected function readColumnsHeads()
     {

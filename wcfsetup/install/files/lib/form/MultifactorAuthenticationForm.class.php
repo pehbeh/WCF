@@ -149,6 +149,8 @@ class MultifactorAuthenticationForm extends AbstractFormBuilderForm
 
     /**
      * Returns to the redirect url if given and to the landing page otherwise.
+     *
+     * @return void
      */
     protected function performRedirect()
     {

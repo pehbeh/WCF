@@ -5,6 +5,7 @@ namespace wcf\system\html\simple;
 use wcf\system\message\embedded\object\ISimpleMessageEmbeddedObjectHandler;
 use wcf\system\message\embedded\object\MessageEmbeddedObjectManager;
 use wcf\system\SingletonFactory;
+use wcf\util\ArrayUtil;
 
 /**
  * Parses content for simple placeholders.
@@ -18,7 +19,7 @@ class HtmlSimpleParser extends SingletonFactory
 {
     /**
      * embedded object context
-     * @var array
+     * @var array{objectType: string, objectID: int}
      */
     protected $context = [
         'objectType' => '',
@@ -26,7 +27,7 @@ class HtmlSimpleParser extends SingletonFactory
     ];
 
     /**
-     * @var ISimpleMessageEmbeddedObjectHandler[]
+     * @var array<string, ISimpleMessageEmbeddedObjectHandler>
      */
     protected $handlers = [];
 
@@ -49,6 +50,7 @@ class HtmlSimpleParser extends SingletonFactory
      *
      * @param string $objectType object type identifier
      * @param int $objectID object id
+     * @return void
      */
     public function setContext($objectType, $objectID)
     {
@@ -66,7 +68,7 @@ class HtmlSimpleParser extends SingletonFactory
      * @param string $objectType object type identifier
      * @param int $objectID object id
      * @param string $message message content
-     * @return      bool         true if there is at least one embedded content found
+     * @return bool true if there is at least one embedded content found
      */
     public function parse($objectType, $objectID, $message)
     {
@@ -90,6 +92,7 @@ class HtmlSimpleParser extends SingletonFactory
 
         $embeddedContent = [];
         foreach ($data as $handler => $values) {
+            $values = ArrayUtil::toIntegerArray($values);
             $values = $this->handlers[$handler]->validateValues($objectType, $objectID, $values);
             if (!empty($values)) {
                 $embeddedContent[$this->handlers[$handler]->objectTypeID] = \array_unique($values);
@@ -106,7 +109,7 @@ class HtmlSimpleParser extends SingletonFactory
      * @param string $objectType object type identifier
      * @param int $objectID object id
      * @param string $message message content
-     * @return      string          parsed and replaced string
+     * @return string parsed and replaced string
      */
     public function replaceTags($objectType, $objectID, $message)
     {
@@ -123,8 +126,13 @@ class HtmlSimpleParser extends SingletonFactory
     /**
      * Replaces a placeholder.
      *
-     * @param array $data placeholder data
-     * @return      string          placeholder replacement
+     * @param array{
+     *  attributes: array<string, string>,
+     *  handler: string,
+     *  raw: string,
+     *  value: string,
+     * } $data placeholder data
+     * @return string placeholder replacement
      */
     public function replaceTag(array $data)
     {
@@ -155,7 +163,7 @@ class HtmlSimpleParser extends SingletonFactory
      * without causing conflicts with existing syntax.
      *
      * @param string $template template content
-     * @return      string          template content with custom template plugin
+     * @return string template content with custom template plugin
      */
     public function parseTemplate($template)
     {
@@ -176,7 +184,12 @@ class HtmlSimpleParser extends SingletonFactory
      * Parses the attribute string and return individual components.
      *
      * @param string $attributesString attributes string, e.g. `foo="1" bar="baz"`
-     * @return      array           list of individual components
+     * @return array{
+     *  attributes: array<string, string>,
+     *  handler: string,
+     *  raw: string,
+     *  value: string,
+     * }
      */
     protected function parseAttributes($attributesString)
     {

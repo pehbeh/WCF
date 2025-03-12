@@ -15,7 +15,7 @@ interface IHtmlProcessor
     /**
      * Returns the parsed html.
      *
-     * @return      string          parsed html
+     * @return string parsed html
      */
     public function getHtml();
 }

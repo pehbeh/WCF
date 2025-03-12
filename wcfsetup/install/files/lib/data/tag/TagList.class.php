@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Tag     current()
- * @method  Tag[]       getObjects()
- * @method  Tag|null    getSingleObject()
- * @method  Tag|null    search($objectID)
- * @property    Tag[] $objects
+ * @extends DatabaseObjectList<Tag>
  */
 class TagList extends DatabaseObjectList
 {

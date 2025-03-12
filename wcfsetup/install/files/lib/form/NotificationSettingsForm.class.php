@@ -206,6 +206,8 @@ class NotificationSettingsForm extends AbstractForm
 
     /**
      * Updates preferences for notification events.
+     *
+     * @return void
      */
     protected function updateActivationStates()
     {

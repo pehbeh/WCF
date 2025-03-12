@@ -42,6 +42,7 @@ abstract class AbstractBulkProcessingForm extends AbstractForm
     /**
      * list with bulk processed objects
      * @var \wcf\data\DatabaseObjectList
+     * @phpstan-ignore missingType.generics
      */
     public $objectList;
 
@@ -168,7 +169,10 @@ abstract class AbstractBulkProcessingForm extends AbstractForm
      */
     public function save()
     {
-        $this->objectList = $this->actions[$this->action]->getProcessor()->getObjectList();
+        $action = $this->actions[$this->action]->getProcessor();
+        \assert($action instanceof AbstractBulkProcessingAction);
+
+        $this->objectList = $action->getObjectList();
 
         parent::save();
 
@@ -182,8 +186,6 @@ abstract class AbstractBulkProcessingForm extends AbstractForm
             }
         }
 
-        $action = $this->actions[$this->action]->getProcessor();
-        /** @var AbstractBulkProcessingAction $action */
         if ($action->canRunInWorker()) {
             $this->objectList->readObjectIDs();
 

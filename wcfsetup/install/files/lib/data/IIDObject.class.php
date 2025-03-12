@@ -15,7 +15,7 @@ interface IIDObject
     /**
      * Returns the unique id of the object.
      *
-     * @return  int
+     * @return int
      */
     public function getObjectID();
 }

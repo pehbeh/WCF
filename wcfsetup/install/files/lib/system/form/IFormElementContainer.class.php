@@ -14,7 +14,7 @@ interface IFormElementContainer
     /**
      * Returns form element container description.
      *
-     * @return  string
+     * @return string
      */
     public function getDescription();
 
@@ -22,13 +22,14 @@ interface IFormElementContainer
      * Sets form element container description.
      *
      * @param string $description
+     * @return void
      */
     public function setDescription($description);
 
     /**
      * Returns label.
      *
-     * @return  string
+     * @return string
      */
     public function getLabel();
 
@@ -36,6 +37,7 @@ interface IFormElementContainer
      * Sets label.
      *
      * @param string $label
+     * @return void
      */
     public function setLabel($label);
 
@@ -43,14 +45,14 @@ interface IFormElementContainer
      * Returns the value of child element with given name.
      *
      * @param string $key
-     * @return  mixed
+     * @return mixed
      */
     public function getValue($key);
 
     /**
      * Returns a list of child elements.
      *
-     * @return  IFormElement[]
+     * @return IFormElement[]
      */
     public function getChildren();
 
@@ -58,6 +60,7 @@ interface IFormElementContainer
      * Appends a new child to stack.
      *
      * @param IFormElement $element
+     * @return void
      */
     public function appendChild(IFormElement $element);
 
@@ -65,13 +68,15 @@ interface IFormElementContainer
      * Prepends a new child to stack.
      *
      * @param IFormElement $element
+     * @return void
      */
     public function prependChild(IFormElement $element);
 
     /**
      * Handles a POST or GET request.
      *
-     * @param array $variables
+     * @param mixed[] $variables
+     * @return void
      */
     public function handleRequest(array $variables);
 
@@ -79,7 +84,7 @@ interface IFormElementContainer
      * Returns HTML-representation of current form element container.
      *
      * @param string $formName
-     * @return  string
+     * @return string
      */
     public function getHTML($formName);
 
@@ -88,6 +93,7 @@ interface IFormElementContainer
      *
      * @param string $name
      * @param string $error
+     * @return void
      */
     public function setError($name, $error);
 }

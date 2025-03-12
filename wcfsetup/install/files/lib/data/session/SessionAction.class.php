@@ -15,9 +15,8 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Session         create()
- * @method  SessionEditor[]     getObjects()
- * @method  SessionEditor       getSingleObject()
+ * @extends AbstractDatabaseObjectAction<Session, SessionEditor>
+ * @phpstan-ignore generics.notSubtype
  */
 class SessionAction extends AbstractDatabaseObjectAction
 {
@@ -39,6 +38,8 @@ class SessionAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates the 'keepAlive' action.
+     *
+     * @return void
      */
     public function validateKeepAlive()
     {
@@ -49,7 +50,7 @@ class SessionAction extends AbstractDatabaseObjectAction
      * Updates session's last activity time to prevent it from expiring. In addition this method
      * will return updated counters for notifications and 3rd party components.
      *
-     * @return  mixed[]
+     * @return mixed[]
      */
     public function keepAlive()
     {
@@ -66,6 +67,8 @@ class SessionAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates parameters to poll notification data.
+     *
+     * @return void
      */
     public function validatePoll()
     {

@@ -16,11 +16,17 @@ class ErrorException extends SystemException
 {
     /**
      * @inheritDoc
+     * @var int
      */
     protected $severity;
 
     /**
-     * @inheritDoc
+     * @param string $message
+     * @param int $code
+     * @param int $severity
+     * @param string $filename
+     * @param int $lineno
+     * @param ?\Exception $previous
      */
     public function __construct(
         $message = "",
@@ -37,6 +43,7 @@ class ErrorException extends SystemException
 
     /**
      * @inheritDoc
+     * @return int
      */
     public function getSeverity()
     {

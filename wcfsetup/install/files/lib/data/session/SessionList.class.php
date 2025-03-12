@@ -2,6 +2,7 @@
 
 namespace wcf\data\session;
 
+use wcf\data\DatabaseObjectDecorator;
 use wcf\data\DatabaseObjectList;
 
 /**
@@ -11,11 +12,8 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Session     current()
- * @method  Session[]   getObjects()
- * @method  Session|null    getSingleObject()
- * @method  Session|null    search($objectID)
- * @property    Session[] $objects
+ * @template-covariant TDatabaseObject of Session|DatabaseObjectDecorator = Session
+ * @extends DatabaseObjectList<TDatabaseObject>
  */
 class SessionList extends DatabaseObjectList
 {

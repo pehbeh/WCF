@@ -47,7 +47,7 @@ class CaptchaSelectOptionType extends AbstractOptionType
      * Prepares JSON-encoded values for disabling or enabling dependent options.
      *
      * @param Option $option
-     * @return  array
+     * @return array{disableOptions: string, enableOptions: string}
      * @see SelectOptionType::parseEnableOptions()
      */
     protected function parseEnableOptions(Option $option)

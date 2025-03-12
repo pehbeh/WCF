@@ -16,8 +16,8 @@ use wcf\system\search\SearchResultTextParser;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method  PageContent getDecoratedObject()
  * @mixin   PageContent
+ * @extends DatabaseObjectDecorator<PageContent>
  */
 class SearchResultPageContent extends DatabaseObjectDecorator implements ISearchResultObject
 {

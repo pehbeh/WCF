@@ -17,6 +17,9 @@ use wcf\system\WCF;
  */
 class SelectFilter extends AbstractFilter
 {
+    /**
+     * @param array<string|int, mixed> $options
+     */
     public function __construct(
         private readonly array $options,
         string $databaseColumn = '',

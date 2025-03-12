@@ -22,6 +22,8 @@ namespace {
 	/**
 	 * Helper method to output debug data for all passed variables,
 	 * uses `print_r()` for arrays and objects, `var_dump()` otherwise.
+	 *
+	 * @return never
 	 */
 	function wcfDebug()
 	{
@@ -108,6 +110,8 @@ namespace wcf\functions\exception {
 	/**
 	 * If the stacktrace contains a compiled template, the context of the relevant template line
 	 * is returned, otherwise an empty array is returned.
+	 *
+	 * @return string[]
 	 */
 	function getTemplateContextLines(\Throwable $e): array
 	{
@@ -251,7 +255,8 @@ namespace wcf\functions\exception {
 	 * Pretty prints the given Throwable. It is recommended to `exit;`
 	 * the request after calling this function.
 	 *
-	 * @throws	\Exception
+	 * @return void
+	 * @throws \Exception
 	 */
 	function printThrowable(\Throwable $e)
 	{
@@ -902,6 +907,8 @@ EXPLANATION;
 	 * This has the downside that the middleware is less transparent but they simply
 	 * rendered stack traces, especially those pasted into messages, unreadable.
 	 * In particular wrapped exceptions could yield massive stack traces.
+	 *
+	 * @return mixed[]
 	 */
 	function getTraceWithoutIntermediateMiddleware(\Throwable $e): array
 	{
@@ -959,6 +966,9 @@ EXPLANATION;
 		);
 	}
 
+	/**
+	 * @param mixed[] $segment
+	 */
 	function isMiddlewareStart(array $segment): bool
 	{
 		if (!isset($segment['class'])) {
@@ -968,6 +978,9 @@ EXPLANATION;
 		return $segment['class'] === Pipeline::class && $segment['function'] === 'process';
 	}
 
+	/**
+	 * @param mixed[] $segment
+	 */
 	function isMiddlewareEnd(array $segment): bool
 	{
 		if (!isset($segment['class'])) {

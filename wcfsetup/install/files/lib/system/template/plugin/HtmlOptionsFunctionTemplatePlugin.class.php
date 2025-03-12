@@ -2,6 +2,7 @@
 
 namespace wcf\system\template\plugin;
 
+use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\system\exception\SystemException;
 use wcf\system\template\TemplateEngine;
@@ -106,7 +107,7 @@ class HtmlOptionsFunctionTemplatePlugin extends HtmlCheckboxesFunctionTemplatePl
      * Makes the HTML for an option group.
      *
      * @param ?string $key
-     * @param array|DatabaseObjectList $values
+     * @param array<string, string|array<string, string>>|DatabaseObjectList<DatabaseObject> $values
      * @return  string
      */
     protected function makeOptionGroup($key, $values)
@@ -118,6 +119,7 @@ class HtmlOptionsFunctionTemplatePlugin extends HtmlCheckboxesFunctionTemplatePl
 
         if ($values instanceof DatabaseObjectList) {
             foreach ($values as $childKey => $value) {
+                // @phpstan-ignore argument.type, argument.type
                 $html .= $this->makeOption($childKey, $value);
             }
         } else {

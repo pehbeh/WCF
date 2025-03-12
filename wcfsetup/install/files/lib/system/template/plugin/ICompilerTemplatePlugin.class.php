@@ -16,7 +16,7 @@ interface ICompilerTemplatePlugin
     /**
      * Executes the start tag of this compiler function.
      *
-     * @param array $tagArgs
+     * @param array<int|string, mixed> $tagArgs
      * @param TemplateScriptingCompiler $compiler
      * @return  string
      */

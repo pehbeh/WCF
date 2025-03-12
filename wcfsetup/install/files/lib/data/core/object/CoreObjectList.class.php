@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  CoreObject      current()
- * @method  CoreObject[]        getObjects()
- * @method  CoreObject|null     getSingleObject()
- * @method  CoreObject|null     search($objectID)
- * @property    CoreObject[] $objects
+ * @extends DatabaseObjectList<CoreObject>
  */
 class CoreObjectList extends DatabaseObjectList
 {

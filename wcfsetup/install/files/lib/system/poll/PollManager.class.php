@@ -92,6 +92,7 @@ class PollManager extends SingletonFactory
      * Removes a list of polls by id.
      *
      * @param int[] $pollIDs
+     * @return void
      */
     public function removePolls(array $pollIDs)
     {
@@ -162,7 +163,8 @@ class PollManager extends SingletonFactory
     /**
      * Reads form parameters for polls.
      *
-     * @param array $postData optional post data to be used instead of $_POST
+     * @param array<string, mixed> $postData optional post data to be used instead of $_POST
+     * @return void
      */
     public function readFormParameters(array $postData = [])
     {
@@ -212,6 +214,8 @@ class PollManager extends SingletonFactory
 
     /**
      * Validates poll parameters.
+     *
+     * @return void
      */
     public function validate()
     {
@@ -315,7 +319,7 @@ class PollManager extends SingletonFactory
      * This method either creates a new poll or updates or deletes an existing poll.
      *
      * @param IPollContainer $pollContainer object the poll belongs to
-     * @param array $pollData poll data
+     * @param mixed[] $pollData poll data
      * @return  null|int                    id of the poll
      * @since   5.2
      */
@@ -350,6 +354,8 @@ class PollManager extends SingletonFactory
 
     /**
      * Assigns variables for poll management or display.
+     *
+     * @return void
      */
     public function assignVariables()
     {

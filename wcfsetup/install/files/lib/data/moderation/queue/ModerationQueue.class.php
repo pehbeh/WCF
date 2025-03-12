@@ -24,7 +24,7 @@ use wcf\system\WCF;
  * @property-read   int $status         status of the moderation queue entry (see `ModerationQueue::STATUS_*` constants)
  * @property-read   int $comments       number of comments on the moderation queue entry
  * @property-read   int $lastChangeTime     timestamp at which the moderation queue entry has been changed the last time
- * @property-read   array $additionalData     array with additional data of the moderation queue entry
+ * @property-read   mixed[] $additionalData     array with additional data of the moderation queue entry
  * @property-read   bool $markAsJustified    true if the report was closed, but it was actually justified and other actions may have been taken
  * @property-read   string $message
  */

@@ -210,7 +210,7 @@ abstract class AbstractFormFieldDecorator implements IFormField
     /**
      * @inheritDoc
      */
-    public function addClass($class): static
+    public function addClass(string $class): static
     {
         $this->field->addClass($class);
 
@@ -240,7 +240,7 @@ abstract class AbstractFormFieldDecorator implements IFormField
     /**
      * @inheritDoc
      */
-    public function attribute($name, $value = null): static
+    public function attribute(string $name, ?string $value = null): static
     {
         $this->field->attribute($name, $value);
 
@@ -250,7 +250,7 @@ abstract class AbstractFormFieldDecorator implements IFormField
     /**
      * @inheritDoc
      */
-    public function available($available = true): static
+    public function available(bool $available = true): static
     {
         $this->field->available($available);
 
@@ -278,7 +278,7 @@ abstract class AbstractFormFieldDecorator implements IFormField
     /**
      * @inheritDoc
      */
-    public function getAttribute($name): mixed
+    public function getAttribute(string $name): mixed
     {
         return $this->field->getAttribute($name);
     }

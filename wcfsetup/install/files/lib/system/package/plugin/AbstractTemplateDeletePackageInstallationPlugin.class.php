@@ -32,6 +32,7 @@ abstract class AbstractTemplateDeletePackageInstallationPlugin extends AbstractF
 
     /**
      * @inheritDoc
+     * @return void
      */
     protected function addFormFields(IFormDocument $form)
     {

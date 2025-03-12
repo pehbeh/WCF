@@ -13,13 +13,15 @@ interface IGroupedUserListAction
 {
     /**
      * Validates parameters to return a parsed list of users.
+     *
+     * @return void
      */
     public function validateGetGroupedUserList();
 
     /**
      * Returns a parsed list of users.
      *
-     * @return  array
+     * @return array{pageCount: int, template: string}
      */
     public function getGroupedUserList();
 }

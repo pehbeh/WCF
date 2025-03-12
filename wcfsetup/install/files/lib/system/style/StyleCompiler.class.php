@@ -331,6 +331,8 @@ final class StyleCompiler extends SingletonFactory
      * Builds the preload manifest from the given iterable containing
      * preload requests.
      *
+     * @param iterable<array{filename: string, as: string, crossorigin: bool, type: ?string}> $requests
+     * @return array{http: list<string>, html: list<string>}
      * @see StyleCompiler::extractPreloadRequests()
      * @since 5.4
      */
@@ -370,6 +372,7 @@ final class StyleCompiler extends SingletonFactory
     /**
      * Extracts preload requests from the given CSS string.
      *
+     * @return iterable<array{filename: string, as: string, crossorigin: bool, type: ?string}>
      * @since 5.4
      */
     private function extractPreloadRequests(string $css): iterable
@@ -741,6 +744,8 @@ final class StyleCompiler extends SingletonFactory
 
     /**
      * Writes the given css into the file with the given prefix.
+     *
+     * @param ?array{http: list<string>, html: list<string>} $preloadManifest
      */
     private function writeCss(string $filePrefix, string $css, ?array $preloadManifest = null): void
     {

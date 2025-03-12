@@ -75,6 +75,8 @@ class TagCloudCacheBuilder extends AbstractCacheBuilder
 
     /**
      * Reads associated tags.
+     *
+     * @return void
      */
     protected function getTags()
     {

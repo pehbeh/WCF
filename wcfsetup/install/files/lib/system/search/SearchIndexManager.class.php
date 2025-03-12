@@ -21,7 +21,7 @@ class SearchIndexManager extends SingletonFactory implements IContextAwareSearch
 {
     /**
      * list of available object types
-     * @var array
+     * @var array<string, ObjectType>
      */
     protected $availableObjectTypes = [];
 

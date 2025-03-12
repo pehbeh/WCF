@@ -4,6 +4,7 @@ namespace wcf\data\edit\history\entry;
 
 use wcf\data\DatabaseObject;
 use wcf\data\object\type\ObjectTypeCache;
+use wcf\system\edit\IHistorySavingObject;
 
 /**
  * Represents an edit history entry.
@@ -26,14 +27,14 @@ use wcf\data\object\type\ObjectTypeCache;
 class EditHistoryEntry extends DatabaseObject
 {
     /**
-     * @inheritDoc
+     * @var ?IHistorySavingObject
      */
     protected $object;
 
     /**
      * Returns the message text of the history entry.
      *
-     * @return  string
+     * @return string
      */
     public function getMessage()
     {
@@ -43,7 +44,7 @@ class EditHistoryEntry extends DatabaseObject
     /**
      * Returns the corresponding IHistorySavingObject
      *
-     * @return  \wcf\system\edit\IHistorySavingObject
+     * @return IHistorySavingObject
      */
     public function getObject()
     {

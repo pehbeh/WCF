@@ -20,9 +20,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  PollEditor[]    getObjects()
- * @method  PollEditor  getSingleObject()
- * @property-read PollEditor[] $objects
+ * @extends AbstractDatabaseObjectAction<Poll, PollEditor>
  */
 class PollAction extends AbstractDatabaseObjectAction implements IGroupedUserListAction
 {
@@ -199,6 +197,13 @@ class PollAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
 
     /**
      * Executes a user's vote.
+     *
+     * @return array{
+     *  changeableVote: int,
+     *  totalVotes: int,
+     *  totalVotesTooltip: string,
+     *  template: string,
+     * }
      */
     public function vote()
     {
@@ -335,12 +340,11 @@ class PollAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
     }
 
     /**
+     * @return array{template: string}
      * @since  5.5
      */
     public function getResultTemplate(): array
     {
-        \assert($this->poll instanceof PollEditor);
-
         return [
             'template' => WCF::getTPL()->render('wcf', 'pollResult', [
                 'poll' => $this->poll->getDecoratedObject(),
@@ -368,6 +372,7 @@ class PollAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
     }
 
     /**
+     * @return array{template: string}
      * @since  5.5
      */
     public function getVoteTemplate(): array
@@ -431,6 +436,8 @@ class PollAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
 
     /**
      * Copies a poll from one object id to another.
+     *
+     * @return array{pollID: ?int}
      */
     public function copy()
     {

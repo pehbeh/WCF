@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  StatDaily       current()
- * @method  StatDaily[]     getObjects()
- * @method  StatDaily|null      getSingleObject()
- * @method  StatDaily|null      search($objectID)
- * @property    StatDaily[] $objects
+ * @extends DatabaseObjectList<StatDaily>
  */
 class StatDailyList extends DatabaseObjectList
 {

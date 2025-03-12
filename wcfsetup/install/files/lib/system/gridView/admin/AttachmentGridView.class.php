@@ -37,6 +37,8 @@ use wcf\util\StringUtil;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @extends AbstractGridView<AdministrativeAttachment, AdministrativeAttachmentList>
  */
 final class AttachmentGridView extends AbstractGridView
 {
@@ -147,6 +149,9 @@ final class AttachmentGridView extends AbstractGridView
         $this->setSortField('uploadTime');
     }
 
+    /**
+     * @return array<string, string>
+     */
     private function getAvailableFileTypes(): array
     {
         $sql = "SELECT    DISTINCT file_table.mimeType

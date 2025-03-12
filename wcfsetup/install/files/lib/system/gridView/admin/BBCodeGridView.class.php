@@ -3,6 +3,7 @@
 namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\BBCodeEditForm;
+use wcf\data\bbcode\BBCode;
 use wcf\data\bbcode\BBCodeList;
 use wcf\data\DatabaseObject;
 use wcf\event\gridView\admin\BBCodeGridViewInitialized;
@@ -24,6 +25,8 @@ use wcf\system\WCF;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @extends AbstractGridView<BBCode, BBCodeList>
  */
 final class BBCodeGridView extends AbstractGridView
 {

@@ -21,21 +21,23 @@ interface IAttributeFormField extends IFormField
     /**
      * Returns the value of the additional attribute of the actual field element with the given name.
      *
-     * @throws      \InvalidArgumentException       if the given attribute is invalid or no such attribute exists
-     * @return      mixed
+     * @throws \InvalidArgumentException if the given attribute is invalid or no such attribute exists
+     * @return mixed
      */
     public function getFieldAttribute(string $name);
 
     /**
      * Returns all additional attributes of the actual field element.
+     *
+     * @return array<string, string>
      */
     public function getFieldAttributes(): array;
 
     /**
      * Adds the given additional attribute to the actual field element and returns this field.
      *
-     * @throws      \InvalidArgumentException       if the given attribute is invalid
-     * @return      static                          this form field
+     * @throws \InvalidArgumentException if the given attribute is invalid
+     * @return static this form field
      */
     public function fieldAttribute(string $name, ?string $value = null);
 
@@ -43,7 +45,7 @@ interface IAttributeFormField extends IFormField
      * Returns `true` if an additional attribute of the actual field element with the given name exists and returns
      * false` otherwise.
      *
-     * @throws      \InvalidArgumentException       if the given attribute is invalid
+     * @throws \InvalidArgumentException if the given attribute is invalid
      */
     public function hasFieldAttribute(string $name): bool;
 
@@ -52,8 +54,8 @@ interface IAttributeFormField extends IFormField
      *
      * If the actual field element does not have the given attribute, this method silently ignores that fact.
      *
-     * @throws      \InvalidArgumentException       if the given attribute is invalid
-     * @return      static                          this form field
+     * @throws \InvalidArgumentException if the given attribute is invalid
+     * @return static this form field
      */
     public function removeFieldAttribute(string $name);
 }

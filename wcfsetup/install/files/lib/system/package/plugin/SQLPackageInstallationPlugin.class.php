@@ -41,29 +41,14 @@ class SQLPackageInstallationPlugin extends AbstractPackageInstallationPlugin
                 $this->installation->getAction()
             );
             $conflicts = $parser->test();
-            if (!empty($conflicts) && (isset($conflicts['CREATE TABLE']) || isset($conflicts['DROP TABLE']))) {
-                $unknownCreateTable = $conflicts['CREATE TABLE'] ?? [];
-                $unknownDropTable = $conflicts['DROP TABLE'] ?? [];
+            if ($conflicts !== [] && isset($conflicts['CREATE TABLE'])) {
+                $unknownCreateTable = $conflicts['CREATE TABLE'];
 
-                $errorMessage = "Can't";
-                if (!empty($unknownDropTable)) {
-                    $errorMessage .= " drop unknown table";
-                    if (\count($unknownDropTable) > 1) {
-                        $errorMessage .= "s";
-                    }
-                    $errorMessage .= " '" . \implode("', '", $unknownDropTable) . "'";
+                $errorMessage = "Can't overwrite unknown table";
+                if (\count($unknownCreateTable) > 1) {
+                    $errorMessage .= "s";
                 }
-                if (!empty($unknownCreateTable)) {
-                    if (!empty($unknownDropTable)) {
-                        $errorMessage .= " and can't";
-                    }
-
-                    $errorMessage .= " overwrite unknown table";
-                    if (\count($unknownCreateTable) > 1) {
-                        $errorMessage .= "s";
-                    }
-                    $errorMessage .= " '" . \implode("', '", $unknownCreateTable) . "'";
-                }
+                $errorMessage .= " '" . \implode("', '", $unknownCreateTable) . "'";
 
                 throw new SystemException($errorMessage);
             }

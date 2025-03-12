@@ -15,12 +15,8 @@ final class JSON
 {
     /**
      * Returns the JSON representation of a value.
-     *
-     * @param mixed $data
-     * @param int $options
-     * @return  string
      */
-    public static function encode($data, $options = 0)
+    public static function encode(mixed $data, int $options = 0): string
     {
         return \json_encode($data, $options);
     }
@@ -28,12 +24,10 @@ final class JSON
     /**
      * Decodes a JSON string.
      *
-     * @param string $json
-     * @param bool $asArray
-     * @return  array
+     * @return mixed[]
      * @throws  SystemException
      */
-    public static function decode($json, $asArray = true)
+    public static function decode(string $json, bool $asArray = true): array
     {
         $data = @\json_decode($json, $asArray);
 
@@ -50,10 +44,8 @@ final class JSON
 
     /**
      * Returns the last error occurred.
-     *
-     * @return  int
      */
-    public static function getLastError()
+    public static function getLastError(): int
     {
         return \json_last_error();
     }

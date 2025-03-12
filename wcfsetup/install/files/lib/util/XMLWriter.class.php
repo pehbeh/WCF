@@ -38,7 +38,7 @@ class XMLWriter
      * @param string $namespace
      * @param string $schemaLocation
      * @param string[] $attributes
-     * @throws  SystemException
+     * @return void
      */
     public function beginDocument($rootElement, $namespace, $schemaLocation, array $attributes = [])
     {
@@ -77,7 +77,7 @@ class XMLWriter
      * elements will be automatically closed before flushing.
      *
      * @param string $filename
-     * @return  mixed
+     * @return string|int|void
      */
     public function endDocument($filename = '')
     {
@@ -103,6 +103,7 @@ class XMLWriter
      *
      * @param string $element
      * @param string[] $attributes
+     * @return void
      */
     public function startElement($element, array $attributes = [])
     {
@@ -116,6 +117,8 @@ class XMLWriter
 
     /**
      * Ends the last opened element.
+     *
+     * @return void
      */
     public function endElement()
     {
@@ -132,6 +135,8 @@ class XMLWriter
      * @param string $cdata
      * @param string[] $attributes
      * @param bool $writeAsCdata
+     *
+     * @return void
      */
     public function writeElement($element, $cdata, array $attributes = [], $writeAsCdata = true)
     {
@@ -158,6 +163,7 @@ class XMLWriter
      * Writes a comment.
      *
      * @param string $comment
+     * @return void
      * @since   5.2
      */
     public function writeComment($comment)
@@ -170,6 +176,7 @@ class XMLWriter
      *
      * @param string $attribute
      * @param string $value
+     * @return void
      */
     public function writeAttribute($attribute, $value)
     {
@@ -180,6 +187,7 @@ class XMLWriter
      * Writes a list of attributes to last opened element.
      *
      * @param string[] $attributes
+     * @return void
      */
     public function writeAttributes(array $attributes)
     {

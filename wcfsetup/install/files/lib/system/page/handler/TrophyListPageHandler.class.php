@@ -18,6 +18,7 @@ class TrophyListPageHandler extends AbstractLookupPageHandler
 
     /**
      * @inheritDoc
+     * @return string
      */
     protected function getDecoratedCategoryClass()
     {

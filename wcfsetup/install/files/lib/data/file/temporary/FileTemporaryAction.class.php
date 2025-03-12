@@ -10,9 +10,7 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.1
  *
- * @method FileTemporary create()
- * @method FileTemporaryEditor[] getObjects()
- * @method FileTemporaryEditor getSingleObject()
+ * @extends AbstractDatabaseObjectAction<FileTemporary, FileTemporaryEditor>
  */
 class FileTemporaryAction extends AbstractDatabaseObjectAction
 {

@@ -14,6 +14,31 @@ use wcf\util\JSON;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       3.1
+ * @phpstan-type Configuration array{
+ *  setup?: array{
+ *      database?: array{
+ *          auto: bool,
+ *          host: string,
+ *          password: string,
+ *          username: string,
+ *      },
+ *      useDefaultInstallPath?: bool,
+ *      forceStaticCookiePrefix?: bool,
+ *  },
+ *  configuration?: array{
+ *      option?: array<string, string>,
+ *      devtools?: array<string, string>,
+ *  },
+ *  packageServerLogin?: array{
+ *      username: string,
+ *      password: string,
+ *  },
+ *  user?: list<array{
+ *      username: string,
+ *      password: string,
+ *      email: string,
+ *  }>,
+ * }
  */
 class DevtoolsSetup extends SingletonFactory
 {
@@ -25,7 +50,7 @@ class DevtoolsSetup extends SingletonFactory
 
     /**
      * configuration data
-     * @var array
+     * @var Configuration|array{}
      */
     protected $configuration = [];
 
@@ -52,7 +77,7 @@ class DevtoolsSetup extends SingletonFactory
     /**
      * Returns the database configuration.
      *
-     * @return array|null
+     * @return ?array{auto: bool, host: string, password: string, username: string, dbName: string}
      */
     public function getDatabaseConfig()
     {
@@ -85,7 +110,7 @@ class DevtoolsSetup extends SingletonFactory
      * Returns true if the suggested default paths for the Core and, if exists,
      * the bundled app should be used.
      *
-     * @return      bool
+     * @return bool
      */
     public function useDefaultInstallPath()
     {
@@ -96,7 +121,7 @@ class DevtoolsSetup extends SingletonFactory
      * Returns true if a static cookie prefix should be used, instead of the randomized
      * value used for non-dev-mode installations.
      *
-     * @return      bool
+     * @return bool
      */
     public function forceStaticCookiePrefix()
     {
@@ -106,7 +131,7 @@ class DevtoolsSetup extends SingletonFactory
     /**
      * List of option values that will be set after the setup has completed.
      *
-     * @return      string[]
+     * @return string[]
      */
     public function getOptionOverrides()
     {
@@ -124,7 +149,7 @@ class DevtoolsSetup extends SingletonFactory
     /**
      * Returns a list of users that should be automatically created during setup.
      *
-     * @return      array|\Generator
+     * @return \Generator<array{username: string, password: string, email: string}>
      */
     public function getUsers()
     {
@@ -148,7 +173,7 @@ class DevtoolsSetup extends SingletonFactory
     /**
      * Returns the base path for projects that should be automatically imported.
      *
-     * @return      string
+     * @return string
      */
     public function getDevtoolsImportPath()
     {
@@ -157,6 +182,8 @@ class DevtoolsSetup extends SingletonFactory
 
     /**
      * Returns the login data for the WoltLab package servers.
+     *
+     * @return array{username: string, password: string}|array{}
      */
     public function getPackageServerLogin(): array
     {
@@ -170,7 +197,7 @@ class DevtoolsSetup extends SingletonFactory
     /**
      * Returns the raw configuration data.
      *
-     * @return array
+     * @return Configuration
      */
     public function getRawConfiguration()
     {

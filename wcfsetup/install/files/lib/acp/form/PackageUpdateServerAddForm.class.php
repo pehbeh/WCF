@@ -3,6 +3,7 @@
 namespace wcf\acp\form;
 
 use Laminas\Diactoros\Uri;
+use wcf\data\package\update\server\PackageUpdateServer;
 use wcf\data\package\update\server\PackageUpdateServerAction;
 use wcf\data\package\update\server\PackageUpdateServerList;
 use wcf\form\AbstractForm;
@@ -79,6 +80,7 @@ class PackageUpdateServerAddForm extends AbstractForm
     /**
      * Validates the server URL.
      *
+     * @return void
      * @since       5.3
      */
     protected function validateServerURL()
@@ -122,6 +124,7 @@ class PackageUpdateServerAddForm extends AbstractForm
     /**
      * Returns the first package update server with a matching serverURL.
      *
+     * @return ?PackageUpdateServer
      * @since       5.3
      */
     protected function findDuplicateServer()
@@ -133,6 +136,8 @@ class PackageUpdateServerAddForm extends AbstractForm
                 return $packageServer;
             }
         }
+
+        return null;
     }
 
     /**

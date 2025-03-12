@@ -7,6 +7,7 @@ use wcf\data\option\OptionAction;
 use wcf\system\application\ApplicationHandler;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\menu\acp\ACPMenu;
+use wcf\system\option\OptionHandler;
 use wcf\system\service\worker\ServiceWorkerHandler;
 use wcf\system\style\StyleHandler;
 use wcf\system\WCF;
@@ -17,6 +18,8 @@ use wcf\system\WCF;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @extends AbstractOptionListForm<OptionHandler>
  */
 class OptionForm extends AbstractOptionListForm
 {
@@ -34,7 +37,7 @@ class OptionForm extends AbstractOptionListForm
 
     /**
      * the option tree
-     * @var array
+     * @var mixed[]
      */
     public $optionTree = [];
 

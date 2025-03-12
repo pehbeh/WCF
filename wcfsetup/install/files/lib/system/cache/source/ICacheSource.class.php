@@ -16,11 +16,14 @@ interface ICacheSource
      *
      * @param string $cacheName
      * @param bool $useWildcard
+     * @return void
      */
     public function flush($cacheName, $useWildcard);
 
     /**
      * Clears the cache completely.
+     *
+     * @return void
      */
     public function flushAll();
 
@@ -29,7 +32,7 @@ interface ICacheSource
      *
      * @param string $cacheName
      * @param int $maxLifetime
-     * @return  mixed
+     * @return mixed
      */
     public function get($cacheName, $maxLifetime);
 
@@ -39,6 +42,7 @@ interface ICacheSource
      * @param string $cacheName
      * @param mixed $value
      * @param int $maxLifetime
+     * @return void
      */
     public function set($cacheName, $value, $maxLifetime);
 }

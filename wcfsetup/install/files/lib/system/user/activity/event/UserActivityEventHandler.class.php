@@ -69,7 +69,7 @@ class UserActivityEventHandler extends SingletonFactory
      * @param int $languageID
      * @param int $userID
      * @param int $time
-     * @param array $additionalData
+     * @param mixed[] $additionalData
      * @return  \wcf\data\user\activity\event\UserActivityEvent
      * @throws  SystemException
      */
@@ -111,7 +111,8 @@ class UserActivityEventHandler extends SingletonFactory
      * This method is intended for bulk processing.
      *
      * @param string $objectType
-     * @param array $eventData
+     * @param mixed[] $eventData
+     * @return void
      * @throws  SystemException
      */
     public function fireEvents($objectType, array $eventData)
@@ -155,6 +156,7 @@ class UserActivityEventHandler extends SingletonFactory
      * @param string $objectType
      * @param int $objectID
      * @param int $userID
+     * @return void
      * @throws  SystemException
      */
     public function removeEvent($objectType, $objectID, $userID = null)
@@ -185,6 +187,7 @@ class UserActivityEventHandler extends SingletonFactory
      *
      * @param string $objectType
      * @param int[] $objectIDs
+     * @return void
      * @throws  SystemException
      */
     public function removeEvents($objectType, array $objectIDs)
@@ -211,7 +214,7 @@ class UserActivityEventHandler extends SingletonFactory
     /**
      * Validates an event list and removes orphaned events.
      *
-     * @param ViewableUserActivityEventList $eventList
+     * @return void
      */
     public static function validateEvents(ViewableUserActivityEventList $eventList)
     {

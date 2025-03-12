@@ -2,6 +2,7 @@
 
 namespace wcf\system\cache\builder;
 
+use wcf\data\acl\option\ACLOption;
 use wcf\data\label\group\LabelGroupList;
 use wcf\data\label\group\ViewableLabelGroup;
 use wcf\data\label\LabelList;
@@ -13,6 +14,10 @@ use wcf\system\acl\ACLHandler;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @phpstan-type LabelCache array{
+ *  options: array<int, ACLOption>,
+ *  groups: array<int, ViewableLabelGroup>,
+ * }
  */
 class LabelCacheBuilder extends AbstractCacheBuilder
 {

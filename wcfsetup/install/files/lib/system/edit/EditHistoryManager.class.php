@@ -3,6 +3,7 @@
 namespace wcf\system\edit;
 
 use wcf\data\edit\history\entry\EditHistoryEntryList;
+use wcf\data\object\type\ObjectType;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\exception\SystemException;
@@ -20,7 +21,7 @@ class EditHistoryManager extends SingletonFactory
 {
     /**
      * list of available object types
-     * @var array
+     * @var array<string, ObjectType>
      */
     protected $availableObjectTypes = [];
 
@@ -38,8 +39,8 @@ class EditHistoryManager extends SingletonFactory
      * Returns the id of the object type with the given name.
      *
      * @param string $objectType
-     * @return  int
-     * @throws  SystemException
+     * @return int
+     * @throws SystemException
      */
     public function getObjectTypeID($objectType)
     {
@@ -61,6 +62,7 @@ class EditHistoryManager extends SingletonFactory
      * @param string $username
      * @param string $editReason
      * @param int $obsoletedByUserID The userID of the user that forced this entry to become outdated
+     * @return void
      */
     public function add($objectType, $objectID, $message, $time, $userID, $username, $editReason, $obsoletedByUserID)
     {
@@ -92,6 +94,7 @@ class EditHistoryManager extends SingletonFactory
      *
      * @param string $objectType
      * @param int[] $objectIDs
+     * @return void
      */
     public function delete($objectType, array $objectIDs)
     {
@@ -121,6 +124,7 @@ class EditHistoryManager extends SingletonFactory
      *
      * @param int[] $userIDs
      * @param int $timeframe
+     * @return void
      */
     public function bulkRevert(array $userIDs, $timeframe = 86400)
     {

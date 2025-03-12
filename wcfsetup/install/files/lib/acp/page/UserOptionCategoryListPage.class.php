@@ -12,7 +12,7 @@ use wcf\page\SortablePage;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    UserOptionCategoryList $objectList
+ * @extends SortablePage<UserOptionCategoryList>
  */
 class UserOptionCategoryListPage extends SortablePage
 {

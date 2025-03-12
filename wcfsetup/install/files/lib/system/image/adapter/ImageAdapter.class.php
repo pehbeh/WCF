@@ -12,12 +12,14 @@ use wcf\util\FileUtil;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @implements IImageAdapter<\stdClass>
+ * @implements IMemoryAwareImageAdapter<\stdClass>
  */
 class ImageAdapter implements IImageAdapter, IMemoryAwareImageAdapter, ISingleFrameImageAdapter
 {
     /**
      * IImageAdapter object
-     * @var IImageAdapter
+     * @var IImageAdapter<\stdClass>
      */
     protected $adapter;
 
@@ -352,7 +354,7 @@ class ImageAdapter implements IImageAdapter, IMemoryAwareImageAdapter, ISingleFr
 
         $adapterClassName = \get_class($this->adapter);
 
-        /** @var IImageAdapter $overlayImage */
+        /** @var IImageAdapter<\stdClass> $overlayImage */
         $overlayImage = new $adapterClassName();
         $overlayImage->loadFile($file);
         $overlayHeight = $overlayImage->getHeight();

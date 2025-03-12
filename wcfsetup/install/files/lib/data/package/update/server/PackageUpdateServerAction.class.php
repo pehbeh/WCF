@@ -14,9 +14,7 @@ use wcf\system\exception\PermissionDeniedException;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  PackageUpdateServer     create()
- * @method  PackageUpdateServerEditor[] getObjects()
- * @method  PackageUpdateServerEditor   getSingleObject()
+ * @extends AbstractDatabaseObjectAction<PackageUpdateServer, PackageUpdateServerEditor>
  */
 class PackageUpdateServerAction extends AbstractDatabaseObjectAction implements IToggleAction
 {

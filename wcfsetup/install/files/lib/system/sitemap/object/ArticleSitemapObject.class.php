@@ -3,6 +3,7 @@
 namespace wcf\system\sitemap\object;
 
 use wcf\data\article\content\ArticleContent;
+use wcf\data\article\content\ArticleContentList;
 use wcf\data\DatabaseObject;
 use wcf\data\page\PageCache;
 
@@ -13,6 +14,8 @@ use wcf\data\page\PageCache;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
+ *
+ * @extends AbstractSitemapObjectObjectType<ArticleContent, ArticleContentList>
  */
 class ArticleSitemapObject extends AbstractSitemapObjectObjectType
 {
@@ -29,7 +32,6 @@ class ArticleSitemapObject extends AbstractSitemapObjectObjectType
      */
     public function canView(DatabaseObject $object)
     {
-        /** @var ArticleContent $object */
         return $object->getArticle()->canRead();
     }
 

@@ -13,9 +13,7 @@ use wcf\data\TDatabaseObjectToggle;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  BBCodeMediaProvider     create()
- * @method  BBCodeMediaProviderEditor[] getObjects()
- * @method  BBCodeMediaProviderEditor   getSingleObject()
+ * @extends AbstractDatabaseObjectAction<BBCodeMediaProvider, BBCodeMediaProviderEditor>
  */
 class BBCodeMediaProviderAction extends AbstractDatabaseObjectAction implements IToggleAction
 {

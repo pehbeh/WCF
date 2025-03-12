@@ -15,7 +15,7 @@ class PreparedStatementConditionBuilder extends ConditionBuilder
 {
     /**
      * input parameters
-     * @var array
+     * @var array<int, mixed>
      */
     protected $parameters = [];
 
@@ -23,7 +23,8 @@ class PreparedStatementConditionBuilder extends ConditionBuilder
      * Adds a new condition. The parameters array has to be a numbered array.
      *
      * @param string $condition
-     * @param array $parameters
+     * @param array<int, mixed> $parameters
+     * @return void
      */
     public function add($condition, array $parameters = [])
     {
@@ -81,7 +82,7 @@ class PreparedStatementConditionBuilder extends ConditionBuilder
     /**
      * Returns the input parameters.
      *
-     * @return  array
+     * @return array<int, mixed>
      */
     public function getParameters()
     {

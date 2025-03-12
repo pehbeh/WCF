@@ -65,6 +65,9 @@ class NumericFilter extends AbstractFilter
         return '';
     }
 
+    /**
+     * @return array{from: int, to: int}
+     */
     private function parseValue(string $value): array
     {
         $from = 0;

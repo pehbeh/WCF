@@ -12,8 +12,7 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  BoxContentEditor[]  getObjects()
- * @method  BoxContentEditor    getSingleObject()
+ * @extends AbstractDatabaseObjectAction<BoxContent, BoxContentEditor>
  */
 class BoxContentAction extends AbstractDatabaseObjectAction
 {

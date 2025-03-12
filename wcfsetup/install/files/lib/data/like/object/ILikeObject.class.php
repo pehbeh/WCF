@@ -20,21 +20,21 @@ interface ILikeObject extends IDatabaseObjectProcessor, IIDObject, ITitledObject
     /**
      * Returns the url to this likeable.
      *
-     * @return  string
+     * @return string
      */
     public function getURL();
 
     /**
      * Returns the user id of the owner of this object.
      *
-     * @return  int
+     * @return int
      */
     public function getUserID();
 
     /**
      * Returns the likeable object type previously set via `setObjectType()`.
      *
-     * @return  ObjectType
+     * @return ObjectType
      */
     public function getObjectType();
 
@@ -42,27 +42,28 @@ interface ILikeObject extends IDatabaseObjectProcessor, IIDObject, ITitledObject
      * Updates the cumulative likes for this object.
      *
      * @param int $cumulativeLikes
+     * @return void
      */
     public function updateLikeCounter($cumulativeLikes);
 
     /**
      * Sets the likable object type.
      *
-     * @param ObjectType $objectType
+     * @return void
      */
     public function setObjectType(ObjectType $objectType);
 
     /**
      * Sends a notification for this like.
      *
-     * @param Like $like
+     * @return void
      */
     public function sendNotification(Like $like);
 
     /**
      * Returns the language id of this object or its parent or `null` if no explicit language is set.
      *
-     * @return  int|null
+     * @return ?int
      */
     public function getLanguageID();
 }

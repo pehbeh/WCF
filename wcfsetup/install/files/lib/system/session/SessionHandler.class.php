@@ -66,26 +66,21 @@ final class SessionHandler extends SingletonFactory
 
     /**
      * language id for active user
-     * @var int
      */
-    private $languageID = 0;
+    private int $languageID = 0;
 
-    /**
-     * @var string
-     */
     private string $sessionID;
 
     private ?LegacySession $legacySession = null;
 
     /**
      * user object
-     * @var User
      */
     private User $user;
 
     /**
      * session variables
-     * @var array
+     * @var array<string, mixed>
      */
     private $variables = [];
 
@@ -100,7 +95,7 @@ final class SessionHandler extends SingletonFactory
      * list of names of permissions only available for users
      * @var string[]
      */
-    private $usersOnlyPermissions = [];
+    private array $usersOnlyPermissions = [];
 
     private string $xsrfToken;
 
@@ -182,6 +177,8 @@ final class SessionHandler extends SingletonFactory
      * Parses the session cookie value, returning an array with the stored fields.
      *
      * The return array is guaranteed to have a `sessionId` key.
+     *
+     * @return array{sessionId: string}&array<string, mixed>
      */
     private function parseCookie(string $value): array
     {
@@ -220,6 +217,7 @@ final class SessionHandler extends SingletonFactory
     /**
      * Extracts the data from the session cookie.
      *
+     * @return array{sessionId: string}&array<string, mixed>
      * @see SessionHandler::parseCookie()
      * @since 5.4
      */
@@ -253,6 +251,8 @@ final class SessionHandler extends SingletonFactory
 
     /**
      * Returns the session ID stored in the session cookie or `null`.
+     *
+     * @param ?(array{sessionId: string}&array<string, mixed>) $cookieData
      */
     private function getSessionIdFromCookie(?array $cookieData): ?string
     {
@@ -307,7 +307,7 @@ final class SessionHandler extends SingletonFactory
     /**
      * @deprecated 5.4 - Sessions are managed automatically. Use loadFromCookie().
      */
-    public function load($sessionEditorClassName, $sessionID)
+    public function load(string $sessionEditorClassName, string $sessionID): void
     {
         $hasSession = false;
         if (!empty($sessionID)) {
@@ -322,7 +322,7 @@ final class SessionHandler extends SingletonFactory
     /**
      * Loads the session matching the session cookie.
      */
-    public function loadFromCookie()
+    public function loadFromCookie(): void
     {
         $cookieData = $this->getParsedCookieData();
         $sessionID = $this->getSessionIdFromCookie($cookieData);
@@ -341,6 +341,8 @@ final class SessionHandler extends SingletonFactory
 
     /**
      * Refreshes the session cookie, extending the expiry.
+     *
+     * @param array{timestep?: int} $cookieData
      */
     private function maybeRefreshCookie(array $cookieData): void
     {
@@ -365,10 +367,11 @@ final class SessionHandler extends SingletonFactory
     /**
      * Initializes session system.
      */
-    public function initSession()
+    public function initSession(): void
     {
         // assign language
-        $this->languageID = $this->getVar('languageID') ?: $this->user->languageID;
+        $languageID = $this->getVar('languageID') ?: $this->user->languageID;
+        $this->languageID = $languageID ?: 0;
 
         // https://github.com/WoltLab/WCF/issues/2568
         if ($this->getVar('__wcfIsFirstVisit') === true) {
@@ -380,7 +383,7 @@ final class SessionHandler extends SingletonFactory
     /**
      * Disables update on shutdown.
      */
-    public function disableUpdate()
+    public function disableUpdate(): void
     {
         $this->doNotUpdate = true;
     }
@@ -704,10 +707,8 @@ final class SessionHandler extends SingletonFactory
 
     /**
      * Returns the value of the permission with the given name.
-     *
-     * @return  mixed       permission value
      */
-    public function getPermission(string $permission)
+    public function getPermission(string $permission): mixed
     {
         // check if a users only permission is checked for a guest and return
         // false if that is the case
@@ -727,10 +728,8 @@ final class SessionHandler extends SingletonFactory
     /**
      * Returns true if a permission was set to 'Never'. This is required to preserve
      * compatibility, while preventing ACLs from overruling a 'Never' setting.
-     *
-     * @return      bool
      */
-    public function getNeverPermission(string $permission)
+    public function getNeverPermission(string $permission): bool
     {
         $this->loadGroupData();
 
@@ -744,7 +743,7 @@ final class SessionHandler extends SingletonFactory
      * @param string[] $permissions list of permissions where each one must pass
      * @throws  PermissionDeniedException
      */
-    public function checkPermissions(array $permissions)
+    public function checkPermissions(array $permissions): void
     {
         foreach ($permissions as $permission) {
             if (!$this->getPermission($permission)) {
@@ -756,7 +755,7 @@ final class SessionHandler extends SingletonFactory
     /**
      * Loads group data from cache.
      */
-    private function loadGroupData()
+    private function loadGroupData(): void
     {
         if ($this->groupData !== null) {
             return;
@@ -779,9 +778,10 @@ final class SessionHandler extends SingletonFactory
     }
 
     /**
+     * @return int[]
      * @deprecated 6.0 Use User::getLanguageIDs() instead.
      */
-    public function getLanguageIDs()
+    public function getLanguageIDs(): array
     {
         if (!$this->user->userID) {
             return [];
@@ -893,7 +893,7 @@ final class SessionHandler extends SingletonFactory
      *
      * @param $hideSession if true, database won't be updated
      */
-    public function changeUser(User $user, bool $hideSession = false)
+    public function changeUser(User $user, bool $hideSession = false): void
     {
         $eventParameters = ['user' => $user, 'hideSession' => $hideSession];
 
@@ -912,7 +912,7 @@ final class SessionHandler extends SingletonFactory
 
         // reset caches
         $this->groupData = null;
-        $this->languageID = $this->user->languageID;
+        $this->languageID = $this->user->languageID ?: 0;
 
         // change language
         WCF::setLanguage($this->languageID ?: 0);
@@ -925,8 +925,6 @@ final class SessionHandler extends SingletonFactory
 
     /**
      * Changes the user stored in the session.
-     *
-     * @param User $user
      */
     private function changeUserVirtual(User $user): void
     {
@@ -1202,7 +1200,7 @@ final class SessionHandler extends SingletonFactory
     /**
      * @deprecated 5.4 - This method is a noop. The lastActivityTime is always updated immediately after loading.
      */
-    public function keepAlive() {}
+    public function keepAlive(): void {}
 
     /**
      * Deletes this session and its related data.
@@ -1265,20 +1263,16 @@ final class SessionHandler extends SingletonFactory
 
     /**
      * Returns currently active language id.
-     *
-     * @return  int
      */
-    public function getLanguageID()
+    public function getLanguageID(): int
     {
         return $this->languageID;
     }
 
     /**
      * Sets the currently active language id.
-     *
-     * @param int $languageID
      */
-    public function setLanguageID($languageID)
+    public function setLanguageID(int $languageID): void
     {
         $this->languageID = $languageID;
         $this->register('languageID', $this->languageID);
@@ -1290,7 +1284,7 @@ final class SessionHandler extends SingletonFactory
      * @param int[] $userIDs
      * @deprecated 6.1 see https://github.com/WoltLab/WCF/pull/3767
      */
-    public static function resetSessions(array $userIDs = [])
+    public static function resetSessions(array $userIDs = []): void
     {
         if (!empty($userIDs)) {
             UserStorageHandler::getInstance()->reset($userIDs, 'groupIDs');
@@ -1391,6 +1385,7 @@ final class SessionHandler extends SingletonFactory
     /**
      * Returns the session variables.
      *
+     * @return array<string, mixed>
      * @since 6.1
      */
     public function getVariables(): array

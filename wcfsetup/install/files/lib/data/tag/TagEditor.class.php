@@ -12,9 +12,8 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static Tag create(array $parameters = [])
- * @method      Tag getDecoratedObject()
  * @mixin       Tag
+ * @extends DatabaseObjectEditor<Tag>
  */
 class TagEditor extends DatabaseObjectEditor
 {
@@ -26,7 +25,7 @@ class TagEditor extends DatabaseObjectEditor
     /**
      * Adds the given tag, and all of it's synonyms as a synonym.
      *
-     * @param Tag $synonym
+     * @return void
      */
     public function addSynonym(Tag $synonym)
     {

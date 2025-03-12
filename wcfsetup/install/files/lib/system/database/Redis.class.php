@@ -19,7 +19,7 @@ use wcf\util\StringUtil;
  * @method  mixed      hGet($key, $hashKey)
  * @method  int     hSet($key, $hashKey, $value)
  * @method  int     incr($key)
- * @method  array      info($option = null)
+ * @method  mixed[]      info($option = null)
  * @method  bool        setex($key, $ttl, $value)
  * @method  bool        setnx($key, $value)
  * @method  int     ttl($key)
@@ -93,8 +93,8 @@ class Redis
      * Passes all method calls down to the underlying Redis connection.
      *
      * @param string $name
-     * @param array $arguments
-     * @return  mixed
+     * @param mixed[] $arguments
+     * @return mixed
      */
     public function __call($name, array $arguments)
     {

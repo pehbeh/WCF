@@ -75,6 +75,7 @@ class DevtoolsInstaller extends Installer
             }
 
             if ($archive !== null) {
+                // @phpstan-ignore if.alwaysTrue
                 if ($this->project->isCore()) {
                     switch ($instruction['pip']) {
                         case 'acpTemplate':

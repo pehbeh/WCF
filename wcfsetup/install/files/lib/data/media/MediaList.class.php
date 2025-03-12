@@ -13,11 +13,7 @@ use wcf\system\database\util\PreparedStatementConditionBuilder;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  Media       current()
- * @method  Media[]     getObjects()
- * @method  Media|null  getSingleObject()
- * @method  Media|null  search($objectID)
- * @property    Media[] $objects
+ * @extends DatabaseObjectList<Media>
  */
 class MediaList extends DatabaseObjectList
 {
@@ -30,6 +26,7 @@ class MediaList extends DatabaseObjectList
      * Adds conditions to search the media files by a certain search string.
      *
      * @param string $searchString
+     * @return void
      */
     public function addSearchConditions($searchString)
     {

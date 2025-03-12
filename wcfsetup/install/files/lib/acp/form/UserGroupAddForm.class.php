@@ -17,7 +17,8 @@ use wcf\util\StringUtil;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
- * @property-read UserGroupOptionHandler $optionHandler
+ *
+ * @extends AbstractOptionListForm<UserGroupOptionHandler>
  */
 class UserGroupAddForm extends AbstractOptionListForm
 {
@@ -33,7 +34,7 @@ class UserGroupAddForm extends AbstractOptionListForm
 
     /**
      * option tree
-     * @var array
+     * @var mixed[]
      */
     public $optionTree = [];
 
@@ -60,8 +61,8 @@ class UserGroupAddForm extends AbstractOptionListForm
     protected $groupDescription = '';
 
     /**
-     * list of values of group 'Anyone'
-     * @var array
+     * list of values of group 'Everyone'
+     * @var mixed[]
      */
     public $defaultValues = [];
 

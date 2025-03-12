@@ -10,9 +10,8 @@ use wcf\data\DatabaseObjectEditor;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.1
  *
- * @method static FileTemporary create(array $parameters = [])
- * @method FileTemporary getDecoratedObject()
  * @mixin FileTemporary
+ * @extends DatabaseObjectEditor<FileTemporary>
  */
 class FileTemporaryEditor extends DatabaseObjectEditor
 {

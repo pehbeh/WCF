@@ -15,7 +15,7 @@ use wcf\util\ArrayUtil;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       5.2
  *
- * @method ContactAttachment getObject($objectID)
+ * @extends AbstractAttachmentObjectType<ContactAttachment>
  */
 class ContactAttachmentObjectType extends AbstractAttachmentObjectType
 {

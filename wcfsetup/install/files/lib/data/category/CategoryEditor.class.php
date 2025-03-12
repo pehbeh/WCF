@@ -15,8 +15,9 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Category    getDecoratedObject()
  * @mixin   Category
+ * @extends DatabaseObjectEditor<Category>
+ * @implements IEditableCachedObject<Category>
  */
 class CategoryEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {
@@ -31,7 +32,7 @@ class CategoryEditor extends DatabaseObjectEditor implements IEditableCachedObje
      *
      * @param int $parentCategoryID
      * @param ?int $showOrder
-     * @return  int
+     * @return int
      */
     public function updateShowOrder($parentCategoryID, $showOrder)
     {
@@ -108,7 +109,6 @@ class CategoryEditor extends DatabaseObjectEditor implements IEditableCachedObje
 
     /**
      * @inheritDoc
-     * @return  Category
      */
     public static function create(array $parameters = [])
     {
@@ -129,9 +129,7 @@ class CategoryEditor extends DatabaseObjectEditor implements IEditableCachedObje
             $parameters['additionalData'] = \serialize([]);
         }
 
-        $object = parent::create($parameters);
-        \assert($object instanceof Category);
-        return $object;
+        return parent::create($parameters);
     }
 
     /**
@@ -160,7 +158,7 @@ class CategoryEditor extends DatabaseObjectEditor implements IEditableCachedObje
      * @param int $objectTypeID
      * @param int $parentCategoryID
      * @param ?int $showOrder
-     * @return  int
+     * @return int
      */
     protected static function getShowOrder($objectTypeID, $parentCategoryID, $showOrder)
     {

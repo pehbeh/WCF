@@ -22,6 +22,7 @@ class PackagePage extends AbstractPage
     public $activeMenuItem = 'wcf.acp.menu.link.package.list';
 
     /**
+     * @var array{}
      * @deprecated 5.5 This array is always empty.
      */
     public $compatibleVersions = [];

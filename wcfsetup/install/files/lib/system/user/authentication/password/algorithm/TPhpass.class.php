@@ -14,7 +14,7 @@ use ParagonIE\ConstantTime\Hex;
  */
 trait TPhpass
 {
-    private $itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    private string $itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
     /**
      * Returns the hashed password, with the given settings.

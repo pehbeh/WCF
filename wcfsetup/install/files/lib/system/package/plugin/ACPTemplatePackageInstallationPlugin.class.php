@@ -79,6 +79,7 @@ class ACPTemplatePackageInstallationPlugin extends AbstractPackageInstallationPl
 
         \assert($this->installation instanceof PackageUninstallationDispatcher);
         foreach ($templates as $application => $templateNames) {
+            // @phpstan-ignore method.notFound
             $this->installation->deleteFiles(
                 Application::getDirectory($application),
                 $templateNames,

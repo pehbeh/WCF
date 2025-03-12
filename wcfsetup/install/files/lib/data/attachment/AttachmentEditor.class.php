@@ -15,9 +15,8 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static Attachment  create(array $parameters = [])
- * @method      Attachment  getDecoratedObject()
  * @mixin       Attachment
+ * @extends DatabaseObjectEditor<Attachment>
  */
 class AttachmentEditor extends DatabaseObjectEditor
 {
@@ -53,7 +52,9 @@ class AttachmentEditor extends DatabaseObjectEditor
                 " . $conditionBuilder;
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute($conditionBuilder->getParameters());
+        // @phpstan-ignore argument.templateType
         while ($attachment = $statement->fetchObject(static::$baseClass)) {
+            /** @var Attachment $attachment */
             $editor = new self($attachment);
             $editor->deleteFiles();
         }
@@ -63,6 +64,8 @@ class AttachmentEditor extends DatabaseObjectEditor
 
     /**
      * Deletes attachment files.
+     *
+     * @return void
      */
     public function deleteFiles()
     {

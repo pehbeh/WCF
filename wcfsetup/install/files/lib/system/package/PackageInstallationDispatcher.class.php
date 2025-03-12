@@ -94,11 +94,6 @@ class PackageInstallationDispatcher
      */
     protected $previousPackageData;
 
-    /**
-     * Creates a new instance of PackageInstallationDispatcher.
-     *
-     * @param PackageInstallationQueue $queue
-     */
     public function __construct(PackageInstallationQueue $queue)
     {
         $this->queue = $queue;
@@ -111,6 +106,7 @@ class PackageInstallationDispatcher
      * Sets data of previous package in queue.
      *
      * @param string[] $packageData
+     * @return void
      */
     public function setPreviousPackage(array $packageData)
     {
@@ -384,8 +380,9 @@ class PackageInstallationDispatcher
     /**
      * Logs an installation step.
      *
-     * @param array $node data of the executed node
+     * @param mixed[] $node data of the executed node
      * @param $log optional additional log text
+     * @return void
      */
     protected function logInstallationStep(array $node = [], string $log = ''): void
     {
@@ -416,6 +413,10 @@ class PackageInstallationDispatcher
         );
     }
 
+    /**
+     * @param mixed[] $nodeData
+     * @return PackageInstallationStep
+     */
     protected function handleStartMarker(array $nodeData)
     {
         (new AuditLogger())->log(
@@ -450,6 +451,9 @@ class PackageInstallationDispatcher
         return new PackageInstallationStep();
     }
 
+    /**
+     * @return PackageInstallationStep
+     */
     protected function handleEndMarker()
     {
         (new AuditLogger())->log(
@@ -502,6 +506,7 @@ class PackageInstallationDispatcher
      * Installs current package.
      *
      * @param mixed[] $nodeData
+     * @return PackageInstallationStep
      * @throws  SystemException
      */
     protected function installPackage(array $nodeData): PackageInstallationStep
@@ -646,7 +651,7 @@ class PackageInstallationDispatcher
     /**
      * Creates a new package based on the given data and returns it.
      *
-     * @param array $packageData
+     * @param mixed[] $packageData
      * @return  Package
      * @since   5.2
      */
@@ -664,6 +669,8 @@ class PackageInstallationDispatcher
 
     /**
      * Saves the localized package info.
+     *
+     * @return void
      */
     protected function saveLocalizedPackageInfos()
     {
@@ -713,6 +720,7 @@ class PackageInstallationDispatcher
      * @param LanguageCategory $languageCategory
      * @param Package $package
      * @param string $infoName
+     * @return void
      */
     protected function saveLocalizedPackageInfo(
         PreparedStatement $statement,
@@ -822,7 +830,8 @@ class PackageInstallationDispatcher
      * Displays a list to select optional packages or installs selection.
      *
      * @param string $currentNode
-     * @param array $nodeData
+     * @param mixed[] $nodeData
+     * @return PackageInstallationStep
      */
     protected function selectOptionalPackages(string $currentNode, array $nodeData): PackageInstallationStep
     {
@@ -1131,6 +1140,8 @@ class PackageInstallationDispatcher
 
     /**
      * Updates queue information.
+     *
+     * @return void
      */
     public function updatePackage()
     {

@@ -14,8 +14,9 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserOption  getDecoratedObject()
  * @mixin   UserOption
+ * @extends DatabaseObjectEditor<UserOption>
+ * @implements IEditableCachedObject<UserOption>
  */
 class UserOptionEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {
@@ -98,6 +99,8 @@ class UserOptionEditor extends DatabaseObjectEditor implements IEditableCachedOb
 
     /**
      * Disables this option.
+     *
+     * @return void
      */
     public function disable()
     {
@@ -108,6 +111,7 @@ class UserOptionEditor extends DatabaseObjectEditor implements IEditableCachedOb
      * Enables this option.
      *
      * @param bool $enable
+     * @return void
      */
     public function enable($enable = true)
     {
@@ -124,7 +128,14 @@ class UserOptionEditor extends DatabaseObjectEditor implements IEditableCachedOb
      * Determines the needed sql statement to modify column definitions.
      *
      * @param string $optionType
-     * @return  array       column definition
+     * @return array{
+     *  autoIncrement: bool,
+     *  key: false,
+     *  notNull: bool,
+     *  type: string,
+     *  default?: int|float|string,
+     *  length?: int,
+     * } column definition
      */
     public static function getColumnDefinition($optionType)
     {

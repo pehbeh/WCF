@@ -14,6 +14,9 @@ use wcf\system\WCF;
  */
 class SelectOptionType extends RadioButtonOptionType
 {
+    /**
+     * @var bool
+     */
     protected $allowEmptyValue = false;
 
     /**
@@ -56,7 +59,7 @@ class SelectOptionType extends RadioButtonOptionType
      * Prepares JSON-encoded values for disabling or enabling dependent options.
      *
      * @param Option $option
-     * @return  array
+     * @return array{disableOptions: string, enableOptions: string}
      */
     protected function parseEnableOptions(Option $option)
     {

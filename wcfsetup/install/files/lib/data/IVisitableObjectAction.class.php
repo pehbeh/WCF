@@ -13,11 +13,15 @@ interface IVisitableObjectAction
 {
     /**
      * Marks objects as read.
+     *
+     * @return void
      */
     public function markAsRead();
 
     /**
      * Validates parameters to mark objects as read.
+     *
+     * @return void
      */
     public function validateMarkAsRead();
 }

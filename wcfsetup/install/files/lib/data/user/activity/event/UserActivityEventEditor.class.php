@@ -11,9 +11,8 @@ use wcf\data\DatabaseObjectEditor;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static UserActivityEvent   create(array $parameters = [])
- * @method      UserActivityEvent   getDecoratedObject()
  * @mixin       UserActivityEvent
+ * @extends DatabaseObjectEditor<UserActivityEvent>
  */
 class UserActivityEventEditor extends DatabaseObjectEditor
 {

@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\ModificationLogGridView;
 
 /**
@@ -13,8 +12,8 @@ use wcf\system\gridView\admin\ModificationLogGridView;
  * @copyright   2001-2019 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    ModificationLogGridView    $gridView
  * @since       5.2
+ * @extends AbstractGridViewPage<ModificationLogGridView>
  */
 class ModificationLogListPage extends AbstractGridViewPage
 {
@@ -29,7 +28,7 @@ class ModificationLogListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.management.canViewLog'];
 
     #[\Override]
-    protected function createGridView(): AbstractGridView
+    protected function createGridView(): ModificationLogGridView
     {
         return new ModificationLogGridView();
     }

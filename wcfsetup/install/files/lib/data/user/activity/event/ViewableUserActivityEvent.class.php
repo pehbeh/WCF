@@ -16,8 +16,8 @@ use wcf\system\user\UserProfileHandler;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserActivityEvent   getDecoratedObject()
  * @mixin   UserActivityEvent
+ * @extends DatabaseObjectDecorator<UserActivityEvent>
  */
 class ViewableUserActivityEvent extends DatabaseObjectDecorator
 {
@@ -52,7 +52,7 @@ class ViewableUserActivityEvent extends DatabaseObjectDecorator
 
     /**
      * user profile
-     * @var UserProfile
+     * @var ?UserProfile
      */
     protected $userProfile;
 
@@ -74,6 +74,8 @@ class ViewableUserActivityEvent extends DatabaseObjectDecorator
 
     /**
      * Marks this event as accessible for current user.
+     *
+     * @return void
      */
     public function setIsAccessible()
     {
@@ -83,7 +85,7 @@ class ViewableUserActivityEvent extends DatabaseObjectDecorator
     /**
      * Returns true if event is accessible by current user.
      *
-     * @return  bool
+     * @return bool
      */
     public function isAccessible()
     {
@@ -92,6 +94,8 @@ class ViewableUserActivityEvent extends DatabaseObjectDecorator
 
     /**
      * Marks this event as orphaned.
+     *
+     * @return void
      */
     public function setIsOrphaned()
     {
@@ -101,7 +105,7 @@ class ViewableUserActivityEvent extends DatabaseObjectDecorator
     /**
      * Returns true if event is orphaned (associated object removed).
      *
-     * @return  bool
+     * @return bool
      */
     public function isOrphaned()
     {
@@ -111,7 +115,7 @@ class ViewableUserActivityEvent extends DatabaseObjectDecorator
     /**
      * Sets user profile.
      *
-     * @param UserProfile $userProfile
+     * @return void
      * @deprecated  3.0
      */
     public function setUserProfile(UserProfile $userProfile)
@@ -122,7 +126,7 @@ class ViewableUserActivityEvent extends DatabaseObjectDecorator
     /**
      * Returns user profile.
      *
-     * @return  UserProfile
+     * @return UserProfile
      */
     public function getUserProfile()
     {
@@ -138,6 +142,7 @@ class ViewableUserActivityEvent extends DatabaseObjectDecorator
      *
      * @param string $description
      * @param bool $isRawHtml
+     * @return void
      */
     public function setDescription($description, $isRawHtml = false)
     {
@@ -148,7 +153,7 @@ class ViewableUserActivityEvent extends DatabaseObjectDecorator
     /**
      * Returns event text.
      *
-     * @return  string
+     * @return string
      */
     public function getDescription()
     {
@@ -159,6 +164,7 @@ class ViewableUserActivityEvent extends DatabaseObjectDecorator
      * Sets event title.
      *
      * @param string $title
+     * @return void
      */
     public function setTitle($title)
     {
@@ -168,7 +174,7 @@ class ViewableUserActivityEvent extends DatabaseObjectDecorator
     /**
      * Returns event title.
      *
-     * @return  string
+     * @return string
      */
     public function getTitle()
     {
@@ -178,7 +184,7 @@ class ViewableUserActivityEvent extends DatabaseObjectDecorator
     /**
      * Returns the object type name.
      *
-     * @return  string
+     * @return string
      */
     public function getObjectTypeName()
     {
@@ -188,8 +194,8 @@ class ViewableUserActivityEvent extends DatabaseObjectDecorator
     /**
      * Returns true if event description contains raw html.
      *
-     * @return      bool
-     * @since       3.1
+     * @return bool
+     * @since 3.1
      */
     public function isRawHtml()
     {

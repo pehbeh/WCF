@@ -10,11 +10,7 @@ use wcf\data\DatabaseObjectList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.1
  *
- * @method FileThumbnail current()
- * @method FileThumbnail[] getObjects()
- * @method FileThumbnail|null getSingleObject()
- * @method FileThumbnail|null search($objectID)
- * @property FileThumbnail[] $objects
+ * @extends DatabaseObjectList<FileThumbnail>
  */
 class FileThumbnailList extends DatabaseObjectList
 {

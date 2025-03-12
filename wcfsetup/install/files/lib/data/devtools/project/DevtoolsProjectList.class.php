@@ -12,11 +12,7 @@ use wcf\data\DatabaseObjectList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method  DevtoolsProject     current()
- * @method  DevtoolsProject[]   getObjects()
- * @method  DevtoolsProject|null    getSingleObject()
- * @method  DevtoolsProject|null    search($objectID)
- * @property    DevtoolsProject[] $objects
+ * @extends DatabaseObjectList<DevtoolsProject>
  */
 class DevtoolsProjectList extends DatabaseObjectList
 {

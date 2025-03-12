@@ -11,6 +11,14 @@ use wcf\util\FileUtil;
  * @author  Jens Hausdorf, Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @phpstan-type BenchmarkItem array{
+ *  text: string,
+ *  type: int,
+ *  before: float,
+ *  start: float,
+ *  trace: mixed[],
+ * }
  */
 class Benchmark extends SingletonFactory
 {
@@ -27,13 +35,13 @@ class Benchmark extends SingletonFactory
     /**
      * time when the webserver received this request
      * @var float
-     * @since   5.2
+     * @since  5.2
      */
     protected $requestStartTime = 0;
 
     /**
      * benchmark items
-     * @var array
+     * @var list<BenchmarkItem>
      */
     protected $items = [];
 
@@ -63,7 +71,7 @@ class Benchmark extends SingletonFactory
      *
      * @param string $text
      * @param int $type
-     * @return  int     index
+     * @return int index
      */
     public function start($text, $type = self::TYPE_OTHER)
     {
@@ -82,6 +90,7 @@ class Benchmark extends SingletonFactory
      * latest benchmark is stopped.
      *
      * @param int $index
+     * @return void
      */
     public function stop($index = null)
     {
@@ -104,7 +113,7 @@ class Benchmark extends SingletonFactory
     /**
      * Returns the execution time.
      *
-     * @return  float
+     * @return float
      */
     public function getExecutionTime()
     {
@@ -116,7 +125,7 @@ class Benchmark extends SingletonFactory
      * received this request.
      *
      * @return float
-     * @since   5.2
+     * @since 5.2
      */
     public function getRequestExecutionTime()
     {
@@ -128,7 +137,7 @@ class Benchmark extends SingletonFactory
      * the timestamp when our PHP code is being executed.
      *
      * @return float
-     * @since   5.2
+     * @since 5.2
      */
     public function getOffsetToRequestTime()
     {
@@ -138,7 +147,7 @@ class Benchmark extends SingletonFactory
     /**
      * Returns the sql query execution time
      *
-     * @return  float
+     * @return float
      */
     public function getQueryExecutionTime()
     {
@@ -148,7 +157,7 @@ class Benchmark extends SingletonFactory
     /**
      * Returns the number of executed sql queries.
      *
-     * @return  int
+     * @return int
      */
     public function getQueryCount()
     {
@@ -158,7 +167,7 @@ class Benchmark extends SingletonFactory
     /**
      * Returns the logged items.
      *
-     * @return  array
+     * @return list<BenchmarkItem>
      */
     public function getItems()
     {
@@ -168,7 +177,7 @@ class Benchmark extends SingletonFactory
     /**
      * Returns the current unix timestamp as a float.
      *
-     * @return  float       unix timestamp
+     * @return float unix timestamp
      */
     protected static function getMicrotime()
     {
@@ -180,7 +189,7 @@ class Benchmark extends SingletonFactory
      *
      * @param float $startTime
      * @param float $endTime
-     * @return  float
+     * @return float
      */
     protected static function compareMicrotimes($startTime, $endTime)
     {
@@ -190,7 +199,7 @@ class Benchmark extends SingletonFactory
     /**
      * Returns the formatted peak of memory_usage.
      *
-     * @return  string
+     * @return string
      */
     public function getMemoryUsage()
     {

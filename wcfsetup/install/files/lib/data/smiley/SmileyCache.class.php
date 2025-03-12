@@ -20,19 +20,19 @@ class SmileyCache extends SingletonFactory
 {
     /**
      * cached smilies
-     * @var Smiley[][]
+     * @var array<int, array<int, Smiley>>
      */
     protected $cachedSmilies = [];
 
     /**
      * cached smilies with smiley code as key
-     * @var Smiley[]
+     * @var array<string, Smiley>
      */
     protected $cachedSmileyByCode = [];
 
     /**
      * cached smiley categories
-     * @var SmileyCategory[]
+     * @var array<?int, SmileyCategory>
      */
     protected $cachedCategories = [];
 
@@ -43,7 +43,7 @@ class SmileyCache extends SingletonFactory
     protected $visibleCategories;
 
     /**
-     * @var Smiley[]
+     * @var array<string, Smiley>
      */
     protected array $emojis;
 
@@ -57,6 +57,7 @@ class SmileyCache extends SingletonFactory
         $this->cachedSmileyByCode = SmileyCacheBuilder::getInstance()->getData([], 'codes');
         $smileyCategories = CategoryHandler::getInstance()->getCategories('com.woltlab.wcf.bbcode.smiley');
 
+        // @phpstan-ignore assign.propertyType
         $this->cachedCategories[null] = new SmileyCategory(new Category(null, [
             'categoryID' => null,
             'parentCategoryID' => 0,
@@ -74,7 +75,7 @@ class SmileyCache extends SingletonFactory
     /**
      * Returns all smilies.
      *
-     * @return  Smiley[][]
+     * @return array<int, array<int, Smiley>>
      */
     public function getSmilies()
     {
@@ -85,7 +86,7 @@ class SmileyCache extends SingletonFactory
      * Returns the smiley with the given smiley code or `null` if no such smiley exists.
      *
      * @param string $code
-     * @return  Smiley|null
+     * @return ?Smiley
      */
     public function getSmileyByCode($code)
     {
@@ -95,7 +96,7 @@ class SmileyCache extends SingletonFactory
     /**
      * Returns all smiley categories.
      *
-     * @return  SmileyCategory[]
+     * @return array<?int, SmileyCategory>
      */
     public function getCategories()
     {
@@ -105,7 +106,7 @@ class SmileyCache extends SingletonFactory
     /**
      * Returns all enabled smiley categories with at least one smiley.
      *
-     * @return  SmileyCategory[]
+     * @return array<int, SmileyCategory>
      */
     public function getVisibleCategories()
     {
@@ -129,8 +130,8 @@ class SmileyCache extends SingletonFactory
     /**
      * Returns all the smilies of a category.
      *
-     * @param int $categoryID
-     * @return  array
+     * @param ?int $categoryID
+     * @return array<int, Smiley>
      */
     public function getCategorySmilies($categoryID = null)
     {
@@ -144,7 +145,8 @@ class SmileyCache extends SingletonFactory
     /**
      * Assigns the smilies and their categories to the template.
      *
-     * @since   5.2
+     * @return void
+     * @since 5.2
      */
     public function assignVariables()
     {
@@ -168,7 +170,7 @@ class SmileyCache extends SingletonFactory
     /**
      * Return all smileys that match `:[a-z][a-z0-9]*+(?:_[a-z0-9]+)*:`.
      *
-     * @return Smiley[]
+     * @return array<string, Smiley>
      * @since 6.1
      */
     public function getEmojis(): array

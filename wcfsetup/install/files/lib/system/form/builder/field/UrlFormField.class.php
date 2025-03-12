@@ -26,6 +26,7 @@ class UrlFormField extends TextFormField
 
     /**
      * @inheritDoc
+     * @return string[]
      * @since       5.4
      */
     protected function getValidAutoCompleteTokens(): array
@@ -38,7 +39,7 @@ class UrlFormField extends TextFormField
     }
 
     /**
-     * @inheritDoc
+     * @return string[]
      */
     protected function getValidInputModes(): array
     {

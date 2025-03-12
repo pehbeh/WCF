@@ -20,9 +20,9 @@ use wcf\util\FileUtil;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method static Page    create(array $parameters = [])
- * @method      Page    getDecoratedObject()
  * @mixin       Page
+ * @extends DatabaseObjectEditor<Page>
+ * @implements IEditableCachedObject<Page>
  */
 class PageEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {
@@ -36,6 +36,7 @@ class PageEditor extends DatabaseObjectEditor implements IEditableCachedObject
      *
      * @param int $languageID language id or `null`
      * @param string $content template content
+     * @return void
      */
     public function updateTemplate($languageID, $content)
     {

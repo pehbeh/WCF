@@ -11,6 +11,9 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
+ *
+ * @template-covariant TDatabaseObject of DatabaseObject|DatabaseObjectDecorator
+ * @extends DatabaseObjectList<TDatabaseObject>
  */
 abstract class I18nDatabaseObjectList extends DatabaseObjectList
 {
@@ -29,7 +32,7 @@ abstract class I18nDatabaseObjectList extends DatabaseObjectList
 
     /**
      * @inheritDoc
-     * @param int $languageID id of the language that should be used
+     * @param ?int $languageID id of the language that should be used
      * @throws \DomainException
      */
     public function __construct($languageID = null)

@@ -23,6 +23,7 @@ use wcf\util\StringUtil;
 class MysqlSearchEngine extends AbstractSearchEngine
 {
     /**
+     * @var int
      * @deprecated 5.4 - This property is used for the deprecated getFulltextMinimumWordLength().
      */
     protected $ftMinWordLen;
@@ -179,6 +180,9 @@ class MysqlSearchEngine extends AbstractSearchEngine
      * - `test -foo bar` becomes `+test* -foo +bar*`
      * - `test <foo bar` becomes `+test* <foo* +bar*`
      * - `test "foo bar"` becomes `+test* +"foo bar"`
+     *
+     * @param string $query
+     * @return string
      */
     protected function parseSearchQuery($query)
     {
@@ -335,6 +339,8 @@ class MysqlSearchEngine extends AbstractSearchEngine
      * Word: |bar|
      * Word: |)|
      *
+     * @param string $query
+     * @return iterable<array{0: string, 1: string, 2: string}>
      * @see https://dev.mysql.com/doc/refman/8.0/en/fulltext-boolean.html
      * @see https://github.com/mysql/mysql-server/blob/ee4455a33b10f1b1886044322e4893f587b319ed/storage/innobase/fts/fts0pars.y
      * @see https://github.com/mysql/mysql-server/blob/ee4455a33b10f1b1886044322e4893f587b319ed/storage/innobase/fts/fts0blex.l
@@ -546,6 +552,7 @@ class MysqlSearchEngine extends AbstractSearchEngine
     }
 
     /**
+     * @return int
      * @deprecated 5.4 - This method was required for use in parseSearchQuery().
      */
     protected function getFulltextMinimumWordLength()

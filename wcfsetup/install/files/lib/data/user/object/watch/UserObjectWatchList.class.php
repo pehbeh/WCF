@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserObjectWatch     current()
- * @method  UserObjectWatch[]   getObjects()
- * @method  UserObjectWatch|null    getSingleObject()
- * @method  UserObjectWatch|null    search($objectID)
- * @property    UserObjectWatch[] $objects
+ * @extends DatabaseObjectList<UserObjectWatch>
  */
 class UserObjectWatchList extends DatabaseObjectList
 {

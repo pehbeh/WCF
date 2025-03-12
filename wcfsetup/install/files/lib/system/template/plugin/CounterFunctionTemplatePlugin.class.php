@@ -19,7 +19,7 @@ class CounterFunctionTemplatePlugin implements IFunctionTemplatePlugin
 {
     /**
      * counter data
-     * @var array
+     * @var array<string, array{skip: int, direction: string, assign: ?string, print: bool, count: int}>
      */
     protected $counters = [];
 

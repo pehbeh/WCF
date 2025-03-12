@@ -13,6 +13,8 @@ use wcf\system\WCF;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @implements \Iterator<int, Breadcrumb>
  */
 final class Breadcrumbs extends SingletonFactory implements \Countable, \Iterator
 {
@@ -20,12 +22,12 @@ final class Breadcrumbs extends SingletonFactory implements \Countable, \Iterato
      * list of breadcrumbs
      * @var Breadcrumb[]
      */
-    protected $items;
+    private array $items;
 
     /**
      * Current iterator-index
      */
-    protected int $index = 0;
+    private int $index = 0;
 
     /**
      * Returns the list of breadcrumbs.
@@ -34,7 +36,7 @@ final class Breadcrumbs extends SingletonFactory implements \Countable, \Iterato
      */
     public function get(): array
     {
-        if ($this->items === null) {
+        if (!isset($this->items)) {
             $this->loadBreadcrumbs();
         }
 
@@ -44,7 +46,7 @@ final class Breadcrumbs extends SingletonFactory implements \Countable, \Iterato
     /**
      * Loads the list of breadcrumbs.
      */
-    protected function loadBreadcrumbs(): void
+    private function loadBreadcrumbs(): void
     {
         $this->items = [];
         $locations = PageLocationManager::getInstance()->getLocations();
@@ -83,7 +85,7 @@ final class Breadcrumbs extends SingletonFactory implements \Countable, \Iterato
      */
     public function count(): int
     {
-        if ($this->items === null) {
+        if (!isset($this->items)) {
             $this->loadBreadcrumbs();
         }
 

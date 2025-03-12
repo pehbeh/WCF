@@ -13,9 +13,7 @@ use wcf\data\comment\ViewableCommentList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.5
  *
- * @method  (ViewableComment|null)[]   getCachedObjects()
- * @method  ViewableComment|null     getObject($objectID)
- * @method  (ViewableComment|null)[]   getObjects(array $objectIDs)
+ * @extends AbstractRuntimeCache<ViewableComment, ViewableCommentList>
  */
 class ViewableCommentRuntimeCache extends AbstractRuntimeCache
 {

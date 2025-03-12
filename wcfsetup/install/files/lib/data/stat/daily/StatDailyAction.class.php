@@ -6,6 +6,7 @@ use wcf\data\AbstractDatabaseObjectAction;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\exception\UserInputException;
+use wcf\system\stat\IStatDailyHandler;
 use wcf\system\WCF;
 
 /**
@@ -15,9 +16,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  StatDaily       create()
- * @method  StatDailyEditor[]   getObjects()
- * @method  StatDailyEditor     getSingleObject()
+ * @extends AbstractDatabaseObjectAction<StatDaily, StatDailyEditor>
  */
 class StatDailyAction extends AbstractDatabaseObjectAction
 {
@@ -28,6 +27,8 @@ class StatDailyAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates the getData action.
+     *
+     * @return void
      */
     public function validateGetData()
     {
@@ -72,6 +73,11 @@ class StatDailyAction extends AbstractDatabaseObjectAction
 
     /**
      * Returns the stat data.
+     *
+     * @return array<int, array{
+     *  label: string,
+     *  data: list<array{0: int, 1: mixed}>
+     * }>
      */
     public function getData()
     {
@@ -129,9 +135,15 @@ class StatDailyAction extends AbstractDatabaseObjectAction
                 ];
             }
 
+            $processor = $objectType->getProcessor();
+            \assert($processor instanceof IStatDailyHandler);
+
+            $timestamp = \strtotime($row['date'] . ' UTC');
+            \assert($timestamp !== false);
+
             $data[$row['objectTypeID']]['data'][] = [
-                \strtotime($row['date'] . ' UTC'),
-                $objectType->getProcessor()->getFormattedCounter($value),
+                $timestamp,
+                $processor->getFormattedCounter($value),
             ];
         }
 

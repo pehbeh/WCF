@@ -19,17 +19,14 @@ interface IUserCondition extends ICondition
      * Adds the condition to the given user list to fetch the users which fulfill
      * the given condition.
      *
-     * @param Condition $condition
-     * @param UserList $userList
+     * @return void
      */
     public function addUserCondition(Condition $condition, UserList $userList);
 
     /**
      * Returns true if the given user fulfills the given condition.
      *
-     * @param Condition $condition
-     * @param User $user
-     * @return  bool
+     * @return bool
      */
     public function checkUser(Condition $condition, User $user);
 }

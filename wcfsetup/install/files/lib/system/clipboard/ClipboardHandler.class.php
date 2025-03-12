@@ -2,6 +2,7 @@
 
 namespace wcf\system\clipboard;
 
+use wcf\data\clipboard\action\ClipboardAction;
 use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\data\object\type\ObjectType;
@@ -26,25 +27,28 @@ class ClipboardHandler extends SingletonFactory
 {
     /**
      * cached list of actions
-     * @var array
+     * @var array<int, ClipboardAction>
      */
     protected $actionCache;
 
     /**
      * cached list of clipboard item types
-     * @var mixed[][]
+     * @var array{
+     *  objectTypes: array<int, ObjectType>,
+     *  objectTypeNames: array<string, int>,
+     * }
      */
     protected $cache;
 
     /**
      * list of marked items
-     * @var DatabaseObject[][]
+     * @var array<string, DatabaseObject[]>
      */
     protected $markedItems;
 
     /**
      * cached list of page actions
-     * @var array
+     * @var array<string, int[]>
      */
     protected $pageCache;
 
@@ -80,6 +84,8 @@ class ClipboardHandler extends SingletonFactory
 
     /**
      * Loads action cache.
+     *
+     * @return void
      */
     protected function loadActionCache()
     {
@@ -93,8 +99,9 @@ class ClipboardHandler extends SingletonFactory
     /**
      * Marks objects as marked.
      *
-     * @param array $objectIDs
+     * @param int[] $objectIDs
      * @param int $objectTypeID
+     * @return void
      */
     public function mark(array $objectIDs, $objectTypeID)
     {
@@ -117,8 +124,9 @@ class ClipboardHandler extends SingletonFactory
     /**
      * Removes an object marking.
      *
-     * @param array $objectIDs
+     * @param int[] $objectIDs
      * @param int $objectTypeID
+     * @return void
      */
     public function unmark(array $objectIDs, $objectTypeID)
     {
@@ -141,6 +149,7 @@ class ClipboardHandler extends SingletonFactory
      * Unmarks all items of given type.
      *
      * @param int $objectTypeID
+     * @return void
      */
     public function unmarkAll($objectTypeID)
     {
@@ -159,7 +168,7 @@ class ClipboardHandler extends SingletonFactory
      * clipboard object type exists.
      *
      * @param string $typeName
-     * @return  int|null
+     * @return ?int
      */
     public function getObjectTypeID($typeName)
     {
@@ -171,7 +180,7 @@ class ClipboardHandler extends SingletonFactory
      * clipboard object type exists.
      *
      * @param int $objectTypeID
-     * @return  ObjectType|null
+     * @return ?ObjectType
      */
     public function getObjectType($objectTypeID)
     {
@@ -183,7 +192,7 @@ class ClipboardHandler extends SingletonFactory
      * clipboard object type exists.
      *
      * @param string $objectType
-     * @return  int|null
+     * @return ?int
      */
     public function getObjectTypeByName($objectType)
     {
@@ -200,7 +209,8 @@ class ClipboardHandler extends SingletonFactory
      * Loads a list of marked items grouped by type name.
      *
      * @param int $objectTypeID
-     * @throws  SystemException
+     * @return void
+     * @throws SystemException
      */
     protected function loadMarkedItems($objectTypeID = null)
     {
@@ -258,7 +268,7 @@ class ClipboardHandler extends SingletonFactory
 
         // read objects
         foreach ($data as $objectType => $objectData) {
-            /** @var DatabaseObjectList $objectList */
+            /** @var DatabaseObjectList<DatabaseObject> $objectList */
             $objectList = new $objectData['className']();
             $objectList->getConditionBuilder()->add(
                 $objectList->getDatabaseTableAlias() . "." . $objectList->getDatabaseTableIndexName() . " IN (?)",
@@ -293,8 +303,8 @@ class ClipboardHandler extends SingletonFactory
     /**
      * Loads a list of marked items grouped by type name.
      *
-     * @param int $objectTypeID
-     * @return  array
+     * @param ?int $objectTypeID
+     * @return DatabaseObject[]|array<string, DatabaseObject[]>
      */
     public function getMarkedItems($objectTypeID = null)
     {
@@ -327,7 +337,11 @@ class ClipboardHandler extends SingletonFactory
      *
      * @param string|string[] $page
      * @param int $pageObjectID
-     * @return  array|null
+     * @return ?array<string, array{
+     *  label: string,
+     *  items: array<int, ClipboardEditorItem>,
+     *  reloadPageOnSuccess: string[],
+     * }>
      * @throws  ImplementationException
      */
     public function getEditorItems($page, $pageObjectID)
@@ -423,6 +437,7 @@ class ClipboardHandler extends SingletonFactory
      * Removes items from clipboard.
      *
      * @param int $typeID
+     * @return void
      */
     public function removeItems($typeID = null)
     {

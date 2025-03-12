@@ -242,7 +242,7 @@ abstract class AbstractCustomOptionForm extends AbstractAcpForm
     /**
      * Returns the list of database values including additional fields.
      *
-     * @return      array
+     * @return array<string, mixed>
      */
     protected function getDatabaseValues()
     {
@@ -262,7 +262,8 @@ abstract class AbstractCustomOptionForm extends AbstractAcpForm
     /**
      * Returns additional parameters passed to the database object action object.
      *
-     * @since       5.4
+     * @return array<string, mixed>
+     * @since 5.4
      */
     protected function getActionParameters(): array
     {

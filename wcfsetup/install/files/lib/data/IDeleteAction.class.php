@@ -15,12 +15,14 @@ interface IDeleteAction
     /**
      * Deletes the relevant objects and returns the number of deleted objects.
      *
-     * @return  int
+     * @return int
      */
     public function delete();
 
     /**
      * Validates the "delete" action.
+     *
+     * @return void
      */
     public function validateDelete();
 }

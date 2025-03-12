@@ -25,9 +25,7 @@ use wcf\util\StringUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    UserOptionCategory $cachedCategories
- * @property    UserOption[] $cachedOptions
- * @property    UserOption[] $options
+ * @extends OptionHandler<UserOption, UserOptionCategory>
  */
 class UserOptionHandler extends OptionHandler
 {
@@ -89,6 +87,7 @@ class UserOptionHandler extends OptionHandler
      * Shows empty options.
      *
      * @param bool $show
+     * @return void
      */
     public function showEmptyOptions($show = true)
     {
@@ -99,6 +98,7 @@ class UserOptionHandler extends OptionHandler
      * Sets registration mode.
      *
      * @param bool $inRegistration
+     * @return void
      */
     public function setInRegistration($inRegistration = true)
     {
@@ -112,6 +112,7 @@ class UserOptionHandler extends OptionHandler
      * Enables edit mode.
      *
      * @param bool $enable
+     * @return void
      */
     public function enableEditMode($enable = true)
     {
@@ -122,6 +123,7 @@ class UserOptionHandler extends OptionHandler
      * Enables search mode.
      *
      * @param bool $enable
+     * @return void
      */
     public function enableSearchMode($enable = true)
     {
@@ -135,6 +137,7 @@ class UserOptionHandler extends OptionHandler
      * Sets option values for a certain user.
      *
      * @param User $user
+     * @return void
      */
     public function setUser(User $user)
     {
@@ -150,6 +153,8 @@ class UserOptionHandler extends OptionHandler
 
     /**
      * Resets the option values.
+     *
+     * @return void
      */
     public function resetOptionValues()
     {
@@ -168,6 +173,7 @@ class UserOptionHandler extends OptionHandler
      * during automatic cronjob execution (always done as a guest), the conditions are properly set.
      *
      * @param bool $enable
+     * @return void
      */
     public function enableConditionMode($enable = true)
     {
@@ -181,7 +187,7 @@ class UserOptionHandler extends OptionHandler
     /**
      * Returns the option values.
      *
-     * @return  array
+     * @return mixed[]
      */
     public function getOptionValues()
     {
@@ -191,7 +197,8 @@ class UserOptionHandler extends OptionHandler
     /**
      * Sets the option values.
      *
-     * @param array $values
+     * @param mixed[] $values
+     * @return void
      */
     public function setOptionValues(array $values)
     {
@@ -206,7 +213,9 @@ class UserOptionHandler extends OptionHandler
         $optionData = parent::getOption($optionName);
 
         if (!$this->editMode && !$this->searchMode) {
-            $optionData['object'] = new ViewableUserOption($optionData['object']);
+            /** @var UserOption $option */
+            $option = $optionData['object'];
+            $optionData['object'] = new ViewableUserOption($option);
             if ($this->user !== null) {
                 $optionData['object']->setOptionValue($this->user);
             }
@@ -380,6 +389,8 @@ class UserOptionHandler extends OptionHandler
 
     /**
      * @inheritDoc
+     * @param mixed[] $source
+     * @return void
      */
     public function readUserInput(array &$source)
     {

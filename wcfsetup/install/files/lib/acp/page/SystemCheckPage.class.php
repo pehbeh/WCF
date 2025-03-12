@@ -33,7 +33,7 @@ class SystemCheckPage extends AbstractPage
     /**
      * A list of directories that need to be writable at all times, grouped by their application
      * identifier. Only the directory itself is checked, unless the path ends with `/*`.
-     * @var string[][]
+     * @var array<string, list<string>>
      */
     public $directories = [
         'wcf' => [
@@ -53,6 +53,12 @@ class SystemCheckPage extends AbstractPage
         ],
     ];
 
+    /**
+     * @var array{
+     *  mysql: array<string|int, string>,
+     *  mariadb: array<string|int, string>,
+     * }
+     */
     public $mysqlVersions = [
         'mysql' => [
             '8' => '8.0.30',
@@ -62,6 +68,9 @@ class SystemCheckPage extends AbstractPage
         ],
     ];
 
+    /**
+     * @var list<string|list<string>>
+     */
     public $phpExtensions = [
         'ctype',
         'dom',
@@ -76,8 +85,19 @@ class SystemCheckPage extends AbstractPage
         'zlib',
     ];
 
+    /**
+     * @var int
+     */
     public $phpMemoryLimit = 128 * 1024 * 1024;
 
+    /**
+     * @var array{
+     *  minimum: string,
+     *  deprecated: list<string>,
+     *  sufficient: list<string>,
+     *  recommended: list<string>,
+     * }
+     */
     public $phpVersions = [
         'minimum' => '8.1.2',
         'deprecated' => [],
@@ -85,6 +105,9 @@ class SystemCheckPage extends AbstractPage
         'recommended' => ['8.2', '8.3'],
     ];
 
+    /**
+     * @var array<string, array<string, array<string, string>>>
+     */
     public $foreignKeys = [
         'wcf1_user' => [
             'avatarFileID' => [
@@ -118,6 +141,9 @@ class SystemCheckPage extends AbstractPage
         ],
     ];
 
+    /**
+     * @var mixed[]
+     */
     public $results = [
         'directories' => [],
         'mysql' => [
@@ -221,6 +247,9 @@ class SystemCheckPage extends AbstractPage
         ]);
     }
 
+    /**
+     * @return void
+     */
     protected function validateMysql()
     {
         // check sql version
@@ -312,6 +341,9 @@ class SystemCheckPage extends AbstractPage
         }
     }
 
+    /**
+     * @return void
+     */
     protected function validatePhpExtensions()
     {
         foreach ($this->phpExtensions as $phpExtension) {
@@ -339,6 +371,9 @@ class SystemCheckPage extends AbstractPage
             && $this->results['php']['opcache'] !== false;
     }
 
+    /**
+     * @return void
+     */
     protected function validatePhpMemoryLimit()
     {
         $this->results['php']['memoryLimit']['required'] = $this->phpMemoryLimit;
@@ -357,6 +392,9 @@ class SystemCheckPage extends AbstractPage
         $this->results['status']['php'] = $this->results['status']['php'] && $this->results['php']['memoryLimit']['result'];
     }
 
+    /**
+     * @return void
+     */
     protected function validatePhpX64()
     {
         $this->results['php']['x64'] = \PHP_INT_SIZE == 8;
@@ -364,6 +402,9 @@ class SystemCheckPage extends AbstractPage
         $this->results['status']['php'] = $this->results['status']['php'] && $this->results['php']['x64'];
     }
 
+    /**
+     * @return void
+     */
     protected function validatePhpVersion()
     {
         $phpVersion = \PHP_VERSION;
@@ -387,6 +428,9 @@ class SystemCheckPage extends AbstractPage
         $this->results['status']['php'] = $this->results['status']['php'] && ($this->results['php']['version']['result'] !== 'unsupported');
     }
 
+    /**
+     * @return void
+     */
     protected function validatePhpGdSupport()
     {
         if (!\function_exists('\gd_info')) {
@@ -407,6 +451,9 @@ class SystemCheckPage extends AbstractPage
         $this->results['status']['php'] = $this->results['status']['php'] && $this->results['php']['gd']['result'];
     }
 
+    /**
+     * @return void
+     */
     protected function validateWritableDirectories()
     {
         foreach ($this->directories as $abbreviation => $directories) {
@@ -423,6 +470,10 @@ class SystemCheckPage extends AbstractPage
         $this->results['status']['directories'] = empty($this->results['directories']);
     }
 
+    /**
+     * @param string $path
+     * @return bool
+     */
     protected function checkDirectory($path)
     {
         if (!$this->createDirectoryIfNotExists($path)) {
@@ -434,6 +485,10 @@ class SystemCheckPage extends AbstractPage
         return $this->makeDirectoryWritable($path);
     }
 
+    /**
+     * @param string $path
+     * @return bool
+     */
     protected function createDirectoryIfNotExists($path)
     {
         if (!\file_exists($path) && !FileUtil::makePath($path)) {
@@ -447,6 +502,10 @@ class SystemCheckPage extends AbstractPage
         return true;
     }
 
+    /**
+     * @param string $path
+     * @return bool
+     */
     protected function makeDirectoryWritable($path)
     {
         try {

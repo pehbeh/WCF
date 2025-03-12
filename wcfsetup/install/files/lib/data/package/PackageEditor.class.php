@@ -13,9 +13,9 @@ use wcf\system\cache\builder\PackageCacheBuilder;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static Package     create(array $parameters = [])
- * @method      Package     getDecoratedObject()
  * @mixin       Package
+ * @extends DatabaseObjectEditor<Package>
+ * @implements IEditableCachedObject<Package>
  */
 class PackageEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {

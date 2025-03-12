@@ -11,10 +11,6 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  PaidSubscriptionTransactionLog      create()
- * @method  PaidSubscriptionTransactionLogEditor[]  getObjects()
- * @method  PaidSubscriptionTransactionLogEditor    getSingleObject()
+ * @extends AbstractDatabaseObjectAction<PaidSubscriptionTransactionLog, PaidSubscriptionTransactionLogEditor>
  */
-class PaidSubscriptionTransactionLogAction extends AbstractDatabaseObjectAction
-{
-}
+class PaidSubscriptionTransactionLogAction extends AbstractDatabaseObjectAction {}

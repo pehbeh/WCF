@@ -19,7 +19,7 @@ use wcf\data\DatabaseObject;
  * @property-read   string $username       name of the user or guest who caused the modification log entry
  * @property-read   int $time           timestamp at which the modification log entry has been created
  * @property-read   string $action         name of the modification action that is logged
- * @property-read   array $additionalData     array with additional data of the modification log entry
+ * @property-read   mixed[] $additionalData     array with additional data of the modification log entry
  */
 class ModificationLog extends DatabaseObject
 {

@@ -27,9 +27,10 @@ trait TAJAXException
      * Throws an previously caught exception while maintaining the propriate stacktrace.
      *
      * @param \Exception|\Throwable $e
-     * @throws  AJAXException
-     * @throws  \Exception
-     * @throws  \Throwable
+     * @return never
+     * @throws AJAXException
+     * @throws \Exception
+     * @throws \Throwable
      */
     protected function throwException($e)
     {

@@ -119,7 +119,7 @@ class PaidSubscriptionAddForm extends AbstractForm
 
     /**
      * available user groups
-     * @var array
+     * @var UserGroup[]
      */
     public $availableUserGroups = [];
 
@@ -131,7 +131,7 @@ class PaidSubscriptionAddForm extends AbstractForm
 
     /**
      * list of available subscriptions
-     * @var array
+     * @var array<int, PaidSubscription>
      */
     public $availableSubscriptions = [];
 
@@ -169,6 +169,9 @@ class PaidSubscriptionAddForm extends AbstractForm
         $this->getAvailableSubscriptions();
     }
 
+    /**
+     * @return void
+     */
     protected function getAvailableSubscriptions()
     {
         $subscriptionList = new PaidSubscriptionList();
@@ -340,6 +343,7 @@ class PaidSubscriptionAddForm extends AbstractForm
      *
      * @param PaidSubscription $subscription
      * @param string $columnName
+     * @return void
      */
     public function saveI18nValue(PaidSubscription $subscription, $columnName)
     {

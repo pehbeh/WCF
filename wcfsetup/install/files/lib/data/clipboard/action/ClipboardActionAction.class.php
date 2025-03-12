@@ -11,9 +11,7 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  ClipboardAction         create()
- * @method  ClipboardActionEditor[]     getObjects()
- * @method  ClipboardActionEditor       getSingleObject()
+ * @extends AbstractDatabaseObjectAction<ClipboardAction, ClipboardActionEditor>
  */
 class ClipboardActionAction extends AbstractDatabaseObjectAction
 {

@@ -21,8 +21,8 @@ trait TCssClassFormField
     /**
      * Adds the given CSS class to the actual field element and returns this field.
      *
-     * @throws      \InvalidArgumentException       if the given class is invalid
-     * @return      static                          this form field
+     * @throws \InvalidArgumentException if the given class is invalid
+     * @return static this form field
      */
     public function addFieldClass(string $class)
     {
@@ -38,8 +38,9 @@ trait TCssClassFormField
     /**
      * Adds the given CSS classes to the actual field element and returns this field.
      *
-     * @throws      \InvalidArgumentException       if any of the given classes is invalid
-     * @return      static                          this form field
+     * @param string[] $classes
+     * @return static this form field
+     * @throws \InvalidArgumentException if any of the given classes is invalid
      */
     public function addFieldClasses(array $classes)
     {
@@ -52,6 +53,8 @@ trait TCssClassFormField
 
     /**
      * Returns all CSS classes of the actual field element.
+     *
+     * @return string[]
      */
     public function getFieldClasses(): array
     {
@@ -62,7 +65,7 @@ trait TCssClassFormField
      * Returns `true` if a CSS class of the actual field element with the given name exists and
      * returns `false` otherwise.
      *
-     * @throws      \InvalidArgumentException       if the given class is invalid
+     * @throws \InvalidArgumentException if the given class is invalid
      */
     public function hasFieldClass(string $class): bool
     {
@@ -76,8 +79,8 @@ trait TCssClassFormField
      *
      * If the actual field element does not have the given CSS class, this method silently ignores that fact.
      *
-     * @throws      \InvalidArgumentException       if the given class is invalid
-     * @return      static                          this form field
+     * @throws \InvalidArgumentException if the given class is invalid
+     * @return static this form field
      */
     public function removeFieldClass(string $class)
     {
@@ -95,8 +98,9 @@ trait TCssClassFormField
      * Checks if the given parameter class is a valid CSS class.
      *
      * @param string $class checked class
+     * @return void
      *
-     * @throws      \InvalidArgumentException       if the given class is invalid
+     * @throws \InvalidArgumentException if the given class is invalid
      */
     abstract public static function validateClass($class);
 }

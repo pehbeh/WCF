@@ -18,8 +18,8 @@ use wcf\util\StringUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserOption  getDecoratedObject()
  * @mixin   UserOption
+ * @extends DatabaseObjectDecorator<UserOption>
  */
 class ViewableUserOption extends DatabaseObjectDecorator
 {
@@ -49,7 +49,7 @@ class ViewableUserOption extends DatabaseObjectDecorator
     /**
      * Sets option values for a specific user.
      *
-     * @param User $user
+     * @return void
      */
     public function setOptionValue(User $user)
     {

@@ -15,8 +15,8 @@ use wcf\system\request\LinkHandler;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method  Article         getDecoratedObject()
  * @mixin   Article
+ * @extends DatabaseObjectDecorator<Article>
  */
 class ArticleVersionTracker extends DatabaseObjectDecorator implements IVersionTrackerObject
 {
@@ -43,6 +43,7 @@ class ArticleVersionTracker extends DatabaseObjectDecorator implements IVersionT
      * Adds an article content object as child.
      *
      * @param ArticleContent $content article content object
+     * @return void
      */
     public function addContent(ArticleContent $content)
     {
@@ -53,6 +54,7 @@ class ArticleVersionTracker extends DatabaseObjectDecorator implements IVersionT
      * Sets the list of article content objects.
      *
      * @param ArticleContent[] $content article content objects
+     * @return void
      */
     public function setContent(array $content)
     {

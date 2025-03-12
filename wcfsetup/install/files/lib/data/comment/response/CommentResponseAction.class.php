@@ -26,9 +26,7 @@ use wcf\util\MessageUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  CommentResponse         create()
- * @method  CommentResponseEditor[]     getObjects()
- * @method  CommentResponseEditor       getSingleObject()
+ * @extends AbstractDatabaseObjectAction<CommentResponse, CommentResponseEditor>
  */
 class CommentResponseAction extends AbstractDatabaseObjectAction
 {
@@ -71,13 +69,15 @@ class CommentResponseAction extends AbstractDatabaseObjectAction
 
     /**
      * response object
-     * @var CommentResponse
+     * @var CommentResponseEditor
      * @deprecated 6.1
      */
     protected $response;
 
     /**
      * Validates parameters to load responses for a given comment id.
+     *
+     * @return void
      * @deprecated 6.1 see https://docs.woltlab.com/6.1/migration/wsc60/php/#comment-backend
      */
     public function validateLoadResponses()
@@ -100,7 +100,12 @@ class CommentResponseAction extends AbstractDatabaseObjectAction
     /**
      * Returns parsed responses for given comment id.
      *
-     * @return  array
+     * @return array{
+     *  commentID: int,
+     *  lastResponseTime: int,
+     *  lastResponseID: int,
+     *  template: string,
+     * }
      * @deprecated 6.1 see https://docs.woltlab.com/6.1/migration/wsc60/php/#comment-backend
      */
     public function loadResponses()
@@ -165,7 +170,7 @@ class CommentResponseAction extends AbstractDatabaseObjectAction
     }
 
     /**
-     * @inheritDoc
+     * @return void
      * @deprecated 6.1 see https://docs.woltlab.com/6.1/migration/wsc60/php/#comment-backend
      */
     public function validateBeginEdit()
@@ -182,7 +187,7 @@ class CommentResponseAction extends AbstractDatabaseObjectAction
     }
 
     /**
-     * @inheritDoc
+     * @return array{actionName: 'beginEdit', template: string}
      * @deprecated 6.1 see https://docs.woltlab.com/6.1/migration/wsc60/php/#comment-backend
      */
     public function beginEdit()
@@ -201,7 +206,7 @@ class CommentResponseAction extends AbstractDatabaseObjectAction
     }
 
     /**
-     * @inheritDoc
+     * @return void
      * @deprecated 6.1 see https://docs.woltlab.com/6.1/migration/wsc60/php/#comment-backend
      */
     public function validateSave()
@@ -212,7 +217,7 @@ class CommentResponseAction extends AbstractDatabaseObjectAction
     }
 
     /**
-     * @inheritDoc
+     * @return array{actionName: 'save', message: string}
      * @deprecated 6.1 see https://docs.woltlab.com/6.1/migration/wsc60/php/#comment-backend
      */
     public function save()
@@ -252,6 +257,7 @@ class CommentResponseAction extends AbstractDatabaseObjectAction
     /**
      * Validates message parameter.
      *
+     * @return void
      * @throws      UserInputException
      * @deprecated 6.1 see https://docs.woltlab.com/6.1/migration/wsc60/php/#comment-backend
      */
@@ -316,6 +322,8 @@ class CommentResponseAction extends AbstractDatabaseObjectAction
 
     /**
      * Sets the list of disallowed bbcodes for comments.
+     *
+     * @return void
      * @deprecated 6.1 see https://docs.woltlab.com/6.1/migration/wsc60/php/#comment-backend
      */
     protected function setDisallowedBBCodes()

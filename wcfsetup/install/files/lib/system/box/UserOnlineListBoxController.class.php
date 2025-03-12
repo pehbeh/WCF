@@ -15,7 +15,7 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @property    UsersOnlineList $objectList
+ * @extends AbstractDatabaseObjectListBoxController<UsersOnlineList>
  */
 class UserOnlineListBoxController extends AbstractDatabaseObjectListBoxController
 {

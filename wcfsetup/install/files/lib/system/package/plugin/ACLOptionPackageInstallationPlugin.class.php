@@ -357,6 +357,7 @@ class ACLOptionPackageInstallationPlugin extends AbstractOptionPackageInstallati
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -529,6 +530,8 @@ class ACLOptionPackageInstallationPlugin extends AbstractOptionPackageInstallati
 
     /**
      * @inheritDoc
+     * @param bool $saveData
+     * @return array<string, int|string>
      * @since   5.2
      */
     protected function fetchElementData(\DOMElement $element, $saveData)
@@ -571,6 +574,7 @@ class ACLOptionPackageInstallationPlugin extends AbstractOptionPackageInstallati
 
     /**
      * @inheritDoc
+     * @return string
      * @since   5.2
      */
     public function getElementIdentifier(\DOMElement $element)
@@ -591,6 +595,7 @@ class ACLOptionPackageInstallationPlugin extends AbstractOptionPackageInstallati
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function setEntryListKeys(IDevtoolsPipEntryList $entryList)
@@ -603,6 +608,7 @@ class ACLOptionPackageInstallationPlugin extends AbstractOptionPackageInstallati
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      * @since   5.2
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)
@@ -639,6 +645,7 @@ class ACLOptionPackageInstallationPlugin extends AbstractOptionPackageInstallati
 
     /**
      * @inheritDoc
+     * @return ?\DOMElement
      * @since   5.2
      */
     protected function prepareDeleteXmlElement(\DOMElement $element)
@@ -655,6 +662,7 @@ class ACLOptionPackageInstallationPlugin extends AbstractOptionPackageInstallati
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function deleteObject(\DOMElement $element)

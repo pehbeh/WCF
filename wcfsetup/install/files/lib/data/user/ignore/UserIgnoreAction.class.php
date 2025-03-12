@@ -25,16 +25,19 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserIgnore      create()
- * @method  UserIgnoreEditor[]  getObjects()
- * @method  UserIgnoreEditor    getSingleObject()
+ * @extends AbstractDatabaseObjectAction<UserIgnore, UserIgnoreEditor>
  */
 class UserIgnoreAction extends AbstractDatabaseObjectAction
 {
+    /**
+     * @var ?IFormDocument
+     */
     protected $form;
 
     /**
      * Validates the 'ignore' action.
+     *
+     * @return void
      */
     public function validateIgnore()
     {
@@ -66,7 +69,7 @@ class UserIgnoreAction extends AbstractDatabaseObjectAction
     /**
      * Ignores a user.
      *
-     * @return  array
+     * @return array{isIgnoredUser: 1}
      */
     public function ignore()
     {
@@ -120,6 +123,8 @@ class UserIgnoreAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates the 'unignore' action.
+     *
+     * @return void
      */
     public function validateUnignore()
     {
@@ -134,7 +139,7 @@ class UserIgnoreAction extends AbstractDatabaseObjectAction
     /**
      * Unignores a user.
      *
-     * @return  array
+     * @return array{isIgnoredUser: 0}
      */
     public function unignore()
     {
@@ -151,6 +156,9 @@ class UserIgnoreAction extends AbstractDatabaseObjectAction
         return ['isIgnoredUser' => 0];
     }
 
+    /**
+     * @return void
+     */
     public function validateGetDialog()
     {
         $this->readInteger('userID');
@@ -168,6 +176,9 @@ class UserIgnoreAction extends AbstractDatabaseObjectAction
         }
     }
 
+    /**
+     * @return array{dialog: string, formId: string}
+     */
     public function getDialog()
     {
         $form = $this->getForm();
@@ -178,6 +189,9 @@ class UserIgnoreAction extends AbstractDatabaseObjectAction
         ];
     }
 
+    /**
+     * @return void
+     */
     public function validateSubmitDialog()
     {
         $this->validateGetDialog();
@@ -189,6 +203,9 @@ class UserIgnoreAction extends AbstractDatabaseObjectAction
         $this->getForm()->validate();
     }
 
+    /**
+     * @return array{dialog: string, formId: string}|array{isIgnoredUser: 0|1}
+     */
     public function submitDialog()
     {
         if ($this->getForm()->hasValidationErrors()) {

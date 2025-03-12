@@ -58,7 +58,7 @@ xQIDAQAB
  * Returns a string if a map name could be extracted. Returns a class implementing
  * ResponseInterface if the $query is invalid.
  */
-function getMapFromQuery(string $query)
+function getMapFromQuery(string $query): string|ResponseInterface
 {
     try {
         // Step 1: Extract the signature and map name.

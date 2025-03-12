@@ -16,14 +16,14 @@ use wcf\util\UserAgent;
 final class Session
 {
     /**
-     * @var array
+     * @var array<string, mixed>
      */
-    private $data;
+    private array $data;
 
     private UserAgent $userAgent;
 
     /**
-     * Session constructor.
+     * @param array<string, mixed> $data
      */
     public function __construct(array $data)
     {

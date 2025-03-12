@@ -35,7 +35,7 @@ final class PagesFormField extends MultipleSelectionFormField
     }
 
     #[\Override]
-    protected static function getDefaultId()
+    protected static function getDefaultId(): string
     {
         return 'pageIDs';
     }
@@ -57,6 +57,9 @@ final class PagesFormField extends MultipleSelectionFormField
         return $this->invertedLabel;
     }
 
+    /**
+     * @param array<string, mixed> $variables
+    */
     public function invertedLabel(string $languageItem, array $variables = []): self
     {
         $this->invertedLabel = WCF::getLanguage()->getDynamicVariable($languageItem, $variables);

@@ -13,9 +13,7 @@ use wcf\data\TDatabaseObjectToggle;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  PaidSubscriptionEditor[]    getObjects()
- * @method  PaidSubscriptionEditor      getSingleObject()
- * @property PaidSubscriptionEditor[] $objects
+ * @extends AbstractDatabaseObjectAction<PaidSubscription, PaidSubscriptionEditor>
  */
 class PaidSubscriptionAction extends AbstractDatabaseObjectAction implements IToggleAction
 {

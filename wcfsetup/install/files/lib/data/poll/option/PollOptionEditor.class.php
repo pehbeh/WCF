@@ -11,9 +11,8 @@ use wcf\data\DatabaseObjectEditor;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static PollOption  create(array $parameters = [])
- * @method      PollOption  getDecoratedObject()
  * @mixin       PollOption
+ * @extends DatabaseObjectEditor<PollOption>
  */
 class PollOptionEditor extends DatabaseObjectEditor
 {

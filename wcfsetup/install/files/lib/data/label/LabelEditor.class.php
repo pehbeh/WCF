@@ -14,9 +14,9 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static Label   create(array $parameters = [])
- * @method      Label   getDecoratedObject()
  * @mixin       Label
+ * @extends DatabaseObjectEditor<Label>
+ * @implements IEditableCachedObject<Label>
  */
 class LabelEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {
@@ -38,6 +38,7 @@ class LabelEditor extends DatabaseObjectEditor implements IEditableCachedObject
      *
      * @param int $groupID
      * @param int $showOrder
+     * @return void
      */
     public function setShowOrder($groupID, $showOrder = 0)
     {

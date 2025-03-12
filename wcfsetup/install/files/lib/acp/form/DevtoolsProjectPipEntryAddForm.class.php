@@ -132,6 +132,8 @@ class DevtoolsProjectPipEntryAddForm extends AbstractFormBuilderForm
 
     /**
      * Adds the pip-specific form fields.
+     *
+     * @return void
      */
     protected function addPipFormFields()
     {

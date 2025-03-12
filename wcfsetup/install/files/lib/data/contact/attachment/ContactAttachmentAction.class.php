@@ -12,8 +12,7 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       5.2
  *
- * @method ContactAttachmentEditor[] getObjects()
- * @method ContactAttachmentEditor getSingleObject()
+ * @extends AbstractDatabaseObjectAction<ContactAttachment, ContactAttachmentEditor>
  */
 class ContactAttachmentAction extends AbstractDatabaseObjectAction
 {

@@ -31,7 +31,6 @@ use wcf\system\interaction\bulk\admin\ArticleBulkInteractions;
 use wcf\system\interaction\Divider;
 use wcf\system\interaction\EditInteraction;
 use wcf\system\WCF;
-use wcf\util\DateUtil;
 use wcf\util\StringUtil;
 
 /**
@@ -41,6 +40,8 @@ use wcf\util\StringUtil;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @extends AbstractGridView<Article, AccessibleArticleList>
  */
 final class ArticleGridView extends AbstractGridView
 {

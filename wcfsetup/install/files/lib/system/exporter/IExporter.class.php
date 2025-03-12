@@ -20,7 +20,8 @@ interface IExporter
      * @param string $databaseName
      * @param string $databasePrefix
      * @param string $fileSystemPath
-     * @param array $additionalData
+     * @param array<string, mixed> $additionalData
+     * @return void
      */
     public function setData(
         $databaseHost,
@@ -34,6 +35,8 @@ interface IExporter
 
     /**
      * Initializes this exporter.
+     *
+     * @return void
      */
     public function init();
 
@@ -41,7 +44,7 @@ interface IExporter
      * Counts the number of required loops for given type.
      *
      * @param string $objectType
-     * @return  int
+     * @return int
      */
     public function countLoops($objectType);
 
@@ -50,35 +53,37 @@ interface IExporter
      *
      * @param string $objectType
      * @param int $loopCount
+     * @return void
      */
     public function exportData($objectType, $loopCount = 0);
 
     /**
      * Validates database access.
      *
-     * @throws  \wcf\system\database\exception\DatabaseException
+     * @return void
+     * @throws \wcf\system\database\exception\DatabaseException
      */
     public function validateDatabaseAccess();
 
     /**
      * Validates given file system path. Returns false on failure.
      *
-     * @return  bool
+     * @return bool
      */
     public function validateFileAccess();
 
     /**
      * Validates the selected data types. Returns false on failure.
      *
-     * @param array $selectedData
-     * @return  bool
+     * @param string[] $selectedData
+     * @return bool
      */
     public function validateSelectedData(array $selectedData);
 
     /**
      * Returns the import worker queue.
      *
-     * @return  array
+     * @return string[]
      */
     public function getQueue();
 
@@ -92,7 +97,7 @@ interface IExporter
     /**
      * Returns a default database table prefix.
      *
-     * @return  string
+     * @return string
      */
     public function getDefaultDatabasePrefix();
 }

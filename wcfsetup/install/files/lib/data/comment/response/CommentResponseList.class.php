@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  CommentResponse     current()
- * @method  CommentResponse[]   getObjects()
- * @method  CommentResponse|null    getSingleObject()
- * @method  CommentResponse|null    search($objectID)
- * @property    CommentResponse[] $objects
+ * @extends DatabaseObjectList<CommentResponse>
  */
 class CommentResponseList extends DatabaseObjectList
 {

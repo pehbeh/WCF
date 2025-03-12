@@ -82,6 +82,7 @@ final class FormFieldValidator implements IFormFieldValidator
      * Checks if the given parameter is a and a valid validator id.
      *
      * @param mixed $id checked id
+     * @return void
      *
      * @throws  \InvalidArgumentException   if the given id is invalid
      */

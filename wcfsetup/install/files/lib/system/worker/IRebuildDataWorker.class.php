@@ -10,13 +10,15 @@ use wcf\data\DatabaseObjectList;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template T of DatabaseObjectList
  */
 interface IRebuildDataWorker extends IWorker
 {
     /**
      * Returns the list of objects.
      *
-     * @return DatabaseObjectList|null
+     * @return ?T
      */
     public function getObjectList();
 }

@@ -66,6 +66,7 @@ class TrophyConditionHandler extends SingletonFactory
      * Assign trophies based on rules.
      *
      * @param int $maxAssigns
+     * @return void
      */
     public function assignTrophies($maxAssigns = 500)
     {
@@ -99,6 +100,7 @@ class TrophyConditionHandler extends SingletonFactory
      * Revoke user trophies which are not longer fulfills the conditions.
      *
      * @param int $maxRevokes
+     * @return void
      * @since       5.2
      */
     public function revokeTrophies($maxRevokes = 500)

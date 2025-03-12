@@ -20,9 +20,7 @@ use wcf\util\DateUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Cronjob         create()
- * @method  CronjobEditor[]     getObjects()
- * @method  CronjobEditor       getSingleObject()
+ * @extends AbstractDatabaseObjectAction<Cronjob, CronjobEditor>
  */
 class CronjobAction extends AbstractDatabaseObjectAction implements IToggleAction
 {
@@ -102,6 +100,8 @@ class CronjobAction extends AbstractDatabaseObjectAction implements IToggleActio
 
     /**
      * Validates the 'execute' action.
+     *
+     * @return void
      */
     public function validateExecute()
     {
@@ -110,6 +110,11 @@ class CronjobAction extends AbstractDatabaseObjectAction implements IToggleActio
 
     /**
      * Executes cronjobs.
+     *
+     * @return array<int, array{
+     *  time: int,
+     *  formatted: string,
+     * }>
      */
     public function execute()
     {
@@ -217,6 +222,7 @@ class CronjobAction extends AbstractDatabaseObjectAction implements IToggleActio
     }
 
     /**
+     * @return void
      * @deprecated 6.0 Either use CronjobScheduler::executeCronjobs() directly, or query CronjobPerformAction.
      */
     public function validateExecuteCronjobs()
@@ -225,6 +231,7 @@ class CronjobAction extends AbstractDatabaseObjectAction implements IToggleActio
     }
 
     /**
+     * @return void
      * @deprecated 6.0 Either use CronjobScheduler::executeCronjobs() directly, or query CronjobPerformAction.
      */
     public function executeCronjobs()

@@ -17,11 +17,11 @@ use wcf\util\StringUtil;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  Media   getDecoratedObject()
  * @mixin   Media
  * @property-read   string|null $title      title of the media file in the active user's language or `null` if object has not been fetched via `ViewableMediaList`
  * @property-read   string|null $caption    caption of the media file in the active user's language or `null` if object has not been fetched via `ViewableMediaList`
  * @property-read   string|null $altText    alternative text of the media file in the active user's language or `null` if object has not been fetched via `ViewableMediaList`
+ * @extends DatabaseObjectDecorator<Media>
  */
 class ViewableMedia extends DatabaseObjectDecorator
 {
@@ -53,6 +53,7 @@ class ViewableMedia extends DatabaseObjectDecorator
      *
      * @param int $languageID
      * @param string[] $content
+     * @return void
      */
     public function setLocalizedContent($languageID, array $content)
     {
@@ -63,7 +64,7 @@ class ViewableMedia extends DatabaseObjectDecorator
      * Returns an instance of this class with localized versions.
      *
      * @param int $languageID
-     * @return      ViewableMedia
+     * @return ViewableMedia
      */
     public function getLocalizedVersion($languageID)
     {
@@ -81,6 +82,7 @@ class ViewableMedia extends DatabaseObjectDecorator
      * Forces the localized values by language id.
      *
      * @param int $languageID
+     * @return void
      */
     protected function forceLanguageID($languageID)
     {
@@ -100,7 +102,7 @@ class ViewableMedia extends DatabaseObjectDecorator
     }
 
     /**
-     * @inheritDoc
+     * @return string
      */
     public function getTitle()
     {

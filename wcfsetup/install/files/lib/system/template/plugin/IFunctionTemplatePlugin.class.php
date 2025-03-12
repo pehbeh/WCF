@@ -16,7 +16,7 @@ interface IFunctionTemplatePlugin
     /**
      * Executes this template function.
      *
-     * @param array $tagArgs
+     * @param array<int|string, mixed> $tagArgs
      * @param TemplateEngine $tplObj
      * @return  string
      */

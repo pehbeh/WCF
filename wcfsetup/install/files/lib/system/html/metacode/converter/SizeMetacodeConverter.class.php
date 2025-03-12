@@ -12,6 +12,9 @@ namespace wcf\system\html\metacode\converter;
  */
 class SizeMetacodeConverter extends AbstractMetacodeConverter
 {
+    /**
+     * @var int[]
+     */
     protected $sizes = [8, 10, 12, 14, 18, 24, 36];
 
     /**

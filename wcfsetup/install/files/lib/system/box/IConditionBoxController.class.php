@@ -17,31 +17,35 @@ interface IConditionBoxController extends IBoxController
     /**
      * Returns the name of the object type definition for the box controller's condition object types.
      *
-     * @return  string
+     * @return string
      */
     public function getConditionDefinition();
 
     /**
      * Returns the condition objects types registered for the dynamic box controller.
      *
-     * @return  ObjectType[]
+     * @return ObjectType[]
      */
     public function getConditionObjectTypes();
 
     /**
      * Returns the template containing the box conditions.
      *
-     * @return  string
+     * @return string
      */
     public function getConditionsTemplate();
 
     /**
      * Reads the box conditions.
+     *
+     * @return void
      */
     public function readConditions();
 
     /**
      * Validates the read conditions for the box.
+     *
+     * @return void
      */
     public function validateConditions();
 }

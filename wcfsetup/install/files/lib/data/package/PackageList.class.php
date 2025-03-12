@@ -12,11 +12,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Package     current()
- * @method  Package[]   getObjects()
- * @method  Package|null    getSingleObject()
- * @method  Package|null    search($objectID)
- * @property    Package[] $objects
+ * @extends DatabaseObjectList<Package>
  */
 class PackageList extends DatabaseObjectList
 {

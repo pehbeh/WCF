@@ -32,60 +32,53 @@ final class HTTPRequest
 {
     /**
      * given options
-     * @var array
+     * @var mixed[]
      */
-    private $options = [];
+    private array $options = [];
 
     /**
      * given post parameters
-     * @var array
+     * @var mixed[]
      */
-    private $postParameters = [];
+    private array $postParameters = [];
 
     /**
      * given files
-     * @var array
+     * @var mixed[]
      */
-    private $files = [];
+    private array $files = [];
 
     /**
      * request URL
-     * @var string
      */
-    private $url = '';
+    private string $url = '';
 
     /**
      * request headers
      * @var string[][]
      */
-    private $headers = [];
+    private array $headers = [];
 
     /**
      * request body
-     * @var string
      */
-    private $body = '';
+    private string $body = '';
 
     /**
      * reply body
-     * @var string
      */
-    private $replyBody;
+    private ?string $replyBody = null;
 
-    /**
-     * @var ?ResponseInterface
-     */
-    private $response;
+    private ?ResponseInterface $response = null;
 
     /**
      * Constructs a new instance of HTTPRequest.
      *
-     * @param string $url URL to connect to
-     * @param array $options
-     * @param mixed $postParameters Parameters to send via POST
-     * @param array $files Files to attach to the request
+     * @param mixed[] $options
+     * @param mixed[] $postParameters Parameters to send via POST
+     * @param mixed[] $files Files to attach to the request
      */
-    public function __construct($url, array $options = [], $postParameters = [], array $files = [])
+    public function __construct(string $url, array $options = [], array|string $postParameters = [], array $files = [])
     {
         $this->url = $url;
 
@@ -112,7 +105,7 @@ final class HTTPRequest
             if (empty($this->files)) {
                 if (\is_array($postParameters)) {
                     $this->body = \http_build_query($this->postParameters, '', '&');
-                } elseif (\is_string($postParameters) && !empty($postParameters)) {
+                } elseif (\is_string($postParameters) && !empty($postParameters)) { // @phpstan-ignore function.alreadyNarrowedType
                     $this->body = $postParameters;
                 }
 
@@ -178,7 +171,7 @@ final class HTTPRequest
     /**
      * Executes the HTTP request.
      */
-    public function execute()
+    public function execute(): void
     {
         $redirectHandler = function (RequestInterface $request, ResponseInterface $response, UriInterface $uri) {
             $this->url = (string)$uri;
@@ -282,9 +275,9 @@ final class HTTPRequest
      * Returns an array with the replied data.
      * Note that the 'headers' element is deprecated and may be removed in the future.
      *
-     * @return  array
+     * @return array{statusCode: int|string, headers: string[]|string[][], httpHeaders: string[]|string[][], body: string, url: string}
      */
-    public function getReply()
+    public function getReply(): array
     {
         if (!$this->response) {
             return [
@@ -342,10 +335,10 @@ final class HTTPRequest
     /**
      * Sets options and applies default values when an option is omitted.
      *
-     * @param array $options
+     * @param mixed[] $options
      * @throws  \InvalidArgumentException
      */
-    private function setOptions(array $options)
+    private function setOptions(array $options): void
     {
         if (!isset($options['timeout'])) {
             $options['timeout'] = 10;
@@ -375,12 +368,8 @@ final class HTTPRequest
      * Adds a header to this request.
      * When an empty value is given existing headers of this name will be removed. When append
      * is set to false existing values will be overwritten.
-     *
-     * @param string $name
-     * @param string $value
-     * @param bool $append
      */
-    public function addHeader($name, $value, $append = false)
+    public function addHeader(string $name, string $value, bool $append = false): void
     {
         // 4.2 Field names are case-insensitive.
         $name = \strtolower($name);

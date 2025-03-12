@@ -12,11 +12,7 @@ use wcf\data\DatabaseObjectList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.2
  *
- * @method  ReactionType        current()
- * @method  ReactionType[]          getObjects()
- * @method  ReactionType|null   getSingleObject()
- * @method  ReactionType|null   search($objectID)
- * @property    ReactionType[] $objects
+ * @extends DatabaseObjectList<ReactionType>
  */
 class ReactionTypeList extends DatabaseObjectList
 {

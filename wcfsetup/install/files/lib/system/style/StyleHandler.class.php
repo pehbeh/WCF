@@ -23,7 +23,7 @@ class StyleHandler extends SingletonFactory
 {
     /**
      * style information cache
-     * @var array
+     * @var array{}|array{default: int, styles: array<int, Style>}
      */
     protected $cache = [];
 
@@ -89,6 +89,7 @@ class StyleHandler extends SingletonFactory
      *
      * @param int $styleID
      * @param bool $ignorePermissions
+     * @return void
      * @throws  SystemException
      */
     public function changeStyle($styleID = 0, $ignorePermissions = false)
@@ -174,6 +175,7 @@ class StyleHandler extends SingletonFactory
      * Resets stylesheet for given style.
      *
      * @param Style $style
+     * @return void
      */
     public function resetStylesheet(Style $style)
     {
@@ -201,6 +203,7 @@ class StyleHandler extends SingletonFactory
      * Resets all stylesheets.
      *
      * @param bool $resetACP
+     * @return void
      */
     public static function resetStylesheets($resetACP = true)
     {
@@ -271,6 +274,8 @@ class StyleHandler extends SingletonFactory
     }
 
     /**
+     * @param boolean $toJSON
+     * @return array{}|string
      * @deprecated 6.0 Unsupported, this exists temporarily for development purposes.
      */
     public function getIcons($toJSON = false)

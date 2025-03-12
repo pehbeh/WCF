@@ -64,7 +64,7 @@ final class NotificationConfirmAction extends AbstractAction
     /**
      * @inheritDoc
      */
-    public function execute()
+    public function execute(): RedirectResponse
     {
         parent::execute();
 

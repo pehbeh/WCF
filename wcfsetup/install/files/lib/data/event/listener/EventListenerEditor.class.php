@@ -13,9 +13,9 @@ use wcf\system\cache\builder\EventListenerCacheBuilder;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static EventListener   create(array $parameters = [])
- * @method      EventListener   getDecoratedObject()
  * @mixin       EventListener
+ * @extends DatabaseObjectEditor<EventListener>
+ * @implements IEditableCachedObject<EventListener>
  */
 class EventListenerEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {

@@ -24,9 +24,7 @@ use wcf\util\ImageUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  StyleEditor[]   getObjects()
- * @method  StyleEditor getSingleObject()
- * @property-read StyleEditor[] $objects
+ * @extends AbstractDatabaseObjectAction<Style, StyleEditor>
  */
 class StyleAction extends AbstractDatabaseObjectAction implements IToggleAction
 {
@@ -59,23 +57,21 @@ class StyleAction extends AbstractDatabaseObjectAction implements IToggleAction
 
     /**
      * style object
-     * @var Style
+     * @var ?Style
      */
     public $style;
 
     /**
      * style editor object
-     * @var StyleEditor
+     * @var ?StyleEditor
      */
     public $styleEditor;
 
     /**
      * @inheritDoc
-     * @return  Style
      */
     public function create()
     {
-        /** @var Style $style */
         $style = parent::create();
 
         // add variables
@@ -125,6 +121,8 @@ class StyleAction extends AbstractDatabaseObjectAction implements IToggleAction
     }
 
     /**
+     * @param string $pathComponent
+     * @return void
      * @deprecated 5.4 This method is unused.
      */
     protected function removeDirectory($pathComponent)
@@ -263,7 +261,7 @@ class StyleAction extends AbstractDatabaseObjectAction implements IToggleAction
     /**
      * Updates style preview image.
      *
-     * @param Style $style
+     * @return void
      */
     protected function updateStylePreviewImage(Style $style)
     {
@@ -309,8 +307,8 @@ class StyleAction extends AbstractDatabaseObjectAction implements IToggleAction
     /**
      * Updates style favicon files.
      *
-     * @param Style $style
-     * @since       3.1
+     * @return void
+     * @since 3.1
      */
     protected function updateFavicons(Style $style)
     {
@@ -414,8 +412,8 @@ BROWSERCONFIG;
     /**
      * Updates the style cover photo.
      *
-     * @param Style $style
-     * @since       3.1
+     * @return void
+     * @since 3.1
      */
     protected function updateCoverPhoto(Style $style)
     {
@@ -461,7 +459,8 @@ BROWSERCONFIG;
     }
 
     /**
-     * @since       5.3
+     * @return void
+     * @since 5.3
      */
     protected function updateCustomAssets(Style $style)
     {
@@ -489,6 +488,7 @@ BROWSERCONFIG;
     /**
      * Validates parameters to copy a style.
      *
+     * @return void
      * @deprecated 6.2
      */
     public function validateCopy()
@@ -503,7 +503,7 @@ BROWSERCONFIG;
     /**
      * Copies a style.
      *
-     * @return  string[]
+     * @return array{redirectURL: string}
      * @deprecated 6.2 Use `wcf\system\style\command\CopyStyle` instead.
      */
     public function copy()
@@ -518,10 +518,12 @@ BROWSERCONFIG;
 
     /**
      * Validates parameters to change user style.
+     *
+     * @return void
      */
     public function validateChangeStyle()
     {
-        $this->style = $this->getSingleObject();
+        $this->style = $this->getSingleObject()->getDecoratedObject();
         if ($this->style->isDisabled && !WCF::getSession()->getPermission('admin.style.canUseDisabledStyle')) {
             throw new PermissionDeniedException();
         }
@@ -529,6 +531,8 @@ BROWSERCONFIG;
 
     /**
      * Changes user style.
+     *
+     * @return void
      */
     public function changeStyle()
     {
@@ -554,6 +558,8 @@ BROWSERCONFIG;
 
     /**
      * Validates the 'getStyleChooser' action.
+     *
+     * @return void
      */
     public function validateGetStyleChooser()
     {
@@ -563,7 +569,7 @@ BROWSERCONFIG;
     /**
      * Returns the style chooser dialog.
      *
-     * @return  string[]
+     * @return array{actionName: string, template: string}
      */
     public function getStyleChooser()
     {
@@ -585,7 +591,8 @@ BROWSERCONFIG;
     /**
      * Validates the mark as tainted action.
      *
-     * @since   3.0
+     * @return void
+     * @since 3.0
      */
     public function validateMarkAsTainted()
     {

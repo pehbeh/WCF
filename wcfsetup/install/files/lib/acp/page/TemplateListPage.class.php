@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\TemplateGridView;
 
 /**
@@ -13,7 +12,7 @@ use wcf\system\gridView\admin\TemplateGridView;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    TemplateGridView $gridView
+ * @extends AbstractGridViewPage<TemplateGridView>
  */
 class TemplateListPage extends AbstractGridViewPage
 {
@@ -28,7 +27,7 @@ class TemplateListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.template.canManageTemplate'];
 
     #[\Override]
-    protected function createGridView(): AbstractGridView
+    protected function createGridView(): TemplateGridView
     {
         return new TemplateGridView(TemplateGridView::DEFAULT_TEMPLATE_GROUP_ID);
     }

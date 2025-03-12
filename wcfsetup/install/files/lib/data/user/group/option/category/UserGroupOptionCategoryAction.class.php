@@ -11,9 +11,7 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserGroupOptionCategory         create()
- * @method  UserGroupOptionCategoryEditor[]     getObjects()
- * @method  UserGroupOptionCategoryEditor       getSingleObject()
+ * @extends AbstractDatabaseObjectAction<UserGroupOptionCategory, UserGroupOptionCategoryEditor>
  */
 class UserGroupOptionCategoryAction extends AbstractDatabaseObjectAction
 {

@@ -13,9 +13,9 @@ use wcf\data\IEditableCachedObject;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.2
  *
- * @method      static ReactionType    create(array $parameters = [])
- * @method              ReactionType    getDecoratedObject()
- * @mixin                   ReactionType
+ * @mixin ReactionType
+ * @extends DatabaseObjectEditor<ReactionType>
+ * @implements IEditableCachedObject<ReactionType>
  */
 class ReactionTypeEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {

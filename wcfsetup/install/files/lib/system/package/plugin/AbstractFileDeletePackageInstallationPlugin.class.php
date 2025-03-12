@@ -233,6 +233,7 @@ abstract class AbstractFileDeletePackageInstallationPlugin extends AbstractXMLPa
 
     /**
      * @inheritDoc
+     * @return void
      */
     protected function addFormFields(IFormDocument $form)
     {
@@ -268,6 +269,8 @@ abstract class AbstractFileDeletePackageInstallationPlugin extends AbstractXMLPa
 
     /**
      * @inheritDoc
+     * @param bool $saveData
+     * @return array<string, int|string>
      */
     protected function fetchElementData(\DOMElement $element, $saveData)
     {
@@ -280,6 +283,7 @@ abstract class AbstractFileDeletePackageInstallationPlugin extends AbstractXMLPa
 
     /**
      * @inheritDoc
+     * @return string
      */
     public function getElementIdentifier(\DOMElement $element)
     {
@@ -290,6 +294,7 @@ abstract class AbstractFileDeletePackageInstallationPlugin extends AbstractXMLPa
 
     /**
      * @inheritDoc
+     * @return void
      */
     protected function setEntryListKeys(IDevtoolsPipEntryList $entryList)
     {
@@ -301,6 +306,7 @@ abstract class AbstractFileDeletePackageInstallationPlugin extends AbstractXMLPa
 
     /**
      * @inheritDoc
+     * @return void
      */
     protected function insertNewXmlElement(XML $xml, \DOMElement $newElement)
     {
@@ -317,6 +323,7 @@ abstract class AbstractFileDeletePackageInstallationPlugin extends AbstractXMLPa
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)
     {
@@ -334,13 +341,14 @@ abstract class AbstractFileDeletePackageInstallationPlugin extends AbstractXMLPa
     /**
      * @inheritDoc
      */
-    final protected function prepareDeleteXmlElement(\DOMElement $element)
+    final protected function prepareDeleteXmlElement(\DOMElement $element): null
     {
         return null;
     }
 
     /**
      * @inheritDoc
+     * @return void
      */
     protected function saveObject(\DOMElement $newElement, ?\DOMElement $oldElement = null)
     {
@@ -374,6 +382,7 @@ abstract class AbstractFileDeletePackageInstallationPlugin extends AbstractXMLPa
 
     /**
      * @inheritDoc
+     * @return string
      */
     protected function getEmptyXml()
     {

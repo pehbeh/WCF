@@ -70,6 +70,7 @@ class I18nValue
      * @param string $item
      * @param string $category
      * @param string $package
+     * @return void
      */
     public function setLanguageItem($item, $category, $package)
     {
@@ -82,6 +83,7 @@ class I18nValue
      * Sets bit flags.
      *
      * @param int $flags
+     * @return void
      */
     public function setFlags($flags)
     {

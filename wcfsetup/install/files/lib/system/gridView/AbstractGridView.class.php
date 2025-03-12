@@ -23,6 +23,9 @@ use wcf\util\StringUtil;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @template TDatabaseObject of DatabaseObject
+ * @template TDatabaseObjectList of DatabaseObjectList
  */
 abstract class AbstractGridView
 {
@@ -37,18 +40,26 @@ abstract class AbstractGridView
     private array $quickInteractions = [];
 
     /**
-     * @var DatabaseObject[]
+     * @var TDatabaseObject[]
      */
     protected array $objects;
 
     protected int $objectCount;
+
+    /**
+     * @var TDatabaseObjectList
+     */
     protected DatabaseObjectList $objectList;
+
     private GridViewRowLink $rowLink;
     private int $rowsPerPage = 20;
     private string $baseUrl = '';
     private string $sortField = '';
     private string $sortOrder = 'ASC';
     private int $pageNo = 1;
+    /**
+     * @var array<string, string|int>
+     */
     private array $activeFilters = [];
     private string|int|null $objectIDFilter = null;
     private ?IInteractionProvider $interactionProvider = null;
@@ -111,6 +122,7 @@ abstract class AbstractGridView
 
     /**
      * Adds multiple new columns to the grid view.
+     *
      * @param GridViewColumn[] $columns
      */
     public function addColumns(array $columns): void
@@ -122,6 +134,7 @@ abstract class AbstractGridView
 
     /**
      * Returns all columns of the grid view.
+     *
      * @return GridViewColumn[]
      */
     public function getColumns(): array
@@ -131,6 +144,7 @@ abstract class AbstractGridView
 
     /**
      * Returns all visible (non-hidden) columns of the grid view.
+     *
      * @return GridViewColumn[]
      */
     public function getVisibleColumns(): array
@@ -154,6 +168,7 @@ abstract class AbstractGridView
 
     /**
      * Returns all columns that are sortable.
+     *
      * @return GridViewColumn[]
      */
     public function getSortableColumns(): array
@@ -163,6 +178,7 @@ abstract class AbstractGridView
 
     /**
      * Returns all columns that are filterable.
+     *
      * @return GridViewColumn[]
      */
     public function getFilterableColumns(): array
@@ -238,6 +254,7 @@ abstract class AbstractGridView
 
     /**
      * Returns the quick interactions.
+     *
      * @return IInteraction[]
      */
     public function getQuickInteractions(): array
@@ -265,6 +282,8 @@ abstract class AbstractGridView
 
     /**
      * Renders the given grid view column.
+     *
+     * @param TDatabaseObject $row
      */
     public function renderColumn(GridViewColumn $column, DatabaseObject $row): string
     {
@@ -340,6 +359,8 @@ abstract class AbstractGridView
 
     /**
      * Renders the interactions for the given row.
+     *
+     * @param TDatabaseObject $row
      */
     public function renderInteractionContextMenuButton(DatabaseObject $row): string
     {
@@ -352,6 +373,8 @@ abstract class AbstractGridView
 
     /**
      * Renders the interactions for the given row.
+     *
+     * @param TDatabaseObject $row
      */
     public function renderQuickInteractions(DatabaseObject $row): string
     {
@@ -368,6 +391,8 @@ abstract class AbstractGridView
 
     /**
      * Returns the row data for the given identifier.
+     *
+     * @param TDatabaseObject $row
      */
     protected function getData(DatabaseObject $row, string $identifer): mixed
     {
@@ -517,6 +542,8 @@ abstract class AbstractGridView
 
     /**
      * Sets the active filter values.
+     *
+     * @param array<string, string|int> $filters
      */
     public function setActiveFilters(array $filters): void
     {
@@ -525,6 +552,8 @@ abstract class AbstractGridView
 
     /**
      * Returns the active filter values.
+     *
+     * @return array<string, string|int>
      */
     public function getActiveFilters(): array
     {
@@ -556,6 +585,8 @@ abstract class AbstractGridView
 
     /**
      * Gets the additional parameters of the grid view.
+     *
+     * @return mixed[]
      */
     public function getParameters(): array
     {
@@ -572,6 +603,8 @@ abstract class AbstractGridView
 
     /**
      * Returns the id for the given row.
+     *
+     * @param TDatabaseObject $row
      */
     public function getObjectID(DatabaseObject $row): string|int
     {
@@ -653,6 +686,8 @@ abstract class AbstractGridView
 
     /**
      * Returns the rows for the active page.
+     *
+     * @return TDatabaseObject[]
      */
     public function getRows(): array
     {
@@ -678,6 +713,8 @@ abstract class AbstractGridView
 
     /**
      * Returns the database object list.
+     *
+     * @return TDatabaseObjectList
      */
     public function getObjectList(): DatabaseObjectList
     {
@@ -736,6 +773,8 @@ abstract class AbstractGridView
 
     /**
      * Creates the database object list of this grid view.
+     *
+     * @return TDatabaseObjectList
      */
     protected abstract function createObjectList(): DatabaseObjectList;
 }

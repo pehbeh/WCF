@@ -27,6 +27,8 @@ use wcf\util\StringUtil;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @extends AbstractGridView<CronjobLog, CronjobLogList>
  */
 final class CronjobLogGridView extends AbstractGridView
 {
@@ -46,6 +48,9 @@ final class CronjobLogGridView extends AbstractGridView
                 ->filter(new SelectFilter($availableCronjobs))
                 ->renderer([
                     new class($availableCronjobs) extends DefaultColumnRenderer {
+                        /**
+                         * @param array<int, string> $availableCronjobs
+                         */
                         public function __construct(private readonly array $availableCronjobs) {}
 
                         public function render(mixed $value, DatabaseObject $row): string
@@ -108,6 +113,9 @@ final class CronjobLogGridView extends AbstractGridView
         return new CronjobLogGridViewInitialized($this);
     }
 
+    /**
+     * @return array<int, string>
+     */
     private function getAvailableCronjobs(): array
     {
         $list = new I18nCronjobList();

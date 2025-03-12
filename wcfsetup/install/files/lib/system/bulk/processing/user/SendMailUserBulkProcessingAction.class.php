@@ -3,8 +3,6 @@
 namespace wcf\system\bulk\processing\user;
 
 use wcf\data\DatabaseObjectList;
-use wcf\data\user\UserList;
-use wcf\system\exception\InvalidObjectArgument;
 use wcf\system\exception\UserInputException;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
@@ -48,10 +46,6 @@ class SendMailUserBulkProcessingAction extends AbstractUserBulkProcessingAction
      */
     public function executeAction(DatabaseObjectList $objectList)
     {
-        if (!($objectList instanceof UserList)) {
-            throw new InvalidObjectArgument($objectList, UserList::class, 'Object list');
-        }
-
         if (\count($objectList)) {
             // save config in session
             $userMailData = WCF::getSession()->getVar('userMailData');

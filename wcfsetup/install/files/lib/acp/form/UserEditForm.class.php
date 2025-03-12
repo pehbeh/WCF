@@ -191,7 +191,6 @@ class UserEditForm extends UserAddForm
      */
     protected function initOptionHandler()
     {
-        \assert($this->optionHandler instanceof UserOptionHandler);
         $this->optionHandler->setUser($this->user->getDecoratedObject());
     }
 
@@ -310,6 +309,8 @@ class UserEditForm extends UserAddForm
 
     /**
      * Sets the selected languages.
+     *
+     * @return void
      */
     protected function readVisibleLanguages()
     {
@@ -318,6 +319,8 @@ class UserEditForm extends UserAddForm
 
     /**
      * Sets the default values.
+     *
+     * @return void
      */
     protected function readDefaultValues()
     {

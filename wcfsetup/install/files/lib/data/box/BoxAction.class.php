@@ -25,8 +25,7 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  BoxEditor[] getObjects()
- * @method  BoxEditor   getSingleObject()
+ * @extends AbstractDatabaseObjectAction<Box, BoxEditor>
  */
 class BoxAction extends AbstractDatabaseObjectAction implements IToggleAction
 {
@@ -295,6 +294,8 @@ class BoxAction extends AbstractDatabaseObjectAction implements IToggleAction
 
     /**
      * Validates the 'getBoxConditionsTemplate' action.
+     *
+     * @return void
      */
     public function validateGetBoxConditionsTemplate()
     {

@@ -13,8 +13,8 @@ use wcf\data\package\update\version\PackageUpdateVersion;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  PackageUpdate   getDecoratedObject()
  * @mixin   PackageUpdate
+ * @extends DatabaseObjectDecorator<PackageUpdate>
  */
 class ViewablePackageUpdate extends DatabaseObjectDecorator
 {
@@ -43,7 +43,7 @@ class ViewablePackageUpdate extends DatabaseObjectDecorator
     /**
      * Sets latest accessible package update version object.
      *
-     * @param PackageUpdateVersion $latestVersion
+     * @return void
      */
     public function setAccessibleVersion(PackageUpdateVersion $latestVersion)
     {
@@ -53,7 +53,7 @@ class ViewablePackageUpdate extends DatabaseObjectDecorator
     /**
      * Sets latest package update version object.
      *
-     * @param PackageUpdateVersion $latestVersion
+     * @return void
      */
     public function setLatestVersion(PackageUpdateVersion $latestVersion)
     {
@@ -63,7 +63,7 @@ class ViewablePackageUpdate extends DatabaseObjectDecorator
     /**
      * Returns latest accessible package update version object.
      *
-     * @return  PackageUpdateVersion
+     * @return PackageUpdateVersion
      */
     public function getAccessibleVersion()
     {
@@ -73,7 +73,7 @@ class ViewablePackageUpdate extends DatabaseObjectDecorator
     /**
      * Returns latest package update version object.
      *
-     * @return  PackageUpdateVersion
+     * @return PackageUpdateVersion
      */
     public function getLatestVersion()
     {
@@ -81,7 +81,7 @@ class ViewablePackageUpdate extends DatabaseObjectDecorator
     }
 
     /**
-     * @param PackageUpdateServer $updateServer
+     * @return void
      * @since 5.2
      */
     public function setUpdateServer(PackageUpdateServer $updateServer)

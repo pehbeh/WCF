@@ -21,9 +21,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserNotificationEditor[]    getObjects()
- * @method  UserNotificationEditor      getSingleObject()
- * @method UserNotification create()
+ * @extends AbstractDatabaseObjectAction<UserNotification, UserNotificationEditor>
  */
 class UserNotificationAction extends AbstractDatabaseObjectAction
 {
@@ -168,6 +166,18 @@ class UserNotificationAction extends AbstractDatabaseObjectAction
     }
 
     /**
+     * @return array{
+     *  items: list<array{
+     *      content: string,
+     *      image: string,
+     *      isUnread: bool,
+     *      link: string,
+     *      objectId: int,
+     *      time: int,
+     *      usernames: string[],
+     *  }>,
+     *  totalCount: int,
+     * }
      * @since 5.5
      */
     public function getNotificationData(): array
@@ -219,6 +229,8 @@ class UserNotificationAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates parameters to mark a notification as confirmed.
+     *
+     * @return void
      */
     public function validateMarkAsConfirmed()
     {
@@ -231,7 +243,7 @@ class UserNotificationAction extends AbstractDatabaseObjectAction
     /**
      * Marks a notification as confirmed.
      *
-     * @return  array
+     * @return array{markAsRead: int, totalCount: int}
      */
     public function markAsConfirmed()
     {
@@ -245,6 +257,8 @@ class UserNotificationAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates parameters to mark all notifications of current user as confirmed.
+     *
+     * @return void
      */
     public function validateMarkAllAsConfirmed()
     {
@@ -254,7 +268,7 @@ class UserNotificationAction extends AbstractDatabaseObjectAction
     /**
      * Marks all notifications of current user as confirmed.
      *
-     * @return  bool[]
+     * @return array{markAllAsRead: bool}
      */
     public function markAllAsConfirmed()
     {

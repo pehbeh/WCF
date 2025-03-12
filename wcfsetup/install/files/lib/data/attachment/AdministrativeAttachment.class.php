@@ -14,9 +14,9 @@ use wcf\system\attachment\IAttachmentObjectType;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Attachment  getDecoratedObject()
  * @mixin   Attachment
  * @property-read string $username
+ * @extends DatabaseObjectDecorator<Attachment>
  */
 class AdministrativeAttachment extends DatabaseObjectDecorator
 {

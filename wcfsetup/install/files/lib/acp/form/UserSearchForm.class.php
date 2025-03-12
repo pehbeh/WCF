@@ -283,6 +283,8 @@ class UserSearchForm extends UserOptionListForm
 
     /**
      * Search for users which fit to the search values.
+     *
+     * @return void
      */
     protected function search()
     {

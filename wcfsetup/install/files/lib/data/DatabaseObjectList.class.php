@@ -13,6 +13,10 @@ use wcf\system\WCF;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template-covariant TDatabaseObject of DatabaseObject|DatabaseObjectDecorator<DatabaseObject>
+ * @implements ITraversableObject<TDatabaseObject>
+ * @phpstan-ignore generics.variance
  */
 abstract class DatabaseObjectList implements \Countable, ITraversableObject
 {
@@ -36,7 +40,8 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
 
     /**
      * result objects
-     * @var DatabaseObject[]
+     * @var TDatabaseObject[]
+     * @phpstan-ignore generics.variance
      */
     public $objects = [];
 
@@ -106,9 +111,6 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
      */
     protected $indexToObject = [];
 
-    /**
-     * Creates a new DatabaseObjectList object.
-     */
     public function __construct()
     {
         // set class name
@@ -141,7 +143,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * Counts the number of objects.
      *
-     * @return  int
+     * @return int
      */
     public function countObjects()
     {
@@ -157,6 +159,8 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
 
     /**
      * Reads the object ids from database.
+     *
+     * @return void
      */
     public function readObjectIDs()
     {
@@ -173,6 +177,8 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
 
     /**
      * Reads the objects from database.
+     *
+     * @return void
      */
     public function readObjects()
     {
@@ -191,6 +197,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
                             " . (!empty($this->sqlOrderBy) ? "ORDER BY " . $this->sqlOrderBy : '');
             $statement = WCF::getDB()->prepare($sql);
             $statement->execute($this->objectIDs);
+            // @phpstan-ignore argument.templateType
             $this->objects = $statement->fetchObjects(($this->objectClassName ?: $this->className));
         } else {
             $sql = "SELECT  " . (!empty($this->sqlSelects) ? $this->sqlSelects . ($this->useQualifiedShorthand ? ',' : '') : '') . "
@@ -201,6 +208,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
                     " . (!empty($this->sqlOrderBy) ? "ORDER BY " . $this->sqlOrderBy : '');
             $statement = WCF::getDB()->prepare($sql, $this->sqlLimit, $this->sqlOffset);
             $statement->execute($this->getConditionBuilder()->getParameters());
+            // @phpstan-ignore argument.templateType
             $this->objects = $statement->fetchObjects(($this->objectClassName ?: $this->className));
         }
 
@@ -227,7 +235,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * Returns the object ids of the list.
      *
-     * @return  int[]
+     * @return int[]
      */
     public function getObjectIDs()
     {
@@ -238,6 +246,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
      * Sets the object ids.
      *
      * @param int[] $objectIDs
+     * @return void
      */
     public function setObjectIDs(array $objectIDs)
     {
@@ -247,7 +256,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * Returns the objects of the list.
      *
-     * @return  DatabaseObject[]
+     * @return TDatabaseObject[]
      */
     public function getObjects()
     {
@@ -257,7 +266,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * Returns the condition builder object.
      *
-     * @return  PreparedStatementConditionBuilder
+     * @return PreparedStatementConditionBuilder
      */
     public function getConditionBuilder()
     {
@@ -267,8 +276,8 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * Sets the condition builder dynamically.
      *
-     * @param PreparedStatementConditionBuilder $conditionBuilder
-     * @since   5.3
+     * @return void
+     * @since 5.3
      */
     public function setConditionBuilder(PreparedStatementConditionBuilder $conditionBuilder)
     {
@@ -278,7 +287,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * Returns the name of the database table.
      *
-     * @return  string
+     * @return string
      */
     public function getDatabaseTableName()
     {
@@ -288,7 +297,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * Returns the name of the database table.
      *
-     * @return  string
+     * @return string
      */
     public function getDatabaseTableIndexName()
     {
@@ -298,7 +307,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * Returns the name of the database table alias.
      *
-     * @return  string
+     * @return string
      */
     public function getDatabaseTableAlias()
     {
@@ -401,8 +410,8 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * Returns the only object in this list or `null` if the list is empty.
      *
-     * @return  DatabaseObject|null
-     * @throws  \BadMethodCallException     if list contains more than one object
+     * @return ?TDatabaseObject
+     * @throws \BadMethodCallException     if list contains more than one object
      */
     public function getSingleObject()
     {

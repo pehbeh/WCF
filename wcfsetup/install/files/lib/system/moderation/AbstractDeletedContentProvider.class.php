@@ -2,6 +2,7 @@
 
 namespace wcf\system\moderation;
 
+use wcf\data\DatabaseObjectList;
 use wcf\data\object\type\AbstractObjectTypeProcessor;
 
 /**
@@ -10,6 +11,9 @@ use wcf\data\object\type\AbstractObjectTypeProcessor;
  * @author  Matthias Schmidt
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template T of DatabaseObjectList
+ * @implements IDeletedContentProvider<T>
  */
 abstract class AbstractDeletedContentProvider extends AbstractObjectTypeProcessor implements IDeletedContentProvider
 {

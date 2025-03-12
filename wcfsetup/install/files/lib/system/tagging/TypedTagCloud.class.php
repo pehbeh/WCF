@@ -37,6 +37,8 @@ class TypedTagCloud extends TagCloud
 
     /**
      * Loads the tag cloud cache.
+     *
+     * @return void
      */
     protected function loadCache()
     {

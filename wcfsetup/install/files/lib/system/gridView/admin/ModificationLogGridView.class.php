@@ -34,6 +34,8 @@ use wcf\util\StringUtil;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @extends AbstractGridView<ModificationLog, ModificationLogList>
  */
 final class ModificationLogGridView extends AbstractGridView
 {
@@ -78,6 +80,9 @@ final class ModificationLogGridView extends AbstractGridView
                 ])
                 ->filter(
                     new class($this->getAvailableActions()) implements IGridViewFilter {
+                        /**
+                         * @param array<string|int, string> $options
+                         */
                         public function __construct(private readonly array $options) {}
 
                         #[\Override]
@@ -166,6 +171,9 @@ final class ModificationLogGridView extends AbstractGridView
         return new ModificationLogList();
     }
 
+    /**
+     * @return IViewableModificationLog[]
+     */
     #[\Override]
     public function getRows(): array
     {
@@ -213,6 +221,9 @@ final class ModificationLogGridView extends AbstractGridView
         return new ModificationLogGridViewInitialized($this);
     }
 
+    /**
+     * @return array<string, string>
+     */
     private function getAvailableActions(): array
     {
         $packages = $actions = $availableActions = [];

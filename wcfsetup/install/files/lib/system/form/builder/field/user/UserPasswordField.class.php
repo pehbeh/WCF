@@ -60,13 +60,14 @@ final class UserPasswordField extends AbstractFormField implements
     /**
      * @inheritDoc
      */
-    protected static function getDefaultId()
+    protected static function getDefaultId(): string
     {
         return 'password';
     }
 
     /**
      * @inheritDoc
+     * @return string[]
      * @since       5.4
      */
     protected function getValidAutoCompleteTokens(): array

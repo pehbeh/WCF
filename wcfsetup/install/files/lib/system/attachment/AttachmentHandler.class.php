@@ -30,6 +30,7 @@ class AttachmentHandler implements \Countable
     /**
      * object type
      * @var IAttachmentObjectType
+     * @phpstan-ignore missingType.generics
      */
     protected $processor;
 
@@ -60,13 +61,11 @@ class AttachmentHandler implements \Countable
     private AttachmentFileProcessor $fileProcessor;
 
     /**
-     * Creates a new AttachmentHandler object.
-     *
      * @param string $objectType
      * @param int $objectID
      * @param string $tmpHash
      * @param int $parentObjectID
-     * @throws  SystemException
+     * @throws SystemException
      */
     public function __construct($objectType, $objectID, $tmpHash = '', $parentObjectID = 0)
     {
@@ -92,7 +91,7 @@ class AttachmentHandler implements \Countable
     /**
      * Returns a list of attachments.
      *
-     * @return  AttachmentList
+     * @return AttachmentList
      */
     public function getAttachmentList()
     {
@@ -123,6 +122,7 @@ class AttachmentHandler implements \Countable
      * Sets the object id of temporary saved attachments.
      *
      * @param int $objectID
+     * @return void
      */
     public function updateObjectID($objectID)
     {
@@ -149,6 +149,7 @@ class AttachmentHandler implements \Countable
      * @param string $objectType
      * @param int $newObjectID
      * @param int[] $oldObjectIDs
+     * @return void
      */
     public static function transferAttachments($objectType, $newObjectID, array $oldObjectIDs)
     {
@@ -175,6 +176,7 @@ class AttachmentHandler implements \Countable
      *
      * @param string $objectType
      * @param int[] $objectIDs
+     * @return void
      */
     public static function removeAttachments($objectType, array $objectIDs)
     {
@@ -195,7 +197,7 @@ class AttachmentHandler implements \Countable
     }
 
     /**
-     * @inheritDoc
+     * @return int
      */
     public function getMaxSize()
     {
@@ -203,7 +205,7 @@ class AttachmentHandler implements \Countable
     }
 
     /**
-     * @inheritDoc
+     * @return string[]
      */
     public function getAllowedExtensions()
     {
@@ -229,7 +231,7 @@ class AttachmentHandler implements \Countable
     /**
      * Returns a formatted list of the allowed file extensions.
      *
-     * @return  string[]
+     * @return string[]
      */
     public function getFormattedAllowedExtensions()
     {
@@ -259,7 +261,7 @@ class AttachmentHandler implements \Countable
     }
 
     /**
-     * @inheritDoc
+     * @return int
      */
     public function getMaxCount()
     {
@@ -269,7 +271,7 @@ class AttachmentHandler implements \Countable
     /**
      * Returns true if the active user has the permission to upload attachments.
      *
-     * @return  bool
+     * @return bool
      */
     public function canUpload()
     {
@@ -279,7 +281,8 @@ class AttachmentHandler implements \Countable
     /**
      * Returns the object type processor.
      *
-     * @return  IAttachmentObjectType
+     * @return IAttachmentObjectType
+     * @phpstan-ignore missingType.generics
      */
     public function getProcessor()
     {
@@ -289,8 +292,8 @@ class AttachmentHandler implements \Countable
     /**
      * Returns the temporary hashes used to identify the relevant uploaded attachments.
      *
-     * @return  string[]
-     * @since   5.2
+     * @return string[]
+     * @since 5.2
      */
     public function getTmpHashes()
     {
@@ -301,7 +304,8 @@ class AttachmentHandler implements \Countable
      * Sets the temporary hashes used to identify the relevant uploaded attachments.
      *
      * @param string[] $tmpHash
-     * @since   5.2
+     * @return void
+     * @since 5.2
      */
     public function setTmpHashes(array $tmpHash)
     {
@@ -311,8 +315,8 @@ class AttachmentHandler implements \Countable
     /**
      * Returns the attachment object type
      *
-     * @return  ObjectType
-     * @since   5.2
+     * @return ObjectType
+     * @since 5.2
      */
     public function getObjectType()
     {
@@ -323,8 +327,8 @@ class AttachmentHandler implements \Countable
      * Returns the id of the object the handled attachments belong to. If the object does not
      * exist (yet), `0` is returned.
      *
-     * @return  int
-     * @since   5.2
+     * @return int
+     * @since 5.2
      */
     public function getObjectID()
     {
@@ -335,8 +339,8 @@ class AttachmentHandler implements \Countable
      * Returns the id of the parent object of the object the handled attachments belong to.
      * If no such parent object exists, `0` is returned.
      *
-     * @return  int
-     * @since   5.2
+     * @return int
+     * @since 5.2
      */
     public function getParentObjectID()
     {

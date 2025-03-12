@@ -28,7 +28,7 @@ class HtmlInputNodeTextParser
 {
     /**
      * list of markers per element that will face a replacement
-     * @var \DOMElement[][]
+     * @var array<int, array<string, \DOMElement>>
      */
     protected $elementStack = [];
 
@@ -39,7 +39,7 @@ class HtmlInputNodeTextParser
 
     /**
      * list of text nodes that will face a replacement
-     * @var \DOMText[]
+     * @var array<int, \DOMText>
      */
     protected $nodeStack = [];
 
@@ -50,7 +50,7 @@ class HtmlInputNodeTextParser
     protected $smileyCount = 0;
 
     /**
-     * @var string[]
+     * @var list<string>
      */
     protected $sourceBBCodes = [];
 
@@ -62,7 +62,7 @@ class HtmlInputNodeTextParser
 
     /**
      * list of smilies by smiley code
-     * @var Smiley[]
+     * @var array<string, Smiley>
      */
     protected static $smilies;
 
@@ -85,9 +85,6 @@ class HtmlInputNodeTextParser
 	~x";
 
     /**
-     * HtmlInputNodeTextParser constructor.
-     *
-     * @param HtmlInputNodeProcessor $htmlInputNodeProcessor
      * @param int $smileyCount
      */
     public function __construct(HtmlInputNodeProcessor $htmlInputNodeProcessor, $smileyCount = 0)
@@ -141,6 +138,8 @@ class HtmlInputNodeTextParser
 
     /**
      * Parses all text nodes searching for possible replacements.
+     *
+     * @return void
      */
     public function parse()
     {
@@ -234,6 +233,7 @@ class HtmlInputNodeTextParser
      * @param \DOMText $text text node
      * @param string $value node value
      * @param string[] $usernames list of already found usernames
+     * @return void
      */
     protected function detectMention(\DOMText $text, string $value, array &$usernames)
     {
@@ -640,6 +640,7 @@ class HtmlInputNodeTextParser
      *
      * @param \DOMText $text text node
      * @param \DOMElement[] $elements elements to be inserted
+     * @return void
      */
     protected function replaceMatches(\DOMText $text, array $elements)
     {

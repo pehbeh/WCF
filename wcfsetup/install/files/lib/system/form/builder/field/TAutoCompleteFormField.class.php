@@ -57,6 +57,7 @@ trait TAutoCompleteFormField
     /**
      * Returns all valid `autocomplete` tokens.
      *
+     * @return string[]
      * @see https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#inappropriate-for-the-control
      */
     protected function getValidAutoCompleteTokens(): array

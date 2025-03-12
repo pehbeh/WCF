@@ -18,7 +18,7 @@ interface IMaximumLengthFormField extends IFormField
      * Returns the maximum length of the values of this field or `null` if no maximum
      * length has been set.
      *
-     * @return  null|int
+     * @return ?int
      */
     public function getMaximumLength();
 
@@ -26,8 +26,8 @@ interface IMaximumLengthFormField extends IFormField
      * Sets the maximum length of the values of this field. If `null` is passed, the
      * maximum length is removed.
      *
-     * @param null|int $maximumLength maximum field value length
-     * @return  static              this field
+     * @param ?int $maximumLength maximum field value length
+     * @return static this field
      *
      * @throws  \InvalidArgumentException   if the given maximum length is no integer or otherwise invalid
      */
@@ -37,7 +37,8 @@ interface IMaximumLengthFormField extends IFormField
      * Validates the maximum length of the given text.
      *
      * @param string $text validated text
-     * @param null|Language $language language of the validated text
+     * @param ?Language $language language of the validated text
+     * @return void
      */
     public function validateMaximumLength($text, ?Language $language = null);
 }

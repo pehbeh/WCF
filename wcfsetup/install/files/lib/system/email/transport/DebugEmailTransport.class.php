@@ -19,7 +19,7 @@ use wcf\util\DateUtil;
  */
 final class DebugEmailTransport implements IEmailTransport
 {
-    protected StreamInterface $mbox;
+    private readonly StreamInterface $mbox;
 
     /**
      * Creates a new DebugTransport using the given mbox as target.
@@ -38,7 +38,7 @@ final class DebugEmailTransport implements IEmailTransport
     /**
      * Writes the given $email into the mbox.
      */
-    public function deliver(Email $email, Mailbox $envelopeFrom, Mailbox $envelopeTo)
+    public function deliver(Email $email, Mailbox $envelopeFrom, Mailbox $envelopeTo): void
     {
         $this->mbox->write(\sprintf(
             "From %s %s\r\n",

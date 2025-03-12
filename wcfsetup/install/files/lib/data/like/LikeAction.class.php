@@ -3,6 +3,7 @@
 namespace wcf\data\like;
 
 use wcf\data\AbstractDatabaseObjectAction;
+use wcf\data\DatabaseObject;
 use wcf\data\IGroupedUserListAction;
 use wcf\data\like\object\ILikeObject;
 use wcf\data\reaction\ReactionAction;
@@ -24,9 +25,18 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @deprecated  since 5.2, use \wcf\data\reaction\ReactionAction instead
  *
- * @method  Like        create()
- * @method  LikeEditor[]    getObjects()
- * @method  LikeEditor  getSingleObject()
+ * @extends AbstractDatabaseObjectAction<Like, LikeEditor>
+ * @phpstan-type LikeData array{
+ *  likes: int,
+ *  dislikes: int,
+ *  cumulativeLikes: int,
+ *  isLiked: 1|0,
+ *  isDisliked: 1|0,
+ *  containerID: int,
+ *  newValue: 0,
+ *  oldValue: 0,
+ *  users: array{}
+ * }
  */
 class LikeAction extends AbstractDatabaseObjectAction implements IGroupedUserListAction
 {
@@ -54,12 +64,14 @@ class LikeAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
 
     /**
      * like object type provider object
-     * @var ILikeObjectTypeProvider
+     * @var ILikeObjectTypeProvider<DatabaseObject>
      */
     public $objectTypeProvider;
 
     /**
      * Validates parameters to fetch like details.
+     *
+     * @return void
      */
     public function validateGetLikeDetails()
     {
@@ -69,7 +81,7 @@ class LikeAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
     /**
      * Returns like details.
      *
-     * @return  string[]
+     * @return array{containerID: int, template: string}
      */
     public function getLikeDetails()
     {
@@ -116,6 +128,8 @@ class LikeAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
 
     /**
      * Validates parameters for like-related actions.
+     *
+     * @return void
      */
     public function validateLike()
     {
@@ -137,7 +151,7 @@ class LikeAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
     }
 
     /**
-     * @inheritDoc
+     * @return LikeData
      */
     public function like()
     {
@@ -145,7 +159,7 @@ class LikeAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
     }
 
     /**
-     * @inheritDoc
+     * @return void
      */
     public function validateDislike()
     {
@@ -154,7 +168,7 @@ class LikeAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
     }
 
     /**
-     * @inheritDoc
+     * @return LikeData
      */
     public function dislike()
     {
@@ -166,7 +180,7 @@ class LikeAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
      * will revert the status (removing like/dislike).
      *
      * @param int $likeValue
-     * @return  array
+     * @return LikeData
      */
     protected function updateLike($likeValue)
     {
@@ -190,9 +204,9 @@ class LikeAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
 
         // get stats
         return [
-            'likes' => ($likeData['data']['likes'] === null) ? 0 : $likeData['data']['likes'],
-            'dislikes' => ($likeData['data']['dislikes'] === null) ? 0 : $likeData['data']['dislikes'],
-            'cumulativeLikes' => ($likeData['data']['cumulativeLikes'] === null) ? 0 : $likeData['data']['cumulativeLikes'],
+            'likes' => $likeData['data']['likes'],
+            'dislikes' => $likeData['data']['dislikes'],
+            'cumulativeLikes' => $likeData['data']['cumulativeLikes'],
             'isLiked' => ($likeData['data']['liked'] == 1) ? 1 : 0,
             'isDisliked' => ($likeData['data']['liked'] == -1) ? 1 : 0,
             'containerID' => $this->parameters['data']['containerID'],
@@ -204,6 +218,8 @@ class LikeAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
 
     /**
      * Validates permissions for given object.
+     *
+     * @return void
      */
     protected function validateObjectParameters()
     {
@@ -261,7 +277,7 @@ class LikeAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
             $this->parameters['data']['objectID'],
             $this->objectType->objectTypeID,
         ]);
-        $pageCount = \ceil($statement->fetchSingleColumn() / 20);
+        $pageCount = (int)\ceil($statement->fetchSingleColumn() / 20);
 
         $sql = "SELECT      userID, likeValue
                 FROM        wcf1_like
@@ -307,6 +323,8 @@ class LikeAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
 
     /**
      * Validates parameters to load likes.
+     *
+     * @return void
      */
     public function validateLoad()
     {
@@ -333,7 +351,7 @@ class LikeAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
     /**
      * Loads a list of likes.
      *
-     * @return  array
+     * @return array{lastLikeTime: int, template: string}|array{}
      */
     public function load()
     {
@@ -362,6 +380,8 @@ class LikeAction extends AbstractDatabaseObjectAction implements IGroupedUserLis
 
     /**
      * Copies likes from one object id to another.
+     *
+     * @return void
      */
     public function copy()
     {

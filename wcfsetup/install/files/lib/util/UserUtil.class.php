@@ -57,7 +57,7 @@ final class UserUtil
     /**
      * @deprecated 5.5 Check whether `User::getUserByUsername()->userID` is falsy.
      */
-    public static function isAvailableUsername($name): bool
+    public static function isAvailableUsername(string $name): bool
     {
         $sql = "SELECT  COUNT(username)
                 FROM    wcf1_user
@@ -65,7 +65,7 @@ final class UserUtil
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute([$name]);
 
-        return $statement->fetchSingleColumn() == 0;
+        return $statement->fetchSingleColumn() === 0;
     }
 
     /**
@@ -91,7 +91,7 @@ final class UserUtil
     /**
      * @deprecated 5.5 Check whether `User::getUserByEmail()->userID` is falsy.
      */
-    public static function isAvailableEmail($email): bool
+    public static function isAvailableEmail(string $email): bool
     {
         $sql = "SELECT  COUNT(email)
                 FROM    wcf1_user
@@ -99,7 +99,7 @@ final class UserUtil
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute([$email]);
 
-        return $statement->fetchSingleColumn() == 0;
+        return $statement->fetchSingleColumn() === 0;
     }
 
     /**

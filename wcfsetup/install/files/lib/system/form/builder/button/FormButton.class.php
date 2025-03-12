@@ -21,7 +21,7 @@ class FormButton implements IFormButton
 
     /**
      * access key for this form button or `null` if no access key has been set
-     * @var null|string
+     * @var ?string
      */
     protected $accessKey;
 
@@ -32,7 +32,7 @@ class FormButton implements IFormButton
     protected $submit = false;
 
     /**
-     * @inheritDoc
+     * @var string
      */
     protected $templateName = 'shared_formButton';
 

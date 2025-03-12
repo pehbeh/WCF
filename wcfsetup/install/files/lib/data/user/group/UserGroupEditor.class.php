@@ -18,8 +18,9 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserGroup   getDecoratedObject()
  * @mixin   UserGroup
+ * @extends DatabaseObjectEditor<UserGroup>
+ * @implements IEditableCachedObject<UserGroup>
  */
 class UserGroupEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {
@@ -30,14 +31,11 @@ class UserGroupEditor extends DatabaseObjectEditor implements IEditableCachedObj
 
     /**
      * @inheritDoc
-     * @return  UserGroup
      */
     public static function create(array $parameters = [])
     {
-        /** @var UserGroup $group */
         $group = parent::create($parameters);
 
-        // update accessible groups
         self::updateAccessibleGroups($group->groupID);
 
         return $group;
@@ -66,11 +64,12 @@ class UserGroupEditor extends DatabaseObjectEditor implements IEditableCachedObj
     /**
      * Removes user to group assignments.
      *
-     * @param array $groupIDs
+     * @param int[] $groupIDs
+     * @return void
      */
     protected static function removeGroupAssignments(array $groupIDs)
     {
-        if (empty($groupIDs)) {
+        if ($groupIDs === []) {
             return;
         }
 
@@ -85,11 +84,12 @@ class UserGroupEditor extends DatabaseObjectEditor implements IEditableCachedObj
     /**
      * Removes group option values.
      *
-     * @param array $groupIDs
+     * @param int[] $groupIDs
+     * @return void
      */
     protected static function removeOptionValues(array $groupIDs)
     {
-        if (empty($groupIDs)) {
+        if ($groupIDs === []) {
             return;
         }
 
@@ -104,7 +104,8 @@ class UserGroupEditor extends DatabaseObjectEditor implements IEditableCachedObj
     /**
      * Updates group options.
      *
-     * @param array $groupOptions
+     * @param array<int, mixed> $groupOptions
+     * @return void
      */
     public function updateGroupOptions(array $groupOptions = [])
     {
@@ -131,6 +132,7 @@ class UserGroupEditor extends DatabaseObjectEditor implements IEditableCachedObj
      *
      * @param int $groupID this group is added or deleted in the value
      * @param bool $delete flag for group deletion
+     * @return void
      * @throws  SystemException
      */
     protected static function updateAccessibleGroups($groupID, $delete = false)

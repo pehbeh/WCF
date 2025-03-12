@@ -13,6 +13,8 @@ use wcf\util\StringUtil;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @implements IImageAdapter<\Imagick>
+ * @implements IWebpImageAdapter<\Imagick>
  */
 class ImagickImageAdapter implements IImageAdapter, ISingleFrameImageAdapter, IWebpImageAdapter
 {
@@ -49,6 +51,8 @@ class ImagickImageAdapter implements IImageAdapter, ISingleFrameImageAdapter, IW
 
     /**
      * List of image format that support animations.
+     *
+     * @var string[]
      */
     protected static array $animatedFormats = ['GIF', 'WEBP'];
 
@@ -69,6 +73,7 @@ class ImagickImageAdapter implements IImageAdapter, ISingleFrameImageAdapter, IW
      */
     public function load($image, $type = 0)
     {
+        // @phpstan-ignore instanceof.alwaysTrue
         if (!($image instanceof \Imagick)) {
             throw new SystemException("Object must be an instance of Imagick");
         }
@@ -108,6 +113,8 @@ class ImagickImageAdapter implements IImageAdapter, ISingleFrameImageAdapter, IW
 
     /**
      * Reads width and height of the image.
+     *
+     * @return void
      */
     protected function readImageDimensions()
     {
@@ -509,6 +516,7 @@ class ImagickImageAdapter implements IImageAdapter, ISingleFrameImageAdapter, IW
      */
     public function saveImageAs($image, string $filename, string $type, int $quality = 100): void
     {
+        // @phpstan-ignore instanceof.alwaysTrue
         if (!($image instanceof \Imagick)) {
             throw new \InvalidArgumentException("Given image is not a valid Imagick-object.");
         }

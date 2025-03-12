@@ -15,7 +15,7 @@ use wcf\system\user\authentication\password\IPasswordAlgorithm;
  */
 final class DoubleBcrypt implements IPasswordAlgorithm
 {
-    private static $blowfishCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./';
+    private static string $blowfishCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./';
 
     /**
      * blowfish cost factor
@@ -68,16 +68,12 @@ final class DoubleBcrypt implements IPasswordAlgorithm
 
     /**
      * Returns a double salted bcrypt hash.
-     *
-     * @param string $password
-     * @param string $salt
-     * @return  string
      */
     private static function getDoubleSaltedHash(
         #[\SensitiveParameter]
-        $password,
-        $salt = null
-    ) {
+        string $password,
+        ?string $salt = null
+    ): string {
         if ($salt === null) {
             $salt = self::getRandomSalt();
         }
@@ -87,16 +83,12 @@ final class DoubleBcrypt implements IPasswordAlgorithm
 
     /**
      * Returns a simple salted bcrypt hash.
-     *
-     * @param string $password
-     * @param string $salt
-     * @return  string
      */
     private static function getSaltedHash(
         #[\SensitiveParameter]
-        $password,
-        $salt = null
-    ) {
+        string $password,
+        ?string $salt = null
+    ): string {
         if ($salt === null) {
             $salt = self::getRandomSalt();
         }
@@ -106,10 +98,8 @@ final class DoubleBcrypt implements IPasswordAlgorithm
 
     /**
      * Returns a random blowfish-compatible salt.
-     *
-     * @return  string
      */
-    private static function getRandomSalt()
+    private static function getRandomSalt(): string
     {
         $salt = '';
 
@@ -122,11 +112,8 @@ final class DoubleBcrypt implements IPasswordAlgorithm
 
     /**
      * Returns a blowfish salt, e.g. $2a$07$usesomesillystringforsalt$
-     *
-     * @param string $salt
-     * @return  string
      */
-    private static function getSalt($salt)
+    private static function getSalt(string $salt): string
     {
         $salt = \mb_substr($salt, 0, 22, '8bit');
 
@@ -135,11 +122,8 @@ final class DoubleBcrypt implements IPasswordAlgorithm
 
     /**
      * Returns true if given bcrypt hash uses a different cost factor and should be re-computed.
-     *
-     * @param string $hash
-     * @return  bool
      */
-    private static function isDifferentBlowfish($hash)
+    private static function isDifferentBlowfish(string $hash): bool
     {
         $currentCost = \intval(self::BCRYPT_COST);
         $hashCost = \intval(\mb_substr($hash, 4, 2, '8bit'));

@@ -2,6 +2,8 @@
 
 namespace wcf\data\object\type;
 
+use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectDecorator;
 use wcf\data\DatabaseObjectList;
 
 /**
@@ -10,6 +12,9 @@ use wcf\data\DatabaseObjectList;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template TDatabaseObject of DatabaseObject|DatabaseObjectDecorator
+ * @implements IObjectTypeProvider<TDatabaseObject>
  */
 abstract class AbstractObjectTypeProvider implements IObjectTypeProvider
 {
@@ -52,7 +57,7 @@ abstract class AbstractObjectTypeProvider implements IObjectTypeProvider
         $tableAlias = \call_user_func([$this->className, 'getDatabaseTableAlias']);
         $tableIndex = \call_user_func([$this->className, 'getDatabaseTableIndexName']);
 
-        /** @var DatabaseObjectList $objectList */
+        /** @var DatabaseObjectList<TDatabaseObject> $objectList */
         $objectList = new $this->listClassName();
         if ($this->decoratorClassName) {
             $objectList->decoratorClassName = $this->decoratorClassName;

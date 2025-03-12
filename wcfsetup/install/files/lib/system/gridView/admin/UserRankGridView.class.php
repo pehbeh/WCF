@@ -30,6 +30,8 @@ use wcf\util\StringUtil;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @extends AbstractGridView<UserRank, I18nUserRankList>
  */
 final class UserRankGridView extends AbstractGridView
 {
@@ -136,6 +138,9 @@ final class UserRankGridView extends AbstractGridView
         return new UserRankGridViewInitialized($this);
     }
 
+    /**
+     * @return array<int, string>
+     */
     private function getAvailableUserGroups(): array
     {
         $groups = [];

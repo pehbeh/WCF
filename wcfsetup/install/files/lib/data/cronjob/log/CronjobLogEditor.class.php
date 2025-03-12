@@ -12,9 +12,8 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static CronjobLog  create(array $parameters = [])
- * @method      CronjobLog  getDecoratedObject()
  * @mixin       CronjobLog
+ * @extends DatabaseObjectEditor<CronjobLog>
  */
 class CronjobLogEditor extends DatabaseObjectEditor
 {
@@ -25,6 +24,8 @@ class CronjobLogEditor extends DatabaseObjectEditor
 
     /**
      * Deletes all cronjob logs.
+     *
+     * @return void
      */
     public static function clearLogs()
     {

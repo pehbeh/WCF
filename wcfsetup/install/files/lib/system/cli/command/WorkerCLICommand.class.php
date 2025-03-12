@@ -197,6 +197,9 @@ class WorkerCLICommand implements ICLICommand
 
     /**
      * Contains the logic of the parent controller process in multithreading mode.
+     *
+     * @param int $threads
+     * @return void
      */
     protected function spawnController(IWorker $worker, $threads)
     {
@@ -401,7 +404,7 @@ class WorkerCLICommand implements ICLICommand
     /**
      * Returns an array with the list of all available workers.
      *
-     * @return  array
+     * @return list<array{0: string, 1: string}>
      */
     public function generateList()
     {
@@ -449,7 +452,7 @@ class WorkerCLICommand implements ICLICommand
     }
 
     /**
-     * @inheritDoc
+     * @return string
      */
     public function getUsage()
     {

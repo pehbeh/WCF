@@ -2,6 +2,7 @@
 
 namespace wcf\system\gridView\admin;
 
+use wcf\data\acp\session\access\log\ACPSessionAccessLog;
 use wcf\data\acp\session\access\log\ACPSessionAccessLogList;
 use wcf\event\gridView\admin\ACPSessionGridViewInitialized;
 use wcf\system\gridView\AbstractGridView;
@@ -23,6 +24,8 @@ use wcf\system\WCF;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @extends AbstractGridView<ACPSessionAccessLog, ACPSessionAccessLogList>
  */
 final class ACPSessionGridView extends AbstractGridView
 {

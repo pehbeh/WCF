@@ -16,8 +16,9 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  MenuItem    getDecoratedObject()
  * @mixin   MenuItem
+ * @extends DatabaseObjectEditor<MenuItem>
+ * @implements IEditableCachedObject<MenuItem>
  */
 class MenuItemEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {

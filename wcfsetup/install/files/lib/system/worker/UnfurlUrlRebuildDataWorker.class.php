@@ -16,7 +16,7 @@ use wcf\system\WCF;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  *
- * @method  UnfurlUrlList    getObjectList()
+ * @extends AbstractLinearRebuildDataWorker<UnfurlUrlList>
  */
 final class UnfurlUrlRebuildDataWorker extends AbstractLinearRebuildDataWorker
 {

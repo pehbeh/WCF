@@ -264,6 +264,7 @@ class UserGroupOptionPackageInstallationPlugin extends AbstractOptionPackageInst
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -317,6 +318,8 @@ class UserGroupOptionPackageInstallationPlugin extends AbstractOptionPackageInst
 
     /**
      * @inheritDoc
+     * @param bool $saveData
+     * @return array<string, int|string>
      * @since   5.2
      */
     protected function fetchElementData(\DOMElement $element, $saveData)
@@ -362,6 +365,7 @@ class UserGroupOptionPackageInstallationPlugin extends AbstractOptionPackageInst
 
     /**
      * @inheritDoc
+     * @return UserGroupOptionHandler
      * @since   5.2
      */
     protected function getSortOptionHandler()
@@ -399,6 +403,7 @@ class UserGroupOptionPackageInstallationPlugin extends AbstractOptionPackageInst
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      * @since   5.2
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)

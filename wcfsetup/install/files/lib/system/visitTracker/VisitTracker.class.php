@@ -2,6 +2,7 @@
 
 namespace wcf\system\visitTracker;
 
+use wcf\data\object\type\ObjectType;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\system\exception\SystemException;
 use wcf\system\SingletonFactory;
@@ -30,13 +31,13 @@ class VisitTracker extends SingletonFactory
 
     /**
      * list of available object types
-     * @var array
+     * @var array<string, ObjectType>
      */
     protected $availableObjectTypes = [];
 
     /**
      * user visits
-     * @var array
+     * @var ?array<int, int>
      */
     protected $userVisits;
 
@@ -147,6 +148,7 @@ class VisitTracker extends SingletonFactory
      * Deletes all tracked visits of a specific object type.
      *
      * @param string $objectType
+     * @return void
      */
     public function deleteObjectVisits($objectType)
     {
@@ -166,6 +168,7 @@ class VisitTracker extends SingletonFactory
      * @param int $objectID
      * @param int[] $userIDs
      * @param int $time
+     * @return void
      */
     public function trackObjectVisitByUserIDs($objectType, $objectID, array $userIDs, $time = TIME_NOW)
     {
@@ -190,6 +193,7 @@ class VisitTracker extends SingletonFactory
      * @param string $objectType
      * @param int $objectID
      * @param int $time
+     * @return void
      */
     public function trackObjectVisit($objectType, $objectID, $time = TIME_NOW)
     {
@@ -209,6 +213,7 @@ class VisitTracker extends SingletonFactory
      *
      * @param string $objectType
      * @param int $time
+     * @return void
      */
     public function trackTypeVisit($objectType, $time = TIME_NOW)
     {

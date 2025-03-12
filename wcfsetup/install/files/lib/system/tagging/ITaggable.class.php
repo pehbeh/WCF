@@ -11,14 +11,15 @@ use wcf\data\tag\Tag;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template T of DatabaseObjectList
  */
 interface ITaggable
 {
     /**
      * Returns a list of tagged objects.
      *
-     * @param Tag $tag
-     * @return  DatabaseObjectList
+     * @return T
      * @deprecated 5.2
      */
     public function getObjectList(Tag $tag);

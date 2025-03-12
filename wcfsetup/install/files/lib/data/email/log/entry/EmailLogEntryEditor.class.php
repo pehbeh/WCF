@@ -11,9 +11,8 @@ use wcf\data\DatabaseObjectEditor;
  * @copyright   2001-2021 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static EmailLogEntry    create(array $parameters = [])
- * @method      EmailLogEntry    getDecoratedObject()
  * @mixin       EmailLogEntry
+ * @extends DatabaseObjectEditor<EmailLogEntry>
  */
 class EmailLogEntryEditor extends DatabaseObjectEditor
 {

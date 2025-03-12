@@ -2,6 +2,7 @@
 
 namespace wcf\system\bulk\processing;
 
+use wcf\data\DatabaseObjectList;
 use wcf\data\object\type\AbstractObjectTypeProcessor;
 
 /**
@@ -11,6 +12,9 @@ use wcf\data\object\type\AbstractObjectTypeProcessor;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
+ *
+ * @template TDatabaseObjectList of DatabaseObjectList
+ * @implements IBulkProcessingAction<TDatabaseObjectList>
  */
 abstract class AbstractBulkProcessingAction extends AbstractObjectTypeProcessor implements IBulkProcessingAction
 {

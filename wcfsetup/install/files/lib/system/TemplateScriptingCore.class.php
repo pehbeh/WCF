@@ -34,8 +34,8 @@ class TemplateScriptingCore
      * and the template object.
      *
      * @param string $name called method
-     * @param array $arguments method parameters
-     * @return  mixed
+     * @param mixed[] $arguments method parameters
+     * @return mixed
      */
     public function __call($name, array $arguments)
     {

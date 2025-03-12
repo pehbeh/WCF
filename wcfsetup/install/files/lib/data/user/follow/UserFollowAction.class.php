@@ -23,9 +23,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserFollow      create()
- * @method  UserFollowEditor[]  getObjects()
- * @method  UserFollowEditor    getSingleObject()
+ * @extends AbstractDatabaseObjectAction<UserFollow, UserFollowEditor>
  */
 class UserFollowAction extends AbstractDatabaseObjectAction implements IGroupedUserListAction
 {
@@ -35,14 +33,14 @@ class UserFollowAction extends AbstractDatabaseObjectAction implements IGroupedU
     protected $allowGuestAccess = ['getGroupedUserList'];
 
     /**
-     * user profile object
-     * @var UserProfile
+     * @var ?UserProfile
      */
     public $userProfile;
 
     /**
      * Validates given parameters.
      *
+     * @return void
      * @deprecated 6.1 use `wcf\action\UserFollowAction` instead
      */
     public function validateFollow()
@@ -73,7 +71,7 @@ class UserFollowAction extends AbstractDatabaseObjectAction implements IGroupedU
     /**
      * Follows a user.
      *
-     * @return  array
+     * @return array{following: 1}
      * @deprecated 6.1 use `wcf\action\UserFollowAction` instead
      */
     public function follow()
@@ -87,7 +85,7 @@ class UserFollowAction extends AbstractDatabaseObjectAction implements IGroupedU
     }
 
     /**
-     * @inheritDoc
+     * @return void
      * @deprecated 6.1 use `wcf\action\UserFollowAction` instead
      */
     public function validateUnfollow()
@@ -98,7 +96,7 @@ class UserFollowAction extends AbstractDatabaseObjectAction implements IGroupedU
     /**
      * Stops following a user.
      *
-     * @return  array
+     * @return array{following: 0}
      * @deprecated 6.1 use `wcf\action\UserFollowAction` instead
      */
     public function unfollow()
@@ -189,7 +187,7 @@ class UserFollowAction extends AbstractDatabaseObjectAction implements IGroupedU
                 WHERE   followUserID = ?";
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute([$this->parameters['userID']]);
-        $pageCount = \ceil($statement->fetchSingleColumn() / 20);
+        $pageCount = (int)\ceil($statement->fetchSingleColumn() / 20);
 
         // get user ids
         $sql = "SELECT  userID

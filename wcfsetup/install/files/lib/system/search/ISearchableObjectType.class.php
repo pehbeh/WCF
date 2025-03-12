@@ -19,8 +19,9 @@ interface ISearchableObjectType
     /**
      * Caches the data for the given object ids.
      *
-     * @param array $objectIDs
-     * @param array $additionalData
+     * @param int[] $objectIDs
+     * @param mixed[]|null $additionalData
+     * @return void
      */
     public function cacheObjects(array $objectIDs, ?array $additionalData = null);
 
@@ -36,6 +37,7 @@ interface ISearchableObjectType
      * Shows the form part of this object type.
      *
      * @param IForm $form instance of the form class where the search has taken place
+     * @return void
      */
     public function show(?IForm $form = null);
 
@@ -135,6 +137,7 @@ interface ISearchableObjectType
     /**
      * Sets the location in menu/breadcrumbs.
      *
+     * @return void
      * @since   3.0
      */
     public function setLocation();

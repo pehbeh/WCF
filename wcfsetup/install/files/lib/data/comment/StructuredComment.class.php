@@ -14,8 +14,9 @@ use wcf\system\cache\runtime\UserProfileRuntimeCache;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Comment     getDecoratedObject()
  * @mixin   Comment
+ * @extends DatabaseObjectDecorator<Comment>
+ * @implements \Iterator<int, StructuredCommentResponse>
  */
 class StructuredComment extends DatabaseObjectDecorator implements \Countable, \Iterator
 {
@@ -110,6 +111,7 @@ class StructuredComment extends DatabaseObjectDecorator implements \Countable, \
     /**
      * Sets the user's profile.
      *
+     * @return void
      * @deprecated  3.0
      */
     public function setUserProfile(UserProfile $userProfile)

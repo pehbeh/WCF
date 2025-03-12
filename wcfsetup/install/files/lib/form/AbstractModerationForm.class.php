@@ -31,7 +31,7 @@ abstract class AbstractModerationForm extends AbstractForm
 
     /**
      * data used for moderation queue update
-     * @var array
+     * @var mixed[]
      */
     public $data = [];
 
@@ -160,6 +160,8 @@ abstract class AbstractModerationForm extends AbstractForm
 
     /**
      * Prepares update of moderation queue item.
+     *
+     * @return void
      */
     protected function prepareSave()
     {

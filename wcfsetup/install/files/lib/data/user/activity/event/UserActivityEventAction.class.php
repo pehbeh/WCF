@@ -19,9 +19,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserActivityEvent       create()
- * @method  UserActivityEventEditor[]   getObjects()
- * @method  UserActivityEventEditor     getSingleObject()
+ * @extends AbstractDatabaseObjectAction<UserActivityEvent, UserActivityEventEditor>
  */
 class UserActivityEventAction extends AbstractDatabaseObjectAction
 {
@@ -37,6 +35,8 @@ class UserActivityEventAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates parameters to load recent activity entries.
+     *
+     * @return void
      */
     public function validateLoad()
     {
@@ -65,7 +65,11 @@ class UserActivityEventAction extends AbstractDatabaseObjectAction
     /**
      * Loads a list of recent activity entries.
      *
-     * @return  array
+     * @return array{
+     *  lastEventID: int,
+     *  lastEventTime: int,
+     *  template: string,
+     * }|array{}
      */
     public function load()
     {
@@ -135,9 +139,14 @@ class UserActivityEventAction extends AbstractDatabaseObjectAction
 
     /**
      * Does nothing.
+     *
+     * @return void
      */
     public function validateSwitchContext() {}
 
+    /**
+     * @return void
+     */
     public function switchContext()
     {
         /** @noinspection PhpUndefinedFieldInspection */

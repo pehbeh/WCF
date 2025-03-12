@@ -13,9 +13,7 @@ use wcf\data\media\ViewableMediaList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  (ViewableMedia|null)[]         getCachedObjects()
- * @method  ?ViewableMedia      getObject($objectID)
- * @method  (ViewableMedia|null)[]         getObjects(array $objectIDs)
+ * @extends AbstractRuntimeCache<ViewableMedia, ViewableMediaList>
  */
 class ViewableMediaRuntimeCache extends AbstractRuntimeCache
 {

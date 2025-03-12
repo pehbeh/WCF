@@ -11,11 +11,7 @@ use wcf\data\I18nDatabaseObjectList;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  PaidSubscription    current()
- * @method  PaidSubscription[]  getObjects()
- * @method  PaidSubscription|null   getSingleObject()
- * @method  PaidSubscription|null   search($objectID)
- * @property    PaidSubscription[] $objects
+ * @extends I18nDatabaseObjectList<PaidSubscription>
  */
 class I18nPaidSubscriptionList extends I18nDatabaseObjectList
 {

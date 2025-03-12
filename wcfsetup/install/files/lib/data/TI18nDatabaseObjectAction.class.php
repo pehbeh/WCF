@@ -15,7 +15,7 @@ use wcf\system\WCF;
  * @license   GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.0
  *
- * @mixin AbstractDatabaseObjectAction
+ * @mixin AbstractDatabaseObjectAction<DatabaseObject, DatabaseObjectEditor<DatabaseObject>>
  */
 trait TI18nDatabaseObjectAction
 {
@@ -38,6 +38,8 @@ trait TI18nDatabaseObjectAction
 
     /**
      * Deletes language items and clears the language cache.
+     *
+     * @param string[] $languageItems
      */
     private function deleteI18nItems(array $languageItems): void
     {

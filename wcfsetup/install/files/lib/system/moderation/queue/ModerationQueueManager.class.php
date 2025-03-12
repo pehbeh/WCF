@@ -200,6 +200,7 @@ class ModerationQueueManager extends SingletonFactory
      *
      * @param int $objectTypeID
      * @param ViewableModerationQueue[] $objects
+     * @return void
      * @throws  SystemException
      */
     public function populate($objectTypeID, array $objects)
@@ -312,6 +313,8 @@ class ModerationQueueManager extends SingletonFactory
 
     /**
      * Forces the update of non-tracked queues for this user.
+     *
+     * @return void
      */
     protected function forceUserAssignment()
     {
@@ -350,6 +353,7 @@ class ModerationQueueManager extends SingletonFactory
      * Saves moderation queue assignments.
      *
      * @param array<int, bool> $assignments
+     * @return void
      */
     public function setAssignment(array $assignments, ?User $user = null)
     {
@@ -381,6 +385,8 @@ class ModerationQueueManager extends SingletonFactory
 
     /**
      * Identifies and removes orphaned queues.
+     *
+     * @return void
      */
     public function identifyOrphans()
     {
@@ -429,6 +435,7 @@ class ModerationQueueManager extends SingletonFactory
      * Removes a list of orphaned queue ids.
      *
      * @param int[] $queueIDs
+     * @return void
      */
     public function removeOrphans(array $queueIDs)
     {
@@ -450,6 +457,7 @@ class ModerationQueueManager extends SingletonFactory
      * Resets moderation count for all users or optionally only for one user.
      *
      * @param int $userID
+     * @return void
      */
     public function resetModerationCount($userID = null)
     {
@@ -502,6 +510,7 @@ class ModerationQueueManager extends SingletonFactory
      *
      * @param string $objectType
      * @param int[] $objectIDs
+     * @return void
      * @throws  SystemException
      */
     public function removeQueues($objectType, array $objectIDs)

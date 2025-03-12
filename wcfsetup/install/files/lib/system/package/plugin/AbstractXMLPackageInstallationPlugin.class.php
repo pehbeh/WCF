@@ -89,6 +89,7 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
      * Deletes items.
      *
      * @param \DOMXPath $xpath
+     * @return void
      */
     protected function deleteItems(\DOMXPath $xpath)
     {
@@ -125,7 +126,7 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
 
     /**
      * @param \DOMXPath $xpath
-     * @return  \DOMNodeList
+     * @return  \DOMNodeList<\DOMElement>
      */
     protected function getImportElements(\DOMXPath $xpath)
     {
@@ -136,6 +137,7 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
      * Imports or updates items.
      *
      * @param \DOMXPath $xpath
+     * @return void
      */
     protected function importItems(\DOMXPath $xpath)
     {
@@ -218,8 +220,9 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
      * Sets element value from XPath.
      *
      * @param \DOMXPath $xpath
-     * @param array $elements
+     * @param array<string, mixed> $elements
      * @param \DOMElement $element
+     * @return void
      */
     protected function getElement(\DOMXPath $xpath, array &$elements, \DOMElement $element)
     {
@@ -285,8 +288,8 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
     /**
      * Inserts or updates new items.
      *
-     * @param array $row
-     * @param array $data
+     * @param array<string, mixed> $row
+     * @param array<string, mixed> $data
      * @return  \wcf\data\IStorableObject|\wcf\data\DatabaseObjectEditor|null
      */
     protected function import(array $row, array $data)
@@ -300,7 +303,7 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
             // update existing item
             $baseClass = \call_user_func([$this->className, 'getBaseClass']);
 
-            /** @var \wcf\data\DatabaseObjectEditor $itemEditor */
+            /** @var \wcf\data\DatabaseObjectEditor<\wcf\data\DatabaseObject> $itemEditor */
             $itemEditor = new $this->className(new $baseClass(null, $row));
             $itemEditor->update($data);
 
@@ -311,13 +314,16 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
     /**
      * Executed after all items would have been imported, use this hook if you've
      * overwritten import() to disable insert/update.
+     *
+     * @return void
      */
     protected function postImport() {}
 
     /**
      * Deletes the given items.
      *
-     * @param array $items
+     * @param mixed[] $items
+     * @return void
      */
     abstract protected function handleDelete(array $items);
 
@@ -325,8 +331,8 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
      * Prepares import, use this to map xml tags and attributes
      * to their corresponding database fields.
      *
-     * @param array $data
-     * @return  array
+     * @param mixed[] $data
+     * @return mixed[]
      */
     abstract protected function prepareImport(array $data);
 
@@ -334,7 +340,8 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
      * Validates given item, e.g. checking for invalid values. If validation
      * fails you should throw an exception.
      *
-     * @param array $data
+     * @param mixed[] $data
+     * @return void
      */
     protected function validateImport(array $data) {}
 
@@ -342,8 +349,8 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
      * Returns an array with a sql query and its parameters to find an existing item for updating
      * or `null` if updates are not supported.
      *
-     * @param array $data
-     * @return  array|null
+     * @param mixed[] $data
+     * @return mixed[]|null
      */
     abstract protected function findExistingItem(array $data);
 
@@ -353,7 +360,8 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
      *
      * Attention: $data is passed by reference
      *
-     * @param array $data
+     * @param mixed[] $data
+     * @return void
      */
     protected function prepareCreate(array &$data)
     {
@@ -362,6 +370,8 @@ abstract class AbstractXMLPackageInstallationPlugin extends AbstractPackageInsta
 
     /**
      * Triggered after executing all delete and/or import actions.
+     *
+     * @return void
      */
     protected function cleanup() {}
 

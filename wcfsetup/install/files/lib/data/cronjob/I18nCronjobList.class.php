@@ -12,11 +12,7 @@ use wcf\data\I18nDatabaseObjectList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       5.3
  *
- * @method  Cronjob     current()
- * @method  Cronjob[]   getObjects()
- * @method  Cronjob|null    getSingleObject()
- * @method  Cronjob|null    search($objectID)
- * @property    Cronjob[] $objects
+ * @extends I18nDatabaseObjectList<Cronjob>
  */
 class I18nCronjobList extends I18nDatabaseObjectList
 {

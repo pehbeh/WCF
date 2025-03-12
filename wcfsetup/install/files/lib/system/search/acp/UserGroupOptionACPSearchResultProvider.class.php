@@ -24,6 +24,9 @@ class UserGroupOptionACPSearchResultProvider extends AbstractCategorizedACPSearc
      */
     protected $listClassName = UserGroupOptionCategoryList::class;
 
+    /**
+     * @var list<string>
+     */
     private array $restrictedOptionNames = [
         'admin.configuration.package.canUpdatePackage',
         'admin.configuration.package.canEditServer',

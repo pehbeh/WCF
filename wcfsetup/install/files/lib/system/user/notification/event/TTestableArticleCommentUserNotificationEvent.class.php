@@ -23,6 +23,7 @@ trait TTestableArticleCommentUserNotificationEvent
     use TTestableCategorizedUserNotificationEvent;
 
     /**
+     * @return array{objectID: int, objectTypeID: ?int}
      * @see TTestableCommentUserNotificationEvent::createTestComment()
      */
     protected static function getTestCommentObjectData(UserProfile $recipient, UserProfile $author)

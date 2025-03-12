@@ -77,6 +77,7 @@ class MessageHtmlInputFilter implements IHtmlInputFilter
      * Sets required configuration data for HTML filter.
      *
      * @param \HTMLPurifier_Config $config HTMLPurifier configuration
+     * @return void
      */
     protected function setAttributeDefinitions(\HTMLPurifier_Config $config)
     {

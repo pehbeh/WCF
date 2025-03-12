@@ -22,6 +22,15 @@ use wcf\util\StringUtil;
  * @author  Tim Duesterhus
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @phpstan-type FilesEntry array{
+ *  name: string,
+ *  type: string,
+ *  size: int,
+ *  tmp_name: string,
+ *  error: int,
+ *  full_path: string,
+ * }
  */
 class SmileyAddForm extends AbstractForm
 {
@@ -95,13 +104,13 @@ class SmileyAddForm extends AbstractForm
 
     /**
      * data of the uploaded smiley file
-     * @var array
+     * @var FilesEntry|array{}
      */
     public $fileUpload = [];
 
     /**
      * data of the uploaded smiley file (2x)
-     * @var array
+     * @var FilesEntry|array{}
      */
     public $fileUpload2x = [];
 

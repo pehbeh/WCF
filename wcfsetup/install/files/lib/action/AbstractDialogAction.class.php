@@ -3,6 +3,7 @@
 namespace wcf\action;
 
 use Laminas\Diactoros\Response\JsonResponse;
+use Psr\Http\Message\ResponseInterface;
 use wcf\system\exception\AJAXException;
 use wcf\system\exception\IllegalLinkException;
 use wcf\util\StringUtil;
@@ -26,7 +27,7 @@ abstract class AbstractDialogAction extends AbstractSecureAction
 
     /**
      * response data
-     * @var array
+     * @var mixed[]
      */
     public $data = [];
 
@@ -54,7 +55,7 @@ abstract class AbstractDialogAction extends AbstractSecureAction
     /**
      * @inheritDoc
      */
-    final public function execute()
+    final public function execute(): ResponseInterface
     {
         parent::execute();
 
@@ -73,6 +74,8 @@ abstract class AbstractDialogAction extends AbstractSecureAction
 
     /**
      * Validates current dialog step.
+     *
+     * @return void
      */
     abstract protected function validateStep();
 }

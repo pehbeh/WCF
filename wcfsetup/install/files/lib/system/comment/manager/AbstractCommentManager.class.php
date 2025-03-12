@@ -263,6 +263,7 @@ abstract class AbstractCommentManager implements ICommentManager
     /**
      * Returns the object ID for the given Comment or CommentResponse.
      *
+     * @param Comment|CommentResponse|DatabaseObjectDecorator<CommentResponse> $commentOrResponse
      * @return int
      */
     final protected function getObjectID($commentOrResponse)
@@ -271,12 +272,13 @@ abstract class AbstractCommentManager implements ICommentManager
             $commentOrResponse instanceof CommentResponse
             || (
                 $commentOrResponse instanceof DatabaseObjectDecorator
+                // @phpstan-ignore instanceof.alwaysTrue
                 && $commentOrResponse->getDecoratedObject() instanceof CommentResponse
             )
         ) {
             return $commentOrResponse->getComment()->objectID;
-        } else {
-            return $commentOrResponse->objectID;
         }
+
+        return $commentOrResponse->objectID;
     }
 }

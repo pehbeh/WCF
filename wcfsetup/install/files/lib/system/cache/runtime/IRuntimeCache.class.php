@@ -3,6 +3,7 @@
 namespace wcf\system\cache\runtime;
 
 use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectDecorator;
 
 /**
  * Handles runtime caches to centrally store objects fetched during runtime for reuse.
@@ -11,6 +12,7 @@ use wcf\data\DatabaseObject;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
+ * @template TDatabaseObject of DatabaseObject|DatabaseObjectDecorator
  */
 interface IRuntimeCache
 {
@@ -19,6 +21,7 @@ interface IRuntimeCache
      * this id will also be fetched.
      *
      * @param int $objectID
+     * @return void
      */
     public function cacheObjectID($objectID);
 
@@ -27,13 +30,14 @@ interface IRuntimeCache
      * these ids will also be fetched.
      *
      * @param int[] $objectIDs
+     * @return void
      */
     public function cacheObjectIDs(array $objectIDs);
 
     /**
      * Returns all currently cached objects.
      *
-     * @return  DatabaseObject[]
+     * @return array<int, ?TDatabaseObject>
      */
     public function getCachedObjects();
 
@@ -43,7 +47,7 @@ interface IRuntimeCache
      * during this method call and the object, if existing, will be returned.
      *
      * @param int $objectID
-     * @return  DatabaseObject|null
+     * @return ?TDatabaseObject
      */
     public function getObject($objectID);
 
@@ -54,7 +58,7 @@ interface IRuntimeCache
      * during this method call and the objects, if existing, will be returned.
      *
      * @param int[] $objectIDs
-     * @return  DatabaseObject[]
+     * @return array<int, ?TDatabaseObject>
      */
     public function getObjects(array $objectIDs);
 
@@ -62,6 +66,7 @@ interface IRuntimeCache
      * Removes the object with the given id from the runtime cache if it has already been loaded.
      *
      * @param int $objectID
+     * @return void
      */
     public function removeObject($objectID);
 
@@ -69,6 +74,7 @@ interface IRuntimeCache
      * Removes the objects with the given ids from the runtime cache if they have already been loaded.
      *
      * @param int[] $objectIDs
+     * @return void
      */
     public function removeObjects(array $objectIDs);
 }

@@ -15,8 +15,8 @@ use wcf\util\FileUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Template    getDecoratedObject()
  * @mixin   Template
+ * @extends DatabaseObjectEditor<Template>
  */
 class TemplateEditor extends DatabaseObjectEditor
 {
@@ -27,7 +27,6 @@ class TemplateEditor extends DatabaseObjectEditor
 
     /**
      * @inheritDoc
-     * @return  Template
      */
     public static function create(array $parameters = [])
     {
@@ -36,13 +35,13 @@ class TemplateEditor extends DatabaseObjectEditor
             $parameters['packageID'] = PACKAGE_ID;
         }
 
-        $object = parent::create($parameters);
-        \assert($object instanceof Template);
-        return $object;
+        return parent::create($parameters);
     }
 
     /**
      * Saves the source of this template.
+     *
+     * @return void
      */
     public function setSource(string $source)
     {
@@ -63,6 +62,7 @@ class TemplateEditor extends DatabaseObjectEditor
      *
      * @param string $name
      * @param int $templateGroupID
+     * @return void
      */
     public function rename($name, $templateGroupID = 0)
     {
@@ -94,6 +94,8 @@ class TemplateEditor extends DatabaseObjectEditor
 
     /**
      * Deletes this template.
+     *
+     * @return void
      */
     public function delete()
     {
@@ -107,6 +109,8 @@ class TemplateEditor extends DatabaseObjectEditor
 
     /**
      * Deletes the file of this template.
+     *
+     * @return void
      */
     public function deleteFile()
     {
@@ -135,6 +139,8 @@ class TemplateEditor extends DatabaseObjectEditor
 
     /**
      * Deletes the compiled files of this template.
+     *
+     * @return void
      */
     public function deleteCompiledFiles()
     {

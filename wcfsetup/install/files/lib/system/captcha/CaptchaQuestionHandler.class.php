@@ -21,30 +21,25 @@ final class CaptchaQuestionHandler implements ICaptchaHandler
 {
     /**
      * answer to the captcha question
-     * @var string
      */
-    protected $captchaAnswer = '';
+    private string $captchaAnswer = '';
 
     /**
      * unique identifier of the captcha question
-     * @var string
      */
-    protected $captchaQuestion = '';
+    private string $captchaQuestion = '';
 
     /**
      * captcha question to answer
      */
-    protected CaptchaQuestionEditor $question;
+    private CaptchaQuestionEditor $question;
 
     /**
      * list of available captcha questions
      * @var CaptchaQuestion[]
      */
-    protected $questions = [];
+    private array $questions = [];
 
-    /**
-     * Creates a new instance of CaptchaQuestionHandler.
-     */
     public function __construct()
     {
         $this->questions = CaptchaQuestionCacheBuilder::getInstance()->getData();
@@ -111,7 +106,7 @@ final class CaptchaQuestionHandler implements ICaptchaHandler
     /**
      * Reads a random captcha question.
      */
-    protected function readCaptchaQuestion()
+    private function readCaptchaQuestion(): void
     {
         $questionID = \array_rand($this->questions);
         $this->question = new CaptchaQuestionEditor($this->questions[$questionID]);

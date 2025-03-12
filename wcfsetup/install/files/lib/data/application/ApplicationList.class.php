@@ -2,6 +2,7 @@
 
 namespace wcf\data\application;
 
+use wcf\data\DatabaseObjectDecorator;
 use wcf\data\DatabaseObjectList;
 
 /**
@@ -11,11 +12,8 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Application     current()
- * @method  Application[]       getObjects()
- * @method  Application|null    getSingleObject()
- * @method  Application|null    search($objectID)
- * @property    Application[] $objects
+ * @template TDatabaseObject of Application|DatabaseObjectDecorator<Application> = Application
+ * @extends DatabaseObjectList<TDatabaseObject>
  */
 class ApplicationList extends DatabaseObjectList
 {

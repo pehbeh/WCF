@@ -116,7 +116,7 @@ final class RatingFormField extends AbstractFormField implements
     /**
      * @inheritDoc
      */
-    protected static function getDefaultId()
+    protected static function getDefaultId(): string
     {
         return 'rating';
     }

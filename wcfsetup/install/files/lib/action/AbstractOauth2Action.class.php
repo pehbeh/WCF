@@ -108,6 +108,8 @@ abstract class AbstractOauth2Action extends AbstractAction
 
     /**
      * Turns the access token response into an oauth user.
+     *
+     * @param array<string, string> $accessToken
      */
     abstract protected function getUser(array $accessToken): OauthUser;
 
@@ -118,6 +120,8 @@ abstract class AbstractOauth2Action extends AbstractAction
 
     /**
      * Validates the state parameter.
+     *
+     * @return void
      */
     protected function validateState()
     {
@@ -138,6 +142,8 @@ abstract class AbstractOauth2Action extends AbstractAction
 
     /**
      * Turns the 'code' into an access token.
+     *
+     * @return mixed[]
      */
     protected function codeToAccessToken(string $code): array
     {

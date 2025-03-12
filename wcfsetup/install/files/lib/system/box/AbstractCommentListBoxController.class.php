@@ -17,6 +17,8 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
+ *
+ * @extends AbstractDatabaseObjectListBoxController<ViewableCommentList>
  */
 abstract class AbstractCommentListBoxController extends AbstractDatabaseObjectListBoxController
 {
@@ -78,7 +80,7 @@ abstract class AbstractCommentListBoxController extends AbstractDatabaseObjectLi
     /**
      * Applies object type-specific filters to the comments.
      *
-     * @param ViewableCommentList $commentList
+     * @return void
      */
     abstract protected function applyObjectTypeFilters(ViewableCommentList $commentList);
 

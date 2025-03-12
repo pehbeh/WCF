@@ -18,8 +18,7 @@ use wcf\util\JSON;
  * @copyright   2001-2019 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method BlacklistEntryEditor[] getObjects()
- * @method BlacklistEntryEditor getSingleObject()
+ * @extends AbstractDatabaseObjectAction<BlacklistEntry, BlacklistEntryEditor>
  * @since 5.2
  */
 class BlacklistEntryAction extends AbstractDatabaseObjectAction
@@ -29,6 +28,9 @@ class BlacklistEntryAction extends AbstractDatabaseObjectAction
      */
     protected $className = BlacklistEntryEditor::class;
 
+    /**
+     * @return void
+     */
     public function import()
     {
         $client = HttpFactory::makeClientWithTimeout(5);

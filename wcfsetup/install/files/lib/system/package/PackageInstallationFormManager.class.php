@@ -20,6 +20,7 @@ abstract class PackageInstallationFormManager
      * Handles a POST or GET request.
      *
      * @param PackageInstallationQueue $queue
+     * @return void
      */
     public static function handleRequest(PackageInstallationQueue $queue)
     {
@@ -42,6 +43,7 @@ abstract class PackageInstallationFormManager
      *
      * @param PackageInstallationQueue $queue
      * @param FormDocument $document
+     * @return void
      */
     public static function registerForm(PackageInstallationQueue $queue, FormDocument $document)
     {
@@ -80,7 +82,7 @@ abstract class PackageInstallationFormManager
      * @param PackageInstallationQueue $queue
      * @param FormDocument $document
      */
-    private static function insertForm(PackageInstallationQueue $queue, FormDocument $document)
+    private static function insertForm(PackageInstallationQueue $queue, FormDocument $document): void
     {
         $sql = "INSERT INTO wcf1_package_installation_form
                             (queueID, formName, document)
@@ -99,7 +101,7 @@ abstract class PackageInstallationFormManager
      * @param PackageInstallationQueue $queue
      * @param FormDocument $document
      */
-    private static function updateForm(PackageInstallationQueue $queue, FormDocument $document)
+    private static function updateForm(PackageInstallationQueue $queue, FormDocument $document): void
     {
         $sql = "UPDATE  wcf1_package_installation_form
                 SET     document = ?
@@ -117,6 +119,7 @@ abstract class PackageInstallationFormManager
      * Deletes form documents associated with given queue.
      *
      * @param PackageInstallationQueue $queue
+     * @return void
      */
     public static function deleteForms(PackageInstallationQueue $queue)
     {

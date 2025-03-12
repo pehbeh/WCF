@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  PackageUpdateVersion        current()
- * @method  PackageUpdateVersion[]      getObjects()
- * @method  PackageUpdateVersion|null   getSingleObject()
- * @method  PackageUpdateVersion|null   search($objectID)
- * @property    PackageUpdateVersion[] $objects
+ * @extends DatabaseObjectList<PackageUpdateVersion>
  */
 class PackageUpdateVersionList extends DatabaseObjectList
 {

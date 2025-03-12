@@ -31,7 +31,7 @@ abstract class AbstractWorker implements IWorker
 
     /**
      * list of additional parameters
-     * @var array
+     * @var mixed[]
      */
     protected $parameters = [];
 
@@ -53,6 +53,8 @@ abstract class AbstractWorker implements IWorker
 
     /**
      * Counts objects applicable for worker action.
+     *
+     * @return void
      */
     abstract protected function countObjects();
 

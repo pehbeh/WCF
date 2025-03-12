@@ -84,6 +84,8 @@ final class PluralFunctionTemplatePlugin implements IFunctionTemplatePlugin
      * This extra step is required because the existing implementation for
      * plurals resolved the category and then picked the appropriate value
      * itself.
+     *
+     * @param array<string|int, string> $values
      */
     private function createMessageFromValues(array $values): string
     {

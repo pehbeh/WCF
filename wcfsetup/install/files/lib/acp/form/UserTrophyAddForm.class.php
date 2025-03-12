@@ -124,6 +124,7 @@ class UserTrophyAddForm extends AbstractAcpForm
     /**
      * Validates the users.
      *
+     * @return void
      * @throws UserInputException
      */
     protected function validateUser()

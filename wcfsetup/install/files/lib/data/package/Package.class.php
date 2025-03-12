@@ -73,7 +73,7 @@ class Package extends DatabaseObject implements ILinkableObject, IRouteControlle
 
     /**
      * package requirements
-     * @var array
+     * @var array<int, int[]>
      */
     protected static $requirements;
 
@@ -263,6 +263,7 @@ class Package extends DatabaseObject implements ILinkableObject, IRouteControlle
      * DO NOT call this method outside the package installation!
      *
      * @param string $packageVersion
+     * @return void
      */
     public function setPackageVersion($packageVersion)
     {
@@ -282,6 +283,8 @@ class Package extends DatabaseObject implements ILinkableObject, IRouteControlle
 
     /**
      * Loads package requirements.
+     *
+     * @return void
      */
     protected static function loadRequirements()
     {
@@ -431,6 +434,7 @@ class Package extends DatabaseObject implements ILinkableObject, IRouteControlle
      * Writes the config.inc.php for an application.
      *
      * @param int $packageID
+     * @return void
      */
     public static function writeConfigFile($packageID)
     {

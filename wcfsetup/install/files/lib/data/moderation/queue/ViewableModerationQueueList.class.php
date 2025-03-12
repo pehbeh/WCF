@@ -18,11 +18,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  ViewableModerationQueue     current()
- * @method  ViewableModerationQueue[]   getObjects()
- * @method  ViewableModerationQueue|null    getSingleObject()
- * @method  ViewableModerationQueue|null    search($objectID)
- * @property    ViewableModerationQueue[] $objects
+ * @extends ModerationQueueList<ViewableModerationQueue>
  */
 class ViewableModerationQueueList extends ModerationQueueList
 {

@@ -40,7 +40,7 @@ abstract class AbstractMimePart
      *
      * This method must be idempotent.
      *
-     * @return  array
+     * @return list<array{0: string, 1: string}>
      */
     public function getAdditionalHeaders()
     {

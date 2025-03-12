@@ -14,29 +14,35 @@ interface ICaptchaHandler
     /**
      * Returns the form element.
      *
-     * @return  string
+     * @return string
      */
     public function getFormElement();
 
     /**
      * Returns true if this kind of captcha is available.
      *
-     * @return  bool
+     * @return bool
      */
     public function isAvailable();
 
     /**
      * Reads the parameters of the captcha form element.
+     *
+     * @return void
      */
     public function readFormParameters();
 
     /**
      * Resets the captcha after it is no longer needed.
+     *
+     * @return void
      */
     public function reset();
 
     /**
      * Validates the response to the challenge and marks the captcha as done.
+     *
+     * @return void
      */
     public function validate();
 }

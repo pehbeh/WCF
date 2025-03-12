@@ -4,6 +4,7 @@ namespace wcf\system\cache;
 
 use wcf\system\cache\builder\ICacheBuilder;
 use wcf\system\cache\source\DiskCacheSource;
+use wcf\system\cache\source\ICacheSource;
 use wcf\system\exception\SystemException;
 use wcf\system\SingletonFactory;
 
@@ -17,14 +18,11 @@ use wcf\system\SingletonFactory;
 class CacheHandler extends SingletonFactory
 {
     /**
-     * cache source object
-     * @var \wcf\system\cache\source\ICacheSource
+     * @var ICacheSource
      */
     protected $cacheSource;
 
-    /**
-     * Creates a new CacheHandler object.
-     */
+    #[\Override]
     protected function init()
     {
         // init cache source object
@@ -49,8 +47,8 @@ class CacheHandler extends SingletonFactory
     /**
      * Flush cache for given resource.
      *
-     * @param ICacheBuilder $cacheBuilder
-     * @param array $parameters
+     * @param mixed[] $parameters
+     * @return void
      */
     public function flush(ICacheBuilder $cacheBuilder, array $parameters)
     {
@@ -59,6 +57,8 @@ class CacheHandler extends SingletonFactory
 
     /**
      * Flushes the entire cache.
+     *
+     * @return void
      */
     public function flushAll()
     {
@@ -68,9 +68,8 @@ class CacheHandler extends SingletonFactory
     /**
      * Returns cached value for given resource, false if no cache exists.
      *
-     * @param ICacheBuilder $cacheBuilder
-     * @param array $parameters
-     * @return  mixed
+     * @param mixed[] $parameters
+     * @return mixed
      */
     public function get(ICacheBuilder $cacheBuilder, array $parameters)
     {
@@ -83,9 +82,9 @@ class CacheHandler extends SingletonFactory
     /**
      * Caches a value for given resource,
      *
-     * @param ICacheBuilder $cacheBuilder
-     * @param array $parameters
-     * @param array $data
+     * @param mixed[] $parameters
+     * @param mixed[] $data
+     * @return void
      */
     public function set(ICacheBuilder $cacheBuilder, array $parameters, array $data)
     {
@@ -99,8 +98,8 @@ class CacheHandler extends SingletonFactory
     /**
      * Returns cache index hash.
      *
-     * @param array $parameters
-     * @return  string
+     * @param mixed[] $parameters
+     * @return string
      */
     public function getCacheIndex(array $parameters)
     {
@@ -110,9 +109,8 @@ class CacheHandler extends SingletonFactory
     /**
      * Builds cache name.
      *
-     * @param ICacheBuilder $cacheBuilder
-     * @param array $parameters
-     * @return  string
+     * @param mixed[] $parameters
+     * @return string
      */
     protected function getCacheName(ICacheBuilder $cacheBuilder, array $parameters = [])
     {
@@ -131,7 +129,7 @@ class CacheHandler extends SingletonFactory
     /**
      * Returns the cache source object.
      *
-     * @return  \wcf\system\cache\source\ICacheSource
+     * @return ICacheSource
      */
     public function getCacheSource()
     {
@@ -141,8 +139,8 @@ class CacheHandler extends SingletonFactory
     /**
      * Unifies parameter order, numeric indices will be discarded.
      *
-     * @param array $parameters
-     * @return  array
+     * @param mixed[] $parameters
+     * @return mixed[]
      */
     protected function orderParameters($parameters)
     {
@@ -161,8 +159,8 @@ class CacheHandler extends SingletonFactory
     public function sanityCheck(): bool
     {
         if (
-            CACHE_SOURCE_TYPE != 'disk'
-            && \get_class(CacheHandler::getInstance()->getCacheSource()) === \wcf\system\cache\source\DiskCacheSource::class
+            CACHE_SOURCE_TYPE !== 'disk'
+            && \get_class(CacheHandler::getInstance()->getCacheSource()) === DiskCacheSource::class
         ) {
             return false;
         }

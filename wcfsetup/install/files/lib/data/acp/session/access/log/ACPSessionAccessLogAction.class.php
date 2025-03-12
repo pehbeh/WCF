@@ -11,9 +11,7 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  ACPSessionAccessLog     create()
- * @method  ACPSessionAccessLogEditor[] getObjects()
- * @method  ACPSessionAccessLogEditor   getSingleObject()
+ * @extends AbstractDatabaseObjectAction<ACPSessionAccessLog, ACPSessionAccessLogEditor>
  */
 class ACPSessionAccessLogAction extends AbstractDatabaseObjectAction
 {

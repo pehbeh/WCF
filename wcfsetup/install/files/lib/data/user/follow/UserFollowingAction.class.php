@@ -54,7 +54,7 @@ class UserFollowingAction extends UserFollowAction
                 WHERE   userID = ?";
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute([$this->parameters['userID']]);
-        $pageCount = \ceil($statement->fetchSingleColumn() / 20);
+        $pageCount = (int)\ceil($statement->fetchSingleColumn() / 20);
 
         // get user ids
         $sql = "SELECT  followUserID

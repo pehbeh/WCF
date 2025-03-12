@@ -2,6 +2,8 @@
 
 namespace wcf\system\comment;
 
+use wcf\data\comment\Comment;
+use wcf\data\user\UserProfile;
 use wcf\system\cache\runtime\CommentRuntimeCache;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
 use wcf\system\SingletonFactory;
@@ -17,7 +19,8 @@ use wcf\system\SingletonFactory;
 class CommentDataHandler extends SingletonFactory
 {
     /**
-     * @inheritDoc
+     * @param int $commentID
+     * @return void
      */
     public function cacheCommentID($commentID)
     {
@@ -25,7 +28,8 @@ class CommentDataHandler extends SingletonFactory
     }
 
     /**
-     * @inheritDoc
+     * @param int $userID
+     * @return void
      */
     public function cacheUserID($userID)
     {
@@ -33,7 +37,8 @@ class CommentDataHandler extends SingletonFactory
     }
 
     /**
-     * @inheritDoc
+     * @param int $commentID
+     * @return ?Comment
      */
     public function getComment($commentID)
     {
@@ -41,7 +46,8 @@ class CommentDataHandler extends SingletonFactory
     }
 
     /**
-     * @inheritDoc
+     * @param int $userID
+     * @return ?UserProfile
      */
     public function getUser($userID)
     {

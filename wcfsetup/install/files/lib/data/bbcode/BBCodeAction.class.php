@@ -16,8 +16,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  BBCodeEditor[]  getObjects()
- * @method  BBCodeEditor    getSingleObject()
+ * @extends AbstractDatabaseObjectAction<BBCode, BBCodeEditor>
  */
 class BBCodeAction extends AbstractDatabaseObjectAction
 {

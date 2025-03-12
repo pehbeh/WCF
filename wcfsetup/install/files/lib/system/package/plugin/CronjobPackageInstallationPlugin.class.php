@@ -236,6 +236,7 @@ class CronjobPackageInstallationPlugin extends AbstractXMLPackageInstallationPlu
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -324,6 +325,8 @@ class CronjobPackageInstallationPlugin extends AbstractXMLPackageInstallationPlu
 
     /**
      * @inheritDoc
+     * @param bool $saveData
+     * @return array<string, mixed>
      * @since   5.2
      */
     protected function fetchElementData(\DOMElement $element, $saveData)
@@ -443,6 +446,7 @@ class CronjobPackageInstallationPlugin extends AbstractXMLPackageInstallationPlu
 
     /**
      * @inheritDoc
+     * @return string
      * @since   5.2
      */
     public function getElementIdentifier(\DOMElement $element)
@@ -452,6 +456,7 @@ class CronjobPackageInstallationPlugin extends AbstractXMLPackageInstallationPlu
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function setEntryListKeys(IDevtoolsPipEntryList $entryList)
@@ -464,6 +469,7 @@ class CronjobPackageInstallationPlugin extends AbstractXMLPackageInstallationPlu
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      * @since   5.2
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)

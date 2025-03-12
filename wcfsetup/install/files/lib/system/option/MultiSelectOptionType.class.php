@@ -125,7 +125,7 @@ class MultiSelectOptionType extends SelectOptionType
     public function addCondition(UserList $userList, Option $option, $value)
     {
         if (!\is_array($value) || empty($value)) {
-            return false;
+            return;
         }
         $value = ArrayUtil::trim($value, false);
 

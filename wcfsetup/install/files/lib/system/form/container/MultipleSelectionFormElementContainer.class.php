@@ -13,14 +13,15 @@ class MultipleSelectionFormElementContainer extends SelectionFormElementContaine
 {
     /**
      * container value
-     * @var array
+     * @var string[]
      */
     protected $value = [];
 
     /**
      * Sets container value.
      *
-     * @param array $value
+     * @param string[] $value
+     * @return void
      */
     public function setValue(array $value)
     {
@@ -43,7 +44,7 @@ class MultipleSelectionFormElementContainer extends SelectionFormElementContaine
 		<h2 class="sectionTitle">{$this->getLabel()}</h2>
 		<p class="sectionDescription">{$this->getDescription()}</p>
 	</header>
-	
+
 	<dl class="wide">
 		{$content}
 	</dl>

@@ -27,6 +27,8 @@ class MessagePreviewAction extends BBCodeAction
 
     /**
      * Validates parameters for message preview.
+     *
+     * @return void
      */
     public function validateGetMessagePreview()
     {
@@ -46,8 +48,8 @@ class MessagePreviewAction extends BBCodeAction
     /**
      * Returns a rendered message preview.
      *
-     * @return  array
-     * @throws  UserInputException
+     * @return array{message: string, raw: string}
+     * @throws UserInputException
      */
     public function getMessagePreview()
     {

@@ -12,11 +12,7 @@ use wcf\data\DatabaseObjectList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method  UserTrophy      current()
- * @method  UserTrophy[]        getObjects()
- * @method  UserTrophy|null     getSingleObject()
- * @method  UserTrophy|null     search($objectID)
- * @property    UserTrophy[] $objects
+ * @extends DatabaseObjectList<UserTrophy>
  */
 class UserTrophyList extends DatabaseObjectList
 {

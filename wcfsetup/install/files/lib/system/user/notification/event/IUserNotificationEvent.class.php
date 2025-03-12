@@ -105,6 +105,7 @@ interface IUserNotificationEvent extends IDatabaseObjectProcessor, ILinkableObje
      * Sets a list of authors for stacked notifications.
      *
      * @param UserProfile[] $authors
+     * @return void
      */
     public function setAuthors(array $authors);
 
@@ -121,7 +122,8 @@ interface IUserNotificationEvent extends IDatabaseObjectProcessor, ILinkableObje
      * @param UserNotification $notification
      * @param IUserNotificationObject $object
      * @param UserProfile $author
-     * @param array $additionalData
+     * @param mixed[] $additionalData
+     * @return void
      */
     public function setObject(
         UserNotification $notification,
@@ -134,6 +136,7 @@ interface IUserNotificationEvent extends IDatabaseObjectProcessor, ILinkableObje
      * Sets the language for the event
      *
      * @param Language $language
+     * @return void
      */
     public function setLanguage(Language $language);
 

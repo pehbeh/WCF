@@ -19,7 +19,7 @@ use wcf\system\search\SearchIndexManager;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method  PageList    getObjectList()
+ * @extends AbstractRebuildDataWorker<PageList>
  */
 class PageRebuildDataWorker extends AbstractRebuildDataWorker
 {

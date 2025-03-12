@@ -90,7 +90,8 @@ abstract class AbstractModerationQueueManager extends SingletonFactory implement
      * @param int $objectTypeID
      * @param int $objectID
      * @param int $containerID
-     * @param array $additionalData
+     * @param mixed[] $additionalData
+     * @return void
      */
     protected function addEntry($objectTypeID, $objectID, $containerID = 0, array $additionalData = [])
     {
@@ -145,7 +146,8 @@ abstract class AbstractModerationQueueManager extends SingletonFactory implement
      * @param int $objectTypeID
      * @param int[] $objectIDs
      * @param int[] $containerIDs format: `objectID => containerID`
-     * @param array $additionalData
+     * @param mixed[] $additionalData
+     * @return void
      */
     protected function addEntries($objectTypeID, array $objectIDs, array $containerIDs, array $additionalData = [])
     {
@@ -251,6 +253,7 @@ abstract class AbstractModerationQueueManager extends SingletonFactory implement
      *
      * @param int $objectTypeID
      * @param int[] $objectIDs
+     * @return void
      */
     protected function removeEntries($objectTypeID, array $objectIDs)
     {

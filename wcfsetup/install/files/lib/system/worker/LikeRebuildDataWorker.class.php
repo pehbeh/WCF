@@ -14,7 +14,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  LikeList    getObjectList()
+ * @extends AbstractLinearRebuildDataWorker<LikeList>
  */
 final class LikeRebuildDataWorker extends AbstractLinearRebuildDataWorker
 {
@@ -178,7 +178,7 @@ final class LikeRebuildDataWorker extends AbstractLinearRebuildDataWorker
      *
      * @param int[]|null $oldCachedReactions
      * @param int[] $newCachedReactions
-     * @return      int[]
+     * @return int[]
      */
     private function mergeCachedReactions($oldCachedReactions, array $newCachedReactions)
     {

@@ -31,6 +31,7 @@ final class RenderQuote implements IController
     {
         $parameters = Helper::mapApiParameters($request, GetRenderQuoteParameters::class);
 
+        // @phpstan-ignore argument.templateType
         $object = Helper::fetchObjectFromRequestParameter($parameters->objectID, $parameters->className);
         \assert($object instanceof IMessage && $object instanceof DatabaseObject);
 

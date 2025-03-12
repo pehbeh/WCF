@@ -84,7 +84,7 @@ final class PackageEnableUpgradeOverrideForm extends AbstractFormBuilderForm
         }
     }
 
-    private function isEnabled()
+    private function isEnabled(): bool
     {
         if (!isset($this->isEnabled)) {
             $this->isEnabled = PackageUpdateServer::isUpgradeOverrideEnabled();
@@ -93,7 +93,11 @@ final class PackageEnableUpgradeOverrideForm extends AbstractFormBuilderForm
         return $this->isEnabled;
     }
 
-    private function getIssuesPreventingUpgrade()
+
+    /**
+     * @return list<array{title: string, description: string}>
+     */
+    private function getIssuesPreventingUpgrade(): array
     {
         $parameters = ['issues' => []];
         EventHandler::getInstance()->fireAction($this, 'getIssuesPreventingUpgrade', $parameters);
@@ -110,6 +114,9 @@ final class PackageEnableUpgradeOverrideForm extends AbstractFormBuilderForm
         return \array_filter($issues);
     }
 
+    /**
+     * @return ?array{title: string, description: string}
+     */
     private function checkMinimumPhpVersion(): ?array
     {
         // Minimum: PHP 8.1.2
@@ -130,6 +137,9 @@ final class PackageEnableUpgradeOverrideForm extends AbstractFormBuilderForm
         }
     }
 
+    /**
+     * @return ?array{title: string, description: string}
+     */
     private function checkMaximumPhpVersion(): ?array
     {
         // Maximum: PHP 8.3.x
@@ -150,6 +160,9 @@ final class PackageEnableUpgradeOverrideForm extends AbstractFormBuilderForm
         }
     }
 
+    /**
+     * @return ?array{title: string, description: string}
+     */
     private function checkRequiredPhpExtensions(): ?array
     {
         $requiredExtensions = [
@@ -195,6 +208,9 @@ final class PackageEnableUpgradeOverrideForm extends AbstractFormBuilderForm
         }
     }
 
+    /**
+     * @return ?array{title: string, description: string}
+     */
     private function checkMinimumDatabaseVersion(): ?array
     {
         $sqlVersion = WCF::getDB()->getVersion();
@@ -232,6 +248,9 @@ final class PackageEnableUpgradeOverrideForm extends AbstractFormBuilderForm
         }
     }
 
+    /**
+     * @return ?array{title: string, description: string}
+     */
     private function checkForTls(): ?array
     {
         if (RouteHandler::secureConnection()) {

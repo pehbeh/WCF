@@ -2,6 +2,7 @@
 
 namespace wcf\system\gridView\filter;
 
+use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 
 /**
@@ -22,6 +23,9 @@ abstract class AbstractFilter implements IGridViewFilter
         return $value;
     }
 
+    /**
+     * @param DatabaseObjectList<DatabaseObject> $list
+     */
     protected function getDatabaseColumnName(DatabaseObjectList $list, string $id): string
     {
         return ($this->databaseColumn ?: $list->getDatabaseTableAlias() . '.' . $id);

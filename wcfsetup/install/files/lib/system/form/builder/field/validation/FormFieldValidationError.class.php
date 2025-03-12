@@ -16,21 +16,19 @@ final class FormFieldValidationError implements IFormFieldValidationError
 {
     /**
      * additional error information, also used to resolve error message from language item
-     * @var array
+     * @var array<string, mixed>
      */
-    protected $information;
+    private array $information;
 
     /**
      * language item containing the error message
-     * @var string
      */
-    protected $languageItem;
+    private string $languageItem;
 
     /**
      * error type
-     * @var string
      */
-    protected $type;
+    private string $type;
 
     /**
      * @inheritDoc

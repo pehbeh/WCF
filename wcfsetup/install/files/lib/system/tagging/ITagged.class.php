@@ -2,6 +2,7 @@
 
 namespace wcf\system\tagging;
 
+use wcf\data\DatabaseObjectList;
 use wcf\data\IIDObject;
 
 /**
@@ -10,13 +11,15 @@ use wcf\data\IIDObject;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template T of DatabaseObjectList
  */
 interface ITagged extends IIDObject
 {
     /**
      * Returns the taggable type of this tagged object.
      *
-     * @return  ITaggable
+     * @return ITaggable<T>
      */
     public function getTaggable();
 }

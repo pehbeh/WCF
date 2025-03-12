@@ -52,9 +52,6 @@ class HtmlOutputNodeProcessor extends AbstractHtmlNodeProcessor
      */
     public static $plainTextNewlineTags = ['br', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li', 'td', 'tr'];
 
-    /**
-     * HtmlOutputNodeProcessor constructor.
-     */
     public function __construct()
     {
         $this->sourceBBCodes = BBCodeParser::getInstance()->getSourceBBCodes();
@@ -64,6 +61,7 @@ class HtmlOutputNodeProcessor extends AbstractHtmlNodeProcessor
      * Sets the desired output type.
      *
      * @param string $outputType desired output type
+     * @return void
      */
     public function setOutputType($outputType)
     {
@@ -73,7 +71,7 @@ class HtmlOutputNodeProcessor extends AbstractHtmlNodeProcessor
     /**
      * Returns the current output type.
      *
-     * @return  string
+     * @return string
      */
     public function getOutputType()
     {
@@ -210,6 +208,7 @@ class HtmlOutputNodeProcessor extends AbstractHtmlNodeProcessor
      * Enables the keyword highlighting.
      *
      * @param bool $enable
+     * @return void
      */
     public function enableKeywordHighlighting($enable = true)
     {
@@ -218,6 +217,8 @@ class HtmlOutputNodeProcessor extends AbstractHtmlNodeProcessor
 
     /**
      * Executes the keyword highlighting.
+     *
+     * @return void
      */
     protected function highlightKeywords()
     {
@@ -327,7 +328,7 @@ class HtmlOutputNodeProcessor extends AbstractHtmlNodeProcessor
         foreach ($elementsWithStyles as $element) {
             $style = $element->getAttribute("style");
             $values = \array_map(
-                static fn (string $value) => StringUtil::trim($value),
+                static fn(string $value) => StringUtil::trim($value),
                 \explode(";", $style)
             );
 

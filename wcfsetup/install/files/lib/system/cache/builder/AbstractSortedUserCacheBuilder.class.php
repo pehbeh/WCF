@@ -3,6 +3,8 @@
 namespace wcf\system\cache\builder;
 
 use wcf\data\condition\Condition;
+use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectList;
 use wcf\data\user\UserList;
 use wcf\system\condition\IObjectListCondition;
 
@@ -62,7 +64,7 @@ abstract class AbstractSortedUserCacheBuilder extends AbstractCacheBuilder
         if (isset($parameters['conditions'])) {
             /** @var Condition $condition */
             foreach ($parameters['conditions'] as $condition) {
-                /** @var IObjectListCondition $processor */
+                /** @var IObjectListCondition<DatabaseObjectList<DatabaseObject>> $processor */
                 $processor = $condition->getObjectType()->getProcessor();
                 $processor->addObjectListCondition($userProfileList, $condition->conditionData);
             }

@@ -29,7 +29,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserList    getObjectList()
+ * @extends AbstractLinearRebuildDataWorker<UserList>
  */
 final class UserRebuildDataWorker extends AbstractLinearRebuildDataWorker
 {

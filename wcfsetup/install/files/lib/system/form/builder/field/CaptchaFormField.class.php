@@ -186,7 +186,7 @@ final class CaptchaFormField extends AbstractFormField implements IObjectTypeFor
     /**
      * @inheritDoc
      */
-    protected static function getDefaultId()
+    protected static function getDefaultId(): string
     {
         return 'captcha';
     }

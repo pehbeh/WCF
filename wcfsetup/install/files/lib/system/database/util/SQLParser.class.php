@@ -2,6 +2,7 @@
 
 namespace wcf\system\database\util;
 
+use wcf\system\database\editor\DatabaseEditor;
 use wcf\system\exception\SystemException;
 use wcf\system\WCF;
 use wcf\util\ArrayUtil;
@@ -14,6 +15,9 @@ use wcf\util\StringUtil;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @phpstan-import-type ColumnDefinition from DatabaseEditor
+ * @phpstan-import-type ForeignKeyDefinition from DatabaseEditor
+ * @phpstan-import-type IndexDefinition from DatabaseEditor
  */
 class SQLParser
 {
@@ -41,6 +45,8 @@ class SQLParser
 
     /**
      * Executes the sql queries.
+     *
+     * @return void
      */
     public function execute()
     {
@@ -64,7 +70,8 @@ class SQLParser
      *
      * @param string $statement
      * @param string $query
-     * @throws  SystemException
+     * @return void
+     * @throws SystemException
      */
     protected function executeStatement($statement, $query)
     {
@@ -285,8 +292,9 @@ class SQLParser
      * Executes a 'CREATE TABLE' statement.
      *
      * @param string $tableName
-     * @param array $columns
-     * @param array $indices
+     * @param list<array{name: string, data: ColumnDefinition}> $columns
+     * @param list<array{name: string, data: IndexDefinition}> $indices
+     * @return void
      */
     protected function executeCreateTableStatement($tableName, $columns, $indices = [])
     {
@@ -298,7 +306,8 @@ class SQLParser
      *
      * @param string $tableName
      * @param string $columnName
-     * @param array $columnData
+     * @param ColumnDefinition $columnData
+     * @return void
      */
     protected function executeAddColumnStatement($tableName, $columnName, $columnData)
     {
@@ -311,7 +320,8 @@ class SQLParser
      * @param string $tableName
      * @param string $oldColumnName
      * @param string $newColumnName
-     * @param array $newColumnData
+     * @param ColumnDefinition $newColumnData
+     * @return void
      */
     protected function executeAlterColumnStatement($tableName, $oldColumnName, $newColumnName, $newColumnData)
     {
@@ -323,7 +333,8 @@ class SQLParser
      *
      * @param string $tableName
      * @param string $indexName
-     * @param array $indexData
+     * @param IndexDefinition $indexData
+     * @return void
      */
     protected function executeAddIndexStatement($tableName, $indexName, $indexData)
     {
@@ -335,7 +346,8 @@ class SQLParser
      *
      * @param string $tableName
      * @param string $indexName
-     * @param array $indexData
+     * @param ForeignKeyDefinition $indexData
+     * @return void
      */
     protected function executeAddForeignKeyStatement($tableName, $indexName, $indexData)
     {
@@ -347,6 +359,7 @@ class SQLParser
      *
      * @param string $tableName
      * @param string $columnName
+     * @return void
      */
     protected function executeDropColumnStatement($tableName, $columnName)
     {
@@ -358,6 +371,7 @@ class SQLParser
      *
      * @param string $tableName
      * @param string $indexName
+     * @return void
      */
     protected function executeDropIndexStatement($tableName, $indexName)
     {
@@ -368,6 +382,7 @@ class SQLParser
      * Executes a 'DROP PRIMARY KEY' statement.
      *
      * @param string $tableName
+     * @return void
      */
     protected function executeDropPrimaryKeyStatement($tableName)
     {
@@ -379,6 +394,7 @@ class SQLParser
      *
      * @param string $tableName
      * @param string $indexName
+     * @return void
      */
     protected function executeDropForeignKeyStatement($tableName, $indexName)
     {
@@ -389,6 +405,7 @@ class SQLParser
      * Executes a 'DROP TABLE' statement.
      *
      * @param string $tableName
+     * @return void
      */
     protected function executeDropTableStatement($tableName)
     {
@@ -399,6 +416,7 @@ class SQLParser
      * Executes a standard ansi sql statement.
      *
      * @param string $query
+     * @return void
      */
     protected function executeStandardStatement($query)
     {

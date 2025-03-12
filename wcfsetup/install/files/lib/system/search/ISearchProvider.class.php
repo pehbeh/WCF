@@ -17,6 +17,9 @@ interface ISearchProvider
 {
     /**
      * Caches the data for the given object ids.
+     *
+     * @param int[] $objectIDs
+     * @param mixed[] $additionalData
      */
     public function cacheObjects(array $objectIDs, ?array $additionalData = null): void;
 
@@ -38,6 +41,8 @@ interface ISearchProvider
     /**
      * Returns the search conditions of this provider or `null` if no special search conditions are necessary.
      * If this provider is the only provider that is searched, the search parameters are passed.
+     *
+     * @param array<string, mixed> $parameters
      */
     public function getConditionBuilder(array $parameters): ?PreparedStatementConditionBuilder;
 
@@ -73,6 +78,8 @@ interface ISearchProvider
 
     /**
      * Returns additional search information.
+     *
+     * @return mixed[]
      */
     public function getAdditionalData(): ?array;
 

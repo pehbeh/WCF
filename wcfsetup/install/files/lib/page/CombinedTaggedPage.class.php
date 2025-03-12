@@ -2,6 +2,7 @@
 
 namespace wcf\page;
 
+use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\data\object\type\ObjectType;
 use wcf\data\object\type\ObjectTypeCache;
@@ -22,6 +23,8 @@ use wcf\util\StringUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       5.2
+ *
+ * @extends MultipleLinkPage<DatabaseObjectList<DatabaseObject>>
  */
 class CombinedTaggedPage extends MultipleLinkPage
 {
@@ -46,7 +49,7 @@ class CombinedTaggedPage extends MultipleLinkPage
     public $objectType;
 
     /**
-     * @var ICombinedTaggable
+     * @var ICombinedTaggable<DatabaseObjectList<DatabaseObject>>
      */
     public $processor;
 

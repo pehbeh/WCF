@@ -255,7 +255,7 @@ class DevtoolsProjectEditForm extends DevtoolsProjectAddForm
             foreach ($requirements as $requirement) {
                 $requirementData[] = [
                     'file' => isset($requirement['file']) ? 1 : 0,
-                    'minVersion' => $requirement['minversion'] ?? '',
+                    'minVersion' => $requirement['minversion'],
                     'packageIdentifier' => $requirement['name'],
                 ];
             }
@@ -271,7 +271,7 @@ class DevtoolsProjectEditForm extends DevtoolsProjectAddForm
             foreach ($exclusions as $exclusion) {
                 $exclusionData[] = [
                     'packageIdentifier' => $exclusion['name'],
-                    'version' => $exclusion['version'] ?? '',
+                    'version' => $exclusion['version'],
                 ];
             }
 
@@ -334,6 +334,10 @@ class DevtoolsProjectEditForm extends DevtoolsProjectAddForm
         $instructionsField->value($instructions);
     }
 
+    /**
+     * @param bool $available
+     * @return void
+     */
     protected function tooglePackageXmlFieldAvailabilty($available)
     {
         /** @var TabMenuFormContainer $tabMenu */

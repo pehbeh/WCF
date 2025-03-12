@@ -30,6 +30,8 @@ final class UserAgent
 
     /**
      * Detects the browser on the basis of the user agent.
+     *
+     * @return array{0: string, 1: string}|array{0: null, 1: null}
      */
     private function detectBrowser(string $userAgent): array
     {

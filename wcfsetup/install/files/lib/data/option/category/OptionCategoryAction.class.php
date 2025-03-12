@@ -11,9 +11,7 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  OptionCategory      create()
- * @method  OptionCategoryEditor[]  getObjects()
- * @method  OptionCategoryEditor    getSingleObject()
+ * @extends AbstractDatabaseObjectAction<OptionCategory, OptionCategoryEditor>
  */
 class OptionCategoryAction extends AbstractDatabaseObjectAction
 {

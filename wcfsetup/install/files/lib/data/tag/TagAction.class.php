@@ -15,9 +15,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  TagEditor[] getObjects()
- * @method  TagEditor   getSingleObject()
- * @property TagEditor[] $objects
+ * @extends AbstractDatabaseObjectAction<Tag, TagEditor>
  */
 class TagAction extends AbstractDatabaseObjectAction implements ISearchAction
 {
@@ -63,7 +61,6 @@ class TagAction extends AbstractDatabaseObjectAction implements ISearchAction
     public function create()
     {
         $tag = parent::create();
-        \assert($tag instanceof Tag);
 
         $editor = new TagEditor($tag);
         $this->saveSynonyms($editor);

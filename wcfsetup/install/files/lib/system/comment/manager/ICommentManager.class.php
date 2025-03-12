@@ -18,7 +18,7 @@ interface ICommentManager
      * Returns true if the current user may add comments or responses.
      *
      * @param int $objectID
-     * @return  bool
+     * @return bool
      */
     public function canAdd($objectID);
 
@@ -26,38 +26,35 @@ interface ICommentManager
      * Returns true if a comment requires approval.
      *
      * @param int $objectID
-     * @return      bool
+     * @return bool
      */
     public function canAddWithoutApproval($objectID);
 
     /**
      * Returns true if the current user may edit given comment.
      *
-     * @param Comment $comment
-     * @return  bool
+     * @return bool
      */
     public function canEditComment(Comment $comment);
 
     /**
      * Returns true if the current user may edit given response.
      *
-     * @param CommentResponse $response
-     * @return  bool
+     * @return bool
      */
     public function canEditResponse(CommentResponse $response);
 
     /**
      * Returns true if the current user may delete given comment.
      *
-     * @param Comment $comment
-     * @return  bool
+     * @return bool
      */
     public function canDeleteComment(Comment $comment);
 
     /**
      * Returns true if the current user may delete given response.
      *
-     * @param CommentResponse $response
+     * @return bool
      */
     public function canDeleteResponse(CommentResponse $response);
 
@@ -67,7 +64,7 @@ interface ICommentManager
      *
      * @param int $objectTypeID
      * @param int $objectID
-     * @return  bool
+     * @return bool
      * @deprecated 6.1 use `ICommentPermissionManager::canModerateObject()` instead
      */
     public function canModerate($objectTypeID, $objectID);
@@ -75,7 +72,7 @@ interface ICommentManager
     /**
      * Returns the amount of comments per page.
      *
-     * @return  int
+     * @return int
      */
     public function getCommentsPerPage();
 
@@ -84,23 +81,21 @@ interface ICommentManager
      *
      * @param int $objectTypeID
      * @param int $objectID
-     * @return  string
+     * @return string
      */
     public function getLink($objectTypeID, $objectID);
 
     /**
      * Returns the link to the given comment.
      *
-     * @param Comment $comment
-     * @return  string
+     * @return string
      */
     public function getCommentLink(Comment $comment);
 
     /**
      * Returns the link to the given comment response.
      *
-     * @param CommentResponse $response
-     * @return  string
+     * @return string
      */
     public function getResponseLink(CommentResponse $response);
 
@@ -110,7 +105,7 @@ interface ICommentManager
      * @param int $objectTypeID
      * @param int $objectID
      * @param bool $isResponse
-     * @return  string
+     * @return string
      */
     public function getTitle($objectTypeID, $objectID, $isResponse = false);
 
@@ -120,7 +115,7 @@ interface ICommentManager
      *
      * @param int $objectID
      * @param bool $validateWritePermission
-     * @return  bool
+     * @return bool
      */
     public function isAccessible($objectID, $validateWritePermission = false);
 
@@ -129,25 +124,28 @@ interface ICommentManager
      *
      * @param int $objectID
      * @param int $value
+     * @return void
      */
     public function updateCounter($objectID, $value);
 
     /**
      * Returns true if this comment type supports likes.
      *
-     * @return  bool
+     * @return bool
      */
     public function supportsLike();
 
     /**
      * Returns true if this comment type supports reports.
      *
-     * @return  bool
+     * @return bool
      */
     public function supportsReport();
 
     /**
      * Sets the list of disallowed bbcodes.
+     *
+     * @return void
      */
     public function setDisallowedBBCodes();
 
@@ -156,7 +154,7 @@ interface ICommentManager
      * the content's author.
      *
      * @param Comment|CommentResponse $commentOrResponse
-     * @return  bool
+     * @return bool
      */
     public function isContentAuthor($commentOrResponse);
 }

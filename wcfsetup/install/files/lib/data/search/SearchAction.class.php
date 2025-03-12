@@ -19,9 +19,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Search      create()
- * @method  SearchEditor[]  getObjects()
- * @method  SearchEditor    getSingleObject()
+ * @extends AbstractDatabaseObjectAction<Search, SearchEditor>
  */
 class SearchAction extends AbstractDatabaseObjectAction
 {
@@ -91,6 +89,14 @@ class SearchAction extends AbstractDatabaseObjectAction
     }
 
     /**
+     * @return array{
+     *  count: int,
+     *  title: string,
+     *  pages: int,
+     *  pageNo: int,
+     *  searchID: int,
+     *  template: string,
+     * }|array{count: int, title: string}
      * @since 5.5
      */
     public function search(): array
@@ -123,7 +129,7 @@ class SearchAction extends AbstractDatabaseObjectAction
                 'count' => $resultHandler->countSearchResults(),
                 'query' => $resultHandler->getQuery(),
             ]),
-            'pages' => \ceil($resultHandler->countSearchResults() / SEARCH_RESULTS_PER_PAGE),
+            'pages' => (int)\ceil($resultHandler->countSearchResults() / SEARCH_RESULTS_PER_PAGE),
             'pageNo' => $this->parameters['pageNo'] ?: 1,
             'searchID' => $search->searchID,
             'template' => WCF::getTPL()->render($templateName['application'], $templateName['templateName'], [
@@ -152,6 +158,7 @@ class SearchAction extends AbstractDatabaseObjectAction
     }
 
     /**
+     * @return array{template: string}
      * @since 5.5
      */
     public function getSearchResults(): array

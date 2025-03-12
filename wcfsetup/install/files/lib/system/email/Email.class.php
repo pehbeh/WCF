@@ -19,6 +19,7 @@ use wcf\util\StringUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
+ * @phpstan-type Recipient array{type: string, mailbox: Mailbox}
  */
 class Email
 {
@@ -36,7 +37,7 @@ class Email
 
     /**
      * Recipients of this email.
-     * @var array
+     * @var array<string, Recipient>
      */
     protected $recipients = [];
 
@@ -100,7 +101,7 @@ class Email
 
     /**
      * User specified X-* headers
-     * @var array
+     * @var list<array{0: string, 1: string}>
      */
     protected $extraHeaders = [];
 
@@ -119,7 +120,7 @@ class Email
     /**
      * Returns the mail host for use in the Message-Id.
      *
-     * @return  string
+     * @return string
      */
     public static function getHost()
     {
@@ -134,6 +135,7 @@ class Email
      * Sets the email's 'Subject'.
      *
      * @param string $subject
+     * @return void
      */
     public function setSubject($subject)
     {
@@ -143,7 +145,7 @@ class Email
     /**
      * Returns the email's 'Subject'.
      *
-     * @return  string
+     * @return string
      */
     public function getSubject()
     {
@@ -154,6 +156,7 @@ class Email
      * Sets the email's 'Date'.
      *
      * @param \DateTime $date
+     * @return void
      */
     public function setDate(?\DateTime $date = null)
     {
@@ -164,7 +167,7 @@ class Email
      * Returns the email's 'Date'.
      * If no header is set yet the current time will automatically be set.
      *
-     * @return  \DateTime
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -179,7 +182,8 @@ class Email
      * Sets the part left of the at sign (@) in the email's 'Message-Id'.
      *
      * @param string $messageID
-     * @throws  \DomainException
+     * @return void
+     * @throws \DomainException
      */
     public function setMessageID($messageID = null)
     {
@@ -205,7 +209,7 @@ class Email
      * Returns the email's full 'Message-Id' including the host.
      * If no header is set yet a message id will automatically be generated and set.
      *
-     * @return  string
+     * @return string
      */
     public function getMessageID()
     {
@@ -220,7 +224,8 @@ class Email
      * Adds a message id to the email's 'In-Reply-To'.
      *
      * @param string $messageID
-     * @throws  \DomainException
+     * @return void
+     * @throws \DomainException
      */
     public function addInReplyTo($messageID)
     {
@@ -235,6 +240,7 @@ class Email
      * Removes a message id from the email's 'In-Reply-To'.
      *
      * @param string $messageID
+     * @return void
      */
     public function removeInReplyTo($messageID)
     {
@@ -244,7 +250,7 @@ class Email
     /**
      * Returns the email's 'In-Reply-To' message ids.
      *
-     * @return  string[]
+     * @return string[]
      */
     public function getInReplyTo()
     {
@@ -255,7 +261,8 @@ class Email
      * Adds a message id to the email's 'References'.
      *
      * @param string $messageID
-     * @throws  \DomainException
+     * @return void
+     * @throws \DomainException
      */
     public function addReferences($messageID)
     {
@@ -270,6 +277,7 @@ class Email
      * Removes a message id from the email's 'References'.
      *
      * @param string $messageID
+     * @return void
      */
     public function removeReferences($messageID)
     {
@@ -279,7 +287,7 @@ class Email
     /**
      * Returns the email's 'References' message ids.
      *
-     * @return  string[]
+     * @return string[]
      */
     public function getReferences()
     {
@@ -291,7 +299,8 @@ class Email
      *
      * @param ?string $listId
      * @param string $humanReadable
-     * @throws  \DomainException
+     * @return void
+     * @throws \DomainException
      * @since 5.3
      */
     public function setListID($listId, $humanReadable = null)
@@ -325,7 +334,7 @@ class Email
      * Returns the email's full 'List-Id' including the host. Returns 'null'
      * if no 'List-Id' is set.
      *
-     * @return  ?string
+     * @return ?string
      * @since 5.3
      */
     public function getListID()
@@ -345,6 +354,7 @@ class Email
      *
      * @param ?string $uri
      * @param bool $supportsOneClick
+     * @return void
      * @since 5.3
      */
     public function setListUnsubscribe($uri, $supportsOneClick = false)
@@ -363,7 +373,7 @@ class Email
      * Returns the email's full 'List-Id' including the host. Returns 'null'
      * if no 'List-Id' is set.
      *
-     * @return  ?string
+     * @return ?string
      * @since 5.3
      */
     public function getListUnsubscribeUri()
@@ -375,6 +385,7 @@ class Email
      * Sets the email's 'From'.
      *
      * @param Mailbox $sender
+     * @return void
      */
     public function setSender(?Mailbox $sender = null)
     {
@@ -385,7 +396,7 @@ class Email
      * Returns the email's 'From'.
      * If no header is set yet the MAIL_FROM_ADDRESS will automatically be set.
      *
-     * @return  Mailbox
+     * @return Mailbox
      */
     public function getSender()
     {
@@ -400,6 +411,7 @@ class Email
      * Sets the email's 'Reply-To'.
      *
      * @param Mailbox $replyTo
+     * @return void
      */
     public function setReplyTo(?Mailbox $replyTo = null)
     {
@@ -410,7 +422,7 @@ class Email
      * Returns the email's 'Reply-To'.
      * If no header is set yet the MAIL_ADMIN_ADDRESS will automatically be set.
      *
-     * @return  Mailbox
+     * @return Mailbox
      */
     public function getReplyTo()
     {
@@ -426,7 +438,8 @@ class Email
      *
      * @param Mailbox $recipient
      * @param string $type One of 'to', 'cc', 'bcc'
-     * @throws  \DomainException
+     * @return void
+     * @throws \DomainException
      */
     public function addRecipient(Mailbox $recipient, $type = 'to')
     {
@@ -455,6 +468,7 @@ class Email
      * Removes a recipient from this email.
      *
      * @param Mailbox $recipient
+     * @return void
      */
     public function removeRecipient(Mailbox $recipient)
     {
@@ -464,7 +478,7 @@ class Email
     /**
      * Returns the email's recipients as an array of [ $recipient, $type ] tuples.
      *
-     * @return  array
+     * @return array<string, Recipient>
      */
     public function getRecipients()
     {
@@ -476,7 +490,8 @@ class Email
      *
      * @param string $header
      * @param string $value
-     * @throws  \DomainException
+     * @return void
+     * @throws \DomainException
      */
     public function addHeader($header, $value)
     {
@@ -495,8 +510,8 @@ class Email
      * Note: You must have set a Subject and at least one recipient, otherwise fetching the
      *       headers will fail.
      *
-     * @return  array
-     * @throws  \LogicException
+     * @return list<array{0: string, 1: string}>
+     * @throws \LogicException
      */
     public function getHeaders()
     {
@@ -593,7 +608,7 @@ class Email
      * Returns the email's headers as a string. Returns the header names in their
      * canonical form.
      *
-     * @return  string
+     * @return string
      * @see Email::getHeaders()
      * @see Email::getCanonicalHeaderName()
      */
@@ -612,6 +627,7 @@ class Email
      * Sets the body of this email.
      *
      * @param AbstractMimePart $body
+     * @return void
      */
     public function setBody(AbstractMimePart $body)
     {
@@ -704,6 +720,7 @@ class Email
      * Queues this email for delivery.
      * This is equivalent to manually queuing the jobs returned by getJobs().
      *
+     * @return void
      * @see \wcf\system\email\Email::getJobs()
      * @see \wcf\system\background\BackgroundQueueHandler::enqueueIn()
      */

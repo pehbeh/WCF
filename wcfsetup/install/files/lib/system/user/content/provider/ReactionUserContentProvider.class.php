@@ -2,6 +2,7 @@
 
 namespace wcf\system\user\content\provider;
 
+use wcf\data\DatabaseObject;
 use wcf\data\like\Like;
 use wcf\data\like\LikeList;
 use wcf\data\like\object\AbstractLikeObject;
@@ -18,6 +19,8 @@ use wcf\system\reaction\ReactionHandler;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.2
+ *
+ * @extends AbstractDatabaseUserContentProvider<LikeList>
  */
 class ReactionUserContentProvider extends AbstractDatabaseUserContentProvider
 {
@@ -41,10 +44,10 @@ class ReactionUserContentProvider extends AbstractDatabaseUserContentProvider
         foreach ($likeList as $like) {
             $objectType = ObjectTypeCache::getInstance()->getObjectType($like->objectTypeID);
 
-            /** @var IObjectTypeProvider $processor */
+            /** @var IObjectTypeProvider<DatabaseObject> $processor */
             $processor = $objectType->getProcessor();
 
-            /** @var AbstractLikeObject $likeableObject */
+            /** @var AbstractLikeObject<LikeObject> $likeableObject */
             $likeableObject = $processor->getObjectByID($like->objectID);
             $likeableObject->setObjectType($objectType);
 

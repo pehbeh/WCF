@@ -11,10 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method BlacklistEntry current()
- * @method BlacklistEntry[] getObjects()
- * @method BlacklistEntry|null search($objectID)
- * @property BlacklistEntry[] $objects
+ * @extends DatabaseObjectList<BlacklistEntry>
  * @since 5.2
  */
 class BlacklistEntryList extends DatabaseObjectList

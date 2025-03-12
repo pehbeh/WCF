@@ -18,6 +18,7 @@ interface IUserOnlineLocation
      * Caches the information of a page location.
      *
      * @param UserOnline $user
+     * @return void
      */
     public function cache(UserOnline $user);
 

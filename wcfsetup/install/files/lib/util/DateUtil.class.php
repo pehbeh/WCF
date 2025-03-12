@@ -473,6 +473,7 @@ final class DateUtil
      * Validates if given date is valid ISO-8601.
      *
      * @param string $date
+     * @return void
      * @throws  SystemException
      */
     public static function validateDate($date)

@@ -21,35 +21,39 @@ use wcf\system\WCFACP;
 final class ControllerMap extends SingletonFactory
 {
     /**
-     * @var array
+     * @var array{
+     *  lookup: array<string, array<string, string>>,
+     *  reverse: array<string, array<string, string>>,
+     * }
      * @since   5.2
      */
-    protected $applicationOverrides;
+    private array $applicationOverrides;
 
     /**
-     * @var array
+     * @var array<string, array<string, array<string, string>>>
      */
-    protected $ciControllers;
+    private array $ciControllers;
 
     /**
-     * @var array
+     * @var array{
+     *  lookup: array<string, array<string, string>>,
+     *  reverse: array<string, array<string, string>>,
+     * }
      */
-    protected $customUrls;
+    private array $customUrls;
 
     /**
-     * @var string[][]
+     * @var array<string, array<string, string>>
      */
-    protected $landingPages;
+    private array $landingPages;
 
     /**
      * list of <ControllerName> to <controller-name> mappings
      * @var array<string, string>
      */
-    protected $lookupCache = [];
+    private array $lookupCache = [];
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     protected function init()
     {
         $this->applicationOverrides = RoutingCacheBuilder::getInstance()->getData([], 'applicationOverrides');
@@ -130,7 +134,7 @@ final class ControllerMap extends SingletonFactory
      *
      * URL -> Controller
      *
-     * @return  array       empty array if there is no exact match
+     * @return array{}|array{className: string, controller: string}|array{className: string, controller: string, cmsPageID: string, cmsPageLanguageID: string}
      */
     public function resolveCustomController(string $application, string $controller): array
     {
@@ -287,7 +291,7 @@ final class ControllerMap extends SingletonFactory
     /**
      * Returns true if currently active request represents the global landing page.
      *
-     * @param array $metaData
+     * @param array<string, mixed> $metaData
      */
     public function isLandingPage(string $className, array $metaData): bool
     {
@@ -324,7 +328,7 @@ final class ControllerMap extends SingletonFactory
      *
      * @return      string[]|null   className and controller, or null if this is not a legacy controller name
      */
-    protected function getLegacyClassData(string $application, string $controller, bool $isAcpRequest)
+    private function getLegacyClassData(string $application, string $controller, bool $isAcpRequest)
     {
         $environment = $isAcpRequest ? 'acp' : 'frontend';
         if (isset($this->ciControllers[$application][$environment][$controller])) {
@@ -348,7 +352,7 @@ final class ControllerMap extends SingletonFactory
      * @param $pageType page type, e.g. 'form' or 'action'
      * @return  string[]|null   className and controller
      */
-    protected function getClassData(string $application, string $controller, bool $isAcpRequest, string $pageType)
+    private function getClassData(string $application, string $controller, bool $isAcpRequest, string $pageType)
     {
         $className = $application . '\\' . ($isAcpRequest ? 'acp\\' : '') . $pageType . '\\' . $controller . \ucfirst($pageType);
         if (!\class_exists($className)) {

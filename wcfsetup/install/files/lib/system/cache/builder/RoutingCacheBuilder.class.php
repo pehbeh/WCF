@@ -44,8 +44,14 @@ class RoutingCacheBuilder extends AbstractCacheBuilder
      * declares a different application that will be used instead without actually migrating
      * the page to a different application.
      *
-     * @param array $customUrls
-     * @return array
+     * @param array{
+     *  lookup: array<string, array<string, string>>,
+     *  reverse: array<string, array<string, string>>,
+     * } $customUrls
+     * @return array{
+     *  lookup: array<string, array<string, string>>,
+     *  reverse: array<string, array<string, string>>,
+     * }
      */
     protected function getApplicationOverrides(array &$customUrls)
     {
@@ -115,7 +121,10 @@ class RoutingCacheBuilder extends AbstractCacheBuilder
      * and environment level to prevent any issues with controllers with the same name but
      * correct spelling to be incorrectly handled.
      *
-     * @return  array
+     * @return array<string, array{
+     *  acp: array<string, string>,
+     *  frontend: array<string, string>,
+     * }>|array{}
      */
     protected function getCaseInsensitiveControllers()
     {
@@ -169,7 +178,10 @@ class RoutingCacheBuilder extends AbstractCacheBuilder
      * Builds up a lookup and a reverse lookup list per application in order to resolve
      * custom page mappings.
      *
-     * @return  array
+     * @return array{
+     *  lookup: array<string, array<string, string>>,
+     *  reverse: array<string, array<string, string>>,
+     * }
      */
     protected function getCustomUrls()
     {

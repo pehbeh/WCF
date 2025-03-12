@@ -14,8 +14,8 @@ use wcf\data\media\ViewableMedia;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  ArticleContent  getDecoratedObject()
  * @mixin   ArticleContent
+ * @extends DatabaseObjectDecorator<ArticleContent>
  */
 class ViewableArticleContent extends DatabaseObjectDecorator
 {
@@ -59,7 +59,7 @@ class ViewableArticleContent extends DatabaseObjectDecorator
     /**
      * Sets the article objects.
      *
-     * @param ViewableArticle $article
+     * @return void
      */
     public function setArticle(ViewableArticle $article)
     {
@@ -89,7 +89,7 @@ class ViewableArticleContent extends DatabaseObjectDecorator
     /**
      * Sets the article's image.
      *
-     * @param ViewableMedia $image
+     * @return void
      */
     public function setImage(ViewableMedia $image)
     {
@@ -121,7 +121,7 @@ class ViewableArticleContent extends DatabaseObjectDecorator
     /**
      * Sets the article's teaser image.
      *
-     * @param ViewableMedia $image
+     * @return void
      */
     public function setTeaserImage(ViewableMedia $image)
     {

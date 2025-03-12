@@ -19,7 +19,7 @@ trait TFormNode
 {
     /**
      * additional attributes of this node
-     * @var array
+     * @var array<string, ?string>
      */
     protected $attributes = [];
 
@@ -56,9 +56,9 @@ trait TFormNode
     /**
      * Adds the given CSS class to this node and returns this node.
      *
-     * @return  $this
+     * @return $this
      *
-     * @throws  \InvalidArgumentException   if the given class is invalid
+     * @throws \InvalidArgumentException if the given class is invalid
      */
     public function addClass(string $class): static
     {
@@ -74,9 +74,9 @@ trait TFormNode
     /**
      * Adds the given CSS classes to this node and returns this node.
      *
-     * @return  $this
+     * @return $this
      *
-     * @throws  \InvalidArgumentException   if any of the given classes is invalid
+     * @throws \InvalidArgumentException if any of the given classes is invalid
      */
     public function addClasses(array $classes): static
     {
@@ -95,7 +95,7 @@ trait TFormNode
      * This method is expected to set the dependent node of the given dependency
      * to this node.
      *
-     * @return  $this
+     * @return $this
      */
     public function addDependency(IFormFieldDependency $dependency): static
     {
@@ -111,9 +111,9 @@ trait TFormNode
      *
      * The value of an existing attribute is overwritten by the new value.
      *
-     * @return  $this
+     * @return $this
      *
-     * @throws  \InvalidArgumentException   if an invalid name or value is given (some attribute names are invalid as there are specific methods for setting that attribute)
+     * @throws \InvalidArgumentException if an invalid name or value is given (some attribute names are invalid as there are specific methods for setting that attribute)
      */
     public function attribute(string $name, ?string $value = null): static
     {
@@ -147,7 +147,7 @@ trait TFormNode
      * form field values while this method manages static availability that is independent
      * of form field values and only depends on external factors.
      *
-     * @return  $this
+     * @return $this
      */
     public function available(bool $available = true): static
     {
@@ -196,7 +196,7 @@ trait TFormNode
      *
      * This method is not meant to empty the value of input fields.
      *
-     * @return  $this
+     * @return $this
      */
     public function cleanup(): static
     {
@@ -206,7 +206,7 @@ trait TFormNode
     /**
      * Returns the value of the additional attribute of this node with the given name.
      *
-     * @throws  \InvalidArgumentException   if the given name is invalid or no such attribute exists
+     * @throws \InvalidArgumentException if the given name is invalid or no such attribute exists
      */
     public function getAttribute(string $name): mixed
     {
@@ -220,7 +220,7 @@ trait TFormNode
     /**
      * Returns additional attributes of this node.
      *
-     * @return  array       additional node attributes
+     * @return array<string, ?string> additional node attributes
      */
     public function getAttributes(): array
     {
@@ -230,7 +230,7 @@ trait TFormNode
     /**
      * Returns all CSS classes of this node.
      *
-     * @return  string[]
+     * @return string[]
      */
     public function getClasses(): array
     {
@@ -240,7 +240,7 @@ trait TFormNode
     /**
      * Returns all of the node's dependencies.
      *
-     * @return  IFormFieldDependency[]      node's dependencies
+     * @return IFormFieldDependency[] node's dependencies
      */
     public function getDependencies()
     {
@@ -250,9 +250,9 @@ trait TFormNode
     /**
      * Returns the form document this node belongs to.
      *
-     * @return  IFormDocument           form document node belongs to
+     * @return IFormDocument form document node belongs to
      *
-     * @throws  \BadMethodCallException     if form document is inaccessible for this node
+     * @throws \BadMethodCallException if form document is inaccessible for this node
      */
     abstract public function getDocument();
 
@@ -260,7 +260,7 @@ trait TFormNode
      * Returns additional template variables used to generate the html representation
      * of this node.
      *
-     * @return  array       additional template variables
+     * @return array<string, mixed> additional template variables
      */
     public function getHtmlVariables()
     {
@@ -270,9 +270,9 @@ trait TFormNode
     /**
      * Returns the id of the form node.
      *
-     * @return  string      node id
+     * @return string node id
      *
-     * @throws  \BadMethodCallException     if no id has been set
+     * @throws \BadMethodCallException if no id has been set
      */
     public function getId()
     {
@@ -290,9 +290,9 @@ trait TFormNode
      * The prefixed id is primarily intended to be used when outputting the form's
      * fields and reading their values.
      *
-     * @return  string              prefixed node id
+     * @return string prefixed node id
      *
-     * @throws  \BadMethodCallException     if no id has been set or if form document is inaccessible for this node
+     * @throws \BadMethodCallException if no id has been set or if form document is inaccessible for this node
      */
     public function getPrefixedId()
     {
@@ -304,9 +304,9 @@ trait TFormNode
      * `false` otherwise.
      *
      * @param string $name attribute name
-     * @return  bool
+     * @return bool
      *
-     * @throws  \InvalidArgumentException   if the given attribute name is invalid
+     * @throws \InvalidArgumentException if the given attribute name is invalid
      */
     public function hasAttribute($name)
     {
@@ -319,9 +319,9 @@ trait TFormNode
      * Returns `true` if a CSS class with the given name exists and returns `false` otherwise.
      *
      * @param string $class checked CSS class
-     * @return  bool
+     * @return bool
      *
-     * @throws  \InvalidArgumentException   if the given class is invalid
+     * @throws \InvalidArgumentException if the given class is invalid
      */
     public function hasClass($class)
     {
@@ -335,9 +335,9 @@ trait TFormNode
      * returns `false` otherwise.
      *
      * @param string $dependencyId id of the checked dependency
-     * @return  bool
+     * @return bool
      *
-     * @throws  \InvalidArgumentException   if the given id is invalid
+     * @throws \InvalidArgumentException if the given id is invalid
      */
     public function hasDependency($dependencyId)
     {
@@ -354,10 +354,10 @@ trait TFormNode
      * Sets the id of the node.
      *
      * @param string $id new id of node
-     * @return  static          this node
+     * @return static this node
      *
-     * @throws  \BadMethodCallException     if id has already been set
-     * @throws  \InvalidArgumentException   if the given id is invalid
+     * @throws \BadMethodCallException if id has already been set
+     * @throws \InvalidArgumentException if the given id is invalid
      */
     public function id($id)
     {
@@ -377,9 +377,9 @@ trait TFormNode
      *
      * If the node's own availability has not been explicitly set, it is assumed to be `true`.
      *
-     * @return  bool
+     * @return bool
      *
-     * @see     IFormNode::available()
+     * @see IFormNode::available()
      */
     public function isAvailable()
     {
@@ -403,9 +403,9 @@ trait TFormNode
      * This method enables this node to perform actions that require the whole document having
      * finished constructing itself and every parent-child relationship being established.
      *
-     * @return  static              this node
+     * @return static this node
      *
-     * @throws  \BadMethodCallException     if this node has already been populated
+     * @throws \BadMethodCallException if this node has already been populated
      */
     public function populate()
     {
@@ -446,9 +446,9 @@ trait TFormNode
      * ignores that fact.
      *
      * @param string $name removed attribute
-     * @return  static              this node
+     * @return static this node
      *
-     * @throws  \InvalidArgumentException   if the given attribute is invalid
+     * @throws \InvalidArgumentException if the given attribute is invalid
      */
     public function removeAttribute($name)
     {
@@ -466,9 +466,9 @@ trait TFormNode
      * ignores that fact.
      *
      * @param string $class removed CSS class
-     * @return  static              this node
+     * @return static this node
      *
-     * @throws  \InvalidArgumentException   if the given class is invalid
+     * @throws \InvalidArgumentException if the given class is invalid
      */
     public function removeClass($class)
     {
@@ -486,9 +486,9 @@ trait TFormNode
      * Removes the dependency with the given id and returns this node.
      *
      * @param string $dependencyId id of the removed dependency
-     * @return  static              this field
+     * @return static this field
      *
-     * @throws  \InvalidArgumentException   if the given id is invalid or no such dependency exists
+     * @throws \InvalidArgumentException if the given id is invalid or no such dependency exists
      */
     public function removeDependency($dependencyId)
     {
@@ -509,9 +509,9 @@ trait TFormNode
      * Creates a new element with the given id.
      *
      * @param string $id node id
-     * @return  static      this node
+     * @return static this node
      *
-     * @throws  \InvalidArgumentException   if the given id is already used by another node, or otherwise is invalid
+     * @throws \InvalidArgumentException if the given id is already used by another node, or otherwise is invalid
      */
     public static function create($id)
     {
@@ -521,8 +521,8 @@ trait TFormNode
     /**
      * Returns a list of attributes that are not accessible via the attribute methods.
      *
-     * @return      string[]
-     * @since       5.2.11
+     * @return string[]
+     * @since 5.2.11
      */
     protected static function getReservedAttributes()
     {
@@ -538,8 +538,9 @@ trait TFormNode
      * Checks if the given attribute name class a and a valid attribute name.
      *
      * @param string $name checked argument name
+     * @return void
      *
-     * @throws  \InvalidArgumentException   if the given attribute name is invalid
+     * @throws \InvalidArgumentException if the given attribute name is invalid
      */
     public static function validateAttribute($name)
     {
@@ -556,8 +557,9 @@ trait TFormNode
      * Checks if the given parameter class a and a valid node class.
      *
      * @param string $class checked id
+     * @return void
      *
-     * @throws  \InvalidArgumentException   if the given id is invalid
+     * @throws \InvalidArgumentException if the given id is invalid
      */
     public static function validateClass($class)
     {
@@ -572,8 +574,9 @@ trait TFormNode
      * Checks if the given parameter is a and a valid node id.
      *
      * @param string $id checked id
+     * @return void
      *
-     * @throws  \InvalidArgumentException   if the given id is invalid
+     * @throws \InvalidArgumentException if the given id is invalid
      */
     public static function validateId($id)
     {

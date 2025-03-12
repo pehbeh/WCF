@@ -10,11 +10,7 @@ use wcf\data\file\thumbnail\FileThumbnailList;
  * @copyright 2001-2023 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method File current()
- * @method File[] getObjects()
- * @method File|null getSingleObject()
- * @method File|null search($objectID)
- * @property File[] $objects
+ * @extends DatabaseObjectList<File>
  */
 class FileList extends DatabaseObjectList
 {

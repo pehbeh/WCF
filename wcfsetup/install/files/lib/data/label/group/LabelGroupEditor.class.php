@@ -14,9 +14,9 @@ use wcf\system\cache\builder\LabelCacheBuilder;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static LabelGroup  create(array $parameters = [])
- * @method      LabelGroup  getDecoratedObject()
  * @mixin       LabelGroup
+ * @extends DatabaseObjectEditor<LabelGroup>
+ * @implements IEditableCachedObject<LabelGroup>
  */
 class LabelGroupEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {

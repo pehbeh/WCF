@@ -187,7 +187,7 @@ class TestableUserNotificationEventHandler extends SingletonFactory
      * @param UserProfile $author
      * @param int $timesTriggered
      * @param int $guestTimesTriggered
-     * @param array $additionalData
+     * @param mixed[] $additionalData
      * @return  UserNotification
      */
     protected function getUserNotification(
@@ -304,7 +304,7 @@ class TestableUserNotificationEventHandler extends SingletonFactory
      * data within the same request. This is crucial as during testing, objects
      * are created and used within the same request.
      *
-     * @param ICacheBuilder $cacheBuilder
+     * @return void
      */
     public function resetCacheBuilder(ICacheBuilder $cacheBuilder)
     {

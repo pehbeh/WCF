@@ -15,11 +15,15 @@ interface ILoadableContainerAction
     /**
      * Toggles the container state of the relevant objects and loads their
      * content if necessary.
+     *
+     * @return void
      */
     public function loadContainer();
 
     /**
      * Validates the 'loadContainer' action.
+     *
+     * @return void
      */
     public function validateLoadContainer();
 }

@@ -12,8 +12,7 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  PageContentEditor[] getObjects()
- * @method  PageContentEditor   getSingleObject()
+ * @extends AbstractDatabaseObjectAction<PageContent, PageContentEditor>
  */
 class PageContentAction extends AbstractDatabaseObjectAction
 {

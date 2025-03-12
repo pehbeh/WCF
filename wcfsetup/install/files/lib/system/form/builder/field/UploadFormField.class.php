@@ -54,31 +54,31 @@ class UploadFormField extends AbstractFormField
 
     /**
      * maximum filesize for each uploaded file
-     * @var null|number
+     * @var ?int
      */
     protected $maximumFilesize;
 
     /**
      * minimum image width for each uploaded file
-     * @var null|number
+     * @var ?int
      */
     protected $minimumImageWidth;
 
     /**
      * maximum image width for each uploaded file
-     * @var null|number
+     * @var ?int
      */
     protected $maximumImageWidth;
 
     /**
      * minimum image height for each uploaded file
-     * @var null|number
+     * @var ?int
      */
     protected $minimumImageHeight;
 
     /**
      * maximum image height for each uploaded file
-     * @var null|number
+     * @var ?int
      */
     protected $maximumImageHeight;
 
@@ -89,7 +89,7 @@ class UploadFormField extends AbstractFormField
 
     /**
      * Array of temporary values, which are assigned, after the method `populate` are called.
-     * @var array
+     * @var UploadFile[]
      */
     private $values = [];
 
@@ -116,6 +116,8 @@ class UploadFormField extends AbstractFormField
 
     /**
      * Unregisters the current field in the upload handler.
+     *
+     * @return void
      */
     private function unregisterField()
     {
@@ -624,7 +626,9 @@ class UploadFormField extends AbstractFormField
     /**
      * @inheritDoc
      *
-     * @throws      \LogicException       if the field has already been initialized
+     * @param ?int $maximum
+     * @return static
+     * @throws \LogicException if the field has already been initialized
      */
     public function maximum($maximum = null)
     {
@@ -641,14 +645,15 @@ class UploadFormField extends AbstractFormField
      * Sets the maximum filesize for each upload. If `null` is passed, the
      * maximum filesize is removed.
      *
-     * @param null|number $maximumFilesize maximum filesize
-     * @return  static                      this field
+     * @param ?int $maximumFilesize maximum filesize
+     * @return static this field
      *
-     * @throws  \InvalidArgumentException   if the given maximum filesize is no number or otherwise invalid
+     * @throws \InvalidArgumentException if the given maximum filesize is no number or otherwise invalid
      */
     public function maximumFilesize($maximumFilesize = null)
     {
         if ($maximumFilesize !== null) {
+            // @phpstan-ignore function.alreadyNarrowedType
             if (!\is_numeric($maximumFilesize)) {
                 throw new \InvalidArgumentException(
                     "Given maximum filesize is no int, '" . \gettype($maximumFilesize) . "' given for field '{$this->getId()}'."
@@ -665,7 +670,7 @@ class UploadFormField extends AbstractFormField
      * Returns the maximum filesize of each file or `null` if no maximum filesize
      * has been set.
      *
-     * @return  null|number
+     * @return ?int
      */
     public function getMaximumFilesize()
     {
@@ -676,11 +681,11 @@ class UploadFormField extends AbstractFormField
      * Sets the minimum image width for each uploaded file. If `null` is passed, the
      * minimum image width is removed.
      *
-     * @param null|number $minimumImageWidth the mimimum image width
-     * @return  static                     this field
+     * @param ?int $minimumImageWidth the mimimum image width
+     * @return static this field
      *
-     * @throws  \InvalidArgumentException   if the given mimimum image width is no number or otherwise invalid
-     * @throws  \LogicException                  if the form field is not marked as image only
+     * @throws \InvalidArgumentException if the given mimimum image width is no number or otherwise invalid
+     * @throws \LogicException if the form field is not marked as image only
      */
     public function minimumImageWidth($minimumImageWidth = null)
     {
@@ -689,6 +694,7 @@ class UploadFormField extends AbstractFormField
         }
 
         if ($minimumImageWidth !== null) {
+            // @phpstan-ignore function.alreadyNarrowedType
             if (!\is_numeric($minimumImageWidth)) {
                 throw new \InvalidArgumentException(
                     "Given minimum image width is no int, '" . \gettype($minimumImageWidth) . "' given for field '{$this->getId()}'."
@@ -712,7 +718,7 @@ class UploadFormField extends AbstractFormField
      * Returns the mimimum image width of each file or `null` if no mimimum image width
      * has been set.
      *
-     * @return  null|number
+     * @return ?int
      */
     public function getMinimumImageWidth()
     {
@@ -723,11 +729,11 @@ class UploadFormField extends AbstractFormField
      * Sets the maximum image width for each uploaded file. If `null` is passed, the
      * maximum image width is removed.
      *
-     * @param null|number $maximumImageWidth the maximum image width
-     * @return  static                     this field
+     * @param ?int $maximumImageWidth the maximum image width
+     * @return static this field
      *
-     * @throws  \InvalidArgumentException   if the given mimimum image width is no number or otherwise invalid
-     * @throws  \LogicException                  if the form field is not marked as image only
+     * @throws \InvalidArgumentException if the given mimimum image width is no number or otherwise invalid
+     * @throws \LogicException if the form field is not marked as image only
      */
     public function maximumImageWidth($maximumImageWidth = null)
     {
@@ -736,6 +742,7 @@ class UploadFormField extends AbstractFormField
         }
 
         if ($maximumImageWidth !== null) {
+            // @phpstan-ignore function.alreadyNarrowedType
             if (!\is_numeric($maximumImageWidth)) {
                 throw new \InvalidArgumentException(
                     "Given maximum image width is no int, '" . \gettype($maximumImageWidth) . "' given for field '{$this->getId()}'."
@@ -759,7 +766,7 @@ class UploadFormField extends AbstractFormField
      * Returns the maximum image width of each file or `null` if no maximum image width
      * has been set.
      *
-     * @return  null|number
+     * @return ?int
      */
     public function getMaximumImageWidth()
     {
@@ -770,11 +777,11 @@ class UploadFormField extends AbstractFormField
      * Sets the minimum image height for each uploaded file. If `null` is passed, the
      * minimum image height is removed.
      *
-     * @param null|number $minimumImageHeight the mimimum image height
-     * @return  static                      this field
+     * @param ?int $minimumImageHeight the mimimum image height
+     * @return static this field
      *
-     * @throws  \InvalidArgumentException   if the given mimimum image height is no number or otherwise invalid
-     * @throws  \LogicException                  if the form field is not marked as image only
+     * @throws \InvalidArgumentException if the given mimimum image height is no number or otherwise invalid
+     * @throws \LogicException if the form field is not marked as image only
      */
     public function minimumImageHeight($minimumImageHeight = null)
     {
@@ -785,6 +792,7 @@ class UploadFormField extends AbstractFormField
         }
 
         if ($minimumImageHeight !== null) {
+            // @phpstan-ignore function.alreadyNarrowedType
             if (!\is_numeric($minimumImageHeight)) {
                 throw new \InvalidArgumentException(
                     "Given minimum image height is no int, '" . \gettype($minimumImageHeight) . "' given for field '{$this->getId()}'."
@@ -808,7 +816,7 @@ class UploadFormField extends AbstractFormField
      * Returns the mimimum image height of each file or `null` if no mimimum image height
      * has been set.
      *
-     * @return  null|number
+     * @return ?int
      */
     public function getMinimumImageHeight()
     {
@@ -819,11 +827,11 @@ class UploadFormField extends AbstractFormField
      * Sets the maximum image height for each uploaded file. If `null` is passed, the
      * maximum image height is removed.
      *
-     * @param null|number $maximumImageHeight the maximum image height
-     * @return  static                     this field
+     * @param ?int $maximumImageHeight the maximum image height
+     * @return static this field
      *
-     * @throws  \InvalidArgumentException   if the given mimimum image height is no number or otherwise invalid
-     * @throws  \LogicException                  if the form field is not marked as image only
+     * @throws \InvalidArgumentException if the given mimimum image height is no number or otherwise invalid
+     * @throws \LogicException if the form field is not marked as image only
      */
     public function maximumImageHeight($maximumImageHeight = null)
     {
@@ -834,6 +842,7 @@ class UploadFormField extends AbstractFormField
         }
 
         if ($maximumImageHeight !== null) {
+            // @phpstan-ignore function.alreadyNarrowedType
             if (!\is_numeric($maximumImageHeight)) {
                 throw new \InvalidArgumentException(
                     "Given maximum image height is no int, '" . \gettype($maximumImageHeight) . "' given for field '{$this->getId()}'."
@@ -857,7 +866,7 @@ class UploadFormField extends AbstractFormField
      * Returns the maximum image height of each file or `null` if no maximum image height
      * has been set.
      *
-     * @return  null|number
+     * @return ?int
      */
     public function getMaximumImageHeight()
     {
@@ -872,9 +881,9 @@ class UploadFormField extends AbstractFormField
      * false it will clear the acceptable types if they are `image/*`.
      *
      * @param bool $imageOnly
-     * @return  static              this field
+     * @return static this field
      *
-     * @throws       \InvalidArgumentException         if the field is not set to images only and a minimum/maximum width/height is set
+     * @throws \InvalidArgumentException if the field is not set to images only and a minimum/maximum width/height is set
      */
     public function imageOnly($imageOnly = true)
     {
@@ -928,9 +937,9 @@ class UploadFormField extends AbstractFormField
      * use this option, outside the acp or check the file whether remote code is contained.
      *
      * @param bool $allowSvgImages
-     * @return  static              this field
+     * @return static this field
      *
-     * @throws      \BadMethodCallException         if the imageOnly flag isn't set to true
+     * @throws \BadMethodCallException if the imageOnly flag isn't set to true
      */
     public function allowSvgImage($allowSvgImages = true)
     {
@@ -948,7 +957,7 @@ class UploadFormField extends AbstractFormField
     /**
      * Returns `true` if only images can be uploaded via this field and returns `false` otherwise.
      *
-     * @return  bool
+     * @return bool
      */
     public function isImageOnly()
     {
@@ -958,7 +967,7 @@ class UploadFormField extends AbstractFormField
     /**
      * Returns true, if the field can contain svg images in the image only mode.
      *
-     * @return  bool
+     * @return bool
      */
     public function svgImageAllowed()
     {
@@ -979,9 +988,10 @@ class UploadFormField extends AbstractFormField
      * - `image/*`
      * - `video/*`
      *
-     * @see         https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#Unique_file_type_specifiers
+     * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#Unique_file_type_specifiers
      * @param string[]|null $acceptableFiles
-     * @since       5.3
+     * @return $this
+     * @since 5.3
      */
     public function setAcceptableFiles($acceptableFiles = null)
     {
@@ -993,8 +1003,8 @@ class UploadFormField extends AbstractFormField
     /**
      * Returns the acceptable file types.
      *
-     * @return      string[]|null
-     * @since       5.3
+     * @return string[]|null
+     * @since 5.3
      */
     public function getAcceptableFiles()
     {
@@ -1004,6 +1014,7 @@ class UploadFormField extends AbstractFormField
     /**
      * Returns the allowed file extensions or `null` if the extension is not validated.
      *
+     * @return string[]
      * @since  6.2
      */
     public function getAllowedFileExtensions(): ?array
@@ -1014,6 +1025,7 @@ class UploadFormField extends AbstractFormField
     /**
      * Specifies the allowed file extensions or `null` if the extension is not to be validated.
      *
+     * @param string[]|null $allowedFileExtensions
      * @since  6.2
      */
     public function setAllowedFileExtensions(?array $allowedFileExtensions = null): static

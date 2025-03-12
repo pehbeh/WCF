@@ -302,6 +302,8 @@ class PackageValidationException extends SystemException
 
     /**
      * @inheritDoc
+     *
+     * @return void
      */
     protected function logError()
     {

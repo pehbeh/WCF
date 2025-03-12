@@ -14,14 +14,29 @@ use wcf\util\StringUtil;
  */
 class ZipWriter
 {
+    /**
+     * @var string[]
+     */
     protected $headers = [];
 
+    /**
+     * @var string[]
+     */
     protected $data = [];
 
+    /**
+     * @var string
+     */
     protected $endOfData = "\x50\x4b\x05\x06\x00\x00\x00\x00";
 
+    /**
+     * @var int
+     */
     protected $lastOffset = 0;
 
+    /**
+     * @var string
+     */
     protected $zipComment = '';
 
     /**
@@ -29,6 +44,7 @@ class ZipWriter
      *
      * @param string $name dirname
      * @param int $date
+     * @return void
      */
     public function addDir($name, $date = TIME_NOW)
     {
@@ -87,6 +103,7 @@ class ZipWriter
      * @param string $data content of the file
      * @param string $name filename
      * @param int $date file creation time as unix timestamp
+     * @return void
      */
     public function addFile($data, $name, $date = TIME_NOW)
     {
@@ -156,6 +173,7 @@ class ZipWriter
      * Set Zip archive comment
      *
      * @param string $comment zip archive comment
+     * @return void
      */
     public function setArchiveComment($comment)
     {
@@ -165,7 +183,7 @@ class ZipWriter
     /**
      * Constructs the final Zip file structure and return it.
      *
-     * @return  string
+     * @return string
      */
     public function getFile()
     {
@@ -191,7 +209,7 @@ class ZipWriter
      * Converts an unix timestamp to Zip file time.
      *
      * @param int $date unix timestamp
-     * @return  string
+     * @return string
      */
     protected static function getDosDatetime($date)
     {

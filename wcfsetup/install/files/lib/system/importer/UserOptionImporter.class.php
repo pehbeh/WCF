@@ -104,6 +104,7 @@ class UserOptionImporter extends AbstractImporter
      * Creates the given category if necessary.
      *
      * @param string $name
+     * @return void
      */
     protected function createCategory($name)
     {

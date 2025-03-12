@@ -11,9 +11,8 @@ use wcf\data\DatabaseObjectEditor;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static ACLOption   create(array $parameters = [])
- * @method      ACLOption   getDecoratedObject()
  * @mixin       ACLOption
+ * @extends DatabaseObjectEditor<ACLOption>
  */
 class ACLOptionEditor extends DatabaseObjectEditor
 {

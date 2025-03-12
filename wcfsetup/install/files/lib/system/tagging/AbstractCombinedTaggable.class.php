@@ -2,6 +2,7 @@
 
 namespace wcf\system\tagging;
 
+use wcf\data\DatabaseObjectList;
 use wcf\data\tag\Tag;
 
 /**
@@ -11,6 +12,10 @@ use wcf\data\tag\Tag;
  * @copyright   2001-2019 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       5.2
+ *
+ * @template T of DatabaseObjectList
+ * @extends AbstractTaggable<T>
+ * @implements ICombinedTaggable<T>
  */
 abstract class AbstractCombinedTaggable extends AbstractTaggable implements ICombinedTaggable
 {

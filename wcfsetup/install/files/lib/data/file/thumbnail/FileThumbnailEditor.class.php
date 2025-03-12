@@ -12,9 +12,8 @@ use wcf\system\file\processor\ThumbnailFormat;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.1
  *
- * @method static FileThumbnail create(array $parameters = [])
- * @method FileThumbnail getDecoratedObject()
  * @mixin FileThumbnail
+ * @extends DatabaseObjectEditor<FileThumbnail>
  */
 class FileThumbnailEditor extends DatabaseObjectEditor
 {

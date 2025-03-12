@@ -33,13 +33,13 @@ trait TXmlGuiPackageInstallationPlugin
 {
     /**
      * dom element representing the original data of the edited entry
-     * @var null|\DOMElement
+     * @var ?\DOMElement
      */
     protected $editedEntry;
 
     /**
      * type of the currently handled pip entries
-     * @var null|string
+     * @var ?string
      */
     protected $entryType;
 
@@ -48,6 +48,7 @@ trait TXmlGuiPackageInstallationPlugin
      * element.
      *
      * @param \DOMElement $element installation element
+     * @return void
      */
     protected function addDeleteElement(\DOMElement $element)
     {
@@ -60,14 +61,17 @@ trait TXmlGuiPackageInstallationPlugin
             $document->documentElement->appendChild($delete);
         }
 
-        $delete->appendChild($document->importNode($this->prepareDeleteXmlElement($element)));
+        $xmlElement = $this->prepareDeleteXmlElement($element);
+        // @phpstan-ignore function.impossibleType, notIdentical.alwaysFalse
+        \assert($xmlElement !== null);
+        $delete->appendChild($document->importNode($xmlElement));
     }
 
     /**
      * Adds a new entry of this pip based on the data provided by the given
      * form.
      *
-     * @param IFormDocument $form
+     * @return void
      */
     public function addEntry(IFormDocument $form)
     {
@@ -85,7 +89,7 @@ trait TXmlGuiPackageInstallationPlugin
     /**
      * Adds all fields to the given form to add or edit an entry.
      *
-     * @param IFormDocument $form
+     * @return void
      */
     abstract protected function addFormFields(IFormDocument $form);
 
@@ -94,8 +98,9 @@ trait TXmlGuiPackageInstallationPlugin
      * child data and form.
      *
      * @param \DOMElement $element element to which the child elements are added
-     * @param array $children
+     * @param array<string|int, mixed> $children
      * @param IFormDocument $form form containing the children's data
+     * @return void
      */
     protected function appendElementChildren(\DOMElement $element, array $children, IFormDocument $form)
     {
@@ -142,9 +147,7 @@ trait TXmlGuiPackageInstallationPlugin
      * Creates a new XML element for the given document using the data provided
      * by the given form and return the new dom element.
      *
-     * @param \DOMDocument $document
-     * @param IFormDocument $form
-     * @return  \DOMElement
+     * @return \DOMElement
      */
     abstract protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form);
 
@@ -154,9 +157,7 @@ trait TXmlGuiPackageInstallationPlugin
      *
      * This method internally calls `prepareXmlElement()` and fires an event.
      *
-     * @param \DOMDocument $document
-     * @param IFormDocument $form
-     * @return  \DOMElement
+     * @return \DOMElement
      */
     protected function createXmlElement(\DOMDocument $document, IFormDocument $form)
     {
@@ -183,6 +184,7 @@ trait TXmlGuiPackageInstallationPlugin
      *
      * @param string $identifier
      * @param bool $addDeleteInstruction
+     * @return void
      */
     public function deleteEntry($identifier, $addDeleteInstruction)
     {
@@ -229,7 +231,7 @@ trait TXmlGuiPackageInstallationPlugin
      * because there is no content left.
      *
      * @param \DOMDocument $document sanitized document
-     * @return  bool
+     * @return bool
      */
     protected function sanitizeXmlFileAfterDeleteEntry(\DOMDocument $document)
     {
@@ -252,7 +254,7 @@ trait TXmlGuiPackageInstallationPlugin
     /**
      * Deletes the given element from database.
      *
-     * @param \DOMElement $element
+     * @return void
      */
     protected function deleteObject(\DOMElement $element)
     {
@@ -274,9 +276,8 @@ trait TXmlGuiPackageInstallationPlugin
      * provided by the given form and returns the new identifier of the entry
      * (or the old identifier if it has not changed).
      *
-     * @param IFormDocument $form
      * @param string $identifier
-     * @return  string          new identifier
+     * @return string new identifier
      */
     public function editEntry(IFormDocument $form, $identifier)
     {
@@ -300,7 +301,7 @@ trait TXmlGuiPackageInstallationPlugin
     /**
      * Returns additional template code for the form to add and edit entries.
      *
-     * @return  string
+     * @return string
      */
     public function getAdditionalTemplateCode()
     {
@@ -312,7 +313,7 @@ trait TXmlGuiPackageInstallationPlugin
      * if required.
      *
      * @param string $value
-     * @return  string
+     * @return string
      */
     protected function getAutoCdataValue($value)
     {
@@ -326,13 +327,13 @@ trait TXmlGuiPackageInstallationPlugin
     /**
      * Returns the `import` element with the given identifier.
      *
-     * @param XML $xml
      * @param string $identifier
-     * @return  \DOMElement|null
+     * @return ?\DOMElement
      */
     protected function getElementByIdentifier(XML $xml, $identifier)
     {
         foreach ($this->getImportElements($xml->xpath()) as $element) {
+            // @phpstan-ignore function.alreadyNarrowedType, instanceof.alwaysTrue
             \assert($element instanceof \DOMElement);
             if ($this->getElementIdentifier($element) === $identifier) {
                 return $element;
@@ -347,7 +348,7 @@ trait TXmlGuiPackageInstallationPlugin
      *
      * @param \DOMElement $element element whose data is returned
      * @param bool $saveData is `true` if data is intended to be saved and otherwise `false`
-     * @return  array
+     * @return array<string, int|string>
      */
     abstract protected function fetchElementData(\DOMElement $element, $saveData);
 
@@ -357,7 +358,7 @@ trait TXmlGuiPackageInstallationPlugin
      *
      * @param \DOMElement $element element whose data is returned
      * @param bool $saveData is `true` if data is intended to be saved and otherwise `false`
-     * @return  array
+     * @return mixed[]
      */
     protected function getElementData(\DOMElement $element, $saveData = false)
     {
@@ -381,8 +382,7 @@ trait TXmlGuiPackageInstallationPlugin
     /**
      * Returns the identifier of the given `import` element.
      *
-     * @param \DOMElement $element
-     * @return  string
+     * @return string
      */
     abstract protected function getElementIdentifier(\DOMElement $element);
 
@@ -391,7 +391,7 @@ trait TXmlGuiPackageInstallationPlugin
      * present for a new entry to be added as if it was added to an existing
      * file.
      *
-     * @return  string
+     * @return string
      */
     protected function getEmptyXml()
     {
@@ -409,7 +409,7 @@ XML;
      * Returns the name of the xsd file for this package installation plugin
      * (without the file extension).
      *
-     * @return  string
+     * @return string
      */
     protected function getXsdFilename()
     {
@@ -421,7 +421,7 @@ XML;
     /**
      * Returns a list of all pip entries of this pip.
      *
-     * @return  IDevtoolsPipEntryList
+     * @return IDevtoolsPipEntryList
      */
     public function getEntryList()
     {
@@ -450,7 +450,7 @@ XML;
      * For package installation plugins that support entries and categories
      * for these entries, `['entries', 'categories']` should be returned.
      *
-     * @return  string[]
+     * @return string[]
      */
     public function getEntryTypes()
     {
@@ -460,7 +460,7 @@ XML;
     /**
      * @inheritDoc
      *
-     * @return \DOMNodeList
+     * @return \DOMNodeList<\DOMElement>
      */
     protected function getImportElements(\DOMXPath $xpath)
     {
@@ -480,7 +480,7 @@ XML;
     /**
      * Returns the xml object for this pip.
      *
-     * @return  XML
+     * @return XML
      */
     protected function getProjectXml()
     {
@@ -499,7 +499,7 @@ XML;
     /**
      * Returns the location of the xml file for this pip.
      *
-     * @return  string
+     * @return string
      */
     protected function getXmlFileLocation()
     {
@@ -514,6 +514,7 @@ XML;
      *
      * @param XML $xml XML document to which the element is added
      * @param \DOMElement $newElement added new element
+     * @return void
      */
     protected function insertNewXmlElement(XML $xml, \DOMElement $newElement)
     {
@@ -533,7 +534,7 @@ XML;
      * Populates the given form to be used for adding and editing entries
      * managed by this PIP.
      *
-     * @param IFormDocument $form
+     * @return void
      */
     public function populateForm(IFormDocument $form)
     {
@@ -558,8 +559,7 @@ XML;
     /**
      * Returns a delete xml element based on the given import element.
      *
-     * @param \DOMElement $element
-     * @return  \DOMElement
+     * @return ?\DOMElement
      */
     protected function prepareDeleteXmlElement(\DOMElement $element)
     {
@@ -593,6 +593,7 @@ XML;
      *
      * @param \DOMElement $newElement XML element with new data
      * @param \DOMElement|null $oldElement XML element with old data
+     * @return void
      */
     protected function saveObject(\DOMElement $newElement, ?\DOMElement $oldElement = null)
     {
@@ -630,8 +631,9 @@ XML;
      * edit that entry has been submitted.
      *
      * @param string $identifier
+     * @return void
      *
-     * @throws  \InvalidArgumentException   if no such entry exists
+     * @throws \InvalidArgumentException if no such entry exists
      */
     public function setEditedEntryIdentifier($identifier)
     {
@@ -648,8 +650,7 @@ XML;
      * exists, `false` is returned.
      *
      * @param string $identifier
-     * @param IFormDocument $document
-     * @return  bool
+     * @return bool
      */
     public function setEntryData($identifier, IFormDocument $document)
     {
@@ -692,7 +693,7 @@ XML;
     /**
      * Sets the keys of the given (empty) entry list.
      *
-     * @param IDevtoolsPipEntryList $entryList
+     * @return void
      */
     abstract protected function setEntryListKeys(IDevtoolsPipEntryList $entryList);
 
@@ -700,8 +701,9 @@ XML;
      * Sets the type of the currently handled pip entries.
      *
      * @param string $entryType currently handled pip entry type
+     * @return void
      *
-     * @throws  \InvalidArgumentException   if the given entry type is invalid (see `getEntryTypes()` method)
+     * @throws \InvalidArgumentException if the given entry type is invalid (see `getEntryTypes()` method)
      */
     public function setEntryType($entryType)
     {
@@ -716,7 +718,7 @@ XML;
      * Returns `true` if this package installation plugin supports delete
      * instructions.
      *
-     * @return  bool
+     * @return bool
      */
     public function supportsDeleteInstruction()
     {

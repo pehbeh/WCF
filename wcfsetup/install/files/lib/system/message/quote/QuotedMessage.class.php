@@ -21,6 +21,7 @@ use wcf\data\IMessage;
  * @method  int     getUserID()
  * @method  string      getUsername()
  * @method  bool        isVisible()
+ * @implements \Iterator<string>
  *
  * @deprecated 6.2
  */
@@ -78,6 +79,7 @@ class QuotedMessage implements \Countable, \Iterator
      * @param string $quoteID
      * @param string $quote
      * @param string $fullQuote
+     * @return void
      */
     public function addQuote($quoteID, $quote, $fullQuote)
     {
@@ -111,6 +113,7 @@ class QuotedMessage implements \Countable, \Iterator
      *
      * @param string $quoteID
      * @param bool $overrideIsFullQuote
+     * @return void
      */
     public function setOverrideIsFullQuote($quoteID, $overrideIsFullQuote)
     {

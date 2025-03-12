@@ -11,12 +11,6 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  CaptchaQuestion     current()
- * @method  CaptchaQuestion[]   getObjects()
- * @method  CaptchaQuestion|null    getSingleObject()
- * @method  CaptchaQuestion|null    search($objectID)
- * @property    CaptchaQuestion[] $objects
+ * @extends DatabaseObjectList<CaptchaQuestion>
  */
-class CaptchaQuestionList extends DatabaseObjectList
-{
-}
+class CaptchaQuestionList extends DatabaseObjectList {}

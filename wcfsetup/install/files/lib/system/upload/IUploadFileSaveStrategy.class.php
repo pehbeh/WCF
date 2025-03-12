@@ -15,6 +15,7 @@ interface IUploadFileSaveStrategy
      * Saves the given file.
      *
      * @param UploadFile $uploadFile
+     * @return void
      */
     public function save(UploadFile $uploadFile);
 }

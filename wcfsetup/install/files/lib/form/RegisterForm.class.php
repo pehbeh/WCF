@@ -81,7 +81,7 @@ class RegisterForm extends UserAddForm
 
     /**
      * field names
-     * @var array
+     * @var array<string, string>
      */
     public $randomFieldNames = [];
 
@@ -190,7 +190,6 @@ class RegisterForm extends UserAddForm
      */
     protected function initOptionHandler()
     {
-        \assert($this->optionHandler instanceof UserOptionHandler);
         $this->optionHandler->setInRegistration();
         parent::initOptionHandler();
     }
@@ -309,7 +308,7 @@ class RegisterForm extends UserAddForm
     }
 
     /**
-     * Validates the captcha.
+     * @return void
      */
     protected function validateCaptcha()
     {

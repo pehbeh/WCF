@@ -19,7 +19,7 @@ class SimpleAclResolver extends SingletonFactory
 {
     /**
      * cached permissions per object type
-     * @var array
+     * @var array<string, array<int, array{group: list<int>, user: list<int>}>>
      */
     protected $cache = [];
 
@@ -29,8 +29,8 @@ class SimpleAclResolver extends SingletonFactory
      *
      * @param string $objectType object type name
      * @param int $objectID object id
-     * @param User|null $user user object, if `null` uses current user
-     * @return      bool         false if user is not allowed
+     * @param ?User $user user object, if `null` uses current user
+     * @return bool false if user is not allowed
      */
     public function canAccess($objectType, $objectID, ?User $user = null)
     {
@@ -68,6 +68,7 @@ class SimpleAclResolver extends SingletonFactory
      * Resets the cache for provided object type.
      *
      * @param string $objectType object type name
+     * @return void
      */
     public function resetCache($objectType)
     {
@@ -78,6 +79,7 @@ class SimpleAclResolver extends SingletonFactory
      * Attempts to load the cache for provided object type.
      *
      * @param string $objectType object type name
+     * @return void
      */
     protected function loadCache($objectType)
     {

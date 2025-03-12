@@ -32,7 +32,7 @@ final class WorkerProxyAction extends AJAXInvokeAction
 
     /**
      * parameters for worker action
-     * @var array
+     * @var array<string, mixed>
      */
     protected $parameters = [];
 
@@ -42,6 +42,9 @@ final class WorkerProxyAction extends AJAXInvokeAction
      */
     protected $worker;
 
+    /**
+     * @var string[]
+     */
     public static $allowInvoke = [];
 
     /**
@@ -66,6 +69,8 @@ final class WorkerProxyAction extends AJAXInvokeAction
 
     /**
      * Validates class name.
+     *
+     * @return void
      */
     protected function validate()
     {
@@ -112,8 +117,9 @@ final class WorkerProxyAction extends AJAXInvokeAction
      * Sends a JSON-encoded response.
      *
      * @param int $progress
-     * @param array $parameters
+     * @param ?array<string, mixed> $parameters
      * @param string $proceedURL
+     * @return void
      */
     protected function sendResponse($progress = 0, ?array $parameters = null, $proceedURL = '')
     {

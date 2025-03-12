@@ -28,22 +28,22 @@ interface IClipboardAction
      *
      * @param DatabaseObject[] $objects
      * @param ClipboardAction $action
-     * @return  ClipboardEditorItem|null
+     * @return ?ClipboardEditorItem
      */
     public function execute(array $objects, ClipboardAction $action);
 
     /**
      * Returns action class name.
      *
-     * @return  string
+     * @return string
      */
     public function getClassName();
 
     /**
      * Returns label for item editor.
      *
-     * @param array $objects
-     * @return  string
+     * @param DatabaseObject[] $objects
+     * @return string
      */
     public function getEditorLabel(array $objects);
 
@@ -51,8 +51,8 @@ interface IClipboardAction
      * Returns the list of action names that should trigger a page reload once they
      * have been executed.
      *
-     * @return      string[]
-     * @since       5.2
+     * @return string[]
+     * @since 5.2
      */
     public function getReloadPageOnSuccess();
 }

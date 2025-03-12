@@ -14,9 +14,9 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method static Trophy create(array $parameters = [])
- * @method Trophy getDecoratedObject()
  * @mixin   Trophy
+ * @extends DatabaseObjectEditor<Trophy>
+ * @implements IEditableCachedObject<Trophy>
  */
 class TrophyEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {
@@ -29,6 +29,7 @@ class TrophyEditor extends DatabaseObjectEditor implements IEditableCachedObject
      * Sets the show order of the trophy.
      *
      * @param int $showOrder
+     * @return void
      */
     public function setShowOrder($showOrder = 0)
     {

@@ -40,6 +40,8 @@ use wcf\util\StringUtil;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @extends AbstractGridView<PaidSubscriptionTransactionLog, PaidSubscriptionTransactionLogList>
  */
 final class PaidSubscriptionTransactionLogGridView extends AbstractGridView
 {
@@ -120,6 +122,9 @@ final class PaidSubscriptionTransactionLogGridView extends AbstractGridView
         $this->setSortOrder("DESC");
     }
 
+    /**
+     * @return array<int, string>
+     */
     private function getAvailablePaymentMethods(): array
     {
         $paymentMethods = [];
@@ -130,6 +135,9 @@ final class PaidSubscriptionTransactionLogGridView extends AbstractGridView
         return $paymentMethods;
     }
 
+    /**
+     * @return array<int, string>
+     */
     private function getAvailableSubscriptions(): array
     {
         $subscriptions = [];

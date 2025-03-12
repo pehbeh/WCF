@@ -73,11 +73,13 @@ class UserMergeForm extends AbstractForm
         // get object type id
         $this->objectTypeID = ClipboardHandler::getInstance()->getObjectTypeID('com.woltlab.wcf.user');
         // get user
+        // @phpstan-ignore assign.propertyType
         $this->users = ClipboardHandler::getInstance()->getMarkedItems($this->objectTypeID);
         if (empty($this->users) || \count($this->users) < 2) {
             throw new IllegalLinkException();
         }
         foreach ($this->users as $user) {
+            /** @var User $user */
             if (!$user->canEdit()) {
                 throw new PermissionDeniedException();
             }

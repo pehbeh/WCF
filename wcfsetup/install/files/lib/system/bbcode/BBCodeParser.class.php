@@ -13,12 +13,18 @@ use wcf\system\SingletonFactory;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @phpstan-type BBCodeTag array{
+ *  name: string,
+ *  closing: bool,
+ *  source: string,
+ *  attributes?: list<string>,
+ * }
  */
 class BBCodeParser extends SingletonFactory
 {
     /**
      * list of bbcodes
-     * @var BBCode[]
+     * @var array<string, BBCode>
      */
     protected $bbcodes = [];
 
@@ -41,14 +47,12 @@ class BBCodeParser extends SingletonFactory
     protected $parsedText = '';
 
     /**
-     * tag array
-     * @var array
+     * @var list<BBCodeTag>
      */
     protected $tagArray = [];
 
     /**
-     * text array
-     * @var array
+     * @var array<int, string>
      */
     protected $textArray = [];
 
@@ -82,6 +86,7 @@ class BBCodeParser extends SingletonFactory
      * Sets the output type of the parser.
      *
      * @param string $outputType
+     * @return void
      */
     public function setOutputType($outputType)
     {
@@ -91,7 +96,7 @@ class BBCodeParser extends SingletonFactory
     /**
      * Returns the current output type.
      *
-     * @return  string
+     * @return string
      */
     public function getOutputType()
     {
@@ -102,6 +107,7 @@ class BBCodeParser extends SingletonFactory
      * Sets the text to be parsed.
      *
      * @param string $text
+     * @return void
      */
     public function setText($text)
     {
@@ -112,7 +118,7 @@ class BBCodeParser extends SingletonFactory
      * Parses the given text.
      *
      * @param string $text
-     * @return  string      parsed text
+     * @return string parsed text
      */
     public function parse($text)
     {
@@ -127,6 +133,8 @@ class BBCodeParser extends SingletonFactory
     /**
      * Builds a valid xml structure of bbcode tags.
      * Inserts unclosed tags automatically.
+     *
+     * @return void
      */
     public function buildXMLStructure()
     {
@@ -231,8 +239,8 @@ class BBCodeParser extends SingletonFactory
     /**
      * Validates the attributes of a tag.
      *
-     * @param array $tag
-     * @return  bool
+     * @param BBCodeTag $tag
+     * @return bool
      */
     public function isValidTag(array $tag)
     {
@@ -277,9 +285,9 @@ class BBCodeParser extends SingletonFactory
     /**
      * Validates an attributes of a tag.
      *
-     * @param array $tagAttributes
+     * @param list<string> $tagAttributes
      * @param BBCodeAttribute $definedTagAttribute
-     * @return  bool
+     * @return bool
      */
     protected function isValidTagAttribute(array $tagAttributes, BBCodeAttribute $definedTagAttribute)
     {
@@ -305,8 +313,8 @@ class BBCodeParser extends SingletonFactory
     /**
      * Returns true if the text inside the given text needs to be buffered.
      *
-     * @param array $tag
-     * @return  bool
+     * @param BBCodeTag $tag
+     * @return bool
      */
     protected function needBuffering(array $tag)
     {
@@ -328,8 +336,8 @@ class BBCodeParser extends SingletonFactory
     /**
      * Builds the opening tag.
      *
-     * @param array $tag
-     * @return  string
+     * @param BBCodeTag $tag
+     * @return string
      */
     protected function buildOpeningTag(array $tag)
     {
@@ -359,8 +367,8 @@ class BBCodeParser extends SingletonFactory
     /**
      * Builds the closing tag.
      *
-     * @param array $tag
-     * @return  string
+     * @param BBCodeTag $tag
+     * @return string
      */
     protected function buildClosingTag(array $tag)
     {
@@ -374,10 +382,10 @@ class BBCodeParser extends SingletonFactory
     /**
      * Returns true if the given tag is allowed in the given list of open tags.
      *
-     * @param array $openTags
+     * @param mixed[] $openTags
      * @param string $tag
      * @param bool $closing
-     * @return  bool
+     * @return bool
      * @deprecated 5.5 This method is useless since 3.0, do not use it.
      */
     protected function isAllowed(array $openTags, $tag, $closing = false)
@@ -388,6 +396,8 @@ class BBCodeParser extends SingletonFactory
 
     /**
      * Builds the parsed string.
+     *
+     * @return void
      */
     public function buildParsedString()
     {
@@ -482,6 +492,7 @@ class BBCodeParser extends SingletonFactory
      * Builds the tag array from the given text.
      *
      * @param bool $ignoreSourceCodes
+     * @return void
      */
     public function buildTagArray($ignoreSourceCodes = true)
     {
@@ -508,6 +519,7 @@ class BBCodeParser extends SingletonFactory
 
         // get bbcode tags
         \preg_match_all($pattern, $this->text, $matches);
+        // @phpstan-ignore assign.propertyType
         $this->tagArray = $matches[0];
         unset($matches);
 
@@ -524,7 +536,7 @@ class BBCodeParser extends SingletonFactory
      * Builds a bbcode tag.
      *
      * @param string $string
-     * @return  array       bbcode tag data
+     * @return BBCodeTag
      */
     protected function buildTag($string)
     {
@@ -553,7 +565,7 @@ class BBCodeParser extends SingletonFactory
      * Builds the attributes of a bbcode tag.
      *
      * @param string $string
-     * @return  array       bbcode attributes
+     * @return list<string> bbcode attributes
      */
     public function buildTagAttributes($string)
     {
@@ -576,7 +588,7 @@ class BBCodeParser extends SingletonFactory
      * Removes code bbcode occurrences in given message.
      *
      * @param string $message
-     * @return  string
+     * @return string
      */
     public function removeCodeTags($message)
     {
@@ -596,7 +608,7 @@ class BBCodeParser extends SingletonFactory
     /**
      * Returns the list of bbcodes that represent block elements.
      *
-     * @return  string[]    list of bbcode block elements
+     * @return string[] list of bbcode block elements
      */
     public function getBlockBBCodes(): array
     {
@@ -618,7 +630,7 @@ class BBCodeParser extends SingletonFactory
     /**
      * Returns the list of bbcodes that represent source code elements.
      *
-     * @return  string[]    list of bbcode source code elements
+     * @return list<string> list of bbcode source code elements
      */
     public function getSourceBBCodes(): array
     {

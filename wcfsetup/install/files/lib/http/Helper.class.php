@@ -108,6 +108,7 @@ final class Helper
      * schema. Missing parameters or values that cannot be casted to the
      * requested type will yield a `MappingError`.
      *
+     * @param mixed[] $queryParameters
      * @throws MappingError
      */
     public static function mapQueryParameters(array $queryParameters, string $schema): mixed
@@ -131,6 +132,7 @@ final class Helper
      * Missing parameters or values that cannot be casted to the requested
      * type will yield a `MappingError`.
      *
+     * @param mixed[] $bodyParameters
      * @throws MappingError
      */
     public static function mapRequestBody(array $bodyParameters, string $schema): mixed

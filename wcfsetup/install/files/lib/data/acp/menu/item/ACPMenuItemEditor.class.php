@@ -13,9 +13,9 @@ use wcf\system\cache\builder\ACPMenuCacheBuilder;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static ACPMenuItem create(array $parameters = [])
- * @method      ACPMenuItem getDecoratedObject()
  * @mixin       ACPMenuItem
+ * @extends DatabaseObjectEditor<ACPMenuItem>
+ * @implements IEditableCachedObject<ACPMenuItem>
  */
 class ACPMenuItemEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {

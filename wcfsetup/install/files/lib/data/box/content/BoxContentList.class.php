@@ -14,11 +14,7 @@ use wcf\system\message\embedded\object\MessageEmbeddedObjectManager;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  BoxContent      current()
- * @method  BoxContent[]            getObjects()
- * @method  BoxContent|null         getSingleObject()
- * @method  BoxContent|null         search($objectID)
- * @property    BoxContent[] $objects
+ * @extends DatabaseObjectList<BoxContent>
  */
 class BoxContentList extends DatabaseObjectList
 {
@@ -86,6 +82,7 @@ class BoxContentList extends DatabaseObjectList
      * Enables/disables the loading of box content images.
      *
      * @param bool $enable
+     * @return void
      */
     public function enableImageLoading($enable = true)
     {
@@ -96,6 +93,7 @@ class BoxContentList extends DatabaseObjectList
      * Enables/disables the loading of embedded objects.
      *
      * @param bool $enable
+     * @return void
      */
     public function enableEmbeddedObjectLoading($enable = true)
     {

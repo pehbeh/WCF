@@ -38,7 +38,8 @@ class ButtonFormField extends AbstractFormField implements IAttributeFormField, 
     /**
      * Sets the text shown on the button and returns this form field.
      *
-     * @return  ButtonFormField     this form field
+     * @param array<string, mixed> $variables
+     * @return ButtonFormField this form field
      */
     public function buttonLabel(string $languageItem, array $variables = [])
     {

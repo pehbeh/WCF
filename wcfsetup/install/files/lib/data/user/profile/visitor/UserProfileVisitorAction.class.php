@@ -18,9 +18,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserProfileVisitor      create()
- * @method  UserProfileVisitorEditor[]  getObjects()
- * @method  UserProfileVisitorEditor    getSingleObject()
+ * @extends AbstractDatabaseObjectAction<UserProfileVisitor, UserProfileVisitorEditor>
  */
 class UserProfileVisitorAction extends AbstractDatabaseObjectAction implements IGroupedUserListAction
 {
@@ -67,7 +65,7 @@ class UserProfileVisitorAction extends AbstractDatabaseObjectAction implements I
                 WHERE   ownerID = ?";
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute([$this->parameters['userID']]);
-        $pageCount = \ceil($statement->fetchSingleColumn() / 20);
+        $pageCount = (int)\ceil($statement->fetchSingleColumn() / 20);
 
         // get user ids
         $sql = "SELECT      userID
@@ -95,6 +93,7 @@ class UserProfileVisitorAction extends AbstractDatabaseObjectAction implements I
 
     /**
      * Inserts a new visitor if it does not already exist, or updates it if it does.
+     * @return void
      * @since       5.2
      */
     public function registerVisitor()

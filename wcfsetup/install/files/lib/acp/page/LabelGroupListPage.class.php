@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\LabelGroupGridView;
 
 /**
@@ -13,7 +12,7 @@ use wcf\system\gridView\admin\LabelGroupGridView;
  * @copyright   2001-2025 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    LabelGroupGridView $gridView
+ * @extends AbstractGridViewPage<LabelGroupGridView>
  */
 class LabelGroupListPage extends AbstractGridViewPage
 {
@@ -23,7 +22,7 @@ class LabelGroupListPage extends AbstractGridViewPage
     public $activeMenuItem = 'wcf.acp.menu.link.label.group.list';
 
     #[\Override]
-    protected function createGridView(): AbstractGridView
+    protected function createGridView(): LabelGroupGridView
     {
         return new LabelGroupGridView();
     }

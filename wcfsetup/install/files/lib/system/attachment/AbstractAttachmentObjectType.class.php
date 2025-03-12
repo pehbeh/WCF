@@ -2,6 +2,7 @@
 
 namespace wcf\system\attachment;
 
+use wcf\data\DatabaseObjectDecorator;
 use wcf\data\IUserContent;
 use wcf\system\WCF;
 use wcf\util\ArrayUtil;
@@ -12,12 +13,14 @@ use wcf\util\ArrayUtil;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @template T of object
+ * @implements IAttachmentObjectType<T>
  */
 abstract class AbstractAttachmentObjectType implements IAttachmentObjectType
 {
     /**
      * cached objects
-     * @var IUserContent[]
+     * @var array<int, ?T>
      */
     protected $cachedObjects = [];
 
@@ -62,7 +65,8 @@ abstract class AbstractAttachmentObjectType implements IAttachmentObjectType
     }
 
     /**
-     * @inheritDoc
+     * @param array<int, ?T> $objects
+     * @return void
      */
     public function setCachedObjects(array $objects)
     {

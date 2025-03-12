@@ -15,6 +15,8 @@ interface IPrintableException
     /**
      * Prints this exception.
      * This method is called by WCF::handleException().
+     *
+     * @return void
      */
     public function show();
 }

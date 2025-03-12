@@ -18,14 +18,14 @@ interface IHistorySavingObject extends IDatabaseObjectProcessor, IUserContent
     /**
      * Returns the object's current edit reason.
      *
-     * @return  string
+     * @return string
      */
     public function getEditReason();
 
     /**
      * Returns the object's current message text.
      *
-     * @return  string
+     * @return string
      */
     public function getMessage();
 
@@ -33,11 +33,14 @@ interface IHistorySavingObject extends IDatabaseObjectProcessor, IUserContent
      * Reverts the object's text to the given EditHistoryEntry.
      *
      * @param EditHistoryEntry $edit
+     * @return void
      */
     public function revertVersion(EditHistoryEntry $edit);
 
     /**
      * Sets the page location data.
+     *
+     * @return void
      */
     public function setLocation();
 }

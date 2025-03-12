@@ -36,13 +36,13 @@ class Diff
 
     /**
      * original array, as given by the user
-     * @var array
+     * @var list<string>
      */
     protected $a = [];
 
     /**
      * modified array, as given by the user
-     * @var array
+     * @var list<string>
      */
     protected $b = [];
 
@@ -60,12 +60,15 @@ class Diff
 
     /**
      * calculated diff
-     * @var array
+     * @var ?list<array{0: string, 1: string}>
      */
     protected $d;
 
     /**
      * @deprecated 6.0 Use sebastian/diff instead.
+     *
+     * @param list<string> $a
+     * @param list<string> $b
      */
     public function __construct(array $a, array $b)
     {
@@ -77,6 +80,7 @@ class Diff
     }
 
     /**
+     * @return \SplFixedArray<string>
      * @deprecated 6.0 Use sebastian/diff instead.
      */
     public function getLCS()
@@ -192,6 +196,8 @@ class Diff
     /**
      * Builds the diff out of the longest common subsequence of `$this->a`
      * and `$this->b` and saves it in `$this->d`.
+     *
+     * @return void
      */
     protected function calculateDiff()
     {
@@ -230,6 +236,7 @@ class Diff
     }
 
     /**
+     * @return list<array{0: string, 1: string}>
      * @deprecated 6.0 Use sebastian/diff instead.
      */
     public function getRawDiff()
@@ -240,6 +247,8 @@ class Diff
     }
 
     /**
+     * @param int $context
+     * @return string
      * @deprecated 6.0 Use sebastian/diff instead.
      */
     public function getUnixDiff($context = 2)
@@ -328,6 +337,8 @@ class Diff
      * Transforms the output of sebastian/diff's Differ::diffToArray() into
      * the output of self::getRawDiff().
      *
+     * @param list<array{0: string, 1: int}> $arrayDiff
+     * @return list<array{0: string, 1: string}>
      * @since 6.0
      */
     public static function rawDiffFromSebastianDiff(array $arrayDiff): array

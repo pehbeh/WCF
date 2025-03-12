@@ -6,9 +6,11 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use wcf\action\IAction;
 use wcf\data\user\User;
 use wcf\http\attribute\AllowAccessToken;
 use wcf\http\error\NotFoundHandler;
+use wcf\page\IPage;
 use wcf\system\request\RequestHandler;
 use wcf\system\session\SessionHandler;
 use wcf\system\WCF;
@@ -55,6 +57,9 @@ final class HandleAccessToken implements MiddlewareInterface
         return $this->checkAccessToken($accessToken);
     }
 
+    /**
+     * @param \ReflectionClass<object> $class
+     */
     private function hasAttribute(\ReflectionClass $class): bool
     {
         if ($class->getAttributes(AllowAccessToken::class) !== []) {

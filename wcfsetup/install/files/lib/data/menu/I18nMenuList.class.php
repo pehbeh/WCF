@@ -12,11 +12,7 @@ use wcf\data\I18nDatabaseObjectList;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  *
- * @method  Menu        current()
- * @method  Menu[]      getObjects()
- * @method  Menu|null   getSingleObject()
- * @method  Menu|null   search($objectID)
- * @property    Menu[] $objects
+ * @extends I18nDatabaseObjectList<Menu>
  */
 class I18nMenuList extends I18nDatabaseObjectList
 {

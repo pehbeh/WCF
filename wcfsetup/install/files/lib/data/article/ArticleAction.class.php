@@ -36,9 +36,7 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  ArticleEditor[] getObjects()
- * @method  ArticleEditor   getSingleObject()
- * @property-read ArticleEditor[] $objects
+ * @extends AbstractDatabaseObjectAction<Article, ArticleEditor>
  */
 class ArticleAction extends AbstractDatabaseObjectAction
 {
@@ -86,7 +84,6 @@ class ArticleAction extends AbstractDatabaseObjectAction
 
     /**
      * @inheritDoc
-     * @return  Article
      */
     public function create()
     {
@@ -94,7 +91,6 @@ class ArticleAction extends AbstractDatabaseObjectAction
             $this->parameters['data']['attachments'] = \count($this->parameters['attachmentHandler']);
         }
 
-        /** @var Article $article */
         $article = parent::create();
 
         // save article content
@@ -381,6 +377,7 @@ class ArticleAction extends AbstractDatabaseObjectAction
     /**
      * Validates parameters to delete articles.
      *
+     * @return void
      * @throws  PermissionDeniedException
      * @throws  UserInputException
      */
@@ -479,6 +476,8 @@ class ArticleAction extends AbstractDatabaseObjectAction
     /**
      * Validates parameters to move articles to the trash bin.
      *
+     *
+     * @return void
      * @throws  PermissionDeniedException
      * @throws  UserInputException
      */
@@ -505,6 +504,8 @@ class ArticleAction extends AbstractDatabaseObjectAction
 
     /**
      * Moves articles to the trash bin.
+     *
+     * @return array{objectIDs: int[]}
      */
     public function trash()
     {
@@ -525,6 +526,7 @@ class ArticleAction extends AbstractDatabaseObjectAction
     /**
      * Validates parameters to restore articles.
      *
+     * @return void
      * @throws  UserInputException
      */
     public function validateRestore()
@@ -534,6 +536,8 @@ class ArticleAction extends AbstractDatabaseObjectAction
 
     /**
      * Restores articles.
+     *
+     * @return array{objectIDs: int[]}
      */
     public function restore()
     {
@@ -554,6 +558,7 @@ class ArticleAction extends AbstractDatabaseObjectAction
     /**
      * Validates parameters to toggle between i18n and monolingual mode.
      *
+     * @return void
      * @throws      UserInputException
      */
     public function validateToggleI18n()
@@ -578,6 +583,8 @@ class ArticleAction extends AbstractDatabaseObjectAction
 
     /**
      * Toggles between i18n and monolingual mode.
+     *
+     * @return void
      */
     public function toggleI18n()
     {
@@ -632,6 +639,8 @@ class ArticleAction extends AbstractDatabaseObjectAction
 
     /**
      * Marks articles as read.
+     *
+     * @return void
      */
     public function markAsRead()
     {
@@ -673,6 +682,8 @@ class ArticleAction extends AbstractDatabaseObjectAction
 
     /**
      * Marks all articles as read.
+     *
+     * @return void
      */
     public function markAllAsRead()
     {
@@ -688,6 +699,8 @@ class ArticleAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates the mark all as read action.
+     *
+     * @return void
      */
     public function validateMarkAllAsRead()
     {
@@ -697,6 +710,7 @@ class ArticleAction extends AbstractDatabaseObjectAction
     /**
      * Validates the `setCategory` action.
      *
+     * @return void
      * @throws  UserInputException
      */
     public function validateSetCategory()
@@ -730,6 +744,8 @@ class ArticleAction extends AbstractDatabaseObjectAction
 
     /**
      * Sets the category of articles.
+     *
+     * @return void
      */
     public function setCategory()
     {
@@ -743,6 +759,7 @@ class ArticleAction extends AbstractDatabaseObjectAction
     /**
      * Validates the `publish` action.
      *
+     * @return void
      * @throws  PermissionDeniedException
      * @throws  UserInputException
      */
@@ -769,6 +786,8 @@ class ArticleAction extends AbstractDatabaseObjectAction
 
     /**
      * Publishes articles.
+     *
+     * @return void
      */
     public function publish()
     {
@@ -816,6 +835,7 @@ class ArticleAction extends AbstractDatabaseObjectAction
     /**
      * Validates the `unpublish` action.
      *
+     * @return void
      * @throws  PermissionDeniedException
      * @throws  UserInputException
      */
@@ -842,6 +862,8 @@ class ArticleAction extends AbstractDatabaseObjectAction
 
     /**
      * Unpublishes articles.
+     *
+     * @return void
      */
     public function unpublish()
     {
@@ -877,6 +899,8 @@ class ArticleAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates parameters to search for an article by its localized title.
+     *
+     * @return void
      */
     public function validateSearch()
     {
@@ -886,7 +910,11 @@ class ArticleAction extends AbstractDatabaseObjectAction
     /**
      * Searches for an article by its localized title.
      *
-     * @return      array   list of matching articles
+     * @return list<array{
+     *  displayLink: string,
+     *  name: string,
+     *  articleID: int,
+     * }> list of matching articles
      */
     public function search()
     {
@@ -929,6 +957,7 @@ class ArticleAction extends AbstractDatabaseObjectAction
      * Unmarks articles.
      *
      * @param int[] $articleIDs
+     * @return void
      */
     protected function unmarkItems(array $articleIDs = [])
     {

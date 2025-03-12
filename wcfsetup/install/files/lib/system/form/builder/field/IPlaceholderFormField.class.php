@@ -16,7 +16,7 @@ interface IPlaceholderFormField extends IFormField
      * Returns the placeholder value of this field or `null` if no placeholder has
      * been set.
      *
-     * @return  null|string
+     * @return ?string
      */
     public function getPlaceholder();
 
@@ -25,11 +25,11 @@ interface IPlaceholderFormField extends IFormField
      * and returns this element. If `null` is passed, the placeholder value is
      * removed.
      *
-     * @param null|string $languageItem language item containing the placeholder or `null` to unset placeholder
-     * @param array $variables additional variables used when resolving the language item
-     * @return  static              this field
+     * @param ?string $languageItem language item containing the placeholder or `null` to unset placeholder
+     * @param array<string, mixed> $variables additional variables used when resolving the language item
+     * @return static this field
      *
-     * @throws  \InvalidArgumentException   if the given value is invalid
+     * @throws \InvalidArgumentException if the given value is invalid
      */
     public function placeholder($languageItem = null, array $variables = []);
 }

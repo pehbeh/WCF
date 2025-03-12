@@ -31,6 +31,7 @@ interface IPollHandler
      * Returns related object for given poll object.
      *
      * @param Poll $poll
+     * @return ?object
      */
     public function getRelatedObject(Poll $poll);
 }

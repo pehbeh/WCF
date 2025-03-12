@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  ClipboardAction     current()
- * @method  ClipboardAction[]   getObjects()
- * @method  ClipboardAction|null    getSingleObject()
- * @method  ClipboardAction|null    search($objectID)
- * @property    ClipboardAction[] $objects
+ * @extends DatabaseObjectList<ClipboardAction>
  */
 class ClipboardActionList extends DatabaseObjectList
 {

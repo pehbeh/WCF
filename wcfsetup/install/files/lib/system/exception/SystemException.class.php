@@ -68,7 +68,7 @@ class SystemException extends LoggedException implements IExtraInformationExcept
     }
 
     /**
-     * @inheritDoc
+     * @return void
      */
     public function show()
     {

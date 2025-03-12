@@ -13,6 +13,8 @@ use wcf\util\DateUtil;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @phpstan-ignore missingType.generics
  */
 class StatDailyRebuildDataWorker extends AbstractRebuildDataWorker
 {
@@ -89,6 +91,8 @@ class StatDailyRebuildDataWorker extends AbstractRebuildDataWorker
 
     /**
      * Determines the start timestamp.
+     *
+     * @return void
      */
     protected function getStartDate()
     {

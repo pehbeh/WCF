@@ -14,11 +14,15 @@ interface IClipboardAction
 {
     /**
      * Unmarks all marked objects.
+     *
+     * @return void
      */
     public function unmarkAll();
 
     /**
      * Validates the 'unmarkAll' action.
+     *
+     * @return void
      */
     public function validateUnmarkAll();
 }

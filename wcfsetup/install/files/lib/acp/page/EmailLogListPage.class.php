@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\EmailLogGridView;
 
 /**
@@ -13,7 +12,7 @@ use wcf\system\gridView\admin\EmailLogGridView;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    EmailLogGridView $gridView
+ * @extends AbstractGridViewPage<EmailLogGridView>
  */
 class EmailLogListPage extends AbstractGridViewPage
 {
@@ -28,7 +27,7 @@ class EmailLogListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.management.canViewLog'];
 
     #[\Override]
-    protected function createGridView(): AbstractGridView
+    protected function createGridView(): EmailLogGridView
     {
         return new EmailLogGridView();
     }

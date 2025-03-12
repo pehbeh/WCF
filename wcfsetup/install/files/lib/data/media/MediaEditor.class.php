@@ -12,9 +12,8 @@ use wcf\data\DatabaseObjectEditor;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method static Media   create(array $parameters = [])
- * @method      Media   getDecoratedObject()
  * @mixin       Media
+ * @extends DatabaseObjectEditor<Media>
  */
 class MediaEditor extends DatabaseObjectEditor
 {
@@ -25,6 +24,8 @@ class MediaEditor extends DatabaseObjectEditor
 
     /**
      * Deletes the physical files of the media file.
+     *
+     * @return void
      */
     public function deleteFiles()
     {

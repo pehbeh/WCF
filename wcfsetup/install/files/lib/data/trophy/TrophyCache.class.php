@@ -139,6 +139,8 @@ class TrophyCache extends SingletonFactory
 
     /**
      * Resets the cache for the trophies.
+     *
+     * @return void
      */
     public function clearCache()
     {

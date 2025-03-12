@@ -14,9 +14,9 @@ use wcf\system\language\LanguageFactory;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static TemplateListener    create(array $parameters = [])
- * @method      TemplateListener    getDecoratedObject()
  * @mixin       TemplateListener
+ * @extends DatabaseObjectEditor<TemplateListener>
+ * @implements IEditableCachedObject<TemplateListener>
  */
 class TemplateListenerEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {

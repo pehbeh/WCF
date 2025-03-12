@@ -32,7 +32,7 @@ use wcf\system\exception\SystemException;
  * @method int      puts($string, $length = null)       alias of `write`
  * @method string   read($length)
  * @method int      seek($offset, $whence = 0)
- * @method array    stat()
+ * @method array<string, mixed> stat()
  * @method bool     sync()
  * @method int      tell()
  * @method bool     touch($time = 0, $atime = 0)        note: default value of `$time` actually is `time()`
@@ -57,7 +57,7 @@ class File
      *
      * @param string $filename
      * @param string $mode
-     * @param array $options
+     * @param array<string, mixed> $options
      * @throws  SystemException
      */
     public function __construct($filename, $mode = 'wb', $options = [])
@@ -79,7 +79,7 @@ class File
      * Do not call this function directly. Use $file->write('') instead.
      *
      * @param string $function
-     * @param array $arguments
+     * @param mixed[] $arguments
      * @return  mixed
      * @throws  SystemException
      */

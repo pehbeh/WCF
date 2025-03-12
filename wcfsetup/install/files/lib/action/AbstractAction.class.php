@@ -39,9 +39,7 @@ abstract class AbstractAction implements IAction
     /**
      * @inheritDoc
      */
-    final public function __construct()
-    {
-    }
+    final public function __construct() {}
 
     /**
      * @inheritDoc
@@ -121,6 +119,8 @@ abstract class AbstractAction implements IAction
     /**
      * Calls the 'executed' event after the successful execution of this action.
      * This functions won't called automatically. You must do this manually, if you inherit AbstractAction.
+     *
+     * @return void
      */
     protected function executed()
     {

@@ -17,13 +17,16 @@ use wcf\util\FileUtil;
  * @since       3.1
  *
  * @method  DevtoolsTar getTar()
+ * @property ?DevtoolsTar $tar
  */
 class DevtoolsPackageArchive extends PackageArchive
 {
+    /**
+     * @var string
+     */
     protected $packageXmlPath = '';
 
-    /** @noinspection PhpMissingParentConstructorInspection @inheritDoc */
-    public function __construct($packageXmlPath)
+    public function __construct(string $packageXmlPath)
     {
         $this->packageXmlPath = $packageXmlPath;
     }

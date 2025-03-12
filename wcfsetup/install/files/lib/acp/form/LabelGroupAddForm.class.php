@@ -66,7 +66,7 @@ class LabelGroupAddForm extends AbstractForm
 
     /**
      * list of label group to object type relations
-     * @var array<array>
+     * @var array<int, int[]>
      */
     public $objectTypes = [];
 
@@ -257,6 +257,7 @@ class LabelGroupAddForm extends AbstractForm
      * Saves label group to object relations.
      *
      * @param ?int $groupID
+     * @return void
      */
     protected function saveObjectTypeRelations($groupID)
     {
@@ -299,7 +300,8 @@ class LabelGroupAddForm extends AbstractForm
     /**
      * Sets object type relations.
      *
-     * @param array|null $data
+     * @param ?array<int, int[]> $data
+     * @return void
      */
     protected function setObjectTypeRelations($data = null)
     {

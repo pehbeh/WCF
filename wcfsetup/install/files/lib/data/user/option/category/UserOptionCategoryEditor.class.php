@@ -13,8 +13,9 @@ use wcf\system\cache\builder\UserOptionCacheBuilder;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserOptionCategory  getDecoratedObject()
  * @mixin   UserOptionCategory
+ * @extends DatabaseObjectEditor<UserOptionCategory>
+ * @implements IEditableCachedObject<UserOptionCategory>
  */
 class UserOptionCategoryEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {
@@ -34,9 +35,7 @@ class UserOptionCategoryEditor extends DatabaseObjectEditor implements IEditable
             $parameters['packageID'] = PACKAGE_ID;
         }
 
-        $object = parent::create($parameters);
-        \assert($object instanceof UserOptionCategory);
-        return $object;
+        return parent::create($parameters);
     }
 
     /**

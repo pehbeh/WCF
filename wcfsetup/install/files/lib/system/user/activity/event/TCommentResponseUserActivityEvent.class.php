@@ -51,6 +51,7 @@ trait TCommentResponseUserActivityEvent
      * Reads the data of the comment responses the given events belong to.
      *
      * @param ViewableUserActivityEvent[] $events
+     * @return void
      */
     protected function readResponseData(array $events)
     {

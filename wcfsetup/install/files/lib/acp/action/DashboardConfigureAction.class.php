@@ -24,6 +24,15 @@ use wcf\system\WCF;
 final class DashboardConfigureAction implements RequestHandlerInterface
 {
     private AcpDashboard $dashboard;
+
+    /**
+     * @var array<string, array{
+     *  boxName: string,
+     *  userID: int,
+     *  enabled: int,
+     *  showOrder: int,
+     * }>
+     */
     private array $userConfiguration;
 
     public function __construct()
@@ -88,6 +97,9 @@ final class DashboardConfigureAction implements RequestHandlerInterface
         return $form;
     }
 
+    /**
+     * @return list<string>
+     */
     private function getSelectedBoxNames(): array
     {
         $selectedBoxNames = [];
@@ -111,6 +123,9 @@ final class DashboardConfigureAction implements RequestHandlerInterface
         };
     }
 
+    /**
+     * @return array<string, string>
+     */
     private function getBoxOptions(): array
     {
         $options = [];
@@ -123,6 +138,9 @@ final class DashboardConfigureAction implements RequestHandlerInterface
         return $options;
     }
 
+    /**
+     * @param array<string, string> &$options
+     */
     private function sortBoxOptions(array &$options): void
     {
         \uksort($options, function (string $boxNameA, string $boxNameB) {

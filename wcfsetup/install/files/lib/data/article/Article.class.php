@@ -337,7 +337,7 @@ class Article extends DatabaseObject implements ILinkableObject, IPopoverObject,
     /**
      * Sets the discussion provider for this article.
      *
-     * @param IArticleDiscussionProvider $discussionProvider
+     * @return void
      * @since       5.2
      */
     public function setDiscussionProvider(IArticleDiscussionProvider $discussionProvider)

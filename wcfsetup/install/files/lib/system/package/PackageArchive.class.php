@@ -5,7 +5,6 @@ namespace wcf\system\package;
 use wcf\data\package\Package;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\exception\SystemException;
-use wcf\system\io\File;
 use wcf\system\io\Tar;
 use wcf\system\package\validation\PackageValidationException;
 use wcf\system\WCF;
@@ -20,6 +19,8 @@ use wcf\util\XML;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @phpstan-type Instruction array{pip: string, value: string, attributes: array<string, string>}
+ * @phpstan-type VoidInstruction array{pip: self::VOID_MARKER, value: ''}
  */
 class PackageArchive
 {
@@ -37,37 +38,52 @@ class PackageArchive
 
     /**
      * general package information
-     * @var array
+     * @var array{}|array{
+     *  applicationDirectory?: string,
+     *  date: string|false,
+     *  isApplication: int,
+     *  name: string,
+     *  packageDescription?: array<string, string>,
+     *  packageName: array<string, string>,
+     *  packageURL: string,
+     *  version: string,
+     * }
      */
     protected $packageInfo = [];
 
     /**
      * author information
-     * @var array
+     * @var array{}|array{
+     *  author: string,
+     *  authorURL?: string,
+     * }
      */
     protected $authorInfo = [];
 
     /**
      * list of requirements
-     * @var array
+     * @var array<string, array{file?: string, name: string, minversion: string}>
      */
     protected $requirements = [];
 
     /**
      * list of optional packages
-     * @var array
+     * @var list<array{file?: string, name: string}&array<string, string>>
      */
     protected $optionals = [];
 
     /**
      * list of excluded packages
-     * @var array
+     * @var list<array{name: string, version: string}>
      */
     protected $excludedPackages = [];
 
     /**
      * list of instructions
-     * @var mixed[][]
+     * @var array{
+     *  install: Instruction[],
+     *  update: array<string, Instruction[]|VoidInstruction>
+     * }
      */
     protected $instructions = [
         'install' => [],
@@ -119,6 +135,8 @@ class PackageArchive
 
     /**
      * Opens the package archive and reads package information.
+     *
+     * @return void
      */
     public function openArchive()
     {
@@ -137,6 +155,8 @@ class PackageArchive
 
     /**
      * Extracts information about this package (parses package.xml).
+     *
+     * @return void
      */
     protected function readPackageInfo()
     {
@@ -209,7 +229,7 @@ class PackageArchive
                             $languageCode = $element->getAttribute('language');
                         }
 
-                        $this->packageInfo[$name][$languageCode] = StringUtil::trim($element->nodeValue);
+                        $this->packageInfo[$name][$languageCode] = StringUtil::trim($element->textContent);
                         break;
 
                     case 'isapplication':
@@ -222,11 +242,11 @@ class PackageArchive
                             );
                         }
 
-                        $this->packageInfo['isApplication'] = \intval($element->nodeValue);
+                        $this->packageInfo['isApplication'] = \intval($element->textContent);
                         break;
 
                     case 'applicationdirectory':
-                        if (isset($this->packageInfo['applicationdirectory'])) {
+                        if (isset($this->packageInfo['applicationDirectory'])) {
                             throw new PackageValidationException(
                                 PackageValidationException::DUPLICATE_PACKAGE_INFORMATION,
                                 [
@@ -235,8 +255,8 @@ class PackageArchive
                             );
                         }
 
-                        if (\preg_match('~^[a-z0-9\-\_]+$~', $element->nodeValue)) {
-                            $this->packageInfo['applicationDirectory'] = $element->nodeValue;
+                        if (\preg_match('~^[a-z0-9\-\_]+$~', $element->textContent)) {
+                            $this->packageInfo['applicationDirectory'] = $element->textContent;
                         }
                         break;
 
@@ -250,7 +270,7 @@ class PackageArchive
                             );
                         }
 
-                        $this->packageInfo['packageURL'] = $element->nodeValue;
+                        $this->packageInfo['packageURL'] = $element->textContent;
                         break;
 
                     case 'version':
@@ -263,14 +283,14 @@ class PackageArchive
                             );
                         }
 
-                        if (!Package::isValidVersion($element->nodeValue)) {
+                        if (!Package::isValidVersion($element->textContent)) {
                             throw new PackageValidationException(
                                 PackageValidationException::INVALID_PACKAGE_VERSION,
-                                ['packageVersion' => $element->nodeValue]
+                                ['packageVersion' => $element->textContent]
                             );
                         }
 
-                        $this->packageInfo['version'] = $element->nodeValue;
+                        $this->packageInfo['version'] = $element->textContent;
                         break;
 
                     case 'date':
@@ -283,9 +303,9 @@ class PackageArchive
                             );
                         }
 
-                        DateUtil::validateDate($element->nodeValue);
+                        DateUtil::validateDate($element->textContent);
 
-                        $this->packageInfo['date'] = @\strtotime($element->nodeValue);
+                        $this->packageInfo['date'] = @\strtotime($element->textContent);
                         break;
 
                     default:
@@ -330,7 +350,7 @@ class PackageArchive
                             $name = 'authorURL';
                         }
 
-                        $this->authorInfo[$name] = StringUtil::trim($element->nodeValue);
+                        $this->authorInfo[$name] = StringUtil::trim($element->textContent);
                         break;
                     default:
                         throw new PackageValidationException(
@@ -366,15 +386,15 @@ class PackageArchive
         // get required packages
         $elements = $xpath->query('child::ns:requiredpackages/ns:requiredpackage', $package);
         foreach ($elements as $element) {
-            if (!Package::isValidPackageName($element->nodeValue)) {
+            if (!Package::isValidPackageName($element->textContent)) {
                 throw new PackageValidationException(
                     PackageValidationException::INVALID_PACKAGE_NAME,
-                    ['packageName' => $element->nodeValue]
+                    ['packageName' => $element->textContent]
                 );
             }
 
             // read attributes
-            $data = ['name' => $element->nodeValue];
+            $data = ['name' => $element->textContent];
             $attributes = $xpath->query('attribute::*', $element);
             foreach ($attributes as $attribute) {
                 \assert($attribute instanceof \DOMAttr);
@@ -389,12 +409,12 @@ class PackageArchive
                     PackageValidationException::INVALID_REQUIRED_PACKAGE_VERSION_NUMBER,
                     [
                         'version' => $data['minversion'] ?? '',
-                        'packageName' => $element->nodeValue,
+                        'packageName' => $element->textContent,
                     ]
                 );
             }
 
-            $this->requirements[$element->nodeValue] = $data;
+            $this->requirements[$element->textContent] = $data;
         }
 
         if (!isset($this->requirements['com.woltlab.wcf'])) {
@@ -410,10 +430,7 @@ class PackageArchive
             //
             // This stops old packages that are missing both exclude and compatibility tags from being installable,
             // it also nicely excludes all versions were compatibility tags were non-deprecated (i.e. 5.2).
-            if (
-                !isset($this->requirements['com.woltlab.wcf']['minversion'])
-                || Package::compareVersion($this->requirements['com.woltlab.wcf']['minversion'], '5.4.22', '<')
-            ) {
+            if (Package::compareVersion($this->requirements['com.woltlab.wcf']['minversion'], '5.4.22', '<')) {
                 throw new PackageValidationException(PackageValidationException::ANCIENT_COM_WOLTLAB_WCF_REQUIREMENT);
             }
         }
@@ -421,15 +438,15 @@ class PackageArchive
         // get optional packages
         $elements = $xpath->query('child::ns:optionalpackages/ns:optionalpackage', $package);
         foreach ($elements as $element) {
-            if (!Package::isValidPackageName($element->nodeValue)) {
+            if (!Package::isValidPackageName($element->textContent)) {
                 throw new PackageValidationException(
                     PackageValidationException::INVALID_PACKAGE_NAME,
-                    ['packageName' => $element->nodeValue]
+                    ['packageName' => $element->textContent]
                 );
             }
 
             // read attributes
-            $data = ['name' => $element->nodeValue];
+            $data = ['name' => $element->textContent];
             $attributes = $xpath->query('attribute::*', $element);
             foreach ($attributes as $attribute) {
                 \assert($attribute instanceof \DOMAttr);
@@ -442,22 +459,22 @@ class PackageArchive
         // get excluded packages
         $elements = $xpath->query('child::ns:excludedpackages/ns:excludedpackage', $package);
         foreach ($elements as $element) {
-            if (!Package::isValidPackageName($element->nodeValue)) {
+            if (!Package::isValidPackageName($element->textContent)) {
                 throw new PackageValidationException(
                     PackageValidationException::INVALID_PACKAGE_NAME,
-                    ['packageName' => $element->nodeValue]
+                    ['packageName' => $element->textContent]
                 );
             }
 
-            if ($element->nodeValue === $this->packageInfo['name']) {
+            if ($element->textContent === $this->packageInfo['name']) {
                 throw new PackageValidationException(
                     PackageValidationException::SELF_EXCLUDE,
-                    ['packageName' => $element->nodeValue]
+                    ['packageName' => $element->textContent]
                 );
             }
 
             // read attributes
-            $data = ['name' => $element->nodeValue];
+            $data = ['name' => $element->textContent];
             $attributes = $xpath->query('attribute::*', $element);
             foreach ($attributes as $attribute) {
                 \assert($attribute instanceof \DOMAttr);
@@ -472,7 +489,7 @@ class PackageArchive
                     PackageValidationException::INVALID_EXCLUDED_PACKAGE_VERSION_NUMBER,
                     [
                         'version' => $data['version'] ?? '',
-                        'packageName' => $element->nodeValue,
+                        'packageName' => $element->textContent,
                     ]
                 );
             }
@@ -505,7 +522,7 @@ class PackageArchive
                 $instructionData[] = [
                     'attributes' => $data,
                     'pip' => $instruction->getAttribute('type'),
-                    'value' => $instruction->nodeValue,
+                    'value' => $instruction->textContent,
                 ];
             }
 
@@ -539,6 +556,8 @@ class PackageArchive
 
     /**
      * Closes and deletes the tar archive of this package.
+     *
+     * @return void
      */
     public function deleteArchive()
     {
@@ -626,7 +645,7 @@ class PackageArchive
     /**
      * Returns a list of all requirements of this package.
      *
-     * @return  array
+     * @return array<string, array{file?: string, name: string, minversion: string}>
      */
     public function getRequirements()
     {
@@ -636,7 +655,7 @@ class PackageArchive
     /**
      * Returns a list of all delivered optional packages of this package.
      *
-     * @return  array
+     * @return list<array{file?: string, name: string}&array<string, string>>
      */
     public function getOptionals()
     {
@@ -646,7 +665,7 @@ class PackageArchive
     /**
      * Returns a list of excluded packages.
      *
-     * @return  array
+     * @return list<array{name: string, version: string}>
      */
     public function getExcludedPackages()
     {
@@ -656,7 +675,7 @@ class PackageArchive
     /**
      * Returns the package installation instructions.
      *
-     * @return  array
+     * @return Instruction[]
      */
     public function getInstallInstructions()
     {
@@ -666,7 +685,7 @@ class PackageArchive
     /**
      * Returns the package update instructions.
      *
-     * @return  array
+     * @return array<string, Instruction[]|VoidInstruction>
      * @since 6.0
      */
     public function getAllUpdateInstructions()
@@ -678,6 +697,7 @@ class PackageArchive
      * Returns the appropriate update instructions to update the given package version,
      * `null` if no appropriate instruction could be found.
      *
+     * @return Instruction[]|VoidInstruction|null
      * @since 6.0
      */
     public function getUpdateInstructionsFor(string $version): ?array
@@ -695,7 +715,7 @@ class PackageArchive
      * Checks which package requirements do already exist in database.
      * Returns a list with the existing requirements.
      *
-     * @return  array
+     * @return array<string, array<string, string|int>>
      */
     public function getExistingRequirements()
     {
@@ -726,7 +746,7 @@ class PackageArchive
     /**
      * Returns a list of all open requirements of this package.
      *
-     * @return  array
+     * @return array<string, array<string, string|int>>
      */
     public function getOpenRequirements()
     {
@@ -739,21 +759,17 @@ class PackageArchive
             if (isset($existingPackages[$requirement['name']])) {
                 // package does already exist
                 // maybe an update is necessary
-                if (isset($requirement['minversion'])) {
-                    if (
-                        Package::compareVersion(
-                            $existingPackages[$requirement['name']]['packageVersion'],
-                            $requirement['minversion']
-                        ) >= 0
-                    ) {
-                        // package does already exist in needed version
-                        // skip installation of requirement
-                        continue;
-                    } else {
-                        $requirement['existingVersion'] = $existingPackages[$requirement['name']]['packageVersion'];
-                    }
-                } else {
+                if (
+                    Package::compareVersion(
+                        $existingPackages[$requirement['name']]['packageVersion'],
+                        $requirement['minversion']
+                    ) >= 0
+                ) {
+                    // package does already exist in needed version
+                    // skip installation of requirement
                     continue;
+                } else {
+                    $requirement['existingVersion'] = $existingPackages[$requirement['name']]['packageVersion'];
                 }
 
                 $requirement['packageID'] = $existingPackages[$requirement['name']]['packageID'];
@@ -777,8 +793,8 @@ class PackageArchive
      *
      * @param string $filename
      * @param string $tempPrefix
-     * @return  string
-     * @throws  PackageValidationException
+     * @return string
+     * @throws PackageValidationException
      */
     public function extractTar($filename, $tempPrefix = 'package_')
     {
@@ -805,7 +821,7 @@ class PackageArchive
     /**
      * Returns a list of packages which exclude this package.
      *
-     * @return  Package[]
+     * @return Package[]
      */
     public function getConflictedExcludingPackages()
     {

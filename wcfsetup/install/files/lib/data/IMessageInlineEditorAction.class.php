@@ -14,24 +14,28 @@ interface IMessageInlineEditorAction
     /**
      * Provides WYSIWYG editor for message inline editing.
      *
-     * @return  array
+     * @return array{actionName: 'beginEdit', template: string}
      */
     public function beginEdit();
 
     /**
      * Saves changes made to a message.
      *
-     * @return  array
+     * @return array{actionName: 'save', message: string}
      */
     public function save();
 
     /**
      * Validates parameters to begin message inline editing.
+     *
+     * @return void
      */
     public function validateBeginEdit();
 
     /**
      * Validates parameters to save changes made to a message.
+     *
+     * @return void
      */
     public function validateSave();
 }

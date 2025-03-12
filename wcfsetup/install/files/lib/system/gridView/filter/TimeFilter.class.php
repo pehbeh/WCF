@@ -99,6 +99,9 @@ class TimeFilter extends AbstractFilter
         return '';
     }
 
+    /**
+     * @return array{from: int, to: int}
+     */
     private function getTimestamps(string $value): array
     {
         $from = 0;

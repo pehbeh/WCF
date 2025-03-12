@@ -5,6 +5,8 @@ namespace wcf\system\package\plugin;
 use wcf\data\box\Box;
 use wcf\data\box\BoxEditor;
 use wcf\data\box\BoxList;
+use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectList;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\data\page\PageNode;
 use wcf\data\page\PageNodeTree;
@@ -61,7 +63,7 @@ class BoxPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin 
 
     /**
      * box contents
-     * @var array
+     * @var array<int, array<string, array{content?: string, title: string}>>
      */
     protected $content = [];
 
@@ -498,6 +500,7 @@ class BoxPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin 
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -644,7 +647,7 @@ class BoxPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin 
         // add box controller-specific form fields
         foreach (ObjectTypeCache::getInstance()->getObjectTypes('com.woltlab.wcf.boxController') as $objectType) {
             if (\is_subclass_of($objectType->className, AbstractDatabaseObjectListBoxController::class)) {
-                /** @var AbstractDatabaseObjectListBoxController $boxController */
+                /** @var AbstractDatabaseObjectListBoxController<DatabaseObjectList<DatabaseObject>> $boxController */
                 $boxController = new $objectType->className();
 
                 $boxController->addPipGuiFormFields($form, $objectType->objectType);
@@ -654,6 +657,8 @@ class BoxPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin 
 
     /**
      * @inheritDoc
+     * @param bool $saveData
+     * @return array<string, int|string>
      * @since   5.2
      */
     protected function fetchElementData(\DOMElement $element, $saveData)
@@ -733,7 +738,7 @@ class BoxPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin 
                     AbstractDatabaseObjectListBoxController::class
                 )
             ) {
-                /** @var AbstractDatabaseObjectListBoxController $boxController */
+                /** @var AbstractDatabaseObjectListBoxController<DatabaseObjectList<DatabaseObject>> $boxController */
                 $boxController = new $objectType->className();
 
                 $objectTypeData = $boxController->getPipGuiElementData($element, $saveData);
@@ -816,6 +821,7 @@ class BoxPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin 
 
     /**
      * @inheritDoc
+     * @return string
      * @since   5.2
      */
     public function getElementIdentifier(\DOMElement $element)
@@ -825,6 +831,7 @@ class BoxPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin 
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function setEntryListKeys(IDevtoolsPipEntryList $entryList)
@@ -837,6 +844,7 @@ class BoxPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin 
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      * @since   5.2
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)
@@ -935,7 +943,7 @@ class BoxPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin 
                     AbstractDatabaseObjectListBoxController::class
                 )
             ) {
-                /** @var AbstractDatabaseObjectListBoxController $boxController */
+                /** @var AbstractDatabaseObjectListBoxController<DatabaseObjectList<DatabaseObject>> $boxController */
                 $boxController = new $objectType->className();
 
                 $boxController->writePipGuiEntry($box, $form);

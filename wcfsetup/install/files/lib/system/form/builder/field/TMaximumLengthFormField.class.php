@@ -17,7 +17,7 @@ trait TMaximumLengthFormField
 {
     /**
      * maximum length of the field value
-     * @var null|int
+     * @var ?int
      */
     protected $maximumLength;
 
@@ -25,7 +25,7 @@ trait TMaximumLengthFormField
      * Returns the maximum length of the values of this field or `null` if no placeholder
      * has been set.
      *
-     * @return  null|int
+     * @return ?int
      */
     public function getMaximumLength()
     {
@@ -36,10 +36,10 @@ trait TMaximumLengthFormField
      * Sets the maximum length of the values of this field. If `null` is passed, the
      * maximum length is removed.
      *
-     * @param null|int $maximumLength maximum field value length
-     * @return  static              this field
+     * @param ?int $maximumLength maximum field value length
+     * @return static this field
      *
-     * @throws  \InvalidArgumentException   if the given maximum length is no integer or otherwise invalid
+     * @throws \InvalidArgumentException if the given maximum length is no integer or otherwise invalid
      */
     public function maximumLength($maximumLength = null)
     {
@@ -75,8 +75,9 @@ trait TMaximumLengthFormField
      * Validates the maximum length of the given text.
      *
      * @param string $text validated text
-     * @param null|Language $language language of the validated text
+     * @param ?Language $language language of the validated text
      * @param string $errorLanguageItem
+     * @return void
      */
     public function validateMaximumLength(
         $text,

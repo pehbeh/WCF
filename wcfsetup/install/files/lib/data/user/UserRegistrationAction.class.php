@@ -20,6 +20,8 @@ class UserRegistrationAction extends UserAction
 
     /**
      * Validates the validate username function.
+     *
+     * @return void
      */
     public function validateValidateUsername()
     {
@@ -28,6 +30,8 @@ class UserRegistrationAction extends UserAction
 
     /**
      * Validates the validate email address function.
+     *
+     * @return void
      */
     public function validateValidateEmailAddress()
     {
@@ -37,7 +41,7 @@ class UserRegistrationAction extends UserAction
     /**
      * Validates the given username.
      *
-     * @return  array
+     * @return array{isValid: bool, error?: string}
      */
     public function validateUsername()
     {
@@ -63,7 +67,7 @@ class UserRegistrationAction extends UserAction
     /**
      * Validates given email address.
      *
-     * @return  array
+     * @return array{isValid: bool, error?: string}
      */
     public function validateEmailAddress()
     {

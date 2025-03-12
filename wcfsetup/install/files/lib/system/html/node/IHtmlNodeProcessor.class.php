@@ -17,21 +17,21 @@ interface IHtmlNodeProcessor
     /**
      * Returns the currently loaded DOM document.
      *
-     * @return      \DOMDocument    active DOM document
+     * @return \DOMDocument active DOM document
      */
     public function getDocument();
 
     /**
      * Returns the final HTML for storage or display.
      *
-     * @return      string  parsed HTML
+     * @return string parsed HTML
      */
     public function getHtml();
 
     /**
      * Returns the html processor instance.
      *
-     * @return      IHtmlProcessor          html processor instance
+     * @return IHtmlProcessor html processor instance
      */
     public function getHtmlProcessor();
 
@@ -40,11 +40,14 @@ interface IHtmlNodeProcessor
      *
      * @param IHtmlProcessor $htmlProcessor html processor
      * @param string $html HTML string
+     * @return void
      */
     public function load(IHtmlProcessor $htmlProcessor, $html);
 
     /**
      * Processes the HTML and transforms it depending on the output type.
+     *
+     * @return void
      */
     public function process();
 }

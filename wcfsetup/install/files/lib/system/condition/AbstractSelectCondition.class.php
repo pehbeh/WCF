@@ -110,6 +110,8 @@ abstract class AbstractSelectCondition extends AbstractSingleFieldCondition
 
     /**
      * Returns the selectable options.
+     *
+     * @return array<string|int, string|mixed[]>
      */
     abstract protected function getOptions();
 

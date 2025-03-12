@@ -11,9 +11,7 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  TemplateListener        create()
- * @method  TemplateListenerEditor[]    getObjects()
- * @method  TemplateListenerEditor      getSingleObject()
+ * @extends AbstractDatabaseObjectAction<TemplateListener, TemplateListenerEditor>
  */
 class TemplateListenerAction extends AbstractDatabaseObjectAction
 {

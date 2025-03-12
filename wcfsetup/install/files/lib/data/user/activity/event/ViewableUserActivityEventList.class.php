@@ -114,7 +114,7 @@ class ViewableUserActivityEventList extends UserActivityEventList
     /**
      * Validates event permissions and returns a list of orphaned event ids.
      *
-     * @return  int[]
+     * @return list<int>
      */
     public function validateEvents()
     {
@@ -137,6 +137,7 @@ class ViewableUserActivityEventList extends UserActivityEventList
      * Truncates the items in object list to given number of items.
      *
      * @param int $limit
+     * @return void
      */
     public function truncate($limit)
     {

@@ -2,6 +2,7 @@
 
 namespace wcf\system\comment\response\command;
 
+use wcf\data\comment\Comment;
 use wcf\data\comment\CommentEditor;
 use wcf\data\comment\CommentList;
 use wcf\data\comment\response\CommentResponse;
@@ -24,24 +25,28 @@ use wcf\system\user\notification\UserNotificationHandler;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.1
- *
- * @property-read int[] $responseIDs
- * @property-read CommentResponse[] $responses
  */
 final class DeleteResponses
 {
     private readonly ObjectType $objectType;
     private readonly ICommentManager $commentManager;
 
+    /**
+     * @var int[]
+     */
     private readonly array $responseIDs;
 
+    /**
+     * @param CommentResponse[] $responses
+     */
     public function __construct(
         private readonly array $responses,
         private readonly bool $updateCounters = true,
     ) {
         $this->responseIDs = \array_column($this->responses, 'responseID');
-        $firstResponse = \reset($this->responses);
-        \assert($firstResponse !== false);
+        $firstResponseKey = \array_key_first($this->responses);
+        \assert($firstResponseKey !== null);
+        $firstResponse = $this->responses[$firstResponseKey];
         $this->objectType = CommentHandler::getInstance()->getObjectType($firstResponse->getComment()->objectTypeID);
         $this->commentManager = CommentHandler::getInstance()->getCommentManagerByID($firstResponse->getComment()->objectTypeID);
     }
@@ -124,6 +129,7 @@ final class DeleteResponses
         $commentList = new CommentList();
         $commentList->setObjectIDs(\array_unique($commentIDs));
         $commentList->readObjects();
+        ///** @var array<int, Comment> */
         $comments = $commentList->getObjects();
 
         foreach ($comments as $comment) {

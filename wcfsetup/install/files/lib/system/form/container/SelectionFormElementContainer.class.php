@@ -23,6 +23,7 @@ abstract class SelectionFormElementContainer extends AbstractFormElementContaine
      * Sets container name.
      *
      * @param string $name
+     * @return void
      */
     public function setName($name)
     {

@@ -15,8 +15,7 @@ use wcf\system\tagging\TagEngine;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  ArticleContentEditor[]  getObjects()
- * @method  ArticleContentEditor    getSingleObject()
+ * @extends AbstractDatabaseObjectAction<ArticleContent, ArticleContentEditor>
  */
 class ArticleContentAction extends AbstractDatabaseObjectAction
 {

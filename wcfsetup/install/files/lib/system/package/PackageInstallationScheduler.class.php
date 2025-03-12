@@ -24,36 +24,48 @@ use wcf\util\FileUtil;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @phpstan-type StackEntry array{
+ *  packageName: string,
+ *  packageVersion: string,
+ *  package: string,
+ *  packageID: 0,
+ *  archive: string,
+ *  action: 'install',
+ * }|array{
+ *  packageName: string,
+ *  fromversion: string,
+ *  toVersion: string,
+ *  package: string,
+ *  packageID: int,
+ *  archive: string,
+ *  action: 'update',
+ * }
  */
 final class PackageInstallationScheduler
 {
     /**
      * stack of package installations / updates
-     * @var array
+     * @var array<int, StackEntry>
      */
-    protected $packageInstallationStack = [];
+    private array $packageInstallationStack = [];
 
     /**
-     * list of package update servers
-     * @var PackageUpdateServer[]
+     * @var array<int, PackageUpdateServer>
      */
-    protected $packageUpdateServers = [];
+    private array $packageUpdateServers = [];
 
     /**
      * list of packages to update or install
-     * @var array
+     * @var string[]
      */
-    protected $selectedPackages = [];
+    private array $selectedPackages = [];
 
     /**
-     * virtual package versions
-     * @var array
+     * @var array<string|int, string>
      */
-    protected $virtualPackageVersions = [];
+    private array $virtualPackageVersions = [];
 
     /**
-     * Creates a new instance of PackageInstallationScheduler
-     *
      * @param string[] $selectedPackages
      */
     public function __construct(array $selectedPackages)
@@ -64,10 +76,8 @@ final class PackageInstallationScheduler
 
     /**
      * Builds the stack of package installations / updates.
-     *
-     * @param bool $validateInstallInstructions
      */
-    public function buildPackageInstallationStack($validateInstallInstructions = false)
+    public function buildPackageInstallationStack(bool $validateInstallInstructions = false): void
     {
         foreach ($this->selectedPackages as $package => $version) {
             $this->tryToInstallPackage($package, $version, true, $validateInstallInstructions);
@@ -77,17 +87,16 @@ final class PackageInstallationScheduler
     /**
      * Tries to install a new package. Checks the virtual package version list.
      *
-     * @param string $package package identifier
-     * @param string $minversion preferred package version
-     * @param bool $installOldVersion true, if you want to install the package in the given minversion and not in the newest version
-     * @param bool $validateInstallInstructions
+     * @param $package package identifier
+     * @param $minversion preferred package version
+     * @param $installOldVersion true, if you want to install the package in the given minversion and not in the newest version
      */
-    protected function tryToInstallPackage(
-        $package,
-        $minversion = '',
-        $installOldVersion = false,
-        $validateInstallInstructions = false
-    ) {
+    private function tryToInstallPackage(
+        string $package,
+        string $minversion = '',
+        bool $installOldVersion = false,
+        bool $validateInstallInstructions = false
+    ): void {
         // check virtual package version
         if (isset($this->virtualPackageVersions[$package])) {
             if (
@@ -134,20 +143,12 @@ final class PackageInstallationScheduler
         }
     }
 
-    /**
-     * Installs a new package.
-     *
-     * @param string $package package identifier
-     * @param string $version package version
-     * @param int $stackPosition
-     * @param bool $validateInstallInstructions
-     */
-    protected function installPackage(
-        $package,
-        $version = '',
-        $stackPosition = -1,
-        $validateInstallInstructions = false
-    ) {
+    private function installPackage(
+        string $package,
+        string $version = '',
+        int $stackPosition = -1,
+        bool $validateInstallInstructions = false
+    ): void {
         // get package update versions
         $packageUpdateVersions = PackageUpdateDispatcher::getInstance()->getPackageUpdateVersions($package, $version);
 
@@ -179,10 +180,8 @@ final class PackageInstallationScheduler
     /**
      * Resolves the package requirements of an package update.
      * Starts the installation or update to higher version of required packages.
-     *
-     * @param int $packageUpdateVersionID
      */
-    protected function resolveRequirements($packageUpdateVersionID)
+    private function resolveRequirements(int $packageUpdateVersionID): void
     {
         // resolve requirements
         $requiredPackages = [];
@@ -249,14 +248,12 @@ final class PackageInstallationScheduler
     /**
      * Tries to download a package from available update servers.
      *
-     * @param string $package package identifier
-     * @param array $packageUpdateVersions package update versions
-     * @param bool $validateInstallInstructions
+     * @param mixed[] $packageUpdateVersions
      * @return  string      tmp filename of a downloaded package
      * @throws  PackageUpdateUnauthorizedException
      * @throws  SystemException
      */
-    protected function downloadPackage($package, $packageUpdateVersions, $validateInstallInstructions = false)
+    private function downloadPackage(string $package, array $packageUpdateVersions, bool $validateInstallInstructions = false): string
     {
         // get download from cache
         if ($filename = $this->getCachedDownload($package, $packageUpdateVersions[0]['packageVersion'])) {
@@ -369,9 +366,18 @@ final class PackageInstallationScheduler
     /**
      * Returns a list of excluded packages.
      *
-     * @return  array
+     * @return list<array{
+     *  package: string,
+     *  packageName: string,
+     *  packageVersion: string,
+     *  action: string,
+     *  conflict: string,
+     *  existingPackage: string,
+     *  existingPackageName: string,
+     *  existingPackageVersion: string,
+     * }>
      */
-    public function getExcludedPackages()
+    public function getExcludedPackages(): array
     {
         $excludedPackages = [];
 
@@ -379,7 +385,7 @@ final class PackageInstallationScheduler
             $packageInstallations = [];
             $packageIdentifier = [];
             foreach ($this->packageInstallationStack as $packageInstallation) {
-                $packageInstallation['newVersion'] = ($packageInstallation['action'] == 'update' ? $packageInstallation['toVersion'] : $packageInstallation['packageVersion']);
+                $packageInstallation['newVersion'] = ($packageInstallation['action'] === 'update' ? $packageInstallation['toVersion'] : $packageInstallation['packageVersion']);
                 $packageInstallations[] = $packageInstallation;
                 $packageIdentifier[] = $packageInstallation['package'];
             }
@@ -534,20 +540,14 @@ final class PackageInstallationScheduler
     /**
      * Returns the stack of package installations.
      *
-     * @return  array
+     * @return array<int, StackEntry>
      */
-    public function getPackageInstallationStack()
+    public function getPackageInstallationStack(): array
     {
         return $this->packageInstallationStack;
     }
 
-    /**
-     * Updates an existing package.
-     *
-     * @param int $packageID
-     * @param string $version
-     */
-    protected function updatePackage($packageID, $version)
+    private function updatePackage(int $packageID, string $version): void
     {
         // get package info
         $package = PackageCache::getInstance()->getPackage($packageID);
@@ -664,13 +664,13 @@ final class PackageInstallationScheduler
      * Determines intermediate update steps using a backtracking algorithm in case there is no direct upgrade possible.
      *
      * @param string $package package identifier
-     * @param array $fromversions list of all fromversions
+     * @param array<string, array<string, string>> $fromversions list of all fromversions
      * @param string $currentVersion current package version
      * @param string $newVersion new package version
-     * @return  array       list of update steps (old version => new version, old version => new version, ...)
+     * @return array<string, string> list of update steps (old version => new version, old version => new version, ...)
      * @throws  SystemException
      */
-    protected function findShortestUpdateThread($package, $fromversions, $currentVersion, $newVersion)
+    private function findShortestUpdateThread(string $package, array $fromversions, string $currentVersion, string $newVersion): array
     {
         if (!isset($fromversions[$newVersion])) {
             throw new UnknownUpdatePath($package, $currentVersion, $newVersion);
@@ -735,20 +735,19 @@ final class PackageInstallationScheduler
 
     /**
      * Compares the length of two updates threads.
+     *
+     * @param array<string, string> $updateThreadListA
+     * @param array<string, string> $updateThreadListB
      */
-    protected function compareUpdateThreadLists(array $updateThreadListA, array $updateThreadListB): int
+    private function compareUpdateThreadLists(array $updateThreadListA, array $updateThreadListB): int
     {
         return \count($updateThreadListA) <=> \count($updateThreadListB);
     }
 
     /**
      * Returns the filename of downloads stored in session or null if no stored downloads exist.
-     *
-     * @param string $package package identifier
-     * @param string $version package version
-     * @return  string|bool
      */
-    protected function getCachedDownload($package, $version)
+    private function getCachedDownload(string $package, string $version): string|bool
     {
         $cachedDownloads = WCF::getSession()->getVar('cachedPackageUpdateDownloads');
         if (isset($cachedDownloads[$package . '@' . $version]) && @\file_exists($cachedDownloads[$package . '@' . $version])) {
@@ -761,10 +760,10 @@ final class PackageInstallationScheduler
     /**
      * Returns stored auth data the update server with given data.
      *
-     * @param array $data
-     * @return  array
+     * @param mixed[] $data
+     * @return string[]
      */
-    protected function getAuthData(array $data)
+    private function getAuthData(array $data): array
     {
         $updateServer = new PackageUpdateServer(null, $data);
 

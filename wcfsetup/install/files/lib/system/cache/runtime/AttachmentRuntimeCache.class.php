@@ -13,9 +13,7 @@ use wcf\data\attachment\AttachmentList;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.1
  *
- * @method  Attachment[]         getCachedObjects()
- * @method  Attachment|null      getObject($objectID)
- * @method  Attachment[]         getObjects(array $objectIDs)
+ * @extends AbstractRuntimeCache<Attachment, AttachmentList>
  */
 final class AttachmentRuntimeCache extends AbstractRuntimeCache
 {

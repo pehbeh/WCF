@@ -2,6 +2,7 @@
 
 namespace wcf\data\article\content;
 
+use wcf\data\DatabaseObjectDecorator;
 use wcf\data\DatabaseObjectList;
 
 /**
@@ -12,11 +13,8 @@ use wcf\data\DatabaseObjectList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  ArticleContent      current()
- * @method  ArticleContent[]    getObjects()
- * @method  ArticleContent|null getSingleObject()
- * @method  ArticleContent|null search($objectID)
- * @property    ArticleContent[] $objects
+ * @template TDatabaseObject of ArticleContent|DatabaseObjectDecorator<ArticleContent> = ArticleContent
+ * @extends DatabaseObjectList<TDatabaseObject>
  */
 class ArticleContentList extends DatabaseObjectList
 {

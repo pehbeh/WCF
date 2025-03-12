@@ -20,7 +20,7 @@ interface IContentCondition extends ICondition
      * like the active user object via WCF::getUser().
      *
      * @param Condition $condition
-     * @return  bool
+     * @return bool
      */
     public function showContent(Condition $condition);
 }

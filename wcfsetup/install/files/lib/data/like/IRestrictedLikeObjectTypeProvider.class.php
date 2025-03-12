@@ -2,6 +2,7 @@
 
 namespace wcf\data\like;
 
+use wcf\data\DatabaseObject;
 use wcf\data\like\object\ILikeObject;
 
 /**
@@ -12,6 +13,9 @@ use wcf\data\like\object\ILikeObject;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
+ *
+ * @template TDatabaseObject of DatabaseObject
+ * @extends ILikeObjectTypeProvider<TDatabaseObject>
  */
 interface IRestrictedLikeObjectTypeProvider extends ILikeObjectTypeProvider
 {

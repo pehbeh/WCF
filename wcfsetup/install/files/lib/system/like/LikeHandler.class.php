@@ -26,6 +26,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @deprecated  The LikeHandler is deprecated since 5.2 in favor of the \wcf\system\reaction\ReactionHandler
+ * @phpstan-type LikeStatus array{likes: int, dislikes: int, cumulativeLikes: int, liked: int}
  */
 class LikeHandler extends SingletonFactory
 {
@@ -88,7 +89,7 @@ class LikeHandler extends SingletonFactory
      * like objects
      *
      * @param ObjectType $objectType
-     * @param array $objectIDs
+     * @param int[] $objectIDs
      * @return  int
      */
     public function loadLikeObjects(ObjectType $objectType, array $objectIDs)
@@ -103,7 +104,13 @@ class LikeHandler extends SingletonFactory
      * @param User $user
      * @param int $likeValue
      * @param int $time
-     * @return  array
+     * @return array{
+     *  data: LikeStatus|array{},
+     *  like: Like|null|0,
+     *  newValue: 0,
+     *  oldValue: 0,
+     *  users: array{}
+     * }
      */
     public function like(ILikeObject $likeable, User $user, $likeValue, $time = TIME_NOW)
     {
@@ -140,7 +147,13 @@ class LikeHandler extends SingletonFactory
      * @param ILikeObject $likeable
      * @param LikeObject $likeObject
      * @param User $user
-     * @return  array
+     * @return array{
+     *  data: LikeStatus,
+     *  like: null,
+     *  newValue: 0,
+     *  oldValue: 0,
+     *  users: array{}
+     * }
      */
     public function revertLike(Like $like, ILikeObject $likeable, LikeObject $likeObject, User $user)
     {
@@ -161,6 +174,7 @@ class LikeHandler extends SingletonFactory
      * @param string $objectType
      * @param int[] $objectIDs
      * @param string[] $notificationObjectTypes
+     * @return void
      */
     public function removeLikes($objectType, array $objectIDs, array $notificationObjectTypes = [])
     {
@@ -172,7 +186,7 @@ class LikeHandler extends SingletonFactory
      *
      * @param LikeObject $likeObject
      * @param User $user
-     * @return  array
+     * @return LikeStatus
      */
     protected function loadLikeStatus(LikeObject $likeObject, User $user)
     {

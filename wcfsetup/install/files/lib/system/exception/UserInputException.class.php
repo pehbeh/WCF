@@ -25,7 +25,7 @@ class UserInputException extends UserException
 
     /**
      * variables for AJAX error handling
-     * @var array
+     * @var array<string, mixed>
      */
     protected $variables = [];
 
@@ -34,7 +34,7 @@ class UserInputException extends UserException
      *
      * @param string $field affected formular field
      * @param string|mixed[] $type kind of this error
-     * @param array $variables additional variables for AJAX error handling
+     * @param array<string, mixed> $variables additional variables for AJAX error handling
      */
     public function __construct($field = '', $type = 'empty', array $variables = [])
     {
@@ -49,7 +49,7 @@ class UserInputException extends UserException
     /**
      * Returns the affected formular field of this error.
      *
-     * @return  string
+     * @return string
      */
     public function getField()
     {
@@ -59,7 +59,7 @@ class UserInputException extends UserException
     /**
      * Returns the kind of this error.
      *
-     * @return  string|mixed[]
+     * @return string|mixed[]
      */
     public function getType()
     {
@@ -69,7 +69,7 @@ class UserInputException extends UserException
     /**
      * Returns additional variables for AJAX error handling.
      *
-     * @return  array
+     * @return array<string, mixed>
      */
     public function getVariables()
     {

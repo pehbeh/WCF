@@ -128,6 +128,7 @@ class UserOption extends Option implements ITitledObject
      * Sets target user object.
      *
      * @param User $user
+     * @return void
      */
     public function setUser(User $user)
     {
@@ -221,6 +222,7 @@ class UserOption extends Option implements ITitledObject
      * Allows modifications of editable option.
      *
      * @param int $editableOption
+     * @return void
      */
     public function modifyEditableOption($editableOption)
     {
@@ -231,6 +233,7 @@ class UserOption extends Option implements ITitledObject
      * Allows modifications of visible option.
      *
      * @param int $visibleOption
+     * @return void
      */
     public function modifyVisibleOption($visibleOption)
     {
