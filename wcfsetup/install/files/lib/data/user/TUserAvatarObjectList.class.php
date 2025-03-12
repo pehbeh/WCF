@@ -2,7 +2,7 @@
 
 namespace wcf\data\user;
 
-use wcf\data\DatabaseObjectList;
+use wcf\data\user\UserProfileList;
 use wcf\system\cache\runtime\FileRuntimeCache;
 
 /**
@@ -13,7 +13,7 @@ use wcf\system\cache\runtime\FileRuntimeCache;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
  * @property    UserProfile[] $objects
- * @mixin DatabaseObjectList
+ * @mixin UserProfileList
  *
  * @since 6.2
  */
