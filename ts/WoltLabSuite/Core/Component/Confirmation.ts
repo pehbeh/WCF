@@ -81,9 +81,9 @@ class ConfirmationPrefab {
   }
 
   async softDelete(): Promise<ResultSoftDeleteWithoutReason>;
-  async softDelete(title: string): Promise<ResultSoftDeleteWithoutReason>;
-  async softDelete(title: string, askForReason: false): Promise<ResultSoftDeleteWithoutReason>;
-  async softDelete(title: string, askForReason: true): Promise<ResultConfirmationWithReason>;
+  async softDelete(title: string | undefined): Promise<ResultSoftDeleteWithoutReason>;
+  async softDelete(title: string | undefined, askForReason: false): Promise<ResultSoftDeleteWithoutReason>;
+  async softDelete(title: string | undefined, askForReason: true): Promise<ResultConfirmationWithReason>;
   async softDelete(
     title?: string,
     askForReason = false,

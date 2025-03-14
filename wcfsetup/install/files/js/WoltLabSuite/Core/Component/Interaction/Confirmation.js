@@ -22,10 +22,10 @@ define(["require", "exports", "WoltLabSuite/Core/Component/Confirmation"], funct
     })(ConfirmationType || (exports.ConfirmationType = ConfirmationType = {}));
     async function handleConfirmation(objectName, confirmationType, customMessage = "") {
         if (confirmationType == ConfirmationType.SoftDelete) {
-            return await (0, Confirmation_1.confirmationFactory)().softDelete(objectName);
+            return await (0, Confirmation_1.confirmationFactory)().softDelete(objectName ? objectName : undefined);
         }
         if (confirmationType == ConfirmationType.SoftDeleteWithReason) {
-            return await (0, Confirmation_1.confirmationFactory)().softDelete(objectName, true);
+            return await (0, Confirmation_1.confirmationFactory)().softDelete(objectName ? objectName : undefined, true);
         }
         if (confirmationType == ConfirmationType.Restore) {
             return {

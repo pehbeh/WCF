@@ -34,7 +34,7 @@ final class DeleteContent implements IController
 
         $parameters = Helper::mapApiParameters($request, DeleteContentParameters::class);
 
-        $this->deleteContent($queue, $parameters->message);
+        $this->deleteContent($queue, $parameters->reason ?? '');
 
         return new JsonResponse([]);
     }
@@ -60,13 +60,21 @@ final class DeleteContent implements IController
 
     private function deleteContent(ModerationQueue $queue, string $message): void
     {
-        $this->getManager($queue)::getInstance()->removeContent(
+        $this->getManager($queue)->removeContent(
             $queue,
             $message
         );
 
         $editor = new ModerationQueueEditor($queue);
-        $editor->markAsConfirmed();
+
+        $definition = ObjectTypeCache::getInstance()->getDefinition(
+            ObjectTypeCache::getInstance()->getObjectType($queue->objectTypeID)->definitionID
+        );
+        if ($definition->definitionName === 'com.woltlab.wcf.moderation.type.report') {
+            $editor->markAsConfirmed();
+        } else {
+            $editor->markAsRejected();
+        }
     }
 }
 
@@ -74,6 +82,6 @@ final class DeleteContent implements IController
 final class DeleteContentParameters
 {
     public function __construct(
-        public readonly string $message,
+        public readonly ?string $reason = null
     ) {}
 }
