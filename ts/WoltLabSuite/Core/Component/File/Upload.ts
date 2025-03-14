@@ -36,10 +36,12 @@ type ResizeConfiguration = {
   quality: number;
 };
 
-async function upload(element: WoltlabCoreFileUploadElement, file: File): Promise<ResponseCompleted | undefined> {
+async function upload(
+  element: WoltlabCoreFileUploadElement,
+  file: File,
+  fileHash: string,
+): Promise<ResponseCompleted | undefined> {
   const objectType = element.dataset.objectType!;
-
-  const fileHash = await getSha256Hash(await file.arrayBuffer());
 
   const fileElement = document.createElement("woltlab-core-file");
   fileElement.dataset.filename = file.name;
@@ -281,14 +283,29 @@ export function setup(): void {
       // Resize all files in parallel but keep the original order. This ensures
       // that files are uploaded in the same order that they were provided by
       // the browser.
-      void Promise.allSettled(files.map((file) => resizeImage(element, file))).then((results) => {
+      void Promise.allSettled(files.map((file) => resizeImage(element, file))).then(async (results) => {
+        const validFiles: File[] = [];
         for (let i = 0, length = results.length; i < length; i++) {
           const result = results[i];
 
           if (result.status === "fulfilled") {
-            void upload(element, result.value);
+            validFiles.push(result.value);
           } else {
             innerError(element, getPhrase("wcf.upload.error.damagedImageFile", { filename: files[i].name }));
+          }
+        }
+
+        const checksums = await Promise.allSettled(
+          validFiles.map((file) => file.arrayBuffer().then((buffer) => getSha256Hash(buffer))),
+        );
+
+        for (let i = 0, length = checksums.length; i < length; i++) {
+          const result = checksums[i];
+
+          if (result.status === "fulfilled") {
+            void upload(element, validFiles[i], result.value);
+          } else {
+            throw new Error(result.reason);
           }
         }
       });
@@ -314,7 +331,8 @@ export function setup(): void {
 
       void resizeImage(element, file).then(async (resizeFile) => {
         try {
-          const data = await upload(element, resizeFile);
+          const checksum = await getSha256Hash(await resizeFile.arrayBuffer());
+          const data = await upload(element, resizeFile, checksum);
           if (data === undefined || typeof data.data.attachmentID !== "number") {
             promiseReject();
           } else {

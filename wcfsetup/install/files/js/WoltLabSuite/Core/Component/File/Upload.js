@@ -4,9 +4,8 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/Selector", "Wol
     exports.clearPreviousErrors = clearPreviousErrors;
     exports.setup = setup;
     Resizer_1 = tslib_1.__importDefault(Resizer_1);
-    async function upload(element, file) {
+    async function upload(element, file, fileHash) {
         const objectType = element.dataset.objectType;
-        const fileHash = await getSha256Hash(await file.arrayBuffer());
         const fileElement = document.createElement("woltlab-core-file");
         fileElement.dataset.filename = file.name;
         fileElement.dataset.fileSize = file.size.toString();
@@ -192,14 +191,25 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/Selector", "Wol
                 // Resize all files in parallel but keep the original order. This ensures
                 // that files are uploaded in the same order that they were provided by
                 // the browser.
-                void Promise.allSettled(files.map((file) => resizeImage(element, file))).then((results) => {
+                void Promise.allSettled(files.map((file) => resizeImage(element, file))).then(async (results) => {
+                    const validFiles = [];
                     for (let i = 0, length = results.length; i < length; i++) {
                         const result = results[i];
                         if (result.status === "fulfilled") {
-                            void upload(element, result.value);
+                            validFiles.push(result.value);
                         }
                         else {
                             (0, Util_1.innerError)(element, (0, Language_1.getPhrase)("wcf.upload.error.damagedImageFile", { filename: files[i].name }));
+                        }
+                    }
+                    const checksums = await Promise.allSettled(validFiles.map((file) => file.arrayBuffer().then((buffer) => getSha256Hash(buffer))));
+                    for (let i = 0, length = checksums.length; i < length; i++) {
+                        const result = checksums[i];
+                        if (result.status === "fulfilled") {
+                            void upload(element, validFiles[i], result.value);
+                        }
+                        else {
+                            throw new Error(result.reason);
                         }
                     }
                 });
@@ -219,7 +229,8 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Helper/Selector", "Wol
                 }
                 void resizeImage(element, file).then(async (resizeFile) => {
                     try {
-                        const data = await upload(element, resizeFile);
+                        const checksum = await getSha256Hash(await resizeFile.arrayBuffer());
+                        const data = await upload(element, resizeFile, checksum);
                         if (data === undefined || typeof data.data.attachmentID !== "number") {
                             promiseReject();
                         }
