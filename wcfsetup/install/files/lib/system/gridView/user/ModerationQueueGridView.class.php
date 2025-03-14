@@ -20,7 +20,6 @@ use wcf\system\gridView\GridViewColumn;
 use wcf\system\gridView\GridViewRowLink;
 use wcf\system\gridView\renderer\AbstractColumnRenderer;
 use wcf\system\gridView\renderer\DefaultColumnRenderer;
-use wcf\system\gridView\renderer\ILinkColumnRenderer;
 use wcf\system\gridView\renderer\NumberColumnRenderer;
 use wcf\system\gridView\renderer\TimeColumnRenderer;
 use wcf\system\gridView\renderer\UserLinkColumnRenderer;
@@ -37,6 +36,8 @@ use wcf\util\StringUtil;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @extends AbstractGridView<ViewableModerationQueue, ViewableModerationQueueList>
  */
 final class ModerationQueueGridView extends AbstractGridView
 {
@@ -47,87 +48,89 @@ final class ModerationQueueGridView extends AbstractGridView
                 ->label('wcf.global.title')
                 ->titleColumn()
                 ->renderer(
-                    new class extends DefaultColumnRenderer {
-                        #[\Override]
-                        public function render(mixed $value, DatabaseObject $row): string
-                        {
-                            \assert($row instanceof ViewableModerationQueue);
+                    new
+                        /** @template-extends DefaultColumnRenderer<ViewableModerationQueue> */
+                        class extends DefaultColumnRenderer {
+                            #[\Override]
+                            public function render(mixed $value, DatabaseObject $row): string
+                            {
+                                /** @var ViewableModerationQueue $row */
+                                $title = StringUtil::encodeHTML($row->getTitle());
 
-                            $link = StringUtil::encodeHTML($row->getLink());
-                            $title = StringUtil::encodeHTML($row->getTitle());
-
-                            if ($row->isNew()) {
-                                $badgeLabel = WCF::getLanguage()->get('wcf.message.new');
-                                $badge = <<<HTML
+                                if ($row->isNew()) {
+                                    $badgeLabel = WCF::getLanguage()->get('wcf.message.new');
+                                    $badge = <<<HTML
                                     <span class="badge label newMessageBadge">{$badgeLabel}</span>
                                 HTML;
-                            } else {
-                                $badge = '';
-                            }
-                            return <<<HTML
+                                } else {
+                                    $badge = '';
+                                }
+                                return <<<HTML
                                 {$title}{$badge}
                             HTML;
+                            }
                         }
-                    }
                 ),
             GridViewColumn::for("author")
                 ->label("wcf.moderation.username")
                 ->renderer(
-                    new class extends UserLinkColumnRenderer {
-                        #[\Override]
-                        public function render(mixed $value, DatabaseObject $row): string
-                        {
-                            \assert($row instanceof ViewableModerationQueue);
+                    new
+                        /** @template-extends UserLinkColumnRenderer<ViewableModerationQueue> */
+                        class extends UserLinkColumnRenderer {
+                            #[\Override]
+                            public function render(mixed $value, DatabaseObject $row): string
+                            {
+                                /** @var ViewableModerationQueue $row */
 
-                            $userID = $row->getAffectedObject()->getUserID();
+                                $userID = $row->getAffectedObject()->getUserID();
 
-                            if ($userID) {
-                                return parent::render($userID, $row);
+                                if ($userID) {
+                                    return parent::render($userID, $row);
+                                }
+
+                                if ($row->getAffectedObject()->getUsername()) {
+                                    return StringUtil::encodeHTML($row->getAffectedObject()->getUsername());
+                                }
+
+                                return '';
                             }
 
-                            if ($row->getAffectedObject()->getUsername()) {
-                                return StringUtil::encodeHTML($row->getAffectedObject()->getUsername());
+                            #[\Override]
+                            public function prepare(mixed $value, DatabaseObject $row): void
+                            {
+                                /** @var ViewableModerationQueue $row */
+                                parent::prepare($row->getAffectedObject()->getUserID(), $row);
                             }
-
-                            return '';
                         }
-
-                        #[\Override]
-                        public function prepare(mixed $value, DatabaseObject $row): void
-                        {
-                            \assert($row instanceof ViewableModerationQueue);
-
-                            parent::prepare($row->getAffectedObject()->getUserID(), $row);
-                        }
-                    }
                 ),
             GridViewColumn::for("assignedUser")
                 ->label("wcf.moderation.assignedUser")
                 ->filter(new UserFilter("moderation_queue.assignedUserID"))
                 ->sortable(sortByDatabaseColumn: "assignedUsername")
                 ->renderer(
-                    new class extends UserLinkColumnRenderer {
-                        public function __construct()
-                        {
-                            parent::__construct(fallbackValue: "assignedUsername");
+                    new
+                        /** @template-extends UserLinkColumnRenderer<ViewableModerationQueue> */
+                        class extends UserLinkColumnRenderer {
+
+                            public function __construct()
+                            {
+                                parent::__construct(fallbackValue: "assignedUsername");
+                            }
+
+                            #[\Override]
+                            public function render(mixed $value, DatabaseObject $row): string
+                            {
+                                /** @var ViewableModerationQueue $row */
+                                return parent::render($row->assignedUserID, $row);
+                            }
+
+                            #[\Override]
+                            public function prepare(mixed $value, DatabaseObject $row): void
+                            {
+                                /** @var ViewableModerationQueue $row */
+                                parent::prepare($row->assignedUserID, $row);
+                            }
                         }
-
-                        #[\Override]
-                        public function render(mixed $value, DatabaseObject $row): string
-                        {
-                            \assert($row instanceof ViewableModerationQueue);
-
-                            return parent::render($row->assignedUserID, $row);
-                        }
-
-                        #[\Override]
-                        public function prepare(mixed $value, DatabaseObject $row): void
-                        {
-                            \assert($row instanceof ViewableModerationQueue);
-
-                            parent::prepare($row->assignedUserID, $row);
-                        }
-                    }
                 ),
             GridViewColumn::for("objectType")
                 ->label("wcf.moderation.report.reportedContent")
@@ -137,8 +140,7 @@ final class ModerationQueueGridView extends AbstractGridView
                         #[\Override]
                         public function render(mixed $value, DatabaseObject $row): string
                         {
-                            \assert($row instanceof ViewableModerationQueue);
-
+                            /** @var ViewableModerationQueue $row */
                             return WCF::getLanguage()->getDynamicVariable(
                                 "wcf.moderation.type.{$row->getObjectTypeName()}"
                             );
@@ -182,8 +184,7 @@ final class ModerationQueueGridView extends AbstractGridView
                         #[\Override]
                         public function render(mixed $value, DatabaseObject $row): string
                         {
-                            \assert($row instanceof ViewableModerationQueue);
-
+                            /** @var ViewableModerationQueue $row */
                             $status = StringUtil::encodeHTML($row->getStatus());
                             return <<<HTML
                                 <span class="status status-{$status}">{$status}</span>
@@ -234,6 +235,9 @@ final class ModerationQueueGridView extends AbstractGridView
                     ->options($this->getModerationQueueObjectTypeOptions(), true);
             }
 
+            /**
+             * @return array<int, string>
+             */
             private function getModerationQueueObjectTypeIDs(): array
             {
                 $objectTypes = [];
@@ -249,6 +253,14 @@ final class ModerationQueueGridView extends AbstractGridView
                 return $objectTypes;
             }
 
+            /**
+             * @return list<array{
+             *  value: string,
+             *  depth: int,
+             *  isSelectable: bool,
+             *  label: string,
+             * }>
+             */
             private function getModerationQueueObjectTypeOptions(): array
             {
                 $options = [];

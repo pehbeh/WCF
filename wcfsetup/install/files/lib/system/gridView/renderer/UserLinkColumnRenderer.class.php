@@ -15,7 +15,8 @@ use wcf\util\StringUtil;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  *
- * @extends ObjectLinkColumnRenderer<User, UserRuntimeCache>
+ * @template TDatabaseObject of DatabaseObject = User
+ * @extends ObjectLinkColumnRenderer<TDatabaseObject, UserRuntimeCache>
  */
 class UserLinkColumnRenderer extends ObjectLinkColumnRenderer
 {

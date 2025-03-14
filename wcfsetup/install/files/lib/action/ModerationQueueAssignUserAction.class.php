@@ -21,6 +21,8 @@ use wcf\system\WCF;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.0
+ *
+ * @phpstan-import-type PerformActionResult from AbstractModerationAction
  */
 final class ModerationQueueAssignUserAction extends AbstractModerationAction
 {
@@ -106,6 +108,9 @@ final class ModerationQueueAssignUserAction extends AbstractModerationAction
         return $form;
     }
 
+    /**
+     * @return PerformActionResult
+     */
     #[\Override]
     protected function performAction(ModerationQueue $queue, Psr15DialogForm $form): array
     {

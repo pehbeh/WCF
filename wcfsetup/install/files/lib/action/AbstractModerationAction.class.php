@@ -18,6 +18,17 @@ use wcf\system\form\builder\Psr15DialogForm;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @phpstan-type PerformActionResult array{
+ *  result: array{
+ *      assignee: ?array{
+ *          username: string,
+ *          userID: int,
+ *          link: string,
+ *      },
+ *      status: string,
+ *  }
+ * }
  */
 abstract class AbstractModerationAction implements RequestHandlerInterface
 {
@@ -84,5 +95,8 @@ abstract class AbstractModerationAction implements RequestHandlerInterface
      */
     abstract protected function getForm(array $moderationQueues): Psr15DialogForm;
 
+    /**
+     * @return PerformActionResult|array{}
+     */
     abstract protected function performAction(ModerationQueue $queue, Psr15DialogForm $form): array;
 }

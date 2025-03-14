@@ -55,6 +55,9 @@ final class ModerationReportQueueCloseAction extends AbstractModerationAction
         return $form;
     }
 
+    /**
+     * @return array{}
+     */
     #[\Override]
     protected function performAction(ModerationQueue $queue, Psr15DialogForm $form): array
     {
