@@ -18,6 +18,7 @@ parameters:
     universalObjectCratesClasses:
         - wcf\data\category\Category
         - wcf\data\condition\Condition
+        - wcf\data\modification\log\ModificationLog
         - wcf\data\object\type\ObjectType
         - wcf\data\option\Option
         - wcf\data\user\activity\event\ViewableUserActivityEvent

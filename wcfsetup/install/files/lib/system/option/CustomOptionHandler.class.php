@@ -15,7 +15,8 @@ use wcf\system\exception\UserInputException;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @extends OptionHandler<Option, OptionCategory>
+ * @template TOption of CustomOption = CustomOption
+ * @extends OptionHandler<TOption, OptionCategory>
  * @phpstan-import-type ParsedOption from OptionHandler
  */
 abstract class CustomOptionHandler extends OptionHandler
@@ -66,7 +67,6 @@ abstract class CustomOptionHandler extends OptionHandler
      */
     public function readData()
     {
-        /** @var CustomOption $option */
         foreach ($this->options as $option) {
             if (!isset($this->optionValues[$option->optionName])) {
                 $this->optionValues[$option->optionName] = $option->defaultValue;
@@ -113,9 +113,7 @@ abstract class CustomOptionHandler extends OptionHandler
         $optionData = parent::getOption($optionName);
 
         if (isset($this->optionValues[$optionName])) {
-            $object = $optionData['object'];
-            \assert($object instanceof CustomOption);
-            $object->setOptionValue($this->optionValues[$optionName]);
+            $optionData['object']->setOptionValue($this->optionValues[$optionName]);
         }
 
         return $optionData;
@@ -126,8 +124,6 @@ abstract class CustomOptionHandler extends OptionHandler
      */
     protected function validateOption(Option $option)
     {
-        /** @var CustomOption $option */
-
         parent::validateOption($option);
 
         if ($option->required && empty($this->optionValues[$option->optionName])) {
