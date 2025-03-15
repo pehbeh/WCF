@@ -13,6 +13,8 @@ use wcf\util\HeaderUtil;
  * @author  Tim Duesterhus
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template TItems of \Iterator
  * @deprecated 6.1 use `AbstractRssFeedPage` instead
  */
 abstract class AbstractFeedPage extends AbstractAuthedPage
@@ -41,7 +43,7 @@ abstract class AbstractFeedPage extends AbstractAuthedPage
 
     /**
      * list of feed-entries for the current page object must be an \Iterator with \wcf\data\IFeedEntry-Elements
-     * @var \Iterator
+     * @var TItems
      */
     public $items;
 
