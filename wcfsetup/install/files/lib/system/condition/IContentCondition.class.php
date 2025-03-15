@@ -19,7 +19,6 @@ interface IContentCondition extends ICondition
      * All necessary data to check the condition needs to be globally available
      * like the active user object via WCF::getUser().
      *
-     * @param Condition $condition
      * @return bool
      */
     public function showContent(Condition $condition);
