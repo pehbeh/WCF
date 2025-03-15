@@ -187,7 +187,11 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\languages\EnableLanguage());
             $event->register(new \wcf\system\endpoint\controller\core\languages\SetAsDefaultLanguage());
             $event->register(new \wcf\system\endpoint\controller\core\languages\items\DeleteItem());
+            $event->register(new \wcf\system\endpoint\controller\core\labels\groups\ChangeLabelShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\labels\groups\ChangeShowOrder());
             $event->register(new \wcf\system\endpoint\controller\core\labels\groups\DeleteGroup());
+            $event->register(new \wcf\system\endpoint\controller\core\labels\groups\GetLabelShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\labels\groups\GetShowOrder());
             $event->register(new \wcf\system\endpoint\controller\core\pages\DeletePage());
             $event->register(new \wcf\system\endpoint\controller\core\pages\DisablePage());
             $event->register(new \wcf\system\endpoint\controller\core\pages\EnablePage());
