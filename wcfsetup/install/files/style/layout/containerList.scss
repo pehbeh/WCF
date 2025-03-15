@@ -384,6 +384,10 @@
 
 .styleListPreviewImage {
 	text-align: center;
+
+    img {
+        border-radius: var(--wcfBorderRadius);
+    }
 }
 
 @include screen-md-down {
