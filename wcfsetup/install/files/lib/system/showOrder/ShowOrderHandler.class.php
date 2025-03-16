@@ -17,7 +17,7 @@ use wcf\http\Helper;
 final class ShowOrderHandler
 {
     /**
-     * @var ShowOrderItem[]
+     * @var list<ShowOrderItem>
      */
     private readonly array $items;
 

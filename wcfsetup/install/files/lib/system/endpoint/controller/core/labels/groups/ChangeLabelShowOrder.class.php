@@ -43,6 +43,9 @@ final class ChangeLabelShowOrder implements IController
         return new JsonResponse([]);
     }
 
+    /**
+     * @param list<ShowOrderItem> $items
+     */
     private function saveShowOrder(array $items): void
     {
         $sql = "UPDATE  wcf1_label

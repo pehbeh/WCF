@@ -39,13 +39,11 @@ final class ChangeShowOrder implements IController
         return new JsonResponse([]);
     }
 
+    /**
+     * @param list<ShowOrderItem> $items
+     */
     private function saveShowOrder(array $items): void
     {
-        $sql = "UPDATE  wcf1_label
-                SET     showOrder = ?
-                WHERE   labelID = ?";
-        $statement = WCF::getDB()->prepare($sql);
-
         WCF::getDB()->beginTransaction();
         $sql = "UPDATE  wcf1_label_group
                 SET     showOrder = ?
