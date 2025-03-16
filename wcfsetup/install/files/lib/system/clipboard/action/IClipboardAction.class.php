@@ -12,6 +12,8 @@ use wcf\system\clipboard\ClipboardEditorItem;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template TDatabaseobject of DatabaseObject
  */
 interface IClipboardAction
 {
@@ -26,7 +28,7 @@ interface IClipboardAction
      * Returns the editor item for the clipboard action with the given name or `null`
      * if the action is not applicable to the given objects.
      *
-     * @param DatabaseObject[] $objects
+     * @param TDatabaseobject[] $objects
      * @param ClipboardAction $action
      * @return ?ClipboardEditorItem
      */
@@ -42,7 +44,7 @@ interface IClipboardAction
     /**
      * Returns label for item editor.
      *
-     * @param DatabaseObject[] $objects
+     * @param TDatabaseobject[] $objects
      * @return string
      */
     public function getEditorLabel(array $objects);

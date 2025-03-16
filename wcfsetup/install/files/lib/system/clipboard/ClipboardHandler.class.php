@@ -398,7 +398,7 @@ class ClipboardHandler extends SingletonFactory
         // execute actions
         $editorData = [];
         foreach ($actions as $actionData) {
-            /** @var IClipboardAction $clipboardAction */
+            /** @var IClipboardAction<DatabaseObject> $clipboardAction */
             $clipboardAction = $actionData['object'];
 
             // get accepted objects

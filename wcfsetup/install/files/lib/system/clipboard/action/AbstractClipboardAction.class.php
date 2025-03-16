@@ -14,6 +14,9 @@ use wcf\system\WCF;
  * @author  Matthias Schmidt
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template TDatabaseobject of Databaseobject
+ * @implements IClipboardAction<TDatabaseobject>
  */
 abstract class AbstractClipboardAction implements IClipboardAction
 {
@@ -25,7 +28,7 @@ abstract class AbstractClipboardAction implements IClipboardAction
 
     /**
      * relevant database objects
-     * @var DatabaseObject[]
+     * @var TDatabaseobject[]
      */
     protected $objects = [];
 
