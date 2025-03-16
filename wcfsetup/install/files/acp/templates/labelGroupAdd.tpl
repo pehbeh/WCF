@@ -130,7 +130,7 @@
 		
 		setup(
 			document.querySelector('.jsChangeShowOrder'),
-			'core/labels/groups/{$labelGroup->groupID}/label-show-order'
+			'core/labels/groups/{$labelGroup->groupID}/labels/show-order'
 		);
 	});
 </script>

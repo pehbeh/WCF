@@ -24,7 +24,7 @@ use wcf\system\WCF;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-#[PostRequest('/core/labels/groups/{id:\d+}/label-show-order')]
+#[PostRequest('/core/labels/groups/{id:\d+}/labels/show-order')]
 final class ChangeLabelShowOrder implements IController
 {
     public function __invoke(ServerRequestInterface $request, array $variables): ResponseInterface
