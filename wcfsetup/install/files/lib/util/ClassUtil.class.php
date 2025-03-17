@@ -98,23 +98,19 @@ final class ClassUtil
     }
 
     /**
-     * Returns the properties as a key-value array of the given object.
-     * This array doesn't contain properties with `null` as value.
-     *
-     * @param ?\ReflectionProperty::IS_* $filter
+     * Returns the properties as a key-value array to construct the given object.
      *
      * @return array<string, mixed>
      */
-    public static function getObjectProperties(object $object, ?int $filter = null): array
+    public static function getConstructorProperties(object $object): array
     {
         $reflection = new \ReflectionClass($object);
-        $properties = [];
-        foreach ($reflection->getProperties($filter) as $property) {
-            if (!$property->isInitialized($object)) {
-                continue;
-            }
 
-            if ($property->getValue($object) === null) {
+        $properties = [];
+        foreach ($reflection->getConstructor()?->getParameters() ?? [] as $parameter) {
+            $property = $reflection->getProperty($parameter->getName());
+
+            if (!$property->isInitialized($object)) {
                 continue;
             }
 

@@ -53,7 +53,7 @@ abstract class AbstractPersistentCache implements ICacheCallback
                 \get_class($this)
             );
 
-            $parameters = ClassUtil::getObjectProperties($this, \ReflectionProperty::IS_READONLY);
+            $parameters = ClassUtil::getConstructorProperties($this);
 
             if ($parameters !== []) {
                 $this->cacheName .= '-' . CacheHandler::getInstance()->getCacheIndex($parameters);

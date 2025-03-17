@@ -43,7 +43,7 @@ abstract class AbstractEphemeralCache implements ICacheCallback
                         new EphemeralCacheRebuildBackgroundJob(
                             $item,
                             \get_class($this),
-                            ClassUtil::getObjectProperties($this, \ReflectionProperty::IS_READONLY)
+                            ClassUtil::getConstructorProperties($this)
                         )
                     );
 
@@ -68,7 +68,7 @@ abstract class AbstractEphemeralCache implements ICacheCallback
                 \get_class($this)
             );
 
-            $parameters = ClassUtil::getObjectProperties($this, \ReflectionProperty::IS_READONLY);
+            $parameters = ClassUtil::getConstructorProperties($this);
 
             if ($parameters !== []) {
                 $this->cacheName .= '-' . CacheHandler::getInstance()->getCacheIndex($parameters);
