@@ -12,9 +12,8 @@ use wcf\data\DatabaseObjectEditor;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.3
  *
- * @method static DevtoolsMissingLanguageItem create(array $parameters = [])
- * @method      DevtoolsMissingLanguageItem getDecoratedObject()
  * @mixin       DevtoolsMissingLanguageItem
+ * @extends DatabaseObjectEditor<DevtoolsMissingLanguageItem>
  */
 class DevtoolsMissingLanguageItemEditor extends DatabaseObjectEditor
 {

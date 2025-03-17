@@ -27,9 +27,9 @@ class ValidateActionException extends \Exception
     protected $fieldName = '';
 
     /**
-     * @inheritDoc
+     * @param array<string, mixed> $variables
      */
-    public function __construct($fieldName, $errorMessage = 'empty', array $variables = [])
+    public function __construct(string $fieldName, string $errorMessage = 'empty', array $variables = [])
     {
         $this->errorMessage = $errorMessage;
         if (!\str_contains($this->errorMessage, '.')) {

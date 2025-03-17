@@ -14,16 +14,16 @@ interface ICacheBuilder
     /**
      * Returns the data that ought to be cached.
      *
-     * @param array $parameters
+     * @param mixed[] $parameters
      * @param string $arrayIndex
-     * @return  mixed
+     * @return mixed
      */
     public function getData(array $parameters = [], $arrayIndex = '');
 
     /**
      * Returns maximum lifetime for cache resource.
      *
-     * @return  int
+     * @return int
      */
     public function getMaxLifetime();
 
@@ -31,7 +31,8 @@ interface ICacheBuilder
      * Flushes cache. If no parameters are given, all caches starting with
      * the same cache name will be flushed too.
      *
-     * @param array $parameters
+     * @param mixed[] $parameters
+     * @return void
      */
     public function reset(array $parameters = []);
 }

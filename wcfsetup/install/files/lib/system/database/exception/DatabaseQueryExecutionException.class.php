@@ -2,6 +2,7 @@
 
 namespace wcf\system\database\exception;
 
+use wcf\system\database\statement\PreparedStatement;
 use wcf\system\exception\IExtraInformationException;
 use wcf\util\StringUtil;
 
@@ -13,23 +14,24 @@ use wcf\util\StringUtil;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  * @method mixed|int getCode()
+ * @phpstan-import-type ParameterValues from PreparedStatement
  */
 class DatabaseQueryExecutionException extends DatabaseQueryException implements IExtraInformationException
 {
     /**
      * Parameters that were passed to execute().
-     * @var array
+     * @var ParameterValues
      */
     protected $parameters = [];
 
     /**
-     * @var string|null
+     * @var ?string
      * @since 5.3
      */
     protected $sqlState;
 
     /**
-     * @var string|null
+     * @var ?string
      * @since 5.3
      */
     protected $driverCode;
@@ -37,7 +39,8 @@ class DatabaseQueryExecutionException extends DatabaseQueryException implements 
     /** @noinspection PhpMissingParentConstructorInspection */
 
     /**
-     * @inheritDoc
+     * @param string $message
+     * @param ParameterValues $parameters
      */
     public function __construct($message, $parameters, ?\PDOException $previous = null)
     {
@@ -54,7 +57,7 @@ class DatabaseQueryExecutionException extends DatabaseQueryException implements 
     /**
      * Returns the ANSI SQLSTATE or null.
      *
-     * @return string|null
+     * @return ?string
      * @since 5.3
      */
     public function getSqlState()
@@ -65,7 +68,7 @@ class DatabaseQueryExecutionException extends DatabaseQueryException implements 
     /**
      * Returns the driver specific error code or null.
      *
-     * @return string|null
+     * @return ?string
      * @since 5.3
      */
     public function getDriverCode()
@@ -76,7 +79,7 @@ class DatabaseQueryExecutionException extends DatabaseQueryException implements 
     /**
      * Returns the parameters that were passed to execute().
      *
-     * @return  array
+     * @return ParameterValues
      */
     public function getParameters()
     {

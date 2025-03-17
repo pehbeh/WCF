@@ -14,9 +14,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserOptionCategory      create()
- * @method  UserOptionCategoryEditor[]  getObjects()
- * @method  UserOptionCategoryEditor    getSingleObject()
+ * @extends AbstractDatabaseObjectAction<UserOptionCategory, UserOptionCategoryEditor>
  */
 class UserOptionCategoryAction extends AbstractDatabaseObjectAction
 {

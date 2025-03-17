@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\BBCodeGridView;
 
 /**
@@ -13,9 +12,9 @@ use wcf\system\gridView\admin\BBCodeGridView;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    BBCodeGridView $gridView
+ * @extends AbstractGridViewPage<BBCodeGridView>
  */
-class BBCodeListPage extends AbstractGridViewPage
+final class BBCodeListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -33,7 +32,7 @@ class BBCodeListPage extends AbstractGridViewPage
     public $templateName = 'bbcodeList';
 
     #[\Override]
-    public function createGridViewController(): AbstractGridView
+    public function createGridView(): BBCodeGridView
     {
         return new BBCodeGridView();
     }

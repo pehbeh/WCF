@@ -105,6 +105,7 @@ class FilePackageInstallationPlugin extends AbstractPackageInstallationPlugin im
 
         \assert($this->installation instanceof PackageUninstallationDispatcher);
         foreach ($files as $application => $filenames) {
+            // @phpstan-ignore method.notFound
             $this->installation->deleteFiles(Application::getDirectory($application), $filenames);
 
             // delete log entries

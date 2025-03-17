@@ -150,6 +150,9 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\CloseReport());
             $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\DeleteContent());
             $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\EnableContent());
+            $event->register(new \wcf\system\endpoint\controller\core\moderationQueues\MarkAsRead());
+            $event->register(new \wcf\system\endpoint\controller\core\styles\AddDarkMode());
+            $event->register(new \wcf\system\endpoint\controller\core\styles\CopyStyle());
             $event->register(new \wcf\system\endpoint\controller\core\styles\DeleteStyle());
             $event->register(new \wcf\system\endpoint\controller\core\styles\DisableStyle());
             $event->register(new \wcf\system\endpoint\controller\core\styles\EnableStyle());
@@ -185,7 +188,11 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\languages\EnableLanguage());
             $event->register(new \wcf\system\endpoint\controller\core\languages\SetAsDefaultLanguage());
             $event->register(new \wcf\system\endpoint\controller\core\languages\items\DeleteItem());
+            $event->register(new \wcf\system\endpoint\controller\core\labels\groups\ChangeLabelShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\labels\groups\ChangeShowOrder());
             $event->register(new \wcf\system\endpoint\controller\core\labels\groups\DeleteGroup());
+            $event->register(new \wcf\system\endpoint\controller\core\labels\groups\GetLabelShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\labels\groups\GetShowOrder());
             $event->register(new \wcf\system\endpoint\controller\core\pages\DeletePage());
             $event->register(new \wcf\system\endpoint\controller\core\pages\DisablePage());
             $event->register(new \wcf\system\endpoint\controller\core\pages\EnablePage());
@@ -204,6 +211,11 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\users\groups\assignment\DisableAssignment());
             $event->register(new \wcf\system\endpoint\controller\core\users\groups\DeleteGroup());
             $event->register(new \wcf\system\endpoint\controller\core\menus\DeleteMenu());
+            $event->register(new \wcf\system\endpoint\controller\core\trophies\EnableTrophy());
+            $event->register(new \wcf\system\endpoint\controller\core\trophies\DisableTrophy());
+            $event->register(new \wcf\system\endpoint\controller\core\trophies\DeleteTrophy());
+            $event->register(new \wcf\system\endpoint\controller\core\trophies\GetShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\trophies\ChangeShowOrder());
         }
     );
 

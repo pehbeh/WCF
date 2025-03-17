@@ -23,6 +23,7 @@ class LabelFormElement extends AbstractFormElement
      * Sets element text.
      *
      * @param string $text
+     * @return void
      */
     public function setText($text)
     {

@@ -51,7 +51,7 @@ class XML
      * Loads a xml file for processing.
      *
      * @param string $path
-     * @throws  SystemException
+     * @return void
      */
     public function load($path)
     {
@@ -81,6 +81,7 @@ class XML
      *
      * @param string $path
      * @param string $xml
+     * @return void
      */
     public function loadXML($path, $xml)
     {
@@ -103,6 +104,7 @@ class XML
     /**
      * Validate the loaded document against the specified xml schema definition.
      *
+     * @return void
      * @deprecated  since 5.2
      */
     public function validate()
@@ -123,6 +125,7 @@ class XML
     /**
      * Determines schema for given document.
      *
+     * @return void
      * @deprecated  since 5.2
      */
     protected function getSchema()
@@ -210,7 +213,8 @@ class XML
      * Throws a SystemException providing details on xml errors if applicable.
      *
      * @param string $message
-     * @param array $errors
+     * @param array{line: int, message: string}[] $errors
+     * @return never
      * @throws  SystemException
      */
     protected function throwException($message, array $errors = [])
@@ -244,6 +248,7 @@ class XML
      *
      * @param string $fileLocation location of file
      * @param bool $cdata indicates of values are escaped using cdata
+     * @return void
      * @since   5.2
      */
     public function write($fileLocation, $cdata = false)
@@ -275,6 +280,7 @@ class XML
      * @param XMLWriter $writer xml writer
      * @param \DOMElement $element written element
      * @param bool $cdata indicates if element value is escaped using cdata
+     * @return void
      * @since   5.2
      */
     protected function writeElement(XMLWriter $writer, \DOMElement $element, $cdata)
@@ -305,7 +311,7 @@ class XML
      * (with the attribute names as array keys).
      *
      * @param \DOMElement $element elements whose attributes will be returned
-     * @return  array               attributes
+     * @return array<string, string> attributes
      * @since   5.2
      */
     public function getAttributes(\DOMElement $element)

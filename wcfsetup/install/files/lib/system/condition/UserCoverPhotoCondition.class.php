@@ -6,7 +6,6 @@ use wcf\data\condition\Condition;
 use wcf\data\DatabaseObjectList;
 use wcf\data\user\User;
 use wcf\data\user\UserList;
-use wcf\system\exception\InvalidObjectArgument;
 use wcf\system\WCF;
 
 /**
@@ -16,6 +15,8 @@ use wcf\system\WCF;
  * @copyright   2001-2020 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.3
+ *
+ * @implements IObjectListCondition<UserList>
  */
 class UserCoverPhotoCondition extends AbstractSelectCondition implements
     IContentCondition,
@@ -51,10 +52,6 @@ class UserCoverPhotoCondition extends AbstractSelectCondition implements
      */
     public function addObjectListCondition(DatabaseObjectList $objectList, array $conditionData)
     {
-        if (!($objectList instanceof UserList)) {
-            throw new InvalidObjectArgument($objectList, UserList::class, 'Object list');
-        }
-
         switch ($conditionData['userCoverPhoto']) {
             case self::NO_COVER_PHOTO:
                 $objectList->getConditionBuilder()->add(

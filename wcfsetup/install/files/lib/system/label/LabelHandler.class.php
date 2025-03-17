@@ -5,6 +5,7 @@ namespace wcf\system\label;
 use wcf\data\label\group\LabelGroup;
 use wcf\data\label\group\ViewableLabelGroup;
 use wcf\data\label\Label;
+use wcf\data\object\type\ObjectType;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\data\user\User;
 use wcf\system\cache\builder\LabelCacheBuilder;
@@ -19,18 +20,22 @@ use wcf\system\WCF;
  * @author  Alexander Ebert, Joshua Ruesweg
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @phpstan-import-type LabelCache from LabelCacheBuilder
  */
 class LabelHandler extends SingletonFactory
 {
     /**
      * cached list of object types
-     * @var mixed[][]
+     * @var array{
+     *  objectTypes: array<int, ObjectType>,
+     *  objectTypeNames: array<string, int>
+     * }
      */
     protected $cache;
 
     /**
      * list of label groups
-     * @var mixed[][]
+     * @var LabelCache
      */
     protected $labelGroups;
 
@@ -58,12 +63,12 @@ class LabelHandler extends SingletonFactory
      * no such option exists.
      *
      * @param string $optionName
-     * @return  int|null
+     * @return ?int
      */
     public function getOptionID($optionName)
     {
         foreach ($this->labelGroups['options'] as $option) {
-            if ($option->optionName == $optionName) {
+            if ($option->optionName === $optionName) {
                 return $option->optionID;
             }
         }
@@ -76,7 +81,7 @@ class LabelHandler extends SingletonFactory
      * object.
      *
      * @param string $objectType
-     * @return  \wcf\data\object\type\ObjectType|null
+     * @return ?ObjectType
      */
     public function getObjectType($objectType)
     {
@@ -94,7 +99,7 @@ class LabelHandler extends SingletonFactory
      *
      * @param int[] $labelIDs
      * @param User $user
-     * @return  array
+     * @return array<int, bool>|array{}
      * @see     \wcf\system\label\LabelHandler::getPermissions()
      */
     public function validateCanView(array $labelIDs, ?User $user = null)
@@ -107,7 +112,7 @@ class LabelHandler extends SingletonFactory
      *
      * @param int[] $labelIDs
      * @param User $user
-     * @return  array
+     * @return array<int, bool>|array{}
      * @see     \wcf\system\label\LabelHandler::getPermissions()
      */
     public function validateCanUse(array $labelIDs, ?User $user = null)
@@ -121,7 +126,7 @@ class LabelHandler extends SingletonFactory
      * @param string $optionName
      * @param int[] $labelIDs
      * @param User $user
-     * @return  array
+     * @return array<int, bool>|array{}
      * @throws  SystemException
      */
     public function getPermissions($optionName, array $labelIDs, ?User $user = null)
@@ -175,6 +180,7 @@ class LabelHandler extends SingletonFactory
      * @param int $objectTypeID
      * @param int $objectID
      * @param bool $validatePermissions
+     * @return void
      */
     public function setLabels(array $labelIDs, $objectTypeID, $objectID, $validatePermissions = true)
     {
@@ -222,6 +228,7 @@ class LabelHandler extends SingletonFactory
      * @param int[] $labelIDs ids of the new labels
      * @param string $objectType label object type of the updated object
      * @param int $objectID id of the updated object
+     * @return void
      * @since   5.2
      */
     public function replaceLabels(array $groupIDs, array $labelIDs, $objectType, $objectID)
@@ -376,6 +383,7 @@ class LabelHandler extends SingletonFactory
             $data[$groupID] = $this->labelGroups['groups'][$groupID];
         }
 
+        // @phpstan-ignore argument.type
         \uasort($data, [LabelGroup::class, 'sortLabelGroups']);
 
         return $data;
@@ -414,6 +422,7 @@ class LabelHandler extends SingletonFactory
      *
      * @param int $objectTypeID
      * @param int[] $objectIDs
+     * @return void
      */
     public function removeLabels($objectTypeID, array $objectIDs)
     {

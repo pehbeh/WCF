@@ -13,8 +13,8 @@ use wcf\data\moderation\queue\ModerationQueue;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.1
  *
- * @method  ModerationQueue     getDecoratedObject()
  * @mixin   ModerationQueue
+ * @extends DatabaseObjectDecorator<ModerationQueue>
  */
 final class ModerationQueueUserNotificationObject extends DatabaseObjectDecorator implements IUserNotificationObject
 {

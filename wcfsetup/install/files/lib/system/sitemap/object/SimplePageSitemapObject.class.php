@@ -16,6 +16,8 @@ use wcf\system\exception\PermissionDeniedException;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
+ *
+ * @extends AbstractSitemapObjectObjectType<Page, PageList>
  */
 class SimplePageSitemapObject extends AbstractSitemapObjectObjectType
 {
@@ -32,7 +34,6 @@ class SimplePageSitemapObject extends AbstractSitemapObjectObjectType
      */
     public function getObjectList()
     {
-        /** @var PageList $pageList */
         $pageList = parent::getObjectList();
         $pageList->getConditionBuilder()->add('isMultilingual = ?', [0]);
         $pageList->getConditionBuilder()->add('page.allowSpidersToIndex = ?', [1]);
@@ -45,8 +46,6 @@ class SimplePageSitemapObject extends AbstractSitemapObjectObjectType
      */
     public function canView(DatabaseObject $object)
     {
-        \assert($object instanceof Page);
-
         if ($object->requireObjectID) {
             return false;
         }

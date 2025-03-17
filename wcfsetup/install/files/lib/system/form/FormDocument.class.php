@@ -26,8 +26,6 @@ class FormDocument
     protected $name = '';
 
     /**
-     * Creates a new instance of FormDocument.
-     *
      * @param string $name
      */
     public function __construct($name)
@@ -38,7 +36,7 @@ class FormDocument
     /**
      * Returns form document name.
      *
-     * @return  string
+     * @return string
      */
     public function getName()
     {
@@ -49,6 +47,7 @@ class FormDocument
      * Appends a FormElementContainer object.
      *
      * @param IFormElementContainer $container
+     * @return void
      */
     public function appendContainer(IFormElementContainer $container)
     {
@@ -59,6 +58,7 @@ class FormDocument
      * Prepends a FormElementContainer object.
      *
      * @param IFormElementContainer $container
+     * @return void
      */
     public function prependContainer(IFormElementContainer $container)
     {
@@ -68,7 +68,7 @@ class FormDocument
     /**
      * Returns assigned FormElementContainer objects.
      *
-     * @return  IFormElementContainer[]
+     * @return IFormElementContainer[]
      */
     public function getContainers()
     {
@@ -79,7 +79,7 @@ class FormDocument
      * Returns the value of container's child element with given name.
      *
      * @param string $key
-     * @return  mixed
+     * @return mixed
      */
     public function getValue($key)
     {
@@ -94,7 +94,7 @@ class FormDocument
     /**
      * Returns HTML-representation of current document.
      *
-     * @return  string
+     * @return string
      */
     public function getHTML()
     {
@@ -109,6 +109,8 @@ class FormDocument
 
     /**
      * Handles request input variables.
+     *
+     * @return void
      */
     public function handleRequest()
     {
@@ -133,6 +135,7 @@ class FormDocument
      *
      * @param string $name
      * @param string $error
+     * @return void
      */
     public function setError($name, $error)
     {

@@ -202,6 +202,8 @@ final class TwitterAuthAction extends AbstractOauth2AuthAction
 
     /**
      * Requests an request_token to initiate the OAuth flow.
+     *
+     * @return mixed[]
      */
     private function getRequestToken(): array
     {
@@ -264,7 +266,7 @@ final class TwitterAuthAction extends AbstractOauth2AuthAction
     /**
      * Builds the OAuth authorization header.
      *
-     * @param array $parameters
+     * @param array<string, string|int> $parameters
      */
     public function buildOAuthHeader(array $parameters): string
     {
@@ -285,6 +287,8 @@ final class TwitterAuthAction extends AbstractOauth2AuthAction
 
     /**
      * Creates an OAuth 1 signature.
+     *
+     * @param array<string, string|int> $parameters
      */
     public function createSignature(
         string $url,

@@ -17,6 +17,8 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
+ *
+ * @implements IObjectListCondition<DatabaseObjectList<DatabaseObject>>
  */
 abstract class AbstractTimestampCondition extends AbstractSingleFieldCondition implements
     IObjectCondition,
@@ -56,7 +58,6 @@ abstract class AbstractTimestampCondition extends AbstractSingleFieldCondition i
             throw new InvalidObjectArgument($objectList, $className, 'Object list');
         }
 
-        // @phpstan-ignore property.notFound
         if ($this->object->ignoreZeroTime) {
             $objectList->getConditionBuilder()->add(
                 $objectList->getDatabaseTableAlias() . '.' . $this->getPropertyName() . ' <> ?',

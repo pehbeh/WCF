@@ -45,7 +45,11 @@ class WysiwygFormContainer extends FormContainer
     /**
      * attachment-related data used to create an `AttachmentHandler` object for the attachment
      * form field
-     * @var null|array
+     * @var ?array{
+     *  objectType: string,
+     *  parentObjectID: int,
+     *  objectID: int,
+     * }
      */
     protected $attachmentData;
 
@@ -599,6 +603,8 @@ class WysiwygFormContainer extends FormContainer
 
     /**
      * Sets the attachment handler of the attachment form field.
+     *
+     * @return void
      */
     protected function setAttachmentHandler()
     {

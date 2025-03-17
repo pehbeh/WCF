@@ -134,7 +134,7 @@ class CommentResponse extends DatabaseObject implements IMessage
     /**
      * Sets related comment object.
      *
-     * @param Comment $comment
+     * @return void
      */
     public function setComment(Comment $comment)
     {

@@ -49,6 +49,7 @@ interface ISearchEngine
      * Removes engine-specific special characters from a string.
      *
      * @param string $string
+     * @return string
      */
     public function removeSpecialCharacters($string);
 
@@ -56,13 +57,13 @@ interface ISearchEngine
      * Searches for the given string and returns the data of the found messages.
      *
      * @param string $q
-     * @param array $objectTypes
+     * @param string[] $objectTypes
      * @param bool $subjectOnly
      * @param PreparedStatementConditionBuilder $searchIndexCondition
-     * @param array $additionalConditions
+     * @param array<string, PreparedStatementConditionBuilder> $additionalConditions
      * @param string $orderBy
      * @param int $limit
-     * @return  array
+     * @return list<array{objectID: int, objectType: string}>
      */
     public function search(
         $q,

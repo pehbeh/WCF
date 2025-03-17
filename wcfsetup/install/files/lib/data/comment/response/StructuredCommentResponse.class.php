@@ -13,8 +13,8 @@ use wcf\system\cache\runtime\UserProfileRuntimeCache;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  CommentResponse     getDecoratedObject()
  * @mixin   CommentResponse
+ * @extends DatabaseObjectDecorator<CommentResponse>
  */
 class StructuredCommentResponse extends DatabaseObjectDecorator
 {
@@ -44,7 +44,7 @@ class StructuredCommentResponse extends DatabaseObjectDecorator
     /**
      * Sets the user's profile.
      *
-     * @param UserProfile $userProfile
+     * @return void
      * @deprecated  3.0
      */
     public function setUserProfile(UserProfile $userProfile)
@@ -98,6 +98,7 @@ class StructuredCommentResponse extends DatabaseObjectDecorator
      * Sets deletable state.
      *
      * @param bool $deletable
+     * @return void
      */
     public function setIsDeletable($deletable)
     {
@@ -108,6 +109,7 @@ class StructuredCommentResponse extends DatabaseObjectDecorator
      * Sets editable state.
      *
      * @param bool $editable
+     * @return void
      */
     public function setIsEditable($editable)
     {

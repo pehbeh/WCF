@@ -27,8 +27,8 @@ class MultipartMixedMimePart extends AbstractMultipartMimePart
      *
      * @param AbstractMimePart $part
      * @param mixed $data Ignored.
-     * @throws  \InvalidArgumentException
-     * @throws  \DomainException
+     * @throws \InvalidArgumentException
+     * @throws \DomainException
      */
     // @codingStandardsIgnoreStart
     public function addMimePart(AbstractMimePart $part, $data = null)

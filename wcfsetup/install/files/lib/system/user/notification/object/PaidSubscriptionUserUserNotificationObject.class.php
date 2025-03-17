@@ -14,8 +14,8 @@ use wcf\system\request\LinkHandler;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method  PaidSubscriptionUser    getDecoratedObject()
  * @mixin   PaidSubscriptionUser
+ * @extends DatabaseObjectDecorator<PaidSubscriptionUser>
  */
 class PaidSubscriptionUserUserNotificationObject extends DatabaseObjectDecorator implements IUserNotificationObject
 {

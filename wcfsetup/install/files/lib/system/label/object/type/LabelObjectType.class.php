@@ -100,6 +100,7 @@ class LabelObjectType
      * Sets option value.
      *
      * @param int $optionValue
+     * @return void
      */
     public function setOptionValue($optionValue)
     {

@@ -25,6 +25,7 @@ class UserBirthdayCache extends SingletonFactory
      * Loads the birthday cache.
      *
      * @param int $month
+     * @return void
      */
     protected function loadMonth(int $month): void
     {

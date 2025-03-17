@@ -30,6 +30,7 @@ interface IOnlineLocationPageHandler
      *
      * @param Page $page visited page
      * @param UserOnline $user user online object with request data
+     * @return void
      */
     public function prepareOnlineLocation(Page $page, UserOnline $user);
 }

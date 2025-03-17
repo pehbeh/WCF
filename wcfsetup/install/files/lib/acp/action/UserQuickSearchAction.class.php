@@ -83,7 +83,7 @@ final class UserQuickSearchAction extends AbstractAction
     /**
      * @inheritDoc
      */
-    public function execute()
+    public function execute(): RedirectResponse
     {
         ACPMenu::getInstance()->setActiveMenuItem('wcf.acp.menu.link.user.search');
 

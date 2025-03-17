@@ -54,6 +54,8 @@ class Uninstaller
 
     /**
      * Checks if the target directory is a valid directory.
+     *
+     * @return bool
      */
     protected function checkTargetDir()
     {
@@ -80,6 +82,7 @@ class Uninstaller
      * Deletes a file.
      *
      * @param string $file
+     * @return void
      */
     protected function deleteFile($file)
     {
@@ -90,6 +93,7 @@ class Uninstaller
      * Deletes a directory.
      *
      * @param string $dir
+     * @return void
      */
     protected function deleteDir($dir)
     {
@@ -98,6 +102,8 @@ class Uninstaller
 
     /**
      * Starts the deletion of the files.
+     *
+     * @return void
      */
     protected function uninstall()
     {

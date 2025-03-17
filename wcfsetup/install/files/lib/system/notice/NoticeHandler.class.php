@@ -67,6 +67,8 @@ class NoticeHandler extends SingletonFactory
 
     /**
      * Disables the display of notices for the active page.
+     *
+     * @return void
      */
     public static function disableNotices()
     {

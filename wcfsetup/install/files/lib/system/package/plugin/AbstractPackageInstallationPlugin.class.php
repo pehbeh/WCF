@@ -36,7 +36,7 @@ abstract class AbstractPackageInstallationPlugin implements IPackageInstallation
 
     /**
      * install/update instructions
-     * @var array
+     * @var mixed[]
      */
     public $instruction = [];
 
@@ -44,7 +44,7 @@ abstract class AbstractPackageInstallationPlugin implements IPackageInstallation
      * Creates a new AbstractPackageInstallationPlugin object.
      *
      * @param PackageInstallationDispatcher $installation
-     * @param array $instruction
+     * @param mixed[] $instruction
      */
     public function __construct(PackageInstallationDispatcher $installation, $instruction = [])
     {

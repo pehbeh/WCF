@@ -17,8 +17,9 @@ use wcf\system\WCF;
  * @copyright   2001-2020 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Cronjob     getDecoratedObject()
  * @mixin   Cronjob
+ * @extends DatabaseObjectEditor<Cronjob>
+ * @implements IEditableCachedObject<Cronjob>
  */
 class CronjobEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {
@@ -29,7 +30,6 @@ class CronjobEditor extends DatabaseObjectEditor implements IEditableCachedObjec
 
     /**
      * @inheritDoc
-     * @return  Cronjob
      */
     public static function create(array $parameters = [])
     {
@@ -44,7 +44,6 @@ class CronjobEditor extends DatabaseObjectEditor implements IEditableCachedObjec
         }
 
         $cronjob = parent::create($parameters);
-        \assert($cronjob instanceof Cronjob);
 
         // save cronjob description
         if (!empty($descriptions)) {
@@ -59,6 +58,7 @@ class CronjobEditor extends DatabaseObjectEditor implements IEditableCachedObjec
      * Saves the descriptions of the cronjob in language items.
      *
      * @param string[] $descriptions
+     * @return void
      * @since   3.0
      */
     protected function saveDescriptions(array $descriptions)

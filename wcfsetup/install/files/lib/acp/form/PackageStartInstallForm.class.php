@@ -123,6 +123,7 @@ class PackageStartInstallForm extends AbstractForm
      * Validates the upload package input.
      *
      * @param string $filename
+     * @return void
      * @throws  UserInputException
      */
     protected function validateUploadPackage($filename = '')

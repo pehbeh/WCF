@@ -211,8 +211,7 @@ class MessageQuoteManager extends SingletonFactory
      * @param IMessage $message
      * @param string $text
      * @param bool $renderAsString
-     *
-     * @return  array|string
+     * @return array{username: string, link: string, text: string}|string
      * @deprecated 6.2
      */
     public function renderQuote(IMessage $message, $text, $renderAsString = true)
@@ -240,6 +239,7 @@ class MessageQuoteManager extends SingletonFactory
     /**
      * Removes quotes marked for removal.
      *
+     * @return void
      * @deprecated 6.2
      */
     public function removeMarkedQuotes()
@@ -275,7 +275,7 @@ class MessageQuoteManager extends SingletonFactory
      *
      * @param string $objectType
      * @param int[] $objectIDs
-     *
+     * @return void
      * @deprecated 6.2
      */
     public function initObjects($objectType, array $objectIDs)
@@ -285,6 +285,7 @@ class MessageQuoteManager extends SingletonFactory
     /**
      * Reads the quote message id.
      *
+     * @return void
      * @deprecated 6.2
      */
     public function readParameters()
@@ -327,6 +328,7 @@ class MessageQuoteManager extends SingletonFactory
     /**
      * Assigns variables on page load.
      *
+     * @return void
      * @deprecated 6.2
      */
     public function assignVariables()
@@ -348,7 +350,7 @@ class MessageQuoteManager extends SingletonFactory
      * Removes orphaned quote ids
      *
      * @param int[] $quoteIDs
-     *
+     * @return void
      * @deprecated 6.2
      */
     public function removeOrphanedQuotes(array $quoteIDs)

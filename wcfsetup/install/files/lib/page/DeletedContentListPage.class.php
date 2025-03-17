@@ -2,6 +2,8 @@
 
 namespace wcf\page;
 
+use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectList;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\WCF;
@@ -12,6 +14,8 @@ use wcf\system\WCF;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @extends MultipleLinkPage<DatabaseObjectList<DatabaseObject>>
  */
 class DeletedContentListPage extends MultipleLinkPage
 {

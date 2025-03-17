@@ -23,14 +23,13 @@ abstract class AbstractBackgroundJob
 
     /**
      * The number of times this job already failed.
-     * @var int
      */
-    private $failures = 0;
+    private int $failures = 0;
 
     /**
      * Returns the number of times this job already failed.
      *
-     * @return  int
+     * @return int
      */
     final public function getFailures()
     {
@@ -40,7 +39,7 @@ abstract class AbstractBackgroundJob
     /**
      * Increments the fail counter.
      */
-    final public function fail()
+    final public function fail(): void
     {
         $this->failures++;
 
@@ -50,7 +49,7 @@ abstract class AbstractBackgroundJob
     /**
      * Returns the number of seconds to wait before requeuing a failed job.
      *
-     * @return  int 30 minutes by default
+     * @return int 30 minutes by default
      */
     public function retryAfter()
     {
@@ -61,6 +60,8 @@ abstract class AbstractBackgroundJob
      * Performs the job. It will automatically be requeued up to MAX_FAILURES times
      * if it fails (either throws an Exception or does not finish until the clean up
      * cronjob comes along).
+     *
+     * @return void
      */
     abstract public function perform();
 
@@ -70,6 +71,7 @@ abstract class AbstractBackgroundJob
      * Note: This method MUST NOT throw any exceptions. Doing so will lead to this job immediately
      * being failed completely.
      *
+     * @return void
      * @see AbstractBackgroundJob::fail()
      */
     public function onFailure()
@@ -86,6 +88,7 @@ abstract class AbstractBackgroundJob
      *
      * Note: Both onFailure() and onFinalFailure() will be called on the final failure.
      *
+     * @return void
      * @see AbstractBackgroundJob::onFailure()
      */
     public function onFinalFailure()

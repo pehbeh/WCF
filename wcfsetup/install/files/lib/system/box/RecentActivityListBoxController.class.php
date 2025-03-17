@@ -2,6 +2,8 @@
 
 namespace wcf\system\box;
 
+use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectList;
 use wcf\data\user\activity\event\ViewableUserActivityEventList;
 use wcf\data\user\ignore\UserIgnore;
 use wcf\system\condition\IObjectListCondition;
@@ -18,7 +20,7 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @property    ViewableUserActivityEventList $objectList
+ * @extends AbstractDatabaseObjectListBoxController<ViewableUserActivityEventList>
  */
 class RecentActivityListBoxController extends AbstractDatabaseObjectListBoxController
 {
@@ -192,7 +194,7 @@ class RecentActivityListBoxController extends AbstractDatabaseObjectListBoxContr
 
         if ($this->conditionDefinition) {
             foreach ($this->box->getConditions() as $condition) {
-                /** @var IObjectListCondition $processor */
+                /** @var IObjectListCondition<DatabaseObjectList<DatabaseObject>> $processor */
                 $processor = $condition->getObjectType()->getProcessor();
                 $processor->addObjectListCondition($this->objectList, $condition->conditionData);
             }

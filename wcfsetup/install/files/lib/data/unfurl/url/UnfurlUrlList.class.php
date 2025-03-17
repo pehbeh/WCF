@@ -13,11 +13,7 @@ use wcf\system\cache\runtime\FileRuntimeCache;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       5.4
  *
- * @method      UnfurlUrl           current()
- * @method      UnfurlUrl[]         getObjects()
- * @method      UnfurlUrl|null      getSingleObject()
- * @method      UnfurlUrl|null      search($objectID)
- * @property    UnfurlUrl[]         $objects
+ * @extends DatabaseObjectList<UnfurlUrl>
  */
 class UnfurlUrlList extends DatabaseObjectList
 {

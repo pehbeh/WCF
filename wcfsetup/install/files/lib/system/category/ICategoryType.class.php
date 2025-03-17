@@ -16,15 +16,14 @@ interface ICategoryType
     /**
      * Is called right after the given category is deleted.
      *
-     * @param CategoryEditor $categoryEditor
+     * @return void
      */
     public function afterDeletion(CategoryEditor $categoryEditor);
 
     /**
      * Is called before the given category is deleted.
      *
-     * @param CategoryEditor $categoryEditor
-     * @since   3.1
+     * @since 3.1
      * @return void
      */
     public function beforeDeletion(CategoryEditor $categoryEditor);
@@ -32,54 +31,46 @@ interface ICategoryType
     /**
      * Returns true if the active user can add a category of this type.
      *
-     * @return  bool
+     * @return bool
      */
     public function canAddCategory();
 
     /**
      * Returns true if the active user can delete a category of this type.
      *
-     * @return  bool
+     * @return bool
      */
     public function canDeleteCategory();
 
     /**
      * Returns true if the active user can edit a category of this type.
      *
-     * @return  bool
+     * @return bool
      */
     public function canEditCategory();
 
     /**
      * Is called after categories were assigned different parent categories.
      *
-     * Array structure:
-     * [
-     *  categoryID => [
-     *      oldParentCategoryID => 1,
-     *      newParentCategoryID => 2
-     *  ],
-     *  categoryID => [
-     *      oldParentCategoryID => null,
-     *      newParentCategoryID => 2
-     *  ],
-     * ]
-     *
-     * @param array $categoryData
+     * @param array<int, array{
+     *  newParentCategoryID: int,
+     *  oldParentCategoryID: ?int,
+     * }> $categoryData
+     * @return void
      */
     public function changedParentCategories(array $categoryData);
 
     /**
      * Returns true if a category of this type may have no empty description.
      *
-     * @return  bool
+     * @return bool
      */
     public function forceDescription();
 
     /**
      * Returns abbreviation of the application this category type belongs to.
      *
-     * @return  string
+     * @return string
      */
     public function getApplication();
 
@@ -88,7 +79,7 @@ interface ICategoryType
      * name for categories of this type or `null` if no such object type exists.
      *
      * @param string $definitionName
-     * @return  string|null
+     * @return ?string
      */
     public function getObjectTypeName($definitionName);
 
@@ -96,14 +87,14 @@ interface ICategoryType
      * Returns the language variable category for the description language
      * variables of categories of this type.
      *
-     * @return  string
+     * @return string
      */
     public function getDescriptionLangVarCategory();
 
     /**
      * Returns the prefix used for language variables of i18n values.
      *
-     * @return  string
+     * @return string
      */
     public function getI18nLangVarPrefix();
 
@@ -118,7 +109,7 @@ interface ICategoryType
      *
      * @param string $name
      * @param bool $optional
-     * @return  string
+     * @return string
      */
     public function getLanguageVariable($name, $optional = false);
 
@@ -126,7 +117,7 @@ interface ICategoryType
      * Returns the maximum category nesting level for this type. "-1" means
      * that there is no maximum.
      *
-     * @return  int
+     * @return int
      */
     public function getMaximumNestingLevel();
 
@@ -134,22 +125,22 @@ interface ICategoryType
      * Returns the language variable category for the title language variables
      * of categories of this type.
      *
-     * @return  string
+     * @return string
      */
     public function getTitleLangVarCategory();
 
     /**
      * Returns true if categories of this type have descriptions.
      *
-     * @return  bool
+     * @return bool
      */
     public function hasDescription();
 
     /**
      * Returns `true` if the descriptions of categories of this type support HTML.
      *
-     * @return  bool
-     * @since   5.2
+     * @return bool
+     * @since 5.2
      */
     public function supportsHtmlDescription();
 }

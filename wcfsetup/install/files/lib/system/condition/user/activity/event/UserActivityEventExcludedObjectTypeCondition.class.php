@@ -7,7 +7,6 @@ use wcf\data\object\type\ObjectTypeCache;
 use wcf\data\user\activity\event\UserActivityEventList;
 use wcf\system\condition\AbstractMultiSelectCondition;
 use wcf\system\condition\IObjectListCondition;
-use wcf\system\exception\InvalidObjectArgument;
 use wcf\system\WCF;
 
 /**
@@ -17,6 +16,8 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
+ *
+ * @implements IObjectListCondition<UserActivityEventList>
  */
 class UserActivityEventExcludedObjectTypeCondition extends AbstractMultiSelectCondition implements IObjectListCondition
 {
@@ -40,10 +41,6 @@ class UserActivityEventExcludedObjectTypeCondition extends AbstractMultiSelectCo
      */
     public function addObjectListCondition(DatabaseObjectList $objectList, array $conditionData)
     {
-        if (!($objectList instanceof UserActivityEventList)) {
-            throw new InvalidObjectArgument($objectList, UserActivityEventList::class, 'Object list');
-        }
-
         $objectList->getConditionBuilder()->add(
             'user_activity_event.objectTypeID NOT IN (?)',
             [$conditionData[$this->fieldName]]

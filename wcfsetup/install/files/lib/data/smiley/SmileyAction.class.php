@@ -15,9 +15,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  SmileyEditor[]  getObjects()
- * @method  SmileyEditor    getSingleObject()
- * @property-read SmileyEditor[] $objects
+ * @extends AbstractDatabaseObjectAction<Smiley, SmileyEditor>
  */
 class SmileyAction extends AbstractDatabaseObjectAction implements ISortableAction
 {

@@ -89,7 +89,7 @@ final class DevtoolsProjectRequiredPackagesFormField extends AbstractFormField
     /**
      * @inheritDoc
      */
-    protected static function getDefaultId()
+    protected static function getDefaultId(): string
     {
         return 'requiredPackages';
     }

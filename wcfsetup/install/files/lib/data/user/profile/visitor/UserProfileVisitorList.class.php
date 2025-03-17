@@ -14,11 +14,7 @@ use wcf\data\user\UserProfile;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserProfile     current()
- * @method  UserProfile[]       getObjects()
- * @method  UserProfile|null    getSingleObject()
- * @method  UserProfile|null    search($objectID)
- * @property    UserProfile[] $objects
+ * @extends DatabaseObjectList<UserProfile>
  */
 class UserProfileVisitorList extends DatabaseObjectList
 {

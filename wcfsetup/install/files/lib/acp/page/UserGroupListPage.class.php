@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\UserGroupGridView;
 
 /**
@@ -13,9 +12,9 @@ use wcf\system\gridView\admin\UserGroupGridView;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    UserGroupGridView $gridView
+ * @extends AbstractGridViewPage<UserGroupGridView>
  */
-class UserGroupListPage extends AbstractGridViewPage
+final class UserGroupListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -28,7 +27,7 @@ class UserGroupListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.user.canEditGroup', 'admin.user.canDeleteGroup'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): UserGroupGridView
     {
         return new UserGroupGridView();
     }

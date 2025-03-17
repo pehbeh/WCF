@@ -6,7 +6,6 @@ use wcf\data\condition\Condition;
 use wcf\data\DatabaseObjectList;
 use wcf\data\user\User;
 use wcf\data\user\UserList;
-use wcf\system\exception\InvalidObjectArgument;
 use wcf\system\exception\UserInputException;
 use wcf\system\WCF;
 
@@ -17,6 +16,8 @@ use wcf\system\WCF;
  * @author  Matthias Schmidt
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @implements IObjectListCondition<UserList>
  */
 class UserRegistrationDateIntervalCondition extends AbstractIntegerCondition implements
     IContentCondition,
@@ -40,10 +41,6 @@ class UserRegistrationDateIntervalCondition extends AbstractIntegerCondition imp
      */
     public function addObjectListCondition(DatabaseObjectList $objectList, array $conditionData): void
     {
-        if (!($objectList instanceof UserList)) {
-            throw new InvalidObjectArgument($objectList, UserList::class, 'Object list');
-        }
-
         if (isset($conditionData['greaterThan'])) {
             $objectList->getConditionBuilder()->add(
                 'user_table.registrationDate < ?',

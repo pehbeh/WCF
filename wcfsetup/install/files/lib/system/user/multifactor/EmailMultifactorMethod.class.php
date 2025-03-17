@@ -95,6 +95,9 @@ final class EmailMultifactorMethod implements IMultifactorMethod
     /**
      * Returns a code from $codes matching the $userCode. `null` is returned if
      * no matching code could be found.
+     *
+     * @param mixed[][] $codes
+     * @return mixed[]
      */
     private function findValidCode(string $userCode, array $codes): ?array
     {

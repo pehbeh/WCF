@@ -18,9 +18,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  NoticeEditor[]      getObjects()
- * @method  NoticeEditor        getSingleObject()
- * @property-read NoticeEditor[] $objects
+ * @extends AbstractDatabaseObjectAction<Notice, NoticeEditor>
  */
 class NoticeAction extends AbstractDatabaseObjectAction implements ISortableAction, IToggleAction
 {
@@ -115,6 +113,8 @@ class NoticeAction extends AbstractDatabaseObjectAction implements ISortableActi
 
     /**
      * Validates the 'dismiss' action.
+     *
+     * @return void
      */
     public function validateDismiss()
     {

@@ -12,9 +12,8 @@ use wcf\data\DatabaseObjectEditor;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method static PageContent create(array $parameters = [])
- * @method      PageContent getDecoratedObject()
  * @mixin       PageContent
+ * @extends DatabaseObjectEditor<PageContent>
  */
 class PageContentEditor extends DatabaseObjectEditor
 {

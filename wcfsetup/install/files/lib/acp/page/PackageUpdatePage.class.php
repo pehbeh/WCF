@@ -23,7 +23,7 @@ class PackageUpdatePage extends AbstractPage
 
     /**
      * list of available updates
-     * @var array
+     * @var mixed[]
      */
     public $availableUpdates = [];
 

@@ -15,11 +15,15 @@ final class ValueIntervalFormFieldDependency extends AbstractFormFieldDependency
 {
     /**
      * maximum value of the value interval
+     *
+     * @var float|int|null
      */
     protected $maximum;
 
     /**
      * minimum value of the value interval
+     *
+     * @var float|int|null
      */
     protected $minimum;
 

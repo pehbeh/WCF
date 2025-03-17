@@ -12,9 +12,7 @@ use wcf\system\acl\ACLHandler;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  ACLOption       create()
- * @method  ACLOptionEditor[]   getObjects()
- * @method  ACLOptionEditor     getSingleObject()
+ * @extends AbstractDatabaseObjectAction<ACLOption, ACLOptionEditor>
  */
 class ACLOptionAction extends AbstractDatabaseObjectAction
 {
@@ -30,6 +28,8 @@ class ACLOptionAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates parameters for ACL options.
+     *
+     * @return void
      */
     public function validateLoadAll()
     {
@@ -41,7 +41,7 @@ class ACLOptionAction extends AbstractDatabaseObjectAction
     /**
      * Returns a set of permissions and their values if applicable.
      *
-     * @return  array
+     * @return mixed[]
      */
     public function loadAll()
     {

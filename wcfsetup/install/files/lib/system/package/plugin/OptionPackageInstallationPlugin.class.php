@@ -179,6 +179,7 @@ class OptionPackageInstallationPlugin extends AbstractOptionPackageInstallationP
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -190,8 +191,7 @@ class OptionPackageInstallationPlugin extends AbstractOptionPackageInstallationP
 
         switch ($this->entryType) {
             case 'options':
-                /** @var SingleSelectionFormField $optionType */
-                $optionType = $form->getNodeById('optionType');
+                $optionType = $form->getFormField('optionType');
 
                 /** @var TextFormField $optionNameField */
                 $optionNameField = $dataContainer->getNodeById('optionName');
@@ -252,8 +252,8 @@ class OptionPackageInstallationPlugin extends AbstractOptionPackageInstallationP
                 ));
 
                 // add `hidden` pseudo-category
-                /** @var SingleSelectionFormField $categoryName */
                 $categoryName = $form->getNodeById('categoryName');
+                \assert($categoryName instanceof SingleSelectionFormField);
                 $options = $categoryName->getNestedOptions();
                 $options[] = [
                     'depth' => 0,
@@ -318,6 +318,8 @@ class OptionPackageInstallationPlugin extends AbstractOptionPackageInstallationP
 
     /**
      * @inheritDoc
+     * @param bool $saveData
+     * @return array<string, int|string>
      * @since   5.2
      */
     protected function fetchElementData(\DOMElement $element, $saveData)
@@ -347,11 +349,11 @@ class OptionPackageInstallationPlugin extends AbstractOptionPackageInstallationP
 
     /**
      * @inheritDoc
-     * @since   5.2
+     * @return OptionHandler<Option, OptionCategory>
+     * @since 5.2
      */
     protected function getSortOptionHandler()
     {
-        // reuse OptionHandler
         return new class(true) extends OptionHandler {
             /**
              * @inheritDoc
@@ -384,6 +386,7 @@ class OptionPackageInstallationPlugin extends AbstractOptionPackageInstallationP
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      * @since   5.2
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)

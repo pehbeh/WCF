@@ -11,7 +11,6 @@ use wcf\data\category\CategoryNodeTree;
 use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\event\gridView\admin\ArticleGridViewInitialized;
-use wcf\event\IPsr14Event;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\BooleanFilter;
 use wcf\system\gridView\filter\CategoryFilter;
@@ -23,6 +22,7 @@ use wcf\system\gridView\GridViewColumn;
 use wcf\system\gridView\GridViewRowLink;
 use wcf\system\gridView\renderer\CategoryColumnRenderer;
 use wcf\system\gridView\renderer\DefaultColumnRenderer;
+use wcf\system\gridView\renderer\NumberColumnRenderer;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\gridView\renderer\TimeColumnRenderer;
 use wcf\system\gridView\renderer\UserLinkColumnRenderer;
@@ -31,7 +31,6 @@ use wcf\system\interaction\bulk\admin\ArticleBulkInteractions;
 use wcf\system\interaction\Divider;
 use wcf\system\interaction\EditInteraction;
 use wcf\system\WCF;
-use wcf\util\DateUtil;
 use wcf\util\StringUtil;
 
 /**
@@ -41,6 +40,8 @@ use wcf\util\StringUtil;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @extends AbstractGridView<Article, AccessibleArticleList>
  */
 final class ArticleGridView extends AbstractGridView
 {
@@ -132,6 +133,7 @@ final class ArticleGridView extends AbstractGridView
                 ->hidden(),
             GridViewColumn::for('views')
                 ->label('wcf.acp.article.views')
+                ->renderer(new NumberColumnRenderer())
                 ->sortable(),
             GridViewColumn::for('time')
                 ->label('wcf.acp.sessionLog.time')

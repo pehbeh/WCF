@@ -7,5 +7,8 @@ namespace wcf\system\cli\command;
  */
 interface IArgumentedCLICommand extends ICLICommand
 {
+    /**
+     * @return string
+     */
     public function getUsage();
 }

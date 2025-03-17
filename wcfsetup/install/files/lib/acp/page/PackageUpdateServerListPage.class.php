@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\PackageUpdateServerGridView;
 
 /**
@@ -13,9 +12,9 @@ use wcf\system\gridView\admin\PackageUpdateServerGridView;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    PackageUpdateServerGridView $gridView
+ * @extends AbstractGridViewPage<PackageUpdateServerGridView>
  */
-class PackageUpdateServerListPage extends AbstractGridViewPage
+final class PackageUpdateServerListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -28,7 +27,7 @@ class PackageUpdateServerListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.configuration.package.canEditServer'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): PackageUpdateServerGridView
     {
         return new PackageUpdateServerGridView();
     }

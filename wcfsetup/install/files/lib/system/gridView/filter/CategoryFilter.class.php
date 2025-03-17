@@ -17,6 +17,9 @@ use wcf\system\form\builder\field\SelectFormField;
  */
 class CategoryFilter extends AbstractFilter
 {
+    /**
+     * @param \Traversable<mixed> $options
+     */
     public function __construct(private readonly \Traversable $options, string $databaseColumn = '')
     {
         parent::__construct($databaseColumn);

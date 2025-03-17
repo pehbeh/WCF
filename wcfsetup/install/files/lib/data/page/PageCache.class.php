@@ -17,8 +17,14 @@ use wcf\system\WCF;
 class PageCache extends SingletonFactory
 {
     /**
-     * page cache
-     * @var array
+     * @var array{
+     *  identifier: array<string, int>,
+     *  controller: array<string, int>,
+     *  pages: array<int, Page>,
+     *  pageTitles: array<int, array<int, string>>,
+     *  landingPage: Page,
+     *  pageMetaDescriptions: array<int, array<int, string>>,
+     * }
      */
     protected $cache;
 

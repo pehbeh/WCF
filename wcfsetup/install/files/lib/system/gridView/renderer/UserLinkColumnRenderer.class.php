@@ -3,7 +3,7 @@
 namespace wcf\system\gridView\renderer;
 
 use wcf\data\DatabaseObject;
-use wcf\system\cache\runtime\AbstractRuntimeCache;
+use wcf\data\user\User;
 use wcf\system\cache\runtime\UserRuntimeCache;
 use wcf\util\StringUtil;
 
@@ -14,9 +14,15 @@ use wcf\util\StringUtil;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @template TDatabaseObject of DatabaseObject = User
+ * @extends ObjectLinkColumnRenderer<TDatabaseObject, UserRuntimeCache>
  */
 class UserLinkColumnRenderer extends ObjectLinkColumnRenderer
 {
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function __construct(
         string $controllerClass = '',
         array $parameters = [],
@@ -27,7 +33,7 @@ class UserLinkColumnRenderer extends ObjectLinkColumnRenderer
     }
 
     #[\Override]
-    protected function getRuntimeCache(): AbstractRuntimeCache
+    protected function getRuntimeCache(): UserRuntimeCache
     {
         return UserRuntimeCache::getInstance();
     }

@@ -19,7 +19,10 @@ class CategoryPermissionHandler extends SingletonFactory
 {
     /**
      * cached category acl options
-     * @var array
+     * @var array<int, array{
+     *  group: array<int, array<string, int>>,
+     *  user: array<int, array<string, int>>,
+     * }>
      */
     protected $categoryPermissions = [];
 
@@ -29,7 +32,7 @@ class CategoryPermissionHandler extends SingletonFactory
      *
      * @param Category $category
      * @param User $user
-     * @return  int[]
+     * @return array<string, int>
      */
     public function getPermissions(Category $category, ?User $user = null)
     {
@@ -39,24 +42,19 @@ class CategoryPermissionHandler extends SingletonFactory
 
         $permissions = [];
         if (isset($this->categoryPermissions[$category->categoryID])) {
-            if (isset($this->categoryPermissions[$category->categoryID]['group'])) {
-                foreach ($user->getGroupIDs() as $groupID) {
-                    if (isset($this->categoryPermissions[$category->categoryID]['group'][$groupID])) {
-                        foreach ($this->categoryPermissions[$category->categoryID]['group'][$groupID] as $optionName => $optionValue) {
-                            if (isset($permissions[$optionName])) {
-                                $permissions[$optionName] = $permissions[$optionName] || $optionValue;
-                            } else {
-                                $permissions[$optionName] = $optionValue;
-                            }
+            foreach ($user->getGroupIDs() as $groupID) {
+                if (isset($this->categoryPermissions[$category->categoryID]['group'][$groupID])) {
+                    foreach ($this->categoryPermissions[$category->categoryID]['group'][$groupID] as $optionName => $optionValue) {
+                        if (isset($permissions[$optionName])) {
+                            $permissions[$optionName] = $permissions[$optionName] || $optionValue;
+                        } else {
+                            $permissions[$optionName] = $optionValue;
                         }
                     }
                 }
             }
 
-            if (
-                isset($this->categoryPermissions[$category->categoryID]['user'])
-                && isset($this->categoryPermissions[$category->categoryID]['user'][$user->userID])
-            ) {
+            if (isset($this->categoryPermissions[$category->categoryID]['user'][$user->userID])) {
                 foreach ($this->categoryPermissions[$category->categoryID]['user'][$user->userID] as $optionName => $optionValue) {
                     $permissions[$optionName] = $optionValue;
                 }
@@ -76,6 +74,8 @@ class CategoryPermissionHandler extends SingletonFactory
 
     /**
      * Resets the category permission cache.
+     *
+     * @return void
      */
     public function resetCache()
     {

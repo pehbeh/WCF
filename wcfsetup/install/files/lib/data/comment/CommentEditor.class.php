@@ -12,9 +12,8 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static Comment     create(array $parameters = [])
- * @method      Comment     getDecoratedObject()
  * @mixin       Comment
+ * @extends DatabaseObjectEditor<Comment>
  */
 class CommentEditor extends DatabaseObjectEditor
 {
@@ -25,6 +24,8 @@ class CommentEditor extends DatabaseObjectEditor
 
     /**
      * Updates response ids.
+     *
+     * @return void
      */
     public function updateResponseIDs()
     {
@@ -42,6 +43,8 @@ class CommentEditor extends DatabaseObjectEditor
 
     /**
      * Updates response ids, including disabled ones.
+     *
+     * @return void
      */
     public function updateUnfilteredResponseIDs()
     {

@@ -45,16 +45,16 @@ abstract class DatabaseObject implements IIDObject, IStorableObject
 
     /**
      * object data
-     * @var array
+     * @var mixed[]
      */
     protected $data;
 
     /**
      * Creates a new instance of the DatabaseObject class.
      *
-     * @param mixed $id
-     * @param array $row
-     * @param DatabaseObject $object
+     * @param string|int|null $id
+     * @param mixed[]|null $row
+     * @param ?static $object
      */
     public function __construct($id, ?array $row = null, ?self $object = null)
     {
@@ -80,7 +80,8 @@ abstract class DatabaseObject implements IIDObject, IStorableObject
     /**
      * Stores the data of a database row.
      *
-     * @param array $data
+     * @param mixed[] $data
+     * @return void
      */
     protected function handleData($data)
     {
@@ -222,6 +223,7 @@ abstract class DatabaseObject implements IIDObject, IStorableObject
      * @param mixed $sortBy
      * @param string $sortOrder
      * @param bool $maintainIndexAssociation
+     * @return void
      */
     public static function sort(&$objects, $sortBy, $sortOrder = 'ASC', $maintainIndexAssociation = true)
     {

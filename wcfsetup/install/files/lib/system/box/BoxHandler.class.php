@@ -71,7 +71,8 @@ class BoxHandler extends SingletonFactory
      * @param string $boxIdentifier
      * @param string $conditionDefinition
      * @param string $conditionObjectType
-     * @param array $conditionData
+     * @param mixed[] $conditionData
+     * @return void
      * @throws  \InvalidArgumentException
      * @deprecated 6.1 use `CreateBoxCondition` instead
      */
@@ -122,7 +123,8 @@ class BoxHandler extends SingletonFactory
      * @param string $boxIdentifier
      * @param string[] $pageIdentifiers
      * @param bool $visible
-     * @throws  \InvalidArgumentException
+     * @return void
+     * @throws \InvalidArgumentException
      * @deprecated 6.1 use `CreateBoxCondition` instead
      */
     public function addBoxToPageAssignments($boxIdentifier, array $pageIdentifiers, $visible = true)
@@ -150,6 +152,8 @@ class BoxHandler extends SingletonFactory
 
     /**
      * Disables the loading of the box layout for the active page.
+     *
+     * @return void
      */
     public static function disablePageLayout()
     {

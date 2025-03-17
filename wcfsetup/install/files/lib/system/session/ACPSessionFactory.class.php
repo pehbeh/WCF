@@ -15,17 +15,21 @@ use wcf\system\event\EventHandler;
 class ACPSessionFactory
 {
     /**
+     * @var string
      * @deprecated 5.4 - This property is not read any longer.
      */
     protected $cookieSuffix = 'acp_';
 
     /**
+     * @var string
      * @deprecated 5.4 - This property is not read any longer.
      */
     protected $sessionEditor = ACPSessionEditor::class;
 
     /**
      * Loads the object of the active session.
+     *
+     * @return void
      */
     public function load()
     {
@@ -45,6 +49,7 @@ class ACPSessionFactory
     }
 
     /**
+     * @return bool
      * @deprecated 5.4 - Sessions are fully managed by SessionHandler.
      */
     public function hasValidCookie()
@@ -54,6 +59,8 @@ class ACPSessionFactory
 
     /**
      * Initializes the session system.
+     *
+     * @return void
      */
     protected function init()
     {

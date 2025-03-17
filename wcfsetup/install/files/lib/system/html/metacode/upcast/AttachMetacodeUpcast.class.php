@@ -86,7 +86,7 @@ final class AttachMetacodeUpcast extends AbstractImageMetacodeUpcast
         if (\count($attributes) < 1 || \count($attributes) > 3) {
             return false;
         }
-        $attachment = AttachmentRuntimeCache::getInstance()->getObject($attributes[0]);
+        $attachment = AttachmentRuntimeCache::getInstance()->getObject((int)$attributes[0]);
         if ($attachment === null) {
             return false;
         }

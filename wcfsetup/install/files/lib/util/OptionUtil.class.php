@@ -14,10 +14,9 @@ final class OptionUtil
     /**
      * Returns a list of the available options.
      *
-     * @param string $selectOptions
-     * @return  array
+     * @return array<string, string>
      */
-    public static function parseSelectOptions($selectOptions)
+    public static function parseSelectOptions(string $selectOptions): array
     {
         $result = [];
         $options = \explode("\n", StringUtil::trim(StringUtil::unifyNewlines($selectOptions)));
@@ -38,10 +37,9 @@ final class OptionUtil
     /**
      * Returns a list of the enable options.
      *
-     * @param string $enableOptions
-     * @return  array
+     * @return array<string, string>
      */
-    public static function parseMultipleEnableOptions($enableOptions)
+    public static function parseMultipleEnableOptions(string $enableOptions): array
     {
         $result = [];
         if (!empty($enableOptions)) {

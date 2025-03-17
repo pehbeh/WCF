@@ -63,12 +63,15 @@ final class SearchHandler
      */
     private $results = [];
 
+    /**
+     * @param mixed[] $parameters
+     */
     public function __construct(array $parameters)
     {
         $this->parameters = $parameters;
     }
 
-    public function search()
+    public function search(): ?Search
     {
         $this->initParameters();
         $this->buildConditions();
@@ -266,6 +269,9 @@ final class SearchHandler
         return $form;
     }
 
+    /**
+     * @return int[]
+     */
     private function getUserIDs(): array
     {
         if ($this->userIDs === null) {
@@ -383,6 +389,9 @@ final class SearchHandler
         return $resultValues['returnValues'];
     }
 
+    /**
+     * @return mixed[]
+     */
     private function getAdditionalData(): array
     {
         $additionalData = [];

@@ -16,6 +16,8 @@ use wcf\util\StringUtil;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @phpstan-import-type Instruction from PackageArchive
+ * @phpstan-import-type VoidInstruction from PackageArchive
  */
 class PackageInstallationNodeBuilder
 {
@@ -61,11 +63,6 @@ class PackageInstallationNodeBuilder
      */
     private static $pendingPackages = [];
 
-    /**
-     * Creates a new instance of PackageInstallationNodeBuilder
-     *
-     * @param PackageInstallationDispatcher $installation
-     */
     public function __construct(PackageInstallationDispatcher $installation)
     {
         $this->installation = $installation;
@@ -73,6 +70,8 @@ class PackageInstallationNodeBuilder
 
     /**
      * Sets parent node.
+     *
+     * @return void
      */
     public function setParentNode(string $parentNode)
     {
@@ -81,6 +80,8 @@ class PackageInstallationNodeBuilder
 
     /**
      * Builds nodes for current installation queue.
+     *
+     * @return void
      */
     public function buildNodes()
     {
@@ -250,7 +251,7 @@ class PackageInstallationNodeBuilder
     /**
      * Returns data for current node.
      *
-     * @return  array
+     * @return list<array{nodeType: string, nodeData: string, sequenceNo: int}>
      */
     public function getNodeData(string $node)
     {
@@ -270,6 +271,8 @@ class PackageInstallationNodeBuilder
 
     /**
      * Marks a node as completed.
+     *
+     * @return void
      */
     public function completeNode(string $node)
     {
@@ -288,6 +291,8 @@ class PackageInstallationNodeBuilder
      * Removes all nodes associated with queue's process no.
      *
      * CAUTION: This method SHOULD NOT be called within the installation process!
+     *
+     * @return void
      */
     public function purgeNodes()
     {
@@ -350,6 +355,7 @@ class PackageInstallationNodeBuilder
      *
      * @param string $node
      * @param int $sequenceNo
+     * @return void
      */
     public function cloneNode($node, $sequenceNo)
     {
@@ -406,6 +412,8 @@ class PackageInstallationNodeBuilder
 
     /**
      * Shifts nodes to allow dynamic inserts at runtime.
+     *
+     * @return void
      */
     public function shiftNodes(string $oldParentNode, string $newParentNode)
     {
@@ -421,6 +429,9 @@ class PackageInstallationNodeBuilder
         ]);
     }
 
+    /**
+     * @return void
+     */
     protected function buildStartMarkerNode(?string $currentPackageVersion)
     {
         if (!empty($this->node)) {
@@ -446,6 +457,9 @@ class PackageInstallationNodeBuilder
         ]);
     }
 
+    /**
+     * @return void
+     */
     protected function buildEndMarkerNode()
     {
         if (!empty($this->node)) {
@@ -471,6 +485,8 @@ class PackageInstallationNodeBuilder
 
     /**
      * Builds package node used to install the package itself.
+     *
+     * @return void
      */
     protected function buildPackageNode()
     {
@@ -645,6 +661,8 @@ class PackageInstallationNodeBuilder
     /**
      * Builds package installation plugin nodes, whereas pips could be grouped within
      * one node, differ from each by nothing but the sequence number.
+     *
+     * @param Instruction[]|array{0: VoidInstruction} $instructions
      */
     protected function buildPluginNodes(array $instructions): void
     {
@@ -670,7 +688,7 @@ class PackageInstallationNodeBuilder
         foreach ($instructions as $pip) {
             $i++;
 
-            if (isset($pip['attributes']['run']) && ($pip['attributes']['run'] == 'standalone')) {
+            if (isset($pip['attributes']['run']) && ($pip['attributes']['run'] === 'standalone')) {
                 // move into a new node unless current one is empty
                 if (!$this->emptyNode) {
                     $this->parentNode = $this->node;
@@ -731,6 +749,8 @@ class PackageInstallationNodeBuilder
      * Builds nodes for optional packages, whereas each package exists within
      * one node with the same parent node, separated by sequence no (which does
      * not really matter at this point).
+     *
+     * @return void
      */
     protected function buildOptionalNodes()
     {
@@ -817,6 +837,8 @@ class PackageInstallationNodeBuilder
 
     /**
      * Recursively build nodes for child queues.
+     *
+     * @return void
      */
     protected function buildChildQueues()
     {

@@ -2723,6 +2723,9 @@
 		<file>lib/system/clipboard/action/UserExtendedClipboardAction.class.php</file>
 		<file>lib/system/clipboard/action/ArticleClipboardAction.class.php</file>
 		<file>lib/system/clipboard/action/TagClipboardAction.class.php</file>
+		<file>lib/system/clipboard/action/ModerationQueueReportClipboardAction.class.php</file>
+		<file>lib/system/clipboard/action/ModerationQueueClipboardAction.class.php</file>
+		<file>lib/system/clipboard/action/ModerationQueueActivationClipboardAction.class.php</file>
 		<file>lib/system/condition/INoticeCondition.class.php</file>
 		<file>lib/system/condition/UserReputationCondition.class.php</file>
 		<file>lib/system/cronjob/CleanUpCronjobLogCronjob.class.php</file>

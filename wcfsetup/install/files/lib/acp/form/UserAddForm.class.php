@@ -3,6 +3,7 @@
 namespace wcf\acp\form;
 
 use wcf\data\smiley\category\SmileyCategory;
+use wcf\data\smiley\Smiley;
 use wcf\data\smiley\SmileyCache;
 use wcf\data\user\group\UserGroup;
 use wcf\data\user\User;
@@ -114,18 +115,27 @@ class UserAddForm extends UserOptionListForm
 
     /**
      * tree of available user options
-     * @var array
+     * @var mixed[]
      */
     public $optionTree = [];
+
     public AttachmentHandler $attachmentHandler;
+
     public int $attachmentObjectID = 0;
+
     public string $attachmentObjectType = 'com.woltlab.wcf.user.signature';
+
+    /**
+     * @var array<int, Smiley>
+     */
     public array $defaultSmilies = [];
+
     /**
      * list of smiley categories
-     * @var SmileyCategory[]
+     * @var array<int, SmileyCategory>
      */
     public array $smileyCategories = [];
+
     public ?string $tmpHash = '';
 
     #[\Override]
@@ -341,7 +351,6 @@ class UserAddForm extends UserOptionListForm
         $this->signature = $this->disableSignatureReason = '';
         $this->groupIDs = [];
         $this->languageID = $this->getDefaultFormLanguageID();
-        \assert($this->optionHandler instanceof UserOptionHandler);
         $this->optionHandler->resetOptionValues();
         // Reload attachment handler to reset the uploaded attachments.
         $this->attachmentHandler = new AttachmentHandler(
@@ -355,7 +364,8 @@ class UserAddForm extends UserOptionListForm
      * Throws a UserInputException if the username is not unique or not valid.
      *
      * @param string $username
-     * @throws  UserInputException
+     * @return void
+     * @throws UserInputException
      */
     protected function validateUsername($username)
     {
@@ -376,7 +386,7 @@ class UserAddForm extends UserOptionListForm
 
     /**
      * Throws a UserInputException if the email is not unique or not valid.
-     * @throws  UserInputException
+     * @throws UserInputException
      */
     protected function validateEmail(string $email): void
     {
@@ -397,7 +407,7 @@ class UserAddForm extends UserOptionListForm
 
     /**
      * Throws a UserInputException if the password is not valid.
-     * @throws  UserInputException
+     * @throws UserInputException
      */
     protected function validatePassword(
         #[\SensitiveParameter]
@@ -437,6 +447,8 @@ class UserAddForm extends UserOptionListForm
 
     /**
      * Reads option tree on page init.
+     *
+     * @return void
      */
     protected function readOptionTree()
     {

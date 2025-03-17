@@ -123,6 +123,8 @@ class UserMenuItem extends ProcessibleDatabaseObject implements ITitledObject, I
 
     /**
      * Parses controller name.
+     *
+     * @return void
      */
     protected function parseController()
     {

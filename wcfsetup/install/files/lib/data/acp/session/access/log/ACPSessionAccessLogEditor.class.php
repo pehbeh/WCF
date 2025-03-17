@@ -11,9 +11,8 @@ use wcf\data\DatabaseObjectEditor;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static ACPSessionAccessLog create(array $parameters = [])
- * @method      ACPSessionAccessLog getDecoratedObject()
  * @mixin       ACPSessionAccessLog
+ * @extends DatabaseObjectEditor<ACPSessionAccessLog>
  */
 class ACPSessionAccessLogEditor extends DatabaseObjectEditor
 {

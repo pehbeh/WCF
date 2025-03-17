@@ -17,8 +17,7 @@ use wcf\system\WCF;
  * @copyright   2001-2023 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  LanguageEditor[]    getObjects()
- * @method  LanguageEditor      getSingleObject()
+ * @extends AbstractDatabaseObjectAction<Language, LanguageEditor>
  */
 class LanguageAction extends AbstractDatabaseObjectAction implements IToggleAction
 {
@@ -57,12 +56,10 @@ class LanguageAction extends AbstractDatabaseObjectAction implements IToggleActi
 
     /**
      * @inheritDoc
-     * @return  Language
      */
     public function create()
     {
         $object = parent::create();
-        \assert($object instanceof Language);
 
         if (isset($this->parameters['sourceLanguageID']) && $this->parameters['sourceLanguageID']) {
             $sourceLanguage = LanguageFactory::getInstance()->getLanguage($this->parameters['sourceLanguageID']);
@@ -80,6 +77,8 @@ class LanguageAction extends AbstractDatabaseObjectAction implements IToggleActi
 
     /**
      * Validates permission to set a language as default.
+     *
+     * @return void
      */
     public function validateSetAsDefault()
     {
@@ -90,6 +89,8 @@ class LanguageAction extends AbstractDatabaseObjectAction implements IToggleActi
 
     /**
      * Sets language as default
+     *
+     * @return void
      */
     public function setAsDefault()
     {

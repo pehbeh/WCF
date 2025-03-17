@@ -12,11 +12,7 @@ use wcf\data\DatabaseObjectList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.3
  *
- * @method  DevtoolsMissingLanguageItem     current()
- * @method  DevtoolsMissingLanguageItem[]       getObjects()
- * @method  DevtoolsMissingLanguageItem|null    getSingleObject()
- * @method  DevtoolsMissingLanguageItem|null    search($objectID)
- * @property    DevtoolsMissingLanguageItem[] $objects
+ * @extends DatabaseObjectList<DevtoolsMissingLanguageItem>
  */
 class DevtoolsMissingLanguageItemList extends DatabaseObjectList
 {

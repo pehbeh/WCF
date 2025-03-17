@@ -20,7 +20,7 @@ class HtmlOutputProcessor extends AbstractHtmlProcessor
     /**
      * Generate the table of contents, implicitly enable this for certain object types on demand.
      * @var bool|null
-     * @since   5.2
+     * @since 5.2
      */
     public $enableToc;
 
@@ -56,6 +56,7 @@ class HtmlOutputProcessor extends AbstractHtmlProcessor
      * @param int $objectID object id
      * @param bool $doKeywordHighlighting enable keyword highlighting
      * @param int $languageID content language id
+     * @return void
      */
     public function process($html, $objectType, $objectID, $doKeywordHighlighting = true, $languageID = null)
     {
@@ -78,7 +79,8 @@ class HtmlOutputProcessor extends AbstractHtmlProcessor
      * Sets the desired output type.
      *
      * @param string $outputType desired output type
-     * @throws      \InvalidArgumentException
+     * @return void
+     * @throws \InvalidArgumentException
      */
     public function setOutputType($outputType)
     {
@@ -125,7 +127,7 @@ class HtmlOutputProcessor extends AbstractHtmlProcessor
     /**
      * Returns the output node processor instance.
      *
-     * @return      HtmlOutputNodeProcessor         output node processor instance
+     * @return HtmlOutputNodeProcessor output node processor instance
      */
     protected function getHtmlOutputNodeProcessor()
     {

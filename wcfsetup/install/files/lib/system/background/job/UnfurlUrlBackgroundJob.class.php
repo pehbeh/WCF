@@ -130,6 +130,16 @@ final class UnfurlUrlBackgroundJob extends AbstractBackgroundJob
         }
     }
 
+    /**
+     * @return array{
+     *  imageUrl: string,
+     *  imageUrlHash: string,
+     *  fileID: ?int,
+     *  isStored: 1|0,
+     *  width: int,
+     *  height: int,
+     * }|array{}
+     */
     private function getImageData(UnfurlResponse $unfurlResponse): array
     {
         if (empty($unfurlResponse->getImageUrl()) || !Url::is($unfurlResponse->getImageUrl())) {
@@ -202,6 +212,9 @@ final class UnfurlUrlBackgroundJob extends AbstractBackgroundJob
         return $image;
     }
 
+    /**
+     * @param array{0: int, 1: int, 2: int, 3: string, bits: int, channels: int, mime: string} $imageData
+     */
     private function validateImage(array $imageData): bool
     {
         $isSquared = $imageData[0] === $imageData[1];
@@ -219,6 +232,9 @@ final class UnfurlUrlBackgroundJob extends AbstractBackgroundJob
         return true;
     }
 
+    /**
+     * @param array{0: int, 1: int, 2: int, 3: string, bits: int, channels: int, mime: string} $imageData
+     */
     private function createFile(array $imageData, string $originalFile, string $image): ?File
     {
         $extension = $this->getImageExtension($imageData);
@@ -240,6 +256,9 @@ final class UnfurlUrlBackgroundJob extends AbstractBackgroundJob
         return $file;
     }
 
+    /**
+     * @param array{0: int, 1: int, 2: int, 3: string, bits: int, channels: int, mime: string} $imageData
+     */
     private function getImageExtension(array $imageData): ?string
     {
         $extension = ImageUtil::getExtensionByMimeType($imageData['mime']);
@@ -255,6 +274,9 @@ final class UnfurlUrlBackgroundJob extends AbstractBackgroundJob
         }
     }
 
+    /**
+     * @param array{imageUrl: string, imageUrlHash: string, fileID: ?int, isStored: 1|0, width: int, height: int}|array{} $imageData
+     */
     private function save(
         string $status,
         string $title = "",

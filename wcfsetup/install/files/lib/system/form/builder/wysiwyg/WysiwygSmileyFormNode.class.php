@@ -43,7 +43,7 @@ class WysiwygSmileyFormNode implements IFormChildNode
     /**
      * Returns the list of available smilies.
      *
-     * @return  Smiley[]
+     * @return Smiley[]
      */
     public function getSmilies()
     {
@@ -51,7 +51,7 @@ class WysiwygSmileyFormNode implements IFormChildNode
     }
 
     /**
-     * @inheritDoc
+     * @return bool
      */
     public function hasSaveValue()
     {
@@ -59,7 +59,7 @@ class WysiwygSmileyFormNode implements IFormChildNode
     }
 
     /**
-     * @inheritDoc
+     * @return void
      */
     public function readValue()
     {

@@ -52,6 +52,7 @@ class UserActivityPointHandler extends SingletonFactory
      * @param int $objectID
      * @param int $userID
      * @param mixed[] $additionalData
+     * @return void
      * @throws  InvalidObjectTypeException
      * @throws  SystemException
      */
@@ -110,6 +111,7 @@ class UserActivityPointHandler extends SingletonFactory
      * @param string $objectType
      * @param int[] $itemsToUser
      * @param bool $updateUsers
+     * @return void
      * @throws  InvalidObjectTypeException
      */
     public function fireEvents($objectType, array $itemsToUser, $updateUsers = true)
@@ -165,6 +167,7 @@ class UserActivityPointHandler extends SingletonFactory
      *
      * @param string $objectType
      * @param int[] $userToItems
+     * @return void
      * @throws  InvalidObjectTypeException
      */
     public function removeEvents($objectType, array $userToItems)
@@ -204,6 +207,7 @@ class UserActivityPointHandler extends SingletonFactory
      * Updates total activity points and ranks for given user ids.
      *
      * @param int[] $userIDs
+     * @return void
      */
     public function updateUsers(array $userIDs)
     {
@@ -230,6 +234,7 @@ class UserActivityPointHandler extends SingletonFactory
      * Resets activity points and items for a given object type.
      *
      * @param string $objectType
+     * @return void
      * @throws  InvalidObjectTypeException
      */
     public function reset($objectType)
@@ -280,6 +285,7 @@ class UserActivityPointHandler extends SingletonFactory
      * Updates the user ranks for the given users.
      *
      * @param int[] $userIDs
+     * @return void
      */
     protected function updateUserRanks(array $userIDs)
     {

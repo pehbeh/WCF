@@ -31,13 +31,16 @@ class TemplateGroup extends DatabaseObject implements ITitledObject
      */
     protected static $templateGroupStructure;
 
+    /**
+     * @var array<int, string>
+     */
     protected static $selectList;
 
     /**
      * Returns whether the template group is immutable (i.e. whether it's the email
      * or shared template group).
      *
-     * @return  bool
+     * @return bool
      */
     public function isImmutable()
     {
@@ -47,7 +50,7 @@ class TemplateGroup extends DatabaseObject implements ITitledObject
     /**
      * Returns the localized name of the template group.
      *
-     * @return  string
+     * @return string
      */
     public function getName()
     {
@@ -66,7 +69,7 @@ class TemplateGroup extends DatabaseObject implements ITitledObject
      * @param int[] $ignore Array of template group ids that should be excluded with all of their children.
      *                      -1 denotes that all immutable groups should be ignored.
      * @param int $initialDepth Specifies the initial indentation depth of the list
-     * @return  array
+     * @return array<int, string>
      */
     public static function getSelectList($ignore = [], $initialDepth = 0)
     {
@@ -78,7 +81,7 @@ class TemplateGroup extends DatabaseObject implements ITitledObject
         return self::$selectList;
     }
 
-    private static function buildTemplateGroupStructure()
+    private static function buildTemplateGroupStructure(): void
     {
         if (self::$templateGroupStructure === null) {
             self::$templateGroupStructure = [];
@@ -97,6 +100,7 @@ class TemplateGroup extends DatabaseObject implements ITitledObject
     /**
      * Returns a list of all parent template groups.
      *
+     * @param int $parentID
      * @return \Generator<TemplateGroup>
      */
     public static function getParentTemplatesGroups($parentID = 0): \Generator
@@ -114,7 +118,8 @@ class TemplateGroup extends DatabaseObject implements ITitledObject
      *
      * @param int $parentID id of the parent template group
      * @param int $depth current list depth
-     * @param array $ignore list of template group ids to ignore in result
+     * @param int[] $ignore list of template group ids to ignore in result
+     * @return void
      */
     protected static function makeSelectList($parentID = 0, $depth = 0, $ignore = [])
     {

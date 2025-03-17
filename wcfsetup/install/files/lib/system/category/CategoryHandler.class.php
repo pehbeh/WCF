@@ -46,8 +46,8 @@ class CategoryHandler extends SingletonFactory
      * Returns all category objects with the given object type. If no object
      * type is given, all categories grouped by object type are returned.
      *
-     * @param string $objectType
-     * @return  Category[]|Category[][]
+     * @param ?string $objectType
+     * @return ($objectType is null ? array<string, array<int, Category>> : array<int, Category>)
      */
     public function getCategories($objectType = null)
     {
@@ -157,6 +157,8 @@ class CategoryHandler extends SingletonFactory
 
     /**
      * Reloads the category cache.
+     *
+     * @return void
      */
     public function reloadCache()
     {

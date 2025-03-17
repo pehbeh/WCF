@@ -11,9 +11,8 @@ use wcf\data\DatabaseObjectEditor;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static Search      create(array $parameters = [])
- * @method      Search      getDecoratedObject()
- * @mixin       Search
+ * @mixin Search
+ * @extends DatabaseObjectEditor<Search>
  */
 class SearchEditor extends DatabaseObjectEditor
 {

@@ -50,6 +50,9 @@ final class DeleteItem implements IController
         }
     }
 
+    /**
+     * @return array<int, LanguageItem>
+     */
     private function getLanguageItemsForAllLanguages(LanguageItem $languageItem): array
     {
         $languageItemList = new LanguageItemList();

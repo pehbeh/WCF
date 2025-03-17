@@ -16,9 +16,9 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static Notice      create(array $parameters = [])
- * @method      Notice      getDecoratedObject()
  * @mixin       Notice
+ * @extends DatabaseObjectEditor<Notice>
+ * @implements IEditableCachedObject<Notice>
  */
 class NoticeEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {
@@ -31,6 +31,7 @@ class NoticeEditor extends DatabaseObjectEditor implements IEditableCachedObject
      * Sets the show order of the notice.
      *
      * @param int $showOrder
+     * @return void
      */
     public function setShowOrder($showOrder = 0)
     {

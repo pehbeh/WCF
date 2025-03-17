@@ -15,6 +15,7 @@ use wcf\system\exception\UserInputException;
 class DefaultUserAuthentication extends AbstractUserAuthentication
 {
     /**
+     * @return false
      * @deprecated 5.4 - This method always returns false, as the legacy automated login was removed.
      */
     public function supportsPersistentLogins()
@@ -23,6 +24,9 @@ class DefaultUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
+     * @param string $username
+     * @param string $password
+     * @return void
      * @deprecated 5.4 - This method is a noop, as user sessions are long-lived now.
      */
     public function storeAccessData(User $user, $username, $password)
@@ -55,6 +59,9 @@ class DefaultUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
+     * @param bool $persistent
+     * @param string $userClassname
+     * @return void
      * @deprecated 5.4 - This method always returns null, as user sessions are long-lived now.
      */
     public function loginAutomatically($persistent = false, $userClassname = User::class)
@@ -73,6 +80,10 @@ class DefaultUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
+     * @param int $userID
+     * @param string $password
+     * @param string $userClassname
+     * @return void
      * @deprecated 5.4 - This method always returns null, as user sessions are long-lived now.
      */
     protected function getUserAutomatically($userID, $password, $userClassname = User::class)
@@ -80,6 +91,9 @@ class DefaultUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
+     * @param string $user
+     * @param string $password
+     * @return false
      * @deprecated 5.4 - This method always returns false, as user sessions are long-lived now.
      */
     protected function checkCookiePassword($user, $password)

@@ -54,6 +54,7 @@ class ACPSessionLog extends DatabaseObject
     }
 
     /**
+     * @return false
      * @deprecated 5.4 - This method always returns false.
      */
     public function isActive()
@@ -62,6 +63,7 @@ class ACPSessionLog extends DatabaseObject
     }
 
     /**
+     * @return false
      * @deprecated 5.4 - This method always returns false.
      */
     public function isActiveUserSession()

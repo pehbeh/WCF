@@ -4,6 +4,7 @@ namespace wcf\system\sitemap\object;
 
 use wcf\data\page\PageCache;
 use wcf\data\user\User;
+use wcf\data\user\UserList;
 use wcf\system\WCF;
 
 /**
@@ -13,6 +14,8 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
+ *
+ * @extends AbstractSitemapObjectObjectType<User, UserList>
  */
 class UserSitemapObject extends AbstractSitemapObjectObjectType
 {

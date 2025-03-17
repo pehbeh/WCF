@@ -16,7 +16,7 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @property    UserTrophyList $objectList
+ * @extends AbstractDatabaseObjectListBoxController<UserTrophyList>
  */
 class UserTrophyListBoxController extends AbstractDatabaseObjectListBoxController
 {

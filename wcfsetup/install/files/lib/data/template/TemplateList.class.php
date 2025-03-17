@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Template        current()
- * @method  Template[]      getObjects()
- * @method  Template|null       getSingleObject()
- * @method  Template|null       search($objectID)
- * @property    Template[] $objects
+ * @extends DatabaseObjectList<Template>
  */
 class TemplateList extends DatabaseObjectList
 {

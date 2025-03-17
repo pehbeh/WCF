@@ -3,6 +3,7 @@
 namespace wcf\system\box;
 
 use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectList;
 use wcf\data\user\online\UserOnline;
 use wcf\data\user\online\UsersOnlineList;
 use wcf\data\user\UserProfile;
@@ -19,6 +20,8 @@ use wcf\util\DateUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
+ *
+ * @extends AbstractDatabaseObjectListBoxController<DatabaseObjectList<DatabaseObject>>
  */
 class WhoWasOnlineBoxController extends AbstractDatabaseObjectListBoxController
 {

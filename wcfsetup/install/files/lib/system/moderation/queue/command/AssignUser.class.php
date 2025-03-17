@@ -37,7 +37,7 @@ final class AssignUser
         $this->eventHandler = EventHandler::getInstance();
     }
 
-    public function __invoke()
+    public function __invoke(): void
     {
         $moderationQueueEditor = new ModerationQueueEditor(new ModerationQueue($this->moderationQueueId));
         if ($this->userId !== null) {

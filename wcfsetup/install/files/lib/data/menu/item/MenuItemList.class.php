@@ -12,11 +12,7 @@ use wcf\data\DatabaseObjectList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  MenuItem    current()
- * @method  MenuItem[]  getObjects()
- * @method  MenuItem|null   getSingleObject()
- * @method  MenuItem|null   search($objectID)
- * @property    MenuItem[] $objects
+ * @extends DatabaseObjectList<MenuItem>
  */
 class MenuItemList extends DatabaseObjectList
 {
@@ -29,6 +25,7 @@ class MenuItemList extends DatabaseObjectList
      * Sets the menu items used to improve menu cache performance.
      *
      * @param MenuItem[] $menuItems list of menu item objects
+     * @return void
      */
     public function setMenuItems(array $menuItems)
     {

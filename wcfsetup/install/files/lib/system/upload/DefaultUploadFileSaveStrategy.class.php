@@ -3,6 +3,7 @@
 namespace wcf\system\upload;
 
 use wcf\data\AbstractDatabaseObjectAction;
+use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectEditor;
 use wcf\data\IDatabaseObjectAction;
 use wcf\data\IFile;
@@ -40,7 +41,7 @@ class DefaultUploadFileSaveStrategy implements IUploadFileSaveStrategy
 
     /**
      * additional data stored with the default file data
-     * @var array
+     * @var mixed[]
      */
     public $data = [];
 
@@ -56,7 +57,7 @@ class DefaultUploadFileSaveStrategy implements IUploadFileSaveStrategy
      * - bool rotateImages: if true, images are automatically rotated
      * - bool generateThumbnails: if true, thumbnails are automatically generated after saving file
      *
-     * @var array
+     * @var mixed[]
      */
     public $options = [];
 
@@ -64,8 +65,8 @@ class DefaultUploadFileSaveStrategy implements IUploadFileSaveStrategy
      * Creates a new instance of DefaultUploadFileSaveStrategy.
      *
      * @param string $actionClassName
-     * @param array $options
-     * @param array $data
+     * @param mixed[] $options
+     * @param mixed[] $data
      * @throws  ImplementationException
      * @throws  ParentClassException
      */
@@ -247,7 +248,7 @@ class DefaultUploadFileSaveStrategy implements IUploadFileSaveStrategy
                 }
 
                 if (!empty($updateData)) {
-                    /** @var DatabaseObjectEditor $editor */
+                    /** @var DatabaseObjectEditor<DatabaseObject> $editor */
                     $editor = new $this->editorClassName($object);
                     $editor->update($updateData);
                 }
@@ -258,12 +259,12 @@ class DefaultUploadFileSaveStrategy implements IUploadFileSaveStrategy
                     throw $e;
                 }
 
-                /** @var DatabaseObjectEditor $editor */
+                /** @var DatabaseObjectEditor<DatabaseObject> $editor */
                 $editor = new $this->editorClassName($object);
                 $editor->delete();
             }
         } else {
-            /** @var DatabaseObjectEditor $editor */
+            /** @var DatabaseObjectEditor<DatabaseObject> $editor */
             $editor = new $this->editorClassName($object);
             $editor->delete();
         }
@@ -276,7 +277,7 @@ class DefaultUploadFileSaveStrategy implements IUploadFileSaveStrategy
                     throw $e;
                 }
 
-                /** @var DatabaseObjectEditor $editor */
+                /** @var DatabaseObjectEditor<DatabaseObject> $editor */
                 $editor = new $this->editorClassName($object);
                 $editor->delete();
             }
@@ -287,6 +288,7 @@ class DefaultUploadFileSaveStrategy implements IUploadFileSaveStrategy
      * Generates thumbnails for the given file.
      *
      * @param IThumbnailFile $file
+     * @return void
      */
     public function generateThumbnails(IThumbnailFile $file)
     {

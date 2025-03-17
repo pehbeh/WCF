@@ -12,11 +12,7 @@ use wcf\data\I18nDatabaseObjectList;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  *
- * @method  TemplateGroup       current()
- * @method  TemplateGroup[]     getObjects()
- * @method  TemplateGroup|null  getSingleObject()
- * @method  TemplateGroup|null  search($objectID)
- * @property    TemplateGroup[] $objects
+ * @extends I18nDatabaseObjectList<TemplateGroup>
  */
 class I18nTemplateGroupList extends I18nDatabaseObjectList
 {

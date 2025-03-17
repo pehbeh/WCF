@@ -16,9 +16,8 @@ use wcf\util\FileUtil;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.1
  *
- * @method static File create(array $parameters = [])
- * @method File getDecoratedObject()
  * @mixin File
+ * @extends DatabaseObjectEditor<File>
  */
 class FileEditor extends DatabaseObjectEditor
 {

@@ -93,7 +93,7 @@ class BoxContent extends DatabaseObject
     /**
      * Sets the image of this box content.
      *
-     * @param ViewableMedia $image
+     * @return void
      */
     public function setImage(ViewableMedia $image)
     {

@@ -12,27 +12,30 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
+ *
+ * @template TDatabaseObject of DatabaseObject
+ * @template TDatabaseObjectList of DatabaseObjectList
  */
 interface ISitemapObjectObjectType
 {
     /**
      * Returns the DatabaseObject class name for the sitemap object.
      *
-     * @return  string
+     * @return string
      */
     public function getObjectClass();
 
     /**
      * Returns the DatabaseObjectList class name for the sitemap object.
      *
-     * @return  string
+     * @return string
      */
     public function getObjectListClass();
 
     /**
      * Returns the DatabaseObjectList for the sitemap object.
      *
-     * @return  DatabaseObjectList
+     * @return TDatabaseObjectList
      */
     public function getObjectList();
 
@@ -40,22 +43,22 @@ interface ISitemapObjectObjectType
      * Returns the database column, which represents the last modified date.
      * If there isn't any column, this method should return `null`.
      *
-     * @return  string|null
+     * @return ?string
      */
     public function getLastModifiedColumn();
 
     /**
      * Returns the permission for a guest to view a certain object for this object type.
      *
-     * @param DatabaseObject $object
-     * @return  bool
+     * @param TDatabaseObject $object
+     * @return bool
      */
     public function canView(DatabaseObject $object);
 
     /**
      * Checks the requirements (e.g. module options) for this object type.
      *
-     * @return  bool
+     * @return bool
      */
     public function isAvailableType();
 }

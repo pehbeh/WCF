@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\StyleGridView;
 
 /**
@@ -13,9 +12,9 @@ use wcf\system\gridView\admin\StyleGridView;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    StyleGridView    $gridView
+ * @extends AbstractGridViewPage<StyleGridView>
  */
-class StyleListPage  extends AbstractGridViewPage
+final class StyleListPage  extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -28,7 +27,7 @@ class StyleListPage  extends AbstractGridViewPage
     public $neededPermissions = ['admin.style.canManageStyle'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): StyleGridView
     {
         return new StyleGridView();
     }

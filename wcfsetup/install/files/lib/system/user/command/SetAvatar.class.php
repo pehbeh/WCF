@@ -25,10 +25,9 @@ final class SetAvatar
     public function __construct(
         private readonly User $user,
         private readonly ?File $file = null
-    ) {
-    }
+    ) {}
 
-    public function __invoke()
+    public function __invoke(): void
     {
         if ($this->file === null && $this->user->avatarFileID !== null) {
             (new FileAction([$this->user->avatarFileID], 'delete'))->executeAction();

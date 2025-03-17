@@ -23,6 +23,9 @@ use wcf\system\WCF;
  * @copyright 2001-2024 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.1
+ *
+ * @template T of DatabaseObjectList
+ * @extends AbstractRebuildDataWorker<T>
  */
 abstract class AbstractLinearRebuildDataWorker extends AbstractRebuildDataWorker
 {

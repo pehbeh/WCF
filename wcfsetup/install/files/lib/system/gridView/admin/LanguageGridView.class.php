@@ -33,6 +33,8 @@ use wcf\util\StringUtil;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @extends AbstractGridView<Language, LanguageList>
  */
 final class LanguageGridView extends AbstractGridView
 {

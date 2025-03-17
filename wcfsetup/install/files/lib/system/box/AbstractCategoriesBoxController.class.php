@@ -120,6 +120,7 @@ abstract class AbstractCategoriesBoxController extends AbstractBoxController imp
 
     /**
      * @inheritDoc
+     * @param bool $setConditionData
      */
     public function setBox(Box $box, $setConditionData = true): void
     {

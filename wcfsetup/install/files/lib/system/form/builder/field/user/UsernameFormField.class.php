@@ -78,6 +78,7 @@ final class UsernameFormField extends AbstractFormField implements
 
     /**
      * @inheritDoc
+     * @return string[]
      * @since       5.4
      */
     protected function getValidAutoCompleteTokens(): array
@@ -147,7 +148,7 @@ final class UsernameFormField extends AbstractFormField implements
     /**
      * @inheritDoc
      */
-    protected static function getDefaultId()
+    protected static function getDefaultId(): string
     {
         return 'username';
     }

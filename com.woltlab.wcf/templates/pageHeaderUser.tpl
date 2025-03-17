@@ -12,7 +12,7 @@
 					aria-haspopup="true"
 					aria-expanded="false"
 				>
-					{@$__wcf->getUserProfileHandler()->getAvatar()->getImageTag(32, false)} <span>{lang}wcf.user.userNote{/lang}</span>
+					{unsafe:$__wcf->getUserProfileHandler()->getAvatar()->getImageTag(32, false)} <span>{lang}wcf.user.userNote{/lang}</span>
 				</a>
 				<div class="userMenu userMenuControlPanel" data-origin="userMenu" tabindex="-1" hidden>
 					<div class="userMenuHeader">
@@ -21,7 +21,7 @@
 					<div class="userMenuContent">
 						<div class="userMenuItem{if !MODULE_USER_RANK} userMenuItemSingleLine userMenuItemUserHeader{/if}">
 							<div class="userMenuItemImage">
-								{@$__wcf->getUserProfileHandler()->getUserProfile()->getAvatar()->getImageTag(48)}
+								{unsafe:$__wcf->getUserProfileHandler()->getUserProfile()->getAvatar()->getImageTag(48)}
 							</div>
 							<div class="userMenuItemContent">
 								{* This is the unformatted username, custom styles might not work nicely here and
@@ -31,10 +31,10 @@
 							{if MODULE_USER_RANK}
 							<div class="userMenuItemMeta">
 								{if $__wcf->getUserProfileHandler()->getUserTitle()}
-									<span class="badge userTitleBadge{if $__wcf->getUserProfileHandler()->getRank() && $__wcf->getUserProfileHandler()->getRank()->cssClassName} {@$__wcf->getUserProfileHandler()->getRank()->cssClassName}{/if}">{$__wcf->getUserProfileHandler()->getUserTitle()}</span>
+									<span class="badge userTitleBadge{if $__wcf->getUserProfileHandler()->getRank() && $__wcf->getUserProfileHandler()->getRank()->cssClassName} {unsafe:$__wcf->getUserProfileHandler()->getRank()->cssClassName}{/if}">{$__wcf->getUserProfileHandler()->getUserTitle()}</span>
 								{/if}
 								{if $__wcf->getUserProfileHandler()->getRank() && $__wcf->getUserProfileHandler()->getRank()->rankImage}
-									<span class="userRankImage">{@$__wcf->getUserProfileHandler()->getRank()->getImage()}</span>
+									<span class="userRankImage">{unsafe:$__wcf->getUserProfileHandler()->getRank()->getImage()}</span>
 								{/if}
 							</div>
 							{/if}
@@ -47,7 +47,7 @@
 								{if $__wcf->getUserProfileHandler()->canEditOwnProfile()}
 									<div class="userMenuItem userMenuItemNarrow userMenuItemSingleLine">
 										<div class="userMenuItemImage">
-											{icon size=16 name='pencil'}
+											{icon size=24 name='pencil'}
 										</div>
 										<div class="userMenuItemContent">
 											<a href="{link controller='User' object=$__wcf->user editOnInit=true}{/link}" class="userMenuItemLink">{lang}wcf.user.editProfile{/lang}</a>
@@ -57,7 +57,7 @@
 								{if $__wcf->session->getPermission('admin.general.canUseAcp')}
 									<div class="userMenuItem userMenuItemNarrow userMenuItemSingleLine">
 										<div class="userMenuItemImage">
-											{icon size=16 name='wrench'}
+											{icon size=24 name='wrench'}
 										</div>
 										<div class="userMenuItemContent">
 											<a href="{link isACP=true}{/link}" class="userMenuItemLink">{lang}wcf.global.acp{/lang}</a>
@@ -72,7 +72,7 @@
 						{foreach from=$__wcf->getUserMenu()->getUserMenuItems() item=menuItem}
 						<div class="userMenuItem userMenuItemNarrow userMenuItemSingleLine" data-category="{$menuItem[category]->menuItem}">
 							<div class="userMenuItemImage">
-								{@$menuItem[category]->getIcon()->toHtml(16)}
+								{unsafe:$menuItem[category]->getIcon()->toHtml(24)}
 							</div>
 							<div class="userMenuItemContent">
 								<a href="{$menuItem[link]}" class="userMenuItemLink">
@@ -136,10 +136,10 @@
 						require(['WoltLabSuite/Core/Language/Chooser'], function(LanguageChooser) {
 							var languages = {
 								{implode from=$__wcf->getLanguage()->getLanguages() item=_language}
-									'{@$_language->languageID}': {
-										iconPath: '{@$_language->getIconPath()|encodeJS}',
-										languageName: '{@$_language|encodeJS}',
-										languageCode: '{@$_language->languageCode|encodeJS}'
+									'{$_language->languageID}': {
+										iconPath: '{unsafe:$_language->getIconPath()|encodeJS}',
+										languageName: '{unsafe:$_language|encodeJS}',
+										languageCode: '{unsafe:$_language->languageCode|encodeJS}'
 									}
 								{/implode}
 							};
@@ -159,7 +159,7 @@
 								window.location = location + delimiter + 'l=' + elData(listItem, 'language-id') + window.location.hash;
 							};
 							
-							LanguageChooser.init('pageLanguageContainer', 'pageLanguageID', {@$__wcf->getLanguage()->languageID}, languages, callback);
+							LanguageChooser.init('pageLanguageContainer', 'pageLanguageID', {unsafe:$__wcf->getLanguage()->languageID}, languages, callback);
 						});
 					</script>
 				</li>
@@ -227,7 +227,7 @@
 {if $__wcf->user->userID}
 	<button type="button" class="pageHeaderUserMobile" aria-expanded="false" aria-label="{lang}wcf.menu.user{/lang}">
 		<span class="pageHeaderUserMobileInactive">
-			{@$__wcf->getUserProfileHandler()->getAvatar()->getImageTag(32, false)}
+			{unsafe:$__wcf->getUserProfileHandler()->getAvatar()->getImageTag(32, false)}
 		</span>
 		<span class="pageHeaderUserMobileActive">
 			{icon size=32 name='xmark'}

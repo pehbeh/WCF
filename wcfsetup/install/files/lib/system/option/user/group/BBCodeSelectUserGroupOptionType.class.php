@@ -80,6 +80,8 @@ class BBCodeSelectUserGroupOptionType extends AbstractOptionType implements IUse
 
     /**
      * Loads the list of BBCodes for the HTML select element.
+     *
+     * @return void
      */
     protected function loadBBCodeSelection()
     {

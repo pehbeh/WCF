@@ -4,6 +4,7 @@ namespace wcf\acp\form;
 
 use wcf\form\AbstractForm;
 use wcf\system\exception\UserInputException;
+use wcf\system\option\IOptionHandler;
 use wcf\system\option\OptionHandler;
 
 /**
@@ -12,6 +13,8 @@ use wcf\system\option\OptionHandler;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template-covariant TOptionHandler of IOptionHandler
  */
 abstract class AbstractOptionListForm extends AbstractForm
 {
@@ -39,7 +42,8 @@ abstract class AbstractOptionListForm extends AbstractForm
 
     /**
      * option handler object
-     * @var \wcf\system\option\IOptionHandler
+     * @var TOptionHandler
+     * @phpstan-ignore generics.variance
      */
     public $optionHandler;
 
@@ -72,6 +76,8 @@ abstract class AbstractOptionListForm extends AbstractForm
 
     /**
      * Initializes the option handler.
+     *
+     * @return void
      */
     protected function initOptionHandler()
     {

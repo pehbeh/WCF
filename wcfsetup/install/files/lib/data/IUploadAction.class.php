@@ -14,13 +14,15 @@ interface IUploadAction
 {
     /**
      * Validates the 'upload' action.
+     *
+     * @return void
      */
     public function validateUpload();
 
     /**
      * Saves uploaded files and returns the data of the uploaded files.
      *
-     * @return  array
+     * @return mixed[]
      */
     public function upload();
 }

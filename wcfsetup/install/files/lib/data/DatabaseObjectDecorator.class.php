@@ -10,6 +10,8 @@ use wcf\system\exception\SystemException;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template TDatabaseObject of DatabaseObject
  */
 abstract class DatabaseObjectDecorator extends DatabaseObject
 {
@@ -21,17 +23,13 @@ abstract class DatabaseObjectDecorator extends DatabaseObject
 
     /**
      * decorated object
-     * @var DatabaseObject
+     * @var TDatabaseObject
      */
     protected $object;
 
-    /** @noinspection PhpMissingParentConstructorInspection */
-
     /**
-     * Creates a new DatabaseObjectDecorator object.
-     *
-     * @param DatabaseObject $object
-     * @throws  SystemException
+     * @param TDatabaseObject $object
+     * @throws SystemException
      */
     public function __construct(DatabaseObject $object)
     {
@@ -82,9 +80,9 @@ abstract class DatabaseObjectDecorator extends DatabaseObject
      * Delegates inaccessible methods calls to the decorated object.
      *
      * @param string $name
-     * @param array $arguments
-     * @return  mixed
-     * @throws  SystemException
+     * @param mixed[] $arguments
+     * @return mixed
+     * @throws SystemException
      */
     public function __call($name, $arguments)
     {
@@ -130,7 +128,7 @@ abstract class DatabaseObjectDecorator extends DatabaseObject
     /**
      * Returns the name of the base class.
      *
-     * @return  string
+     * @return string
      */
     public static function getBaseClass()
     {
@@ -140,7 +138,7 @@ abstract class DatabaseObjectDecorator extends DatabaseObject
     /**
      * Returns the decorated object
      *
-     * @return  DatabaseObject
+     * @return TDatabaseObject
      */
     public function getDecoratedObject()
     {

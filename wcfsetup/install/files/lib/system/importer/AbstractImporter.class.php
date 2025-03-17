@@ -11,6 +11,11 @@ use wcf\system\WCF;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @phpstan-type I18nValue array{
+ *  languageID: int,
+ *  languageItem: string,
+ *  languageItemValue: string,
+ * }
  */
 abstract class AbstractImporter implements IImporter
 {
@@ -31,9 +36,10 @@ abstract class AbstractImporter implements IImporter
     /**
      * Imports a list of language items.
      *
-     * @param string[][] $items
+     * @param I18nValue[] $items
      * @param string $languageCategory
      * @param string $package
+     * @return void
      */
     protected function importI18nValues(array $items, $languageCategory, $package)
     {
@@ -62,7 +68,7 @@ abstract class AbstractImporter implements IImporter
      * Returns the language category id.
      *
      * @param string $languageCategory
-     * @return      int
+     * @return int
      */
     protected function getLanguageCategoryID($languageCategory)
     {

@@ -14,9 +14,9 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static PaidSubscription    create(array $parameters = [])
- * @method      PaidSubscription    getDecoratedObject()
  * @mixin       PaidSubscription
+ * @extends DatabaseObjectEditor<PaidSubscription>
+ * @implements IEditableCachedObject<PaidSubscription>
  */
 class PaidSubscriptionEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {
@@ -29,6 +29,7 @@ class PaidSubscriptionEditor extends DatabaseObjectEditor implements IEditableCa
      * Sets the show order of the subscription.
      *
      * @param int $showOrder
+     * @return void
      */
     public function setShowOrder($showOrder = 0)
     {

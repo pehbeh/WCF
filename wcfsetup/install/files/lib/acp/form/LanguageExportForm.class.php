@@ -44,11 +44,13 @@ class LanguageExportForm extends AbstractForm
 
     /**
      * selected packages
+     * @var int
      */
     public $packageID = 0;
 
     /**
      * true to export custom variables
+     * @var bool
      */
     public $exportCustomValues = false;
 
@@ -82,7 +84,7 @@ class LanguageExportForm extends AbstractForm
         }
 
         if (isset($_POST['exportCustomValues'])) {
-            $this->exportCustomValues = \intval($_POST['exportCustomValues']);
+            $this->exportCustomValues = (bool)\intval($_POST['exportCustomValues']);
         }
         if (isset($_POST['languageID'])) {
             $this->languageID = \intval($_POST['languageID']);

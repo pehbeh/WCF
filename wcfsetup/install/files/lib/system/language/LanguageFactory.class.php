@@ -19,11 +19,13 @@ use wcf\system\WCF;
  * @author  Olaf Braun, Alexander Ebert
  * @copyright   2001-2025 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @phpstan-import-type LanguageCache from LanguageCacheBuilder
  */
 class LanguageFactory extends SingletonFactory
 {
     /**
      * language cache
+     * @var LanguageCache
      */
     protected LanguageCacheData $cache;
 
@@ -112,7 +114,7 @@ class LanguageFactory extends SingletonFactory
     /**
      * Returns a list of available language categories.
      *
-     * @return  LanguageCategory[]
+     * @return LanguageCategory[]
      */
     public function getCategories(): array
     {
@@ -121,6 +123,8 @@ class LanguageFactory extends SingletonFactory
 
     /**
      * Searches the preferred language of the current user.
+     *
+     * @return int
      */
     protected function findPreferredLanguage(): int
     {
@@ -131,18 +135,19 @@ class LanguageFactory extends SingletonFactory
 
         // get language id of preferred language
         foreach ($this->cache->languages as $key => $language) {
-            if ($language->languageCode == $languageCode) {
+            if ($language->languageCode === $languageCode) {
                 return $key;
             }
         }
 
-        throw new \RuntimeException("No language found for language code '{$languageCode}'");
+        return 0;
     }
 
     /**
      * Determines the preferred language of the current user.
      *
      * @param string[] $availableLanguageCodes
+     * @return string
      */
     public static function getPreferredLanguage(array $availableLanguageCodes, string $defaultLanguageCode): string
     {
@@ -181,6 +186,8 @@ class LanguageFactory extends SingletonFactory
 
     /**
      * Loads the language cache.
+     *
+     * @return void
      */
     protected function loadCache(): void
     {
@@ -189,6 +196,8 @@ class LanguageFactory extends SingletonFactory
 
     /**
      * Clears languages cache.
+     *
+     * @return void
      */
     public function clearCache(): void
     {
@@ -200,7 +209,7 @@ class LanguageFactory extends SingletonFactory
      * Converts e.g. 'de-informal' to 'de'.
      *
      * @param string $languageCode
-     * @return  string      $languageCode
+     * @return string $languageCode
      */
     public static function fixLanguageCode($languageCode)
     {
@@ -209,7 +218,7 @@ class LanguageFactory extends SingletonFactory
 
     /**
      * Returns the default language object.
-     * @since   3.0
+     * @since 3.0
      */
     public function getDefaultLanguage(): Language
     {
@@ -227,7 +236,7 @@ class LanguageFactory extends SingletonFactory
     /**
      * Returns all available languages.
      *
-     * @return  Language[]
+     * @return Language[]
      */
     public function getLanguages(): array
     {
@@ -237,7 +246,7 @@ class LanguageFactory extends SingletonFactory
     /**
      * Returns all available content languages for given package.
      *
-     * @return  Language[]
+     * @return array<int, Language>
      */
     public function getContentLanguages(): array
     {
@@ -247,8 +256,8 @@ class LanguageFactory extends SingletonFactory
     /**
      * Returns the list of content language ids.
      *
-     * @return      int[]
-     * @since       3.1
+     * @return int[]
+     * @since 3.1
      */
     public function getContentLanguageIDs(): array
     {
@@ -281,6 +290,8 @@ class LanguageFactory extends SingletonFactory
 
     /**
      * Removes language cache and compiled templates.
+     *
+     * @return void
      */
     public function deleteLanguageCache(): void
     {

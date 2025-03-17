@@ -2,6 +2,7 @@
 
 namespace wcf\data\attachment;
 
+use wcf\data\object\type\ObjectType;
 use wcf\data\object\type\ObjectTypeCache;
 
 /**
@@ -15,13 +16,13 @@ class GroupedAttachmentList extends AttachmentList
 {
     /**
      * grouped objects
-     * @var array
+     * @var array<int, array<int, Attachment>>
      */
     public $groupedObjects = [];
 
     /**
      * object type
-     * @var \wcf\data\object\type\ObjectType
+     * @var ObjectType
      */
     protected $objectType;
 
@@ -89,7 +90,8 @@ class GroupedAttachmentList extends AttachmentList
     /**
      * Sets the permissions for attachment access.
      *
-     * @param bool[] $permissions
+     * @param array<string, bool> $permissions
+     * @return void
      */
     public function setPermissions(array $permissions)
     {

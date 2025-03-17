@@ -33,7 +33,7 @@ class TrophyCategory extends AbstractDecoratedCategory implements ITitledLinkObj
     const OBJECT_TYPE_NAME = 'com.woltlab.wcf.trophy.category';
 
     /**
-     * @inheritDoc
+     * @return bool
      */
     public function isAccessible(?User $user = null)
     {

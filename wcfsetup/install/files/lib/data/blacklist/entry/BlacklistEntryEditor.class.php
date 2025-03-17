@@ -11,9 +11,8 @@ use wcf\data\DatabaseObjectEditor;
  * @copyright   2001-2019 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static BlacklistEntry create(array $parameters = [])
- * @method BlacklistEntry getDecoratedObject()
  * @mixin BlacklistEntry
+ * @extends DatabaseObjectEditor<BlacklistEntry>
  * @since 5.2
  */
 class BlacklistEntryEditor extends DatabaseObjectEditor

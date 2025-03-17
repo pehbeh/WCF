@@ -7,7 +7,6 @@ use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\data\user\User;
 use wcf\data\user\UserList;
-use wcf\system\exception\InvalidObjectArgument;
 use wcf\system\option\ISearchableConditionUserOption;
 use wcf\system\option\user\UserOptionHandler;
 use wcf\system\WCF;
@@ -18,6 +17,8 @@ use wcf\system\WCF;
  * @author  Matthias Schmidt
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @implements IObjectListCondition<UserList>
  */
 class UserOptionsCondition extends AbstractMultipleFieldsCondition implements
     IContentCondition,
@@ -49,10 +50,6 @@ class UserOptionsCondition extends AbstractMultipleFieldsCondition implements
      */
     public function addObjectListCondition(DatabaseObjectList $objectList, array $conditionData)
     {
-        if (!($objectList instanceof UserList)) {
-            throw new InvalidObjectArgument($objectList, UserList::class, 'Object list');
-        }
-
         $optionValues = $conditionData['optionValues'];
 
         foreach ($this->optionHandler->getCategoryOptions('profile') as $option) {

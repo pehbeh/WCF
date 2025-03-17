@@ -24,7 +24,7 @@ abstract class AbstractUserActionRenameListener implements IParameterizedEventLi
      * table columns containing the id and name of the user)
      * `{WCF_N}` will be automatically replaced with the number of the WCF installation
      * (only with PHP 5.6 string concatenation is possible in property declarations)
-     * @var array
+     * @var array<string|array{name: string, userID?: string, username?: string}>
      */
     protected $databaseTables = [];
 

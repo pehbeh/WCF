@@ -14,9 +14,7 @@ use wcf\system\condition\ConditionHandler;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserGroupAssignment     create()
- * @method  UserGroupAssignmentEditor[] getObjects()
- * @method  UserGroupAssignmentEditor   getSingleObject()
+ * @extends AbstractDatabaseObjectAction<UserGroupAssignment, UserGroupAssignmentEditor>
  */
 class UserGroupAssignmentAction extends AbstractDatabaseObjectAction implements IToggleAction
 {

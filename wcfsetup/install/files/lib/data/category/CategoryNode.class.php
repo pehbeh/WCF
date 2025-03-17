@@ -14,8 +14,8 @@ use wcf\data\TObjectTreeNode;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Category    getDecoratedObject()
  * @mixin   Category
+ * @extends DatabaseObjectDecorator<Category>
  */
 class CategoryNode extends DatabaseObjectDecorator implements IObjectTreeNode
 {

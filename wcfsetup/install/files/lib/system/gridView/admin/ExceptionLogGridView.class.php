@@ -23,9 +23,14 @@ use wcf\util\ExceptionLogUtil;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @extends AbstractGridView<DatabaseObject, DatabaseObjectList>
  */
 final class ExceptionLogGridView extends AbstractGridView
 {
+    /**
+     * @var array<string, string>
+     */
     private array $availableLogFiles;
 
     public function __construct(bool $applyDefaultFilter = false)
@@ -66,10 +71,13 @@ final class ExceptionLogGridView extends AbstractGridView
         return WCF::getSession()->getPermission('admin.management.canViewLog');
     }
 
+    /**
+     * @return array<string, DatabaseObject>
+     */
     protected function loadDataSource(): array
     {
-        if (!empty($this->getActiveFilters()['exceptionID'])) {
-            $exceptionID = $this->getActiveFilters()['exceptionID'];
+        $exceptionID = $this->getActiveFilters()['exceptionID'] ?? '';
+        if ($exceptionID !== '') {
             $contents = $logFile = '';
             foreach ($this->getAvailableLogFiles() as $logFile) {
                 $contents = \file_get_contents(WCF_DIR . $logFile);
@@ -104,8 +112,11 @@ final class ExceptionLogGridView extends AbstractGridView
             }
 
             return $parsedExceptions;
-        } elseif (!empty($this->getActiveFilters()['logFile'])) {
-            $contents = \file_get_contents(WCF_DIR . $this->getActiveFilters()['logFile']);
+        }
+
+        $logFile = $this->getActiveFilters()['logFile'] ?? '';
+        if ($logFile !== '') {
+            $contents = \file_get_contents(WCF_DIR . $logFile);
             $exceptions = ExceptionLogUtil::splitLog($contents);
             $parsedExceptions = [];
 
@@ -126,6 +137,9 @@ final class ExceptionLogGridView extends AbstractGridView
         return [];
     }
 
+    /**
+     * @param array{exceptionID: string, message: string, date: string, logFile: string} $data
+     */
     private function createObject(array $data): DatabaseObject
     {
         return new class(null, $data) extends DatabaseObject {
@@ -179,6 +193,9 @@ final class ExceptionLogGridView extends AbstractGridView
         // Overwrite the default filtering, as this is already applied when the data is loaded.
     }
 
+    /**
+     * @return array<string, string>
+     */
     private function getAvailableLogFiles(): array
     {
         if (!isset($this->availableLogFiles)) {
@@ -204,6 +221,9 @@ final class ExceptionLogGridView extends AbstractGridView
         return new ExceptionLogGridViewInitialized($this);
     }
 
+    /**
+     * @return DatabaseObjectList<DatabaseObject>
+     */
     #[\Override]
     protected function createObjectList(): DatabaseObjectList
     {

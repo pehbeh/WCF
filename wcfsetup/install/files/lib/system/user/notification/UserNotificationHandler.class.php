@@ -92,6 +92,7 @@ class UserNotificationHandler extends SingletonFactory
      * @param mixed[] $additionalData
      * @param int $baseObjectID
      * @param int $contentLanguageID
+     * @return void
      * @throws  SystemException
      */
     public function fireEvent(
@@ -416,7 +417,7 @@ class UserNotificationHandler extends SingletonFactory
      * Returns a mixed list of notifications, containing leading unconfirmed notifications in their chronological
      * order regardless of the overall order of already confirmed items.
      *
-     * @return  array
+     * @return mixed[]
      */
     public function getMixedNotifications()
     {
@@ -747,6 +748,7 @@ class UserNotificationHandler extends SingletonFactory
      * @param UserNotification $notification
      * @param User $user
      * @param IUserNotificationEvent $event
+     * @return void
      */
     public function sendInstantMailNotification(
         UserNotification $notification,
@@ -856,8 +858,8 @@ class UserNotificationHandler extends SingletonFactory
      * @param string $objectType
      * @param int[] $recipientIDs
      * @param int[] $objectIDs
+     * @return void
      * @deprecated
-     *
      */
     public function deleteNotifications($eventName, $objectType, array $recipientIDs, array $objectIDs = [])
     {
@@ -869,6 +871,7 @@ class UserNotificationHandler extends SingletonFactory
      *
      * @param string $objectType
      * @param int[] $objectIDs
+     * @return void
      * @throws  SystemException
      */
     public function removeNotifications($objectType, array $objectIDs)
@@ -930,6 +933,7 @@ class UserNotificationHandler extends SingletonFactory
      * @param string $objectType
      * @param int[] $recipientIDs
      * @param int[] $objectIDs
+     * @return void
      * @throws  SystemException
      */
     public function markAsConfirmed($eventName, $objectType, array $recipientIDs, array $objectIDs = [])
@@ -985,6 +989,7 @@ class UserNotificationHandler extends SingletonFactory
      * Marks a single notification id as confirmed.
      *
      * @param int $notificationID
+     * @return void
      * @deprecated 5.2 Please use `UserNotificationHandler::markAsConfirmedByIDs()` instead.
      */
     public function markAsConfirmedByID($notificationID)
@@ -996,6 +1001,7 @@ class UserNotificationHandler extends SingletonFactory
      * Marks a list of notification ids as confirmed.
      *
      * @param int[] $notificationIDs
+     * @return void
      */
     public function markAsConfirmedByIDs(array $notificationIDs)
     {
@@ -1031,7 +1037,7 @@ class UserNotificationHandler extends SingletonFactory
      *
      * @param string $objectType
      * @param string $eventName
-     * @return  mixed
+     * @return int|false
      */
     public function getEventSetting($objectType, $eventName)
     {

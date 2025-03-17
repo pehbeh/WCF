@@ -37,7 +37,7 @@ class FTP
      * Calls the specified function on the open ftp connection.
      *
      * @param string $function
-     * @param array $arguments
+     * @param mixed[] $arguments
      * @return  mixed
      * @throws  SystemException
      */

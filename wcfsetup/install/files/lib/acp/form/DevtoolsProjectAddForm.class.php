@@ -1013,8 +1013,8 @@ class DevtoolsProjectAddForm extends AbstractFormBuilderForm
     /**
      * Writes the updated `package.xml` file for the given project using the given data.
      *
-     * @param DevtoolsProject $project
-     * @param array $data
+     * @param mixed[] $data
+     * @return void
      */
     protected function writePackageXml(DevtoolsProject $project, array $data)
     {

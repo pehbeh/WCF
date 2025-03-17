@@ -14,11 +14,15 @@ interface IToggleAction
 {
     /**
      * Toggles the "isDisabled" status of the relevant objects.
+     *
+     * @return void
      */
     public function toggle();
 
     /**
      * Validates the "toggle" action.
+     *
+     * @return void
      */
     public function validateToggle();
 }

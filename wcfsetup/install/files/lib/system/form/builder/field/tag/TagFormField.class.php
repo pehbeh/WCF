@@ -196,7 +196,7 @@ final class TagFormField extends AbstractFormField implements IAttributeFormFiel
     /**
      * @inheritDoc
      */
-    protected static function getDefaultId()
+    protected static function getDefaultId(): string
     {
         return 'tags';
     }

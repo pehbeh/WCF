@@ -18,6 +18,7 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
  * @mixin   \PDOStatement
+ * @phpstan-type ParameterValues list<string|int|float|null|(string|int|float|null)[]>
  */
 class PreparedStatement
 {
@@ -29,7 +30,7 @@ class PreparedStatement
 
     /**
      * SQL query parameters
-     * @var array
+     * @var ParameterValues
      */
     protected $parameters = [];
 
@@ -46,10 +47,6 @@ class PreparedStatement
     protected $query = '';
 
     /**
-     * Creates a new PreparedStatement object.
-     *
-     * @param Database $database
-     * @param \PDOStatement $pdoStatement
      * @param string $query SQL query
      */
     public function __construct(Database $database, \PDOStatement $pdoStatement, $query = '')
@@ -63,9 +60,9 @@ class PreparedStatement
      * Delegates inaccessible methods calls to the decorated object.
      *
      * @param string $name
-     * @param array $arguments
-     * @return  mixed
-     * @throws  SystemException
+     * @param mixed[] $arguments
+     * @return mixed
+     * @throws SystemException
      */
     public function __call($name, $arguments)
     {
@@ -83,8 +80,9 @@ class PreparedStatement
     /**
      * Executes a prepared statement.
      *
-     * @param array $parameters
-     * @throws  DatabaseQueryExecutionException
+     * @param ParameterValues $parameters
+     * @return void
+     * @throws DatabaseQueryExecutionException
      */
     public function execute(array $parameters = [])
     {
@@ -152,7 +150,7 @@ class PreparedStatement
      * Fetches the next row from a result set in an array.
      *
      * @param int $type fetch type
-     * @return  mixed
+     * @return mixed
      */
     public function fetchArray($type = null)
     {
@@ -172,8 +170,8 @@ class PreparedStatement
      * this method!
      *
      * @param int $type fetch type
-     * @return  mixed
-     * @see     \wcf\system\database\statement\PreparedStatement::fetchArray()
+     * @return mixed
+     * @see \wcf\system\database\statement\PreparedStatement::fetchArray()
      */
     public function fetchSingleRow($type = null)
     {
@@ -191,8 +189,8 @@ class PreparedStatement
      * this method!
      *
      * @param int $columnNumber
-     * @return  mixed
-     * @see     \PDOStatement::fetchColumn()
+     * @return mixed
+     * @see \PDOStatement::fetchColumn()
      */
     public function fetchSingleColumn($columnNumber = 0)
     {
@@ -207,7 +205,7 @@ class PreparedStatement
      *
      * @template T of DatabaseObject
      * @param class-string<T> $className
-     * @return T|null
+     * @return ?T
      */
     public function fetchObject($className)
     {
@@ -228,8 +226,8 @@ class PreparedStatement
      *
      * @template T of DatabaseObject
      * @param class-string<T> $className
-     * @return  T|null
-     * @since       5.3
+     * @return ?T
+     * @since 5.3
      */
     public function fetchSingleObject($className)
     {
@@ -246,8 +244,8 @@ class PreparedStatement
      *
      * @template T of DatabaseObject
      * @param class-string<T> $className
-     * @param string|null $keyProperty
-     * @return  T[]
+     * @param ?string $keyProperty
+     * @return T[]
      */
     public function fetchObjects($className, $keyProperty = null)
     {
@@ -269,7 +267,7 @@ class PreparedStatement
      * @param string $keyColumn name of the key column
      * @param string $valueColumn name of the value column
      * @param bool $uniqueKey if `true`, a one-dimensional array is returned, otherwise, for each key an array of fetched values is returned
-     * @return  array<string|int, (string|int)|(string|int)[]>
+     * @return array<string|int, string|int|float|(string|int|float)[]>
      */
     public function fetchMap($keyColumn, $valueColumn, $uniqueKey = true)
     {
@@ -294,6 +292,8 @@ class PreparedStatement
     }
 
     /**
+     * @param string $column
+     * @return list<string|int|float>
      * @deprecated 5.4 - Use ->fetchAll(\PDO::FETCH_COLUMN)
      */
     public function fetchList($column)
@@ -314,8 +314,8 @@ class PreparedStatement
     /**
      * Counts number of affected rows by the last sql statement (INSERT, UPDATE or DELETE).
      *
-     * @return  int     number of affected rows
-     * @throws  DatabaseQueryException
+     * @return int number of affected rows
+     * @throws DatabaseQueryException
      */
     public function getAffectedRows()
     {
@@ -344,7 +344,7 @@ class PreparedStatement
     /**
      * Returns the description of the last error.
      *
-     * @return  string
+     * @return string
      */
     public function getErrorDesc()
     {
@@ -355,7 +355,7 @@ class PreparedStatement
     /**
      * Returns the SQL query of this statement.
      *
-     * @return  string
+     * @return string
      */
     public function getSQLQuery()
     {
@@ -365,7 +365,7 @@ class PreparedStatement
     /**
      * Returns the SQL query parameters of this statement.
      *
-     * @return  array
+     * @return ParameterValues
      */
     public function getSQLParameters()
     {

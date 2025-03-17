@@ -318,8 +318,7 @@ class WysiwygPollFormContainer extends FormContainer implements IObjectTypeFormN
         $this->optionsField = PollOptionsFormField::create($id . 'Options')
             ->wysiwygId($this->getWysiwygId())
             ->addValidator(new FormFieldValidator('empty', static function (PollOptionsFormField $formField) use ($id) {
-                /** @var TextFormField $questionFormField */
-                $questionFormField = $formField->getDocument()->getNodeById($id . 'Question');
+                $questionFormField = $formField->getDocument()->getFormField($id . 'Question');
 
                 if (empty($formField->getValue()) && $questionFormField->getValue() !== '') {
                     $formField->addValidationError(new FormFieldValidationError('empty'));

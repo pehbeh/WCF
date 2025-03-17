@@ -12,10 +12,7 @@ use wcf\system\language\LanguageFactory;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  LanguageItem        create()
- * @method  LanguageItemEditor[]    getObjects()
- * @method  LanguageItemEditor  getSingleObject()
- * @property-read LanguageItemEditor[] $objects
+ * @extends AbstractDatabaseObjectAction<LanguageItem, LanguageItemEditor>
  */
 class LanguageItemAction extends AbstractDatabaseObjectAction
 {
@@ -47,6 +44,7 @@ class LanguageItemAction extends AbstractDatabaseObjectAction
     /**
      * Creates multiple language items.
      *
+     * @return void
      * @since   5.2
      */
     public function createLanguageItems()

@@ -20,16 +20,16 @@ interface IMetacodeConverter
      * The fragment must be inserted into your returned DOM element.
      *
      * @param \DOMDocumentFragment $fragment fragment containing all child nodes, must be appended to returned element
-     * @param array $attributes list of attributes
-     * @return  \DOMElement     new DOM element
+     * @param list<string> $attributes list of attributes
+     * @return \DOMElement new DOM element
      */
     public function convert(\DOMDocumentFragment $fragment, array $attributes);
 
     /**
      * Validates attributes before any DOM modification occurs.
      *
-     * @param array $attributes list of attributes
-     * @return  bool        false if attributes did not match the converter's expectation
+     * @param list<string> $attributes list of attributes
+     * @return bool false if attributes did not match the converter's expectation
      */
     public function validateAttributes(array $attributes);
 }

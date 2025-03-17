@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserGroup       current()
- * @method  UserGroup[]     getObjects()
- * @method  UserGroup|null      getSingleObject()
- * @method  UserGroup|null      search($objectID)
- * @property    UserGroup[] $objects
+ * @extends DatabaseObjectList<UserGroup>
  */
 class UserGroupList extends DatabaseObjectList
 {

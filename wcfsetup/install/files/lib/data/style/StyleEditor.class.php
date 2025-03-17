@@ -39,8 +39,9 @@ use wcf\util\XMLWriter;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Style   getDecoratedObject()
  * @mixin   Style
+ * @extends DatabaseObjectEditor<Style>
+ * @implements IEditableCachedObject<Style>
  */
 final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {
@@ -145,7 +146,7 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
      *
      * @since 5.4
      */
-    private function removeDirectory(string $pathComponent)
+    private function removeDirectory(string $pathComponent): void
     {
         $dir = WCF_DIR . $pathComponent;
         if (\is_dir($dir)) {
@@ -167,6 +168,8 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
 
     /**
      * Sets this style as default style.
+     *
+     * @return void
      */
     public function setAsDefault()
     {
@@ -188,6 +191,8 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
 
     /**
      * Deletes the style's default cover photo.
+     *
+     * @return void
      */
     public function deleteCoverPhoto()
     {
@@ -245,8 +250,7 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
     /**
      * Reads the data of a style exchange format file.
      *
-     * @param Tar $tar
-     * @return  array
+     * @return mixed[]
      * @throws  SystemException
      */
     public static function readStyleData(Tar $tar)
@@ -397,7 +401,7 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
      *
      * @param string $filename
      * @param string $content
-     * @return  array
+     * @return array<string, string>
      */
     public static function readVariablesData($filename, $content)
     {
@@ -410,7 +414,7 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
 
         /** @var \DOMElement $variable */
         foreach ($variables as $variable) {
-            $data[$variable->getAttribute('name')] = $variable->nodeValue;
+            $data[$variable->getAttribute('name')] = $variable->textContent;
         }
 
         return $data;
@@ -420,7 +424,7 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
      * Returns the data of a style exchange format file.
      *
      * @param string $filename
-     * @return  array
+     * @return mixed[]
      */
     public static function getStyleData($filename)
     {
@@ -839,6 +843,7 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
      *
      * @param StyleEditor $styleEditor
      * @param string[] $descriptions
+     * @return void
      */
     protected static function saveLocalizedDescriptions(self $styleEditor, array $descriptions)
     {
@@ -912,6 +917,7 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
      * @param bool $templates
      * @param bool $images
      * @param string $packageName
+     * @return void
      */
     public function export($templates = false, $images = false, $packageName = '')
     {
@@ -1274,6 +1280,8 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
 
     /**
      * Writes the style-*.css file.
+     *
+     * @return void
      */
     public function writeStyleFile()
     {
@@ -1282,7 +1290,6 @@ final class StyleEditor extends DatabaseObjectEditor implements IEditableCachedO
 
     /**
      * @inheritDoc
-     * @return  Style
      */
     public static function create(array $parameters = [])
     {

@@ -18,6 +18,7 @@ interface IModerationQueueHandler
      * Creates queue assignments for matching object ids.
      *
      * @param ModerationQueue[] $queues
+     * @return void
      */
     public function assignQueues(array $queues);
 
@@ -25,7 +26,7 @@ interface IModerationQueueHandler
      * Returns the container id for current object id, may return 0.
      *
      * @param int $objectID
-     * @return  int
+     * @return int
      */
     public function getContainerID($objectID);
 
@@ -33,7 +34,7 @@ interface IModerationQueueHandler
      * Validates object ids and returns orphaned queue ids.
      *
      * @param int[] $queues
-     * @return  int[]
+     * @return int[]
      */
     public function identifyOrphans(array $queues);
 
@@ -41,7 +42,7 @@ interface IModerationQueueHandler
      * Returns true if given object id is valid.
      *
      * @param int $objectID
-     * @return  bool
+     * @return bool
      */
     public function isValid($objectID);
 
@@ -49,6 +50,7 @@ interface IModerationQueueHandler
      * Populates object properties for viewing.
      *
      * @param ViewableModerationQueue[] $queues
+     * @return void
      */
     public function populate(array $queues);
 
@@ -58,6 +60,7 @@ interface IModerationQueueHandler
      *
      * @param ModerationQueue $queue
      * @param string $message
+     * @return void
      */
     public function removeContent(ModerationQueue $queue, $message);
 
@@ -65,7 +68,7 @@ interface IModerationQueueHandler
      * Returns true if the affected content may be removed.
      *
      * @param ModerationQueue $queue
-     * @return  bool
+     * @return bool
      */
     public function canRemoveContent(ModerationQueue $queue);
 
@@ -74,6 +77,7 @@ interface IModerationQueueHandler
      * object is permanently deleted.
      *
      * @param int[] $objectIDs
+     * @return void
      */
     public function removeQueues(array $objectIDs);
 
@@ -82,7 +86,7 @@ interface IModerationQueueHandler
      *
      * @param ModerationQueue $queue
      * @param int $userID
-     * @return  bool
+     * @return bool
      */
     public function isAffectedUser(ModerationQueue $queue, $userID);
 
@@ -90,8 +94,8 @@ interface IModerationQueueHandler
      * Returns the prefix of language items for notifications for comments
      * and comment responses on moderation queues of this type.
      *
-     * @return  string
-     * @since   3.0
+     * @return string
+     * @since 3.0
      */
     public function getCommentNotificationLanguageItemPrefix();
 
@@ -99,8 +103,8 @@ interface IModerationQueueHandler
      * Returns the language item for the type name for notifications for comments
      * and comment responses on moderation queues of this type.
      *
-     * @return  string
-     * @since   6.0
+     * @return string
+     * @since 6.0
      */
     public function getCommentNotificationTypeNameLanguageItem(): string;
 }

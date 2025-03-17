@@ -2861,7 +2861,7 @@ If you have <strong>already bought the licenses for the listed apps</strong>, th
 		<item name="wcf.acp.style.colors.userPanel"><![CDATA[User Panel]]></item>
 		<item name="wcf.acp.style.copyright"><![CDATA[Copyright]]></item>
 		<item name="wcf.acp.style.copyStyle"><![CDATA[Duplicate Style]]></item>
-		<item name="wcf.acp.style.copyStyle.confirmMessage"><![CDATA[Do you really want to duplicate the style <span class="confirmationObject">{$style->styleName}</span>?]]></item>
+		<item name="wcf.acp.style.copyStyle.confirmMessage"><![CDATA[Are you sure you want to duplicate “{$style->styleName}”?]]></item>
 		<item name="wcf.acp.style.coverPhoto"><![CDATA[Default Cover Photo]]></item>
 		<item name="wcf.acp.style.coverPhoto.delete.confirmMessage"><![CDATA[Do you really want to delete the default cover photo? Once deleted, the global default photo will be used instead.]]></item>
 		<item name="wcf.acp.style.coverPhoto.description"><![CDATA[The image must be at least {$coverPhotoMinWidth} × {$coverPhotoMinHeight} pixels large, acceptable image types are GIF, JPG, JPEG, PNG and WEBP.]]></item>
@@ -3422,15 +3422,9 @@ Allowed extensions: {', '|implode:$attachmentHandler->getFormattedAllowedExtensi
 		<item name="wcf.clipboard.item.com.woltlab.wcf.user.confirmEmail"><![CDATA[Confirm Email Address ({#$count})]]></item>
 		<item name="wcf.clipboard.item.com.woltlab.wcf.user.unconfirmEmail"><![CDATA[Unconfirm Email Address ({#$count})]]></item>
 		<item name="wcf.clipboard.item.com.woltlab.wcf.user.deleteUserContent"><![CDATA[Delete User Contents ({#$count})]]></item>
-		<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.assignUserByClipboard"><![CDATA[Assign User ({#$count})]]></item>
-		<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.enableContent"><![CDATA[Approve Content ({#$count})]]></item>
-		<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.removeActivationContent"><![CDATA[Delete Pending Content ({#$count})]]></item>
-		<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.removeReport"><![CDATA[Close Report ({#$count})]]></item>
-		<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.removeReportContent"><![CDATA[Delete Reported Content ({#$count})]]></item>
 		<item name="wcf.clipboard.label.com.woltlab.wcf.article.marked"><![CDATA[{if $count == 1}One Article{else}{#$count} Articles{/if}]]></item>
 		<item name="wcf.clipboard.label.com.woltlab.wcf.media.marked"><![CDATA[{if $count == 1}One File{else}{#$count} Files{/if}]]></item>
 		<item name="wcf.clipboard.label.com.woltlab.wcf.user.marked"><![CDATA[{if $count == 1}One User{else}{#$count} Users{/if}]]></item>
-		<item name="wcf.clipboard.label.com.woltlab.wcf.moderation.queue.marked"><![CDATA[{plural value=$count 1='One Moderation Item' other='# Moderation Items'}]]></item>
 	</category>
 	<category name="wcf.comment">
 		<item name="wcf.comment.add"><![CDATA[Write a comment …]]></item>
@@ -3998,6 +3992,7 @@ Attachments:
 		<item name="wcf.global.rss.withoutAccessToken"><![CDATA[Anonymous RSS Feed]]></item>
 		<item name="wcf.global.incompatiblePhpVersion"><![CDATA[Bad server configuration: The configured version of “PHP” is not compatible, operation is not possible. At least PHP in version 8.1 is required, versions up to PHP 8.3 are supported. For the use of higher PHP versions the software must be updated to a current version.]]></item>
 		<item name="wcf.global.snackbar.progress"><![CDATA[{$label}: {#$iteration} of {#$length}]]></item>
+		<item name="wcf.global.changeShowOrder"><![CDATA[Change Display Order]]></item>
 	</category>
 	<category name="wcf.global.form">
 		<item name="wcf.global.form.boolean.no"><![CDATA[No]]></item>
@@ -4264,8 +4259,7 @@ Allowed extensions: gif, jpg, jpeg, png, webp]]></item>
 		<item name="wcf.moderation.filterByUser.allEntries"><![CDATA[All Items]]></item>
 		<item name="wcf.moderation.filterByUser.myself"><![CDATA[Myself ({$__wcf->getUser()->username})]]></item>
 		<item name="wcf.moderation.filterByUser.nobody"><![CDATA[Nobody]]></item>
-		<item name="wcf.moderation.outstandingItems"><![CDATA[Pending Items]]></item>
-		<item name="wcf.moderation.doneItems"><![CDATA[Resolved Items]]></item>
+		<item name="wcf.moderation.items"><![CDATA[Moderation Items]]></item>
 		<item name="wcf.moderation.lastChangeTime"><![CDATA[Last Change]]></item>
 		<item name="wcf.moderation.moderation"><![CDATA[Moderation]]></item>
 		<item name="wcf.moderation.noMoreItems"><![CDATA[You have no recent items.]]></item>
@@ -4307,7 +4301,6 @@ Allowed extensions: gif, jpg, jpeg, png, webp]]></item>
 		<item name="wcf.moderation.markAsRead.doubleClick"><![CDATA[Double-Click to Mark This Item Read]]></item>
 		<item name="wcf.moderation.comments"><![CDATA[Comments]]></item>
 		<item name="wcf.moderation.username"><![CDATA[Author]]></item>
-		<item name="wcf.moderation.noEntries"><![CDATA[There are no items at the moment. <a href="#" class="jsStaticDialog" data-dialog-id="moderationListSortFilter" role="button">Change the filters.</a>{if $hasActiveFilter} <a href="{link controller='ModerationList'}{/link}">Reset the active filters.</a>{/if}]]></item>
 	</category>
 	<category name="wcf.moderation.activation">
 		<item name="wcf.moderation.activation"><![CDATA[Approval]]></item>
@@ -7501,5 +7494,14 @@ your notifications on <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phras
 	<item name="wcf.clipboard.item.com.woltlab.wcf.tag.delete.confirmMessage"/>
 	<item name="wcf.clipboard.item.com.woltlab.wcf.tag.setAsSynonyms"/>
 	<item name="wcf.clipboard.label.com.woltlab.wcf.tag.marked"/>
+	<item name="wcf.moderation.noEntries"/>
+	<item name="wcf.moderation.outstandingItems"/>
+	<item name="wcf.moderation.doneItems"/>
+	<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.assignUserByClipboard"/>
+	<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.enableContent"/>
+	<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.removeActivationContent"/>
+	<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.removeReport"/>
+	<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.removeReportContent"/>
+	<item name="wcf.clipboard.label.com.woltlab.wcf.moderation.queue.marked"/>
 </delete>
 </language>

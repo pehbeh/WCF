@@ -2,6 +2,7 @@
 
 namespace wcf\data\user;
 
+use wcf\data\DatabaseObjectDecorator;
 use wcf\data\DatabaseObjectList;
 
 /**
@@ -11,11 +12,8 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  User        current()
- * @method  User[]      getObjects()
- * @method  User|null   getSingleObject()
- * @method  User|null   search($objectID)
- * @property    User[] $objects
+ * @template-covariant TDatabaseObject of User|DatabaseObjectDecorator<User> = User
+ * @extends DatabaseObjectList<TDatabaseObject>
  */
 class UserList extends DatabaseObjectList
 {

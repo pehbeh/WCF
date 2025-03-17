@@ -39,7 +39,7 @@ class SendNewPasswordWorker extends AbstractWorker
         $userList = new UserList();
         $userList->getConditionBuilder()->add('user_table.userID IN (?)', [$this->parameters['userIDs']]);
 
-        return $userList->countObjects();
+        $this->count = $userList->countObjects();
     }
 
     /**
@@ -102,6 +102,7 @@ class SendNewPasswordWorker extends AbstractWorker
      * Resets the password of the given user.
      *
      * @param UserEditor $userEditor
+     * @return void
      */
     protected function resetPassword(UserEditor $userEditor)
     {
@@ -121,6 +122,7 @@ class SendNewPasswordWorker extends AbstractWorker
      * Send links.
      *
      * @param User $user
+     * @return void
      */
     protected function sendLink(User $user)
     {

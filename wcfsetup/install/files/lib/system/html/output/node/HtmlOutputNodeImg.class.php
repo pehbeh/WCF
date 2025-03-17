@@ -159,6 +159,7 @@ class HtmlOutputNodeImg extends AbstractHtmlOutputNode
      * @param \DOMElement $element
      * @param string $src
      * @param bool $isUgc
+     * @return void
      */
     protected function replaceExternalSource(\DOMElement $element, $src, $isUgc = false)
     {
@@ -186,6 +187,8 @@ class HtmlOutputNodeImg extends AbstractHtmlOutputNode
     }
 
     /**
+     * @param string[] $hostnames
+     * @return callable(string):bool
      * @deprecated 5.4 Use Url::getHostnameMatcher().
      */
     protected function getHostMatcher(array $hostnames)
@@ -198,7 +201,7 @@ class HtmlOutputNodeImg extends AbstractHtmlOutputNode
      * and whitelisted ones with wildcard support.
      *
      * @param string $hostname
-     * @return      bool
+     * @return bool
      */
     protected function bypassProxy($hostname)
     {
@@ -218,8 +221,8 @@ class HtmlOutputNodeImg extends AbstractHtmlOutputNode
      * Returns the link to fetch the image using the image proxy.
      *
      * @param string $link
-     * @return  string
-     * @since   3.0
+     * @return string
+     * @since 3.0
      */
     protected function getProxyLink($link)
     {
@@ -234,6 +237,10 @@ class HtmlOutputNodeImg extends AbstractHtmlOutputNode
         }
     }
 
+    /**
+     * @param string $src
+     * @return bool
+     */
     protected function isAllowedOrigin($src)
     {
         static $matcher = null;

@@ -13,26 +13,23 @@ final class StringStack
 {
     /**
      * hash index
-     * @var int
      */
-    protected static $i = 0;
+    private static int $i = 0;
 
     /**
      * local string stack
-     * @var string[][]
+     * @var array<string, array<string, string>>
      */
-    protected static $stringStack = [];
+    private static array $stringStack = [];
 
     /**
      * Replaces a string with an unique hash value.
-     *
-     * @param string $string
-     * @param string $type
-     * @param string $delimiter
-     * @return  string      $hash
      */
-    public static function pushToStringStack($string, $type = 'default', $delimiter = '@@')
-    {
+    public static function pushToStringStack(
+        string $string,
+        string $type = 'default',
+        string $delimiter = '@@'
+    ): string {
         self::$i++;
         $hash = $delimiter . StringUtil::getRandomID() . $delimiter;
 
@@ -47,12 +44,8 @@ final class StringStack
 
     /**
      * Reinserts strings that have been replaced by unique hash values.
-     *
-     * @param string $string
-     * @param string $type
-     * @return  string
      */
-    public static function reinsertStrings($string, $type = 'default')
+    public static function reinsertStrings(string $string, string $type = 'default'): string
     {
         if (isset(self::$stringStack[$type])) {
             foreach (self::$stringStack[$type] as $hash => $value) {
@@ -69,10 +62,9 @@ final class StringStack
     /**
      * Returns the stack.
      *
-     * @param string $type
-     * @return  array
+     * @return array<string, string>
      */
-    public static function getStack($type = 'default')
+    public static function getStack(string $type = 'default'): array
     {
         if (isset(self::$stringStack[$type])) {
             return self::$stringStack[$type];

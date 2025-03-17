@@ -14,10 +14,7 @@ use wcf\system\user\authentication\password\IPasswordAlgorithm;
  */
 final class Bcrypt implements IPasswordAlgorithm
 {
-    /**
-     * @var int
-     */
-    private $cost;
+    private int $cost;
 
     /**
      * @param int $cost The BCrypt 'cost' option for newly created hashes. It is recommended not to change this option.
@@ -71,8 +68,10 @@ final class Bcrypt implements IPasswordAlgorithm
 
     /**
      * Returns the value to be used for password_*'s `$options` parameter.
+     *
+     * @return array{cost: int}
      */
-    private function getOptions()
+    private function getOptions(): array
     {
         return [
             'cost' => $this->cost,

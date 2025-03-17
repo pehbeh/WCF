@@ -19,6 +19,7 @@ interface IModerationQueueActivationHandler extends IModerationQueueHandler
      * Enables affected content.
      *
      * @param ModerationQueue $queue
+     * @return void
      */
     public function enableContent(ModerationQueue $queue);
 
@@ -26,7 +27,7 @@ interface IModerationQueueActivationHandler extends IModerationQueueHandler
      * Returns rendered template for disabled content.
      *
      * @param ViewableModerationQueue $queue
-     * @return  string
+     * @return string
      */
     public function getDisabledContent(ViewableModerationQueue $queue);
 }

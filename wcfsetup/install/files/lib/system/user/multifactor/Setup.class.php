@@ -20,12 +20,15 @@ use wcf\system\WCF;
 final class Setup implements IIDObject
 {
     /**
-     * @var array
+     * @var mixed[]
      */
-    private $row;
+    private array $row;
 
-    private $isDeleted = false;
+    private bool $isDeleted = false;
 
+    /**
+     * @param mixed[] $row
+     */
     private function __construct(array $row)
     {
         $this->row = $row;

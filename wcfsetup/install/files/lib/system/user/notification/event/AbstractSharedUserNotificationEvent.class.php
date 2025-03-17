@@ -32,6 +32,8 @@ abstract class AbstractSharedUserNotificationEvent extends AbstractUserNotificat
     /**
      * Provide specialized handlers with object ids, these ids will be collected and should be
      * read once the first time data is requested from the notification event.
+     *
+     * @return void
      */
     abstract protected function prepare();
 }

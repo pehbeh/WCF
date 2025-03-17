@@ -55,7 +55,7 @@ class UploadFile
 
     /**
      * additional data for validation errors
-     * @var array
+     * @var mixed[]
      */
     protected $validationErrorAdditionalData = [];
 
@@ -184,7 +184,8 @@ class UploadFile
      * Sets the validation error type.
      *
      * @param string $validationErrorType
-     * @param array $additionalData
+     * @param mixed[] $additionalData
+     * @return void
      */
     public function setValidationErrorType($validationErrorType, array $additionalData = [])
     {
@@ -205,7 +206,7 @@ class UploadFile
     /**
      * Returns the validation error additional data array.
      *
-     * @return  array
+     * @return mixed[]
      */
     public function getValidationErrorAdditionalData()
     {
@@ -215,7 +216,7 @@ class UploadFile
     /**
      * Returns the image data of the file or `null` if the file is no image.
      *
-     * @return  array|null
+     * @return array{width: int, height: int, mimeType: string}|null
      */
     public function getImageData()
     {
@@ -235,6 +236,7 @@ class UploadFile
      * and the internal filename value to the new filename derived from the given location.
      *
      * @param string $newLocation new file location
+     * @return void
      */
     public function moveUploadedFile($newLocation)
     {

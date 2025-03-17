@@ -17,7 +17,7 @@ use wcf\system\WCF;
  */
 final class RebuildBootstrapper
 {
-    public function __invoke()
+    public function __invoke(): void
     {
         $groups = PackageList::getTopologicallySortedPackages();
 
@@ -80,7 +80,7 @@ final class RebuildBootstrapper
         return \file_exists($this->getBootstrapFilename($package));
     }
 
-    private function getBootstrapFilename(Package $package)
+    private function getBootstrapFilename(Package $package): string
     {
         return \WCF_DIR . 'lib/' . $this->getRelativeBootstrapFilename($package);
     }

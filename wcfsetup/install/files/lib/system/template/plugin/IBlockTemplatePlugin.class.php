@@ -16,7 +16,7 @@ interface IBlockTemplatePlugin
     /**
      * Executes this template block.
      *
-     * @param array $tagArgs
+     * @param array<string|int, mixed> $tagArgs
      * @param string $blockContent
      * @param TemplateEngine $tplObj
      * @return  string
@@ -26,8 +26,9 @@ interface IBlockTemplatePlugin
     /**
      * Initialises this template block.
      *
-     * @param array $tagArgs
+     * @param array<string|int, mixed> $tagArgs
      * @param TemplateEngine $tplObj
+     * @return void
      */
     public function init($tagArgs, TemplateEngine $tplObj);
 

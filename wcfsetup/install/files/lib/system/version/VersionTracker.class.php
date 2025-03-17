@@ -41,13 +41,13 @@ class VersionTracker extends SingletonFactory
      * Adds a new entry to the version history.
      *
      * @param string $objectTypeName object type name
-     * @param IVersionTrackerObject $object target object
+     * @return void
      */
     public function add($objectTypeName, IVersionTrackerObject $object)
     {
         $objectType = $this->getObjectType($objectTypeName);
 
-        /** @var IVersionTrackerProvider $processor */
+        /** @var IVersionTrackerProvider<DatabaseObject> $processor */
         $processor = $objectType->getProcessor();
         $data = $processor->getTrackedData($object);
 
@@ -160,6 +160,8 @@ class VersionTracker extends SingletonFactory
 
     /**
      * Creates the database tables to store each version.
+     *
+     * @return void
      */
     public function createStorageTables()
     {
@@ -205,6 +207,7 @@ class VersionTracker extends SingletonFactory
      *
      * @param string $objectTypeName object type name
      * @param int $objectID object id
+     * @return void
      */
     public function reset($objectTypeName, $objectID)
     {

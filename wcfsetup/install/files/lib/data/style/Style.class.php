@@ -41,21 +41,25 @@ use wcf\util\ImageUtil;
 class Style extends DatabaseObject implements ITitledObject
 {
     /**
+     * @var int
      * @since 5.4
      */
     protected $coverPhotoHeight = 0;
 
     /**
+     * @var int
      * @since 5.4
      */
     protected $coverPhotoWidth = 0;
 
     /**
+     * @var int
      * @since 5.4
      */
     protected $pageLogoSmallHeight = 0;
 
     /**
+     * @var int
      * @since 5.4
      */
     protected $pageLogoSmallWidth = 0;
@@ -182,6 +186,8 @@ class Style extends DatabaseObject implements ITitledObject
 
     /**
      * Loads style-specific variables.
+     *
+     * @return void
      */
     public function loadVariables()
     {
@@ -324,6 +330,7 @@ class Style extends DatabaseObject implements ITitledObject
     }
 
     /**
+     * @return string
      * @deprecated 6.0 Use Style::getFavicon() instead.
      */
     public function getRelativeFavicon()
@@ -413,6 +420,8 @@ class Style extends DatabaseObject implements ITitledObject
      * Serve the WebP variant of the cover photo if the browser supports
      * it and the original cover photo is not a GIF.
      *
+     * @param bool $forceWebP
+     * @return bool
      * @since 5.4
      */
     protected function useWebP($forceWebP = null): bool
@@ -450,8 +459,8 @@ class Style extends DatabaseObject implements ITitledObject
      * Splits the less variables string.
      *
      * @param string $variables
-     * @return  array
-     * @since   3.0
+     * @return array{preset: string, custom: string}
+     * @since 3.0
      */
     public static function splitLessVariables($variables)
     {

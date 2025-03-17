@@ -54,6 +54,9 @@ class InteractionContextMenuView
         );
     }
 
+    /**
+     * @return (IInteraction|Divider)[]
+     */
     public function getInteractionsForObject(DatabaseObject $object): array
     {
         $interactions = \array_filter(
@@ -64,6 +67,9 @@ class InteractionContextMenuView
         return $this->removeObsoleteDividers($interactions);
     }
 
+    /**
+     * @return (IInteraction|Divider)[]
+     */
     public function getInteractions(): array
     {
         return $this->provider->getInteractions();

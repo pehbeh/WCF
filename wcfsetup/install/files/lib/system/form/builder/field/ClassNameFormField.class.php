@@ -254,7 +254,7 @@ final class ClassNameFormField extends TextFormField
     /**
      * @inheritDoc
      */
-    protected static function getDefaultId()
+    protected static function getDefaultId(): string
     {
         return 'className';
     }

@@ -18,7 +18,7 @@ class DevtoolsPackageXmlWriter
 {
     /**
      * data used to write the `package.xml` file
-     * @var array
+     * @var mixed[]
      */
     protected $packageXmlData;
 
@@ -38,7 +38,7 @@ class DevtoolsPackageXmlWriter
      * Creates a new `DevtoolsPackageXmlWriter` object.
      *
      * @param DevtoolsProject $project
-     * @param array $packageXmlData
+     * @param mixed[][] $packageXmlData
      */
     public function __construct(DevtoolsProject $project, array $packageXmlData)
     {
@@ -51,7 +51,7 @@ class DevtoolsPackageXmlWriter
      * section or `false`, otherwise.
      *
      * @param string $string
-     * @return  bool
+     * @return bool
      */
     protected function requiresCdata($string)
     {
@@ -62,6 +62,8 @@ class DevtoolsPackageXmlWriter
 
     /**
      * Writes the `package.xml` file.
+     *
+     * @return void
      */
     public function write()
     {
@@ -85,6 +87,8 @@ class DevtoolsPackageXmlWriter
 
     /**
      * Writes the `authorinformation` element.
+     *
+     * @return void
      */
     protected function writeAuthorInformation()
     {
@@ -110,6 +114,8 @@ class DevtoolsPackageXmlWriter
 
     /**
      * Writes the `optionalpackages` element.
+     *
+     * @return void
      */
     protected function writeExcludedPackages()
     {
@@ -136,6 +142,8 @@ class DevtoolsPackageXmlWriter
 
     /**
      * Writes the `instructions` elements.
+     *
+     * @return void
      */
     protected function writeInstructions()
     {
@@ -169,6 +177,8 @@ class DevtoolsPackageXmlWriter
 
     /**
      * Writes the `optionalpackages` element.
+     *
+     * @return void
      */
     protected function writeOptionalPackages()
     {
@@ -193,6 +203,7 @@ class DevtoolsPackageXmlWriter
      *
      * @param string $information
      * @param null|string $elementName is set to lowercase version of `$information` if missing
+     * @return void
      */
     protected function writeI18nPackageInformation($information, $elementName = null)
     {
@@ -243,6 +254,8 @@ class DevtoolsPackageXmlWriter
 
     /**
      * Writes the `packageinformation` element.
+     *
+     * @return void
      */
     protected function writePackageInformation()
     {
@@ -296,6 +309,8 @@ class DevtoolsPackageXmlWriter
 
     /**
      * Writes the `optionalpackages` element.
+     *
+     * @return void
      */
     protected function writeRequiredPackages()
     {

@@ -22,7 +22,7 @@ trait TMaximumFormField
      * Returns the maximum of the values of this field or `null` if no maximum
      * has been set.
      *
-     * @return  null|int|float
+     * @return null|int|float
      */
     public function getMaximum()
     {
@@ -34,9 +34,9 @@ trait TMaximumFormField
      * maximum is removed.
      *
      * @param null|int|float $maximum maximum field value
-     * @return  static              this field
+     * @return static this field
      *
-     * @throws  \InvalidArgumentException   if the given maximum is no number or otherwise invalid
+     * @throws \InvalidArgumentException if the given maximum is no number or otherwise invalid
      */
     public function maximum($maximum = null)
     {

@@ -105,6 +105,7 @@ class PageCommentUserNotificationEvent extends AbstractCommentUserNotificationEv
 
     /**
      * @inheritDoc
+     * @return array{objectID: int, objectTypeID: ?int}
      */
     protected static function getTestCommentObjectData(UserProfile $recipient, UserProfile $author)
     {

@@ -131,7 +131,7 @@ abstract class AbstractBoxController implements IBoxController
     /**
      * Returns the additional data of the box.
      *
-     * @return  array
+     * @return mixed[]
      */
     protected function getAdditionalData()
     {
@@ -152,6 +152,8 @@ abstract class AbstractBoxController implements IBoxController
 
     /**
      * Loads the content of this box.
+     *
+     * @return void
      */
     abstract protected function loadContent();
 }

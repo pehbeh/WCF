@@ -437,6 +437,7 @@ class PagePackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -547,9 +548,7 @@ class PagePackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
                 ->addValidator(new FormFieldValidator(
                     'selfParent',
                     static function (SingleSelectionFormField $formField) {
-                        /** @var TextFormField $identifier */
-                        $identifier = $formField->getDocument()->getNodeById('identifier');
-
+                        $identifier = $formField->getDocument()->getFormField('identifier');
                         if ($identifier->getSaveValue() === $formField->getValue()) {
                             $formField->addValidationError(
                                 new FormFieldValidationError(
@@ -624,9 +623,7 @@ class PagePackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
         ]);
 
         // dependencies
-
-        /** @var RadioButtonFormField $pageType */
-        $pageType = $form->getNodeById('pageType');
+        $pageType = $form->getFormField('pageType');
         foreach (['controller', 'handler', 'requireObjectID'] as $systemElement) {
             $form->getNodeById($systemElement)->addDependency(
                 ValueFormFieldDependency::create('pageType')
@@ -647,6 +644,8 @@ class PagePackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
 
     /**
      * @inheritDoc
+     * @param bool $saveData
+     * @return array<string, int|string>
      * @since   5.2
      */
     protected function fetchElementData(\DOMElement $element, $saveData)
@@ -798,6 +797,7 @@ class PagePackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
 
     /**
      * @inheritDoc
+     * @return string
      * @since   5.2
      */
     public function getElementIdentifier(\DOMElement $element)
@@ -807,6 +807,7 @@ class PagePackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function setEntryListKeys(IDevtoolsPipEntryList $entryList)
@@ -819,6 +820,7 @@ class PagePackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      * @since   5.2
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)

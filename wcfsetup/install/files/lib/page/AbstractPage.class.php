@@ -375,6 +375,8 @@ abstract class AbstractPage implements IPage
 
     /**
      * Sets the active menu item of the page.
+     *
+     * @return void
      */
     protected function setActiveMenuItem()
     {
@@ -386,6 +388,7 @@ abstract class AbstractPage implements IPage
     }
 
     /**
+     * @return void
      * @deprecated 6.1 handled by the `CheckForForceLogin` middleware
      */
     protected function forceLogin()
@@ -395,6 +398,7 @@ abstract class AbstractPage implements IPage
     /**
      * Calls setResponse() if the parameter implements the ResponseInterface.
      *
+     * @param mixed $response
      * @see AbstractPage::setPsr7Response()
      * @since 5.5
      */

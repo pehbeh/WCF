@@ -62,6 +62,9 @@ class MenuItemAddForm extends AbstractFormBuilderForm
      */
     public Menu $menu;
 
+    /**
+     * @var \RecursiveIteratorIterator<MenuItemNode>
+     */
     public \RecursiveIteratorIterator $menuItemNodeList;
 
     /**
@@ -159,8 +162,7 @@ class MenuItemAddForm extends AbstractFormBuilderForm
                         ->addFieldClass('short')
                         ->addValidator(
                             new FormFieldValidator('requiredObjectIDValidator', function (IntegerFormField $formField) {
-                                $pageFormField = $this->form->getNodeById('pageID');
-                                \assert($pageFormField instanceof SingleSelectionFormField);
+                                $pageFormField = $this->form->getFormField('pageID');
                                 $pageID = $pageFormField->getValue();
                                 $page = new Page($pageID);
                                 $pageObjectID = $formField->getValue();
@@ -292,15 +294,31 @@ class MenuItemAddForm extends AbstractFormBuilderForm
         );
     }
 
+    /**
+     * @param \RecursiveIteratorIterator<PageNode> $pageNodeList
+     * @param array<int, int> $pageHandlers
+     */
     protected function getPageObjectIDFormField(
         \RecursiveIteratorIterator $pageNodeList,
         array $pageHandlers
     ): IntegerFormField {
         return new class($pageNodeList, $pageHandlers) extends IntegerFormField {
             protected $templateName = '__pageObjectIDFormField';
+
+            /**
+             * @var array<int, int>
+             */
             protected array $pageHandlers;
+
+            /**
+             * @var \RecursiveIteratorIterator<PageNode>
+             */
             protected \RecursiveIteratorIterator $pageNodeList;
 
+            /**
+             * @param \RecursiveIteratorIterator<PageNode> $pageNodeList
+             * @param array<int, int> $pageHandlers
+             */
             public function __construct(\RecursiveIteratorIterator $pageNodeList, array $pageHandlers)
             {
                 parent::__construct();

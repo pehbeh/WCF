@@ -3,6 +3,7 @@
 namespace wcf\system\cache\runtime;
 
 use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectDecorator;
 use wcf\data\DatabaseObjectList;
 use wcf\system\SingletonFactory;
 
@@ -13,6 +14,9 @@ use wcf\system\SingletonFactory;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
+ * @template TDatabaseObject of DatabaseObject|DatabaseObjectDecorator
+ * @template TDatabaseObjectList of DatabaseObjectList
+ * @implements IRuntimeCache<TDatabaseObject>
  */
 abstract class AbstractRuntimeCache extends SingletonFactory implements IRuntimeCache
 {
@@ -30,21 +34,17 @@ abstract class AbstractRuntimeCache extends SingletonFactory implements IRuntime
 
     /**
      * cached DatabaseObject objects
-     * @var DatabaseObject[]
+     * @var TDatabaseObject[]
      */
     protected $objects = [];
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function cacheObjectID($objectID)
     {
         $this->cacheObjectIDs([$objectID]);
     }
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function cacheObjectIDs(array $objectIDs)
     {
         foreach ($objectIDs as $objectID) {
@@ -56,6 +56,8 @@ abstract class AbstractRuntimeCache extends SingletonFactory implements IRuntime
 
     /**
      * Fetches the objects for the pending object ids.
+     *
+     * @return void
      */
     protected function fetchObjects()
     {
@@ -74,17 +76,13 @@ abstract class AbstractRuntimeCache extends SingletonFactory implements IRuntime
         $this->objectIDs = [];
     }
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function getCachedObjects()
     {
         return $this->objects;
     }
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function getObject($objectID)
     {
         if (\array_key_exists($objectID, $this->objects)) {
@@ -101,16 +99,14 @@ abstract class AbstractRuntimeCache extends SingletonFactory implements IRuntime
     /**
      * Returns a database object list object to fetch cached objects.
      *
-     * @return  DatabaseObjectList
+     * @return TDatabaseObjectList
      */
     protected function getObjectList()
     {
         return new $this->listClassName();
     }
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function getObjects(array $objectIDs)
     {
         $objects = [];
@@ -137,17 +133,13 @@ abstract class AbstractRuntimeCache extends SingletonFactory implements IRuntime
         return $objects;
     }
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function removeObject($objectID)
     {
         $this->removeObjects([$objectID]);
     }
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function removeObjects(array $objectIDs)
     {
         foreach ($objectIDs as $objectID) {

@@ -135,7 +135,7 @@ class PackageValidationManager extends SingletonFactory
     /**
      * Returns the iterable package archive list.
      *
-     * @return  \RecursiveIteratorIterator
+     * @return  \RecursiveIteratorIterator<PackageValidationArchive>
      */
     public function getPackageValidationArchiveList()
     {

@@ -37,6 +37,9 @@ final class FileProcessorFormField extends AbstractFormField
      */
     protected $javaScriptDataHandlerModule = 'WoltLabSuite/Core/Form/Builder/Field/FileProcessor';
 
+    /**
+     * @var array<string, mixed>
+     */
     private array $context = [];
 
     /**
@@ -48,6 +51,16 @@ final class FileProcessorFormField extends AbstractFormField
     private bool $simpleReplace = false;
     private bool $hideDeleteButton = false;
     private ?string $thumbnailSize = null;
+
+    /**
+     * @var list<array{
+     *  actionName: string,
+     *  title: string,
+     *  icon: ?IFontAwesomeIcon,
+     *  application: string,
+     *  template: string,
+     * }>
+     */
     private array $actionButtons = [];
 
     #[\Override]
@@ -151,12 +164,18 @@ final class FileProcessorFormField extends AbstractFormField
         return $this;
     }
 
+    /**
+     * @return string
+     */
     #[\Override]
     public function getObjectTypeDefinition()
     {
         return 'com.woltlab.wcf.file';
     }
 
+    /**
+     * @return File[]
+     */
     public function getFiles(): array
     {
         return $this->files;
@@ -261,6 +280,8 @@ final class FileProcessorFormField extends AbstractFormField
 
     /**
      * Returns the context for the file processor.
+     *
+     * @return array<string, mixed>
      */
     public function getContext(): array
     {
@@ -269,6 +290,8 @@ final class FileProcessorFormField extends AbstractFormField
 
     /**
      * Sets the context for the file processor.
+     *
+     * @param array<string, mixed> $context
      */
     public function context(array $context): self
     {

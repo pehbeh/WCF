@@ -5,6 +5,7 @@ namespace wcf\acp\form;
 use wcf\data\application\ViewableApplicationList;
 use wcf\data\page\Page;
 use wcf\data\page\PageList;
+use wcf\data\page\PageNode;
 use wcf\data\page\PageNodeTree;
 use wcf\form\AbstractForm;
 use wcf\system\application\ApplicationHandler;
@@ -61,7 +62,7 @@ final class ApplicationManagementForm extends AbstractForm
 
     /**
      * nested list of page nodes
-     * @var \RecursiveIteratorIterator
+     * @var \RecursiveIteratorIterator<PageNode>
      */
     public $pageNodeList;
 

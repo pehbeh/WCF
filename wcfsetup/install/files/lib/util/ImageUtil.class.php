@@ -189,7 +189,7 @@ final class ImageUtil
                     }
 
                     $newFilename = FileUtil::getTemporaryFilename();
-                    $adapter->writeImage($newFilename);
+                    $adapter->writeImage($adapter->getImage(), $newFilename);
                     $filename = $newFilename;
                 }
             }

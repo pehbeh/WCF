@@ -13,9 +13,9 @@ use wcf\system\WCF;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    AttachmentGridView $gridView
+ * @extends AbstractGridViewPage<AttachmentGridView>
  */
-class AttachmentListPage extends AbstractGridViewPage
+final class AttachmentListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -28,7 +28,7 @@ class AttachmentListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.attachment.canManageAttachment'];
 
     #[\Override]
-    protected function createGridViewController(): AttachmentGridView
+    protected function createGridView(): AttachmentGridView
     {
         return new AttachmentGridView();
     }
@@ -43,6 +43,9 @@ class AttachmentListPage extends AbstractGridViewPage
         ]);
     }
 
+    /**
+     * @return array{count: int, size: int, downloads: int}
+     */
     private function getAttachmentStats(): array
     {
         $sql = "SELECT  COUNT(*) AS count,

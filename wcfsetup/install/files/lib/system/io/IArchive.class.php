@@ -8,13 +8,23 @@ namespace wcf\system\io;
  * @author  Tim Duesterhus
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @phpstan-type FileInfo array{
+ *  compressedSize?: int,
+ *  crc32: int,
+ *  filename: string,
+ *  mtime: int,
+ *  offset: int,
+ *  size: int,
+ *  type: 'file'|'folder'|'symlink',
+ *  index: int,
+ * }&mixed[]
  */
 interface IArchive
 {
     /**
      * Returns the table of contents (TOC) list for this archive.
      *
-     * @return array list of contents
+     * @return array<int, FileInfo> list of contents
      */
     public function getContentList();
 
@@ -23,7 +33,7 @@ interface IArchive
      * in the archive.
      *
      * @param mixed $index index or name of the requested file
-     * @return array
+     * @return FileInfo
      */
     public function getFileInfo($index);
 

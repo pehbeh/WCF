@@ -3,6 +3,7 @@
 namespace wcf\system\box;
 
 use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectList;
 use wcf\data\user\option\UserOption;
 use wcf\system\cache\builder\UserOptionCacheBuilder;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
@@ -17,6 +18,8 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
+ *
+ * @extends AbstractDatabaseObjectListBoxController<DatabaseObjectList<DatabaseObject>>
  */
 class TodaysBirthdaysBoxController extends AbstractDatabaseObjectListBoxController
 {
@@ -156,6 +159,7 @@ class TodaysBirthdaysBoxController extends AbstractDatabaseObjectListBoxControll
      * Filters given user ids.
      *
      * @param int[] $userIDs
+     * @return void
      */
     protected function filterUserIDs(&$userIDs)
     {

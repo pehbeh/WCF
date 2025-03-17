@@ -2,6 +2,7 @@
 
 namespace wcf\data\like\object;
 
+use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectDecorator;
 use wcf\data\like\Like;
 use wcf\data\object\type\ObjectType;
@@ -13,8 +14,9 @@ use wcf\data\object\type\ObjectType;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  LikeObject  getDecoratedObject()
  * @mixin   LikeObject
+ * @template TDatabaseObject of DatabaseObject
+ * @extends DatabaseObjectDecorator<TDatabaseObject>
  */
 abstract class AbstractLikeObject extends DatabaseObjectDecorator implements ILikeObject
 {

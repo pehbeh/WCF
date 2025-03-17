@@ -2,6 +2,7 @@
 
 namespace wcf\system\version;
 
+use wcf\data\DatabaseObject;
 use wcf\data\IVersionTrackerObject;
 use wcf\data\object\type\IObjectTypeProvider;
 
@@ -12,6 +13,9 @@ use wcf\data\object\type\IObjectTypeProvider;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
+ *
+ * @template TDatabaseObject of DatabaseObject
+ * @extends IObjectTypeProvider<TDatabaseObject>
  */
 interface IVersionTrackerProvider extends IObjectTypeProvider
 {
@@ -82,6 +86,7 @@ interface IVersionTrackerProvider extends IObjectTypeProvider
      *
      * @param IVersionTrackerObject $object target object
      * @param VersionTrackerEntry $entry previous version
+     * @return void
      */
     public function revert(IVersionTrackerObject $object, VersionTrackerEntry $entry);
 }

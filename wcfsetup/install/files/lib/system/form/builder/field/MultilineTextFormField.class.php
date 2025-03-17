@@ -25,6 +25,7 @@ class MultilineTextFormField extends TextFormField
 
     /**
      * @inheritDoc
+     * @return string[]
      * @since       5.4
      */
     protected function getValidAutoCompleteTokens(): array

@@ -3,6 +3,7 @@
 namespace wcf\system\clipboard\action;
 
 use wcf\data\clipboard\action\ClipboardAction;
+use wcf\data\tag\Tag;
 use wcf\data\tag\TagAction;
 use wcf\system\WCF;
 
@@ -13,6 +14,8 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
+ *
+ * @extends AbstractClipboardAction<Tag>
  */
 class TagClipboardAction extends AbstractClipboardAction
 {

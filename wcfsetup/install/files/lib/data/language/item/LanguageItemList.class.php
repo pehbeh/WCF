@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  LanguageItem        current()
- * @method  LanguageItem[]      getObjects()
- * @method  LanguageItem|null   getSingleObject()
- * @method  LanguageItem|null   search($objectID)
- * @property    LanguageItem[] $objects
+ * @extends DatabaseObjectList<LanguageItem>
  */
 class LanguageItemList extends DatabaseObjectList
 {

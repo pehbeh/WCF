@@ -2,16 +2,9 @@
 
 namespace wcf\action;
 
-use Laminas\Diactoros\Response\JsonResponse;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 use wcf\data\moderation\queue\ModerationQueue;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\data\user\User;
-use wcf\http\Helper;
-use wcf\system\exception\IllegalLinkException;
-use wcf\system\exception\PermissionDeniedException;
 use wcf\system\form\builder\field\dependency\ValueFormFieldDependency;
 use wcf\system\form\builder\field\RadioButtonFormField;
 use wcf\system\form\builder\field\user\UserFormField;
@@ -24,12 +17,14 @@ use wcf\system\WCF;
 /**
  * Assigns a user to a moderation queue entry.
  *
- * @author Tim Duesterhus
- * @copyright 2001-2022 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
- * @since 6.0
+ * @author      Olaf Braun, Tim Duesterhus
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.0
+ *
+ * @phpstan-import-type PerformActionResult from AbstractModerationAction
  */
-final class ModerationQueueAssignUserAction implements RequestHandlerInterface
+final class ModerationQueueAssignUserAction extends AbstractModerationAction
 {
     private readonly ObjectTypeCache $objectTypeCache;
 
@@ -38,82 +33,14 @@ final class ModerationQueueAssignUserAction implements RequestHandlerInterface
         $this->objectTypeCache = ObjectTypeCache::getInstance();
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function handle(ServerRequestInterface $request): ResponseInterface
-    {
-        $parameters = Helper::mapQueryParameters(
-            $request->getQueryParams(),
-            <<<'EOT'
-                array {
-                    id: positive-int
-                }
-                EOT
-        );
-
-        $moderationQueue = new ModerationQueue($parameters['id']);
-        if (!$moderationQueue->queueID) {
-            throw new IllegalLinkException();
-        }
-
-        if (!$moderationQueue->canEdit(WCF::getUser())) {
-            throw new PermissionDeniedException();
-        }
-
-        $form = $this->getForm($moderationQueue);
-
-        if ($request->getMethod() === 'GET') {
-            return $form->toResponse();
-        } elseif ($request->getMethod() === 'POST') {
-            $response = $form->validateRequest($request);
-            if ($response !== null) {
-                return $response;
-            }
-
-            $data = $form->getData()['data'];
-
-            $user = match ($data['assignee']) {
-                'none' => null,
-                'me' => WCF::getUser(),
-                'other' => new User($data['other']),
-            };
-
-            $command = new AssignUser(
-                $moderationQueue,
-                $user
-            );
-            $command();
-
-            // Reload the moderation queue to fetch the new status.
-            $moderationQueue = new ModerationQueue($moderationQueue->queueID);
-
-            $assignee = null;
-            if ($user !== null) {
-                $assignee = [
-                    'username' => $user->username,
-                    'userID' => $user->userID,
-                    'link' => $user->getLink(),
-                ];
-            }
-
-            return new JsonResponse([
-                'result' => [
-                    'assignee' => $assignee,
-                    'status' => $moderationQueue->getStatus(),
-                ],
-            ]);
-        } else {
-            throw new \LogicException('Unreachable');
-        }
-    }
-
-    private function getForm(ModerationQueue $moderationQueue): Psr15DialogForm
+    #[\Override]
+    protected function getForm(array $moderationQueues): Psr15DialogForm
     {
         // The current user should not appear in the
         // "other user" selection if they are assigned.
         $assignedUserID = 0;
-        if ($moderationQueue->assignedUserID && $moderationQueue->assignedUserID !== WCF::getUser()->userID) {
+        $moderationQueue = \count($moderationQueues) === 1 ? \reset($moderationQueues) : null;
+        if ($moderationQueue?->assignedUserID && $moderationQueue->assignedUserID !== WCF::getUser()->userID) {
             $assignedUserID = $moderationQueue->assignedUserID;
         }
 
@@ -130,7 +57,7 @@ final class ModerationQueueAssignUserAction implements RequestHandlerInterface
                     'other' => WCF::getLanguage()->get('wcf.moderation.assignedUser.other'),
                 ])
                 ->value(
-                    match ($moderationQueue->assignedUserID) {
+                    match ($moderationQueue?->assignedUserID) {
                         WCF::getUser()->userID => 'me',
                         null => 'none',
                         default => 'other'
@@ -147,24 +74,31 @@ final class ModerationQueueAssignUserAction implements RequestHandlerInterface
                 )
                 ->label('wcf.user.username')
                 ->required()
-                ->addValidator(new FormFieldValidator('isAffected', function (UserFormField $formField) use ($moderationQueue) {
-                    $user = User::getUserByUsername($formField->getValue());
+                ->addValidator(
+                    new FormFieldValidator(
+                        'isAffected',
+                        function (UserFormField $formField) use ($moderationQueues) {
+                            $user = User::getUserByUsername($formField->getValue());
 
-                    $objectType = $this->objectTypeCache->getObjectType($moderationQueue->objectTypeID);
-                    if (
-                        !$objectType->getProcessor()->isAffectedUser(
-                            $moderationQueue,
-                            $user->userID
-                        )
-                    ) {
-                        $formField->addValidationError(
-                            new FormFieldValidationError(
-                                'notAffected',
-                                'wcf.moderation.assignedUser.error.notAffected'
-                            )
-                        );
-                    }
-                })),
+                            foreach ($moderationQueues as $moderationQueue) {
+                                $objectType = $this->objectTypeCache->getObjectType($moderationQueue->objectTypeID);
+                                if (
+                                    !$objectType->getProcessor()->isAffectedUser(
+                                        $moderationQueue,
+                                        $user->userID
+                                    )
+                                ) {
+                                    $formField->addValidationError(
+                                        new FormFieldValidationError(
+                                            'notAffected',
+                                            'wcf.moderation.assignedUser.error.notAffected'
+                                        )
+                                    );
+                                }
+                            }
+                        }
+                    )
+                ),
         ]);
 
         $form->markRequiredFields(false);
@@ -172,5 +106,45 @@ final class ModerationQueueAssignUserAction implements RequestHandlerInterface
         $form->build();
 
         return $form;
+    }
+
+    /**
+     * @return PerformActionResult
+     */
+    #[\Override]
+    protected function performAction(ModerationQueue $queue, Psr15DialogForm $form): array
+    {
+        $data = $form->getData()['data'];
+
+        $user = match ($data['assignee']) {
+            'none' => null,
+            'me' => WCF::getUser(),
+            'other' => new User($data['other']),
+        };
+
+        $command = new AssignUser(
+            $queue,
+            $user
+        );
+        $command();
+
+        // Reload the moderation queue to fetch the new status.
+        $queue = new ModerationQueue($queue->queueID);
+
+        $assignee = null;
+        if ($user !== null) {
+            $assignee = [
+                'username' => $user->username,
+                'userID' => $user->userID,
+                'link' => $user->getLink(),
+            ];
+        }
+
+        return [
+            'result' => [
+                'assignee' => $assignee,
+                'status' => $queue->getStatus(),
+            ],
+        ];
     }
 }

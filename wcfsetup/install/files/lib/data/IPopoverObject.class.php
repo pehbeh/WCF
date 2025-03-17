@@ -18,7 +18,7 @@ interface IPopoverObject extends IIDObject, ITitledLinkObject
     /**
      * Returns the CSS class that objects of this type use for popover links.
      *
-     * @return  string
+     * @return string
      */
     public function getPopoverLinkClass();
 }

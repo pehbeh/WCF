@@ -8,6 +8,9 @@ namespace wcf\data;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template TDatabaseObject of DatabaseObject|DatabaseObjectDecorator<DatabaseObject>
+ * @extends \SeekableIterator<int, TDatabaseObject>
  */
 interface ITraversableObject extends \SeekableIterator
 {
@@ -15,6 +18,7 @@ interface ITraversableObject extends \SeekableIterator
      * Sets internal iterator pointer based upon related object id.
      *
      * @param int $objectID
+     * @return void
      */
     public function seekTo($objectID);
 
@@ -23,7 +27,7 @@ interface ITraversableObject extends \SeekableIterator
      * pointer to found item. Returns `null` if object id is not found.
      *
      * @param int $objectID
-     * @return  DatabaseObject|null
+     * @return ?TDatabaseObject
      */
     public function search($objectID);
 }

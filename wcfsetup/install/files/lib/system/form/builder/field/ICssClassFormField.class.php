@@ -15,21 +15,24 @@ interface ICssClassFormField extends IFormField
     /**
      * Adds the given CSS class to the actual field element and returns this field.
      *
-     * @throws      \InvalidArgumentException       if the given class is invalid
-     * @return      static                          this form field
+     * @throws \InvalidArgumentException if the given class is invalid
+     * @return static this form field
      */
     public function addFieldClass(string $class);
 
     /**
      * Adds the given CSS classes to the actual field element and returns this field.
      *
-     * @throws      \InvalidArgumentException       if any of the given classes is invalid
-     * @return      static                          this form field
+     * @param string[] $classes
+     * @return static this form field
+     * @throws \InvalidArgumentException if any of the given classes is invalid
      */
     public function addFieldClasses(array $classes);
 
     /**
      * Returns all CSS classes of the actual field element.
+     *
+     * @return string[]
      */
     public function getFieldClasses(): array;
 
@@ -37,7 +40,7 @@ interface ICssClassFormField extends IFormField
      * Returns `true` if a CSS class of the actual field element with the given name exists and
      * returns `false` otherwise.
      *
-     * @throws      \InvalidArgumentException       if the given class is invalid
+     * @throws \InvalidArgumentException if the given class is invalid
      */
     public function hasFieldClass(string $class): bool;
 
@@ -46,8 +49,8 @@ interface ICssClassFormField extends IFormField
      *
      * If the actual field element does not have the given CSS class, this method silently ignores that fact.
      *
-     * @throws      \InvalidArgumentException       if the given class is invalid
-     * @return      static                          this form field
+     * @throws \InvalidArgumentException if the given class is invalid
+     * @return static this form field
      */
     public function removeFieldClass(string $class);
 }

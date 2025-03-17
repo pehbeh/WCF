@@ -32,7 +32,10 @@ class UserImporter extends AbstractImporter
 
     /**
      * @since 5.4
-     * @var array
+     * @var array{
+     *  notActivated: int[],
+     *  activated: int[],
+     * }
      */
     protected $defaultGroups = [
         'notActivated' => [],

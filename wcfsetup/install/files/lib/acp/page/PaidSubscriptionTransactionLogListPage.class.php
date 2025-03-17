@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\PaidSubscriptionTransactionLogGridView;
 
 /**
@@ -13,9 +12,9 @@ use wcf\system\gridView\admin\PaidSubscriptionTransactionLogGridView;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    PaidSubscriptionTransactionLogGridView $gridView
+ * @extends AbstractGridViewPage<PaidSubscriptionTransactionLogGridView>
  */
-class PaidSubscriptionTransactionLogListPage extends AbstractGridViewPage
+final class PaidSubscriptionTransactionLogListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -33,7 +32,7 @@ class PaidSubscriptionTransactionLogListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.paidSubscription.canManageSubscription'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): PaidSubscriptionTransactionLogGridView
     {
         return new PaidSubscriptionTransactionLogGridView();
     }

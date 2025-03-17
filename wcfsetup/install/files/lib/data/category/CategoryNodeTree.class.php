@@ -11,6 +11,8 @@ use wcf\system\exception\SystemException;
  * @author  Matthias Schmidt
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @implements \IteratorAggregate<int, CategoryNode>
  */
 class CategoryNodeTree implements \IteratorAggregate
 {
@@ -82,6 +84,8 @@ class CategoryNodeTree implements \IteratorAggregate
     /**
      * Sets the maximum depth considered when building the node tree, defaults
      * to -1 which equals infinite.
+     *
+     * @return void
      */
     public function setMaxDepth(int $maxDepth)
     {
@@ -90,6 +94,8 @@ class CategoryNodeTree implements \IteratorAggregate
 
     /**
      * Builds the category node tree.
+     *
+     * @return void
      */
     protected function buildTree()
     {
@@ -99,6 +105,8 @@ class CategoryNodeTree implements \IteratorAggregate
 
     /**
      * Builds a certain level of the tree.
+     *
+     * @return void
      */
     protected function buildTreeLevel(CategoryNode $parentNode, int $depth = 0)
     {

@@ -37,6 +37,8 @@ use wcf\system\WCF;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @extends AbstractGridView<Template, TemplateList>
  */
 final class TemplateGridView extends AbstractGridView
 {
@@ -88,6 +90,9 @@ final class TemplateGridView extends AbstractGridView
         }
     }
 
+    /**
+     * @return array<string, Package>
+     */
     private function getApplications(): array
     {
         $applications = ApplicationHandler::getInstance()->getApplications();
@@ -146,6 +151,9 @@ final class TemplateGridView extends AbstractGridView
                 return $templateGroup->getTitle();
             }
 
+            /**
+             * @return list<array{depth: int, value: int, label: string}>
+             */
             private function getSelectOptions(): array
             {
                 $options = [

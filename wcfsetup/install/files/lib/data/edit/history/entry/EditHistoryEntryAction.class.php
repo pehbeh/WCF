@@ -13,9 +13,7 @@ use wcf\system\exception\IllegalLinkException;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  EditHistoryEntry        create()
- * @method  EditHistoryEntryEditor[]    getObjects()
- * @method  EditHistoryEntryEditor      getSingleObject()
+ * @extends AbstractDatabaseObjectAction<EditHistoryEntry, EditHistoryEntryEditor>
  */
 class EditHistoryEntryAction extends AbstractDatabaseObjectAction
 {
@@ -26,6 +24,8 @@ class EditHistoryEntryAction extends AbstractDatabaseObjectAction
 
     /**
      * Checks permissions to revert.
+     *
+     * @return void
      */
     public function validateRevert()
     {
@@ -43,6 +43,8 @@ class EditHistoryEntryAction extends AbstractDatabaseObjectAction
 
     /**
      * Reverts the objects back to this history entry.
+     *
+     * @return void
      */
     public function revert()
     {

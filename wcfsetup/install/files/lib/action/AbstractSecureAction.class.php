@@ -27,6 +27,8 @@ abstract class AbstractSecureAction extends AbstractAction
 
     /**
      * Validates the security token.
+     *
+     * @return void
      */
     protected function checkSecurityToken()
     {

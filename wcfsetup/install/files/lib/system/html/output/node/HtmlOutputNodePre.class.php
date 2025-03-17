@@ -50,9 +50,7 @@ class HtmlOutputNodePre extends AbstractHtmlOutputNode
                     $context = $htmlNodeProcessor->getHtmlProcessor()->getContext();
                     $prefix = '';
                     // Create a unique prefix if possible
-                    if (isset($context['objectType']) && isset($context['objectID'])) {
-                        $prefix = \str_replace('.', '_', $context['objectType']) . '_' . $context['objectID'] . '_';
-                    }
+                    $prefix = \str_replace('.', '_', $context['objectType']) . '_' . $context['objectID'] . '_';
                     [$nodeIdentifier, $tagName] = $htmlNodeProcessor->getWcfNodeIdentifer();
                     $htmlNodeProcessor->addNodeData($this, $nodeIdentifier, [
                         'content' => $element->textContent,

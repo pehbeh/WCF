@@ -19,6 +19,9 @@ interface IContextAwareSearchProvider extends ISearchProvider
     /**
      * Returns the context filter that is being applied
      * to the inner search query.
+     *
+     * @param array<string, mixed> $parameters
+     * @return array<string, mixed>
      */
     public function getContextFilter(array $parameters): array;
 }

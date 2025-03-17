@@ -16,9 +16,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  PackageInstallationQueue        create()
- * @method  PackageInstallationQueueEditor[]    getObjects()
- * @method  PackageInstallationQueueEditor      getSingleObject()
+ * @extends AbstractDatabaseObjectAction<PackageInstallationQueue, PackageInstallationQueueEditor>
  */
 class PackageInstallationQueueAction extends AbstractDatabaseObjectAction
 {
@@ -46,6 +44,8 @@ class PackageInstallationQueueAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates the 'cancelInstallation' action.
+     *
+     * @return void
      */
     public function validateCancelInstallation()
     {
@@ -65,6 +65,8 @@ class PackageInstallationQueueAction extends AbstractDatabaseObjectAction
 
     /**
      * Cancels a certain installation.
+     *
+     * @return array{url: string}
      */
     public function cancelInstallation()
     {

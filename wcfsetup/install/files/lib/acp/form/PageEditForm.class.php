@@ -108,6 +108,9 @@ class PageEditForm extends PageAddForm
         $this->validateOverrideApplicationPackageID();
     }
 
+    /**
+     * @return void
+     */
     protected function validateOverrideApplicationPackageID()
     {
         if ($this->overrideApplicationPackageID) {

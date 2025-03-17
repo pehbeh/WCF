@@ -17,10 +17,9 @@ final class CLIUtil
     /**
      * Generates a table.
      *
-     * @param array $table
-     * @return  string
+     * @param string[][] $table
      */
-    public static function generateTable(array $table)
+    public static function generateTable(array $table): string
     {
         $columnSize = [];
         foreach ($table as $row) {
@@ -68,10 +67,9 @@ final class CLIUtil
     /**
      * Generates a list.
      *
-     * @param array $list
-     * @return  string
+     * @param string[] $list
      */
-    public static function generateList(array $list)
+    public static function generateList(array $list): string
     {
         $result = '';
         foreach ($list as $row) {

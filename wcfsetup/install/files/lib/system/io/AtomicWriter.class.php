@@ -72,6 +72,8 @@ class AtomicWriter extends File
     /**
      * Closes the file, while discarding any written data, noop if the
      * file is already closed or flushed.
+     *
+     * @return void
      */
     public function close()
     {
@@ -87,6 +89,8 @@ class AtomicWriter extends File
     /**
      * Persists the written data into the target file. The flush is atomic
      * if the underlying storage supports an atomic rename.
+     *
+     * @return void
      */
     public function flush()
     {
@@ -116,6 +120,9 @@ class AtomicWriter extends File
 
     /**
      * @inheritDoc
+     * @param string $function
+     * @param mixed[] $arguments
+     * @return mixed
      */
     public function __call($function, $arguments)
     {

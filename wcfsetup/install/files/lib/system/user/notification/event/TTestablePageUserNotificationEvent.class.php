@@ -64,7 +64,7 @@ trait TTestablePageUserNotificationEvent
         return $page;
     }
 
-    private static function resetPageCache()
+    private static function resetPageCache(): void
     {
         // reset cache builders
         TestableUserNotificationEventHandler::getInstance()->resetCacheBuilder(PageCacheBuilder::getInstance());

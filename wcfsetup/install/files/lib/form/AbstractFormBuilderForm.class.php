@@ -23,13 +23,11 @@ use wcf\system\WCF;
 abstract class AbstractFormBuilderForm extends AbstractForm
 {
     /**
-     * form document
      * @var IFormDocument
      */
     public $form;
 
     /**
-     * name of the form document class
      * @var string
      */
     public $formClassName = FormDocument::class;
@@ -50,13 +48,17 @@ abstract class AbstractFormBuilderForm extends AbstractForm
     /**
      * name of the object action performing the form action
      * if not set, `$formAction` is used
-     * @var null|string
+     * @var ?string
      */
     public $objectActionName;
 
     /**
      * name of the object action class performing the form action
-     * @var string
+     *
+     * Note: Do not insert `AbstractDatabaseObjectAction` in the class-string,
+     * the generics will be extremely annoying in deriving classes.
+     *
+     * @var class-string
      */
     public $objectActionClass;
 
@@ -91,6 +93,8 @@ abstract class AbstractFormBuilderForm extends AbstractForm
 
     /**
      * Builds the form.
+     *
+     * @return void
      */
     public function buildForm()
     {
@@ -110,6 +114,8 @@ abstract class AbstractFormBuilderForm extends AbstractForm
      *
      * This is the method that is intended to be overwritten by child classes
      * to add the form containers and fields.
+     *
+     * @return void
      */
     protected function createForm()
     {
@@ -221,6 +227,8 @@ abstract class AbstractFormBuilderForm extends AbstractForm
 
     /**
      * Sets the action of the form.
+     *
+     * @return void
      */
     protected function setFormAction()
     {
@@ -240,6 +248,8 @@ abstract class AbstractFormBuilderForm extends AbstractForm
 
     /**
      * Sets the form data based on the current form object.
+     *
+     * @return void
      */
     protected function setFormObjectData()
     {

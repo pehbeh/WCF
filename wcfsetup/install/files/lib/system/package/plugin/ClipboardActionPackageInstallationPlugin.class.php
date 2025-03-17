@@ -187,6 +187,7 @@ class ClipboardActionPackageInstallationPlugin extends AbstractXMLPackageInstall
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -217,8 +218,7 @@ class ClipboardActionPackageInstallationPlugin extends AbstractXMLPackageInstall
                 ->required()
                 ->implementedInterface(IClipboardAction::class)
                 ->addValidator(new FormFieldValidator('uniqueness', function (ClassNameFormField $formField) {
-                    /** @var TextFormField $actionNameFormField */
-                    $actionNameFormField = $formField->getDocument()->getNodeById('actionName');
+                    $actionNameFormField = $formField->getDocument()->getFormField('actionName');
 
                     if (
                         $formField->getDocument()->getFormMode() === IFormDocument::FORM_MODE_CREATE
@@ -264,6 +264,8 @@ class ClipboardActionPackageInstallationPlugin extends AbstractXMLPackageInstall
 
     /**
      * @inheritDoc
+     * @param bool $saveData
+     * @return array<string, mixed>
      * @since   5.2
      */
     protected function fetchElementData(\DOMElement $element, $saveData)
@@ -300,18 +302,20 @@ class ClipboardActionPackageInstallationPlugin extends AbstractXMLPackageInstall
 
     /**
      * @inheritDoc
+     * @return string
      * @since   5.2
      */
     public function getElementIdentifier(\DOMElement $element)
     {
         return \sha1(
             $element->getElementsByTagName('actionclassname')->item(0)->nodeValue . '/'
-            . $element->getAttribute('name')
+                . $element->getAttribute('name')
         );
     }
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function setEntryListKeys(IDevtoolsPipEntryList $entryList)
@@ -324,6 +328,7 @@ class ClipboardActionPackageInstallationPlugin extends AbstractXMLPackageInstall
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      * @since   5.2
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)
@@ -355,6 +360,7 @@ class ClipboardActionPackageInstallationPlugin extends AbstractXMLPackageInstall
 
     /**
      * @inheritDoc
+     * @return ?\DOMElement
      * @since   5.2
      */
     protected function prepareDeleteXmlElement(\DOMElement $element)
@@ -372,6 +378,7 @@ class ClipboardActionPackageInstallationPlugin extends AbstractXMLPackageInstall
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function deleteObject(\DOMElement $element)

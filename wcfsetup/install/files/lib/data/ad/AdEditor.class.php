@@ -16,9 +16,9 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static Ad  create(array $parameters = [])
- * @method      Ad  getDecoratedObject()
  * @mixin       Ad
+ * @extends DatabaseObjectEditor<Ad>
+ * @implements IEditableCachedObject<Ad>
  */
 class AdEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {
@@ -31,6 +31,7 @@ class AdEditor extends DatabaseObjectEditor implements IEditableCachedObject
      * Sets the show order of the ad.
      *
      * @param int $showOrder
+     * @return void
      */
     public function setShowOrder($showOrder = 0)
     {

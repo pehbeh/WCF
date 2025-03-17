@@ -10,6 +10,7 @@ use wcf\data\media\ViewableMediaList;
 use wcf\data\object\type\ObjectType;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\data\page\Page;
+use wcf\data\page\PageNode;
 use wcf\data\page\PageNodeTree;
 use wcf\data\smiley\SmileyCache;
 use wcf\form\AbstractForm;
@@ -173,13 +174,13 @@ class BoxAddForm extends AbstractForm
 
     /**
      * nested list of page nodes
-     * @var \RecursiveIteratorIterator
+     * @var \RecursiveIteratorIterator<PageNode>
      */
     public $pageNodeList;
 
     /**
      * acl values
-     * @var array
+     * @var mixed[]
      */
     public $aclValues = [];
 
@@ -195,7 +196,7 @@ class BoxAddForm extends AbstractForm
 
     /**
      * list of available positions per box handler
-     * @var array
+     * @var array<int, string[]>
      */
     public $availableBoxPositions = [];
 
@@ -275,6 +276,8 @@ class BoxAddForm extends AbstractForm
 
     /**
      * Loads available box positions per box controller.
+     *
+     * @return void
      */
     protected function readBoxPositions()
     {
@@ -288,7 +291,8 @@ class BoxAddForm extends AbstractForm
     /**
      * Reads basic page parameters controlling type and i18n.
      *
-     * @throws  IllegalLinkException
+     * @return void
+     * @throws IllegalLinkException
      */
     protected function readBoxType()
     {
@@ -412,6 +416,8 @@ class BoxAddForm extends AbstractForm
 
     /**
      * Reads the box images.
+     *
+     * @return void
      */
     protected function readBoxImages()
     {
@@ -555,6 +561,8 @@ class BoxAddForm extends AbstractForm
 
     /**
      * Validates box name.
+     *
+     * @return void
      */
     protected function validateName()
     {
@@ -568,6 +576,8 @@ class BoxAddForm extends AbstractForm
 
     /**
      * Validates the selected box position.
+     *
+     * @return void
      */
     protected function validateBoxPosition()
     {
@@ -786,6 +796,9 @@ class BoxAddForm extends AbstractForm
      * This is a helper method to convert groupedConditionObjectTypes to a flat list.
      * This method should not be used for any other purpose!
      *
+     * @template T of object
+     * @param T[]|T[][] $array
+     * @return T[]
      * @since 5.5
      */
     protected function toFlatList(array $array): array

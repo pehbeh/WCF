@@ -23,6 +23,7 @@ class SingleSelectionFormElementContainer extends SelectionFormElementContainer
      * Sets container value.
      *
      * @param string $value
+     * @return void
      */
     public function setValue($value)
     {
@@ -53,7 +54,7 @@ class SingleSelectionFormElementContainer extends SelectionFormElementContainer
 		<h2 class="sectionTitle">{$this->getLabel()}</h2>
 		<p class="sectionDescription">{$this->getDescription()}</p>
 	</header>
-	
+
 	<dl>
 		<dd>{$content}</dd>
 	</dl>

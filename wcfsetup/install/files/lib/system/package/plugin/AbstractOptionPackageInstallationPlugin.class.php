@@ -2,7 +2,6 @@
 
 namespace wcf\system\package\plugin;
 
-use DOMNode;
 use wcf\data\DatabaseObject;
 use wcf\data\IEditableCachedObject;
 use wcf\data\option\category\OptionCategory;
@@ -174,6 +173,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
      * Imports option categories.
      *
      * @param \DOMXPath $xpath
+     * @return void
      * @throws  SystemException
      */
     protected function importCategories(\DOMXPath $xpath)
@@ -232,6 +232,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
      * Imports options.
      *
      * @param \DOMXPath $xpath
+     * @return void
      */
     protected function importOptions(\DOMXPath $xpath)
     {
@@ -287,7 +288,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
      * Returns the category with given name.
      *
      * @param string $category
-     * @return      array|false
+     * @return array{categoryID: int, packageID: int}|false
      */
     protected function getExistingCategory($category)
     {
@@ -305,7 +306,8 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
     /**
      * Installs option categories.
      *
-     * @param array $category
+     * @param array<string, string|int|null> $category
+     * @return void
      * @throws  SystemException
      */
     protected function saveCategory($category)
@@ -363,14 +365,16 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
     /**
      * Installs options.
      *
-     * @param array $option
+     * @param array<string, int|string> $option
      * @param string $categoryName
      * @param int $existingOptionID
+     * @return void
      */
     abstract protected function saveOption($option, $categoryName, $existingOptionID = 0);
 
     /**
-     * @inheritDoc
+     * @param array{name: string} $data
+     * @return void
      */
     protected function validateOption(array $data)
     {
@@ -430,6 +434,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -627,8 +632,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
                         )),
                 ]);
 
-                /** @var SingleSelectionFormField $optionType */
-                $optionType = $form->getNodeById('optionType');
+                $optionType = $form->getFormField('optionType');
 
                 // add option-specific fields
                 $dataContainer->appendChildren([
@@ -748,6 +752,8 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
 
     /**
      * @inheritDoc
+     * @param bool $saveData
+     * @return array<string, int|string>
      * @since   5.2
      */
     protected function fetchElementData(\DOMElement $element, $saveData)
@@ -902,6 +908,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
 
     /**
      * @inheritDoc
+     * @return string
      * @since   5.2
      */
     public function getElementIdentifier(\DOMElement $element)
@@ -911,6 +918,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
 
     /**
      * @inheritDoc
+     * @return list<string>
      * @since   5.2
      */
     public function getEntryTypes()
@@ -972,6 +980,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function saveObject(\DOMElement $newElement, ?\DOMElement $oldElement = null)
@@ -999,6 +1008,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function setEntryListKeys(IDevtoolsPipEntryList $entryList)
@@ -1026,6 +1036,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      * @since   5.2
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)
@@ -1085,6 +1096,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function insertNewXmlElement(XML $xml, \DOMElement $newElement)
@@ -1132,7 +1144,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
     /**
      * Returns the options for the option type form field.
      *
-     * @return  array
+     * @return  string[]
      * @since   5.2
      */
     protected function getOptionTypeOptions()
@@ -1205,6 +1217,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
 
     /**
      * @inheritDoc
+     * @return ?\DOMElement
      * @since   5.2
      */
     protected function prepareDeleteXmlElement(\DOMElement $element)
@@ -1223,6 +1236,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function deleteObject(\DOMElement $element)
@@ -1268,6 +1282,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addDeleteElement(\DOMElement $element)
@@ -1303,6 +1318,7 @@ abstract class AbstractOptionPackageInstallationPlugin extends AbstractXMLPackag
 
     /**
      * @inheritDoc
+     * @return bool
      * @since   5.2
      */
     protected function sanitizeXmlFileAfterDeleteEntry(\DOMDocument $document)

@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\CaptchaQuestionGridView;
 
 /**
@@ -13,9 +12,9 @@ use wcf\system\gridView\admin\CaptchaQuestionGridView;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    CaptchaQuestionGridView $gridView
+ * @extends AbstractGridViewPage<CaptchaQuestionGridView>
  */
-class CaptchaQuestionListPage extends AbstractGridViewPage
+final class CaptchaQuestionListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -28,7 +27,7 @@ class CaptchaQuestionListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.captcha.canManageCaptchaQuestion'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): CaptchaQuestionGridView
     {
         return new CaptchaQuestionGridView();
     }

@@ -91,7 +91,7 @@ final class RenderComment implements IController
         }
     }
 
-    private function markNotificationsAsRead(Comment $comment, ?CommentResponse $response = null)
+    private function markNotificationsAsRead(Comment $comment, ?CommentResponse $response = null): void
     {
         $objectType = CommentHandler::getInstance()->getObjectType($comment->objectTypeID)->objectType;
         if ($response === null) {
@@ -107,6 +107,12 @@ final class RenderComment implements IController
         }
     }
 
+    /**
+     * @return array{
+     *  template: string,
+     *  response?: string,
+     * }
+     */
     private function renderComment(Comment $comment, ?CommentResponse $response = null, bool $messageOnly = false): array
     {
         if ($comment->hasEmbeddedObjects) {

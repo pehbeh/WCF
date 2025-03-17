@@ -76,7 +76,7 @@ class ArticleModerationQueueReportHandler extends AbstractModerationQueueHandler
     }
 
     /**
-     * @param $articleID
+     * @param int $articleID
      * @return ViewableArticle|null
      */
     public function getArticle($articleID)

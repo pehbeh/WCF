@@ -47,6 +47,9 @@ final class UserCoverPhotoFileProcessor extends AbstractFileProcessor
         return false;
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     private function getUser(array $context): ?UserProfile
     {
         $userID = $context['objectID'] ?? null;

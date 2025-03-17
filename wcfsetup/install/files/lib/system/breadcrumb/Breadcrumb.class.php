@@ -39,6 +39,7 @@ class Breadcrumb
      * Sets the displayed label.
      *
      * @param string $label
+     * @return void
      */
     public function setLabel($label)
     {
@@ -51,6 +52,7 @@ class Breadcrumb
      *
      * @param string $url
      * @param bool $appendSession This parameter is unused as of version 3.0
+     * @return void
      */
     public function setURL($url, $appendSession = false)
     {

@@ -11,12 +11,7 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserAvatar      create()
- * @method  UserAvatarEditor[]  getObjects()
- * @method  UserAvatarEditor    getSingleObject()
- *
+ * @extends AbstractDatabaseObjectAction<UserAvatar, UserAvatarEditor>
  * @deprecated 6.2
  */
-class UserAvatarAction extends AbstractDatabaseObjectAction
-{
-}
+class UserAvatarAction extends AbstractDatabaseObjectAction {}

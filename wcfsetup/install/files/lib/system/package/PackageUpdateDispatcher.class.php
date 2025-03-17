@@ -28,11 +28,36 @@ use wcf\util\XML;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @phpstan-type PackageInfo array{
+ *  author: string,
+ *  authorURL: string,
+ *  isApplication: int,
+ *  packageName: string,
+ *  packageDescription: string,
+ *  pluginStoreFileID: int,
+ *  versions: array<string, array{
+ *    compatibility?: list<string>,
+ *    excludedPackages?: array<string, array{version: string}>,
+ *    isAccessible: int,
+ *    file?: string,
+ *    fromversions?: list<string>,
+ *    license?: array{license: string, licenseURL: string},
+ *    optionalPackages?: list<string>,
+ *    packageDate: string,
+ *    requiredPackages?: array<string, array{minversion?: string}>,
+ *  }>,
+ * }
  */
 final class PackageUpdateDispatcher extends SingletonFactory
 {
     private bool $hasAuthCode = false;
 
+    /**
+     * @var array{
+     *  woltlab: array<string, string>,
+     *  pluginstore: array<string, string>,
+     * }
+     */
     private array $purchasedVersions = [
         'woltlab' => [],
         'pluginstore' => [],
@@ -43,7 +68,7 @@ final class PackageUpdateDispatcher extends SingletonFactory
      *
      * @param int[] $packageUpdateServerIDs
      */
-    public function refreshPackageDatabase(array $packageUpdateServerIDs = [], bool $ignoreCache = false)
+    public function refreshPackageDatabase(array $packageUpdateServerIDs = [], bool $ignoreCache = false): void
     {
         // get update server data
         $tmp = PackageUpdateServer::getActiveUpdateServers($packageUpdateServerIDs);
@@ -62,7 +87,7 @@ final class PackageUpdateDispatcher extends SingletonFactory
         }
 
         if ($requirePurchasedVersions && PACKAGE_SERVER_AUTH_CODE) {
-            $this->getPurchasedVersions();
+            $this->fetchPurchasedVersions();
         }
 
         // loop servers
@@ -71,7 +96,7 @@ final class PackageUpdateDispatcher extends SingletonFactory
             $errorMessage = '';
 
             try {
-                $this->getPackageUpdateXML($updateServer);
+                $this->fetchPackageUpdateXML($updateServer);
                 $refreshedPackageLists = true;
             } catch (SystemException $e) {
                 $errorMessage = $e->getMessage();
@@ -108,7 +133,7 @@ final class PackageUpdateDispatcher extends SingletonFactory
         }
     }
 
-    private function getPurchasedVersions()
+    private function fetchPurchasedVersions(): void
     {
         $client = HttpFactory::makeClientWithTimeout(5);
         $request = new Request(
@@ -145,7 +170,7 @@ final class PackageUpdateDispatcher extends SingletonFactory
      * @throws  PackageUpdateUnauthorizedException
      * @throws  SystemException
      */
-    private function getPackageUpdateXML(PackageUpdateServer $updateServer)
+    private function fetchPackageUpdateXML(PackageUpdateServer $updateServer): void
     {
         $authData = $updateServer->getAuthData();
         $options = [];
@@ -270,7 +295,8 @@ final class PackageUpdateDispatcher extends SingletonFactory
     /**
      * Parses a stream containing info from a packages_update.xml.
      *
-     * @throws      SystemException
+     * @return array<string, PackageInfo>
+     * @throws SystemException
      */
     private function parsePackageUpdateXML(PackageUpdateServer $updateServer, string $content, string $apiVersion): array
     {
@@ -308,7 +334,8 @@ final class PackageUpdateDispatcher extends SingletonFactory
     /**
      * Parses the xml structure from a packages_update.xml.
      *
-     * @throws      PackageValidationException
+     * @return PackageInfo
+     * @throws  PackageValidationException
      */
     private function parsePackageUpdateXMLBlock(
         PackageUpdateServer $updateServer,
@@ -332,20 +359,20 @@ final class PackageUpdateDispatcher extends SingletonFactory
             \assert($element instanceof \DOMElement);
             switch ($element->tagName) {
                 case 'packagename':
-                    $packageInfo['packageName'] = $element->nodeValue;
+                    $packageInfo['packageName'] = $element->textContent;
                     break;
 
                 case 'packagedescription':
-                    $packageInfo['packageDescription'] = $element->nodeValue;
+                    $packageInfo['packageDescription'] = $element->textContent;
                     break;
 
                 case 'isapplication':
-                    $packageInfo['isApplication'] = \intval($element->nodeValue);
+                    $packageInfo['isApplication'] = \intval($element->textContent);
                     break;
 
                 case 'pluginStoreFileID':
                     if ($updateServer->isWoltLabStoreServer()) {
-                        $packageInfo['pluginStoreFileID'] = \intval($element->nodeValue);
+                        $packageInfo['pluginStoreFileID'] = \intval($element->textContent);
                     }
                     break;
             }
@@ -357,11 +384,11 @@ final class PackageUpdateDispatcher extends SingletonFactory
             \assert($element instanceof \DOMElement);
             switch ($element->tagName) {
                 case 'author':
-                    $packageInfo['author'] = $element->nodeValue;
+                    $packageInfo['author'] = $element->textContent;
                     break;
 
                 case 'authorurl':
-                    $packageInfo['authorURL'] = $element->nodeValue;
+                    $packageInfo['authorURL'] = $element->textContent;
                     break;
             }
         }
@@ -408,16 +435,16 @@ final class PackageUpdateDispatcher extends SingletonFactory
                     case 'fromversions':
                         $fromversions = $xpath->query('child::*', $child);
                         foreach ($fromversions as $fromversion) {
-                            $packageInfo['versions'][$versionNo]['fromversions'][] = $fromversion->nodeValue;
+                            $packageInfo['versions'][$versionNo]['fromversions'][] = $fromversion->textContent;
                         }
                         break;
 
                     case 'timestamp':
-                        $packageInfo['versions'][$versionNo]['packageDate'] = $child->nodeValue;
+                        $packageInfo['versions'][$versionNo]['packageDate'] = $child->textContent;
                         break;
 
                     case 'file':
-                        $packageInfo['versions'][$versionNo]['file'] = $child->nodeValue;
+                        $packageInfo['versions'][$versionNo]['file'] = $child->textContent;
                         break;
 
                     case 'requiredpackages':
@@ -426,7 +453,7 @@ final class PackageUpdateDispatcher extends SingletonFactory
                         /** @var \DOMElement $requiredPackage */
                         foreach ($requiredPackages as $requiredPackage) {
                             $minVersion = $requiredPackage->getAttribute('minversion');
-                            $required = $requiredPackage->nodeValue;
+                            $required = $requiredPackage->textContent;
 
                             $packageInfo['versions'][$versionNo]['requiredPackages'][$required] = [];
                             if (!empty($minVersion)) {
@@ -440,7 +467,7 @@ final class PackageUpdateDispatcher extends SingletonFactory
 
                         $optionalPackages = $xpath->query('child::*', $child);
                         foreach ($optionalPackages as $optionalPackage) {
-                            $packageInfo['versions'][$versionNo]['optionalPackages'][] = $optionalPackage->nodeValue;
+                            $packageInfo['versions'][$versionNo]['optionalPackages'][] = $optionalPackage->textContent;
                         }
                         break;
 
@@ -448,7 +475,7 @@ final class PackageUpdateDispatcher extends SingletonFactory
                         $excludedpackages = $xpath->query('child::*', $child);
                         /** @var \DOMElement $excludedPackage */
                         foreach ($excludedpackages as $excludedPackage) {
-                            $exclusion = $excludedPackage->nodeValue;
+                            $exclusion = $excludedPackage->textContent;
                             $version = $excludedPackage->getAttribute('version');
 
                             $packageInfo['versions'][$versionNo]['excludedPackages'][$exclusion] = [
@@ -459,7 +486,7 @@ final class PackageUpdateDispatcher extends SingletonFactory
 
                     case 'license':
                         $packageInfo['versions'][$versionNo]['license'] = [
-                            'license' => $child->nodeValue,
+                            'license' => $child->textContent,
                             'licenseURL' => $child->hasAttribute('url') ? $child->getAttribute('url') : '',
                         ];
                         break;
@@ -499,6 +526,8 @@ final class PackageUpdateDispatcher extends SingletonFactory
 
     /**
      * Updates information parsed from a packages_update.xml into the database.
+     *
+     * @param array<string, PackageInfo> $allNewPackages
      */
     private function savePackageUpdates(array $allNewPackages, int $packageUpdateServerID): void
     {
@@ -610,9 +639,9 @@ final class PackageUpdateDispatcher extends SingletonFactory
                     $coreExclude = null;
                     $versionData['excludedPackages'] = \array_filter(
                         $versionData['excludedPackages'],
-                        static function ($excludedPackage, $excludedVersion) use (&$coreExclude) {
+                        static function ($excludedVersion, $excludedPackage) use (&$coreExclude) {
                             if ($excludedPackage === 'com.woltlab.wcf') {
-                                $coreExclude = $excludedVersion;
+                                $coreExclude = $excludedVersion['version'];
 
                                 return false;
                             }
@@ -678,8 +707,8 @@ final class PackageUpdateDispatcher extends SingletonFactory
     /**
      * Returns a list of available updates for installed packages.
      *
-     * @return  array
-     * @throws      SystemException
+     * @return mixed[]
+     * @throws SystemException
      */
     public function getAvailableUpdates(bool $removeRequirements = true, bool $removeOlderMinorReleases = false): array
     {
@@ -702,6 +731,7 @@ final class PackageUpdateDispatcher extends SingletonFactory
         while ($row = $statement->fetchArray()) {
             $existingPackages[$row['package']][] = $row;
         }
+
         if (empty($existingPackages)) {
             return $updates;
         }
@@ -813,6 +843,9 @@ final class PackageUpdateDispatcher extends SingletonFactory
 
     /**
      * Removes unnecessary updates of requirements from the list of available updates.
+     *
+     * @param mixed[] $updates
+     * @return mixed[]
      */
     private function removeUpdateRequirements(array $updates, int $packageUpdateVersionID): array
     {
@@ -847,6 +880,7 @@ final class PackageUpdateDispatcher extends SingletonFactory
     /**
      * Returns package update versions of the specified package.
      *
+     * @return mixed[]
      * @throws  SystemException
      */
     public function getPackageUpdateVersions(string $package, string $version = ''): array

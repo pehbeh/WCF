@@ -26,10 +26,19 @@ use wcf\util\StringUtil;
  */
 class Smiley extends DatabaseObject implements ITitledObject
 {
+    /**
+     * @var ?int
+     */
     protected $height;
 
+    /**
+     * @var ?int
+     */
     protected $width;
 
+    /**
+     * @var string[]
+     */
     public $smileyCodes;
 
     /**

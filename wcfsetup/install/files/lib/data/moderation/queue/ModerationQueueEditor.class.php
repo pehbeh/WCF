@@ -12,9 +12,8 @@ use wcf\system\moderation\queue\ModerationQueueManager;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static ModerationQueue     create(array $parameters = [])
- * @method      ModerationQueue     getDecoratedObject()
  * @mixin       ModerationQueue
+ * @extends DatabaseObjectEditor<ModerationQueue>
  */
 class ModerationQueueEditor extends DatabaseObjectEditor
 {
@@ -26,6 +25,8 @@ class ModerationQueueEditor extends DatabaseObjectEditor
     /**
      * Marks this entry as confirmed, e.g. report was justified and content was deleted or
      * content was approved.
+     *
+     * @return void
      */
     public function markAsConfirmed()
     {
@@ -39,6 +40,7 @@ class ModerationQueueEditor extends DatabaseObjectEditor
      * Marks this entry as rejected, e.g. report was unjustified or content approval was denied.
      *
      * @param bool $markAsJustified
+     * @return void
      */
     public function markAsRejected($markAsJustified = false)
     {
@@ -58,6 +60,8 @@ class ModerationQueueEditor extends DatabaseObjectEditor
 
     /**
      * Marks this entry as in progress.
+     *
+     * @return void
      */
     public function markAsInProgress()
     {

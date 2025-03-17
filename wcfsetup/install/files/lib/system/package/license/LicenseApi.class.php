@@ -53,6 +53,9 @@ final class LicenseApi
         }
     }
 
+    /**
+     * @param array{}|array{username: string, password: string} $authData
+     */
     public static function fetchFromRemote(array $authData = []): LicenseData
     {
         if ($authData === []) {

@@ -148,7 +148,8 @@ class AJAXFileUploadAction extends AbstractSecureAction
     /**
      * Sends a JSON-encoded response.
      *
-     * @param array $data
+     * @param mixed[] $data
+     * @return void
      */
     protected function sendJsonResponse(array $data)
     {

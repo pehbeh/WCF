@@ -2,6 +2,7 @@
 
 namespace wcf\system\form\builder\field\language;
 
+use wcf\data\language\Language;
 use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\IImmutableFormField;
 use wcf\system\form\builder\field\TDefaultIdFormField;
@@ -32,16 +33,13 @@ final class ContentLanguageFormField extends AbstractFormField implements IImmut
      */
     protected $templateName = 'shared_contentLanguageFormField';
 
-    /**
-     * Creates a new instance of `ContentLanguageFormField`.
-     */
     public function __construct()
     {
         $this->label('wcf.user.language');
     }
 
     /**
-     * @inheritDoc
+     * @return Language[]
      */
     public function getContentLanguages()
     {
@@ -90,7 +88,7 @@ final class ContentLanguageFormField extends AbstractFormField implements IImmut
     /**
      * @inheritDoc
      */
-    protected static function getDefaultId()
+    protected static function getDefaultId(): string
     {
         return 'languageID';
     }

@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  PackageInstallationQueue        current()
- * @method  PackageInstallationQueue[]      getObjects()
- * @method  PackageInstallationQueue|null       getSingleObject()
- * @method  PackageInstallationQueue|null       search($objectID)
- * @property    PackageInstallationQueue[] $objects
+ * @extends DatabaseObjectList<PackageInstallationQueue>
  */
 class PackageInstallationQueueList extends DatabaseObjectList
 {

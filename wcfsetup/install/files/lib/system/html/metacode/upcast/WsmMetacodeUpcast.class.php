@@ -61,7 +61,7 @@ final class WsmMetacodeUpcast extends AbstractImageMetacodeUpcast
         if (\count($attributes) < 1 || \count($attributes) > 4) {
             return false;
         }
-        $media = MediaRuntimeCache::getInstance()->getObject($attributes[0]);
+        $media = MediaRuntimeCache::getInstance()->getObject((int)$attributes[0]);
         if ($media === null) {
             return false;
         }

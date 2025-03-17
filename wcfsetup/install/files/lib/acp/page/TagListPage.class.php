@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\TagGridView;
 
 /**
@@ -13,9 +12,9 @@ use wcf\system\gridView\admin\TagGridView;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    TagGridView $gridView
+ * @extends AbstractGridViewPage<TagGridView>
  */
-class TagListPage extends AbstractGridViewPage
+final class TagListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -33,7 +32,7 @@ class TagListPage extends AbstractGridViewPage
     public $neededModules = ['MODULE_TAGGING'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): TagGridView
     {
         return new TagGridView();
     }

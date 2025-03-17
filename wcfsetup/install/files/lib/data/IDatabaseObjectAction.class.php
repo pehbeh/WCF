@@ -13,39 +13,47 @@ interface IDatabaseObjectAction
 {
     /**
      * Executes the previously chosen action.
+     *
+     * @return mixed|mixed[]
      */
     public function executeAction();
 
     /**
      * Validates action-related parameters.
+     *
+     * @return void
      */
     public function validateAction();
 
     /**
      * Returns active action name.
      *
-     * @return  string
+     * @return string
      */
     public function getActionName();
 
     /**
      * Returns DatabaseObject-related object ids.
      *
-     * @return  int[]
+     * @return int[]
      */
     public function getObjectIDs();
 
     /**
      * Returns action-related parameters.
      *
-     * @return  mixed[]
+     * @return mixed[]
      */
     public function getParameters();
 
     /**
      * Returns results returned by active action.
      *
-     * @return  mixed
+     * @return array{
+     *  actionName: string,
+     *  objectIDs: int[],
+     *  returnValues: mixed|mixed[]
+     * }
      */
     public function getReturnValues();
 }

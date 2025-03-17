@@ -23,15 +23,15 @@ interface IMessageEmbeddedObjectHandler
      *
      * @param HtmlInputProcessor $htmlInputProcessor html input processor holding the current document
      * @param mixed[] $embeddedData list of found embedded data with attributes
-     * @return      int[]               ids of found embedded objects
+     * @return int[] ids of found embedded objects
      */
     public function parse(HtmlInputProcessor $htmlInputProcessor, array $embeddedData);
 
     /**
      * Loads and returns embedded objects.
      *
-     * @param array $objectIDs
-     * @return  DatabaseObject[]
+     * @param int[] $objectIDs
+     * @return DatabaseObject[]
      */
     public function loadObjects(array $objectIDs);
 }

@@ -17,15 +17,22 @@ use wcf\system\WCF;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @phpstan-type ColumnRenderer IColumnRenderer<DatabaseObject|\wcf\data\DatabaseObjectDecorator>
  */
 final class GridViewColumn
 {
     /**
-     * @var IColumnRenderer[]
+     * @var ColumnRenderer[]
      */
     private array $renderer = [];
     private string $label = '';
+
+    /**
+     * @var DefaultColumnRenderer<DatabaseObject>
+     */
     private static DefaultColumnRenderer $defaultRenderer;
+
     private bool $sortable = false;
     private string $sortByDatabaseColumn = '';
     private ?IGridViewFilter $filter = null;
@@ -86,6 +93,8 @@ final class GridViewColumn
 
     /**
      * Sets the renderer of this column.
+     *
+     * @param ColumnRenderer[]|ColumnRenderer $renderers
      */
     public function renderer(array|IColumnRenderer $renderers): static
     {
@@ -94,7 +103,6 @@ final class GridViewColumn
         }
 
         foreach ($renderers as $renderer) {
-            \assert($renderer instanceof IColumnRenderer);
             $this->renderer[] = $renderer;
         }
 
@@ -124,7 +132,7 @@ final class GridViewColumn
 
     /**
      * Returns the renderers of this column.
-     * @return IColumnRenderer[]
+     * @return IColumnRenderer<DatabaseObject>[]
      */
     public function getRenderers(): array
     {
@@ -260,6 +268,8 @@ final class GridViewColumn
 
     /**
      * Returns the default renderer for the rendering of columns.
+     *
+     * @return DefaultColumnRenderer<DatabaseObject>
      */
     private static function getDefaultRenderer(): DefaultColumnRenderer
     {

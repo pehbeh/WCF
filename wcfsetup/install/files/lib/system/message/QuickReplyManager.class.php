@@ -3,7 +3,10 @@
 namespace wcf\system\message;
 
 use wcf\data\AbstractDatabaseObjectAction;
+use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectDecorator;
+use wcf\data\DatabaseObjectEditor;
+use wcf\data\DatabaseObjectList;
 use wcf\data\IAttachmentMessageQuickReplyAction;
 use wcf\data\IMessage;
 use wcf\data\IMessageQuickReplyAction;
@@ -51,7 +54,7 @@ class QuickReplyManager extends SingletonFactory
      *
      * @param string $type
      * @param int $objectID
-     * @return  string
+     * @return string
      */
     public function getMessage($type, $objectID)
     {
@@ -72,6 +75,7 @@ class QuickReplyManager extends SingletonFactory
      * @param string $type
      * @param int $objectID
      * @param string $message
+     * @return void
      */
     public function setMessage($type, $objectID, $message)
     {
@@ -83,6 +87,7 @@ class QuickReplyManager extends SingletonFactory
      *
      * @param string $type
      * @param int $objectID
+     * @return void
      */
     public function removeMessage($type, $objectID)
     {
@@ -93,6 +98,7 @@ class QuickReplyManager extends SingletonFactory
      * Sets the disallowed bbcodes.
      *
      * @param string[] $disallowedBBCodes
+     * @return void
      */
     public function setDisallowedBBCodes(array $disallowedBBCodes)
     {
@@ -102,12 +108,13 @@ class QuickReplyManager extends SingletonFactory
     /**
      * Validates parameters for current request.
      *
-     * @param IMessageQuickReplyAction $object
+     * @param IMessageQuickReplyAction<DatabaseObject, DatabaseObject, DatabaseObjectList<DatabaseObject>> $object
      * @param mixed[] $parameters
      * @param string $containerClassName
      * @param string $containerDecoratorClassName
-     * @throws  ParentClassException
-     * @throws  UserInputException
+     * @return void
+     * @throws ParentClassException
+     * @throws UserInputException
      */
     public function validateParameters(
         IMessageQuickReplyAction $object,
@@ -200,14 +207,23 @@ class QuickReplyManager extends SingletonFactory
     /**
      * Creates a new message and returns the parsed template.
      *
-     * @param IMessageQuickReplyAction $object
-     * @param array $parameters
-     * @param class-string<AbstractDatabaseObjectAction> $containerActionClassName
+     * @param IMessageQuickReplyAction<DatabaseObject, DatabaseObject, DatabaseObjectList<DatabaseObject>> $object
+     * @param mixed[] $parameters
+     * @param class-string<AbstractDatabaseObjectAction<DatabaseObject, DatabaseObjectEditor<DatabaseObject>>> $containerActionClassName
      * @param string $sortOrder
      * @param string $templateName
      * @param string $application
      * @param callable $callbackCreatedMessage
-     * @return  array
+     * @return array{
+     *  isVisible: false
+     * }|array{
+     *  lastPostTime: int,
+     *  objectID: int,
+     *  template: string,
+     * }|array{
+     *  objectID: int,
+     *  url: string,
+     * }
      */
     public function createMessage(
         IMessageQuickReplyAction $object,
@@ -311,6 +327,8 @@ class QuickReplyManager extends SingletonFactory
     }
 
     /**
+     * @param string $tmpHash
+     * @return void
      * @deprecated 5.5 The concept of starting a message in a simple editor and then migrating to an extended editor no longer exists.
      */
     public function setTmpHash($tmpHash)

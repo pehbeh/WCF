@@ -17,16 +17,16 @@ interface ILabelObjectHandler
     /**
      * Returns a list of label group ids.
      *
-     * @param array $parameters
-     * @return  int[]
+     * @param mixed[] $parameters
+     * @return int[]
      */
     public function getLabelGroupIDs(array $parameters = []);
 
     /**
      * Returns a list of label groups.
      *
-     * @param array $parameters
-     * @return  ViewableLabelGroup[]
+     * @param mixed[] $parameters
+     * @return ViewableLabelGroup[]
      */
     public function getLabelGroups(array $parameters = []);
 
@@ -36,7 +36,7 @@ interface ILabelObjectHandler
      * @param int[] $labelIDs
      * @param string $optionName
      * @param bool $legacyReturnValue
-     * @return  mixed
+     * @return mixed
      */
     public function validateLabelIDs(array $labelIDs, $optionName = '', $legacyReturnValue = true);
 
@@ -46,6 +46,7 @@ interface ILabelObjectHandler
      * @param int[] $labelIDs
      * @param int $objectID
      * @param bool $validatePermissions
+     * @return void
      * @see     \wcf\system\label\LabelHandler::setLabels()
      */
     public function setLabels(array $labelIDs, $objectID, $validatePermissions = true);
@@ -55,6 +56,7 @@ interface ILabelObjectHandler
      *
      * @param int $objectID
      * @param bool $validatePermissions
+     * @return void
      * @see     \wcf\system\label\LabelHandler::removeLabels()
      */
     public function removeLabels($objectID, $validatePermissions = true);
@@ -64,7 +66,7 @@ interface ILabelObjectHandler
      *
      * @param int[] $objectIDs
      * @param bool $validatePermissions
-     * @return  Label[][]
+     * @return Label[][]
      */
     public function getAssignedLabels(array $objectIDs, $validatePermissions = true);
 }

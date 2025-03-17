@@ -26,8 +26,8 @@ use wcf\util\StringUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  ModerationQueue     getDecoratedObject()
  * @mixin   ModerationQueue
+ * @extends DatabaseObjectDecorator<ModerationQueue>
  */
 class ViewableModerationQueue extends DatabaseObjectDecorator implements ILinkableObject, ITitledObject
 {
@@ -57,7 +57,7 @@ class ViewableModerationQueue extends DatabaseObjectDecorator implements ILinkab
     /**
      * Sets link for viewing/editing.
      *
-     * @param IUserContent $object
+     * @return void
      */
     public function setAffectedObject(IUserContent $object)
     {
@@ -93,7 +93,7 @@ class ViewableModerationQueue extends DatabaseObjectDecorator implements ILinkab
     /**
      * Sets associated user profile object.
      *
-     * @param UserProfile $userProfile
+     * @return void
      * @deprecated  3.0
      */
     public function setUserProfile(UserProfile $userProfile)
@@ -147,6 +147,8 @@ class ViewableModerationQueue extends DatabaseObjectDecorator implements ILinkab
 
     /**
      * Marks associated objects as removed.
+     *
+     * @return void
      */
     public function setIsOrphaned()
     {

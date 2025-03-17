@@ -23,7 +23,7 @@ class ConditionHandler extends SingletonFactory
     /**
      * list of available conditions grouped by the id of the related condition
      * object type definition
-     * @var array
+     * @var array<int, array<int, mixed[]>>
      */
     protected $conditions = [];
 
@@ -33,6 +33,7 @@ class ConditionHandler extends SingletonFactory
      *
      * @param int $objectID
      * @param ObjectType[] $conditionObjectTypes
+     * @return void
      */
     public function createConditions($objectID, array $conditionObjectTypes)
     {
@@ -56,7 +57,8 @@ class ConditionHandler extends SingletonFactory
      *
      * @param string $definitionName
      * @param int[] $objectIDs
-     * @throws  SystemException
+     * @return void
+     * @throws SystemException
      */
     public function deleteConditions($definitionName, array $objectIDs)
     {
@@ -96,8 +98,8 @@ class ConditionHandler extends SingletonFactory
      *
      * @param string $definitionName
      * @param int $objectID
-     * @return  Condition[]
-     * @throws  SystemException
+     * @return Condition[]
+     * @throws SystemException
      */
     public function getConditions($definitionName, $objectID)
     {
@@ -126,6 +128,7 @@ class ConditionHandler extends SingletonFactory
      * @param int $objectID
      * @param Condition[] $oldConditions
      * @param ObjectType[] $conditionObjectTypes
+     * @return void
      */
     public function updateConditions($objectID, array $oldConditions, array $conditionObjectTypes)
     {

@@ -36,7 +36,6 @@ final class Follow
             return;
         }
 
-        \assert($follow instanceof UserFollow);
         $this->sendNotification($follow);
         $this->fireActivityEvent();
         $this->resetUserStorage();

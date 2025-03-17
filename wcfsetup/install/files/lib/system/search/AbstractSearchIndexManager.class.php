@@ -41,6 +41,8 @@ abstract class AbstractSearchIndexManager extends SingletonFactory implements IS
 
     /**
      * Creates the search index for given object type.
+     *
+     * @return bool
      */
     abstract protected function createSearchIndex(ObjectType $objectType);
 

@@ -29,7 +29,7 @@ abstract class TreeMenu extends SingletonFactory
 
     /**
      * list of all menu items
-     * @var ITreeMenuItem[][]
+     * @var array<string, ITreeMenuItem[]>
      */
     public $menuItems;
 
@@ -56,6 +56,8 @@ abstract class TreeMenu extends SingletonFactory
 
     /**
      * Loads cached menu items.
+     *
+     * @return void
      */
     protected function loadCache()
     {
@@ -69,7 +71,7 @@ abstract class TreeMenu extends SingletonFactory
      * Checks the options and permissions of given menu item.
      *
      * @param ITreeMenuItem $item
-     * @return  bool
+     * @return bool
      */
     protected function checkMenuItem(ITreeMenuItem $item)
     {
@@ -112,6 +114,7 @@ abstract class TreeMenu extends SingletonFactory
      * Checks the options and permissions of the menu items.
      *
      * @param string $parentMenuItem
+     * @return void
      */
     protected function checkMenuItems($parentMenuItem = '')
     {
@@ -134,6 +137,7 @@ abstract class TreeMenu extends SingletonFactory
      * Removes items without children.
      *
      * @param string $parentMenuItem
+     * @return void
      */
     protected function removeEmptyItems($parentMenuItem = '')
     {
@@ -158,6 +162,7 @@ abstract class TreeMenu extends SingletonFactory
      * Builds a plain menu item list.
      *
      * @param string $parentMenuItem
+     * @return void
      */
     protected function buildMenuItemList($parentMenuItem = '')
     {
@@ -178,6 +183,7 @@ abstract class TreeMenu extends SingletonFactory
      * This function should be used in each script which uses a template that includes the menu.tpl.
      *
      * @param string $menuItem name of the active menu item
+     * @return void
      */
     public function setActiveMenuItem($menuItem)
     {
@@ -199,7 +205,7 @@ abstract class TreeMenu extends SingletonFactory
     /**
      * Returns a list of the active menu items.
      *
-     * @return  array
+     * @return string[]
      */
     public function getActiveMenuItems()
     {
@@ -210,7 +216,7 @@ abstract class TreeMenu extends SingletonFactory
      * Returns the active menu item.
      *
      * @param int $level
-     * @return  string|null
+     * @return ?string
      */
     public function getActiveMenuItem($level = 0)
     {
@@ -225,7 +231,7 @@ abstract class TreeMenu extends SingletonFactory
      * Returns the list of menu items.
      *
      * @param string $parentMenuItem
-     * @return  array
+     * @return ITreeMenuItem[]|array<string, ITreeMenuItem[]>
      */
     public function getMenuItems($parentMenuItem = null)
     {

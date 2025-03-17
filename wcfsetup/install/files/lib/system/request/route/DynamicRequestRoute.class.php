@@ -45,9 +45,6 @@ class DynamicRequestRoute implements IRequestRoute
      */
     protected $routeData = [];
 
-    /**
-     * DynamicRequestRoute constructor.
-     */
     public function __construct()
     {
         $this->init();
@@ -55,6 +52,8 @@ class DynamicRequestRoute implements IRequestRoute
 
     /**
      * Sets default routing information.
+     *
+     * @return void
      */
     protected function init()
     {
@@ -81,7 +80,8 @@ class DynamicRequestRoute implements IRequestRoute
     }
 
     /**
-     * @inheritDoc
+     * @param bool $isACP
+     * @return void
      */
     public function setIsACP($isACP)
     {
@@ -92,6 +92,7 @@ class DynamicRequestRoute implements IRequestRoute
      * Sets the build schema used to build outgoing links.
      *
      * @param string $buildSchema
+     * @return void
      */
     public function setBuildSchema($buildSchema)
     {
@@ -124,6 +125,7 @@ class DynamicRequestRoute implements IRequestRoute
      * Sets the route pattern used to evaluate an incoming request.
      *
      * @param string $pattern
+     * @return void
      */
     public function setPattern($pattern)
     {
@@ -134,6 +136,7 @@ class DynamicRequestRoute implements IRequestRoute
      * Sets the list of required components.
      *
      * @param string[] $requiredComponents
+     * @return void
      */
     public function setRequiredComponents(array $requiredComponents)
     {

@@ -19,6 +19,7 @@ use wcf\util\FileUtil;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @phpstan-import-type FileInfo from IArchive
  */
 class Tar implements IArchive
 {
@@ -30,7 +31,7 @@ class Tar implements IArchive
 
     /**
      * content of the tar file
-     * @var array
+     * @var array<int, FileInfo>
      */
     protected $contentList = [];
 
@@ -70,6 +71,9 @@ class Tar implements IArchive
      */
     const CHUNK_SIZE = 8192;
 
+    /**
+     * @var array<string, int<0, 255>>
+     */
     private static array $asciiMap;
 
     /**
@@ -107,6 +111,8 @@ class Tar implements IArchive
 
     /**
      * Opens the tar archive and stores filehandle.
+     *
+     * @return void
      */
     public function open()
     {
@@ -130,6 +136,8 @@ class Tar implements IArchive
 
     /**
      * Closes the opened file.
+     *
+     * @return void
      */
     public function close()
     {
@@ -264,6 +272,8 @@ class Tar implements IArchive
     /**
      * Reads table of contents (TOC) from tar archive.
      * This does not get the entire to memory but only parts of it.
+     *
+     * @return void
      */
     protected function readContent()
     {
@@ -307,7 +317,7 @@ class Tar implements IArchive
      * Unpacks file header for one file entry.
      *
      * @param string $binaryData
-     * @return  array|bool
+     * @return mixed[]|bool
      */
     protected function readHeader($binaryData)
     {

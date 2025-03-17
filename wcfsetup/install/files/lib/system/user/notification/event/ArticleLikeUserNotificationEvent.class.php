@@ -153,6 +153,7 @@ class ArticleLikeUserNotificationEvent extends AbstractSharedUserNotificationEve
 
     /**
      * @inheritDoc
+     * @return LikeableArticle
      */
     protected static function createTestLikeObject(UserProfile $recipient, UserProfile $author)
     {
@@ -163,6 +164,7 @@ class ArticleLikeUserNotificationEvent extends AbstractSharedUserNotificationEve
 
     /**
      * @inheritDoc
+     * @return string
      */
     protected static function getTestLikeableObjectTypeName()
     {

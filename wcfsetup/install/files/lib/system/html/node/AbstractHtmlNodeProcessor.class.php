@@ -36,7 +36,7 @@ abstract class AbstractHtmlNodeProcessor implements IHtmlNodeProcessor
 
     /**
      * storage for node replacements
-     * @var array
+     * @var list<array{data: array<string, mixed>, identifier: string, object: IHtmlNode}>
      */
     protected $nodeData = [];
 
@@ -121,6 +121,7 @@ abstract class AbstractHtmlNodeProcessor implements IHtmlNodeProcessor
                     $obj = $data['object'];
                     $string = $obj->replaceTag($data['data']);
 
+                    // @phpstan-ignore function.alreadyNarrowedType, function.alreadyNarrowedType, booleanAnd.alwaysFalse
                     if (!\is_string($string) && !\is_numeric($string)) {
                         throw new \RuntimeException(
                             \sprintf(
@@ -167,7 +168,7 @@ abstract class AbstractHtmlNodeProcessor implements IHtmlNodeProcessor
     /**
      * Returns a XPath instance for the current DOM document.
      *
-     * @return      \DOMXPath       XPath instance
+     * @return \DOMXPath XPath instance
      */
     public function getXPath()
     {
@@ -185,7 +186,7 @@ abstract class AbstractHtmlNodeProcessor implements IHtmlNodeProcessor
      * @param \DOMElement $element old element
      * @param string $tagName tag name for the new element
      * @param bool $preserveAttributes retain attributes for the new element
-     * @return      \DOMElement     newly created element
+     * @return \DOMElement newly created element
      */
     public function renameTag(\DOMElement $element, $tagName, $preserveAttributes = false)
     {
@@ -213,6 +214,7 @@ abstract class AbstractHtmlNodeProcessor implements IHtmlNodeProcessor
      * @param \DOMElement $element target element
      * @param string $text text used to replace target
      * @param bool $isBlockElement true if element is a block element
+     * @return void
      */
     public function replaceElementWithText(\DOMElement $element, $text, $isBlockElement)
     {
@@ -234,6 +236,7 @@ abstract class AbstractHtmlNodeProcessor implements IHtmlNodeProcessor
      * its original position.
      *
      * @param \DOMElement $element element to be removed
+     * @return void
      */
     public function unwrapContent(\DOMElement $element)
     {
@@ -249,7 +252,8 @@ abstract class AbstractHtmlNodeProcessor implements IHtmlNodeProcessor
      *
      * @param IHtmlNode $htmlNode node processor instance
      * @param string $nodeIdentifier replacement node identifier
-     * @param array $data replacement data
+     * @param array<string, mixed> $data replacement data
+     * @return void
      */
     public function addNodeData(IHtmlNode $htmlNode, $nodeIdentifier, array $data)
     {
@@ -264,7 +268,7 @@ abstract class AbstractHtmlNodeProcessor implements IHtmlNodeProcessor
      * Parses an attribute string.
      *
      * @param string $attributes base64 and JSON encoded attributes
-     * @return      array           parsed attributes
+     * @return array<string|int, string|int|bool|null> parsed attributes
      */
     public function parseAttributes($attributes)
     {
@@ -297,6 +301,7 @@ abstract class AbstractHtmlNodeProcessor implements IHtmlNodeProcessor
      * Invokes a html node processor.
      *
      * @param IHtmlNode $htmlNode html node processor
+     * @return void
      */
     protected function invokeHtmlNode(IHtmlNode $htmlNode)
     {
@@ -328,6 +333,7 @@ abstract class AbstractHtmlNodeProcessor implements IHtmlNodeProcessor
      * @param string $classNamePattern full namespace pattern for class guessing
      * @param string[] $skipTags list of tag names that should be ignored
      * @param callable $callback optional callback
+     * @return void
      */
     protected function invokeNodeHandlers($classNamePattern, array $skipTags = [], ?callable $callback = null)
     {

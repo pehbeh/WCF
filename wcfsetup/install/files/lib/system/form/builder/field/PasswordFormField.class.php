@@ -68,7 +68,7 @@ class PasswordFormField extends AbstractFormField implements
     }
 
     /**
-     * @inheritDoc
+     * @return string[]
      */
     protected function getValidInputModes(): array
     {
@@ -120,6 +120,7 @@ class PasswordFormField extends AbstractFormField implements
 
     /**
      * @inheritDoc
+     * @return string
      */
     protected static function getDefaultId()
     {
@@ -128,6 +129,7 @@ class PasswordFormField extends AbstractFormField implements
 
     /**
      * @inheritDoc
+     * @return string[]
      */
     protected function getValidAutoCompleteTokens(): array
     {

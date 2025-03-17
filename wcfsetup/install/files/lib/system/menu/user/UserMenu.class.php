@@ -61,6 +61,11 @@ class UserMenu extends TreeMenu
     }
 
     /**
+     * @return list<array{
+     *  category: UserMenuItem,
+     *  items: list<string>,
+     *  link: string,
+     * }>
      * @since 5.5
      */
     public function getUserMenuItems(): array

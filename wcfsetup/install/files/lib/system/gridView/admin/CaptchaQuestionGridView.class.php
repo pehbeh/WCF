@@ -3,6 +3,7 @@
 namespace wcf\system\gridView\admin;
 
 use wcf\acp\form\CaptchaQuestionEditForm;
+use wcf\data\captcha\question\CaptchaQuestion;
 use wcf\data\captcha\question\I18nCaptchaQuestionList;
 use wcf\event\gridView\admin\CaptchaQuestionGridViewInitialized;
 use wcf\system\gridView\AbstractGridView;
@@ -25,6 +26,8 @@ use wcf\system\WCF;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @extends AbstractGridView<CaptchaQuestion, I18nCaptchaQuestionList>
  */
 final class CaptchaQuestionGridView extends AbstractGridView
 {

@@ -13,9 +13,7 @@ use wcf\data\user\UserProfileList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  (UserProfile|null)[]    getCachedObjects()
- * @method  UserProfile|null getObject($objectID)
- * @method  (UserProfile|null)[]    getObjects(array $objectIDs)
+ * @extends AbstractRuntimeCache<UserProfile, UserProfileList>
  */
 class UserProfileRuntimeCache extends AbstractRuntimeCache
 {
@@ -28,8 +26,8 @@ class UserProfileRuntimeCache extends AbstractRuntimeCache
      * Adds a user profile to the cache. This is an internal method that should
      * not be used on a regular basis.
      *
-     * @param UserProfile $profile
-     * @since       3.1
+     * @return void
+     * @since 3.1
      */
     public function addUserProfile(UserProfile $profile)
     {

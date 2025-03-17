@@ -17,8 +17,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserNotificationEventEditor[]   getObjects()
- * @method  UserNotificationEventEditor getSingleObject()
+ * @extends AbstractDatabaseObjectAction<UserNotificationEvent, UserNotificationEventEditor>
  */
 class UserNotificationEventAction extends AbstractDatabaseObjectAction
 {
@@ -61,6 +60,7 @@ class UserNotificationEventAction extends AbstractDatabaseObjectAction
     /**
      * Validates the `testEvent` action.
      *
+     * @return void
      * @throws  PermissionDeniedException
      * @throws  UserInputException
      * @since   3.1
@@ -87,8 +87,11 @@ class UserNotificationEventAction extends AbstractDatabaseObjectAction
     /**
      * Tests a certain user notification event by returning all possible notifications.
      *
-     * @return  array
-     * @since   3.1
+     * @return array{
+     *  eventID: int,
+     *  template: string,
+     * }
+     * @since 3.1
      */
     public function testEvent()
     {

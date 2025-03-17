@@ -12,11 +12,7 @@ use wcf\data\I18nDatabaseObjectList;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       5.2
  *
- * @method  UserGroup       current()
- * @method  UserGroup[]     getObjects()
- * @method  UserGroup|null      getSingleObject()
- * @method  UserGroup|null      search($objectID)
- * @property    UserGroup[] $objects
+ * @extends I18nDatabaseObjectList<UserGroup>
  */
 class I18nUserGroupList extends I18nDatabaseObjectList
 {

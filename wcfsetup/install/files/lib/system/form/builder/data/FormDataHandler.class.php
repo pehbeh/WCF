@@ -43,6 +43,7 @@ class FormDataHandler implements IFormDataHandler
         foreach ($this->processors as $processor) {
             $parameters = $processor->processFormData($document, $parameters);
 
+            // @phpstan-ignore function.alreadyNarrowedType
             if (!\is_array($parameters)) {
                 if ($processor instanceof CustomFormDataProcessor) {
                     throw new \UnexpectedValueException("Custom data processor '{$processor->getId()}' does not return an array when processing form data.");
@@ -64,6 +65,7 @@ class FormDataHandler implements IFormDataHandler
         foreach ($this->processors as $processor) {
             $data = $processor->processObjectData($document, $data, $object);
 
+            // @phpstan-ignore function.alreadyNarrowedType
             if (!\is_array($data)) {
                 if ($processor instanceof CustomFormDataProcessor) {
                     throw new \UnexpectedValueException("Custom data processor '{$processor->getId()}' does not return an array when processing object data.");

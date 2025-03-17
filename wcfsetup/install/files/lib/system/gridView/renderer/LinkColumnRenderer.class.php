@@ -14,9 +14,14 @@ use wcf\util\StringUtil;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @extends DefaultColumnRenderer<DatabaseObject>
  */
 class LinkColumnRenderer extends DefaultColumnRenderer implements ILinkColumnRenderer
 {
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function __construct(
         private readonly string $controllerClass,
         private readonly array $parameters = [],

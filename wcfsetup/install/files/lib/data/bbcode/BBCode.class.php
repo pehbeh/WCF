@@ -32,7 +32,7 @@ class BBCode extends ProcessibleDatabaseObject implements IRouteController
 {
     /**
      * list of attributes
-     * @var BBCodeAttribute[]
+     * @var list<BBCodeAttribute>
      */
     protected $attributes;
 
@@ -54,7 +54,7 @@ class BBCode extends ProcessibleDatabaseObject implements IRouteController
     /**
      * Returns the attributes of this bbcode.
      *
-     * @return  BBCodeAttribute[]
+     * @return list<BBCodeAttribute>
      */
     public function getAttributes()
     {
@@ -68,7 +68,8 @@ class BBCode extends ProcessibleDatabaseObject implements IRouteController
     /**
      * Sets the attributes of this bbcode.
      *
-     * @param BBCodeAttribute[] $attributes list of attributes
+     * @param list<BBCodeAttribute> $attributes list of attributes
+     * @return void
      */
     public function setAttributes(array $attributes)
     {
@@ -86,8 +87,8 @@ class BBCode extends ProcessibleDatabaseObject implements IRouteController
     /**
      * Returns the button label in the active user's language.
      *
-     * @return  string
-     * @since   5.2
+     * @return string
+     * @since 5.2
      */
     public function getButtonLabel()
     {
@@ -98,7 +99,7 @@ class BBCode extends ProcessibleDatabaseObject implements IRouteController
      * Returns BBCode object with the given tag.
      *
      * @param string $tag
-     * @return  BBCode
+     * @return BBCode
      */
     public static function getBBCodeByTag($tag)
     {
@@ -122,7 +123,7 @@ class BBCode extends ProcessibleDatabaseObject implements IRouteController
      *
      * @param string $bbcodeTag
      * @param string[] $allowedBBCodeTags
-     * @return  bool
+     * @return bool
      */
     public static function isAllowedBBCode($bbcodeTag, array $allowedBBCodeTags)
     {
@@ -147,7 +148,7 @@ class BBCode extends ProcessibleDatabaseObject implements IRouteController
     /**
      * Returns true if this BBCode can be deleted.
      *
-     * @return  bool
+     * @return bool
      */
     public function canDelete()
     {

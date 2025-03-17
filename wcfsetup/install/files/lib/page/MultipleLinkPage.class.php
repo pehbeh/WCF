@@ -15,6 +15,8 @@ use wcf\system\WCF;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template TDatabaseObjectList of DatabaseObjectList
  */
 abstract class MultipleLinkPage extends AbstractPage
 {
@@ -55,8 +57,7 @@ abstract class MultipleLinkPage extends AbstractPage
     public $endIndex = 0;
 
     /**
-     * DatabaseObjectList object
-     * @var DatabaseObjectList
+     * @var TDatabaseObjectList
      */
     public $objectList;
 
@@ -144,6 +145,8 @@ abstract class MultipleLinkPage extends AbstractPage
 
     /**
      * Initializes DatabaseObjectList instance.
+     *
+     * @return void
      */
     protected function initObjectList()
     {
@@ -160,6 +163,8 @@ abstract class MultipleLinkPage extends AbstractPage
 
     /**
      * Reads object list.
+     *
+     * @return void
      */
     protected function readObjects()
     {
@@ -177,6 +182,8 @@ abstract class MultipleLinkPage extends AbstractPage
     /**
      * Calculates the number of pages and
      * handles the given page number parameter.
+     *
+     * @return void
      */
     public function calculateNumberOfPages()
     {
@@ -207,7 +214,7 @@ abstract class MultipleLinkPage extends AbstractPage
     /**
      * Counts the displayed items.
      *
-     * @return  int
+     * @return int
      */
     public function countItems()
     {
@@ -220,7 +227,7 @@ abstract class MultipleLinkPage extends AbstractPage
     /**
      * Returns true if current page is the first page.
      *
-     * @return  bool
+     * @return bool
      */
     public function isFirstPage()
     {
@@ -230,7 +237,7 @@ abstract class MultipleLinkPage extends AbstractPage
     /**
      * Returns true if current page is the last page.
      *
-     * @return  bool
+     * @return bool
      */
     public function isLastPage()
     {

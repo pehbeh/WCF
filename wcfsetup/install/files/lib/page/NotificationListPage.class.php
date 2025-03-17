@@ -2,6 +2,8 @@
 
 namespace wcf\page;
 
+use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectList;
 use wcf\system\user\notification\UserNotificationHandler;
 use wcf\system\WCF;
 
@@ -11,6 +13,8 @@ use wcf\system\WCF;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @extends MultipleLinkPage<DatabaseObjectList<DatabaseObject>>
  */
 class NotificationListPage extends MultipleLinkPage
 {
@@ -36,16 +40,12 @@ class NotificationListPage extends MultipleLinkPage
     /**
      * @inheritDoc
      */
-    protected function initObjectList()
-    {
-    }
+    protected function initObjectList() {}
 
     /**
      * @inheritDoc
      */
-    protected function readObjects()
-    {
-    }
+    protected function readObjects() {}
 
     /**
      * @inheritDoc

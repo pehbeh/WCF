@@ -20,22 +20,22 @@ use wcf\util\JSON;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       3.1
  *
- * @method  PackageInstallationPlugin   getDecoratedObject()
  * @mixin   PackageInstallationPlugin
+ * @extends DatabaseObjectDecorator<PackageInstallationPlugin>
  */
 class DevtoolsPip extends DatabaseObjectDecorator
 {
     /**
      * project the pip object belongs to
      * @var DevtoolsProject
-     * @since   5.2
+     * @since 5.2
      */
     protected $project;
 
     /**
      * package installation plugin object
      * @var IPackageInstallationPlugin
-     * @since   5.2
+     * @since 5.2
      */
     protected $pip;
 
@@ -47,7 +47,7 @@ class DevtoolsPip extends DatabaseObjectDecorator
     /**
      * Returns true if the PIP class can be found.
      *
-     * @return      bool
+     * @return bool
      */
     public function classExists()
     {
@@ -57,7 +57,7 @@ class DevtoolsPip extends DatabaseObjectDecorator
     /**
      * Returns true if the PIP is expected to be idempotent.
      *
-     * @return      bool
+     * @return bool
      */
     public function isIdempotent()
     {
@@ -67,13 +67,16 @@ class DevtoolsPip extends DatabaseObjectDecorator
     /**
      * Returns the default filename of this PIP.
      *
-     * @return      string
+     * @return string
      */
     public function getDefaultFilename()
     {
         return \call_user_func([$this->getDecoratedObject()->className, 'getDefaultFilename']);
     }
 
+    /**
+     * @return string
+     */
     public function getEffectiveDefaultFilename()
     {
         return './' . \preg_replace('~\.tar$~', '/', $this->getDefaultFilename());
@@ -82,7 +85,7 @@ class DevtoolsPip extends DatabaseObjectDecorator
     /**
      * Returns true if the PIP exists, has a default filename and is idempotent.
      *
-     * @return      bool
+     * @return bool
      */
     public function isSupported()
     {
@@ -92,8 +95,8 @@ class DevtoolsPip extends DatabaseObjectDecorator
     /**
      * Returns `true` if this pip supports adding and editing entries via a gui.
      *
-     * @return  bool
-     * @since   5.2
+     * @return bool
+     * @since 5.2
      */
     public function supportsGui()
     {
@@ -103,6 +106,10 @@ class DevtoolsPip extends DatabaseObjectDecorator
         );
     }
 
+    /**
+     * @param bool $toJson
+     * @return string|string[]
+     */
     public function getSyncDependencies($toJson = true)
     {
         $dependencies = \call_user_func([$this->getDecoratedObject()->className, 'getSyncDependencies']);
@@ -113,8 +120,8 @@ class DevtoolsPip extends DatabaseObjectDecorator
     /**
      * Returns the project this object belongs to.
      *
-     * @return  DevtoolsProject
-     * @since   5.2
+     * @return DevtoolsProject
+     * @since 5.2
      */
     public function getProject()
     {
@@ -125,7 +132,8 @@ class DevtoolsPip extends DatabaseObjectDecorator
      * Sets the project this object belongs to.
      *
      * @param DevtoolsProject $project
-     * @since   5.2
+     * @return void
+     * @since 5.2
      */
     public function setProject(DevtoolsProject $project)
     {
@@ -137,8 +145,8 @@ class DevtoolsPip extends DatabaseObjectDecorator
      *
      * Note: No target will be set for the package installation plugin object.
      *
-     * @return  IPackageInstallationPlugin|IGuiPackageInstallationPlugin
-     * @since   5.2
+     * @return IPackageInstallationPlugin|IGuiPackageInstallationPlugin
+     * @since 5.2
      */
     public function getPip()
     {

@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Like        current()
- * @method  Like[]      getObjects()
- * @method  Like|null   getSingleObject()
- * @method  Like|null   search($objectID)
- * @property    Like[] $objects
+ * @extends DatabaseObjectList<Like>
  */
 class LikeList extends DatabaseObjectList
 {

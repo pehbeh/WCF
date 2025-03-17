@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\ACPSessionLogGridView;
 
 /**
@@ -13,9 +12,9 @@ use wcf\system\gridView\admin\ACPSessionLogGridView;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    ACPSessionLogGridView    $gridView
+ * @extends AbstractGridViewPage<ACPSessionLogGridView>
  */
-class ACPSessionLogListPage extends AbstractGridViewPage
+final class ACPSessionLogListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -33,7 +32,7 @@ class ACPSessionLogListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.management.canViewLog'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): ACPSessionLogGridView
     {
         return new ACPSessionLogGridView();
     }

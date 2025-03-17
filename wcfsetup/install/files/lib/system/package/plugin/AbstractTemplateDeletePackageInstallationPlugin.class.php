@@ -32,13 +32,13 @@ abstract class AbstractTemplateDeletePackageInstallationPlugin extends AbstractF
 
     /**
      * @inheritDoc
+     * @return void
      */
     protected function addFormFields(IFormDocument $form)
     {
         parent::addFormFields($form);
 
-        /** @var TextFormField $templateFormField */
-        $templateFormField = $form->getNodeById($this->tagName);
+        $templateFormField = $form->getFormField($this->tagName);
         $templateFormField->addValidator(new FormFieldValidator('tplSuffix', static function (TextFormField $formField) {
             if (\substr($formField->getValue(), -4) === '.tpl') {
                 $formField->addValidationError(new FormFieldValidationError(

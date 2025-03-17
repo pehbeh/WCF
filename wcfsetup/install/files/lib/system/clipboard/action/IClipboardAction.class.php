@@ -12,6 +12,8 @@ use wcf\system\clipboard\ClipboardEditorItem;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template TDatabaseobject of DatabaseObject
  */
 interface IClipboardAction
 {
@@ -26,24 +28,24 @@ interface IClipboardAction
      * Returns the editor item for the clipboard action with the given name or `null`
      * if the action is not applicable to the given objects.
      *
-     * @param DatabaseObject[] $objects
+     * @param TDatabaseobject[] $objects
      * @param ClipboardAction $action
-     * @return  ClipboardEditorItem|null
+     * @return ?ClipboardEditorItem
      */
     public function execute(array $objects, ClipboardAction $action);
 
     /**
      * Returns action class name.
      *
-     * @return  string
+     * @return string
      */
     public function getClassName();
 
     /**
      * Returns label for item editor.
      *
-     * @param array $objects
-     * @return  string
+     * @param TDatabaseobject[] $objects
+     * @return string
      */
     public function getEditorLabel(array $objects);
 
@@ -51,8 +53,8 @@ interface IClipboardAction
      * Returns the list of action names that should trigger a page reload once they
      * have been executed.
      *
-     * @return      string[]
-     * @since       5.2
+     * @return string[]
+     * @since 5.2
      */
     public function getReloadPageOnSuccess();
 }

@@ -3,7 +3,6 @@
 namespace wcf\page;
 
 use wcf\data\page\PageCache;
-use wcf\data\user\online\UserOnline;
 use wcf\data\user\online\UsersOnlineList;
 use wcf\system\page\handler\IOnlineLocationPageHandler;
 use wcf\system\page\PageLocationManager;
@@ -18,7 +17,7 @@ use wcf\util\HeaderUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    UsersOnlineList $objectList
+ * @extends SortablePage<UsersOnlineList>
  */
 class UsersOnlineListPage extends SortablePage
 {
@@ -54,7 +53,7 @@ class UsersOnlineListPage extends SortablePage
 
     /**
      * page locations
-     * @var array
+     * @var mixed[]
      */
     public $locations = [];
 
@@ -120,14 +119,13 @@ class UsersOnlineListPage extends SortablePage
         // cache all necessary data for showing locations
         foreach ($this->objectList as $userOnline) {
             $page = PageCache::getInstance()->getPage($userOnline->pageID);
-            if ($page !== null && $page->getHandler() !== null && $page->getHandler() instanceof IOnlineLocationPageHandler) {
-                /** @noinspection PhpUndefinedMethodInspection */
-                $page->getHandler()->prepareOnlineLocation($page, $userOnline);
+            $pageHandler = $page?->getHandler();
+            if ($pageHandler instanceof IOnlineLocationPageHandler) {
+                $pageHandler->prepareOnlineLocation($page, $userOnline);
             }
         }
 
         // set locations
-        /** @var UserOnline $userOnline */
         foreach ($this->objectList as $userOnline) {
             $userOnline->setLocation();
         }

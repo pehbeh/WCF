@@ -61,6 +61,7 @@ class SignatureCache extends SingletonFactory
      * Loads the embedded objects for the given users.
      *
      * @param int[] $userIDs
+     * @return void
      * @since       5.2
      */
     public function cacheUserSignature(array $userIDs)

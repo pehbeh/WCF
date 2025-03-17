@@ -11,9 +11,8 @@ use wcf\data\DatabaseObjectEditor;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static UserMenuItem    create(array $parameters = [])
- * @method      UserMenuItem    getDecoratedObject()
  * @mixin       UserMenuItem
+ * @extends DatabaseObjectEditor<UserMenuItem>
  */
 class UserMenuItemEditor extends DatabaseObjectEditor
 {

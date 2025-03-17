@@ -2,6 +2,8 @@
 
 namespace wcf\page;
 
+use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectList;
 use wcf\data\search\ISearchResultObject;
 use wcf\data\search\Search;
 use wcf\system\event\EventHandler;
@@ -20,6 +22,8 @@ use wcf\util\HeaderUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @deprecated 5.5
+ *
+ * @extends MultipleLinkPage<DatabaseObjectList<DatabaseObject>>
  */
 class SearchResultPage extends MultipleLinkPage
 {
@@ -48,13 +52,13 @@ class SearchResultPage extends MultipleLinkPage
 
     /**
      * messages
-     * @var array
+     * @var ISearchResultObject[]
      */
     public $messages = [];
 
     /**
      * search data
-     * @var array
+     * @var mixed[]
      */
     public $searchData;
 
@@ -98,6 +102,8 @@ class SearchResultPage extends MultipleLinkPage
     /**
      * Attempts to start a new search if the search id is invalid or unavailable, and the
      * highlight parameter is available.
+     *
+     * @return void
      */
     protected function redirectOrReject()
     {
@@ -137,6 +143,8 @@ class SearchResultPage extends MultipleLinkPage
 
     /**
      * Caches the message data.
+     *
+     * @return void
      */
     protected function cacheMessageData()
     {
@@ -161,6 +169,8 @@ class SearchResultPage extends MultipleLinkPage
 
     /**
      * Reads the data of the search result messages.
+     *
+     * @return void
      */
     protected function readMessages()
     {
@@ -193,16 +203,12 @@ class SearchResultPage extends MultipleLinkPage
     /**
      * @inheritDoc
      */
-    protected function initObjectList()
-    {
-    }
+    protected function initObjectList() {}
 
     /**
      * @inheritDoc
      */
-    protected function readObjects()
-    {
-    }
+    protected function readObjects() {}
 
     /**
      * @inheritDoc

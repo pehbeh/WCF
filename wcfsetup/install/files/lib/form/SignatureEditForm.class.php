@@ -46,7 +46,7 @@ class SignatureEditForm extends MessageForm
     public $neededModules = ['MODULE_USER_SIGNATURE'];
 
     /**
-     * @inheritDoc
+     * @var bool
      */
     public $showSignatureSetting = false;
 

@@ -12,6 +12,8 @@ use wcf\page\SortablePage;
  * @copyright   2001-2020 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.3
+ *
+ * @extends SortablePage<DevtoolsMissingLanguageItemList>
  */
 class DevtoolsMissingLanguageItemListPage extends SortablePage
 {

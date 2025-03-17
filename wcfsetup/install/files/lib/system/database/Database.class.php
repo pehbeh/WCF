@@ -101,7 +101,7 @@ abstract class Database
 
     /**
      * default driver options passed to the PDO constructor
-     * @var array
+     * @var mixed[]
      */
     protected $defaultDriverOptions = [];
 
@@ -115,7 +115,7 @@ abstract class Database
      * @param int $port SQL database server port
      * @param bool $failsafeTest
      * @param bool $tryToCreateDatabase
-     * @param array $defaultDriverOptions
+     * @param mixed[] $defaultDriverOptions
      */
     public function __construct(
         $host,
@@ -141,6 +141,9 @@ abstract class Database
         $this->connect();
     }
 
+    /**
+     * @return void
+     */
     public function enableDebugMode()
     {
         $this->preparedStatementClassName = DebugPreparedStatement::class;
@@ -148,6 +151,8 @@ abstract class Database
 
     /**
      * Connects to database server.
+     *
+     * @return void
      */
     abstract public function connect();
 
@@ -520,6 +525,8 @@ abstract class Database
 
     /**
      * Increments the query counter by one.
+     *
+     * @return void
      */
     public function incrementQueryCount()
     {
@@ -543,7 +550,7 @@ abstract class Database
     /**
      * Returns true if this database type is supported.
      *
-     * @return  bool
+     * @return bool
      */
     public static function isSupported()
     {
@@ -552,6 +559,8 @@ abstract class Database
 
     /**
      * Sets default connection attributes.
+     *
+     * @return void
      */
     protected function setAttributes()
     {

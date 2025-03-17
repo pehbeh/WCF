@@ -4,6 +4,7 @@ namespace wcf\system\package\plugin;
 
 use wcf\data\event\listener\EventListenerEditor;
 use wcf\data\event\listener\EventListenerList;
+use wcf\event\IPsr14Event;
 use wcf\system\cache\builder\EventListenerCacheBuilder;
 use wcf\system\devtools\pip\IDevtoolsPipEntryList;
 use wcf\system\devtools\pip\IGuiPackageInstallationPlugin;
@@ -170,6 +171,7 @@ class EventListenerPackageInstallationPlugin extends AbstractXMLPackageInstallat
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -233,11 +235,10 @@ class EventListenerPackageInstallationPlugin extends AbstractXMLPackageInstallat
                 ->required()
                 ->addValidator(new FormFieldValidator('callable', static function (ClassNameFormField $formField) {
                     $listenerClassName = $formField->getValue();
-                    /** @var TextFormField $eventClassNameField */
-                    $eventClassNameField = $formField->getDocument()->getNodeById('eventClassName');
+                    $eventClassNameField = $formField->getDocument()->getFormField('eventClassName');
                     $eventClassName = $eventClassNameField->getValue();
 
-                    if (\is_subclass_of($eventClassName, IEvent::class)) {
+                    if (\is_subclass_of($eventClassName, IEvent::class) || \is_subclass_of($eventClassName, IPsr14Event::class)) {
                         if (!\is_callable(new $listenerClassName())) {
                             $formField->addValidationError(
                                 new FormFieldValidationError(
@@ -307,10 +308,8 @@ class EventListenerPackageInstallationPlugin extends AbstractXMLPackageInstallat
      */
     public function setEntryData($identifier, IFormDocument $document): bool
     {
-        $options = $document->getNodeById('options');
-        \assert($options instanceof OptionFormField);
-        $permissions = $document->getNodeById('permissions');
-        \assert($permissions instanceof UserGroupOptionFormField);
+        $options = $document->getFormField('options');
+        $permissions = $document->getFormField('permissions');
 
         $result = $this->traitSetEntryData($identifier, $document);
 
@@ -331,10 +330,8 @@ class EventListenerPackageInstallationPlugin extends AbstractXMLPackageInstallat
      */
     public function editEntry(IFormDocument $form, $identifier)
     {
-        $options = $form->getNodeById('options');
-        \assert($options instanceof OptionFormField);
-        $permissions = $form->getNodeById('permissions');
-        \assert($permissions instanceof UserGroupOptionFormField);
+        $options = $form->getFormField('options');
+        $permissions = $form->getFormField('permissions');
 
         $result = $this->traitEditEntry($form, $identifier);
 
@@ -350,6 +347,8 @@ class EventListenerPackageInstallationPlugin extends AbstractXMLPackageInstallat
 
     /**
      * @inheritDoc
+     * @param bool $saveData
+     * @return array<string, int|string>
      * @since   5.2
      */
     protected function fetchElementData(\DOMElement $element, $saveData)
@@ -402,6 +401,7 @@ class EventListenerPackageInstallationPlugin extends AbstractXMLPackageInstallat
 
     /**
      * @inheritDoc
+     * @return string
      * @since   5.2
      */
     public function getElementIdentifier(\DOMElement $element)
@@ -411,6 +411,7 @@ class EventListenerPackageInstallationPlugin extends AbstractXMLPackageInstallat
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function setEntryListKeys(IDevtoolsPipEntryList $entryList)
@@ -424,6 +425,7 @@ class EventListenerPackageInstallationPlugin extends AbstractXMLPackageInstallat
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      * @since   5.2
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)

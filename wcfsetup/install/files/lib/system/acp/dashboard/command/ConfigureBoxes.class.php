@@ -16,6 +16,9 @@ use wcf\system\WCF;
  */
 final class ConfigureBoxes
 {
+    /**
+     * @param string[] $boxes
+     */
     public function __construct(
         private readonly AcpDashboard $dashboard,
         private readonly User $user,
@@ -23,7 +26,7 @@ final class ConfigureBoxes
     ) {
     }
 
-    public function __invoke()
+    public function __invoke(): void
     {
         $this->resetBoxes();
         $this->saveBoxes();

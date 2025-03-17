@@ -20,7 +20,7 @@ interface IFormFieldValidator
      * @param string $id id of the validator
      * @param callable $validator validation function
      *
-     * @throws  \InvalidArgumentException   if the given id is invalid
+     * @throws \InvalidArgumentException if the given id is invalid
      */
     public function __construct($id, callable $validator);
 
@@ -28,13 +28,14 @@ interface IFormFieldValidator
      * Validates the value of the given field.
      *
      * @param IFormField $field validated field
+     * @return void
      */
     public function __invoke(IFormField $field);
 
     /**
      * Returns the id of the validator.
      *
-     * @return  string      id of the dependency
+     * @return string id of the dependency
      */
     public function getId();
 }

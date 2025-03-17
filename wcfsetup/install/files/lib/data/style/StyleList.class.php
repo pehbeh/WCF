@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  Style       current()
- * @method  Style[]     getObjects()
- * @method  Style|null  getSingleObject()
- * @method  Style|null  search($objectID)
- * @property    Style[] $objects
+ * @extends DatabaseObjectList<Style>
  */
 class StyleList extends DatabaseObjectList
 {

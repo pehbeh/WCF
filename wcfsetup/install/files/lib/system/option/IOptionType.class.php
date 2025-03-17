@@ -29,6 +29,7 @@ interface IOptionType
      *
      * @param Option $option
      * @param string $newValue
+     * @return void
      */
     public function validate(Option $option, $newValue);
 

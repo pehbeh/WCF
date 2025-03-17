@@ -34,8 +34,10 @@ use wcf\system\WCF;
 class CommentHandler extends SingletonFactory
 {
     /**
-     * cached object types
-     * @var mixed[][]
+     * @var array{
+     *  objectTypes: array<int, ObjectType>,
+     *  objectTypeIDs: array<string, int>,
+     * }
      */
     protected $cache;
 
@@ -61,7 +63,7 @@ class CommentHandler extends SingletonFactory
      * such object type exists.
      *
      * @param string $objectType
-     * @return  int|null
+     * @return ?int
      */
     public function getObjectTypeID($objectType)
     {
@@ -73,7 +75,7 @@ class CommentHandler extends SingletonFactory
      * object type exists.
      *
      * @param int $objectTypeID
-     * @return  ObjectType|null
+     * @return ?ObjectType
      */
     public function getObjectType($objectTypeID)
     {
@@ -84,8 +86,8 @@ class CommentHandler extends SingletonFactory
      * Returns comment manager object for given object type.
      *
      * @param string $objectType
-     * @return  ICommentManager
-     * @throws  SystemException
+     * @return ICommentManager
+     * @throws SystemException
      */
     public function getCommentManager($objectType)
     {
@@ -123,7 +125,7 @@ class CommentHandler extends SingletonFactory
      * @param int $objectTypeID
      * @param int $objectID
      * @param bool $readObjects
-     * @return  StructuredCommentList
+     * @return StructuredCommentList
      */
     public function getCommentList(ICommentManager $commentManager, $objectTypeID, $objectID, $readObjects = true)
     {
@@ -140,6 +142,7 @@ class CommentHandler extends SingletonFactory
      *
      * @param string $objectType
      * @param int[] $objectIDs
+     * @return void
      */
     public function deleteObjects($objectType, array $objectIDs)
     {
@@ -219,7 +222,8 @@ class CommentHandler extends SingletonFactory
     /**
      * Enforces the flood control.
      *
-     * @throws      NamedUserException      if flood control is exceeded
+     * @return void
+     * @throws NamedUserException if flood control is exceeded
      */
     public static function enforceFloodControl()
     {
@@ -244,8 +248,9 @@ class CommentHandler extends SingletonFactory
      * @param string $objectType comment object type name
      * @param int[] $objectIDs ids of the objects whose comment-related notifications will be marked as confirmed
      * @param int $time only notifications older than the given timestamp will be marked as confirmed
-     * @throws  \InvalidArgumentException   if invalid comment object type name is given
-     * @since   5.2
+     * @return void
+     * @throws \InvalidArgumentException if invalid comment object type name is given
+     * @since 5.2
      */
     public function markNotificationsAsConfirmed($objectType, array $objectIDs, $time = TIME_NOW)
     {
@@ -475,8 +480,9 @@ class CommentHandler extends SingletonFactory
      *
      * @param string $objectType comment object type name
      * @param StructuredComment[] $comments comments whose notifications will be marked as read
-     * @throws  \InvalidArgumentException       if invalid comment object type name is given
-     * @since   5.2
+     * @return void
+     * @throws \InvalidArgumentException if invalid comment object type name is given
+     * @since 5.2
      */
     public function markNotificationsAsConfirmedForComments($objectType, array $comments)
     {
@@ -656,9 +662,10 @@ class CommentHandler extends SingletonFactory
      *
      * @param string $objectType comment object type name
      * @param (CommentResponse|StructuredCommentResponse)[] $responses comment responses whose notifications will be marked as read
+     * @return void
      *
-     * @throws  \InvalidArgumentException       if invalid comment object type name is given
-     * @since   5.2
+     * @throws \InvalidArgumentException if invalid comment object type name is given
+     * @since 5.2
      */
     public function markNotificationsAsConfirmedForResponses($objectType, array $responses)
     {
@@ -750,7 +757,8 @@ class CommentHandler extends SingletonFactory
      * Enforces the censorship.
      *
      * @param string $text
-     * @throws  UserInputException
+     * @return void
+     * @throws UserInputException
      */
     public static function enforceCensorship($text)
     {

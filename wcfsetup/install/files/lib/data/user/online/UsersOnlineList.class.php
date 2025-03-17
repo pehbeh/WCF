@@ -20,11 +20,7 @@ use wcf\util\StringUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserOnline      current()
- * @method  UserOnline[]        getObjects()
- * @method  UserOnline|null         getSingleObject()
- * @method  UserOnline|null         search($objectID)
- * @property    UserOnline[] $objects
+ * @extends SessionList<UserOnline>
  */
 class UsersOnlineList extends SessionList
 {
@@ -37,7 +33,7 @@ class UsersOnlineList extends SessionList
 
     /**
      * users online stats
-     * @var array
+     * @var array{total: int, invisible: int, members: int, guests: int}
      */
     public $stats = [
         'total' => 0,
@@ -48,7 +44,7 @@ class UsersOnlineList extends SessionList
 
     /**
      * users online markings
-     * @var array
+     * @var ?string[]
      */
     public $usersOnlineMarkings;
 
@@ -86,6 +82,7 @@ class UsersOnlineList extends SessionList
         $this->indexToObject = $this->objects = [];
 
         foreach ($objects as $object) {
+            // @phpstan-ignore argument.type
             $object = new UserOnline(new User(null, null, $object));
             if (!$object->userID || self::isVisibleUser($object)) {
                 $this->objects[$object->sessionID] = $object;
@@ -100,6 +97,8 @@ class UsersOnlineList extends SessionList
 
     /**
      * Fetches users online stats.
+     *
+     * @return void
      */
     public function readStats()
     {
@@ -138,7 +137,7 @@ class UsersOnlineList extends SessionList
     /**
      * Returns a list of the users online markings.
      *
-     * @return  array
+     * @return string[]
      */
     public function getUsersOnlineMarkings()
     {
@@ -166,6 +165,8 @@ class UsersOnlineList extends SessionList
 
     /**
      * Checks the users online record.
+     *
+     * @return void
      */
     public function checkRecord()
     {

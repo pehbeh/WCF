@@ -192,6 +192,7 @@ class UserNotificationEventPackageInstallationPlugin extends AbstractXMLPackageI
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -233,8 +234,7 @@ class UserNotificationEventPackageInstallationPlugin extends AbstractXMLPackageI
                 })
                 // validate the uniqueness of the `name` field after knowing that the selected object type is valid
                 ->addValidator(new FormFieldValidator('nameUniqueness', function (SingleSelectionFormField $formField) {
-                    /** @var TextFormField $nameField */
-                    $nameField = $formField->getDocument()->getNodeById('eventName');
+                    $nameField = $formField->getDocument()->getFormField('eventName');
 
                     if (
                         $formField->getDocument()->getFormMode() === IFormDocument::FORM_MODE_CREATE
@@ -311,6 +311,8 @@ class UserNotificationEventPackageInstallationPlugin extends AbstractXMLPackageI
 
     /**
      * @inheritDoc
+     * @param bool $saveData
+     * @return array<string, int|string>
      * @since   5.2
      */
     protected function fetchElementData(\DOMElement $element, $saveData)
@@ -362,18 +364,20 @@ class UserNotificationEventPackageInstallationPlugin extends AbstractXMLPackageI
 
     /**
      * @inheritDoc
+     * @return string
      * @since   5.2
      */
     public function getElementIdentifier(\DOMElement $element)
     {
         return \sha1(
             $element->getElementsByTagName('name')->item(0)->nodeValue . '/'
-            . $element->getElementsByTagName('objecttype')->item(0)->nodeValue
+                . $element->getElementsByTagName('objecttype')->item(0)->nodeValue
         );
     }
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function setEntryListKeys(IDevtoolsPipEntryList $entryList)
@@ -386,6 +390,7 @@ class UserNotificationEventPackageInstallationPlugin extends AbstractXMLPackageI
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      * @since   5.2
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)
@@ -411,6 +416,7 @@ class UserNotificationEventPackageInstallationPlugin extends AbstractXMLPackageI
 
     /**
      * @inheritDoc
+     * @return ?\DOMElement
      * @since   5.2
      */
     protected function prepareDeleteXmlElement(\DOMElement $element)
@@ -429,6 +435,7 @@ class UserNotificationEventPackageInstallationPlugin extends AbstractXMLPackageI
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function deleteObject(\DOMElement $element)

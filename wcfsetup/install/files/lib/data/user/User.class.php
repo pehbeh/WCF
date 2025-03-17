@@ -98,7 +98,7 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
 
     /**
      * date time zone object
-     * @var \DateTimeZone
+     * @var ?\DateTimeZone
      */
     protected $timezoneObj;
 
@@ -115,8 +115,6 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
     const REGISTER_ACTIVATION_ADMIN = 2;
 
     const REGISTER_ACTIVATION_USER_AND_ADMIN = self::REGISTER_ACTIVATION_USER | self::REGISTER_ACTIVATION_ADMIN;
-
-    /** @noinspection PhpMissingParentConstructorInspection */
 
     /**
      * @inheritDoc
@@ -148,7 +146,7 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
      * Returns true if the given password is the correct password for this user.
      *
      * @param string $password
-     * @return  bool        password correct
+     * @return bool password correct
      */
     public function checkPassword(
         #[\SensitiveParameter]
@@ -191,6 +189,8 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
     }
 
     /**
+     * @param string $passwordHash
+     * @return false
      * @deprecated 5.4 - This method always returns false, as user sessions are long-lived now.
      */
     public function checkCookiePassword($passwordHash)
@@ -202,7 +202,7 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
      * Returns an array with all the groups in which the actual user is a member.
      *
      * @param bool $skipCache
-     * @return  int[]
+     * @return int[]
      */
     public function getGroupIDs($skipCache = false)
     {
@@ -245,7 +245,7 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
     /**
      * Returns a list of language ids for this user.
      *
-     * @return  int[]
+     * @return int[]
      */
     public function getLanguageIDs()
     {
@@ -287,7 +287,7 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
      *
      * @param string $name user option name
      * @param bool $filterDisabled suppress values for disabled options
-     * @return  mixed               user option value
+     * @return mixed user option value
      */
     public function getUserOption($name, $filterDisabled = false)
     {
@@ -303,6 +303,8 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
 
     /**
      * Fetches all user options from cache.
+     *
+     * @return void
      */
     protected static function getUserOptionCache()
     {
@@ -313,7 +315,7 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
      * Returns the id of a user option.
      *
      * @param string $name
-     * @return  int|null
+     * @return ?int
      */
     public static function getUserOptionID($name)
     {
@@ -341,7 +343,7 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
      * Returns the user with the given username.
      *
      * @param string $username
-     * @return  User
+     * @return User
      */
     public static function getUserByUsername($username)
     {
@@ -364,7 +366,7 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
      * Returns the user with the given email.
      *
      * @param string $email
-     * @return  User
+     * @return User
      */
     public static function getUserByEmail($email)
     {
@@ -387,7 +389,7 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
      * Returns the user with the given authData.
      *
      * @param string $authData
-     * @return  User
+     * @return User
      */
     public static function getUserByAuthData($authData)
     {
@@ -409,8 +411,8 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
     /**
      * Returns 3rd party auth provider name.
      *
-     * @return  string
-     * @since       5.2
+     * @return string
+     * @since 5.2
      */
     public function getAuthProvider()
     {
@@ -441,8 +443,8 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
     /**
      * Returns true if the email is confirmed.
      *
-     * @return  bool
-     * @since       5.3
+     * @return bool
+     * @since 5.3
      */
     public function isEmailConfirmed()
     {
@@ -452,7 +454,7 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
     /**
      * Returns the time zone of this user.
      *
-     * @return  \DateTimeZone
+     * @return \DateTimeZone
      */
     public function getTimeZone()
     {
@@ -481,8 +483,8 @@ final class User extends DatabaseObject implements IPopoverObject, IRouteControl
     /**
      * Returns a list of users.
      *
-     * @param array $userIDs
-     * @return  User[]
+     * @param int[] $userIDs
+     * @return User[]
      */
     public static function getUsers(array $userIDs)
     {

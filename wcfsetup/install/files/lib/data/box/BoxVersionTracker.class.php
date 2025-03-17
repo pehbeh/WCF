@@ -15,8 +15,8 @@ use wcf\system\request\LinkHandler;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method  Box     getDecoratedObject()
  * @mixin   Box
+ * @extends DatabaseObjectDecorator<Box>
  */
 class BoxVersionTracker extends DatabaseObjectDecorator implements IVersionTrackerObject
 {
@@ -43,6 +43,7 @@ class BoxVersionTracker extends DatabaseObjectDecorator implements IVersionTrack
      * Adds an box content object as child.
      *
      * @param BoxContent $content box content object
+     * @return void
      */
     public function addContent(BoxContent $content)
     {
@@ -53,6 +54,7 @@ class BoxVersionTracker extends DatabaseObjectDecorator implements IVersionTrack
      * Sets the list of box content objects.
      *
      * @param BoxContent[] $content box content objects
+     * @return void
      */
     public function setContent(array $content)
     {

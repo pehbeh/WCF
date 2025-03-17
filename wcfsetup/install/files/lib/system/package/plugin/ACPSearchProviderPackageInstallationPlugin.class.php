@@ -130,6 +130,8 @@ class ACPSearchProviderPackageInstallationPlugin extends AbstractXMLPackageInsta
 
     /**
      * @inheritDoc
+     * @param bool $saveData
+     * @return array<string, int|string>
      * @since   5.2
      */
     protected function fetchElementData(\DOMElement $element, $saveData)
@@ -152,6 +154,7 @@ class ACPSearchProviderPackageInstallationPlugin extends AbstractXMLPackageInsta
 
     /**
      * @inheritDoc
+     * @return string
      * @since   5.2
      */
     public function getElementIdentifier(\DOMElement $element)
@@ -161,6 +164,7 @@ class ACPSearchProviderPackageInstallationPlugin extends AbstractXMLPackageInsta
 
     /**
      * @inheritDoc
+     * @return string
      * @since   5.2
      */
     protected function getXsdFilename()
@@ -170,6 +174,7 @@ class ACPSearchProviderPackageInstallationPlugin extends AbstractXMLPackageInsta
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -226,6 +231,7 @@ class ACPSearchProviderPackageInstallationPlugin extends AbstractXMLPackageInsta
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function setEntryListKeys(IDevtoolsPipEntryList $entryList)
@@ -238,6 +244,7 @@ class ACPSearchProviderPackageInstallationPlugin extends AbstractXMLPackageInsta
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      * @since   5.2
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)

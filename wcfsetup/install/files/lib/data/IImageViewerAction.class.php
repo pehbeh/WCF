@@ -15,6 +15,8 @@ interface IImageViewerAction
 {
     /**
      * Validates parameters to load the next images.
+     *
+     * @return void
      */
     public function validateLoadNextImages();
 
@@ -64,7 +66,7 @@ interface IImageViewerAction
      *  [ 'items' => 123 ]
      * )
      *
-     * @return  array
+     * @return mixed[]
      */
     public function loadNextImages();
 }

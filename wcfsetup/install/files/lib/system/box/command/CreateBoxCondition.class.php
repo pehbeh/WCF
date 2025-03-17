@@ -18,6 +18,9 @@ use wcf\system\WCF;
  */
 final class CreateBoxCondition
 {
+    /**
+     * @param mixed[] $conditionData
+     */
     public function __construct(
         private readonly string $boxIdentifier,
         private readonly string $conditionDefinition,
@@ -29,7 +32,7 @@ final class CreateBoxCondition
     /**
      * @throws \InvalidArgumentException
      */
-    public function __invoke()
+    public function __invoke(): void
     {
         $objectTypeID = $this->getObjectTypeID();
         if (!$objectTypeID) {

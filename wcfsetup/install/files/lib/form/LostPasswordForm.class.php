@@ -45,7 +45,7 @@ final class LostPasswordForm extends AbstractFormBuilderForm
         parent::checkPermissions();
 
         if (!UserAuthenticationConfigurationFactory::getInstance()->getConfigration()->canChangePassword) {
-            return new IllegalLinkException();
+            throw new IllegalLinkException();
         }
     }
 

@@ -47,6 +47,7 @@ class SimpleEmail
      * Sets the email's 'Subject'.
      *
      * @param string $subject
+     * @return void
      * @see Email::setSubject()
      */
     public function setSubject($subject)
@@ -60,6 +61,7 @@ class SimpleEmail
      * the email.
      *
      * @param User $user
+     * @return void
      */
     public function setRecipient(User $user)
     {
@@ -80,7 +82,8 @@ class SimpleEmail
      * An empty string clears this version (not recommended!).
      *
      * @param string $message
-     * @see     PlainTextMimePart
+     * @return void
+     * @see PlainTextMimePart
      */
     public function setMessage($message)
     {
@@ -94,7 +97,8 @@ class SimpleEmail
      * An empty string clears this version.
      *
      * @param string $message
-     * @see     HtmlTextMimePart
+     * @return void
+     * @see HtmlTextMimePart
      */
     public function setHtmlMessage($message)
     {
@@ -106,7 +110,7 @@ class SimpleEmail
     /**
      * Sets the proper email body based on $textHtml and $textPlain.
      */
-    private function fixBody()
+    private function fixBody(): void
     {
         $parts = [];
         if ($this->textHtml) {
@@ -132,6 +136,7 @@ class SimpleEmail
     /**
      * Queues this email for delivery.
      *
+     * @return void
      * @see Email::send()
      */
     public function send()

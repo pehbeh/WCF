@@ -20,20 +20,17 @@ use Psr\Http\Message\UriInterface;
  */
 final class RedirectGuard
 {
-    /**
-     * @var null|callable
-     */
-    private $next;
+    private readonly ?\Closure $next;
 
     /**
      * @param ?callable $next The next callback to call after validation succeeds.
      */
     public function __construct(?callable $next = null)
     {
-        $this->next = $next;
+        $this->next = $next ? \Closure::fromCallable($next) : null;
     }
 
-    public function __invoke(RequestInterface $request, ResponseInterface $response, UriInterface $uri)
+    public function __invoke(RequestInterface $request, ResponseInterface $response, UriInterface $uri): ?callable
     {
         if ($uri->getPort() !== null) {
             throw new BadResponseException(
@@ -46,5 +43,7 @@ final class RedirectGuard
         if (($next = $this->next)) {
             return $next($request, $response, $uri);
         }
+
+        return null;
     }
 }

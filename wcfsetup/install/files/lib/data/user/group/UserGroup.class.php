@@ -86,7 +86,7 @@ class UserGroup extends DatabaseObject implements ITitledObject
 
     /**
      * group options of this group
-     * @var mixed[][]
+     * @var array<string, mixed>
      */
     protected $groupOptions;
 
@@ -271,8 +271,8 @@ class UserGroup extends DatabaseObject implements ITitledObject
     /**
      * Returns true if the given groups are accessible for the active user.
      *
-     * @param array $groupIDs
-     * @return  bool
+     * @param int[] $groupIDs
+     * @return bool
      */
     public static function isAccessibleGroup(array $groupIDs = [])
     {
@@ -283,7 +283,7 @@ class UserGroup extends DatabaseObject implements ITitledObject
             ));
         }
 
-        if (empty($groupIDs)) {
+        if ($groupIDs === []) {
             return false;
         }
 
@@ -301,7 +301,7 @@ class UserGroup extends DatabaseObject implements ITitledObject
      *
      * @param int[] $groupTypes
      * @param int[] $invalidGroupTypes
-     * @return  UserGroup[]
+     * @return UserGroup[]
      */
     public static function getAccessibleGroups(array $groupTypes = [], array $invalidGroupTypes = [])
     {
@@ -321,8 +321,8 @@ class UserGroup extends DatabaseObject implements ITitledObject
      *
      * @param int[] $groupTypes
      * @param int[] $invalidGroupTypes
-     * @return  UserGroup[]
-     * @since       5.2
+     * @return UserGroup[]
+     * @since 5.2
      */
     public static function getSortedAccessibleGroups(array $groupTypes = [], array $invalidGroupTypes = [])
     {
@@ -340,7 +340,7 @@ class UserGroup extends DatabaseObject implements ITitledObject
      *  b) This is the 'Owner' group.
      *  c) The group can access all groups (the 'Owner' group does not count).
      *
-     * @return  bool
+     * @return bool
      */
     public function isAdminGroup()
     {
@@ -363,7 +363,7 @@ class UserGroup extends DatabaseObject implements ITitledObject
     /**
      * Returns true if the current group is a moderator-group.
      *
-     * @return  bool
+     * @return bool
      */
     public function isModGroup()
     {
@@ -377,6 +377,8 @@ class UserGroup extends DatabaseObject implements ITitledObject
 
     /**
      * Loads the group cache.
+     *
+     * @return void
      */
     protected static function getCache()
     {
@@ -388,7 +390,7 @@ class UserGroup extends DatabaseObject implements ITitledObject
     /**
      * Returns true if this group is accessible for the active user.
      *
-     * @return  bool
+     * @return bool
      */
     public function isAccessible()
     {
@@ -406,7 +408,7 @@ class UserGroup extends DatabaseObject implements ITitledObject
     /**
      * Returns the name of this user group.
      *
-     * @return  string
+     * @return string
      */
     public function getName()
     {
@@ -420,6 +422,7 @@ class UserGroup extends DatabaseObject implements ITitledObject
      * in the same request.
      *
      * @param string $name
+     * @return void
      */
     public function setName($name)
     {
@@ -429,7 +432,7 @@ class UserGroup extends DatabaseObject implements ITitledObject
     /**
      * Returns true if current user may delete this group.
      *
-     * @return  bool
+     * @return bool
      */
     public function isDeletable()
     {
@@ -459,7 +462,7 @@ class UserGroup extends DatabaseObject implements ITitledObject
     /**
      * Returns true if current user may edit this group.
      *
-     * @return  bool
+     * @return bool
      */
     public function isEditable()
     {
@@ -480,7 +483,7 @@ class UserGroup extends DatabaseObject implements ITitledObject
      * Returns the value of the group option with the given name.
      *
      * @param string $name
-     * @return  mixed
+     * @return mixed|null
      */
     public function getGroupOption($name)
     {
@@ -510,9 +513,7 @@ class UserGroup extends DatabaseObject implements ITitledObject
             }
         }
 
-        if (isset($this->groupOptions[$name])) {
-            return $this->groupOptions[$name];
-        }
+        return $this->groupOptions[$name] ?? null;
     }
 
     /**
@@ -526,8 +527,8 @@ class UserGroup extends DatabaseObject implements ITitledObject
     /**
      * Returns the user group description in the active user's language.
      *
-     * @return  string
-     * @since   5.2
+     * @return string
+     * @since 5.2
      */
     public function getDescription()
     {
@@ -620,7 +621,7 @@ class UserGroup extends DatabaseObject implements ITitledObject
     /**
      * Returns the owner group's id unless no group was promoted yet due to backwards compatibility.
      *
-     * @return int|null
+     * @return ?int
      * @since 5.2
      */
     public static function getOwnerGroupID()
@@ -636,7 +637,8 @@ class UserGroup extends DatabaseObject implements ITitledObject
      * Sorts the given user groups alphabetically.
      *
      * @param UserGroup[] $userGroups
-     * @since       5.3
+     * @return void
+     * @since 5.3
      */
     public static function sortGroups(array &$userGroups)
     {

@@ -21,8 +21,8 @@ use function wcf\functions\exception\logThrowable;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       5.4
  *
- * @method  UnfurlUrl   getDecoratedObject()
  * @mixin   UnfurlUrl
+ * @extends DatabaseObjectEditor<UnfurlUrl>
  */
 class UnfurlUrlEditor extends DatabaseObjectEditor
 {

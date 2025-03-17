@@ -11,9 +11,7 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  ObjectType      create()
- * @method  ObjectTypeEditor[]  getObjects()
- * @method  ObjectTypeEditor    getSingleObject()
+ * @extends AbstractDatabaseObjectAction<ObjectType, ObjectTypeEditor>
  */
 class ObjectTypeAction extends AbstractDatabaseObjectAction
 {

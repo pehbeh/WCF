@@ -12,9 +12,7 @@ use wcf\system\WCF;
  * @copyright   2001-2021 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  EmailLogEntry        create()
- * @method  EmailLogEntryEditor[]    getObjects()
- * @method  EmailLogEntryEditor      getSingleObject()
+ * @extends AbstractDatabaseObjectAction<EmailLogEntry, EmailLogEntryEditor>
  */
 class EmailLogEntryAction extends AbstractDatabaseObjectAction
 {
@@ -25,6 +23,8 @@ class EmailLogEntryAction extends AbstractDatabaseObjectAction
 
     /**
      * Deletes old log entries.
+     *
+     * @return void
      */
     public function prune()
     {

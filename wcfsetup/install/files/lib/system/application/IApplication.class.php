@@ -15,13 +15,15 @@ interface IApplication
 {
     /**
      * Initializes this application, called after all applications have been loaded.
+     *
+     * @return void
      */
     public function __run();
 
     /**
      * Returns true if current application is treated as active and was invoked directly.
      *
-     * @return  bool
+     * @return bool
      */
     public function isActiveApplication();
 
@@ -29,7 +31,7 @@ interface IApplication
      * Returns the timestamp at which the evaluation period ends for this application. The
      * special value `0` indicates that there is no active evaluation period at this time.
      *
-     * @return      int
+     * @return int
      */
     public function getEvaluationEndDate();
 
@@ -37,18 +39,19 @@ interface IApplication
      * Returns the id of the WoltLab Plugin-Store file where this app is for purchase. The
      * special value `0` indicates that there is no such file or it is a WoltLab app.
      *
-     * @return      int
+     * @return int
      */
     public function getEvaluationPluginStoreID();
 
     /**
      * Returns the qualified name of this application's primary controller.
      *
-     * @return  string
+     * @return string
      */
     public function getPrimaryController();
 
     /**
+     * @return SingletonFactory
      * @see SingletonFactory::getInstance()
      */
     public static function getInstance();
@@ -57,8 +60,8 @@ interface IApplication
      * Forwards unknown method calls to WCF.
      *
      * @param string $method
-     * @param array $arguments
-     * @return  mixed
+     * @param mixed[] $arguments
+     * @return mixed
      */
     public static function __callStatic($method, array $arguments);
 }

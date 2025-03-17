@@ -24,33 +24,28 @@ final class RouteHandler extends SingletonFactory
 {
     /**
      * current host and protocol
-     * @var string
      */
-    private static $host = '';
+    private static string $host = '';
 
     /**
      * current absolute path
-     * @var string
      */
-    private static $path = '';
+    private static string $path = '';
 
     /**
      * current path info component
-     * @var string
      */
-    private static $pathInfo;
+    private static string $pathInfo;
 
     /**
      * HTTP protocol, either 'http://' or 'https://'
-     * @var string
      */
-    private static $protocol = '';
+    private static string $protocol = '';
 
     /**
      * HTTP encryption
-     * @var bool
      */
-    private static $secure;
+    private static bool $secure;
 
     /**
      * true if the default controller is used (support for custom landing page)
@@ -70,9 +65,9 @@ final class RouteHandler extends SingletonFactory
 
     /**
      * parsed route data
-     * @var array
+     * @var array<string, mixed>
      */
-    private $routeData;
+    private array $routeData;
 
     /**
      * Sets default routes.
@@ -98,7 +93,7 @@ final class RouteHandler extends SingletonFactory
      *
      * @param IRequestRoute $route
      */
-    public function addRoute(IRequestRoute $route)
+    public function addRoute(IRequestRoute $route): void
     {
         \array_unshift($this->routes, $route);
     }
@@ -106,9 +101,9 @@ final class RouteHandler extends SingletonFactory
     /**
      * Returns all registered routes.
      *
-     * @return  IRequestRoute[]
+     * @return IRequestRoute[]
      **/
-    public function getRoutes()
+    public function getRoutes(): array
     {
         return $this->routes;
     }
@@ -175,9 +170,9 @@ final class RouteHandler extends SingletonFactory
     /**
      * Returns parsed route data
      *
-     * @return  array
+     * @return array<string, mixed>
      */
-    public function getRouteData()
+    public function getRouteData(): array
     {
         return $this->routeData;
     }
@@ -197,13 +192,10 @@ final class RouteHandler extends SingletonFactory
      * Builds a route based upon route components, this is nothing
      * but a reverse lookup.
      *
-     * @param string $application application identifier
-     * @param array $components
-     * @param bool $isACP
-     * @return  string
+     * @param array<string, mixed> $components
      * @throws  SystemException
      */
-    public function buildRoute($application, array $components, $isACP = null)
+    public function buildRoute(string $application, array $components, ?bool $isACP = null): string
     {
         if ($isACP === null) {
             $isACP = RequestHandler::getInstance()->isACPRequest();
@@ -248,7 +240,7 @@ final class RouteHandler extends SingletonFactory
      */
     public static function secureConnection(): bool
     {
-        if (self::$secure === null) {
+        if (!isset(self::$secure)) {
             self::$secure = false;
 
             if (
@@ -317,6 +309,8 @@ final class RouteHandler extends SingletonFactory
 
     /**
      * Returns absolute domain path.
+     *
+     * @param string[] $removeComponents
      */
     public static function getPath(array $removeComponents = []): string
     {
@@ -349,7 +343,7 @@ final class RouteHandler extends SingletonFactory
      */
     public static function getPathInfo(): string
     {
-        if (self::$pathInfo === null) {
+        if (!isset(self::$pathInfo)) {
             self::$pathInfo = '';
 
             if (!empty($_SERVER['QUERY_STRING'])) {

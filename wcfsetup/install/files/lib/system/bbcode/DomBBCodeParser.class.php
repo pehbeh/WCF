@@ -235,6 +235,7 @@ final class DomBBCodeParser extends SingletonFactory
         if ($isClosingTag) {
             $this->closingTags[] = $metacodeMarker;
         } else {
+            // @phpstan-ignore argument.type
             if (!HtmlBBCodeParser::getInstance()->isValidTag(['name' => $name, 'attributes' => $attributes])) {
                 return null;
             }

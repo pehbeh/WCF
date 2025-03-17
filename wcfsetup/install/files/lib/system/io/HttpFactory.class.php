@@ -80,6 +80,7 @@ final class HttpFactory
      * specifically removed by passing appropriate options.
      *
      * @see Client
+     * @param array<string, mixed> $options
      * @return PsrClientInterface&ClientInterface
      */
     public static function makeClient(array $options = []): ClientInterface

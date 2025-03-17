@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\BBCodeMediaProviderGridView;
 
 /**
@@ -13,9 +12,9 @@ use wcf\system\gridView\admin\BBCodeMediaProviderGridView;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    BBCodeMediaProviderGridView $gridView
+ * @extends AbstractGridViewPage<BBCodeMediaProviderGridView>
  */
-class BBCodeMediaProviderListPage extends AbstractGridViewPage
+final class BBCodeMediaProviderListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -33,7 +32,7 @@ class BBCodeMediaProviderListPage extends AbstractGridViewPage
     public $templateName = 'bbcodeMediaProviderList';
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): BBCodeMediaProviderGridView
     {
         return new BBCodeMediaProviderGridView();
     }

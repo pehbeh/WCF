@@ -26,12 +26,13 @@ class DeviceNode implements IFormChildNode, IFormParentNode
     }
 
     /**
-     * @var ?array
+     * @var (string|int)[]|null
      */
     protected $data;
 
     /**
      * @inheritDoc
+     * @var string
      */
     protected $templateName = '__multifactorTotpDeviceNode';
 
@@ -53,6 +54,7 @@ class DeviceNode implements IFormChildNode, IFormParentNode
     /**
      * Sets the device data.
      *
+     * @param (string|int)[] $device
      * @return $this
      */
     public function setData(array $device): static

@@ -3,7 +3,6 @@
 namespace wcf\data\trophy;
 
 use wcf\data\AbstractDatabaseObjectAction;
-use wcf\data\ISortableAction;
 use wcf\data\IToggleAction;
 use wcf\data\IUploadAction;
 use wcf\data\TDatabaseObjectToggle;
@@ -27,11 +26,9 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method  TrophyEditor[]      getObjects()
- * @method  TrophyEditor        getSingleObject()
- * @property-read TrophyEditor[] $objects
+ * @extends AbstractDatabaseObjectAction<Trophy, TrophyEditor>
  */
-class TrophyAction extends AbstractDatabaseObjectAction implements IToggleAction, IUploadAction, ISortableAction
+class TrophyAction extends AbstractDatabaseObjectAction implements IToggleAction, IUploadAction
 {
     use TDatabaseObjectToggle;
 
@@ -52,7 +49,6 @@ class TrophyAction extends AbstractDatabaseObjectAction implements IToggleAction
 
     /**
      * @inheritDoc
-     * @return  Trophy
      */
     public function create()
     {
@@ -62,7 +58,6 @@ class TrophyAction extends AbstractDatabaseObjectAction implements IToggleAction
             unset($this->parameters['data']['showOrder']);
         }
 
-        /** @var Trophy $trophy */
         $trophy = parent::create();
 
         if (isset($this->parameters['tmpHash']) && $this->parameters['data']['type'] === Trophy::TYPE_IMAGE) {
@@ -284,7 +279,7 @@ class TrophyAction extends AbstractDatabaseObjectAction implements IToggleAction
     /**
      * Updates style preview image.
      *
-     * @param Trophy $trophy
+     * @return void
      */
     protected function updateTrophyImage(Trophy $trophy)
     {
@@ -313,47 +308,5 @@ class TrophyAction extends AbstractDatabaseObjectAction implements IToggleAction
                 }
             }
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function validateUpdatePosition()
-    {
-        WCF::getSession()->checkPermissions($this->permissionsUpdate);
-
-        if (!isset($this->parameters['data']['structure']) || !\is_array($this->parameters['data']['structure'])) {
-            throw new UserInputException('structure');
-        }
-
-        $trophyList = new TrophyList();
-        $trophyList->setObjectIDs($this->parameters['data']['structure'][0]);
-        $trophyList->readObjects();
-        if (\count($trophyList) !== \count($this->parameters['data']['structure'][0])) {
-            throw new UserInputException('structure');
-        }
-
-        $this->readInteger('offset', true, 'data');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function updatePosition()
-    {
-        $sql = "UPDATE  wcf1_trophy
-                SET     showOrder = ?
-                WHERE   trophyID = ?";
-        $statement = WCF::getDB()->prepare($sql);
-
-        $showOrder = $this->parameters['data']['offset'];
-        WCF::getDB()->beginTransaction();
-        foreach ($this->parameters['data']['structure'][0] as $trophyID) {
-            $statement->execute([
-                $showOrder++,
-                $trophyID,
-            ]);
-        }
-        WCF::getDB()->commitTransaction();
     }
 }

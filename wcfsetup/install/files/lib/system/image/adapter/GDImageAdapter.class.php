@@ -11,6 +11,8 @@ use wcf\util\StringUtil;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @implements IImageAdapter<\GdImage>
+ * @implements IWebpImageAdapter<\GdImage>
  */
 class GDImageAdapter implements IImageAdapter, IWebpImageAdapter
 {
@@ -22,7 +24,7 @@ class GDImageAdapter implements IImageAdapter, IWebpImageAdapter
 
     /**
      * red, green, blue data of the active color
-     * @var array
+     * @var array{red: int, green: int, blue: int}|array{}
      */
     protected $colorData = [];
 
@@ -62,6 +64,7 @@ class GDImageAdapter implements IImageAdapter, IWebpImageAdapter
     /**
      * Returns whether the given image is a valid GD resource / GD object
      *
+     * @param mixed $image
      * @return  bool
      */
     public function isImage($image)

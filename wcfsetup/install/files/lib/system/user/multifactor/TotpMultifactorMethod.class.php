@@ -8,7 +8,6 @@ use wcf\system\form\builder\button\FormButton;
 use wcf\system\form\builder\field\ButtonFormField;
 use wcf\system\form\builder\field\dependency\IsNotClickedFormFieldDependency;
 use wcf\system\form\builder\field\HiddenFormField;
-use wcf\system\form\builder\field\IFormField;
 use wcf\system\form\builder\field\RadioButtonFormField;
 use wcf\system\form\builder\field\TextFormField;
 use wcf\system\form\builder\field\validation\FormFieldValidationError;
@@ -79,8 +78,8 @@ final class TotpMultifactorMethod implements IMultifactorMethod
                     ->description('wcf.user.security.multifactor.totp.code.description')
                     ->required()
                     ->addValidator(new FormFieldValidator('totpSecretValid', static function (CodeFormField $field) {
-                        /** @var SecretFormField $secret */
                         $secret = $field->getDocument()->getNodeById('secret');
+                        \assert($secret instanceof SecretFormField);
                         $totp = $secret->getTotp();
 
                         $minCounter = 0;
@@ -141,6 +140,7 @@ final class TotpMultifactorMethod implements IMultifactorMethod
                 } else {
                     $button = new class extends FormButton
                     {
+                        /** @var string */
                         protected $templateName = '__multifactorTotpDeviceNoDeleteButton';
                     };
                     $button->id('no-delete-' . $row['deviceID'])
@@ -156,6 +156,7 @@ final class TotpMultifactorMethod implements IMultifactorMethod
 
     /**
      * @inheritDoc
+     * @return array{action: string, deviceName: string}
      */
     public function processManagementForm(IFormDocument $form, Setup $setup): array
     {
@@ -312,9 +313,7 @@ final class TotpMultifactorMethod implements IMultifactorMethod
                             return;
                         }
 
-                        /** @var IFormField $deviceField */
-                        $deviceField = $field->getDocument()->getNodeById('device');
-
+                        $deviceField = $field->getDocument()->getFormField('device');
                         $selectedDevice = null;
                         foreach ($devices as $device) {
                             if ($device['deviceID'] === $deviceField->getValue()) {

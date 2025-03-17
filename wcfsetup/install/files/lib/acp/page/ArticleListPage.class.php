@@ -15,9 +15,9 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @property    ArticleGridView $gridView
+ * @extends AbstractGridViewPage<ArticleGridView>
  */
-class ArticleListPage extends AbstractGridViewPage
+final class ArticleListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -70,7 +70,7 @@ class ArticleListPage extends AbstractGridViewPage
     }
 
     #[\Override]
-    protected function createGridViewController(): ArticleGridView
+    protected function createGridView(): ArticleGridView
     {
         return new ArticleGridView();
     }

@@ -44,7 +44,7 @@ trait TI18nFormField
 
     /**
      * pattern for the language item used to save the i18n values
-     * @var null|string
+     * @var ?string
      */
     protected $languageItemPattern;
 
@@ -52,7 +52,7 @@ trait TI18nFormField
      * Returns additional template variables used to generate the html representation
      * of this node.
      *
-     * @return  array       additional template variables
+     * @return array{}|array{elementIdentifier: string, forceSelection: bool}
      */
     public function getHtmlVariables()
     {
@@ -71,9 +71,9 @@ trait TI18nFormField
     /**
      * Returns the pattern for the language item used to save the i18n values.
      *
-     * @return  string              language item pattern
+     * @return string language item pattern
      *
-     * @throws  \BadMethodCallException     if i18n is disabled for this field or no language item has been set
+     * @throws \BadMethodCallException if i18n is disabled for this field or no language item has been set
      */
     public function getLanguageItemPattern()
     {
@@ -99,7 +99,7 @@ trait TI18nFormField
      * in the database, this method is expected to call `getValue()`
      * internally.
      *
-     * @return  mixed
+     * @return mixed
      */
     public function getSaveValue()
     {
@@ -115,7 +115,7 @@ trait TI18nFormField
     /**
      * Returns the value of this field or `null` if no value has been set.
      *
-     * @return  mixed
+     * @return mixed
      */
     public function getValue()
     {
@@ -148,7 +148,7 @@ trait TI18nFormField
      * Returns `true` if the current field value is a i18n value and returns `false`
      * otherwise or if no value has been set.
      *
-     * @return  bool
+     * @return bool
      */
     public function hasI18nValues()
     {
@@ -159,7 +159,7 @@ trait TI18nFormField
      * Returns `true` if the current field value is a plain value and returns `false`
      * otherwise or if no value has been set.
      *
-     * @return  bool
+     * @return bool
      */
     public function hasPlainValue()
     {
@@ -175,7 +175,7 @@ trait TI18nFormField
      * `IFormFieldDataProcessor` object to the form document's data processor.
      * A suitable place to add the processor is the `parent()`
      *
-     * @return  bool
+     * @return bool
      */
     public function hasSaveValue()
     {
@@ -186,7 +186,7 @@ trait TI18nFormField
      * Sets whether this field is supports i18n input and returns this field.
      *
      * @param bool $i18n determines if field supports i18n input
-     * @return  II18nFormField          this field
+     * @return II18nFormField this field
      */
     public function i18n($i18n = true)
     {
@@ -214,7 +214,7 @@ trait TI18nFormField
      * ensure that i18n support is enabled.
      *
      * @param bool $i18nRequired determines if field value must be i18n input
-     * @return  static                  this field
+     * @return static this field
      */
     public function i18nRequired($i18nRequired = true)
     {
@@ -228,7 +228,7 @@ trait TI18nFormField
      * Returns `true` if this field supports i18n input and returns `false` otherwise.
      * By default, fields do not support i18n input.
      *
-     * @return  bool
+     * @return bool
      */
     public function isI18n()
     {
@@ -239,7 +239,7 @@ trait TI18nFormField
      * Returns `true` if this field's value must be i18n input and returns `false` otherwise.
      * By default, fields do not support i18n input.
      *
-     * @return  bool
+     * @return bool
      */
     public function isI18nRequired()
     {
@@ -251,10 +251,10 @@ trait TI18nFormField
      * and returns this field.
      *
      * @param string $pattern language item pattern
-     * @return  II18nFormField          this field
+     * @return II18nFormField this field
      *
-     * @throws  \BadMethodCallException     if i18n is disabled for this field
-     * @throws  \InvalidArgumentException   if the given pattern is invalid
+     * @throws \BadMethodCallException if i18n is disabled for this field
+     * @throws \InvalidArgumentException if the given pattern is invalid
      */
     public function languageItemPattern($pattern)
     {
@@ -304,9 +304,9 @@ trait TI18nFormField
      * This method enables this node to perform actions that require the whole document having
      * finished constructing itself and every parent-child relationship being established.
      *
-     * @return  IFormNode           this node
+     * @return IFormNode this node
      *
-     * @throws  \BadMethodCallException     if this node has already been populated
+     * @throws \BadMethodCallException if this node has already been populated
      */
     public function populate()
     {
@@ -336,7 +336,7 @@ trait TI18nFormField
     /**
      * Reads the value of this field from request data and return this field.
      *
-     * @return  IFormField  this field
+     * @return IFormField this field
      */
     public function readValue()
     {
@@ -360,6 +360,7 @@ trait TI18nFormField
      * field values.
      *
      * @param string $value set value
+     * @return void
      */
     protected function setStringValue($value)
     {
@@ -390,7 +391,7 @@ trait TI18nFormField
      * Sets the value of this field and returns this field.
      *
      * @param string|string[] $value new field value
-     * @return  static                  this field
+     * @return static this field
      *
      * @throws  \InvalidArgumentException       if the given value is of an invalid type or otherwise is invalid
      */
@@ -422,6 +423,8 @@ trait TI18nFormField
      *
      * Note: A `IFormParentNode` object may only return `true` if all of its child
      * nodes are valid. A `IFormField` object is valid if its value is valid.
+     *
+     * @return void
      */
     public function validate()
     {

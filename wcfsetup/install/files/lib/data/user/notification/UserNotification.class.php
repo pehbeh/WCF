@@ -25,7 +25,7 @@ use wcf\system\WCF;
  * @property-read   int $time           timestamp at which the user notification has been created
  * @property-read   int $mailNotified       is 0 has not be notified by mail about the user notification, otherwise 1
  * @property-read   int $confirmTime        timestamp at which the user notification has been marked as confirmed/read
- * @property-read   array $additionalData     array with additional data of the user notification event
+ * @property-read   mixed[] $additionalData     array with additional data of the user notification event
  */
 class UserNotification extends DatabaseObject
 {

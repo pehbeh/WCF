@@ -15,7 +15,7 @@ use wcf\system\form\builder\IFormNode;
 trait TAttributeFormField
 {
     /**
-     * @var string[]
+     * @var array<string, mixed>
      */
     protected $fieldAttributes = [];
 
@@ -38,8 +38,8 @@ trait TAttributeFormField
     /**
      * Returns the value of the additional attribute of the actual field element with the given name.
      *
-     * @throws      \InvalidArgumentException       if the given attribute is invalid or no such attribute exists
-     * @return      mixed
+     * @throws \InvalidArgumentException if the given attribute is invalid or no such attribute exists
+     * @return mixed
      */
     public function getFieldAttribute(string $name)
     {
@@ -52,6 +52,8 @@ trait TAttributeFormField
 
     /**
      * Returns all additional attributes of the actual field element.
+     *
+     * @return array<string, mixed>
      */
     public function getFieldAttributes(): array
     {
@@ -61,8 +63,8 @@ trait TAttributeFormField
     /**
      * Adds the given additional attribute to the actual field element and returns this field.
      *
-     * @throws      \InvalidArgumentException       if the given attribute is invalid
-     * @return      static                          this form field
+     * @throws \InvalidArgumentException if the given attribute is invalid
+     * @return static this form field
      */
     public function fieldAttribute(string $name, ?string $value = null)
     {
@@ -77,7 +79,7 @@ trait TAttributeFormField
      * Returns `true` if an additional attribute of the actual field element with the given name exists and returns
      * false` otherwise.
      *
-     * @throws      \InvalidArgumentException       if the given attribute is invalid
+     * @throws \InvalidArgumentException if the given attribute is invalid
      */
     public function hasFieldAttribute(string $name): bool
     {
@@ -91,8 +93,8 @@ trait TAttributeFormField
      *
      * If the actual field element does not have the given attribute, this method silently ignores that fact.
      *
-     * @throws      \InvalidArgumentException       if the given attribute is invalid
-     * @return      static                          this form field
+     * @throws \InvalidArgumentException if the given attribute is invalid
+     * @return static this form field
      */
     public function removeFieldAttribute(string $name)
     {
@@ -106,7 +108,7 @@ trait TAttributeFormField
     /**
      * Returns a list of attributes that are not accessible via the field attribute methods.
      *
-     * @return      string[]
+     * @return string[]
      */
     protected static function getReservedFieldAttributes(): array
     {
@@ -129,16 +131,18 @@ trait TAttributeFormField
      * Checks if the given name is valid attribute name.
      *
      * @param string $name checked argument name
+     * @return void
      *
-     * @throws      \InvalidArgumentException       if the given attribute name is invalid
-     * @see         IFormNode::validateAttribute()
+     * @throws \InvalidArgumentException if the given attribute name is invalid
+     * @see IFormNode::validateAttribute()
      */
     abstract public static function validateAttribute($name);
 
     /**
      * Checks if the given name is a valid additional attribute name.
      *
-     * @throws      \InvalidArgumentException       if the given additional attribute name is invalid
+     * @return void
+     * @throws \InvalidArgumentException if the given additional attribute name is invalid
      */
     public static function validateFieldAttribute(string $name)
     {

@@ -46,6 +46,8 @@ abstract class AbstractAuthedPage extends AbstractPage
 
     /**
      * Validates the access-token and performs the login.
+     *
+     * @return void
      */
     protected function checkAccessToken()
     {

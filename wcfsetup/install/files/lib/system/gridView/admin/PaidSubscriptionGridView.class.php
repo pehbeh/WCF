@@ -31,6 +31,8 @@ use wcf\system\WCF;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @extends AbstractGridView<PaidSubscription, I18nPaidSubscriptionList>
  */
 final class PaidSubscriptionGridView extends AbstractGridView
 {
@@ -122,6 +124,9 @@ final class PaidSubscriptionGridView extends AbstractGridView
         $this->addRowLink(new GridViewRowLink(PaidSubscriptionEditForm::class));
     }
 
+    /**
+     * @return string[]
+     */
     private function getAvailableCurrencies(): array
     {
         $availableCurrencies = [];

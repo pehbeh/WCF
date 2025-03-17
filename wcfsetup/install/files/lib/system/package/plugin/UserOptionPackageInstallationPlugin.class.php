@@ -80,8 +80,9 @@ class UserOptionPackageInstallationPlugin extends AbstractOptionPackageInstallat
 
     /**
      * @inheritDoc
+     * @param array<string, string|int|null> $category
      */
-    protected function saveCategory($category, $categoryXML = null)
+    protected function saveCategory($category)
     {
         // use for create and update
         $data = [
@@ -253,6 +254,7 @@ class UserOptionPackageInstallationPlugin extends AbstractOptionPackageInstallat
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -261,8 +263,8 @@ class UserOptionPackageInstallationPlugin extends AbstractOptionPackageInstallat
 
         if ($this->entryType === 'options') {
             // add `hidden` pseudo-category
-            /** @var SingleSelectionFormField $categoryName */
             $categoryName = $form->getNodeById('categoryName');
+            \assert($categoryName instanceof SingleSelectionFormField);
             $options = $categoryName->getNestedOptions();
             $options[] = [
                 'depth' => 0,
@@ -274,9 +276,7 @@ class UserOptionPackageInstallationPlugin extends AbstractOptionPackageInstallat
             /** @var IFormContainer $dataContainer */
             $dataContainer = $form->getNodeById('data');
 
-            /** @var SingleSelectionFormField $optionType */
-            $optionType = $form->getNodeById('optionType');
-
+            $optionType = $form->getFormField('optionType');
             $selectOptions = MultilineTextFormField::create('selectOptions')
                 ->objectProperty('selectoptions')
                 ->label('wcf.acp.pip.abstractOption.options.selectOptions')
@@ -399,6 +399,8 @@ class UserOptionPackageInstallationPlugin extends AbstractOptionPackageInstallat
 
     /**
      * @inheritDoc
+     * @param bool $saveData
+     * @return array<string, int|string>
      * @since   5.2
      */
     protected function fetchElementData(\DOMElement $element, $saveData)
@@ -447,6 +449,7 @@ class UserOptionPackageInstallationPlugin extends AbstractOptionPackageInstallat
 
     /**
      * @inheritDoc
+     * @return UserOptionHandler
      * @since   5.2
      */
     protected function getSortOptionHandler()
@@ -484,6 +487,7 @@ class UserOptionPackageInstallationPlugin extends AbstractOptionPackageInstallat
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      * @since   5.2
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)

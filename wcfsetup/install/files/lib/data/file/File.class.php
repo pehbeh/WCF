@@ -189,6 +189,9 @@ class File extends DatabaseObject implements ILinkableObject, IImageDataProvider
         return $this->thumbnails;
     }
 
+    /**
+     * @param ?mixed[] $metaData
+     */
     public function toHtmlElement(?array $metaData = null): string
     {
         $thumbnails = [];

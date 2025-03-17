@@ -28,18 +28,13 @@ final class HeaderUtil
 
     /**
      * output HTML
-     * @var string
      */
-    public static $output = '';
+    public static string $output = '';
 
     /**
      * Alias to php setcookie() function.
-     *
-     * @param string $name
-     * @param string $value
-     * @param int $expire
      */
-    public static function setCookie($name, $value = '', $expire = 0)
+    public static function setCookie(string $name, string $value = '', int $expire = 0): void
     {
         $cookieDomain = self::getCookieDomain();
 
@@ -81,7 +76,7 @@ final class HeaderUtil
     /**
      * Sends the headers of a page.
      */
-    public static function sendHeaders()
+    public static function sendHeaders(): void
     {
         // send content type
         @\header('Content-Type: text/html; charset=UTF-8');
@@ -97,7 +92,7 @@ final class HeaderUtil
     /**
      * Sends no cache headers.
      */
-    public static function sendNoCacheHeaders()
+    public static function sendNoCacheHeaders(): void
     {
         @\header('Last-Modified: ' . \gmdate('D, d M Y H:i:s') . ' GMT');
         @\header('Cache-Control: max-age=0, no-cache, no-store, must-revalidate');
@@ -130,17 +125,12 @@ final class HeaderUtil
     /**
      * @deprecated 5.4 - This method is a no-op, as gzip support was removed.
      */
-    public static function exceptionDisableGzip()
-    {
-    }
+    public static function exceptionDisableGzip(): void {}
 
     /**
      * Parses the rendered output.
-     *
-     * @param string $output
-     * @return  string
      */
-    public static function parseOutput($output)
+    public static function parseOutput(string $output): string
     {
         self::$output = $output;
 
@@ -235,12 +225,8 @@ final class HeaderUtil
 
     /**
      * Redirects the user agent to given location.
-     *
-     * @param string $location
-     * @param bool $sendStatusCode
-     * @param bool $temporaryRedirect
      */
-    public static function redirect($location, $sendStatusCode = false, $temporaryRedirect = true)
+    public static function redirect(string $location, bool $sendStatusCode = false, bool $temporaryRedirect = true): void
     {
         // https://github.com/WoltLab/WCF/issues/2568
         if (SessionHandler::getInstance()->isFirstVisit()) {

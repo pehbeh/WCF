@@ -10,12 +10,14 @@ namespace wcf\data;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.2
  *
- * @mixin   AbstractDatabaseObjectAction
+ * @mixin AbstractDatabaseObjectAction<DatabaseObject, DatabaseObjectEditor<DatabaseObject>>
  */
 trait TDatabaseObjectToggle
 {
     /**
      * Validates the "toggle" action.
+     *
+     * @return void
      */
     public function validateToggle()
     {
@@ -24,6 +26,8 @@ trait TDatabaseObjectToggle
 
     /**
      * Toggles the "isDisabled" status of the relevant objects.
+     *
+     * @return void
      */
     public function toggle()
     {

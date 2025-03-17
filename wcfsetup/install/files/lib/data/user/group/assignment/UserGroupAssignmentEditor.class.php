@@ -15,9 +15,9 @@ use wcf\system\cache\builder\UserGroupAssignmentCacheBuilder;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static UserGroupAssignment create(array $parameters = [])
- * @method      UserGroupAssignment getDecoratedObject()
  * @mixin       UserGroupAssignment
+ * @extends DatabaseObjectEditor<UserGroupAssignment>
+ * @implements IEditableCachedObject<UserGroupAssignment>
  */
 class UserGroupAssignmentEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {

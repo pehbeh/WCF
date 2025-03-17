@@ -24,7 +24,7 @@ abstract class AbstractMultipartMimePart extends AbstractMimePart implements IRe
 
     /**
      * The parts.
-     * @var \SplObjectStorage
+     * @var \SplObjectStorage<AbstractMimePart, mixed>
      */
     protected $parts;
 
@@ -60,8 +60,8 @@ abstract class AbstractMultipartMimePart extends AbstractMimePart implements IRe
     /**
      * Concatenates the given mime parts.
      *
-     * @param \Traversable $parts
-     * @return  string
+     * @param \Traversable<int, AbstractMimePart> $parts
+     * @return string
      */
     protected function getConcatenatedParts($parts)
     {
@@ -125,8 +125,9 @@ abstract class AbstractMultipartMimePart extends AbstractMimePart implements IRe
      *
      * @param AbstractMimePart $part
      * @param mixed $data Additional data, to be defined by child classes
-     * @throws  \InvalidArgumentException
-     * @throws  \DomainException
+     * @return void
+     * @throws \InvalidArgumentException
+     * @throws \DomainException
      */
     public function addMimePart(AbstractMimePart $part, $data = null)
     {
@@ -162,6 +163,7 @@ abstract class AbstractMultipartMimePart extends AbstractMimePart implements IRe
      * Removes a mime part from this multipart part.
      *
      * @param AbstractMimePart $part
+     * @return void
      */
     public function removeMimePart(AbstractMimePart $part)
     {
@@ -173,7 +175,7 @@ abstract class AbstractMultipartMimePart extends AbstractMimePart implements IRe
      * Note: The returned \SplObjectStorage is a clone of the internal one.
      * Modifications will not reflect on this object.
      *
-     * @return  \SplObjectStorage
+     * @return \SplObjectStorage<AbstractMimePart, mixed>
      */
     public function getMimeParts()
     {

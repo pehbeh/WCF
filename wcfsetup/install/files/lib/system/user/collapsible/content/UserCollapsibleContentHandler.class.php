@@ -223,6 +223,7 @@ class UserCollapsibleContentHandler extends SingletonFactory
      * Deletes all saved states for a specific object type.
      *
      * @param int $objectTypeID
+     * @return void
      */
     public function reset($objectTypeID)
     {
@@ -258,6 +259,7 @@ class UserCollapsibleContentHandler extends SingletonFactory
      *
      * @param string $objectType
      * @param int $objectID
+     * @return void
      * @throws  InvalidObjectTypeException
      */
     public function resetAll($objectType, $objectID = null)

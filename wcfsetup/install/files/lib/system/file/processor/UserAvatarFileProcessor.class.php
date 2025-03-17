@@ -216,6 +216,9 @@ final class UserAvatarFileProcessor extends AbstractFileProcessor
         );
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     private function getUser(array $context): ?UserProfile
     {
         $userID = $context['objectID'] ?? null;

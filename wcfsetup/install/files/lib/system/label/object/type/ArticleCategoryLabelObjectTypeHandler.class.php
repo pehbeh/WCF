@@ -4,6 +4,7 @@ namespace wcf\system\label\object\type;
 
 use wcf\data\article\category\ArticleCategoryNode;
 use wcf\data\article\category\ArticleCategoryNodeTree;
+use wcf\data\category\CategoryNode;
 use wcf\system\cache\builder\ArticleCategoryLabelCacheBuilder;
 
 /**
@@ -18,7 +19,7 @@ class ArticleCategoryLabelObjectTypeHandler extends AbstractLabelObjectTypeHandl
 {
     /**
      * category list
-     * @var \RecursiveIteratorIterator
+     * @var \RecursiveIteratorIterator<CategoryNode>
      */
     public $categoryList;
 

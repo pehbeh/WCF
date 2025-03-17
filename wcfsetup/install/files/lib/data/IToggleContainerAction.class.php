@@ -14,11 +14,15 @@ interface IToggleContainerAction
 {
     /**
      * Toggles the container state of the relevant objects.
+     *
+     * @return void
      */
     public function toggleContainer();
 
     /**
      * Validates the 'toggleContainer' action.
+     *
+     * @return void
      */
     public function validateToggleContainer();
 }

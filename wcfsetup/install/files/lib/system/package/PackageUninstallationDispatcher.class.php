@@ -157,6 +157,7 @@ class PackageUninstallationDispatcher extends PackageInstallationDispatcher
     /**
      * Executes the package's uninstall script (if existing).
      *
+     * @return void
      * @since   3.0
      */
     protected function executeUninstallScript()
@@ -171,7 +172,7 @@ class PackageUninstallationDispatcher extends PackageInstallationDispatcher
     /**
      * Uninstalls current package.
      *
-     * @param array $nodeData
+     * @param mixed[] $nodeData
      */
     protected function uninstallPackage(array $nodeData): PackageInstallationStep
     {
@@ -199,6 +200,7 @@ class PackageUninstallationDispatcher extends PackageInstallationDispatcher
      * @param string[] $files
      * @param bool $deleteEmptyDirectories
      * @param bool $deleteEmptyTargetDir
+     * @return void
      */
     public function deleteFiles($targetDir, $files, $deleteEmptyTargetDir = false, $deleteEmptyDirectories = true)
     {

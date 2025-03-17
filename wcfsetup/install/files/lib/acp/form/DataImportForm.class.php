@@ -4,6 +4,7 @@ namespace wcf\acp\form;
 
 use wcf\acp\action\CacheClearAction;
 use wcf\data\application\Application;
+use wcf\data\object\type\ObjectType;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\form\AbstractForm;
 use wcf\system\application\ApplicationHandler;
@@ -26,7 +27,7 @@ class DataImportForm extends AbstractForm
 {
     /**
      * additional data
-     * @var array
+     * @var mixed[]
      */
     public $additionalData = [];
 
@@ -42,7 +43,7 @@ class DataImportForm extends AbstractForm
 
     /**
      * list of available exporters
-     * @var array
+     * @var array<string, ObjectType>
      */
     public $exporters = [];
 
@@ -66,13 +67,13 @@ class DataImportForm extends AbstractForm
 
     /**
      * list of supported data types
-     * @var array
+     * @var array<string, string[]>
      */
     public $supportedData = [];
 
     /**
      * selected data types
-     * @var array
+     * @var string[]
      */
     public $selectedData = [];
 

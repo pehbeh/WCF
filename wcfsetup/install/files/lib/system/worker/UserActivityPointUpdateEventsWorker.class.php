@@ -27,9 +27,7 @@ class UserActivityPointUpdateEventsWorker extends AbstractWorker
      */
     public $objectTypes = [];
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function __construct(array $parameters)
     {
         parent::__construct($parameters);

@@ -34,7 +34,7 @@ abstract class AbstractAcpForm extends AbstractForm
     /**
      * Registers a new i18n value.
      *
-     * @param I18nValue $value
+     * @return void
      */
     public function registerI18nValue(I18nValue $value)
     {
@@ -106,7 +106,7 @@ abstract class AbstractAcpForm extends AbstractForm
     /**
      * Reads the i18n data for the given object.
      *
-     * @param DatabaseObject $databaseObject
+     * @return void
      */
     public function readDataI18n(DatabaseObject $databaseObject)
     {
@@ -159,8 +159,10 @@ abstract class AbstractAcpForm extends AbstractForm
      * Saves the i18n data for the given database object after the given database
      * object has been created.
      *
-     * @param DatabaseObject $databaseObject
+     * @template TDatabaseObject of DatabaseObject
+     * @param TDatabaseObject $databaseObject
      * @param string $editorClass
+     * @return void
      */
     public function saveI18n(DatabaseObject $databaseObject, $editorClass)
     {
@@ -182,7 +184,7 @@ abstract class AbstractAcpForm extends AbstractForm
         }
 
         if (!empty($data)) {
-            /** @var DatabaseObjectEditor $editor */
+            /** @var DatabaseObjectEditor<TDatabaseObject> $editor */
             $editor = new $editorClass($databaseObject);
             $editor->update($data);
         }
@@ -190,6 +192,8 @@ abstract class AbstractAcpForm extends AbstractForm
 
     /**
      * Resets the form values and calls the saved event.
+     *
+     * @return void
      */
     public function reset()
     {

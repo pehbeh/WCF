@@ -40,6 +40,7 @@ abstract class AbstractForm extends AbstractPage implements IForm
     /**
      * database object action
      * @var AbstractDatabaseObjectAction
+     * @phpstan-ignore missingType.generics
      */
     public $objectAction;
 
@@ -114,8 +115,9 @@ abstract class AbstractForm extends AbstractPage implements IForm
     /**
      * Validates the form security token.
      *
-     * @throws  UserInputException  if the security token is invalid
-     * @since   5.2
+     * @return void
+     * @throws UserInputException  if the security token is invalid
+     * @since 5.2
      */
     protected function validateSecurityToken()
     {
@@ -136,6 +138,8 @@ abstract class AbstractForm extends AbstractPage implements IForm
     /**
      * Calls the 'saved' event after the successful call of the save method.
      * This functions won't called automatically. You must do this manually, if you inherit AbstractForm.
+     *
+     * @return void
      */
     protected function saved()
     {

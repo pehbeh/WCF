@@ -47,7 +47,7 @@ class HascontentPrefilterTemplatePlugin implements IPrefilterTemplatePlugin
      * the content during runtime, safely determining whether content is empty
      * or not.
      *
-     * @param array $matches
+     * @param array{before: string, content: string, after: string, else?: string, assign?: string} $matches
      * @return  string
      */
     protected static function replaceContentCallback(array $matches)

@@ -28,6 +28,8 @@ use wcf\util\StringUtil;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @extends AbstractGridView<UserOption, UserOptionList>
  */
 final class UserOptionGridView extends AbstractGridView
 {

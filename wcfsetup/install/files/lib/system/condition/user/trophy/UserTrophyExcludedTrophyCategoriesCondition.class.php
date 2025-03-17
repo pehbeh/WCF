@@ -7,7 +7,6 @@ use wcf\data\trophy\category\TrophyCategoryCache;
 use wcf\data\user\trophy\UserTrophyList;
 use wcf\system\condition\AbstractMultiSelectCondition;
 use wcf\system\condition\IObjectListCondition;
-use wcf\system\exception\InvalidObjectArgument;
 
 /**
  * Condition implementation for the excluded trophies.
@@ -16,6 +15,8 @@ use wcf\system\exception\InvalidObjectArgument;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
+ *
+ * @implements IObjectListCondition<UserTrophyList>
  */
 class UserTrophyExcludedTrophyCategoriesCondition extends AbstractMultiSelectCondition implements IObjectListCondition
 {
@@ -39,10 +40,6 @@ class UserTrophyExcludedTrophyCategoriesCondition extends AbstractMultiSelectCon
      */
     public function addObjectListCondition(DatabaseObjectList $objectList, array $conditionData)
     {
-        if (!($objectList instanceof UserTrophyList)) {
-            throw new InvalidObjectArgument($objectList, UserTrophyList::class, 'Object list');
-        }
-
         $objectList->getConditionBuilder()->add('trophy.categoryID NOT IN (?)', [$conditionData[$this->fieldName]]);
     }
 

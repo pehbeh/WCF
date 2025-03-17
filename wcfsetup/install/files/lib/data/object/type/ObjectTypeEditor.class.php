@@ -12,9 +12,9 @@ use wcf\data\IEditableCachedObject;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static ObjectType  create(array $parameters = [])
- * @method      ObjectType  getDecoratedObject()
  * @mixin       ObjectType
+ * @extends DatabaseObjectEditor<ObjectType>
+ * @implements IEditableCachedObject<ObjectType>
  */
 class ObjectTypeEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {

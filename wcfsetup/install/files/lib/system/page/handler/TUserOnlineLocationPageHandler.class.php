@@ -50,6 +50,7 @@ trait TUserOnlineLocationPageHandler
      *
      * @param Page $page visited page
      * @param UserOnline $user user online object with request data
+     * @return void
      * @see IOnlineLocationPageHandler::prepareOnlineLocation()
      */
     public function prepareOnlineLocation(Page $page, UserOnline $user)

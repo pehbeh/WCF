@@ -11,6 +11,7 @@ use wcf\util\FileUtil;
  * @author  Tim Duesterhus
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @phpstan-import-type FileInfo from IArchive
  */
 class Zip extends File implements IArchive
 {
@@ -22,6 +23,9 @@ class Zip extends File implements IArchive
 
     const DATA_DESCRIPTOR_SIGNATURE = "\x50\x4b\x07\x08";
 
+    /**
+     * @var array{files: array<int, FileInfo>, eof: array<string, mixed[]>}
+     */
     protected $centralDirectory;
 
     /**
@@ -73,6 +77,7 @@ class Zip extends File implements IArchive
      * The directory-structure inside the .zip is preserved.
      *
      * @param string $destination where to extract
+     * @return void
      */
     public function extractAll($destination)
     {
@@ -148,6 +153,8 @@ class Zip extends File implements IArchive
 
     /**
      * Moves the file-pointer to the beginning of the Central Directory.
+     *
+     * @return void
      */
     protected function jumpToCentralDirectory()
     {
@@ -182,8 +189,8 @@ class Zip extends File implements IArchive
     /**
      * Reads the central directory and returns it.
      *
-     * @return  array
-     * @throws  SystemException
+     * @return array{files: array<int, FileInfo>, eof: array<string, mixed[]>}
+     * @throws SystemException
      */
     protected function readCentralDirectory()
     {
@@ -268,8 +275,8 @@ class Zip extends File implements IArchive
      * This does not change the position of the file-pointer.
      *
      * @param int|false|null $offset where to start reading
-     * @return  bool
-     * @throws  SystemException
+     * @return bool
+     * @throws SystemException
      */
     public function isFile($offset = null)
     {
@@ -294,8 +301,8 @@ class Zip extends File implements IArchive
      * Reads a file and returns it.
      *
      * @param int|false|null $offset where to start reading
-     * @return  array
-     * @throws  SystemException
+     * @return mixed[]
+     * @throws SystemException
      */
     public function readFile($offset = null)
     {
@@ -391,7 +398,7 @@ class Zip extends File implements IArchive
      *
      * @param int $length Number of bytes to read
      * @param string $type Which type are the bytes of
-     * @return  mixed
+     * @return mixed
      */
     protected function readAndUnpack($length, $type)
     {

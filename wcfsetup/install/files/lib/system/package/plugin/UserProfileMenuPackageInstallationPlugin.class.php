@@ -123,6 +123,7 @@ class UserProfileMenuPackageInstallationPlugin extends AbstractXMLPackageInstall
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -198,6 +199,8 @@ class UserProfileMenuPackageInstallationPlugin extends AbstractXMLPackageInstall
 
     /**
      * @inheritDoc
+     * @param bool $saveData
+     * @return array<string, int|string>
      * @since   5.2
      */
     protected function fetchElementData(\DOMElement $element, $saveData)
@@ -236,6 +239,7 @@ class UserProfileMenuPackageInstallationPlugin extends AbstractXMLPackageInstall
 
     /**
      * @inheritDoc
+     * @return string
      * @since   5.2
      */
     public function getElementIdentifier(\DOMElement $element)
@@ -245,6 +249,7 @@ class UserProfileMenuPackageInstallationPlugin extends AbstractXMLPackageInstall
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function setEntryListKeys(IDevtoolsPipEntryList $entryList)
@@ -257,6 +262,7 @@ class UserProfileMenuPackageInstallationPlugin extends AbstractXMLPackageInstall
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      * @since   5.2
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)

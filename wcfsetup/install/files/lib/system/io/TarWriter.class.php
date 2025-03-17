@@ -46,6 +46,8 @@ class TarWriter extends Tar
 
     /**
      * Writes the last 0 filled block for end of archive.
+     *
+     * @return void
      */
     protected function writeFooter()
     {
@@ -54,6 +56,8 @@ class TarWriter extends Tar
 
     /**
      * Creates the tar archive.
+     *
+     * @return void
      */
     public function create()
     {

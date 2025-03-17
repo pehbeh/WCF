@@ -77,7 +77,7 @@ final class DevtoolsProjectOptionalPackagesFormField extends AbstractFormField
     /**
      * @inheritDoc
      */
-    protected static function getDefaultId()
+    protected static function getDefaultId(): string
     {
         return 'optionalPackages';
     }

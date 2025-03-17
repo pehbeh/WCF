@@ -46,7 +46,7 @@ use wcf\system\WCF;
  * @property-read   int|null $linkPageID     id of the (internal) page the box image and box title are linking to or `null` if no internal page is linked
  * @property-read   int $linkPageObjectID   id of the object the (internal) page links refers to or `0` if no internal link is used or no specific object is linked
  * @property-read   string $externalURL        external link used to for the box image and box title or empty if no external link is set
- * @property-read   array $additionalData     array with additional data of the box
+ * @property-read   mixed[] $additionalData     array with additional data of the box
  * @property-read   int|null $limit          number of objects shown in the box for `AbstractDatabaseObjectListBoxController` controllers or `null` otherwise
  * @property-read   string|null $sortField      sort field of the objects shown in the box for `AbstractDatabaseObjectListBoxController` controllers or `null` otherwise
  * @property-read   string|null $sortOrder      sort order of the objects shown in the box for `AbstractDatabaseObjectListBoxController` controllers or `null` otherwise
@@ -224,6 +224,7 @@ class Box extends DatabaseObject
      * Sets the box's content.
      *
      * @param BoxContent[] $boxContents
+     * @return void
      */
     public function setBoxContents($boxContents)
     {
@@ -608,6 +609,7 @@ class Box extends DatabaseObject
      * Sets the virtual show order of this box.
      *
      * @param int $virtualShowOrder
+     * @return void
      */
     public function setVirtualShowOrder($virtualShowOrder)
     {

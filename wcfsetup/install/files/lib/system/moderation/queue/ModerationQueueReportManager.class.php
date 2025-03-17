@@ -134,7 +134,8 @@ class ModerationQueueReportManager extends AbstractModerationQueueManager
      * @param string $objectType
      * @param int $objectID
      * @param string $message
-     * @param array $additionalData
+     * @param mixed[] $additionalData
+     * @return void
      * @throws  InvalidObjectTypeException
      */
     public function addReport($objectType, $objectID, $message, array $additionalData = [])

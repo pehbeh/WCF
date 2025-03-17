@@ -6,6 +6,8 @@ use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectList;
 use wcf\http\Helper;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\exception\PermissionDeniedException;
@@ -42,7 +44,7 @@ final class GridViewFilterAction implements RequestHandlerInterface
             throw new UserInputException('gridView', 'invalid');
         }
 
-        /** @var AbstractGridView $view */
+        /** @var AbstractGridView<DatabaseObject, DatabaseObjectList<DatabaseObject>> $view */
         $view = new $parameters['gridView'](...$parameters['gridViewParameters']);
 
         if (!$view->isAccessible()) {
@@ -78,6 +80,10 @@ final class GridViewFilterAction implements RequestHandlerInterface
         }
     }
 
+    /**
+     * @param AbstractGridView<DatabaseObject, DatabaseObjectList<DatabaseObject>> $gridView
+     * @param array<string, mixed> $values
+     */
     private function getForm(AbstractGridView $gridView, array $values): Psr15DialogForm
     {
         $form = new Psr15DialogForm(

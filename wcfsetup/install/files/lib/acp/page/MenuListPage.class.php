@@ -2,9 +2,7 @@
 
 namespace wcf\acp\page;
 
-use wcf\data\menu\MenuList;
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\MenuGridView;
 
 /**
@@ -15,9 +13,9 @@ use wcf\system\gridView\admin\MenuGridView;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       3.0
  *
- * @property    MenuList $objectList
+ * @extends AbstractGridViewPage<MenuGridView>
  */
-class MenuListPage extends AbstractGridViewPage
+final class MenuListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -30,7 +28,7 @@ class MenuListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.content.cms.canManageMenu'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): MenuGridView
     {
         return new MenuGridView();
     }

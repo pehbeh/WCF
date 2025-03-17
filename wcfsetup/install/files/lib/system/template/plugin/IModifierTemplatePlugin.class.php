@@ -17,7 +17,7 @@ interface IModifierTemplatePlugin
     /**
      * Executes this modifier.
      *
-     * @param array $tagArgs
+     * @param array<int|string, mixed> $tagArgs
      * @param TemplateEngine $tplObj
      * @return  string
      */

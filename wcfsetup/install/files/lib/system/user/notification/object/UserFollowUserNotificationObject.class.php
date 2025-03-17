@@ -12,8 +12,8 @@ use wcf\data\user\follow\UserFollow;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  UserFollow  getDecoratedObject()
  * @mixin   UserFollow
+ * @extends DatabaseObjectDecorator<UserFollow>
  */
 class UserFollowUserNotificationObject extends DatabaseObjectDecorator implements IUserNotificationObject
 {

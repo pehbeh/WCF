@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\UserOptionGridView;
 
 /**
@@ -13,9 +12,9 @@ use wcf\system\gridView\admin\UserOptionGridView;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    UserOptionGridView    $gridView
+ * @extends AbstractGridViewPage<UserOptionGridView>
  */
-class UserOptionListPage extends AbstractGridViewPage
+final class UserOptionListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -28,7 +27,7 @@ class UserOptionListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.user.canManageUserOption'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): UserOptionGridView
     {
         return new UserOptionGridView();
     }

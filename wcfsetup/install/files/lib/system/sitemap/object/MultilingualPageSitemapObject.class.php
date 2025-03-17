@@ -18,6 +18,8 @@ use wcf\system\language\LanguageFactory;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
+ *
+ * @extends AbstractSitemapObjectObjectType<PageContent, PageContentList>
  */
 class MultilingualPageSitemapObject extends AbstractSitemapObjectObjectType
 {
@@ -34,7 +36,6 @@ class MultilingualPageSitemapObject extends AbstractSitemapObjectObjectType
      */
     public function getObjectList()
     {
-        /** @var PageContentList $pageList */
         $pageList = parent::getObjectList();
 
         $pageList->sqlConditionJoins = '
@@ -57,7 +58,6 @@ class MultilingualPageSitemapObject extends AbstractSitemapObjectObjectType
      */
     public function canView(DatabaseObject $object)
     {
-        /** @var PageContent $object */
         $page = new Page($object->pageID);
 
         if ($page->requireObjectID) {

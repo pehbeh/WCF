@@ -19,10 +19,15 @@ final class GoogleAuthAction extends AbstractOauth2AuthAction
 {
     const AVAILABLE_DURING_OFFLINE_MODE = true;
 
+    /**
+     * @var mixed[]
+     */
     private array $configuration;
 
     /**
      * Returns Google's OpenID Connect configuration.
+     *
+     * @return mixed[]
      */
     private function getConfiguration(): array
     {

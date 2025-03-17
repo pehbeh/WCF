@@ -124,6 +124,8 @@ abstract class AbstractOauth2AuthAction implements RequestHandlerInterface
 
     /**
      * Turns the 'code' into an access token.
+     *
+     * @return mixed[]
      */
     protected function getAccessToken(OAuth2Success $auth2Success): array
     {
@@ -247,6 +249,8 @@ abstract class AbstractOauth2AuthAction implements RequestHandlerInterface
 
     /**
      * Turns the access token response into an oauth user.
+     *
+     * @param mixed[] $accessToken
      */
     abstract protected function getUser(array $accessToken): OauthUser;
 

@@ -30,9 +30,9 @@ use wcf\util\XML;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static Language    create(array $parameters = [])
- * @method      Language    getDecoratedObject()
  * @mixin       Language
+ * @extends DatabaseObjectEditor<Language>
+ * @implements IEditableCachedObject<Language>
  */
 class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {
@@ -54,7 +54,7 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
     /**
      * Updates the language files for the given category.
      *
-     * @param LanguageCategory $languageCategory
+     * @return void
      */
     public function updateCategory(LanguageCategory $languageCategory)
     {
@@ -65,6 +65,7 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
      * Write the languages files.
      *
      * @param int[] $languageCategoryIDs
+     * @return void
      */
     protected function writeLanguageFiles(array $languageCategoryIDs)
     {
@@ -125,6 +126,8 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
 
     /**
      * Exports this language.
+     *
+     * @return void
      */
     public function export(int $packageID, bool $exportCustomValues = false)
     {
@@ -310,10 +313,10 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
      * Imports language items from an XML file into this language.
      * Updates the relevant language files automatically.
      *
-     * @param XML $xml
      * @param int $packageID
      * @param bool $updateFiles
      * @param bool $updateExistingItems
+     * @return void
      * @throws  \InvalidArgumentException   if given XML file is invalid
      */
     public function updateFromXML(XML $xml, $packageID, $updateFiles = true, $updateExistingItems = true)
@@ -691,6 +694,7 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
      *
      * @param string $languageID
      * @param string $category
+     * @return void
      */
     public static function deleteLanguageFiles($languageID = '.*', $category = '.*')
     {
@@ -706,6 +710,8 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
 
     /**
      * Deletes relevant template compilations.
+     *
+     * @return void
      */
     public function deleteCompiledTemplates()
     {
@@ -717,6 +723,8 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
 
     /**
      * Updates all language files of the given package id.
+     *
+     * @return void
      */
     public static function updateAll()
     {
@@ -726,9 +734,8 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
     /**
      * Takes an XML object and returns the specific language code.
      *
-     * @param XML $xml
-     * @return  string
-     * @throws  SystemException
+     * @return string
+     * @throws SystemException
      */
     public static function readLanguageCodeFromXML(XML $xml)
     {
@@ -747,9 +754,8 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
     /**
      * Takes an XML object and returns the specific language name.
      *
-     * @param XML $xml
-     * @return  string      language name
-     * @throws  SystemException
+     * @return string language name
+     * @throws SystemException
      */
     public static function readLanguageNameFromXML(XML $xml)
     {
@@ -768,9 +774,8 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
     /**
      * Takes an XML object and returns the specific country code.
      *
-     * @param XML $xml
-     * @return  string      country code
-     * @throws  SystemException
+     * @return string country code
+     * @throws SystemException
      */
     public static function readCountryCodeFromXML(XML $xml)
     {
@@ -790,10 +795,8 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
      * Imports language items from an XML file into a new or a current language.
      * Updates the relevant language files automatically.
      *
-     * @param XML $xml
      * @param int $packageID
-     * @param Language $source
-     * @return  LanguageEditor
+     * @return LanguageEditor
      */
     public static function importFromXML(XML $xml, $packageID, ?Language $source = null)
     {
@@ -836,6 +839,7 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
      * Caution: This method expects that target language does not have any items!
      *
      * @param Language $destination
+     * @return void
      */
     public function copy(Language $destination)
     {
@@ -854,10 +858,11 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
     /**
      * Updates the language items of a language category.
      *
-     * @param array $items
+     * @param array<string, string> $items
      * @param LanguageCategory $category
      * @param int $packageID
-     * @param array $useCustom
+     * @param array<int, int> $useCustom
+     * @return void
      */
     public function updateItems(
         array $items,
@@ -915,6 +920,8 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
 
     /**
      * Sets current language as default language.
+     *
+     * @return void
      */
     public function setAsDefault()
     {
@@ -932,6 +939,8 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
 
     /**
      * Clears language cache.
+     *
+     * @return void
      */
     public function clearCache()
     {
@@ -941,7 +950,8 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
     /**
      * Enables the multilingualism feature for given languages.
      *
-     * @param array $languageIDs
+     * @param int[] $languageIDs
+     * @return void
      */
     public static function enableMultilingualism(array $languageIDs = [])
     {
@@ -983,6 +993,7 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
      *
      * @param int $sourceLanguageID
      * @param int $destinationLanguageID
+     * @return void
      */
     public static function copyLanguageContent($sourceLanguageID, $destinationLanguageID)
     {

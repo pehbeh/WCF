@@ -173,6 +173,8 @@ final class BackupMultifactorMethod implements IMultifactorMethod
 
     /**
      * Generates a list of codes.
+     *
+     * @return array<int, string>
      */
     private function generateCodes(): array
     {
@@ -199,6 +201,7 @@ final class BackupMultifactorMethod implements IMultifactorMethod
 
     /**
      * @inheritDoc
+     * @return array<int, string>
      */
     public function processManagementForm(IFormDocument $form, Setup $setup): array
     {
@@ -232,6 +235,9 @@ final class BackupMultifactorMethod implements IMultifactorMethod
     /**
      * Returns a code from $codes matching the $userCode. `null` is returned if
      * no matching code could be found.
+     *
+     * @param mixed[][] $codes
+     * @return mixed[]|null
      */
     private function findValidCode(string $userCode, array $codes): ?array
     {
@@ -348,6 +354,8 @@ final class BackupMultifactorMethod implements IMultifactorMethod
 
     /**
      * Notifies the user that an backup code has been used.
+     *
+     * @param mixed[] $usedCode
      */
     private function sendAuthenticationEmail(Setup $setup, array $usedCode): void
     {

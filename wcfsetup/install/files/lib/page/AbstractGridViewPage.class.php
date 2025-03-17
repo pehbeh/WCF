@@ -14,13 +14,22 @@ use wcf\system\WCF;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @template TGridView of AbstractGridView
  */
 abstract class AbstractGridViewPage extends AbstractPage
 {
+    /**
+     * @var TGridView
+     */
     protected AbstractGridView $gridView;
     protected int $pageNo = 1;
     protected string $sortField = '';
     protected string $sortOrder = '';
+
+    /**
+     * @var mixed[]
+     */
     protected array $filters = [];
 
     #[\Override]
@@ -62,7 +71,7 @@ abstract class AbstractGridViewPage extends AbstractPage
 
     protected function initGridView(): void
     {
-        $this->gridView = $this->createGridViewController();
+        $this->gridView = $this->createGridView();
         if (!$this->gridView->isAccessible()) {
             throw new PermissionDeniedException();
         }
@@ -84,6 +93,8 @@ abstract class AbstractGridViewPage extends AbstractPage
 
     /**
      * Returns the grid view instance for the rendering of this page.
+     *
+     * @return TGridView
      */
-    protected abstract function createGridViewController(): AbstractGridView;
+    protected abstract function createGridView(): AbstractGridView;
 }

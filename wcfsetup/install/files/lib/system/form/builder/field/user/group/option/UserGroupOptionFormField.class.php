@@ -74,7 +74,7 @@ final class UserGroupOptionFormField extends ItemListFormField implements IPacka
     /**
      * @inheritDoc
      */
-    protected static function getDefaultId()
+    protected static function getDefaultId(): string
     {
         return 'permissions';
     }

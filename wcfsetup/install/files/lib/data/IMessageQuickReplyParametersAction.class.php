@@ -8,6 +8,11 @@ namespace wcf\data;
  * @author      Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template TContainer of DatabaseObject
+ * @template TMessage of DatabaseObject
+ * @template TMessageList of DatabaseObjectList
+ * @extends IMessageQuickReplyAction<TContainer, TMessage, TMessageList>
  */
 interface IMessageQuickReplyParametersAction extends IMessageQuickReplyAction
 {

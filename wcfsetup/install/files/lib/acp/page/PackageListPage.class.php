@@ -16,7 +16,7 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    I18nPackageList $objectList
+ * @extends SortablePage<I18nPackageList>
  */
 class PackageListPage extends SortablePage
 {

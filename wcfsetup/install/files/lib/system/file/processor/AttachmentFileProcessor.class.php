@@ -37,7 +37,8 @@ final class AttachmentFileProcessor extends AbstractFileProcessor
             return [];
         }
 
-        return $attachmentHandler->getAllowedExtensions();    }
+        return $attachmentHandler->getAllowedExtensions();
+    }
 
     #[\Override]
     public function canAdopt(File $file, array $context): bool
@@ -118,7 +119,7 @@ final class AttachmentFileProcessor extends AbstractFileProcessor
     }
 
     #[\Override]
-    public function getMaximumCount(array $context): ?int
+    public function getMaximumCount(array $context): int
     {
         $attachmentHandler = $this->getAttachmentHandlerFromContext($context);
         if ($attachmentHandler === null) {
@@ -277,6 +278,9 @@ final class AttachmentFileProcessor extends AbstractFileProcessor
         return $attachmentHandler?->getMaxSize();
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     private function getAttachmentHandlerFromContext(array $context): ?AttachmentHandler
     {
         try {

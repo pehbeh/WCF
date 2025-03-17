@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  ACPMenuItem     current()
- * @method  ACPMenuItem[]       getObjects()
- * @method  ACPMenuItem|null    getSingleObject()
- * @method  ACPMenuItem|null    search($objectID)
- * @property    ACPMenuItem[] $objects
+ * @extends DatabaseObjectList<ACPMenuItem>
  */
 class ACPMenuItemList extends DatabaseObjectList
 {

@@ -18,14 +18,14 @@ interface IBoxController
     /**
      * Returns the content of this box.
      *
-     * @return  string
+     * @return string
      */
     public function getContent();
 
     /**
      * Returns false if this box has no content.
      *
-     * @return  bool
+     * @return bool
      */
     public function hasContent();
 
@@ -34,28 +34,28 @@ interface IBoxController
      *
      * Note: The box itself checks if the active user can access the returned media file.
      *
-     * @return  ViewableMedia|null
+     * @return ?ViewableMedia
      */
     public function getImage();
 
     /**
      * Returns the title link of this box.
      *
-     * @return  string
+     * @return string
      */
     public function getLink();
 
     /**
      * Returns true if this box has a title link.
      *
-     * @return  bool
+     * @return bool
      */
     public function hasLink();
 
     /**
      * Returns the database object of this box.
      *
-     * @return  Box
+     * @return Box
      */
     public function getBox();
 
@@ -63,11 +63,14 @@ interface IBoxController
      * Sets the database object of this box.
      *
      * @param Box $box
+     * @return void
      */
     public function setBox(Box $box);
 
     /**
      * Saves additional box data for box set via `setBox()`.
+     *
+     * @return void
      */
     public function saveAdditionalData();
 
@@ -76,15 +79,15 @@ interface IBoxController
      * apply the default behavior as seen in previous versions. Only supported for
      * system-type boxes.
      *
-     * @return      string|null
-     * @since       5.2
+     * @return ?string
+     * @since 5.2
      */
     public function getTitle();
 
     /**
      * Returns a list of supported box positions.
      *
-     * @return  string[]
+     * @return string[]
      */
     public static function getSupportedPositions();
 }

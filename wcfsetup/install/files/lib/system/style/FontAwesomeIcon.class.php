@@ -21,6 +21,8 @@ final class FontAwesomeIcon implements IFontAwesomeIcon, \Stringable
     /**
      * Uses the icon name as the key and a boolean value that
      * indicates that an icon has a non-solid variant.
+     *
+     * @var array<string, bool>
      */
     private static array $icons;
 

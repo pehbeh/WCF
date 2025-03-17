@@ -51,7 +51,7 @@ class Poll extends DatabaseObject
     /**
      * Adds an option to current poll.
      *
-     * @param PollOption $option
+     * @return void
      */
     public function addOption(PollOption $option)
     {
@@ -69,7 +69,7 @@ class Poll extends DatabaseObject
      * Returns a list of poll options.
      *
      * @param bool $isResultDisplay
-     * @return  PollOption[]
+     * @return PollOption[]
      */
     public function getOptions($isResultDisplay = false)
     {
@@ -96,7 +96,7 @@ class Poll extends DatabaseObject
     /**
      * Returns true if current user is a participant.
      *
-     * @return  bool
+     * @return bool
      */
     public function isParticipant()
     {
@@ -107,6 +107,8 @@ class Poll extends DatabaseObject
 
     /**
      * Loads associated options.
+     *
+     * @return void
      */
     protected function loadOptions()
     {
@@ -128,7 +130,7 @@ class Poll extends DatabaseObject
     /**
      * Returns true if poll is already finished.
      *
-     * @return  bool
+     * @return bool
      */
     public function isFinished()
     {
@@ -138,7 +140,7 @@ class Poll extends DatabaseObject
     /**
      * Returns true if current user can vote.
      *
-     * @return  bool
+     * @return bool
      */
     public function canVote()
     {
@@ -169,7 +171,7 @@ class Poll extends DatabaseObject
     /**
      * Returns true if current user can see the result.
      *
-     * @return  bool
+     * @return bool
      */
     public function canSeeResult()
     {
@@ -183,7 +185,7 @@ class Poll extends DatabaseObject
     /**
      * Returns true if current user can view the participant list.
      *
-     * @return  bool
+     * @return bool
      */
     public function canViewParticipants()
     {
@@ -197,7 +199,7 @@ class Poll extends DatabaseObject
     /**
      * Sets related object for this poll.
      *
-     * @param IPollObject $object
+     * @return void
      */
     public function setRelatedObject(IPollObject $object)
     {
@@ -207,7 +209,7 @@ class Poll extends DatabaseObject
     /**
      * Returns related object.
      *
-     * @return  IPollObject
+     * @return IPollObject
      */
     public function getRelatedObject()
     {

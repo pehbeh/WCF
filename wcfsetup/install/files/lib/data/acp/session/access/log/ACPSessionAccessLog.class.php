@@ -28,6 +28,7 @@ class ACPSessionAccessLog extends DatabaseObject
     protected static $databaseTableIndexName = 'sessionAccessLogID';
 
     /**
+     * @return true
      * @deprecated 5.5 This method is long broken.
      */
     public function hasProtectedURI()

@@ -15,7 +15,7 @@ interface IStatDailyHandler
      * Returns the stats.
      *
      * @param int $date
-     * @return  array
+     * @return array{counter: int, total: int}
      */
     public function getData($date);
 

@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\UserRankGridView;
 
 /**
@@ -13,9 +12,9 @@ use wcf\system\gridView\admin\UserRankGridView;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    UserRankGridView    $gridView
+ * @extends AbstractGridViewPage<UserRankGridView>
  */
-class UserRankListPage extends AbstractGridViewPage
+final class UserRankListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -33,7 +32,7 @@ class UserRankListPage extends AbstractGridViewPage
     public $neededModules = ['MODULE_USER_RANK'];
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): UserRankGridView
     {
         return new UserRankGridView();
     }

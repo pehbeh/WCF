@@ -5,7 +5,6 @@ namespace wcf\acp\page;
 use wcf\data\acp\session\log\ACPSessionLog;
 use wcf\page\AbstractGridViewPage;
 use wcf\system\exception\IllegalLinkException;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\ACPSessionGridView;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
@@ -17,9 +16,9 @@ use wcf\system\WCF;
  * @copyright   2001-2025 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property    ACPSessionGridView $gridView
+ * @extends AbstractGridViewPage<ACPSessionGridView>
  */
-class ACPSessionLogPage extends AbstractGridViewPage
+final class ACPSessionLogPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -64,7 +63,7 @@ class ACPSessionLogPage extends AbstractGridViewPage
     }
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): ACPSessionGridView
     {
         return new ACPSessionGridView($this->sessionLog->sessionLogID);
     }

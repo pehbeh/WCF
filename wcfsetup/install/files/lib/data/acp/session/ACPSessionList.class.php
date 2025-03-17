@@ -11,11 +11,7 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  ACPSession      current()
- * @method  ACPSession[]        getObjects()
- * @method  ACPSession|null     getSingleObject()
- * @method  ACPSession|null     search($objectID)
- * @property    ACPSession[] $objects
+ * @extends DatabaseObjectList<ACPSession>
  * @deprecated  5.4 Distinct ACP sessions have been removed. This class is preserved due to its use in legacy sessions.
  */
 class ACPSessionList extends DatabaseObjectList

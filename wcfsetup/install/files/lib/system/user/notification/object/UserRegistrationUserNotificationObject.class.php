@@ -13,8 +13,8 @@ use wcf\data\user\User;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       5.2
  *
- * @method  User    getDecoratedObject()
  * @mixin   User
+ * @extends DatabaseObjectDecorator<User>
  */
 class UserRegistrationUserNotificationObject extends DatabaseObjectDecorator implements IUserNotificationObject
 {

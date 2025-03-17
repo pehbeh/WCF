@@ -20,13 +20,13 @@ class VersionTrackerEntry
 {
     /**
      * object data
-     * @var array
+     * @var mixed[]
      */
     protected $data = [];
 
     /**
      * list of stored properties and their values
-     * @var array
+     * @var mixed[]
      */
     protected $payload = [];
 
@@ -34,7 +34,7 @@ class VersionTrackerEntry
      * VersionTrackerEntry constructor.
      *
      * @param ?int $id id
-     * @param array $data version data
+     * @param mixed[] $data version data
      */
     public function __construct($id, array $data)
     {

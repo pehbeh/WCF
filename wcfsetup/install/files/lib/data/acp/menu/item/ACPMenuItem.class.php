@@ -94,6 +94,8 @@ class ACPMenuItem extends DatabaseObject implements ITreeMenuItem
 
     /**
      * Parses controller name.
+     *
+     * @return void
      */
     protected function parseController()
     {

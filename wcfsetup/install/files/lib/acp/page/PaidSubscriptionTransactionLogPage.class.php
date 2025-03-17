@@ -39,7 +39,7 @@ class PaidSubscriptionTransactionLogPage extends AbstractPage
 
     /**
      * log entry object
-     * @var\wcf\data\paid\subscription\transaction\log\PaidSubscriptionTransactionLog
+     * @var PaidSubscriptionTransactionLog
      */
     public $log;
 

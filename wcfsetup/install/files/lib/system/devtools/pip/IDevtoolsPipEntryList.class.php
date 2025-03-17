@@ -18,8 +18,9 @@ interface IDevtoolsPipEntryList
      * Before adding entries, the keys must be set.
      *
      * @param string $id unique entry identifier
-     * @param array $entry entry data
-     * @throws  \BadMethodCallException     if no keys have been set
+     * @param array<string, mixed> $entry entry data
+     * @return void
+     * @throws \BadMethodCallException if no keys have been set
      */
     public function addEntry($id, array $entry);
 
@@ -32,16 +33,17 @@ interface IDevtoolsPipEntryList
      *
      * Applying a second filter will filter the pre-filtered entries.
      *
-     * @param string|array $filter either a string that is used to search all entry elements or filter map `key => searchString`
+     * @param string|array<string, mixed> $filter either a string that is used to search all entry elements or filter map `key => searchString`
+     * @return void
      */
     public function filterEntries($filter);
 
     /**
      * Returns all entries in the list.
      *
-     * @param int $startIndex
-     * @param int $entryCount
-     * @return  array
+     * @param ?int $startIndex
+     * @param ?int $entryCount
+     * @return array<string, mixed>
      */
     public function getEntries($startIndex = null, $entryCount = null);
 
@@ -52,8 +54,8 @@ interface IDevtoolsPipEntryList
      * The keys of the returned array are the entry keys and the array values are
      * language items describing the value.
      *
-     * @return  array
-     * @throws  \BadMethodCallException     if no keys have been set
+     * @return array<string, string>
+     * @throws \BadMethodCallException if no keys have been set
      */
     public function getKeys();
 
@@ -61,7 +63,7 @@ interface IDevtoolsPipEntryList
      * Returns true if an entry with the given entry identifier exists.
      *
      * @param string $id unique entry identifier
-     * @return  bool
+     * @return bool
      */
     public function hasEntry($id);
 
@@ -69,7 +71,8 @@ interface IDevtoolsPipEntryList
      * Sets the keys of the entries that can be used to display the entry list
      * as a table.
      *
-     * @param array $keys entry keys
+     * @param array<string, string> $keys entry keys
+     * @return void
      */
     public function setKeys(array $keys);
 }

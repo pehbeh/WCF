@@ -24,7 +24,7 @@ class FileReader
 
     /**
      * http options
-     * @var array
+     * @var array<string, string|int|bool>
      */
     protected $options = [
         'filename' => '',
@@ -39,7 +39,7 @@ class FileReader
 
     /**
      * list of header items
-     * @var array
+     * @var string[]
      */
     protected $headers = [];
 
@@ -65,7 +65,7 @@ class FileReader
      * Creates a new instance of the HTTPFileReader class.
      *
      * @param string $location
-     * @param array $options
+     * @param array<string, string|int|bool> $options
      * @throws  SystemException
      */
     public function __construct($location, array $options)
@@ -83,6 +83,8 @@ class FileReader
 
     /**
      * Sends the file to the client.
+     *
+     * @return void
      */
     public function send()
     {
@@ -109,6 +111,8 @@ class FileReader
 
     /**
      * Handles the given range options.
+     *
+     * @return void
      */
     protected function handleRange()
     {
@@ -144,6 +148,8 @@ class FileReader
 
     /**
      * Handles the given header items.
+     *
+     * @return void
      */
     protected function handleHeaders()
     {
@@ -215,6 +221,9 @@ class FileReader
 
     /**
      * @deprecated 6.0 This method is unused internally. Use `wcf\http\ContentDisposition` instead.
+     *
+     * @param string $filename
+     * @return string
      */
     protected function sanitizeFilename($filename)
     {
@@ -223,6 +232,8 @@ class FileReader
 
     /**
      * Sends the headers of the file to the client.
+     *
+     * @return void
      */
     protected function sendHeaders()
     {
@@ -237,6 +248,8 @@ class FileReader
 
     /**
      * Sends the actual file to the client.
+     *
+     * @return void
      */
     protected function sendFile()
     {
@@ -263,7 +276,8 @@ class FileReader
     /**
      * Sets the options for the http response.
      *
-     * @param array $options
+     * @param array<string, string|int|bool> $options
+     * @return void
      */
     public function setOptions(array $options)
     {
@@ -279,6 +293,7 @@ class FileReader
      *
      * @param string $name
      * @param string $value
+     * @return void
      */
     public function addHeader($name, $value)
     {
@@ -289,6 +304,7 @@ class FileReader
      * Removes the header with the given name.
      *
      * @param string $name
+     * @return void
      */
     public function removeHeader($name)
     {

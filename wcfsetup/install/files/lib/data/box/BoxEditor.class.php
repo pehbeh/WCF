@@ -12,9 +12,8 @@ use wcf\data\DatabaseObjectEditor;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method static Box create(array $parameters = [])
- * @method      Box getDecoratedObject()
  * @mixin       Box
+ * @extends DatabaseObjectEditor<Box>
  */
 class BoxEditor extends DatabaseObjectEditor
 {
@@ -28,6 +27,7 @@ class BoxEditor extends DatabaseObjectEditor
      *
      * @param int $languageID
      * @param string $content
+     * @return void
      */
     public function writeTemplate($languageID, $content)
     {

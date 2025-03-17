@@ -12,14 +12,15 @@ use wcf\data\user\User;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.2
+ *
+ * @template T of DatabaseObjectList
  */
 interface IUserContentProvider
 {
     /**
      * Returns a DatabaseObjectList with all user content objects.
      *
-     * @param User $user
-     * @return      DatabaseObjectList
+     * @return T
      */
     public function getContentListForUser(User $user);
 
@@ -27,6 +28,7 @@ interface IUserContentProvider
      * Delete the content for the given object ids.
      *
      * @param int[] $objectIDs
+     * @return void
      */
     public function deleteContent(array $objectIDs);
 }

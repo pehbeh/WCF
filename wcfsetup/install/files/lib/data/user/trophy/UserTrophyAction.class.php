@@ -25,8 +25,7 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method  UserTrophyEditor[]      getObjects()
- * @method  UserTrophyEditor        getSingleObject()
+ * @extends AbstractDatabaseObjectAction<UserTrophy, UserTrophyEditor>
  */
 class UserTrophyAction extends AbstractDatabaseObjectAction
 {
@@ -188,6 +187,8 @@ class UserTrophyAction extends AbstractDatabaseObjectAction
 
     /**
      * Validates the getGroupedUserTrophyList method.
+     *
+     * @return void
      */
     public function validateGetGroupedUserTrophyList()
     {
@@ -215,6 +216,8 @@ class UserTrophyAction extends AbstractDatabaseObjectAction
 
     /**
      * Returns a viewable user trophy list for a specific user.
+     *
+     * @return array{pageCount: int, title: string, template: string}
      */
     public function getGroupedUserTrophyList()
     {
@@ -246,7 +249,7 @@ class UserTrophyAction extends AbstractDatabaseObjectAction
         $userTrophyList->sqlLimit = 10;
         $userTrophyList->sqlOffset = ($this->parameters['pageNo'] - 1) * 10;
         $userTrophyList->sqlOrderBy = 'time DESC';
-        $pageCount = \ceil($userTrophyList->countObjects() / 10);
+        $pageCount = (int)\ceil($userTrophyList->countObjects() / 10);
         $userTrophyList->readObjects();
 
         return [

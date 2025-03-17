@@ -16,7 +16,7 @@ use wcf\util\ArrayUtil;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       5.2
  *
- * @method  UserProfile|null getObject($objectID)
+ * @extends AbstractAttachmentObjectType<UserProfile>
  */
 class SignatureAttachmentObjectType extends AbstractAttachmentObjectType
 {

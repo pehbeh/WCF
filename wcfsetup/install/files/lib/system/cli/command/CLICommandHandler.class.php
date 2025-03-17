@@ -19,11 +19,12 @@ class CLICommandHandler
 {
     /**
      * list of all available commands
-     * @var ICLICommand[]
+     * @var array<string, ICLICommand>
      */
     private static $commands = [];
 
     /**
+     * @return array<string, ICLICommand>
      * @deprecated 6.0 This method is unused and of questionable value.
      */
     public static function getCommands()
@@ -60,8 +61,8 @@ class CLICommandHandler
      * Returns a command by the given line.
      *
      * @param string $line
-     * @return  ICLICommand
-     * @throws  IllegalLinkException
+     * @return ICLICommand
+     * @throws IllegalLinkException
      */
     public static function getCommand($line)
     {
@@ -78,8 +79,8 @@ class CLICommandHandler
      * Returns a command by the given line.
      *
      * @param string $line
-     * @return  string
-     * @throws  IllegalLinkException
+     * @return string
+     * @throws IllegalLinkException
      */
     public static function getCommandName($line)
     {
@@ -96,7 +97,7 @@ class CLICommandHandler
      * Returns the parameter list of the given line.
      *
      * @param string $line
-     * @return  string[]
+     * @return string[]
      */
     public static function getParameters($line)
     {

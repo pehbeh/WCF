@@ -17,9 +17,9 @@ use wcf\util\DirectoryUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static TemplateGroup   create(array $parameters = [])
- * @method      TemplateGroup   getDecoratedObject()
  * @mixin       TemplateGroup
+ * @extends DatabaseObjectEditor<TemplateGroup>
+ * @implements IEditableCachedObject<TemplateGroup>
  */
 class TemplateGroupEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {
@@ -78,6 +78,8 @@ class TemplateGroupEditor extends DatabaseObjectEditor implements IEditableCache
 
     /**
      * Deletes the folder of this template group.
+     *
+     * @return void
      */
     public function deleteFolder()
     {

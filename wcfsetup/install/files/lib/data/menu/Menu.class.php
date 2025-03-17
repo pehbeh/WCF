@@ -5,6 +5,7 @@ namespace wcf\data\menu;
 use wcf\data\box\Box;
 use wcf\data\DatabaseObject;
 use wcf\data\ITitledObject;
+use wcf\data\menu\item\MenuItemNode;
 use wcf\data\menu\item\MenuItemNodeTree;
 use wcf\system\WCF;
 
@@ -53,7 +54,7 @@ class Menu extends DatabaseObject implements ITitledObject
     /**
      * Returns the items of this menu.
      *
-     * @return  \RecursiveIteratorIterator
+     * @return  \RecursiveIteratorIterator<MenuItemNode>
      */
     public function getMenuItemNodeList()
     {

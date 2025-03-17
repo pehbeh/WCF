@@ -12,6 +12,8 @@ use wcf\system\Regex;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @phpstan-import-type ColumnDefinition from DatabaseEditor
+ * @phpstan-import-type IndexDefinition from DatabaseEditor
  */
 class MySQLDatabaseEditor extends DatabaseEditor
 {
@@ -444,8 +446,8 @@ class MySQLDatabaseEditor extends DatabaseEditor
      * Builds a column definition for execution in a create table or alter table statement.
      *
      * @param string $columnName
-     * @param array $columnData
-     * @return  string
+     * @param ColumnDefinition $columnData
+     * @return string
      */
     protected function buildColumnDefinition($columnName, $columnData)
     {
@@ -488,8 +490,8 @@ class MySQLDatabaseEditor extends DatabaseEditor
      * Builds a index definition for execution in a create table or alter table statement.
      *
      * @param string $indexName
-     * @param array $indexData
-     * @return  string
+     * @param IndexDefinition $indexData
+     * @return string
      */
     protected function buildIndexDefinition($indexName, $indexData)
     {

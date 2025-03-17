@@ -11,6 +11,8 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
+ *
+ * @template TDatabaseObjectList of DatabaseObjectList
  */
 interface IBulkProcessingAction
 {
@@ -18,15 +20,16 @@ interface IBulkProcessingAction
      * Executes the bulk processing action on all objects in the given object
      * list.
      *
-     * @param DatabaseObjectList $objectList
-     * @throws  \InvalidArgumentException   if given object list cannot be handled by the action
+     * @param TDatabaseObjectList $objectList
+     * @return void
+     * @throws \InvalidArgumentException if given object list cannot be handled by the action
      */
     public function executeAction(DatabaseObjectList $objectList);
 
     /**
      * Returns the output for setting additional action parameters.
      *
-     * @return  string
+     * @return string
      */
     public function getHTML();
 
@@ -34,36 +37,41 @@ interface IBulkProcessingAction
      * Returns an object list which will be populated with conditions to read
      * the processed objects.
      *
-     * @return  DatabaseObjectList
+     * @return TDatabaseObjectList
      */
     public function getObjectList();
 
     /**
      * Returns true if the action is available for the active user.
      *
-     * @return  bool
+     * @return bool
      */
     public function isAvailable();
 
     /**
      * Reads additional parameters to execute the action.
+     *
+     * @return void
      */
     public function readFormParameters();
 
     /**
      * Resets the internally stored additional action parameters.
+     *
+     * @return void
      */
     public function reset();
 
     /**
      * Validates the additional action parameters.
+     *
+     * @return void
      */
     public function validate();
 
     /**
      * Returns true if the action can be executed in a worker.
      *
-     * @return  bool
      * @since 6.1
      */
     public function canRunInWorker(): bool;
@@ -71,7 +79,7 @@ interface IBulkProcessingAction
     /**
      * Returns the additional action parameters that should be serialized.
      *
-     * @return  array
+     * @return mixed[]
      * @since 6.1
      */
     public function getAdditionalParameters(): array;
@@ -79,7 +87,7 @@ interface IBulkProcessingAction
     /**
      * Loads the additional action parameters from the given data.
      *
-     * @param array $data
+     * @param mixed[] $data
      * @since 6.1
      */
     public function loadAdditionalParameters(array $data): void;

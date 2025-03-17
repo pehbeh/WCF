@@ -23,6 +23,7 @@ interface ISearchIndexManager
      * @param string $username
      * @param int $languageID
      * @param string $metaData
+     * @return void
      */
     public function set(
         $objectType,
@@ -41,6 +42,7 @@ interface ISearchIndexManager
      *
      * @param string $objectType
      * @param int[] $objectIDs
+     * @return void
      */
     public function delete($objectType, array $objectIDs);
 
@@ -48,21 +50,28 @@ interface ISearchIndexManager
      * Resets the search index.
      *
      * @param string $objectType
+     * @return void
      */
     public function reset($objectType);
 
     /**
      * Creates the search index for all searchable objects.
+     *
+     * @return void
      */
     public function createSearchIndices();
 
     /**
      * Begins the bulk operation.
+     *
+     * @return void
      */
     public function beginBulkOperation();
 
     /**
      * Commits the bulk operation.
+     *
+     * @return void
      */
     public function commitBulkOperation();
 }

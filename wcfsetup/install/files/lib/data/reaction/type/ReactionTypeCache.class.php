@@ -33,7 +33,7 @@ class ReactionTypeCache extends SingletonFactory
      * Returns the reaction type with the given reactionTypeID.
      *
      * @param int $reactionTypeID
-     * @return  ReactionType|null
+     * @return ?ReactionType
      */
     public function getReactionTypeByID($reactionTypeID)
     {
@@ -44,7 +44,7 @@ class ReactionTypeCache extends SingletonFactory
      * Returns the reaction types with the given reactionTypeIDs.
      *
      * @param int[] $reactionTypeIDs
-     * @return  ReactionType[]
+     * @return ReactionType[]
      */
     public function getReactionTypesByID(array $reactionTypeIDs)
     {
@@ -60,7 +60,7 @@ class ReactionTypeCache extends SingletonFactory
     /**
      * Return all reaction types.
      *
-     * @return  ReactionType[]
+     * @return ReactionType[]
      */
     public function getReactionTypes()
     {
@@ -69,6 +69,8 @@ class ReactionTypeCache extends SingletonFactory
 
     /**
      * Resets the cache for the trophies.
+     *
+     * @return void
      */
     public function clearCache()
     {

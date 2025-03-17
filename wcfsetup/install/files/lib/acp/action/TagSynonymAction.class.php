@@ -81,6 +81,9 @@ final class TagSynonymAction implements RequestHandlerInterface
         }
     }
 
+    /**
+     * @param Tag[] $tags
+     */
     private function getForm(array $tags): Psr15DialogForm
     {
         $form = new Psr15DialogForm(

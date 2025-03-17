@@ -15,6 +15,9 @@ use wcf\event\IPsr14Event;
  */
 final class RegistrationSpamChecking implements IPsr14Event
 {
+    /**
+     * @var string[]
+     */
     private array $matches = [];
 
     public function __construct(
@@ -34,6 +37,9 @@ final class RegistrationSpamChecking implements IPsr14Event
         $this->matches[$key] = $key;
     }
 
+    /**
+     * @return string[]
+     */
     public function getMatches(): array
     {
         return \array_values($this->matches);

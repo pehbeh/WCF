@@ -3,6 +3,7 @@
 namespace wcf\system\option;
 
 use wcf\data\custom\option\CustomOption;
+use wcf\data\option\category\OptionCategory;
 use wcf\data\option\Option;
 use wcf\system\exception\NotImplementedException;
 use wcf\system\exception\UserInputException;
@@ -13,6 +14,10 @@ use wcf\system\exception\UserInputException;
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @template TOption of CustomOption = CustomOption
+ * @extends OptionHandler<TOption, OptionCategory>
+ * @phpstan-import-type ParsedOption from OptionHandler
  */
 abstract class CustomOptionHandler extends OptionHandler
 {
@@ -45,7 +50,7 @@ abstract class CustomOptionHandler extends OptionHandler
     /**
      * Returns the parsed options.
      *
-     * @return  array
+     * @return list<ParsedOption>
      */
     public function getOptions()
     {
@@ -62,7 +67,6 @@ abstract class CustomOptionHandler extends OptionHandler
      */
     public function readData()
     {
-        /** @var CustomOption $option */
         foreach ($this->options as $option) {
             if (!isset($this->optionValues[$option->optionName])) {
                 $this->optionValues[$option->optionName] = $option->defaultValue;
@@ -72,6 +76,8 @@ abstract class CustomOptionHandler extends OptionHandler
 
     /**
      * Resets the option values.
+     *
+     * @return void
      */
     public function resetOptionValues()
     {
@@ -81,7 +87,7 @@ abstract class CustomOptionHandler extends OptionHandler
     /**
      * Returns the option values.
      *
-     * @return  array
+     * @return array<string, string>
      */
     public function getOptionValues()
     {
@@ -91,7 +97,8 @@ abstract class CustomOptionHandler extends OptionHandler
     /**
      * Sets the option values.
      *
-     * @param array $values
+     * @param array<string, string> $values
+     * @return void
      */
     public function setOptionValues(array $values)
     {
@@ -106,7 +113,6 @@ abstract class CustomOptionHandler extends OptionHandler
         $optionData = parent::getOption($optionName);
 
         if (isset($this->optionValues[$optionName])) {
-            /** @noinspection PhpUndefinedMethodInspection */
             $optionData['object']->setOptionValue($this->optionValues[$optionName]);
         }
 
@@ -118,8 +124,6 @@ abstract class CustomOptionHandler extends OptionHandler
      */
     protected function validateOption(Option $option)
     {
-        /** @var CustomOption $option */
-
         parent::validateOption($option);
 
         if ($option->required && empty($this->optionValues[$option->optionName])) {

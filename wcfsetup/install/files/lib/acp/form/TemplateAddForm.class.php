@@ -88,8 +88,7 @@ class TemplateAddForm extends AbstractFormBuilderForm
                                 );
                                 \assert($templateGroup instanceof TemplateGroup);
 
-                                $tplNameFormField = $formField->getDocument()->getNodeById('templateName');
-                                \assert($tplNameFormField instanceof TextFormField);
+                                $tplNameFormField = $formField->getDocument()->getFormField('templateName');
                                 $tplName = $tplNameFormField->getSaveValue();
 
                                 if (
@@ -130,9 +129,7 @@ class TemplateAddForm extends AbstractFormBuilderForm
                         )
                         ->addValidator(
                             new FormFieldValidator('unique', function (TextFormField $formField) {
-                                $templateGroupIDFormField = $formField->getDocument()->getNodeById('templateGroupID');
-                                \assert($templateGroupIDFormField instanceof SingleSelectionFormField);
-
+                                $templateGroupIDFormField = $formField->getDocument()->getFormField('templateGroupID');
                                 $conditionBuilder = new PreparedStatementConditionBuilder();
                                 $conditionBuilder->add('templateName = ?', [$formField->getSaveValue()]);
                                 $conditionBuilder->add('templateGroupID = ?', [
@@ -261,12 +258,10 @@ class TemplateAddForm extends AbstractFormBuilderForm
         parent::readData();
 
         if ($_POST === [] && isset($this->copiedTemplate)) {
-            $templateSource = $this->form->getNodeById('templateSource');
-            \assert($templateSource instanceof SourceCodeFormField);
+            $templateSource = $this->form->getFormField('templateSource');
             $templateSource->value($this->copiedTemplate->getSource());
 
-            $templateName = $this->form->getNodeById('templateName');
-            \assert($templateName instanceof TextFormField);
+            $templateName = $this->form->getFormField('templateName');
             $templateName->value($this->copiedTemplate->templateName);
         }
     }

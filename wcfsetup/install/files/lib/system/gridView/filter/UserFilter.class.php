@@ -36,7 +36,7 @@ class UserFilter extends AbstractFilter
     #[\Override]
     public function renderValue(string $value): string
     {
-        $user = UserRuntimeCache::getInstance()->getObject($value);
+        $user = UserRuntimeCache::getInstance()->getObject((int)$value);
 
         return $user ? $user->username : '';
     }

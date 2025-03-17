@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\ExceptionLogGridView;
 use wcf\system\registry\RegistryHandler;
 
@@ -13,8 +12,10 @@ use wcf\system\registry\RegistryHandler;
  * @author  Tim Duesterhus
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @extends AbstractGridViewPage<ExceptionLogGridView>
  */
-class ExceptionLogViewPage extends AbstractGridViewPage
+final class ExceptionLogViewPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -40,7 +41,7 @@ class ExceptionLogViewPage extends AbstractGridViewPage
     }
 
     #[\Override]
-    protected function createGridViewController(): AbstractGridView
+    protected function createGridView(): ExceptionLogGridView
     {
         return new ExceptionLogGridView(true);
     }

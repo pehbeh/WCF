@@ -69,6 +69,7 @@ class UserRank extends DatabaseObject implements ITitledObject
 
     /**
      * @see UploadFormField::updatedObject()
+     * @return list<string>
      */
     public function getRankImageFileUploadFileLocations(): array
     {

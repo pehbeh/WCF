@@ -11,9 +11,8 @@ use wcf\data\DatabaseObjectEditor;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static StyleVariable   create(array $parameters = [])
- * @method      StyleVariable   getDecoratedObject()
  * @mixin       StyleVariable
+ * @extends DatabaseObjectEditor<StyleVariable>
  */
 class StyleVariableEditor extends DatabaseObjectEditor
 {

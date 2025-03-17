@@ -74,6 +74,9 @@ class FileTemporary extends DatabaseObject
         return $this->getPath() . $this->getFilename();
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getContext(): array
     {
         return JSON::decode($this->context);

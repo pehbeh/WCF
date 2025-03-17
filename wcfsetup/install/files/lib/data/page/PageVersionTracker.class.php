@@ -15,8 +15,8 @@ use wcf\system\request\LinkHandler;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method  Page    getDecoratedObject()
  * @mixin   Page
+ * @extends DatabaseObjectDecorator<Page>
  */
 class PageVersionTracker extends DatabaseObjectDecorator implements IVersionTrackerObject
 {
@@ -43,6 +43,7 @@ class PageVersionTracker extends DatabaseObjectDecorator implements IVersionTrac
      * Adds an page content object as child.
      *
      * @param PageContent $content page content object
+     * @return void
      */
     public function addContent(PageContent $content)
     {
@@ -53,6 +54,7 @@ class PageVersionTracker extends DatabaseObjectDecorator implements IVersionTrac
      * Sets the list of page content objects.
      *
      * @param PageContent[] $content page content objects
+     * @return void
      */
     public function setContent(array $content)
     {
@@ -62,7 +64,7 @@ class PageVersionTracker extends DatabaseObjectDecorator implements IVersionTrac
     /**
      * Returns the list of stored page content objects.
      *
-     * @return      PageContent[]   stored page content objects
+     * @return PageContent[]   stored page content objects
      */
     public function getContent()
     {

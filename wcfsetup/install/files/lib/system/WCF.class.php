@@ -125,7 +125,7 @@ class WCF
 
     /**
      * list of autoload directories
-     * @var array
+     * @var array<string, string>
      */
     protected static $autoloadDirectories = [
         'wcf' => WCF_DIR . 'lib/',
@@ -234,6 +234,8 @@ class WCF
      *
      * You *must* not create output in here under normal circumstances, as it might get eaten
      * when gzip is enabled.
+     *
+     * @return void
      */
     public static function destruct()
     {
@@ -325,7 +327,7 @@ class WCF
     /**
      * Calls the show method on the given exception.
      */
-    final public static function handleException(\Throwable $e)
+    final public static function handleException(\Throwable $e): never
     {
         // backwards compatibility
         if ($e instanceof IPrintableException) {
@@ -345,6 +347,8 @@ class WCF
         @\header('HTTP/1.1 500 Internal Server Error');
         try {
             \wcf\functions\exception\printThrowable($e);
+
+            exit;
         } catch (\Throwable $e2) {
             echo "<pre>An Exception was thrown while handling an Exception:\n\n";
             echo \preg_replace('/Database->__construct\(.*\)/', 'Database->__construct(...)', $e2);
@@ -881,7 +885,8 @@ class WCF
     }
 
     /**
-     * @inheritDoc
+     * @param mixed[] $arguments
+     * @return ?object
      */
     final public function __call(string $name, array $arguments)
     {
@@ -896,9 +901,9 @@ class WCF
     /**
      * Returns dynamically loaded core objects.
      *
-     * @param array $arguments
-     * @return  object|null
-     * @throws  SystemException
+     * @param mixed[] $arguments
+     * @return ?object
+     * @throws SystemException
      */
     final public static function __callStatic(string $name, array $arguments)
     {
@@ -994,6 +999,7 @@ class WCF
     }
 
     /**
+     * @param string $fragment
      * @deprecated 5.5 - Put a '#' followed by the fragment as the anchor's href. Make sure to |rawurlencode any variables that may contain special characters.
      */
     public function getAnchor($fragment): string

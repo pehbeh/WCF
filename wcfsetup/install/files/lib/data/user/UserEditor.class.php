@@ -20,8 +20,9 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method  User    getDecoratedObject()
  * @mixin   User
+ * @extends DatabaseObjectEditor<User>
+ * @implements IEditableCachedObject<User>
  */
 class UserEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {
@@ -32,7 +33,7 @@ class UserEditor extends DatabaseObjectEditor implements IEditableCachedObject
 
     /**
      * list of user options default values
-     * @var array
+     * @var array<int, int|float|string>
      */
     protected static $userOptionDefaultValues;
 
@@ -61,7 +62,6 @@ class UserEditor extends DatabaseObjectEditor implements IEditableCachedObject
 
     /**
      * @inheritDoc
-     * @return  User
      */
     public static function create(array $parameters = [])
     {
@@ -117,6 +117,8 @@ class UserEditor extends DatabaseObjectEditor implements IEditableCachedObject
 
     /**
      * Inserts default options.
+     *
+     * @return void
      */
     protected static function createUserOptions(int $userID)
     {
@@ -153,7 +155,7 @@ class UserEditor extends DatabaseObjectEditor implements IEditableCachedObject
     /**
      * Updates user options.
      *
-     * @param array $userOptions
+     * @param array<int, int|float|string> $userOptions
      */
     public function updateUserOptions(array $userOptions = []): void
     {

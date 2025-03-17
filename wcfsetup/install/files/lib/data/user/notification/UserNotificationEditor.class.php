@@ -12,9 +12,8 @@ use wcf\system\user\notification\UserNotificationHandler;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static UserNotification    create(array $parameters = [])
- * @method      UserNotification    getDecoratedObject()
  * @mixin       UserNotification
+ * @extends DatabaseObjectEditor<UserNotification>
  */
 class UserNotificationEditor extends DatabaseObjectEditor
 {
@@ -26,6 +25,7 @@ class UserNotificationEditor extends DatabaseObjectEditor
     /**
      * Marks this notification as confirmed.
      *
+     * @return void
      * @deprecated 5.2 Please use `UserNotificationHandler::markAsConfirmedByIDs()` instead.
      */
     public function markAsConfirmed()

@@ -6,6 +6,7 @@ use wcf\event\worker\RebuildWorkerCollecting;
 use wcf\page\AbstractPage;
 use wcf\system\event\EventHandler;
 use wcf\system\WCF;
+use wcf\system\worker\RegisteredWorker;
 
 /**
  * Show the list of available rebuild data options.
@@ -27,7 +28,7 @@ final class RebuildDataPage extends AbstractPage
     public $neededPermissions = ['admin.management.canRebuildData'];
 
     /**
-     * @var iterable
+     * @var iterable<RegisteredWorker>
      */
     private iterable $workers;
 

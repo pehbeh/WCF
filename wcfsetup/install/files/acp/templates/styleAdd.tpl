@@ -2,7 +2,6 @@
 
 <link href="{@$__wcf->getPath()}acp/style/acpStyleEditor.css?v={LAST_UPDATE_TIME}" type="text/css" rel="stylesheet">
 
-{js application='wcf' acp='true' file='WCF.ACP.Style'}
 {include file='shared_colorPickerJavaScript'}
 
 <script data-relocate="true">
@@ -16,14 +15,6 @@
 	});
 	
 	$(function() {
-		{if $action == 'edit'}
-			new WCF.ACP.Style.CopyStyle({@$style->styleID});
-			
-			WCF.Language.addObject({
-				'wcf.acp.style.copyStyle.confirmMessage': '{jslang}wcf.acp.style.copyStyle.confirmMessage{/jslang}'
-			});
-		{/if}
-		
 		$('.jsUnitSelect').change(function(event) {
 			var $target = $(event.currentTarget);
 			$target.prev().attr('step', (($target.val() === 'em' || $target.val() === 'rem') ? '0.01' : '1'));
@@ -56,24 +47,11 @@
 							</a>
 						{/if}
 					</li>
-				{elseif $isTainted}
-					<li>
-						<button
-							class="button jsButtonAddDarkMode"
-							data-endpoint="{link controller='StyleAddDarkMode' object=$style}{/link}"
-							data-question="{lang}wcf.acp.style.addDarkMode.question{/lang}"
-						>
-							{icon name='palette'}
-							<span>{lang}wcf.acp.style.addDarkMode{/lang}</span>
-						</button>
-					</li>
 				{/if}
-				<li><a href="{link controller='StyleExport' id=$style->styleID}{/link}" class="button">{icon name='download'} <span>{lang}wcf.acp.style.exportStyle{/lang}</span></a></li>
-				<li><a class="jsCopyStyle button">{icon name='copy'} <span>{lang}wcf.acp.style.copyStyle{/lang}</span></a></li>
+				<li>
+					{unsafe:$interactionContextMenu->render()}
+				</li>
 			{/if}
-			
-			<li><a href="{link controller='StyleList'}{/link}" class="button">{icon name='list'} <span>{lang}wcf.acp.menu.link.style.list{/lang}</span></a></li>
-			
 			{event name='contentHeaderNavigation'}
 		</ul>
 	</nav>

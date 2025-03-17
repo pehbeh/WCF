@@ -18,6 +18,9 @@ use wcf\util\StringUtil;
  */
 class GridViewRowLink
 {
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function __construct(
         private readonly string $controllerClass = '',
         private readonly array $parameters = [],

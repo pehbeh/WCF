@@ -11,9 +11,8 @@ use wcf\data\DatabaseObjectEditor;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @method static UserObjectWatch     create(array $parameters = [])
- * @method      UserObjectWatch     getDecoratedObject()
  * @mixin       UserObjectWatch
+ * @extends DatabaseObjectEditor<UserObjectWatch>
  */
 class UserObjectWatchEditor extends DatabaseObjectEditor
 {

@@ -37,7 +37,7 @@ class MailWorker extends AbstractWorker
 
     /**
      * mail data
-     * @var array
+     * @var array{action: string, enableHTML: 1|0, from: string, fromName?: string, groupIDs: int[], 'message-id': string, subject: string, text: string, userIDs: int[]}
      */
     protected $mailData;
 
@@ -173,6 +173,7 @@ class MailWorker extends AbstractWorker
      *
      * @param Email $blueprint
      * @param User $user
+     * @return void
      */
     protected function sendMail(Email $blueprint, User $user)
     {

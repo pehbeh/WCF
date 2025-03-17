@@ -11,7 +11,6 @@ import * as Core from "../../../Core";
 import DomUtil from "../../../Dom/Util";
 import * as EventHandler from "../../../Event/Handler";
 import * as UiScreen from "../../../Ui/Screen";
-import { setup as setupDarkMode } from "./DarkMode";
 
 const _stylePreviewRegions = new Map<string, HTMLElement>();
 let _stylePreviewRegionMarker: HTMLElement;
@@ -258,7 +257,6 @@ function initVisualEditor(): void {
 export function setup(options: StyleEditorOptions): void {
   handleLayoutWidth();
   handleScss(options.isTainted);
-  setupDarkMode();
 
   if (!options.isTainted) {
     handleProtection(options.styleId);

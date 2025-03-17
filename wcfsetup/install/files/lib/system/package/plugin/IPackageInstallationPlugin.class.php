@@ -15,11 +15,15 @@ interface IPackageInstallationPlugin
 {
     /**
      * Executes the installation of this plugin.
+     *
+     * @return mixed
      */
     public function install();
 
     /**
      * Executes the update of this plugin.
+     *
+     * @return mixed
      */
     public function update();
 
@@ -33,6 +37,8 @@ interface IPackageInstallationPlugin
 
     /**
      * Executes the uninstallation of this plugin.
+     *
+     * @return void
      */
     public function uninstall();
 

@@ -42,7 +42,7 @@ abstract class AbstractCategoryAddForm extends AbstractForm
 
     /**
      * additional category data
-     * @var array
+     * @var array<string, mixed>
      */
     public $additionalData = [];
 
@@ -173,6 +173,8 @@ abstract class AbstractCategoryAddForm extends AbstractForm
 
     /**
      * Checks if the active user has the needed permissions to add a new category.
+     *
+     * @return void
      */
     protected function checkCategoryPermissions()
     {
@@ -183,6 +185,8 @@ abstract class AbstractCategoryAddForm extends AbstractForm
 
     /**
      * Reads the categories.
+     *
+     * @return void
      */
     protected function readCategories()
     {
@@ -360,7 +364,7 @@ abstract class AbstractCategoryAddForm extends AbstractForm
     }
 
     /**
-     * @inheritDoc
+     * @return void
      */
     protected function validateParentCategory()
     {

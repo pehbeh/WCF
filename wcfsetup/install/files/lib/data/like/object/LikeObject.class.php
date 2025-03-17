@@ -26,6 +26,12 @@ use wcf\util\JSON;
  * @property-read   string $cachedUsers        serialized array with the ids and names of the three users who liked (+1) the object last
  * @property-read   string $cachedReactions    serialized array with the reactionTypeIDs and the count of the reactions
  * @property-read   int $reactionTypeID
+ * @phpstan-type ReactionData array{
+ *  reactionCount: int,
+ *  renderedReactionIcon: string,
+ *  renderedReactionIconEncoded: string,
+ *  reactionTitle: string,
+ * }
  */
 class LikeObject extends DatabaseObject
 {
@@ -50,7 +56,7 @@ class LikeObject extends DatabaseObject
      * An array with all reaction types, which were received for the object. As key, the reactionTypeID
      * is used. As value there is another array. If the object does not received any reaction yet,
      * an empty array is returned.
-     * @var array
+     * @var array<int, ReactionData>
      */
     protected $reactions = [];
 
@@ -106,8 +112,8 @@ class LikeObject extends DatabaseObject
      * instead of the user (as the method name suggests). This behavior is intentional and helps
      * to establish backward compatibility.
      *
-     * @return  mixed[]
-     * @deprecated  since 5.2
+     * @return mixed[]
+     * @deprecated since 5.2
      */
     public function getUsers()
     {
@@ -134,7 +140,7 @@ class LikeObject extends DatabaseObject
     /**
      * Returns the liked object.
      *
-     * @return  ILikeObject
+     * @return ILikeObject
      */
     public function getLikedObject()
     {
@@ -149,20 +155,10 @@ class LikeObject extends DatabaseObject
     }
 
     /**
-     * Returns an array with all reaction types, which were received for the object. As key, the reactionTypeID
-     * is used. As value there is another array, which has the following structure:
+     * Returns an array with all reaction types, which were received for the object.
      *
-     * [
-     *      'reactionCount' => int,
-     *      'renderedReactionIcon' => string,
-     *      'renderedReactionIconEncoded' => string,
-     *      'reactionTitle' => string,
-     * ]
-     *
-     * If the object does not received any reaction yet, an empty array is returned.
-     *
-     * @return  array
-     * @since   5.2
+     * @return array<int, ReactionData>
+     * @since 5.2
      */
     public function getReactions()
     {
@@ -188,7 +184,7 @@ class LikeObject extends DatabaseObject
     /**
      * Sets the liked object.
      *
-     * @param ILikeObject $likedObject
+     * @return void
      */
     public function setLikedObject(ILikeObject $likedObject)
     {

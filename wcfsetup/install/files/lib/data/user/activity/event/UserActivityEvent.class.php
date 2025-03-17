@@ -17,7 +17,7 @@ use wcf\data\DatabaseObject;
  * @property-read   int|null $languageID     id of the language of the related object or null if the object has no specific language
  * @property-read   int $userID         id of the user who has triggered the user activity event
  * @property-read   int $time           timestamp at which the user activity event has been triggered
- * @property-read   array $additionalData     array with additional data of the user activity event
+ * @property-read   mixed[] $additionalData     array with additional data of the user activity event
  */
 class UserActivityEvent extends DatabaseObject
 {

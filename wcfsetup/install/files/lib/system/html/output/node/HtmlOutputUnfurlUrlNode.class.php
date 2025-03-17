@@ -20,6 +20,9 @@ use wcf\system\message\embedded\object\MessageEmbeddedObjectManager;
  */
 class HtmlOutputUnfurlUrlNode extends AbstractHtmlOutputNode
 {
+    /**
+     * @var string[]
+     */
     private static $disableUnfurlingForContext = ['com.woltlab.wcf.user.signature'];
 
     /**

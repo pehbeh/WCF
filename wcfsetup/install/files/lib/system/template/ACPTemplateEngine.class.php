@@ -33,6 +33,7 @@ class ACPTemplateEngine extends TemplateEngine
      * Deletes all compiled acp templates.
      *
      * @param string $compileDir
+     * @return void
      */
     public static function deleteCompiledACPTemplates($compileDir = '')
     {

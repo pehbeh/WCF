@@ -14,11 +14,7 @@ use wcf\system\message\embedded\object\MessageEmbeddedObjectManager;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
  *
- * @method  ViewableArticleContent      current()
- * @method  ViewableArticleContent[]    getObjects()
- * @method  ViewableArticleContent|null getSingleObject()
- * @method  ViewableArticleContent|null search($objectID)
- * @property    ViewableArticleContent[] $objects
+ * @extends ArticleContentList<ViewableArticleContent>
  */
 class ViewableArticleContentList extends ArticleContentList
 {

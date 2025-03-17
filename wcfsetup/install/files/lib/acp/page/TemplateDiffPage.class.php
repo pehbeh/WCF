@@ -52,7 +52,7 @@ class TemplateDiffPage extends AbstractPage
 
     /**
      * differences between both templates
-     * @var array
+     * @var mixed[]
      */
     public $diff;
 

@@ -44,7 +44,7 @@ class RpcInteraction extends AbstractInteraction
         }
 
         if (\is_string($this->confirmationMessage)) {
-            $confirmationMessage = WCF::getLanguage()->get($this->confirmationMessage);
+            $confirmationMessage = WCF::getLanguage()->getDynamicVariable($this->confirmationMessage);
         } else {
             $confirmationMessage = ($this->confirmationMessage)($object);
         }

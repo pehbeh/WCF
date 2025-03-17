@@ -15,15 +15,15 @@ interface IRequestRoute
     /**
      * Builds a link upon route components.
      *
-     * @param array $components
-     * @return  string
+     * @param array<string, string> $components
+     * @return string
      */
     public function buildLink(array $components);
 
     /**
      * Returns true if current route can handle the build request.
      *
-     * @param array $components
+     * @param array<string, string> $components
      * @return  bool
      */
     public function canHandle(array $components);
@@ -31,7 +31,7 @@ interface IRequestRoute
     /**
      * Returns parsed route data.
      *
-     * @return  array
+     * @return array<string, string|bool>
      */
     public function getRouteData();
 

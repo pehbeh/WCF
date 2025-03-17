@@ -84,7 +84,7 @@ final class OptionFormField extends ItemListFormField implements IPackagesFormFi
     /**
      * @inheritDoc
      */
-    protected static function getDefaultId()
+    protected static function getDefaultId(): string
     {
         return 'options';
     }

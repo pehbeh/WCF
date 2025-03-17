@@ -38,7 +38,9 @@ class UserObjectWatchHandler extends SingletonFactory
     }
 
     /**
-     * @inheritDoc
+     * @param string $objectType
+     * @param int $objectID
+     * @return void
      */
     public function resetObject($objectType, $objectID)
     {
@@ -50,6 +52,7 @@ class UserObjectWatchHandler extends SingletonFactory
      *
      * @param string $objectType
      * @param int[] $objectIDs
+     * @return void
      */
     public function resetObjects($objectType, array $objectIDs)
     {
@@ -80,6 +83,7 @@ class UserObjectWatchHandler extends SingletonFactory
      * @param string $objectType
      * @param int[] $objectIDs
      * @param int[] $userIDs
+     * @return void
      */
     public function deleteObjects($objectType, array $objectIDs, array $userIDs = [])
     {
@@ -109,7 +113,8 @@ class UserObjectWatchHandler extends SingletonFactory
      * @param string $notificationEventName
      * @param string $notificationObjectType
      * @param IUserNotificationObject $notificationObject
-     * @param array $additionalData
+     * @param mixed[] $additionalData
+     * @return void
      */
     public function updateObject(
         $objectType,
@@ -154,6 +159,7 @@ class UserObjectWatchHandler extends SingletonFactory
      * the notification status (`1` = should get a notification,
      * `0` = should not get a notification).
      *
+     * @return array<int, 0|1>
      * @since 5.5
      */
     public function getSubscribers(string $objectType, int $objectID): array
@@ -168,6 +174,7 @@ class UserObjectWatchHandler extends SingletonFactory
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute([$objectTypeObj->objectTypeID, $objectID]);
 
+        // @phpstan-ignore return.type
         return $statement->fetchMap('userID', 'notification');
     }
 
@@ -175,6 +182,8 @@ class UserObjectWatchHandler extends SingletonFactory
      * Updates a watched object for all subscribers including subscribers
      * of the parent object.
      *
+     * @param mixed[] $additionalData
+     * @return void
      * @since 5.5
      */
     public function updateObjectWithParent(

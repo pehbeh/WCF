@@ -2,6 +2,7 @@
 
 namespace wcf\system\gridView\filter;
 
+use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\system\form\builder\field\AbstractFormField;
 
@@ -22,6 +23,8 @@ interface IGridViewFilter
 
     /**
      * Applies the filter to the given database object list.
+     *
+     * @param DatabaseObjectList<DatabaseObject> $list
      */
     public function applyFilter(DatabaseObjectList $list, string $id, string $value): void;
 

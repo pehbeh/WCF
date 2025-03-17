@@ -3,6 +3,7 @@
 namespace wcf\system\package\plugin;
 
 use wcf\data\acp\menu\item\ACPMenuItem;
+use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\page\IPage;
 use wcf\system\devtools\pip\IDevtoolsPipEntryList;
@@ -129,6 +130,7 @@ abstract class AbstractMenuPackageInstallationPlugin extends AbstractXMLPackageI
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function addFormFields(IFormDocument $form)
@@ -148,7 +150,7 @@ abstract class AbstractMenuPackageInstallationPlugin extends AbstractXMLPackageI
                         // replace `Editor` with `List`
                         $listClassName = \substr($this->className, 0, -6) . 'List';
 
-                        /** @var DatabaseObjectList $menuItemList */
+                        /** @var DatabaseObjectList<DatabaseObject> $menuItemList */
                         $menuItemList = new $listClassName();
                         $menuItemList->getConditionBuilder()->add('menuItem = ?', [$formField->getValue()]);
 
@@ -211,8 +213,7 @@ abstract class AbstractMenuPackageInstallationPlugin extends AbstractXMLPackageI
                             $formField->getDocument()->getFormMode() === IFormDocument::FORM_MODE_UPDATE
                             && $formField->getSaveValue() !== ''
                         ) {
-                            /** @var TextFormField $menuItemField */
-                            $menuItemField = $formField->getDocument()->getNodeById('menuItem');
+                            $menuItemField = $formField->getDocument()->getFormField('menuItem');
                             $menuItem = $menuItemField->getSaveValue();
                             $parentMenuItem = $formField->getSaveValue();
 
@@ -268,11 +269,8 @@ abstract class AbstractMenuPackageInstallationPlugin extends AbstractXMLPackageI
                 ->description('wcf.acp.pip.abstractMenu.menuItemLink.description')
                 ->objectProperty('link')
                 ->addValidator(new FormFieldValidator('linkSpecified', function (TextFormField $formField) {
-                    /** @var TextFormField $menuItem */
-                    $menuItem = $formField->getDocument()->getNodeById('menuItem');
-
-                    /** @var ClassNameFormField $menuItemController */
-                    $menuItemController = $formField->getDocument()->getNodeById('menuItemController');
+                    $menuItem = $formField->getDocument()->getFormField('menuItem');
+                    $menuItemController = $formField->getDocument()->getFormField('menuItemController');
 
                     // ensure that either a menu item controller is specified or a link
                     // and workaround for special ACP menu item `wcf.acp.menu.link.option.category`
@@ -290,8 +288,7 @@ abstract class AbstractMenuPackageInstallationPlugin extends AbstractXMLPackageI
                 }))
                 ->addValidator(new FormFieldValidator('format', static function (TextFormField $formField) {
                     if ($formField->getSaveValue() !== '') {
-                        /** @var ClassNameFormField $menuItemController */
-                        $menuItemController = $formField->getDocument()->getNodeById('menuItemController');
+                        $menuItemController = $formField->getDocument()->getFormField('menuItemController');
 
                         if (!$menuItemController->getSaveValue() && !Url::is($formField->getSaveValue())) {
                             $formField->addValidationError(
@@ -332,6 +329,8 @@ abstract class AbstractMenuPackageInstallationPlugin extends AbstractXMLPackageI
 
     /**
      * @inheritDoc
+     * @param bool $saveData
+     * @return array<string, int|string>
      * @since   5.2
      */
     protected function fetchElementData(\DOMElement $element, $saveData)
@@ -394,6 +393,7 @@ abstract class AbstractMenuPackageInstallationPlugin extends AbstractXMLPackageI
 
     /**
      * @inheritDoc
+     * @return string
      * @since   5.2
      */
     public function getElementIdentifier(\DOMElement $element)
@@ -404,14 +404,17 @@ abstract class AbstractMenuPackageInstallationPlugin extends AbstractXMLPackageI
     /**
      * Returns data on the structure of the menu.
      *
-     * @return  array
+     * @return array{
+     *  levels: array<string, int>,
+     *  structure: array<string, array<string, ACPMenuItem>>
+     * }
      */
     protected function getMenuStructureData()
     {
         // replace `Editor` with `List`
         $listClassName = \substr($this->className, 0, -6) . 'List';
 
-        /** @var DatabaseObjectList $menuItemList */
+        /** @var DatabaseObjectList<DatabaseObject> $menuItemList */
         $menuItemList = new $listClassName();
         $menuItemList->getConditionBuilder()->add('packageID IN (?)', [
             \array_merge(
@@ -424,10 +427,11 @@ abstract class AbstractMenuPackageInstallationPlugin extends AbstractXMLPackageI
 
         // for better IDE auto-completion, we use `ACPMenuItem`, but the
         // menu items can also belong to other menus
-        /** @var ACPMenuItem[] $menuItems */
+        /** @var array<string, ACPMenuItem> $menuItems */
         $menuItems = [];
-        /** @var ACPMenuItem[][] $menuStructure */
+        /** @var array<string, array<string, ACPMenuItem>> $menuStructure */
         $menuStructure = [];
+        /** @var ACPMenuItem $menuItem */
         foreach ($menuItemList as $menuItem) {
             if (!isset($menuStructure[$menuItem->parentMenuItem])) {
                 $menuStructure[$menuItem->parentMenuItem] = [];
@@ -437,6 +441,7 @@ abstract class AbstractMenuPackageInstallationPlugin extends AbstractXMLPackageI
             $menuItems[$menuItem->menuItem] = $menuItem;
         }
 
+        /** @var array<string, int> $menuItemLevels */
         $menuItemLevels = [];
         foreach ($menuStructure as $parentMenuItemName => $childMenuItems) {
             $menuItemsLevel = 1;
@@ -459,6 +464,7 @@ abstract class AbstractMenuPackageInstallationPlugin extends AbstractXMLPackageI
 
     /**
      * @inheritDoc
+     * @return void
      * @since   5.2
      */
     protected function setEntryListKeys(IDevtoolsPipEntryList $entryList)
@@ -471,6 +477,7 @@ abstract class AbstractMenuPackageInstallationPlugin extends AbstractXMLPackageI
 
     /**
      * @inheritDoc
+     * @return \DOMElement
      * @since   5.2
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)

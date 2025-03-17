@@ -444,7 +444,8 @@ class DateFormField extends AbstractFormField implements
 
     /**
      * @inheritDoc
-     * @since       5.4
+     * @return string[]
+     * @since 5.4
      */
     protected static function getReservedFieldAttributes(): array
     {
