@@ -1,6 +1,6 @@
 <?php
 
-namespace wcf\system\cache\tolerant;
+namespace wcf\system\cache\ephemeral;
 
 use Symfony\Contracts\Cache\ItemInterface;
 use wcf\data\user\User;
@@ -12,9 +12,9 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.2
  *
- * @extends AbstractTolerantCache<array<int, list<int>>>
+ * @extends AbstractEphemeralCache<array<int, list<int>>>
  */
-final class UserBirthdayCache extends AbstractTolerantCache
+final class UserBirthdayCache extends AbstractEphemeralCache
 {
     public function __construct(public readonly int $month)
     {

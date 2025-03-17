@@ -1,10 +1,10 @@
 <?php
 
-namespace wcf\system\cache\tolerant;
+namespace wcf\system\cache\ephemeral;
 
 use Symfony\Contracts\Cache\ItemInterface;
 use wcf\system\background\BackgroundQueueHandler;
-use wcf\system\background\job\TolerantCacheRebuildBackgroundJob;
+use wcf\system\background\job\EphemeralCacheRebuildBackgroundJob;
 use wcf\system\cache\CacheHandler;
 use wcf\system\cache\ICacheCallback;
 use wcf\util\ClassUtil;
@@ -18,7 +18,7 @@ use wcf\util\ClassUtil;
  * @template T of array|object
  * @implements ICacheCallback<T>
  */
-abstract class AbstractTolerantCache implements ICacheCallback
+abstract class AbstractEphemeralCache implements ICacheCallback
 {
     /**
      * @var T
@@ -40,7 +40,7 @@ abstract class AbstractTolerantCache implements ICacheCallback
                     }
 
                     BackgroundQueueHandler::getInstance()->enqueueIn(
-                        new TolerantCacheRebuildBackgroundJob(
+                        new EphemeralCacheRebuildBackgroundJob(
                             $item,
                             \get_class($this),
                             ClassUtil::getObjectProperties($this, \ReflectionProperty::IS_READONLY)
@@ -63,7 +63,7 @@ abstract class AbstractTolerantCache implements ICacheCallback
         if (!isset($this->cacheName)) {
             /* @see AbstractEagerCache::getCacheKey() */
             $this->cacheName = \str_replace(
-                ['\\', 'system_cache_tolerant_'],
+                ['\\', 'system_cache_ephemeral_'],
                 ['_', ''],
                 \get_class($this)
             );

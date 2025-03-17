@@ -2,7 +2,7 @@
 
 namespace wcf\system\cache\builder;
 
-use wcf\system\cache\tolerant\UserBirthdayCache;
+use wcf\system\cache\ephemeral\UserBirthdayCache;
 
 /**
  * Caches user birthdays (one cache file per month).

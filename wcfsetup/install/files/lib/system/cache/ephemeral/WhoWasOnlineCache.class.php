@@ -1,6 +1,6 @@
 <?php
 
-namespace wcf\system\cache\tolerant;
+namespace wcf\system\cache\ephemeral;
 
 use Symfony\Contracts\Cache\ItemInterface;
 use wcf\system\WCF;
@@ -11,9 +11,9 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.2
  *
- * @extends AbstractTolerantCache<list<int>>
+ * @extends AbstractEphemeralCache<list<int>>
  */
-final class WhoWasOnlineCache extends AbstractTolerantCache
+final class WhoWasOnlineCache extends AbstractEphemeralCache
 {
     #[\Override]
     public function __invoke(ItemInterface $item): array

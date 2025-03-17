@@ -2,7 +2,7 @@
 
 namespace wcf\system\cache\builder;
 
-use wcf\system\cache\tolerant\WhoWasOnlineCache;
+use wcf\system\cache\ephemeral\WhoWasOnlineCache;
 
 /**
  * Caches a list of users that visited the website in last 24 hours.

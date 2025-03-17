@@ -5,7 +5,7 @@ namespace wcf\system\background\job;
 use Symfony\Component\Cache\CacheItem;
 use Symfony\Contracts\Cache\ItemInterface;
 use wcf\system\cache\CacheHandler;
-use wcf\system\cache\tolerant\AbstractTolerantCache;
+use wcf\system\cache\ephemeral\AbstractEphemeralCache;
 
 /**
  * @author Olaf Braun
@@ -13,13 +13,13 @@ use wcf\system\cache\tolerant\AbstractTolerantCache;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.2
  */
-final class TolerantCacheRebuildBackgroundJob extends AbstractUniqueBackgroundJob
+final class EphemeralCacheRebuildBackgroundJob extends AbstractUniqueBackgroundJob
 {
     private readonly ItemInterface $item;
     public function __construct(
         /** @var ItemInterface $item */
         ItemInterface $item,
-        /** @var class-string<AbstractTolerantCache<array|object> */
+        /** @var class-string<AbstractEphemeralCache<array|object> */
         public readonly string $cacheClass,
         /** @var array<string, mixed> */
         public readonly array $parameters = [],
@@ -41,7 +41,7 @@ final class TolerantCacheRebuildBackgroundJob extends AbstractUniqueBackgroundJo
     #[\Override]
     public function newInstance(): static
     {
-        return new TolerantCacheRebuildBackgroundJob($this->item, $this->cacheClass, $this->parameters);
+        return new EphemeralCacheRebuildBackgroundJob($this->item, $this->cacheClass, $this->parameters);
     }
 
     #[\Override]
@@ -61,10 +61,10 @@ final class TolerantCacheRebuildBackgroundJob extends AbstractUniqueBackgroundJo
 
         $startTime = microtime(true);
 
-        $tolerantCache = new $this->cacheClass(...$this->parameters);
+        $ephemeralCache = new $this->cacheClass(...$this->parameters);
 
         $save = true;
-        $value = ($tolerantCache)($this->item, $save);
+        $value = ($ephemeralCache)($this->item, $save);
 
         static $setMetadata;
 
