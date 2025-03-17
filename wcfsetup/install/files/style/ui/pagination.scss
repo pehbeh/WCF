@@ -17,11 +17,15 @@
 }
 
 .pagination__link {
+	--padding-side: 8px;
+
 	border-radius: 4px;
 	color: var(--wcfContentText);
 	display: inline-block;
 	font-variant: tabular-nums;
-	padding: 4px 8px;
+	min-width: calc(2ch + 2 * var(--padding-side));
+	padding: 4px var(--padding-side);
+	text-align: center;
 }
 
 .pagination__link[aria-current="page"],
