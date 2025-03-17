@@ -98,6 +98,29 @@ final class ClassUtil
     }
 
     /**
+     * Returns the properties as a key-value array to construct the given object.
+     *
+     * @return array<string, mixed>
+     */
+    public static function getConstructorProperties(object $object): array
+    {
+        $reflection = new \ReflectionClass($object);
+
+        $properties = [];
+        foreach ($reflection->getConstructor()?->getParameters() ?? [] as $parameter) {
+            $property = $reflection->getProperty($parameter->getName());
+
+            if (!$property->isInitialized($object)) {
+                continue;
+            }
+
+            $properties[$property->getName()] = $property->getValue($object);
+        }
+
+        return $properties;
+    }
+
+    /**
      * Forbid creation of ClassUtil objects.
      */
     private function __construct()

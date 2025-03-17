@@ -5,6 +5,7 @@ namespace wcf\system\cache\tolerant;
 use wcf\system\background\BackgroundQueueHandler;
 use wcf\system\background\job\TolerantCacheRebuildBackgroundJob;
 use wcf\system\cache\CacheHandler;
+use wcf\util\ClassUtil;
 
 /**
  * @author Olaf Braun
@@ -40,9 +41,13 @@ abstract class AbstractTolerantCache
             }
 
             if ($this->needsRebuild()) {
-                BackgroundQueueHandler::getInstance()->enqueueIn(
-                    [new TolerantCacheRebuildBackgroundJob(\get_class($this), $this->getProperties())]
-                );
+                BackgroundQueueHandler::getInstance()->enqueueIn([
+                    new TolerantCacheRebuildBackgroundJob(
+                        \get_class($this),
+                        ClassUtil::getConstructorProperties($this)
+                    )
+                ]);
+                BackgroundQueueHandler::getInstance()->forceCheck();
             }
         }
         return $this->cache;
@@ -58,7 +63,7 @@ abstract class AbstractTolerantCache
                 \get_class($this)
             );
 
-            $parameters = $this->getProperties();
+            $parameters = ClassUtil::getConstructorProperties($this);
 
             if ($parameters !== []) {
                 $this->cacheName .= '-' . CacheHandler::getInstance()->getCacheIndex($parameters);
@@ -66,28 +71,6 @@ abstract class AbstractTolerantCache
         }
 
         return $this->cacheName;
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function getProperties(): array
-    {
-        $reflection = new \ReflectionClass($this);
-        $properties = [];
-        foreach ($reflection->getProperties(\ReflectionProperty::IS_READONLY) as $property) {
-            if (!$property->isInitialized($this)) {
-                continue;
-            }
-
-            if ($property->getValue($this) === null) {
-                continue;
-            }
-
-            $properties[$property->getName()] = $property->getValue($this);
-        }
-
-        return $properties;
     }
 
     final public function rebuild(): void
@@ -121,7 +104,7 @@ abstract class AbstractTolerantCache
             return \TIME_NOW;
         }
 
-        return $cacheTime + ($this->getLifetime() - 60);
+        return $cacheTime + $this->getLifetime();
     }
 
     /**
@@ -129,8 +112,12 @@ abstract class AbstractTolerantCache
      */
     abstract public function getLifetime(): int;
 
-    final public function needsRebuild(): bool
+    private function needsRebuild(): bool
     {
-        return TIME_NOW >= $this->nextRebuildTime();
+        // Probabilistic early expiration
+        // https://en.wikipedia.org/wiki/Cache_stampede#Probabilistic_early_expiration
+
+        return TIME_NOW - 10 * \log(\random_int(1, \PHP_INT_MAX) / \PHP_INT_MAX)
+            >= $this->nextRebuildTime();
     }
 }

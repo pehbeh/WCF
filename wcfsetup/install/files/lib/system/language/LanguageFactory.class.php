@@ -19,13 +19,11 @@ use wcf\system\WCF;
  * @author  Olaf Braun, Alexander Ebert
  * @copyright   2001-2025 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
- * @phpstan-import-type LanguageCache from LanguageCacheBuilder
  */
 class LanguageFactory extends SingletonFactory
 {
     /**
      * language cache
-     * @var LanguageCache
      */
     protected LanguageCacheData $cache;
 

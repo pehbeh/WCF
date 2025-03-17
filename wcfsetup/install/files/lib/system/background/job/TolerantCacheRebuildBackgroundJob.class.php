@@ -51,9 +51,7 @@ final class TolerantCacheRebuildBackgroundJob extends AbstractUniqueBackgroundJo
         }
 
         $asyncCache = new $this->cacheClass(...$this->parameters);
-        if (!$asyncCache->needsRebuild()) {
-            return;
-        }
+        \assert($asyncCache instanceof AbstractTolerantCache);
 
         $asyncCache->rebuild();
     }
