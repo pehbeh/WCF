@@ -5,7 +5,7 @@ namespace wcf\acp\form;
 use wcf\data\language\Language;
 use wcf\data\language\LanguageEditor;
 use wcf\form\AbstractForm;
-use wcf\system\cache\eager\LanguageCache;
+use wcf\system\cache\persistent\LanguageCache;
 use wcf\system\exception\UserInputException;
 use wcf\system\language\LanguageFactory;
 use wcf\system\WCF;

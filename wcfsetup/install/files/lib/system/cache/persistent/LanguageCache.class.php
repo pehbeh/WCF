@@ -1,24 +1,24 @@
 <?php
 
-namespace wcf\system\cache\eager;
+namespace wcf\system\cache\persistent;
 
 use Symfony\Contracts\Cache\ItemInterface;
 use wcf\data\DatabaseObject;
 use wcf\data\language\category\LanguageCategoryList;
 use wcf\data\language\LanguageList;
-use wcf\system\cache\eager\data\LanguageCacheData;
+use wcf\system\cache\persistent\data\LanguageCacheData;
 
 /**
- * Eager cache implementation for languages.
+ * Persistent cache implementation for languages.
  *
  * @author Olaf Braun
  * @copyright 2001-2025 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.2
  *
- * @extends AbstractEagerCache<LanguageCacheData>
+ * @extends AbstractPersistentCache<LanguageCacheData>
  */
-final class LanguageCache extends AbstractEagerCache
+final class LanguageCache extends AbstractPersistentCache
 {
     #[\Override]
     public function __invoke(ItemInterface $item): LanguageCacheData

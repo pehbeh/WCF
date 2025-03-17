@@ -13,7 +13,7 @@ use wcf\system\application\IApplication;
 use wcf\system\benchmark\Benchmark;
 use wcf\system\box\BoxHandler;
 use wcf\system\cache\builder\PackageUpdateCacheBuilder;
-use wcf\system\cache\eager\CoreObjectCache;
+use wcf\system\cache\persistent\CoreObjectCache;
 use wcf\system\database\MySQLDatabase;
 use wcf\system\event\EventHandler;
 use wcf\system\exception\ErrorException;

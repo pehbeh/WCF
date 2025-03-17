@@ -1,6 +1,6 @@
 <?php
 
-namespace wcf\system\cache\eager\data;
+namespace wcf\system\cache\persistent\data;
 
 use wcf\data\language\category\LanguageCategory;
 use wcf\data\language\Language;

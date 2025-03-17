@@ -2,7 +2,7 @@
 
 namespace wcf\system\cache\builder;
 
-use wcf\system\cache\eager\LanguageCache;
+use wcf\system\cache\persistent\LanguageCache;
 
 /**
  * Caches languages and the id of the default language.

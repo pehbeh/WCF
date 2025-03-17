@@ -1,6 +1,6 @@
 <?php
 
-namespace wcf\system\cache\eager;
+namespace wcf\system\cache\persistent;
 
 use wcf\system\cache\builder\AbstractCacheBuilder;
 use wcf\system\cache\CacheHandler;
@@ -16,7 +16,7 @@ use wcf\util\ClassUtil;
  * @template T of array|object
  * @implements ICacheCallback<T>
  */
-abstract class AbstractEagerCache implements ICacheCallback
+abstract class AbstractPersistentCache implements ICacheCallback
 {
     /**
      * @var array<string, T>
@@ -33,23 +33,22 @@ abstract class AbstractEagerCache implements ICacheCallback
     {
         $key = $this->getCacheKey();
 
-        if (!\array_key_exists($key, AbstractEagerCache::$caches)) {
-            AbstractEagerCache::$caches[$key] = CacheHandler::getInstance()->get(
+        if (!\array_key_exists($key, AbstractPersistentCache::$caches)) {
+            AbstractPersistentCache::$caches[$key] = CacheHandler::getInstance()->get(
                 $key,
                 $this,
             );
         }
 
-        return AbstractEagerCache::$caches[$key];
+        return AbstractPersistentCache::$caches[$key];
     }
 
     private function getCacheKey(): string
     {
         if (!isset($this->cacheName)) {
             /* @see AbstractCacheBuilder::getCacheName() */
-            $reflection = new \ReflectionClass($this);
             $this->cacheName = \str_replace(
-                ['\\', 'system_cache_eager_'],
+                ['\\', 'system_cache_persistent_'],
                 ['_', ''],
                 \get_class($this)
             );

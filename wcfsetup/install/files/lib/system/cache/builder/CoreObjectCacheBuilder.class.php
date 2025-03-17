@@ -2,7 +2,7 @@
 
 namespace wcf\system\cache\builder;
 
-use wcf\system\cache\eager\CoreObjectCache;
+use wcf\system\cache\persistent\CoreObjectCache;
 
 /**
  * Caches the core objects.

@@ -10,7 +10,7 @@ use wcf\data\language\item\LanguageItemEditor;
 use wcf\data\language\item\LanguageItemList;
 use wcf\data\page\PageEditor;
 use wcf\event\language\LanguageContentCopying;
-use wcf\system\cache\eager\LanguageCache;
+use wcf\system\cache\persistent\LanguageCache;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\event\EventHandler;
 use wcf\system\exception\SystemException;

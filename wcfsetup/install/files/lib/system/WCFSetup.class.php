@@ -10,7 +10,7 @@ use wcf\data\language\SetupLanguage;
 use wcf\data\package\installation\queue\PackageInstallationQueueEditor;
 use wcf\data\user\User;
 use wcf\data\user\UserAction;
-use wcf\system\cache\eager\LanguageCache;
+use wcf\system\cache\persistent\LanguageCache;
 use wcf\system\database\Database;
 use wcf\system\database\exception\DatabaseException;
 use wcf\system\database\MySQLDatabase;
