@@ -22,7 +22,7 @@ use wcf\system\language\I18nHandler;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property UserOptionCategory $formObject
+ * @extends AbstractFormBuilderForm<UserOptionCategory>
  */
 class UserOptionCategoryAddForm extends AbstractFormBuilderForm
 {

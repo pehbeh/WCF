@@ -2,6 +2,7 @@
 
 namespace wcf\acp\form;
 
+use wcf\data\reaction\type\ReactionType;
 use wcf\data\reaction\type\ReactionTypeAction;
 use wcf\data\reaction\type\ReactionTypeList;
 use wcf\form\AbstractFormBuilderForm;
@@ -18,6 +19,8 @@ use wcf\system\form\builder\field\UploadFormField;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.2
+ *
+ * @extends AbstractFormBuilderForm<ReactionType>
  */
 class ReactionTypeAddForm extends AbstractFormBuilderForm
 {

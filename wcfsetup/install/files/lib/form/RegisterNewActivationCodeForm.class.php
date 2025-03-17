@@ -26,6 +26,8 @@ use wcf\util\HeaderUtil;
  * @author      Marcel Werk
  * @copyright   2001-2023 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @extends AbstractFormBuilderForm<null>
  */
 final class RegisterNewActivationCodeForm extends AbstractFormBuilderForm
 {

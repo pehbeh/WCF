@@ -22,7 +22,7 @@ use wcf\system\form\builder\field\TextFormField;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property Label $formObject
+ * @extends AbstractFormBuilderForm<Label>
  */
 class LabelAddForm extends AbstractFormBuilderForm
 {

@@ -22,7 +22,7 @@ use wcf\system\Regex;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @property CaptchaQuestion $formObject
+ * @extends AbstractFormBuilderForm<CaptchaQuestion>
  */
 class CaptchaQuestionAddForm extends AbstractFormBuilderForm
 {

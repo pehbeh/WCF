@@ -2,7 +2,6 @@
 
 namespace wcf\form;
 
-use wcf\data\AbstractDatabaseObjectAction;
 use wcf\data\IStorableObject;
 use wcf\system\event\EventHandler;
 use wcf\system\exception\UserInputException;
@@ -19,6 +18,8 @@ use wcf\system\WCF;
  * @copyright   2001-2020 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.2
+ *
+ * @template TIStorableObject of IStorableObject|null
  */
 abstract class AbstractFormBuilderForm extends AbstractForm
 {
@@ -41,7 +42,7 @@ abstract class AbstractFormBuilderForm extends AbstractForm
 
     /**
      * updated object, not relevant for form action `create`
-     * @var ?IStorableObject
+     * @var ?TIStorableObject
      */
     public $formObject;
 

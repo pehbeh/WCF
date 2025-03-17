@@ -3,6 +3,7 @@
 namespace wcf\acp\form;
 
 use wcf\data\language\category\LanguageCategoryList;
+use wcf\data\language\item\LanguageItem;
 use wcf\data\language\item\LanguageItemAction;
 use wcf\data\language\item\LanguageItemList;
 use wcf\form\AbstractFormBuilderForm;
@@ -26,6 +27,8 @@ use wcf\system\language\LanguageFactory;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.2
+ *
+ * @extends AbstractFormBuilderForm<LanguageItem>
  */
 class LanguageItemAddForm extends AbstractFormBuilderForm
 {

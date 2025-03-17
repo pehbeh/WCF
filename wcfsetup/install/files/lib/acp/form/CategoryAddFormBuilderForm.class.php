@@ -41,6 +41,8 @@ use wcf\system\WCF;
  * @copyright   2001-2023 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.1
+ *
+ * @extends AbstractFormBuilderForm<Category>
  */
 abstract class CategoryAddFormBuilderForm extends AbstractFormBuilderForm
 {
@@ -455,7 +457,6 @@ abstract class CategoryAddFormBuilderForm extends AbstractFormBuilderForm
             $category = $this->objectAction->getReturnValues()['returnValues'];
             \assert($category instanceof Category);
         } else {
-            // @phpstan-ignore property.notFound
             $category = new Category($this->formObject->categoryID);
         }
 
@@ -513,7 +514,6 @@ abstract class CategoryAddFormBuilderForm extends AbstractFormBuilderForm
         $processor = $this->getObjectTypeProcessor();
 
         if ($this->formObject instanceof DatabaseObject) {
-            // @phpstan-ignore property.notFound
             if ($this->formObject->objectTypeID !== $this->objectType->getObjectID()) {
                 throw new IllegalLinkException();
             }

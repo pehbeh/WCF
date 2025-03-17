@@ -29,7 +29,7 @@ use wcf\system\worker\SitemapRebuildWorker;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       3.1
  *
- * @property ObjectType|null $formObject
+ * @extends AbstractFormBuilderForm<ObjectType>
  */
 class SitemapEditForm extends AbstractFormBuilderForm
 {

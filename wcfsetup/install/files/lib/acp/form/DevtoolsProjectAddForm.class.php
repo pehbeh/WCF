@@ -44,7 +44,7 @@ use wcf\util\FileUtil;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @property    null|DevtoolsProject $formObject
+ * @extends AbstractFormBuilderForm<DevtoolsProject>
  */
 class DevtoolsProjectAddForm extends AbstractFormBuilderForm
 {

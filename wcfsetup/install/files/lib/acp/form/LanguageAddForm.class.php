@@ -23,6 +23,8 @@ use wcf\system\WCF;
  * @author  Florian Gail, Marcel Werk
  * @copyright   2001-2023 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @extends AbstractFormBuilderForm<Language>
  */
 class LanguageAddForm extends AbstractFormBuilderForm
 {

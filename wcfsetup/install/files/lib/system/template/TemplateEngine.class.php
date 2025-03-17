@@ -721,7 +721,7 @@ class TemplateEngine extends SingletonFactory
      * @param bool $sandbox enables execution in sandbox
      * @return  string
      *
-     * @deprecated 6.2 use `render()` instead
+     * @deprecated 6.2 use `render()` instead, will be removed in 7.0
      */
     public function fetch($templateName, $application = 'wcf', array $variables = [], $sandbox = false)
     {

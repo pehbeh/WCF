@@ -21,6 +21,8 @@ use wcf\system\WCF;
  * @copyright   2001-2021 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.3
+ *
+ * @extends AbstractFormBuilderForm<null>
  */
 final class PackageEnableUpgradeOverrideForm extends AbstractFormBuilderForm
 {

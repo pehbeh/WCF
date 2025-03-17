@@ -17,7 +17,6 @@ use wcf\system\form\builder\field\CaptchaFormField;
 use wcf\system\form\builder\field\TextFormField;
 use wcf\system\form\builder\field\validation\FormFieldValidationError;
 use wcf\system\form\builder\field\validation\FormFieldValidator;
-use wcf\system\form\builder\IFormChildNode;
 use wcf\system\request\LinkHandler;
 use wcf\system\user\authentication\configuration\UserAuthenticationConfigurationFactory;
 use wcf\system\WCF;
@@ -30,6 +29,8 @@ use wcf\util\UserUtil;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @extends AbstractFormBuilderForm<null>
  */
 final class LostPasswordForm extends AbstractFormBuilderForm
 {
