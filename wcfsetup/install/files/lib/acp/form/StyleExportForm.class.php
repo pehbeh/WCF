@@ -80,6 +80,10 @@ class StyleExportForm extends AbstractForm
 
         if ($this->style->templateGroupID) {
             $this->canExportTemplates = true;
+
+            if ($_POST === []) {
+                $this->exportTemplates = true;
+            }
         }
     }
 
