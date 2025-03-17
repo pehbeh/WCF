@@ -180,24 +180,23 @@ class UiPollEditor {
     const sortHandle = document.createElement("span");
     sortHandle.innerHTML = '<fa-icon name="up-down-left-right" solid></fa-icon>';
     sortHandle.classList.add("sortableNodeHandle");
-    pollOptionInput.appendChild(sortHandle);
 
     // buttons
     const addButton = document.createElement("button");
+    addButton.classList.add("button", "small");
     addButton.type = "button";
     addButton.innerHTML = '<fa-icon name="plus" solid></fa-icon>';
     addButton.classList.add("jsTooltip", "jsAddOption");
     addButton.title = Language.get("wcf.poll.button.addOption");
     addButton.addEventListener("click", () => this.createOption());
-    pollOptionInput.appendChild(addButton);
 
     const deleteButton = document.createElement("button");
+    deleteButton.classList.add("button", "small");
     deleteButton.type = "button";
     deleteButton.innerHTML = '<fa-icon name="xmark" solid></fa-icon>';
     deleteButton.classList.add("jsTooltip", "jsDeleteOption");
     deleteButton.title = Language.get("wcf.poll.button.removeOption");
     deleteButton.addEventListener("click", () => this.removeOption(deleteButton));
-    pollOptionInput.appendChild(deleteButton);
 
     // input field
     const optionInput = document.createElement("input");
@@ -211,7 +210,8 @@ class UiPollEditor {
         optionInput.focus();
       }
     });
-    pollOptionInput.appendChild(optionInput);
+
+    pollOptionInput.append(sortHandle, optionInput, addButton, deleteButton);
 
     if (insertAfter !== null) {
       optionInput.focus();

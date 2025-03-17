@@ -1,16 +1,20 @@
 /* poll create/edit form */
 .pollOptionContainer .pollOptionInput {
-	align-items: center;
+	column-gap: 5px;
 	margin: 5px 0;
 
 	/* using `display: flex` inside a native list-item is pretty weird */
 	display: inline-flex;
 	width: 100%;
 
-	> .icon {
-		flex: 0 0 auto;
-		margin: 0 5px;
-	}
+    > fa-icon {
+        align-self: center;
+    }
+
+    > button {
+        align-items: center;
+        display: flex;
+    }
 
 	> input {
 		flex: 1 1 auto;
