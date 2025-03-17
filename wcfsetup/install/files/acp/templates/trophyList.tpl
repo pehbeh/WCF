@@ -25,14 +25,14 @@
 
 {if $gridView->countRows() > 1}
 	<script data-relocate="true">
-	  require(["WoltLabSuite/Core/Component/ChangeShowOrder"], ({ setup }) => {
-		  {jsphrase name='wcf.global.changeShowOrder'}
+		require(["WoltLabSuite/Core/Component/ChangeShowOrder"], ({ setup }) => {
+			{jsphrase name='wcf.global.changeShowOrder'}
 
-		setup(
-			document.querySelector('.jsChangeShowOrder'),
-			'core/trophies/show-order',
-		);
-	  });
+			setup(
+				document.querySelector('.jsChangeShowOrder'),
+				'core/trophies/show-order',
+			);
+		});
 	</script>
 {/if}
 
