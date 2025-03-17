@@ -11,10 +11,10 @@ use wcf\system\interaction\DeleteInteraction;
 /**
  * Interaction provider for trophies.
  *
- * @author      Olaf Braun
- * @copyright   2001-2025 WoltLab GmbH
- * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
- * @since       6.2
+ * @author Olaf Braun
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
  */
 final class TrophyInteractions extends AbstractInteractionProvider
 {

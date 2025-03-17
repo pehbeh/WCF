@@ -214,6 +214,8 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\trophies\EnableTrophy());
             $event->register(new \wcf\system\endpoint\controller\core\trophies\DisableTrophy());
             $event->register(new \wcf\system\endpoint\controller\core\trophies\DeleteTrophy());
+            $event->register(new \wcf\system\endpoint\controller\core\trophies\GetShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\trophies\ChangeShowOrder());
         }
     );
 
