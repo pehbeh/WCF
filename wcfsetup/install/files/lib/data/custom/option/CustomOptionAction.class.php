@@ -3,6 +3,7 @@
 namespace wcf\data\custom\option;
 
 use wcf\data\AbstractDatabaseObjectAction;
+use wcf\data\DatabaseObjectDecorator;
 use wcf\data\IToggleAction;
 use wcf\data\TDatabaseObjectToggle;
 
@@ -14,7 +15,10 @@ use wcf\data\TDatabaseObjectToggle;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @extends AbstractDatabaseObjectAction<CustomOption, CustomOptionEditor>
+ * @template TCustomOption of CustomOption = CustomOption
+ * @template TCustomOptionEditor of CustomOptionEditor|DatabaseObjectDecorator<TCustomOption> = CustomOptionEditor
+ * @extends AbstractDatabaseObjectAction<TCustomOption, TCustomOptionEditor>
+ * @phpstan-ignore generics.notSubtype
  */
 abstract class CustomOptionAction extends AbstractDatabaseObjectAction implements IToggleAction
 {

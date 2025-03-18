@@ -30,16 +30,15 @@ interface IMessageQuickReplyAction
      * @param ?string $message source message
      * @return HtmlInputProcessor
      */
-    public function getHtmlInputProcessor($message = null);
+    public function getHtmlInputProcessor(?string $message = null);
 
     /**
      * Returns a message list object.
      *
      * @param TContainer $container
-     * @param int $lastMessageTime
      * @return TMessageList
      */
-    public function getMessageList(DatabaseObject $container, $lastMessageTime);
+    public function getMessageList(DatabaseObject $container, int $lastMessageTime);
 
     /**
      * Returns page no for given container object.

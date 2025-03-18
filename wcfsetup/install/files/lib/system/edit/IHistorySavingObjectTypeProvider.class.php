@@ -3,6 +3,7 @@
 namespace wcf\system\edit;
 
 use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectDecorator;
 use wcf\data\object\type\IObjectTypeProvider;
 use wcf\system\exception\PermissionDeniedException;
 
@@ -13,8 +14,8 @@ use wcf\system\exception\PermissionDeniedException;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @template TDatabaseObject of DatabaseObject
- * @extends IObjectTypeProvider<DatabaseObject>
+ * @template TDatabaseObject of DatabaseObject|DatabaseObjectDecorator
+ * @extends IObjectTypeProvider<TDatabaseObject>
  */
 interface IHistorySavingObjectTypeProvider extends IObjectTypeProvider
 {
@@ -22,7 +23,6 @@ interface IHistorySavingObjectTypeProvider extends IObjectTypeProvider
      * Checks the permissions to review the edit history and to revert to an
      * older version of the given IHistorySavingObject.
      *
-     * @param IHistorySavingObject $object
      * @return void
      * @throws  PermissionDeniedException   if access is denied
      * @throws  \InvalidArgumentException   if given object has not be provided by this provider and thus cannot be checked by this method

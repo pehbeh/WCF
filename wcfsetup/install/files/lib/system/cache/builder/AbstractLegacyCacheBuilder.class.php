@@ -47,6 +47,9 @@ abstract class AbstractLegacyCacheBuilder extends SingletonFactory implements IC
 
     /**
      * Rebuilds cache for current resource.
+     *
+     * @param mixed[] $parameters
+     * @return mixed[]
      */
     abstract protected function rebuild(array $parameters): array;
 
