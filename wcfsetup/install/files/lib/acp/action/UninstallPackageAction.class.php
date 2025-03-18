@@ -135,7 +135,7 @@ final class UninstallPackageAction extends AbstractSecureAction
             ]),
             'step' => 'uninstall',
             'node' => $nextNode,
-            'currentAction' => $this->getCurrentAction($queueID),
+            'currentAction' => $this->getCurrentAction($queueID, $queue),
             'progress' => 0,
             'queueID' => $queueID,
         ]);
@@ -174,7 +174,7 @@ final class UninstallPackageAction extends AbstractSecureAction
     /**
      * @inheritDoc
      */
-    protected function getCurrentAction(?int $queueID): string
+    protected function getCurrentAction(?int $queueID, PackageInstallationQueue $queue): string
     {
         if ($queueID === null) {
             // success message
@@ -185,7 +185,7 @@ final class UninstallPackageAction extends AbstractSecureAction
             $installationType = $this->installation->nodeBuilder->getInstallationTypeByQueue($queueID);
             $currentAction = WCF::getLanguage()->getDynamicVariable(
                 'wcf.acp.package.uninstallation.step.' . $installationType,
-                ['packageName' => $packageName]
+                ['packageName' => $packageName, 'queue' => $queue]
             );
         }
 
