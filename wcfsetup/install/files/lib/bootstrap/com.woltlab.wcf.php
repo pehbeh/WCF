@@ -222,6 +222,11 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\ads\DeleteAd());
             $event->register(new \wcf\system\endpoint\controller\core\ads\GetShowOrder());
             $event->register(new \wcf\system\endpoint\controller\core\ads\ChangeShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\notices\EnableNotice());
+            $event->register(new \wcf\system\endpoint\controller\core\notices\DisableNotice());
+            $event->register(new \wcf\system\endpoint\controller\core\notices\DeleteNotice());
+            $event->register(new \wcf\system\endpoint\controller\core\notices\GetShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\notices\ChangeShowOrder());
         }
     );
 

@@ -3,11 +3,9 @@
 namespace wcf\data\notice;
 
 use wcf\data\AbstractDatabaseObjectAction;
-use wcf\data\ISortableAction;
 use wcf\data\IToggleAction;
 use wcf\data\TDatabaseObjectToggle;
 use wcf\system\condition\ConditionHandler;
-use wcf\system\exception\UserInputException;
 use wcf\system\user\storage\UserStorageHandler;
 use wcf\system\WCF;
 
@@ -20,7 +18,7 @@ use wcf\system\WCF;
  *
  * @extends AbstractDatabaseObjectAction<Notice, NoticeEditor>
  */
-class NoticeAction extends AbstractDatabaseObjectAction implements ISortableAction, IToggleAction
+class NoticeAction extends AbstractDatabaseObjectAction implements IToggleAction
 {
     use TDatabaseObjectToggle;
 
@@ -124,27 +122,6 @@ class NoticeAction extends AbstractDatabaseObjectAction implements ISortableActi
     /**
      * @inheritDoc
      */
-    public function validateUpdatePosition()
-    {
-        WCF::getSession()->checkPermissions($this->permissionsUpdate);
-
-        if (!isset($this->parameters['data']['structure']) || !\is_array($this->parameters['data']['structure'])) {
-            throw new UserInputException('structure');
-        }
-
-        $noticeList = new NoticeList();
-        $noticeList->setObjectIDs($this->parameters['data']['structure'][0]);
-        $noticeList->readObjects();
-        if (\count($noticeList) !== \count($this->parameters['data']['structure'][0])) {
-            throw new UserInputException('structure');
-        }
-
-        $this->readInteger('offset', true, 'data');
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function update()
     {
         parent::update();
@@ -156,26 +133,5 @@ class NoticeAction extends AbstractDatabaseObjectAction implements ISortableActi
         ) {
             \reset($this->objects)->setShowOrder($this->parameters['data']['showOrder']);
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function updatePosition()
-    {
-        $sql = "UPDATE  wcf1_notice
-                SET     showOrder = ?
-                WHERE   noticeID = ?";
-        $statement = WCF::getDB()->prepare($sql);
-
-        $showOrder = $this->parameters['data']['offset'];
-        WCF::getDB()->beginTransaction();
-        foreach ($this->parameters['data']['structure'][0] as $noticeID) {
-            $statement->execute([
-                $showOrder++,
-                $noticeID,
-            ]);
-        }
-        WCF::getDB()->commitTransaction();
     }
 }

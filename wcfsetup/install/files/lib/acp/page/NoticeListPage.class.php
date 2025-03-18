@@ -2,8 +2,9 @@
 
 namespace wcf\acp\page;
 
-use wcf\data\notice\NoticeList;
-use wcf\page\SortablePage;
+use wcf\page\AbstractGridViewPage;
+use wcf\system\gridView\AbstractGridView;
+use wcf\system\gridView\admin\NoticeGridView;
 
 /**
  * Lists the available notices.
@@ -12,9 +13,9 @@ use wcf\page\SortablePage;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @extends SortablePage<NoticeList>
+ * @extends AbstractGridViewPage<NoticeGridView>
  */
-class NoticeListPage extends SortablePage
+class NoticeListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -24,20 +25,11 @@ class NoticeListPage extends SortablePage
     /**
      * @inheritDoc
      */
-    public $defaultSortField = 'showOrder';
-
-    /**
-     * @inheritDoc
-     */
     public $neededPermissions = ['admin.notice.canManageNotice'];
 
-    /**
-     * @inheritDoc
-     */
-    public $objectListClassName = NoticeList::class;
-
-    /**
-     * @inheritDoc
-     */
-    public $validSortFields = ['noticeID', 'noticeName', 'showOrder'];
+    #[\Override]
+    protected function createGridView(): AbstractGridView
+    {
+        return new NoticeGridView();
+    }
 }
