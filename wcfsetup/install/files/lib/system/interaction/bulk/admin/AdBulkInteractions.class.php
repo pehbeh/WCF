@@ -2,7 +2,7 @@
 
 namespace wcf\system\interaction\bulk\admin;
 
-use wcf\data\article\AccessibleArticleList;
+use wcf\data\ad\AdList;
 use wcf\event\interaction\bulk\admin\AdBulkInteractionCollecting;
 use wcf\system\event\EventHandler;
 use wcf\system\interaction\bulk\AbstractBulkInteractionProvider;
@@ -32,6 +32,6 @@ final class AdBulkInteractions extends AbstractBulkInteractionProvider
     #[\Override]
     public function getObjectListClassName(): string
     {
-        return AccessibleArticleList::class;
+        return AdList::class;
     }
 }
