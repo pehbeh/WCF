@@ -99,16 +99,19 @@ abstract class AbstractTolerantCache
 
     final public function nextRebuildTime(): int
     {
+        $lifetime = $this->getLifetime();
+        \assert($lifetime >= 300);
+
         $cacheTime = CacheHandler::getInstance()->getCacheSource()->getCreationTime(
             $this->getCacheKey(),
-            $this->getLifetime()
+            $lifetime
         );
 
         if ($cacheTime === null) {
             return \TIME_NOW;
         }
 
-        return $cacheTime + $this->getLifetime();
+        return $cacheTime + $lifetime;
     }
 
     /**
