@@ -3,12 +3,9 @@
 namespace wcf\data\ad;
 
 use wcf\data\AbstractDatabaseObjectAction;
-use wcf\data\ISortableAction;
 use wcf\data\IToggleAction;
 use wcf\data\TDatabaseObjectToggle;
 use wcf\system\condition\ConditionHandler;
-use wcf\system\exception\UserInputException;
-use wcf\system\WCF;
 
 /**
  * Executes ad-related actions.
@@ -19,7 +16,7 @@ use wcf\system\WCF;
  *
  * @extends AbstractDatabaseObjectAction<Ad, AdEditor>
  */
-class AdAction extends AbstractDatabaseObjectAction implements ISortableAction, IToggleAction
+class AdAction extends AbstractDatabaseObjectAction implements IToggleAction
 {
     use TDatabaseObjectToggle;
 
@@ -66,63 +63,5 @@ class AdAction extends AbstractDatabaseObjectAction implements ISortableAction, 
         ConditionHandler::getInstance()->deleteConditions('com.woltlab.wcf.condition.ad', $this->objectIDs);
 
         return parent::delete();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function validateUpdatePosition()
-    {
-        WCF::getSession()->checkPermissions($this->permissionsUpdate);
-
-        if (!isset($this->parameters['data']['structure']) || !\is_array($this->parameters['data']['structure'])) {
-            throw new UserInputException('structure');
-        }
-
-        $adList = new AdList();
-        $adList->setObjectIDs($this->parameters['data']['structure'][0]);
-        $adList->readObjects();
-        if (\count($adList) !== \count($this->parameters['data']['structure'][0])) {
-            throw new UserInputException('structure');
-        }
-
-        $this->readInteger('offset', true, 'data');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function update()
-    {
-        parent::update();
-
-        if (
-            \count($this->objects) == 1
-            && isset($this->parameters['data']['showOrder'])
-            && $this->parameters['data']['showOrder'] != \reset($this->objects)->showOrder
-        ) {
-            \reset($this->objects)->setShowOrder($this->parameters['data']['showOrder']);
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function updatePosition()
-    {
-        $sql = "UPDATE  wcf1_ad
-                SET     showOrder = ?
-                WHERE   adID = ?";
-        $statement = WCF::getDB()->prepare($sql);
-
-        $showOrder = $this->parameters['data']['offset'];
-        WCF::getDB()->beginTransaction();
-        foreach ($this->parameters['data']['structure'][0] as $adID) {
-            $statement->execute([
-                $showOrder++,
-                $adID,
-            ]);
-        }
-        WCF::getDB()->commitTransaction();
     }
 }
