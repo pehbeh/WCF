@@ -188,6 +188,7 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\languages\EnableLanguage());
             $event->register(new \wcf\system\endpoint\controller\core\languages\SetAsDefaultLanguage());
             $event->register(new \wcf\system\endpoint\controller\core\languages\items\DeleteItem());
+            $event->register(new \wcf\system\endpoint\controller\core\labels\DeleteLabel());
             $event->register(new \wcf\system\endpoint\controller\core\labels\groups\ChangeLabelShowOrder());
             $event->register(new \wcf\system\endpoint\controller\core\labels\groups\ChangeShowOrder());
             $event->register(new \wcf\system\endpoint\controller\core\labels\groups\DeleteGroup());
@@ -216,6 +217,11 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\trophies\DeleteTrophy());
             $event->register(new \wcf\system\endpoint\controller\core\trophies\GetShowOrder());
             $event->register(new \wcf\system\endpoint\controller\core\trophies\ChangeShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\ads\EnableAd());
+            $event->register(new \wcf\system\endpoint\controller\core\ads\DisableAd());
+            $event->register(new \wcf\system\endpoint\controller\core\ads\DeleteAd());
+            $event->register(new \wcf\system\endpoint\controller\core\ads\GetShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\ads\ChangeShowOrder());
             $event->register(new \wcf\system\endpoint\controller\core\notices\EnableNotice());
             $event->register(new \wcf\system\endpoint\controller\core\notices\DisableNotice());
             $event->register(new \wcf\system\endpoint\controller\core\notices\DeleteNotice());
