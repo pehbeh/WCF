@@ -6,6 +6,8 @@ use wcf\system\cache\CacheHandler;
 use wcf\util\ClassUtil;
 
 /**
+ * Eager caches are caches that do not expire and must be renewed manually if the data in the cache has changed.
+ *
  * @author Olaf Braun
  * @copyright 2001-2025 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>

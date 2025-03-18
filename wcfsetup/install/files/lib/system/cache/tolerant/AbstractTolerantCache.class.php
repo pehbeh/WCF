@@ -8,6 +8,10 @@ use wcf\system\cache\CacheHandler;
 use wcf\util\ClassUtil;
 
 /**
+ * Tolerant caches are caches that are rebuilt in the background when they are about to expire or have already expired.
+ * The cache data can be outdated, this must not be a problem when using these caches.
+ * The lifetime MUST BE `>= 300`.
+ *
  * @author Olaf Braun
  * @copyright 2001-2025 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
