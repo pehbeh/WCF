@@ -644,6 +644,10 @@ class ArticleAction extends AbstractDatabaseObjectAction
      */
     public function markAsRead()
     {
+        if (!WCF::getUser()->userID) {
+            return;
+        }
+
         if (empty($this->parameters['visitTime'])) {
             $this->parameters['visitTime'] = TIME_NOW;
         }
@@ -662,21 +666,18 @@ class ArticleAction extends AbstractDatabaseObjectAction
             );
         }
 
-        // reset storage
-        if (WCF::getUser()->userID) {
-            UserStorageHandler::getInstance()->reset([WCF::getUser()->userID], 'unreadArticles');
-            UserStorageHandler::getInstance()->reset([WCF::getUser()->userID], 'unreadWatchedArticles');
-            UserStorageHandler::getInstance()->reset([WCF::getUser()->userID], 'unreadArticlesByCategory');
+        UserStorageHandler::getInstance()->reset([WCF::getUser()->userID], 'unreadArticles');
+        UserStorageHandler::getInstance()->reset([WCF::getUser()->userID], 'unreadWatchedArticles');
+        UserStorageHandler::getInstance()->reset([WCF::getUser()->userID], 'unreadArticlesByCategory');
 
-            // delete obsolete notifications
-            if ($articleIDs !== []) {
-                UserNotificationHandler::getInstance()->markAsConfirmed(
-                    'article',
-                    'com.woltlab.wcf.article.notification',
-                    [WCF::getUser()->userID],
-                    $articleIDs
-                );
-            }
+        // delete obsolete notifications
+        if ($articleIDs !== []) {
+            UserNotificationHandler::getInstance()->markAsConfirmed(
+                'article',
+                'com.woltlab.wcf.article.notification',
+                [WCF::getUser()->userID],
+                $articleIDs
+            );
         }
     }
 
@@ -687,14 +688,15 @@ class ArticleAction extends AbstractDatabaseObjectAction
      */
     public function markAllAsRead()
     {
+        if (!WCF::getUser()->userID) {
+            return;
+        }
+
         VisitTracker::getInstance()->trackTypeVisit('com.woltlab.wcf.article');
 
-        // reset storage
-        if (WCF::getUser()->userID) {
-            UserStorageHandler::getInstance()->reset([WCF::getUser()->userID], 'unreadArticles');
-            UserStorageHandler::getInstance()->reset([WCF::getUser()->userID], 'unreadWatchedArticles');
-            UserStorageHandler::getInstance()->reset([WCF::getUser()->userID], 'unreadArticlesByCategory');
-        }
+        UserStorageHandler::getInstance()->reset([WCF::getUser()->userID], 'unreadArticles');
+        UserStorageHandler::getInstance()->reset([WCF::getUser()->userID], 'unreadWatchedArticles');
+        UserStorageHandler::getInstance()->reset([WCF::getUser()->userID], 'unreadArticlesByCategory');
     }
 
     /**
