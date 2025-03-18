@@ -2,44 +2,28 @@
 
 namespace wcf\system\cache\builder;
 
-use wcf\system\WCF;
+use wcf\system\cache\tolerant\WhoWasOnlineCache;
 
 /**
  * Caches a list of users that visited the website in last 24 hours.
  *
- * @author  Marcel Werk
+ * @author  Olaf Braun, Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @deprecated 6.2 use `WhoWasOnlineCache` instead
  */
-class WhoWasOnlineCacheBuilder extends AbstractCacheBuilder
+class WhoWasOnlineCacheBuilder extends AbstractLegacyCacheBuilder
 {
-    /**
-     * @inheritDoc
-     */
-    protected $maxLifetime = 600;
-
-    /**
-     * @inheritDoc
-     */
-    protected function rebuild(array $parameters)
+    #[\Override]
+    protected function rebuild(array $parameters): array
     {
-        $userIDs = [];
-        $sql = "(
-                    SELECT  userID
-                    FROM    wcf1_user
-                    WHERE   lastActivityTime > ?
-                ) UNION (
-                    SELECT  userID
-                    FROM    wcf1_session
-                    WHERE   userID IS NOT NULL
-                        AND lastActivityTime > ?
-                )";
-        $statement = WCF::getDB()->prepare($sql);
-        $statement->execute([TIME_NOW - 86400, TIME_NOW - USER_ONLINE_TIMEOUT]);
-        while ($userID = $statement->fetchColumn()) {
-            $userIDs[] = $userID;
-        }
+        return (new WhoWasOnlineCache())->getCache();
+    }
 
-        return $userIDs;
+    #[\Override]
+    public function reset(array $parameters = [])
+    {
+        (new WhoWasOnlineCache())->rebuild();
     }
 }

@@ -184,4 +184,28 @@ class RedisCacheSource implements ICacheSource
     {
         return $this->redis;
     }
+
+    #[\Override]
+    public function getCreationTime(string $cacheName, int $maxLifetime): ?int
+    {
+        $parts = \explode('-', $cacheName, 2);
+
+        if (isset($parts[1])) {
+            $ttl = $this->redis->ttl($this->getCacheName($parts[0]));
+        } else {
+            $ttl = $this->redis->ttl($this->getCacheName($cacheName));
+        }
+
+        // -2 means that the key does not exist
+        if ($ttl === -2) {
+            return null;
+        }
+
+        // -1 means that the key exists but does not have an expiration date.
+        if ($ttl === -1) {
+            return \TIME_NOW;
+        }
+
+        return $ttl - $maxLifetime;
+    }
 }

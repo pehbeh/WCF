@@ -2,8 +2,7 @@
 
 namespace wcf\system\cache\builder;
 
-use wcf\data\user\User;
-use wcf\system\WCF;
+use wcf\system\cache\tolerant\UserBirthdayCache;
 
 /**
  * Caches user birthdays (one cache file per month).
@@ -11,40 +10,25 @@ use wcf\system\WCF;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @deprecated 6.2 use `UserBirthdayCache` instead
  */
-class UserBirthdayCacheBuilder extends AbstractCacheBuilder
+class UserBirthdayCacheBuilder extends AbstractLegacyCacheBuilder
 {
-    /**
-     * @inheritDoc
-     */
-    protected $maxLifetime = 3600;
-
-    /**
-     * @inheritDoc
-     */
-    protected function rebuild(array $parameters)
+    #[\Override]
+    protected function rebuild(array $parameters): array
     {
-        $userOptionID = User::getUserOptionID('birthday');
-        if ($userOptionID === null) {
-            // birthday profile field missing; skip
-            return [];
+        $cache = [];
+        foreach ((new UserBirthdayCache($parameters['month']))->getCache() as $day => $userIDs) {
+            $cache[\sprintf("%02d-%02d", $parameters['month'], $day)] = $userIDs;
         }
 
-        $data = [];
-        $birthday = 'userOption' . $userOptionID;
-        $sql = "SELECT  userID, " . $birthday . "
-                FROM    wcf1_user_option_value
-                WHERE   " . $birthday . " LIKE ?";
-        $statement = WCF::getDB()->prepare($sql);
-        $statement->execute(['%-' . ($parameters['month'] < 10 ? '0' : '') . $parameters['month'] . '-%']);
-        while ($row = $statement->fetchArray()) {
-            [, $month, $day] = \explode('-', $row[$birthday]);
-            if (!isset($data[$month . '-' . $day])) {
-                $data[$month . '-' . $day] = [];
-            }
-            $data[$month . '-' . $day][] = $row['userID'];
-        }
+        return $cache;
+    }
 
-        return $data;
+    #[\Override]
+    public function reset(array $parameters = [])
+    {
+        (new UserBirthdayCache($parameters['month']))->rebuild();
     }
 }

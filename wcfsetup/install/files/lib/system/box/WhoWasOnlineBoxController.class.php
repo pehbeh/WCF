@@ -7,8 +7,8 @@ use wcf\data\DatabaseObjectList;
 use wcf\data\user\online\UserOnline;
 use wcf\data\user\online\UsersOnlineList;
 use wcf\data\user\UserProfile;
-use wcf\system\cache\builder\WhoWasOnlineCacheBuilder;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
+use wcf\system\cache\tolerant\WhoWasOnlineCache;
 use wcf\system\event\EventHandler;
 use wcf\system\WCF;
 use wcf\util\DateUtil;
@@ -100,14 +100,9 @@ class WhoWasOnlineBoxController extends AbstractDatabaseObjectListBoxController
     {
         EventHandler::getInstance()->fireAction($this, 'readObjects');
 
-        $userIDs = WhoWasOnlineCacheBuilder::getInstance()->getData();
+        $userIDs = (new WhoWasOnlineCache())->getCache();
 
         if (!empty($userIDs)) {
-            if (WCF::getUser()->userID && !\in_array(WCF::getUser()->userID, $userIDs)) {
-                // current user is missing in cache -> reset cache
-                WhoWasOnlineCacheBuilder::getInstance()->reset();
-            }
-
             $this->users = \array_filter(
                 UserProfileRuntimeCache::getInstance()->getObjects($userIDs),
                 static function ($user) {

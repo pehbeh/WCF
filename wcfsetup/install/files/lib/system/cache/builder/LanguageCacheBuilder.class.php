@@ -2,19 +2,17 @@
 
 namespace wcf\system\cache\builder;
 
-use wcf\data\DatabaseObject;
 use wcf\data\language\category\LanguageCategory;
-use wcf\data\language\category\LanguageCategoryList;
 use wcf\data\language\Language;
-use wcf\data\language\LanguageList;
+use wcf\system\cache\eager\LanguageCache;
 
 /**
  * Caches languages and the id of the default language.
  *
- * @author  Marcel Werk
- * @copyright   2001-2019 WoltLab GmbH
+ * @author Olaf Braun, Marcel Werk
+ * @copyright 2001-2025 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
- * @phpstan-type LanguageCache array{
+ * @phpstan-type LanguageCacheData array{
  *  codes: array<string, int>,
  *  countryCodes: array<int, string>,
  *  languages: array<int, Language>,
@@ -23,57 +21,30 @@ use wcf\data\language\LanguageList;
  *  categoryIDs: array<int, string>,
  *  multilingualismEnabled: bool,
  * }
+ *
+ * @deprecated 6.2 use `LanguageCache` instead
  */
-class LanguageCacheBuilder extends AbstractCacheBuilder
+class LanguageCacheBuilder extends AbstractLegacyCacheBuilder
 {
-    /**
-     * @inheritDoc
-     */
-    public function rebuild(array $parameters)
+    #[\Override]
+    public function reset(array $parameters = [])
     {
-        $data = [
-            'codes' => [],
-            'countryCodes' => [],
-            'languages' => [],
-            'default' => 0,
-            'categories' => [],
-            'categoryIDs' => [],
-            'multilingualismEnabled' => false,
+        (new LanguageCache())->rebuild();
+    }
+
+    #[\Override]
+    public function rebuild(array $parameters): array
+    {
+        $cacheData = (new LanguageCache())->getCache();
+
+        return [
+            'codes' => $cacheData->codes,
+            'countryCodes' => $cacheData->countryCodes,
+            'languages' => $cacheData->languages,
+            'default' => $cacheData->default,
+            'categories' => $cacheData->categories,
+            'categoryIDs' => $cacheData->categoryIDs,
+            'multilingualismEnabled' => $cacheData->multilingualismEnabled,
         ];
-
-        // get languages
-        $languageList = new LanguageList();
-        $languageList->getConditionBuilder()->add('language.isDisabled = ?', [0]);
-        $languageList->readObjects();
-        $data['languages'] = $languageList->getObjects();
-        foreach ($languageList->getObjects() as $language) {
-            // default language
-            if ($language->isDefault) {
-                $data['default'] = $language->languageID;
-            }
-
-            // multilingualism
-            if ($language->hasContent) {
-                $data['multilingualismEnabled'] = true;
-            }
-
-            // language code to language id
-            $data['codes'][$language->languageCode] = $language->languageID;
-
-            // country code to language id
-            $data['countryCode'][$language->languageID] = $language->countryCode;
-        }
-
-        DatabaseObject::sort($data['languages'], 'languageName');
-
-        // get language categories
-        $languageCategoryList = new LanguageCategoryList();
-        $languageCategoryList->readObjects();
-        foreach ($languageCategoryList->getObjects() as $languageCategory) {
-            $data['categories'][$languageCategory->languageCategory] = $languageCategory;
-            $data['categoryIDs'][$languageCategory->languageCategoryID] = $languageCategory->languageCategory;
-        }
-
-        return $data;
     }
 }

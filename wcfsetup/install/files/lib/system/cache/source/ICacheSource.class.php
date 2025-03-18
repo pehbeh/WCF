@@ -45,4 +45,10 @@ interface ICacheSource
      * @return void
      */
     public function set($cacheName, $value, $maxLifetime);
+
+    /**
+     * Returns the timestamp when the cache was created.
+     * Or `null` if the cache does not exist or is empty.
+     */
+    public function getCreationTime(string $cacheName, int $maxLifetime): ?int;
 }

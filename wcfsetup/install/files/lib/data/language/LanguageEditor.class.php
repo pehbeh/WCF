@@ -10,7 +10,7 @@ use wcf\data\language\item\LanguageItemEditor;
 use wcf\data\language\item\LanguageItemList;
 use wcf\data\page\PageEditor;
 use wcf\event\language\LanguageContentCopying;
-use wcf\system\cache\builder\LanguageCacheBuilder;
+use wcf\system\cache\eager\LanguageCache;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\event\EventHandler;
 use wcf\system\exception\SystemException;
@@ -932,7 +932,7 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
         $statement->execute([0]);
 
         // set current language as default language
-        $this->update(['isDefault' => 1]);
+        $this->update(['isDefault' => 1, 'isDisabled' => 0]);
 
         $this->clearCache();
     }
@@ -944,7 +944,7 @@ class LanguageEditor extends DatabaseObjectEditor implements IEditableCachedObje
      */
     public function clearCache()
     {
-        LanguageCacheBuilder::getInstance()->reset();
+        (new LanguageCache())->rebuild();
     }
 
     /**

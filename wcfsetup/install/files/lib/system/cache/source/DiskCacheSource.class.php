@@ -157,4 +157,20 @@ final class DiskCacheSource implements ICacheSource
             throw new \Exception("Failed to unserialize the cache contents.", 0, $e);
         }
     }
+
+    #[\Override]
+    public function getCreationTime(string $cacheName, int $maxLifetime): ?int
+    {
+        $filename = $this->getFilename($cacheName);
+
+        if (!\file_exists($filename)) {
+            return null;
+        }
+
+        if (!@\filesize($filename)) {
+            return null;
+        }
+
+        return \filemtime($filename);
+    }
 }

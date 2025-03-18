@@ -34,10 +34,6 @@ final class SetAsDefaultLanguage implements IController
         $languageEditor = new LanguageEditor($language);
         $languageEditor->setAsDefault();
 
-        if ($languageEditor->isDisabled) {
-            $languageEditor->update(['isDisabled' => 0]);
-        }
-
         return new JsonResponse([]);
     }
 
