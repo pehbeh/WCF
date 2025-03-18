@@ -24,7 +24,7 @@
 		<ul>
 			{if $action == 'edit'}
 				<li><button type="button" class="button jsChangeShowOrder">{icon name='up-down'} <span>{lang}wcf.global.changeShowOrder{/lang}</span></a></li>
-				<li><a href="{link controller='LabelList' id=$groupID}{/link}" class="button">{icon name='list'} <span>{lang}wcf.acp.label.list{/lang}</span></a></li>
+				<li><a href="{link controller='LabelList'}filters[groupID]={$groupID}{/link}" class="button">{icon name='list'} <span>{lang}wcf.acp.label.list{/lang}</span></a></li>
 			{/if}
 			<li><a href="{link controller='LabelGroupList'}{/link}" class="button">{icon name='list'} <span>{lang}wcf.acp.label.group.list{/lang}</span></a></li>
 			
