@@ -68,7 +68,7 @@ class WysiwygFormContainer extends FormContainer
 
     /**
      * id of the edited object
-     * @var int
+     * @var ?int
      */
     protected $objectId;
 
@@ -272,6 +272,10 @@ class WysiwygFormContainer extends FormContainer
      */
     public function getObjectId()
     {
+        if ($this->objectId === null) {
+            return 0;
+        }
+
         return $this->objectId;
     }
 
