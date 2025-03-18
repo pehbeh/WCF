@@ -3,11 +3,8 @@
 namespace wcf\data\reaction\type;
 
 use wcf\data\AbstractDatabaseObjectAction;
-use wcf\data\ISortableAction;
 use wcf\data\IToggleAction;
 use wcf\data\TDatabaseObjectToggle;
-use wcf\system\exception\PermissionDeniedException;
-use wcf\system\exception\UserInputException;
 use wcf\system\file\upload\UploadFile;
 use wcf\system\language\I18nHandler;
 use wcf\system\WCF;
@@ -22,7 +19,7 @@ use wcf\system\WCF;
  *
  * @extends AbstractDatabaseObjectAction<ReactionType, ReactionTypeEditor>
  */
-class ReactionTypeAction extends AbstractDatabaseObjectAction implements ISortableAction, IToggleAction
+class ReactionTypeAction extends AbstractDatabaseObjectAction implements IToggleAction
 {
     use TDatabaseObjectToggle;
 
@@ -39,7 +36,7 @@ class ReactionTypeAction extends AbstractDatabaseObjectAction implements ISortab
     /**
      * @inheritDoc
      */
-    protected $requireACP = ['delete', 'update', 'updatePosition'];
+    protected $requireACP = ['delete', 'update'];
 
     /**
      * @inheritDoc
@@ -177,47 +174,6 @@ class ReactionTypeAction extends AbstractDatabaseObjectAction implements ISortab
                 $object->update($updateData);
             }
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function validateUpdatePosition()
-    {
-        // validate permissions
-        if ($this->permissionsUpdate !== []) {
-            WCF::getSession()->checkPermissions($this->permissionsUpdate);
-        } else {
-            throw new PermissionDeniedException();
-        }
-
-        if (!isset($this->parameters['data']['structure'])) {
-            throw new UserInputException('structure');
-        }
-
-        $this->readInteger('offset', true, 'data');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function updatePosition()
-    {
-        $reactionTypeList = new ReactionTypeList();
-        $reactionTypeList->readObjects();
-
-        $i = $this->parameters['data']['offset'];
-        WCF::getDB()->beginTransaction();
-        foreach ($this->parameters['data']['structure'][0] as $reactionTypeID) {
-            $reactionType = $reactionTypeList->search($reactionTypeID);
-            if ($reactionType === null) {
-                continue;
-            }
-
-            $editor = new ReactionTypeEditor($reactionType);
-            $editor->update(['showOrder' => $i++]);
-        }
-        WCF::getDB()->commitTransaction();
     }
 
     /**

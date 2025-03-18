@@ -2,19 +2,20 @@
 
 namespace wcf\acp\page;
 
-use wcf\data\reaction\type\ReactionTypeList;
-use wcf\page\MultipleLinkPage;
+use wcf\page\AbstractGridViewPage;
+use wcf\system\gridView\AbstractGridView;
+use wcf\system\gridView\admin\ReactionTypeGridView;
 
 /**
  * Shows the list of reaction types.
  *
- * @author  Joshua Ruesweg
- * @copyright   2001-2019 WoltLab GmbH
+ * @author  Olaf Braun, Joshua Ruesweg
+ * @copyright   2001-2025 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @extends MultipleLinkPage<ReactionTypeList>
+ * @extends AbstractGridViewPage<ReactionTypeGridView>
  */
-class ReactionTypeListPage extends MultipleLinkPage
+class ReactionTypeListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -31,13 +32,9 @@ class ReactionTypeListPage extends MultipleLinkPage
      */
     public $neededPermissions = ['admin.content.reaction.canManageReactionType'];
 
-    /**
-     * @inheritDoc
-     */
-    public $sqlOrderBy = 'showOrder ASC, reactionTypeID ASC';
-
-    /**
-     * @inheritDoc
-     */
-    public $objectListClassName = ReactionTypeList::class;
+    #[\Override]
+    protected function createGridView(): AbstractGridView
+    {
+        return new ReactionTypeGridView();
+    }
 }
