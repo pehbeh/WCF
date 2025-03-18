@@ -2,9 +2,9 @@
 
 namespace wcf\system\cache\builder;
 
-use wcf\system\cache\eager\LanguageCache;
 use wcf\data\language\category\LanguageCategory;
 use wcf\data\language\Language;
+use wcf\system\cache\eager\LanguageCache;
 
 /**
  * Caches languages and the id of the default language.
@@ -12,7 +12,7 @@ use wcf\data\language\Language;
  * @author Olaf Braun, Marcel Werk
  * @copyright 2001-2025 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
- * @phpstan-type LanguageCache array{
+ * @phpstan-type LanguageCacheData array{
  *  codes: array<string, int>,
  *  countryCodes: array<int, string>,
  *  languages: array<int, Language>,
