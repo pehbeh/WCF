@@ -2,8 +2,9 @@
 
 namespace wcf\acp\page;
 
-use wcf\data\ad\AdList;
-use wcf\page\MultipleLinkPage;
+use wcf\page\AbstractGridViewPage;
+use wcf\system\gridView\AbstractGridView;
+use wcf\system\gridView\admin\AdGridView;
 
 /**
  * Lists the available ads.
@@ -12,9 +13,9 @@ use wcf\page\MultipleLinkPage;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @extends MultipleLinkPage<AdList>
+ * @extends AbstractGridViewPage<AdGridView>
  */
-class AdListPage extends MultipleLinkPage
+class AdListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -31,13 +32,9 @@ class AdListPage extends MultipleLinkPage
      */
     public $neededModules = ['MODULE_WCF_AD'];
 
-    /**
-     * @inheritDoc
-     */
-    public $objectListClassName = AdList::class;
-
-    /**
-     * @inheritDoc
-     */
-    public $sqlOrderBy = 'ad.showOrder';
+    #[\Override]
+    protected function createGridView(): AbstractGridView
+    {
+        return new AdGridView();
+    }
 }

@@ -216,6 +216,11 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\trophies\DeleteTrophy());
             $event->register(new \wcf\system\endpoint\controller\core\trophies\GetShowOrder());
             $event->register(new \wcf\system\endpoint\controller\core\trophies\ChangeShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\ads\EnableAd());
+            $event->register(new \wcf\system\endpoint\controller\core\ads\DisableAd());
+            $event->register(new \wcf\system\endpoint\controller\core\ads\DeleteAd());
+            $event->register(new \wcf\system\endpoint\controller\core\ads\GetShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\ads\ChangeShowOrder());
         }
     );
 

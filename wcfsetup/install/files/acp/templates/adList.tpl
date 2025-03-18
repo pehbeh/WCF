@@ -1,22 +1,15 @@
 {include file='header' pageTitle='wcf.acp.ad.list'}
 
-<script data-relocate="true">
-	require(['WoltLabSuite/Core/Ui/Sortable/List'], function (UiSortableList) {
-		new UiSortableList({
-			containerId: 'adList',
-			className: 'wcf\\data\\ad\\AdAction',
-			offset: {@$startIndex}
-		});
-	});
-</script>
-
 <header class="contentHeader">
 	<div class="contentHeaderTitle">
-		<h1 class="contentTitle">{lang}wcf.acp.ad.list{/lang}{if $items} <span class="badge badgeInverse">{#$items}</span>{/if}</h1>
+		<h1 class="contentTitle">{lang}wcf.acp.ad.list{/lang} <span class="badge badgeInverse">{#$gridView->countRows()}</span></h1>
 	</div>
 	
 	<nav class="contentHeaderNavigation">
 		<ul>
+			<li>
+				<button type="button" class="button jsChangeShowOrder">{icon name='up-down'} <span>{lang}wcf.global.changeShowOrder{/lang}</span></button>
+			</li>
 			<li><a href="{link controller='AdAdd'}{/link}" class="button">{icon name='plus'} <span>{lang}wcf.acp.menu.link.ad.add{/lang}</span></a></li>
 			
 			{event name='contentHeaderNavigation'}
@@ -24,57 +17,19 @@
 	</nav>
 </header>
 
-{hascontent}
-	<div class="paginationTop">
-		{content}{pages print=true assign=pagesLinks controller="AdList" link="pageNo=%d"}{/content}
-	</div>
-{/hascontent}
+<div class="section">
+	{unsafe:$gridView->render()}
+</div>
 
-{if $objects|count}
-	<div class="section sortableListContainer" id="adList">
-		<ol class="sortableList jsObjectActionContainer jsReloadPageWhenEmpty" data-object-id="0" start="{@($pageNo - 1) * $itemsPerPage + 1}" data-object-action-class-name="wcf\data\ad\AdAction">
-			{foreach from=$objects item='ad'}
-				<li class="sortableNode sortableNoNesting jsAd jsObjectActionObject" data-object-id="{@$ad->adID}">
-					<span class="sortableNodeLabel">
-						<a href="{link controller='AdEdit' object=$ad}{/link}">{$ad->adName}</a>
-						
-						<span class="statusDisplay sortableButtonContainer">
-							<span class="sortableNodeHandle">
-								{icon name='arrows-up-down-left-right'}
-							</span>
-							{objectAction action="toggle" isDisabled=$ad->isDisabled}
-							<a href="{link controller='AdEdit' object=$ad}{/link}" title="{lang}wcf.global.button.edit{/lang}" class="jsTooltip">{icon name='pencil'}</a>
-							{objectAction action="delete" objectTitle=$ad->getTitle()}
-							
-							{event name='itemButtons'}
-						</span>
-					</span>
-				</li>
-			{/foreach}
-		</ol>
-	</div>
-	
-	<div class="formSubmit">
-		<button type="button" class="button buttonPrimary" data-type="submit">{lang}wcf.global.button.saveSorting{/lang}</button>
-	</div>
-	
-	<footer class="contentFooter">
-		{hascontent}
-			<div class="paginationBottom">
-				{content}{@$pagesLinks}{/content}
-			</div>
-		{/hascontent}
-		
-		<nav class="contentFooterNavigation">
-			<ul>
-				<li><a href="{link controller='AdAdd'}{/link}" class="button">{icon name='plus'} <span>{lang}wcf.acp.menu.link.ad.add{/lang}</span></a></li>
-				
-				{event name='contentFooterNavigation'}
-			</ul>
-		</nav>
-	</footer>
-{else}
-	<woltlab-core-notice type="info">{lang}wcf.global.noItems{/lang}</woltlab-core-notice>
-{/if}
+<script data-relocate="true">
+	require(["WoltLabSuite/Core/Component/ChangeShowOrder"], ({ setup }) => {
+		{jsphrase name='wcf.global.changeShowOrder'}
+
+		setup(
+			document.querySelector('.jsChangeShowOrder'),
+			'core/ads/show-order',
+		);
+	});
+</script>
 
 {include file='footer'}
