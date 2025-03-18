@@ -14,8 +14,6 @@
 	</nav>
 </header>
 
-<woltlab-core-notice type="info" id="labelChangeNotice">{lang}wcf.acp.label.sortAfterGroupFiltering{/lang}</woltlab-core-notice>
-
 <div class="section">
 	{unsafe:$gridView->render()}
 </div>
