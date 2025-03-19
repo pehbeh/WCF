@@ -87,8 +87,8 @@ final class ReactionTypeGridView extends AbstractGridView
         $this->addQuickInteraction(
             new ToggleInteraction(
                 "enable",
-                "core/reactions/types/%s/assignable",
-                "core/reactions/types/%s/not-assignable",
+                "core/reactions/types/%s/enable",
+                "core/reactions/types/%s/disable",
                 "isAssignable",
                 false
             )

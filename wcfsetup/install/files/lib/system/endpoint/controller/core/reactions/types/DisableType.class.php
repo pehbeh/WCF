@@ -22,8 +22,8 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.2
  */
-#[PostRequest("/core/reactions/types/{id:\d+}/not-assignable")]
-final class NotAssignable implements IController
+#[PostRequest("/core/reactions/types/{id:\d+}/disable")]
+final class DisableType implements IController
 {
     public function __invoke(ServerRequestInterface $request, array $variables): ResponseInterface
     {

@@ -27,7 +27,7 @@ final class ReactionTypeBulkInteractions extends AbstractBulkInteractionProvider
             new BulkDeleteInteraction('core/reactions/types/%s'),
             new BulkRpcInteraction(
                 'assignable',
-                'core/reactions/types/%s/assignable',
+                'core/reactions/types/%s/enable',
                 'wcf.acp.reactionType.isAssignable',
                 InteractionConfirmationType::None,
                 '',
@@ -37,7 +37,7 @@ final class ReactionTypeBulkInteractions extends AbstractBulkInteractionProvider
             ),
             new BulkRpcInteraction(
                 'unset-assignable',
-                'core/reactions/types/%s/not-assignable',
+                'core/reactions/types/%s/disable',
                 'wcf.acp.reactionType.isNotAssignable',
                 InteractionConfirmationType::None,
                 '',

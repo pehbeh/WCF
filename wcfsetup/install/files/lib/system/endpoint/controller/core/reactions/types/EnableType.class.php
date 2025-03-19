@@ -22,8 +22,8 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.2
  */
-#[PostRequest("/core/reactions/types/{id:\d+}/assignable")]
-final class Assignable implements IController
+#[PostRequest("/core/reactions/types/{id:\d+}/enable")]
+final class EnableType implements IController
 {
     public function __invoke(ServerRequestInterface $request, array $variables): ResponseInterface
     {
