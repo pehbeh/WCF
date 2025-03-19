@@ -227,6 +227,11 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\notices\DeleteNotice());
             $event->register(new \wcf\system\endpoint\controller\core\notices\GetShowOrder());
             $event->register(new \wcf\system\endpoint\controller\core\notices\ChangeShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\reactions\types\EnableType());
+            $event->register(new \wcf\system\endpoint\controller\core\reactions\types\DisableType());
+            $event->register(new \wcf\system\endpoint\controller\core\reactions\types\DeleteType());
+            $event->register(new \wcf\system\endpoint\controller\core\reactions\types\GetShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\reactions\types\ChangeShowOrder());
         }
     );
 
