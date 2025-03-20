@@ -82,7 +82,7 @@ final class UserTrophyGridView extends AbstractGridView
                         {
                             \assert($row instanceof UserTrophy);
 
-                            return $row->getTrophy()->getTitle();
+                            return StringUtil::encodeHTML($row->getTrophy()->getTitle());
                         }
                     }
                 )
