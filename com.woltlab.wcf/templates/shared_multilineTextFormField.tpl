@@ -12,7 +12,7 @@
 	*}{if $field->getInputMode() !== null} inputmode="{$field->getInputMode()}"{/if}{*
 	*}{if $field->getPlaceholder() !== null} placeholder="{$field->getPlaceholder()}"{/if}{*
 	*}{foreach from=$field->getFieldAttributes() key='attributeName' item='attributeValue'} {$attributeName}="{$attributeValue}"{/foreach}{*
-*}>{$field->getValue()}</textarea>
+*}>{if !$field->isI18n() || !$field->hasI18nValues() || $availableLanguages|count === 1}{$field->getValue()}{/if}</textarea>
 
 {if $field->isI18n()}
 	{include file='shared_multipleLanguageInputJavascript'}
