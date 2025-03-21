@@ -3345,6 +3345,8 @@ freigeschaltet. {if LANGUAGE_USE_INFORMAL_VARIANT}Du kannst{else}Sie können{/if
 		<item name="wcf.article.button.publish"><![CDATA[Veröffentlichen]]></item>
 		<item name="wcf.article.button.unpublish"><![CDATA[Veröffentlichung zurückziehen]]></item>
 		<item name="wcf.article.button.setCategory"><![CDATA[Kategorie ändern]]></item>
+		<item name="wcf.article.unreadArticles"><![CDATA[Ungelesene Artikel]]></item>
+		<item name="wcf.article.watchedArticles"><![CDATA[Abonnierte Artikel]]></item>
 	</category>
 	<category name="wcf.attachment">
 		<item name="wcf.attachment.file.info"><![CDATA[{@$attachment->filesize|filesize} – {plural value=$attachment->downloads 1="1 Download" other="# Downloads"}]]></item>

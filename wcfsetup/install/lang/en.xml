@@ -3270,6 +3270,8 @@ Your account on {@PAGE_TITLE|phrase} [URL:{link isEmail=true}{/link}] has been a
 		<item name="wcf.article.button.publish"><![CDATA[Publish]]></item>
 		<item name="wcf.article.button.unpublish"><![CDATA[Withdraw Publication]]></item>
 		<item name="wcf.article.button.setCategory"><![CDATA[Set category]]></item>
+		<item name="wcf.article.unreadArticles"><![CDATA[Unread Articles]]></item>
+		<item name="wcf.article.watchedArticles"><![CDATA[Subscribed Articles]]></item>
 	</category>
 	<category name="wcf.attachment">
 		<item name="wcf.attachment.file.info"><![CDATA[{@$attachment->filesize|filesize} – {plural value=$attachment->downloads 1="1 Download" other="# Downloads"}]]></item>

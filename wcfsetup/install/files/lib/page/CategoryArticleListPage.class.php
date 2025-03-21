@@ -3,45 +3,35 @@
 namespace wcf\page;
 
 use wcf\data\article\category\ArticleCategory;
-use wcf\data\article\CategoryArticleList;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\exception\PermissionDeniedException;
+use wcf\system\listView\user\ArticleListView;
 use wcf\system\MetaTagHandler;
 use wcf\system\page\PageLocationManager;
-use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 
 /**
  * Shows a list of cms articles in a certain category.
  *
- * @author  Marcel Werk
- * @copyright   2001-2019 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
- * @since   3.0
+ * @author      Marcel Werk
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       3.0
  */
 class CategoryArticleListPage extends ArticleListPage
 {
     /**
-     * category the listed articles belong to
-     * @var ArticleCategory
+     * Category the listed articles belong to.
      */
-    public $category;
+    public ?ArticleCategory $category = null;
 
     /**
-     * id of the category the listed articles belong to
-     * @var int
+     * Id of the category the listed articles belong to.
      */
-    public $categoryID = 0;
+    public int $categoryID = 0;
 
-    /**
-     * @inheritDoc
-     */
-    public $controllerName = 'CategoryArticleList';
-
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function readParameters()
     {
         if (isset($_REQUEST['id'])) {
@@ -51,30 +41,17 @@ class CategoryArticleListPage extends ArticleListPage
         if ($this->category === null) {
             throw new IllegalLinkException();
         }
-        $this->controllerParameters['object'] = $this->category;
+
         parent::readParameters();
-
-        $this->canonicalURL = LinkHandler::getInstance()->getLink('CategoryArticleList', [
-            'object' => $this->category,
-        ], ($this->pageNo > 1 ? 'pageNo=' . $this->pageNo : ''));
-
-        if ($this->category->sortField) {
-            $this->sortField = $this->category->sortField;
-            $this->sortOrder = $this->category->sortOrder;
-        }
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function getLabelGroups(): array
+    #[\Override]
+    protected function createListView(): ArticleListView
     {
-        return $this->category->getLabelGroups('canViewLabel');
+        return new ArticleListView();
     }
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function checkPermissions()
     {
         parent::checkPermissions();
@@ -84,31 +61,7 @@ class CategoryArticleListPage extends ArticleListPage
         }
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function initObjectList()
-    {
-        $this->objectList = new CategoryArticleList($this->categoryID, true);
-        $this->applyFilters();
-
-        if ($this->sortField === 'title') {
-            $this->objectList->sqlSelects = "(
-                SELECT  title
-                FROM    wcf1_article_content
-                WHERE   articleID = article.articleID
-                    AND (
-                            languageID IS NULL
-                         OR languageID = " . WCF::getLanguage()->languageID . "
-                         )
-                LIMIT   1
-            ) AS title";
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function readData()
     {
         parent::readData();
@@ -149,9 +102,7 @@ class CategoryArticleListPage extends ArticleListPage
         }
     }
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function assignVariables()
     {
         parent::assignVariables();
@@ -159,7 +110,6 @@ class CategoryArticleListPage extends ArticleListPage
         WCF::getTPL()->assign([
             'categoryID' => $this->categoryID,
             'category' => $this->category,
-            'controllerObject' => $this->category,
         ]);
     }
 }

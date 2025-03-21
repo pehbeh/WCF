@@ -2,17 +2,14 @@
 
 namespace wcf\page;
 
-use wcf\data\article\category\ArticleCategory;
-use wcf\data\article\CategoryArticleList;
-use wcf\system\exception\IllegalLinkException;
-use wcf\system\request\LinkHandler;
+use wcf\system\listView\user\ArticleListView;
 
 /**
  * Shows a list of articles in watched categories.
  *
- * @author  Joshua Ruesweg
- * @copyright   2001-2019 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @author      Joshua Ruesweg
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       5.2
  */
 class WatchedArticleListPage extends ArticleListPage
@@ -25,33 +22,14 @@ class WatchedArticleListPage extends ArticleListPage
     /**
      * @inheritDoc
      */
-    public $controllerName = 'WatchedArticleList';
+    public $templateName = 'articleList';
 
-    /**
-     * @inheritDoc
-     */
-    public function readParameters()
+    #[\Override]
+    protected function createListView(): ArticleListView
     {
-        parent::readParameters();
+        $listView = parent::createListView();
+        $listView->setActiveFilters(['watched' => 1]);
 
-        if (empty(ArticleCategory::getSubscribedCategoryIDs())) {
-            throw new IllegalLinkException();
-        }
-
-        $this->canonicalURL = LinkHandler::getInstance()->getLink(
-            'WatchedArticleList',
-            $this->controllerParameters,
-            ($this->pageNo > 1 ? 'pageNo=' . $this->pageNo : '')
-        );
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function initObjectList()
-    {
-        $this->objectList = new CategoryArticleList(ArticleCategory::getSubscribedCategoryIDs());
-
-        $this->applyFilters();
+        return $listView;
     }
 }

@@ -1,7 +1,7 @@
 {if !$disableAds|isset}{assign var='disableAds' value=false}{/if}
 
 <div class="contentItemList">
-	{foreach from=$objects item='article' name='articles'}
+	{foreach from=$view->getItems() item='article' name='articles'}
 		{if $article->getArticleContent()}
 		<article class="contentItem contentItemMultiColumn">
 			<div class="contentItemLink">
