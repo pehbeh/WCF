@@ -60,6 +60,13 @@ final class CronjobScheduler extends SingletonFactory
             SessionHandler::getInstance()->changeUser(new User(null), true);
 
             foreach ($cronjobEditors as $cronjobEditor) {
+                // Reset the memory usage for each cronjob, allowing to measure each individual
+                // cronjob's memory usage without a memory-heavy cronjob skewing the numbers for
+                // the following cronjobs.
+                if (\PHP_VERSION_ID >= 80200) {
+                    \memory_reset_peak_usage();
+                }
+
                 // mark cronjob as being executed
                 $cronjobEditor->update([
                     'state' => Cronjob::EXECUTING,
