@@ -161,6 +161,7 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\users\options\DisableOption());
             $event->register(new \wcf\system\endpoint\controller\core\users\options\EnableOption());
             $event->register(new \wcf\system\endpoint\controller\core\users\ranks\DeleteUserRank());
+            $event->register(new \wcf\system\endpoint\controller\core\users\trophies\DeleteUserTrophy());
             $event->register(new \wcf\system\endpoint\controller\core\interactions\GetBulkContextMenuOptions());
             $event->register(new \wcf\system\endpoint\controller\core\interactions\GetContextMenuOptions());
             $event->register(new \wcf\system\endpoint\controller\core\articles\DeleteArticle());
@@ -227,6 +228,11 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\notices\DeleteNotice());
             $event->register(new \wcf\system\endpoint\controller\core\notices\GetShowOrder());
             $event->register(new \wcf\system\endpoint\controller\core\notices\ChangeShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\reactions\types\EnableType());
+            $event->register(new \wcf\system\endpoint\controller\core\reactions\types\DisableType());
+            $event->register(new \wcf\system\endpoint\controller\core\reactions\types\DeleteType());
+            $event->register(new \wcf\system\endpoint\controller\core\reactions\types\GetShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\reactions\types\ChangeShowOrder());
         }
     );
 

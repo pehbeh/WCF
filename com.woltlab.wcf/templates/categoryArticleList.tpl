@@ -65,7 +65,9 @@
 {capture assign='contentInteractionButtons'}
 	{include file='__userObjectWatchButton' isSubscribed=$category->isSubscribed() objectType='com.woltlab.wcf.article.category' objectID=$category->categoryID}
 	
-	<button type="button" class="markAllAsReadButton contentInteractionButton button small jsOnly">{icon name='check'} <span>{lang}wcf.global.button.markAllAsRead{/lang}</span></button>
+	{if $__wcf->user->userID}
+		<button type="button" class="markAllAsReadButton contentInteractionButton button small jsOnly">{icon name='check'} <span>{lang}wcf.global.button.markAllAsRead{/lang}</span></button>
+	{/if}
 {/capture}
 
 {capture assign='contentInteractionDropdownItems'}
@@ -98,11 +100,13 @@
 	{/hascontent}
 </footer>
 
-<script data-relocate="true">
-	require(['WoltLabSuite/Core/Ui/Article/MarkAllAsRead'], ({ setup }) => {
-		setup();
-	});
-</script>
+{if $__wcf->user->userID}
+	<script data-relocate="true">
+		require(['WoltLabSuite/Core/Ui/Article/MarkAllAsRead'], ({ setup }) => {
+			setup();
+		});
+	</script>
+{/if}
 
 {include file='shared_articleAddDialog'}
 

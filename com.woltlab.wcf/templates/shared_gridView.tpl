@@ -80,7 +80,7 @@
 		WoltLabLanguage.registerPhrase("wcf.clipboard.button.numberOfSelectedItems", '{jslang __literal=true}wcf.clipboard.button.numberOfSelectedItems{/jslang}');
 		
 		new GridView(
-			'{unsafe:$view->getID()|encodeJs}',
+			'{unsafe:$view->getID()|encodeJS}',
 			'{unsafe:$view->getClassName()|encodeJS}',
 			{$view->getPageNo()},
 			'{unsafe:$view->getBaseUrl()|encodeJS}',
@@ -89,7 +89,7 @@
 			'{unsafe:$view->getBulkInteractionProviderClassName()|encodeJS}',
 			new Map([
 				{foreach from=$view->getParameters() key='name' item='value'}
-					['{unsafe:$name|encodeJs}', '{unsafe:$value|encodeJs}'],
+					['{unsafe:$name|encodeJS}', '{unsafe:$value|encodeJS}'],
 				{/foreach}
 			]),
 		);

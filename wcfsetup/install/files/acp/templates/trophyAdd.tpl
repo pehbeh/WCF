@@ -183,14 +183,17 @@
 			<dl>
 				<dt>{lang}wcf.acp.trophy.type.badge{/lang}</dt>
 				<dd>
-					<span class="trophyIcon" style="color: {$iconColor}; background-color: {$badgeColor}">
-						{@$icon->toHtml(64)}
-					</span>
-					<button type="button" class="button small trophyIconEditButton" data-value="icon">{lang}wcf.global.fontAwesome.selectIcon{/lang}</button>
-					<button type="button" class="button small trophyIconEditButton" data-value="color">{lang}wcf.style.colorPicker.changeColor{/lang}</button>
-					<button type="button" class="button small trophyIconEditButton" data-value="background-color">{lang}wcf.style.colorPicker.changeBackgroundColor{/lang}</button>
+					<div class="badgeIconEditor">
+						<span class="trophyIcon" style="color: {$iconColor}; background-color: {$badgeColor}">
+							{unsafe:$icon->toHtml(64)}
+						</span>
+						<div class="badgeIconEditorButtons">
+							<button type="button" class="button small trophyIconEditButton" data-value="icon">{lang}wcf.global.fontAwesome.selectIcon{/lang}</button>
+							<button type="button" class="button small trophyIconEditButton" data-value="color">{lang}wcf.style.colorPicker.changeColor{/lang}</button>
+							<button type="button" class="button small trophyIconEditButton" data-value="background-color">{lang}wcf.style.colorPicker.changeBackgroundColor{/lang}</button>
+						</div>
+					</div>
 
-					
 					<input type="hidden" name="iconName" value="{$iconName}">
 					<input type="hidden" name="iconColor" value="{$iconColor}">
 					<input type="hidden" name="badgeColor" value="{$badgeColor}">

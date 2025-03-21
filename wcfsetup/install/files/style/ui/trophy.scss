@@ -12,8 +12,28 @@
 	vertical-align: middle;
 }
 
-#badgeContainer .icon {
-	vertical-align: middle;
+.badgeIconEditor {
+	column-gap: 10px;
+	display: flex;
+}
+
+.badgeIconEditor .trophyIcon {
+	align-self: center;
+	flex: 0 0 auto;
+}
+
+.badgeIconEditorButtons {
+	align-items: start;
+	align-self: center;
+	display: flex;
+	flex: 1 0 auto;
+	gap: 10px;
+}
+
+@include screen-xs {
+	.badgeIconEditorButtons {
+		flex-direction: column;
+	}
 }
 
 .trophyIcon {

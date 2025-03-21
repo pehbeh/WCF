@@ -80,9 +80,9 @@ class LanguageFactory extends SingletonFactory
             $statement = WCF::getDB()->prepare($sql);
             $statement->execute([$languageCode]);
             return $statement->fetchObject(Language::class);
-        } else {
-            return $this->getLanguageByCode($languageCode);
         }
+
+        return $this->cache->getLanguageByCode($languageCode);
     }
 
     /**
