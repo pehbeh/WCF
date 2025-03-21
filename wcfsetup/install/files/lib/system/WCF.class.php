@@ -512,6 +512,9 @@ class WCF
 
         // The option for the SFS action has been converted into a general option with version 6.1.
         \define('BLACKLIST_SFS_ACTION', 'disable');
+
+        // The option to show an article counter in the message sidebar was removed with version 6.2.
+        \define('MESSAGE_SIDEBAR_ENABLE_ARTICLES', 0);
     }
 
     /**

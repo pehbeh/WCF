@@ -1355,11 +1355,6 @@ DESC:wcf.global.sortOrder.descending</selectoptions>
 				<defaultvalue>1</defaultvalue>
 				<options>module_trophy</options>
 			</option>
-			<option name="message_sidebar_enable_articles">
-				<categoryname>message.sidebar</categoryname>
-				<optiontype>boolean</optiontype>
-				<defaultvalue>1</defaultvalue>
-			</option>
 			<option name="message_sidebar_user_options">
 				<categoryname>message.sidebar</categoryname>
 				<optiontype>useroptions</optiontype>
@@ -1637,6 +1632,7 @@ DESC:wcf.global.sortOrder.descending</selectoptions>
 		<option name="enable_woltlab_news"/>
 		<option name="users_online_record_no_guests"/>
 		<option name="blacklist_sfs_action"/>
+		<option name="message_sidebar_enable_articles"/>
 		<category name="security.blacklist"/>
 		<category name="security.blacklist.custom"/>
 	</delete>
