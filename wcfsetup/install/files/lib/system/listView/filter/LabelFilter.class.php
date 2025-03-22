@@ -60,6 +60,6 @@ class LabelFilter extends AbstractFilter
     #[\Override]
     public function renderValue(string $value): string
     {
-        return $this->labelGroup->getLabel($value)->getTitle();
+        return $this->labelGroup->getLabel((int)$value)->getTitle();
     }
 }

@@ -4,15 +4,26 @@ namespace wcf\system\listView;
 
 use wcf\action\ListViewFilterAction;
 use wcf\data\DatabaseObject;
+use wcf\data\DatabaseObjectDecorator;
 use wcf\data\DatabaseObjectList;
 use wcf\system\listView\filter\IListViewFilter;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 
+/**
+ * Abstract implementation of a grid view.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ *
+ * @template TDatabaseObject of DatabaseObject|DatabaseObjectDecorator
+ * @template TDatabaseObjectList of DatabaseObjectList
+ */
 abstract class AbstractListView
 {
     private int $objectCount;
-    private DatabaseObjectList $objectList;
     private int $itemsPerPage = 20;
     private string $baseUrl = '';
     private string $sortField = '';
@@ -35,9 +46,14 @@ abstract class AbstractListView
     private array $availableFilters = [];
 
     /**
-     * @var DatabaseObject[]
+     * @var TDatabaseObject[]
      */
     private array $objects;
+
+    /**
+     * @var TDatabaseObjectList
+     */
+    private DatabaseObjectList $objectList;
 
     /**
      * Returns the number of items per page.
@@ -113,6 +129,8 @@ abstract class AbstractListView
 
     /**
      * Sets the active filter values.
+     *
+     * @param mixed[] $filters
      */
     public function setActiveFilters(array $filters): void
     {
@@ -121,6 +139,8 @@ abstract class AbstractListView
 
     /**
      * Returns the active filter values.
+     *
+     * @return mixed[]
      */
     public function getActiveFilters(): array
     {
@@ -193,7 +213,7 @@ abstract class AbstractListView
     /**
      * Returns the items for the active page.
      *
-     * @return DatabaseObject[]
+     * @return TDatabaseObject[]
      */
     public function getItems(): array
     {
@@ -219,6 +239,8 @@ abstract class AbstractListView
 
     /**
      * Returns the database object list.
+     *
+     * @return TDatabaseObjectList
      */
     public function getObjectList(): DatabaseObjectList
     {
@@ -296,7 +318,7 @@ abstract class AbstractListView
     }
 
     /**
-     * @param array<string, ListViewSortField>
+     * @param ListViewSortField[] $sortFields
      */
     public function addAvailableSortFields(array $sortFields): void
     {
@@ -369,6 +391,9 @@ abstract class AbstractListView
         return WCF::getTPL()->render('wcf', 'shared_listView', ['view' => $this]);
     }
 
+    /**
+     * @return TDatabaseObjectList
+     */
     protected abstract function createObjectList(): DatabaseObjectList;
 
     public abstract function renderItems(): string;

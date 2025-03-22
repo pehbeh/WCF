@@ -4,7 +4,9 @@ namespace wcf\system\listView\user;
 
 use wcf\data\article\AccessibleArticleList;
 use wcf\data\article\category\ArticleCategory;
+use wcf\data\article\ViewableArticle;
 use wcf\data\DatabaseObjectList;
+use wcf\data\label\group\ViewableLabelGroup;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\system\label\LabelHandler;
 use wcf\system\listView\AbstractListView;
@@ -15,6 +17,16 @@ use wcf\system\listView\ListViewSortField;
 use wcf\system\visitTracker\VisitTracker;
 use wcf\system\WCF;
 
+/**
+ * Grid view for the list of user ranks.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2024 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ *
+ * @extends AbstractListView<ViewableArticle, AccessibleArticleList>
+ */
 class ArticleListView extends AbstractListView
 {
     public function __construct()

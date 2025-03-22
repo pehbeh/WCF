@@ -14,13 +14,23 @@ use wcf\system\WCF;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
+ *
+ * @template TListView of AbstractListView
  */
 abstract class AbstractListViewPage extends AbstractPage
 {
-    protected AbstractListView $listView;
     protected int $pageNo = 1;
     protected string $sortField = '';
     protected string $sortOrder = '';
+
+    /**
+     * @var TListView
+     */
+    protected AbstractListView $listView;
+
+    /**
+     * @var mixed[]
+     */
     protected array $filters = [];
 
     #[\Override]
@@ -84,6 +94,8 @@ abstract class AbstractListViewPage extends AbstractPage
 
     /**
      * Returns the list view instance for the rendering of this page.
+     *
+     * @return TListView
      */
     protected abstract function createListView(): AbstractListView;
 }
