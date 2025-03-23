@@ -2,6 +2,7 @@ import State, { StateChangeCause } from "./ListView/State";
 import { trigger as triggerDomChange } from "../Dom/Change/Listener";
 import { setInnerHtml } from "../Dom/Util";
 import { getItems } from "../Api/ListViews/GetItems";
+import { element as scrollToElement } from "WoltLabSuite/Core/Ui/Scroll";
 
 export class ListView {
   readonly #viewClassName: string;
@@ -52,6 +53,9 @@ export class ListView {
     this.#viewElement.hidden = response.totalItems === 0;
     this.#noItemsNotice.hidden = response.totalItems !== 0;
     this.#state.updateFromResponse(cause, response.pages, response.filterLabels);
+    if (cause === StateChangeCause.Pagination) {
+      scrollToElement(this.#viewElement);
+    }
 
     triggerDomChange();
   }

@@ -1,4 +1,4 @@
-define(["require", "exports", "tslib", "./ListView/State", "../Dom/Change/Listener", "../Dom/Util", "../Api/ListViews/GetItems"], function (require, exports, tslib_1, State_1, Listener_1, Util_1, GetItems_1) {
+define(["require", "exports", "tslib", "./ListView/State", "../Dom/Change/Listener", "../Dom/Util", "../Api/ListViews/GetItems", "WoltLabSuite/Core/Ui/Scroll"], function (require, exports, tslib_1, State_1, Listener_1, Util_1, GetItems_1, Scroll_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ListView = void 0;
@@ -30,6 +30,9 @@ define(["require", "exports", "tslib", "./ListView/State", "../Dom/Change/Listen
             this.#viewElement.hidden = response.totalItems === 0;
             this.#noItemsNotice.hidden = response.totalItems !== 0;
             this.#state.updateFromResponse(cause, response.pages, response.filterLabels);
+            if (cause === 2 /* StateChangeCause.Pagination */) {
+                (0, Scroll_1.element)(this.#viewElement);
+            }
             (0, Listener_1.trigger)();
         }
     }
