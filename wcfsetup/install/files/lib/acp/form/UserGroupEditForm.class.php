@@ -38,7 +38,7 @@ class UserGroupEditForm extends UserGroupAddForm
 
     /**
      * user group editor object
-     * @var UserGroupEditor
+     * @var ?UserGroupEditor
      */
     public $group;
 

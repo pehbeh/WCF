@@ -47,7 +47,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
 
     /**
      * ids of result objects
-     * @var int[]
+     * @var int[]|null
      */
     public $objectIDs;
 
@@ -235,7 +235,7 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
     /**
      * Returns the object ids of the list.
      *
-     * @return int[]
+     * @return int[]|null
      */
     public function getObjectIDs()
     {
