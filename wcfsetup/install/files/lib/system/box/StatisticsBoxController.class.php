@@ -2,7 +2,7 @@
 
 namespace wcf\system\box;
 
-use wcf\system\cache\builder\UserStatsCacheBuilder;
+use wcf\system\cache\tolerant\UserStatsCache;
 use wcf\system\WCF;
 
 /**
@@ -29,7 +29,7 @@ class StatisticsBoxController extends AbstractBoxController
             $this->content = WCF::getTPL()->render(
                 'wcf',
                 'boxStatistics',
-                ['statistics' => UserStatsCacheBuilder::getInstance()->getData()]
+                ['statistics' => (new UserStatsCache())->getCache()]
             );
         }
     }
