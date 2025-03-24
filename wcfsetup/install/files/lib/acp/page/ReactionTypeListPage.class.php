@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\ReactionTypeGridView;
 
 /**
@@ -15,7 +14,7 @@ use wcf\system\gridView\admin\ReactionTypeGridView;
  *
  * @extends AbstractGridViewPage<ReactionTypeGridView>
  */
-class ReactionTypeListPage extends AbstractGridViewPage
+final class ReactionTypeListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -33,7 +32,7 @@ class ReactionTypeListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.content.reaction.canManageReactionType'];
 
     #[\Override]
-    protected function createGridView(): AbstractGridView
+    protected function createGridView(): ReactionTypeGridView
     {
         return new ReactionTypeGridView();
     }

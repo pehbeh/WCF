@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\AdGridView;
 
 /**
@@ -15,7 +14,7 @@ use wcf\system\gridView\admin\AdGridView;
  *
  * @extends AbstractGridViewPage<AdGridView>
  */
-class AdListPage extends AbstractGridViewPage
+final class AdListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -33,7 +32,7 @@ class AdListPage extends AbstractGridViewPage
     public $neededModules = ['MODULE_WCF_AD'];
 
     #[\Override]
-    protected function createGridView(): AbstractGridView
+    protected function createGridView(): AdGridView
     {
         return new AdGridView();
     }

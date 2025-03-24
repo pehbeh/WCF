@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\TrophyGridView;
 
 /**
@@ -16,7 +15,7 @@ use wcf\system\gridView\admin\TrophyGridView;
  *
  * @extends AbstractGridViewPage<TrophyGridView>
  */
-class TrophyListPage extends AbstractGridViewPage
+final class TrophyListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -34,7 +33,7 @@ class TrophyListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.trophy.canManageTrophy'];
 
     #[\Override]
-    protected function createGridView(): AbstractGridView
+    protected function createGridView(): TrophyGridView
     {
         return new TrophyGridView();
     }

@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\NoticeGridView;
 
 /**
@@ -15,7 +14,7 @@ use wcf\system\gridView\admin\NoticeGridView;
  *
  * @extends AbstractGridViewPage<NoticeGridView>
  */
-class NoticeListPage extends AbstractGridViewPage
+final class NoticeListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -28,7 +27,7 @@ class NoticeListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.notice.canManageNotice'];
 
     #[\Override]
-    protected function createGridView(): AbstractGridView
+    protected function createGridView(): NoticeGridView
     {
         return new NoticeGridView();
     }

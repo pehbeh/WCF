@@ -3,7 +3,6 @@
 namespace wcf\acp\page;
 
 use wcf\page\AbstractGridViewPage;
-use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\admin\LabelGridView;
 
 /**
@@ -15,7 +14,7 @@ use wcf\system\gridView\admin\LabelGridView;
  *
  * @extends AbstractGridViewPage<LabelGridView>
  */
-class LabelListPage extends AbstractGridViewPage
+final class LabelListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -28,7 +27,7 @@ class LabelListPage extends AbstractGridViewPage
     public $neededPermissions = ['admin.content.label.canManageLabel'];
 
     #[\Override]
-    protected function createGridView(): AbstractGridView
+    protected function createGridView(): LabelGridView
     {
         return new LabelGridView();
     }
