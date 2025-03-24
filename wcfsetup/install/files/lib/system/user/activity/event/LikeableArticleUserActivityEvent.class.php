@@ -42,6 +42,14 @@ class LikeableArticleUserActivityEvent extends SingletonFactory implements IUser
             if (isset($articles[$event->objectID])) {
                 $article = $articles[$event->objectID];
 
+                $reactionType = ReactionHandler::getInstance()->getReactionTypeByID(
+                    $event->reactionTypeID ?? $event->reactionType->reactionTypeID
+                );
+                if ($reactionType === null) {
+                    $event->setIsOrphaned();
+                    continue;
+                }
+
                 // check permissions
                 if (!$article->canRead()) {
                     continue;
@@ -50,9 +58,7 @@ class LikeableArticleUserActivityEvent extends SingletonFactory implements IUser
 
                 $event->setTitle(WCF::getLanguage()->getDynamicVariable('wcf.article.recentActivity.likedArticle', [
                     'article' => $article,
-                    'reactionType' => ReactionHandler::getInstance()->getReactionTypeByID(
-                        $event->reactionTypeID ?? $event->reactionType->reactionTypeID
-                    ),
+                    'reactionType' => $reactionType,
                     'author' => $event->getUserProfile(),
                 ]));
                 $event->setLink($article->getLink());

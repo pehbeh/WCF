@@ -21,6 +21,7 @@ final class LicenseData
      *              type: string,
      *              expiryDates?: array<string, int>,
      *              ckeditorLicenseKey?: string,
+     *              ckeditorLicenseKeyV44?: string,
      *          } $license
      * @param   array<string,string> $pluginstore
      * @param   array<string,string> $woltlab

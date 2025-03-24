@@ -36,7 +36,7 @@ class HtmlOutputNodeA extends AbstractHtmlOutputNode
         // Find links that are nested inside other links.
         $nestedLinks = \array_filter(
             $elements,
-            static fn (\DOMElement $element) => DOMUtil::hasParent($element, 'a'),
+            static fn(\DOMElement $element) => DOMUtil::hasParent($element, 'a'),
         );
 
         if ($nestedLinks !== []) {
@@ -66,18 +66,22 @@ class HtmlOutputNodeA extends AbstractHtmlOutputNode
 
             if ($href->getScheme() !== 'mailto') {
                 if (ApplicationHandler::getInstance()->isInternalURL($href->__toString())) {
-                    if ($href->getHost() === '') {
-                        // `withScheme()` implicitly adds `localhost`
-                        // https://www.woltlab.com/community/thread/302070-link-ohne-protokoll-zeigt-auf-localhost/
-                        $href = $href->withHost(ApplicationHandler::getInstance()->getDomainName());
+                    // Check if the links is nothing more but a named anchor.
+                    // See https://www.woltlab.com/community/thread/311519-anchor-verlinkung-im-editor-ignoriert-domain-pfad/
+                    if (!Uri::isSameDocumentReference($href)) {
+                        if ($href->getHost() === '') {
+                            // `withScheme()` implicitly adds `localhost`
+                            // https://www.woltlab.com/community/thread/302070-link-ohne-protokoll-zeigt-auf-localhost/
+                            $href = $href->withHost(ApplicationHandler::getInstance()->getDomainName());
+                        }
+
+                        $href = $href->withScheme(RouteHandler::secureConnection() ? 'https' : 'http');
+
+                        $element->setAttribute(
+                            'href',
+                            $href->__toString(),
+                        );
                     }
-
-                    $href = $href->withScheme(RouteHandler::secureConnection() ? 'https' : 'http');
-
-                    $element->setAttribute(
-                        'href',
-                        $href->__toString(),
-                    );
                 } else {
                     /** @var HtmlOutputNodeProcessor $htmlNodeProcessor */
                     self::markLinkAsExternal($element, $htmlNodeProcessor->getHtmlProcessor()->enableUgc);

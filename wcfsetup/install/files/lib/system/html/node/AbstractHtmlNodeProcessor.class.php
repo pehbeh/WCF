@@ -56,9 +56,7 @@ abstract class AbstractHtmlNodeProcessor implements IHtmlNodeProcessor
         $this->document = new \DOMDocument('1.0', 'UTF-8');
         $this->xpath = null;
 
-        $html = \preg_replace_callback('~(<pre[^>]*>)(.*?)(</pre>)~s', static function ($matches) {
-            return $matches[1] . \preg_replace('~\r?\n~', '@@@WCF_PRE_LINEBREAK@@@', $matches[2]) . $matches[3];
-        }, $html);
+        $html = $this->maskLineBreaksInsideCode($html);
 
         // strip UTF-8 zero-width whitespace
         $html = \preg_replace('~\x{200B}~u', '', $html);
@@ -99,6 +97,44 @@ abstract class AbstractHtmlNodeProcessor implements IHtmlNodeProcessor
         }
 
         $this->nodeData = [];
+    }
+
+    /**
+     * Replaces line breaks inside code blocks with a symbol to prevent them
+     * being mangled by libxml.
+     *
+     * This method splits up the HTML into chunks that effectively end with
+     * `</pre>`. This allows us to use a simple regex to find the start of the
+     * pre tag and treating everything inbetween as the content of the block.
+     *
+     * The previous approach used a lazy match for the pre content which could
+     * hit the backtracking limit for extremely large payloads.
+     */
+    private function maskLineBreaksInsideCode(string $html): string
+    {
+        $segments = \preg_split('~</pre>~s', $html, flags: \PREG_SPLIT_NO_EMPTY);
+
+        $html = '';
+        foreach ($segments as $segment) {
+            $hasMatch = false;
+
+            $html .= \preg_replace_callback(
+                '~(?<openingTag><pre[^>]*>)(?<content>.*+)$~s',
+                static function ($matches) use (&$hasMatch) {
+                    $hasMatch = true;
+
+                    return $matches['openingTag'] . \preg_replace('~\r?\n~', '@@@WCF_PRE_LINEBREAK@@@', $matches['content']) . '</pre>';
+                },
+                $segment,
+                limit: 1
+            );
+
+            if (!$hasMatch && \str_contains($segment, '<pre')) {
+                $html .= '</pre>';
+            }
+        }
+
+        return $html;
     }
 
     /**

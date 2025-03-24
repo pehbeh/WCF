@@ -124,6 +124,7 @@
 	background-color: var(--wcfContentContainerBackground);
 	border-radius: 30px;
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: center;
 	gap: 5px;
 	margin: 5px auto 0 auto;
