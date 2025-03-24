@@ -2,45 +2,33 @@
 
 namespace wcf\system\cache\builder;
 
-use wcf\system\cache\runtime\UserProfileRuntimeCache;
-use wcf\system\WCF;
+use wcf\system\cache\tolerant\UserStatsCache;
 
 /**
  * Caches the number of members and the newest member.
  *
- * @author  Marcel Werk
+ * @author Olaf Braun, Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @deprecated 6.2 use `UserStatsCache` instead
  */
-class UserStatsCacheBuilder extends AbstractCacheBuilder
+class UserStatsCacheBuilder extends AbstractLegacyCacheBuilder
 {
-    /**
-     * @inheritDoc
-     */
-    protected $maxLifetime = 600;
-
-    /**
-     * @inheritDoc
-     */
-    protected function rebuild(array $parameters)
+    #[\Override]
+    protected function rebuild(array $parameters): array
     {
-        $data = [];
+        $cache = (new UserStatsCache())->getCache();
 
-        // number of members
-        $sql = "SELECT  COUNT(*) AS amount
-                FROM    wcf1_user";
-        $statement = WCF::getDB()->prepare($sql);
-        $statement->execute();
-        $data['members'] = $statement->fetchColumn();
+        return [
+            'members' => $cache->members,
+            'newestMember' => $cache->newestMember
+        ];
+    }
 
-        // newest member
-        $sql = "SELECT      userID
-                FROM        wcf1_user
-                ORDER BY    userID DESC";
-        $statement = WCF::getDB()->prepare($sql, 1);
-        $statement->execute();
-        $data['newestMember'] = UserProfileRuntimeCache::getInstance()->getObject($statement->fetchSingleColumn());
-
-        return $data;
+    #[\Override]
+    public function reset(array $parameters = [])
+    {
+        (new UserStatsCache())->rebuild();
     }
 }
