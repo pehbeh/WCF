@@ -4,7 +4,7 @@ namespace wcf\system\user\notification\event;
 
 use wcf\data\category\Category;
 use wcf\data\category\CategoryAction;
-use wcf\system\cache\builder\CategoryCacheBuilder;
+use wcf\system\cache\eager\CategoryCache;
 use wcf\system\category\CategoryHandler;
 use wcf\system\user\notification\TestableUserNotificationEventHandler;
 
@@ -44,7 +44,7 @@ trait TTestableCategorizedUserNotificationEvent
         ]))->executeAction()['returnValues'];
 
         // work-around to reset category cache during this request
-        TestableUserNotificationEventHandler::getInstance()->resetCacheBuilder(CategoryCacheBuilder::getInstance());
+        TestableUserNotificationEventHandler::getInstance()->resetCacheHandler((new CategoryCache()));
 
         CategoryHandler::getInstance()->reloadCache();
 

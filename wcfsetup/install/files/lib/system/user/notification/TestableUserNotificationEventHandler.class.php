@@ -10,7 +10,10 @@ use wcf\data\user\User;
 use wcf\data\user\UserAction;
 use wcf\data\user\UserProfile;
 use wcf\data\user\UserProfileList;
+use wcf\system\cache\builder\AbstractLegacyCacheBuilder;
 use wcf\system\cache\builder\ICacheBuilder;
+use wcf\system\cache\eager\AbstractEagerCache;
+use wcf\system\cache\tolerant\AbstractTolerantCache;
 use wcf\system\email\Email;
 use wcf\system\email\mime\RecipientAwareTextMimePart;
 use wcf\system\email\UserMailbox;
@@ -308,8 +311,29 @@ class TestableUserNotificationEventHandler extends SingletonFactory
      */
     public function resetCacheBuilder(ICacheBuilder $cacheBuilder)
     {
-        $reflectionClass = new \ReflectionClass(\get_class($cacheBuilder));
+        if ($cacheBuilder instanceof AbstractLegacyCacheBuilder) {
+            $reflectionClass = new \ReflectionClass(AbstractLegacyCacheBuilder::class);
+        } else {
+            $reflectionClass = new \ReflectionClass(\get_class($cacheBuilder));
+        }
+
         $reflectionProperty = $reflectionClass->getProperty('cache');
         $reflectionProperty->setValue($cacheBuilder, []);
+    }
+
+    /**
+     * @template T of object|array
+     * @param AbstractEagerCache<T>|AbstractTolerantCache<T> $cacheHandler
+     */
+    public function resetCacheHandler(AbstractEagerCache|AbstractTolerantCache $cacheHandler): void
+    {
+        if ($cacheHandler instanceof AbstractEagerCache) {
+            $reflectionClass = new \ReflectionClass(AbstractEagerCache::class);
+        } else {
+            $reflectionClass = new \ReflectionClass(AbstractTolerantCache::class);
+        }
+
+        $reflectionProperty = $reflectionClass->getProperty('caches');
+        $reflectionProperty->setValue($cacheHandler, []);
     }
 }
