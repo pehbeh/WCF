@@ -3,6 +3,8 @@ import { trigger as triggerDomChange } from "../Dom/Change/Listener";
 import { setInnerHtml } from "../Dom/Util";
 import { getItems } from "../Api/ListViews/GetItems";
 import { element as scrollToElement } from "WoltLabSuite/Core/Ui/Scroll";
+import { wheneverFirstSeen } from "../Helper/Selector";
+import UiDropdownSimple from "../Ui/Dropdown/Simple";
 
 export class ListView {
   readonly #viewClassName: string;
@@ -22,6 +24,7 @@ export class ListView {
     this.#viewElement = document.getElementById(`${viewId}_items`) as HTMLTableElement;
     this.#noItemsNotice = document.getElementById(`${viewId}_noItemsNotice`) as HTMLElement;
 
+    this.#initInteractions();
     this.#state = this.#setupState(viewId, pageNo, baseUrl, sortField, sortOrder);
   }
 
@@ -58,5 +61,27 @@ export class ListView {
     }
 
     triggerDomChange();
+  }
+
+  #initInteractions(): void {
+    wheneverFirstSeen(`#${this.#viewElement.id} .listView__item`, (item) => {
+      item.querySelectorAll<HTMLElement>(".dropdownToggle").forEach((element) => {
+        let dropdown = UiDropdownSimple.getDropdownMenu(element.dataset.target!);
+        if (!dropdown) {
+          dropdown = element.closest(".dropdown")!.querySelector<HTMLElement>(".dropdownMenu")!;
+        }
+
+        dropdown?.querySelectorAll<HTMLButtonElement>("[data-interaction]").forEach((element) => {
+          element.addEventListener("click", () => {
+            item.dispatchEvent(
+              new CustomEvent("interaction:execute", {
+                detail: element.dataset,
+                bubbles: true,
+              }),
+            );
+          });
+        });
+      });
+    });
   }
 }

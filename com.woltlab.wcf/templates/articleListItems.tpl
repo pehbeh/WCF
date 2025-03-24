@@ -3,7 +3,11 @@
 <div class="contentItemList">
 	{foreach from=$view->getItems() item='article' name='articles'}
 		{if $article->getArticleContent()}
-		<article class="contentItem contentItemMultiColumn">
+		<article class="contentItem contentItemMultiColumn listView__item" data-object-id="{$article->getObjectID()}">
+			<div class="contentItemOptions">
+				{unsafe:$view->renderInteractionContextMenuButton($article)}
+			</div>
+			
 			<div class="contentItemLink">
 				<div class="contentItemImage contentItemImageLarge">
 					<img

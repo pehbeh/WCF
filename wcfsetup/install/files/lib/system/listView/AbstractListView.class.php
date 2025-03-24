@@ -6,6 +6,8 @@ use wcf\action\ListViewFilterAction;
 use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectDecorator;
 use wcf\data\DatabaseObjectList;
+use wcf\system\interaction\IInteractionProvider;
+use wcf\system\interaction\InteractionContextMenuView;
 use wcf\system\listView\filter\IListViewFilter;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
@@ -29,6 +31,8 @@ abstract class AbstractListView
     private string $sortField = '';
     private string $sortOrder = 'ASC';
     private int $pageNo = 1;
+    private ?IInteractionProvider $interactionProvider = null;
+    private InteractionContextMenuView $interactionContextMenuView;
 
     /**
      * @var array<string, string>
@@ -384,6 +388,73 @@ abstract class AbstractListView
         $value = $this->availableFilters[$id]->renderValue($this->activeFilters[$id]);
 
         return $this->availableFilters[$id]->getLabel() . ($value !== '' ? ': ' . $value : '');
+    }
+
+    /**
+     * Sets the interaction provider that is used to render the interaction context menu.
+     */
+    public function setInteractionProvider(IInteractionProvider $provider): void
+    {
+        $this->interactionProvider = $provider;
+    }
+
+    /**
+     * Returns the interaction provider of the list view.
+     */
+    public function getInteractionProvider(): ?IInteractionProvider
+    {
+        return $this->interactionProvider;
+    }
+
+    /**
+     * Returns true, if this list view has interactions.
+     */
+    public function hasInteractions(): bool
+    {
+        return $this->interactionProvider !== null;
+    }
+
+    /**
+     * Renders the initialization code for the interactions of the list view.
+     */
+    public function renderInteractionInitialization(): string
+    {
+        $code = '';
+        if ($this->interactionProvider !== null) {
+            $code = $this->getInteractionContextMenuView()->renderInitialization($this->getID() . '_items');
+        }
+
+        return $code;
+    }
+
+    /**
+     * Returns the view of the interaction context menu.
+     */
+    public function getInteractionContextMenuView(): InteractionContextMenuView
+    {
+        if ($this->interactionProvider === null) {
+            throw new \BadMethodCallException("Missing interaction provider.");
+        }
+
+        if (!isset($this->interactionContextMenuView)) {
+            $this->interactionContextMenuView = new InteractionContextMenuView($this->interactionProvider);
+        }
+
+        return $this->interactionContextMenuView;
+    }
+
+    /**
+     * Renders the interactions for the given row.
+     *
+     * @param TDatabaseObject $row
+     */
+    public function renderInteractionContextMenuButton(DatabaseObject $row): string
+    {
+        if ($this->interactionProvider === null) {
+            return '';
+        }
+
+        return $this->getInteractionContextMenuView()->renderButton($row);
     }
 
     public function render(): string

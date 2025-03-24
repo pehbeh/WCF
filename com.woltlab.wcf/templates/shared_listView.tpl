@@ -87,9 +87,9 @@
 		);
 	});
 </script>
-{*if $view->hasInteractions()}
+{if $view->hasInteractions()}
 	{unsafe:$view->renderInteractionInitialization()}
 {/if}
-{if $view->hasBulkInteractions()}
+{*if $view->hasBulkInteractions()}
 	{unsafe:$view->renderBulkInteractionInitialization()}
 {/if*}
