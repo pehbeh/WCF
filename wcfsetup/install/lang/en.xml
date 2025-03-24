@@ -2788,6 +2788,7 @@ If you have <strong>already bought the licenses for the listed apps</strong>, th
 		<item name="wcf.acp.sessionLog.time"><![CDATA[Time]]></item>
 	</category>
 	<category name="wcf.acp.smiley">
+		<item name="wcf.acp.smiley.smiley"><![CDATA[Smiley]]></item>
 		<item name="wcf.acp.smiley.list"><![CDATA[Smilies]]></item>
 		<item name="wcf.acp.smiley.add"><![CDATA[Add Smiley]]></item>
 		<item name="wcf.acp.smiley.edit"><![CDATA[Edit Smiley]]></item>
