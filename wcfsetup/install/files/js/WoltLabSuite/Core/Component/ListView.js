@@ -1,4 +1,4 @@
-define(["require", "exports", "tslib", "./ListView/State", "../Dom/Change/Listener", "../Dom/Util", "../Api/ListViews/GetItems", "WoltLabSuite/Core/Ui/Scroll", "../Helper/Selector", "../Ui/Dropdown/Simple"], function (require, exports, tslib_1, State_1, Listener_1, Util_1, GetItems_1, Scroll_1, Selector_1, Simple_1) {
+define(["require", "exports", "tslib", "./ListView/State", "../Dom/Change/Listener", "../Dom/Util", "../Api/ListViews/GetItems", "WoltLabSuite/Core/Ui/Scroll", "../Helper/Selector", "../Ui/Dropdown/Simple", "../Api/ListViews/GetItem"], function (require, exports, tslib_1, State_1, Listener_1, Util_1, GetItems_1, Scroll_1, Selector_1, Simple_1, GetItem_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ListView = void 0;
@@ -15,6 +15,7 @@ define(["require", "exports", "tslib", "./ListView/State", "../Dom/Change/Listen
             this.#noItemsNotice = document.getElementById(`${viewId}_noItemsNotice`);
             this.#initInteractions();
             this.#state = this.#setupState(viewId, pageNo, baseUrl, sortField, sortOrder);
+            this.#initEventListeners();
         }
         #setupState(viewId, pageNo, baseUrl, sortField, sortOrder) {
             const state = new State_1.default(viewId, this.#viewElement, pageNo, baseUrl, sortField, sortOrder);
@@ -37,6 +38,12 @@ define(["require", "exports", "tslib", "./ListView/State", "../Dom/Change/Listen
             }
             (0, Listener_1.trigger)();
         }
+        async #refreshItem(item) {
+            const response = (await (0, GetItem_1.getItem)(this.#viewClassName, item.dataset.objectId /*, this.#gridViewParameters*/)).unwrap();
+            item.replaceWith((0, Util_1.createFragmentFromHtml)(response.template));
+            this.#state.refreshSelection();
+            (0, Listener_1.trigger)();
+        }
         #initInteractions() {
             (0, Selector_1.wheneverFirstSeen)(`#${this.#viewElement.id} .listView__item`, (item) => {
                 item.querySelectorAll(".dropdownToggle").forEach((element) => {
@@ -53,6 +60,21 @@ define(["require", "exports", "tslib", "./ListView/State", "../Dom/Change/Listen
                         });
                     });
                 });
+            });
+        }
+        #initEventListeners() {
+            this.#viewElement.addEventListener("interaction:invalidate-all", () => {
+                void this.#loadItems(0 /* StateChangeCause.Change */);
+            });
+            this.#viewElement.addEventListener("interaction:invalidate", (event) => {
+                void this.#refreshItem(event.target);
+            });
+            this.#viewElement.addEventListener("interaction:remove", (event) => {
+                event.target.remove();
+                //  this.#checkEmptyTable();
+            });
+            this.#viewElement.addEventListener("interaction:reset-selection", () => {
+                this.#state.resetSelection();
             });
         }
     }

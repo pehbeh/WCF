@@ -30,7 +30,9 @@ abstract class AbstractListView
     private string $baseUrl = '';
     private string $sortField = '';
     private string $sortOrder = 'ASC';
+    private string $cssClassName = '';
     private int $pageNo = 1;
+    private string|int|null $objectIDFilter = null;
     private ?IInteractionProvider $interactionProvider = null;
     private InteractionContextMenuView $interactionContextMenuView;
 
@@ -188,12 +190,12 @@ abstract class AbstractListView
             $this->objectList->sqlOrderBy .= ',' . $this->objectList->getDatabaseTableAlias() .
                 '.' . $this->objectList->getDatabaseTableIndexName() . ' ' . $this->getSortOrder();
         }
-        /*if ($this->getObjectIDFilter() !== null) {
+        if ($this->getObjectIDFilter() !== null) {
             $this->objectList->getConditionBuilder()->add(
                 $this->objectList->getDatabaseTableAlias() . '.' . $this->objectList->getDatabaseTableIndexName() . ' = ?',
                 [$this->getObjectIDFilter()]
             );
-        }*/
+        }
         $this->applyFilters();
         /*$this->validate();
         $this->fireInitializedEvent();
@@ -455,6 +457,32 @@ abstract class AbstractListView
         }
 
         return $this->getInteractionContextMenuView()->renderButton($row);
+    }
+
+    /**
+     * Filters the list view by the given object id.
+     */
+    public function setObjectIDFilter(string|int|null $objectID): void
+    {
+        $this->objectIDFilter = $objectID;
+    }
+
+    /**
+     * Returns the object id by which the list view is filtered.
+     */
+    public function getObjectIDFilter(): string|int|null
+    {
+        return $this->objectIDFilter;
+    }
+
+    public function setCssClassName(string $cssClassName): void
+    {
+        $this->cssClassName = $cssClassName;
+    }
+
+    public function getCssClassName(): string
+    {
+        return $this->cssClassName;
     }
 
     public function render(): string

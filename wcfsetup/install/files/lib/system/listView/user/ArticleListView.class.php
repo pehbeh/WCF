@@ -8,9 +8,6 @@ use wcf\data\article\ViewableArticle;
 use wcf\data\DatabaseObjectList;
 use wcf\data\label\group\ViewableLabelGroup;
 use wcf\data\object\type\ObjectTypeCache;
-use wcf\form\ArticleEditForm;
-use wcf\system\interaction\Divider;
-use wcf\system\interaction\EditInteraction;
 use wcf\system\interaction\user\ArticleInteractions;
 use wcf\system\label\LabelHandler;
 use wcf\system\listView\AbstractListView;
@@ -55,6 +52,7 @@ class ArticleListView extends AbstractListView
         $this->setItemsPerPage(\ARTICLES_PER_PAGE);
         $this->setSortField('time');
         $this->setSortOrder(\ARTICLE_SORT_ORDER);
+        $this->setCssClassName('contentItemList');
     }
 
     #[\Override]

@@ -42,7 +42,7 @@
 	{/if}
 	
 	<div class="listView__itemContainer">
-		<div class="listView__items" id="{$view->getID()}_items"{if !$view->countItems()} hidden{/if}>
+		<div class="listView__items {$view->getCssClassName()}" id="{$view->getID()}_items"{if !$view->countItems()} hidden{/if}>
 			{unsafe:$view->renderItems()}
 		</div>
 	</div>
