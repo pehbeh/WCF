@@ -25,13 +25,13 @@ final class CategoryHandler extends SingletonFactory
      * maps the names of the category object types to the object type ids
      * @var array<int, string>
      */
-    protected array $objectTypeIDs = [];
+    private array $objectTypeIDs;
 
     /**
      * list of category object types
      * @var ObjectType[]
      */
-    protected array $objectTypes = [];
+    private array $objectTypes;
 
     /**
      * Returns all category objects with the given object type. If no object
