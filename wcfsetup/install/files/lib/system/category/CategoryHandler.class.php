@@ -5,75 +5,72 @@ namespace wcf\system\category;
 use wcf\data\category\Category;
 use wcf\data\object\type\ObjectType;
 use wcf\data\object\type\ObjectTypeCache;
-use wcf\system\cache\builder\CategoryCacheBuilder;
+use wcf\system\cache\eager\CategoryCache;
+use wcf\system\cache\eager\data\CategoryCacheData;
 use wcf\system\exception\SystemException;
 use wcf\system\SingletonFactory;
 
 /**
  * Handles the categories.
  *
- * @author  Matthias Schmidt
- * @copyright   2001-2019 WoltLab GmbH
+ * @author  Olaf Braun, Matthias Schmidt
+ * @copyright   2001-2025 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
-class CategoryHandler extends SingletonFactory
+final class CategoryHandler extends SingletonFactory
 {
-    /**
-     * cached categories
-     * @var Category[]
-     */
-    protected $categories = [];
-
-    /**
-     * category ids grouped by the object type they belong to
-     * @var int[][]
-     */
-    protected $objectTypeCategoryIDs = [];
+    private CategoryCacheData $cache;
 
     /**
      * maps the names of the category object types to the object type ids
      * @var array<int, string>
      */
-    protected $objectTypeIDs = [];
+    private array $objectTypeIDs;
 
     /**
      * list of category object types
      * @var ObjectType[]
      */
-    protected $objectTypes = [];
+    private array $objectTypes;
 
     /**
      * Returns all category objects with the given object type. If no object
      * type is given, all categories grouped by object type are returned.
      *
-     * @param ?string $objectType
      * @return ($objectType is null ? array<string, array<int, Category>> : array<int, Category>)
      */
-    public function getCategories($objectType = null)
+    public function getCategories(?string $objectType = null): array
     {
-        $categories = [];
         if ($objectType === null) {
-            foreach ($this->objectTypes as $objectType) {
-                $categories[$objectType->objectType] = $this->getCategories($objectType->objectType);
+            $categories = [];
+            foreach ($this->cache->objectTypeCategoryIDs as $objectType => $categoryIDs) {
+                foreach ($categoryIDs as $categoryID) {
+                    $categories[$objectType][$categoryID] = $this->cache->getCategory($categoryID);
+                }
             }
-        } elseif (isset($this->objectTypeCategoryIDs[$objectType])) {
-            foreach ($this->objectTypeCategoryIDs[$objectType] as $categoryID) {
-                $categories[$categoryID] = $this->getCategory($categoryID);
-            }
-        }
 
-        return $categories;
+            return $categories;
+        } else {
+            return $this->cache->getCategoriesForObjectType($objectType);
+        }
+    }
+
+    /**
+     * Returns the category ids of the given object type.
+     *
+     * @return int[]
+     */
+    public function getCategoryIDs(string $objectType): array
+    {
+        return $this->cache->getCategoryIDsForObjectType($objectType);
     }
 
     /**
      * Returns the category with the given id or `null` if no such category exists.
-     *
-     * @param int $categoryID
-     * @return  Category|null
      */
-    public function getCategory($categoryID)
+    public function getCategory(int $categoryID): ?Category
     {
-        return $this->categories[$categoryID] ?? null;
+        return $this->cache->getCategory($categoryID);
     }
 
     /**
@@ -81,23 +78,24 @@ class CategoryHandler extends SingletonFactory
      *
      * The second parameter is only needed if $categoryID is 0.
      *
-     * @param int $categoryID
-     * @param int $objectTypeID
      * @return  Category[]
      * @throws  SystemException
      */
-    public function getChildCategories($categoryID, $objectTypeID = null)
+    public function getChildCategories(int $categoryID, ?int $objectTypeID = null): array
     {
         if (!$categoryID && $objectTypeID === null) {
             throw new SystemException("Missing object type id");
         }
 
+        if ($categoryID) {
+            $objectTypeID = $this->getCategory($categoryID)->objectTypeID;
+        }
+
+        $objectType = $this->getObjectType($objectTypeID)->objectType;
+
         $categories = [];
-        foreach ($this->categories as $category) {
-            if (
-                $category->parentCategoryID == $categoryID
-                && ($categoryID || $category->objectTypeID == $objectTypeID)
-            ) {
+        foreach ($this->cache->getCategoriesForObjectType($objectType) as $category) {
+            if ($category->parentCategoryID == $categoryID) {
                 $categories[$category->categoryID] = $category;
             }
         }
@@ -107,11 +105,8 @@ class CategoryHandler extends SingletonFactory
 
     /**
      * Returns the category object type with the given id or `null` if no such object type exists.
-     *
-     * @param int $objectTypeID
-     * @return  ObjectType|null
      */
-    public function getObjectType($objectTypeID)
+    public function getObjectType(int $objectTypeID): ?ObjectType
     {
         if (isset($this->objectTypeIDs[$objectTypeID])) {
             return $this->getObjectTypeByName($this->objectTypeIDs[$objectTypeID]);
@@ -122,11 +117,8 @@ class CategoryHandler extends SingletonFactory
 
     /**
      * Returns the category object type with the given name or `null` if no such object type exists.
-     *
-     * @param string $objectType
-     * @return  ObjectType|null
      */
-    public function getObjectTypeByName($objectType)
+    public function getObjectTypeByName(string $objectType): ?ObjectType
     {
         return $this->objectTypes[$objectType] ?? null;
     }
@@ -136,7 +128,7 @@ class CategoryHandler extends SingletonFactory
      *
      * @return  ObjectType[]
      */
-    public function getObjectTypes()
+    public function getObjectTypes(): array
     {
         return $this->objectTypes;
     }
@@ -151,19 +143,14 @@ class CategoryHandler extends SingletonFactory
             $this->objectTypeIDs[$objectType->objectTypeID] = $objectType->objectType;
         }
 
-        $this->categories = CategoryCacheBuilder::getInstance()->getData([], 'categories');
-        $this->objectTypeCategoryIDs = CategoryCacheBuilder::getInstance()->getData([], 'objectTypeCategoryIDs');
+        $this->cache = (new CategoryCache())->getCache();
     }
 
     /**
      * Reloads the category cache.
-     *
-     * @return void
      */
-    public function reloadCache()
+    public function reloadCache(): void
     {
-        CategoryCacheBuilder::getInstance()->reset();
-
         $this->init();
     }
 }

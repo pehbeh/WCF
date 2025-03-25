@@ -4,7 +4,7 @@ namespace wcf\data\category;
 
 use wcf\data\DatabaseObjectEditor;
 use wcf\data\IEditableCachedObject;
-use wcf\system\cache\builder\CategoryCacheBuilder;
+use wcf\system\cache\eager\CategoryCache;
 use wcf\system\category\CategoryHandler;
 use wcf\system\WCF;
 
@@ -201,11 +201,9 @@ class CategoryEditor extends DatabaseObjectEditor implements IEditableCachedObje
         return $maxShowOrder + 1;
     }
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public static function resetCache()
     {
-        CategoryCacheBuilder::getInstance()->reset();
+        (new CategoryCache())->rebuild();
     }
 }

@@ -2,44 +2,33 @@
 
 namespace wcf\system\cache\builder;
 
-use wcf\data\category\CategoryList;
+use wcf\system\cache\eager\CategoryCache;
 
 /**
  * Caches the categories for the active application.
  *
- * @author  Matthias Schmidt
- * @copyright   2001-2019 WoltLab GmbH
+ * @author Olaf Braun, Matthias Schmidt
+ * @copyright   2001-2025 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @deprecated 6.2 use `CategoryCache` instead
  */
-class CategoryCacheBuilder extends AbstractCacheBuilder
+class CategoryCacheBuilder extends AbstractLegacyCacheBuilder
 {
-    /**
-     * @inheritDoc
-     */
-    public function rebuild(array $parameters)
+    #[\Override]
+    protected function rebuild(array $parameters): array
     {
-        $list = new CategoryList();
-        $list->sqlSelects = "object_type.objectType";
-        $list->sqlJoins = "
-            LEFT JOIN   wcf1_object_type object_type
-            ON          object_type.objectTypeID = category.objectTypeID";
-        $list->sqlOrderBy = "category.showOrder ASC";
-        $list->readObjects();
+        $cache = (new CategoryCache())->getCache();
 
-        $data = [
-            'categories' => $list->getObjects(),
-            'objectTypeCategoryIDs' => [],
+        return [
+            'categories' => $cache->categories,
+            'objectTypeCategoryIDs' => $cache->objectTypeCategoryIDs,
         ];
-        foreach ($list as $category) {
-            $objectType = $category->objectType;
+    }
 
-            if (!isset($data['objectTypeCategoryIDs'][$objectType])) {
-                $data['objectTypeCategoryIDs'][$objectType] = [];
-            }
-
-            $data['objectTypeCategoryIDs'][$objectType][] = $category->categoryID;
-        }
-
-        return $data;
+    #[\Override]
+    public function reset(array $parameters = [])
+    {
+        (new CategoryCache())->rebuild();
     }
 }
