@@ -12,6 +12,7 @@ export class ListView {
   readonly #viewElement: HTMLElement;
   readonly #state: State;
   readonly #noItemsNotice: HTMLElement;
+  #listViewParameters?: Map<string, string>;
 
   constructor(
     viewId: string,
@@ -20,10 +21,12 @@ export class ListView {
     baseUrl: string = "",
     sortField = "",
     sortOrder = "ASC",
+    listViewParameters?: Map<string, string>,
   ) {
     this.#viewClassName = viewClassName;
     this.#viewElement = document.getElementById(`${viewId}_items`) as HTMLTableElement;
     this.#noItemsNotice = document.getElementById(`${viewId}_noItemsNotice`) as HTMLElement;
+    this.#listViewParameters = listViewParameters;
 
     this.#initInteractions();
     this.#state = this.#setupState(viewId, pageNo, baseUrl, sortField, sortOrder);
@@ -50,7 +53,7 @@ export class ListView {
         this.#state.getSortField(),
         this.#state.getSortOrder(),
         this.#state.getActiveFilters(),
-        //this.#gridViewParameters,
+        this.#listViewParameters,
       )
     ).unwrap();
     setInnerHtml(this.#viewElement, response.template);
@@ -66,9 +69,7 @@ export class ListView {
   }
 
   async #refreshItem(item: HTMLElement): Promise<void> {
-    const response = (
-      await getItem(this.#viewClassName, item.dataset.objectId! /*, this.#gridViewParameters*/)
-    ).unwrap();
+    const response = (await getItem(this.#viewClassName, item.dataset.objectId!, this.#listViewParameters)).unwrap();
     item.replaceWith(createFragmentFromHtml(response.template));
     this.#state.refreshSelection();
     triggerDomChange();
@@ -107,11 +108,19 @@ export class ListView {
 
     this.#viewElement.addEventListener("interaction:remove", (event) => {
       (event.target as HTMLElement).remove();
-      //  this.#checkEmptyTable();
+      this.#checkEmptyList();
     });
 
     this.#viewElement.addEventListener("interaction:reset-selection", () => {
       this.#state.resetSelection();
     });
+  }
+
+  #checkEmptyList(): void {
+    if (this.#viewElement.querySelectorAll(".listView__item").length > 0) {
+      return;
+    }
+
+    void this.#loadItems(StateChangeCause.Change);
   }
 }

@@ -8,7 +8,7 @@ use wcf\system\WCF;
 
 class CategoryArticleListView extends ArticleListView
 {
-    public function __construct(public readonly ArticleCategory $category)
+    public function __construct(public readonly int $categoryID)
     {
         parent::__construct();
     }
@@ -16,7 +16,7 @@ class CategoryArticleListView extends ArticleListView
     #[\Override]
     protected function createObjectList(): CategoryArticleList
     {
-        $list = new CategoryArticleList($this->category->categoryID, true);
+        $list = new CategoryArticleList($this->categoryID, true);
         if ($list->sqlSelects !== '') {
             $list->sqlSelects .= ',';
         }
@@ -37,18 +37,18 @@ class CategoryArticleListView extends ArticleListView
     #[\Override]
     public function isAccessible(): bool
     {
-        return parent::isAccessible() && $this->category->isAccessible();
-    }
-
-    #[\Override]
-    public function renderItems(): string
-    {
-        return WCF::getTPL()->render('wcf', 'articleListItems', ['view' => $this]);
+        return parent::isAccessible() && ArticleCategory::getCategory($this->categoryID)->isAccessible();
     }
 
     #[\Override]
     protected function getAccessibleLabelGroups(): array
     {
-        return $this->category->getLabelGroups('canViewLabel');
+        return ArticleCategory::getCategory($this->categoryID)->getLabelGroups('canViewLabel');
+    }
+
+    #[\Override]
+    public function getParameters(): array
+    {
+        return ['categoryID' => $this->categoryID];
     }
 }

@@ -6,6 +6,7 @@ use wcf\data\article\category\ArticleCategory;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\exception\PermissionDeniedException;
 use wcf\system\listView\user\ArticleListView;
+use wcf\system\listView\user\CategoryArticleListView;
 use wcf\system\MetaTagHandler;
 use wcf\system\page\PageLocationManager;
 use wcf\system\WCF;
@@ -48,7 +49,7 @@ class CategoryArticleListPage extends ArticleListPage
     #[\Override]
     protected function createListView(): ArticleListView
     {
-        return new ArticleListView();
+        return new CategoryArticleListView($this->category->categoryID);
     }
 
     #[\Override]

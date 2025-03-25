@@ -37,7 +37,7 @@ export async function getItems(
   }
   if (listViewParameters) {
     listViewParameters.forEach((value, key) => {
-      url.searchParams.set(`gridViewParameters[${key}]`, value);
+      url.searchParams.set(`listViewParameters[${key}]`, value);
     });
   }
 

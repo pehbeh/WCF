@@ -23,7 +23,7 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "../Result"], fu
         }
         if (listViewParameters) {
             listViewParameters.forEach((value, key) => {
-                url.searchParams.set(`gridViewParameters[${key}]`, value);
+                url.searchParams.set(`listViewParameters[${key}]`, value);
             });
         }
         let response;
