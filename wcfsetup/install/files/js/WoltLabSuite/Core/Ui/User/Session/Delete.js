@@ -6,11 +6,10 @@
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @woltlabExcludeBundle all
  */
-define(["require", "exports", "tslib", "../../Notification", "../../Confirmation", "../../../Language", "WoltLabSuite/Core/Api/Sessions/DeleteSession"], function (require, exports, tslib_1, UiNotification, UiConfirmation, Language, DeleteSession_1) {
+define(["require", "exports", "tslib", "../../Confirmation", "../../../Language", "WoltLabSuite/Core/Api/Sessions/DeleteSession", "WoltLabSuite/Core/Component/Snackbar"], function (require, exports, tslib_1, UiConfirmation, Language, DeleteSession_1, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
-    UiNotification = tslib_1.__importStar(UiNotification);
     UiConfirmation = tslib_1.__importStar(UiConfirmation);
     Language = tslib_1.__importStar(Language);
     function onClick(button) {
@@ -19,7 +18,7 @@ define(["require", "exports", "tslib", "../../Notification", "../../Confirmation
             confirm: async (_parameters) => {
                 (await (0, DeleteSession_1.deleteSession)(button.dataset.sessionId)).unwrap();
                 button.closest("li")?.remove();
-                UiNotification.show();
+                (0, Snackbar_1.showDefaultSuccessSnackbar)();
             },
         });
     }

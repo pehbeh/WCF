@@ -7,9 +7,9 @@
  * @woltlabExcludeBundle all
  */
 
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 import FormBuilderDialog from "../../../Form/Builder/Dialog";
 import * as Language from "../../../Language";
-import * as UiNotification from "../../Notification";
 
 interface AjaxResponse {
   isIgnoredUser: 0 | 1;
@@ -40,7 +40,7 @@ export class UiUserIgnoreList {
           },
           submitActionName: "submitDialog",
           successCallback(data: AjaxResponse) {
-            UiNotification.show(undefined, () => {
+            showDefaultSuccessSnackbar().addEventListener("snackbar:close", () => {
               if (!data.isIgnoredUser) {
                 window.location.reload();
               }

@@ -7,12 +7,11 @@
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @woltlabExcludeBundle all
  */
-define(["require", "exports", "tslib", "../../../Event/Handler", "../../Notification", "../../../User", "../../../StringUtil", "../../../Language", "../../User/Search/Input", "../../../Dom/Traverse", "../../../Ajax", "../../../Dom/Util", "../../Dialog"], function (require, exports, tslib_1, EventHandler, UiNotification, User_1, StringUtil, Language, Input_1, DomTraverse, Ajax, Util_1, Dialog_1) {
+define(["require", "exports", "tslib", "../../../Event/Handler", "../../../User", "../../../StringUtil", "../../../Language", "../../User/Search/Input", "../../../Dom/Traverse", "../../../Ajax", "../../../Dom/Util", "../../Dialog", "WoltLabSuite/Core/Component/Snackbar"], function (require, exports, tslib_1, EventHandler, User_1, StringUtil, Language, Input_1, DomTraverse, Ajax, Util_1, Dialog_1, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
     EventHandler = tslib_1.__importStar(EventHandler);
-    UiNotification = tslib_1.__importStar(UiNotification);
     User_1 = tslib_1.__importDefault(User_1);
     StringUtil = tslib_1.__importStar(StringUtil);
     Language = tslib_1.__importStar(Language);
@@ -60,7 +59,9 @@ define(["require", "exports", "tslib", "../../../Event/Handler", "../../Notifica
         }
         _ajaxSuccess() {
             Dialog_1.default.close(this);
-            UiNotification.show(undefined, () => window.location.reload());
+            (0, Snackbar_1.showDefaultSuccessSnackbar)().addEventListener("snackbar:close", () => {
+                window.location.reload();
+            });
         }
         _dialogSetup() {
             const submitCallback = () => this.submitDialog();

@@ -7,13 +7,13 @@
  * @since 6.0
  */
 
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 import { dboAction } from "../../Ajax";
 import { dialogFactory } from "../../Component/Dialog";
 import { innerError } from "../../Dom/Util";
 import WoltlabCoreDialogElement from "../../Element/woltlab-core-dialog";
 import { wheneverFirstSeen } from "../../Helper/Selector";
 import * as Language from "../../Language";
-import * as UiNotification from "../Notification";
 
 type ResponsePrepareReport = {
   alreadyReported: 0 | 1;
@@ -77,7 +77,7 @@ async function submitReport(dialog: WoltlabCoreDialogElement, objectType: string
     })
     .dispatch();
 
-  UiNotification.show();
+  showDefaultSuccessSnackbar();
 }
 
 function validateButton(element: HTMLElement): boolean {

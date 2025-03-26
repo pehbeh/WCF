@@ -7,8 +7,8 @@
  * @woltlabExcludeBundle tiny
  */
 
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 import { dboAction } from "../../Ajax";
-import * as UiNotification from "../Notification";
 
 async function markAllAsRead(): Promise<void> {
   await dboAction("markAllAsRead", "wcf\\data\\article\\ArticleAction").dispatch();
@@ -16,7 +16,7 @@ async function markAllAsRead(): Promise<void> {
   document.querySelectorAll(".contentItemList .contentItemBadgeNew").forEach((el: HTMLElement) => el.remove());
   document.querySelectorAll(".boxMenu .active .badge").forEach((el: HTMLElement) => el.remove());
 
-  UiNotification.show();
+  showDefaultSuccessSnackbar();
 }
 
 export function setup(): void {

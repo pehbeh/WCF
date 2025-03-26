@@ -10,7 +10,6 @@
 
 import * as EventHandler from "../../../Event/Handler";
 import { AjaxResponse, ClipboardActionData } from "../../../Controller/Clipboard/Data";
-import * as UiNotification from "../../Notification";
 import User from "../../../User";
 import * as StringUtil from "../../../StringUtil";
 import * as Language from "../../../Language";
@@ -21,6 +20,7 @@ import { AjaxCallbackObject, AjaxCallbackSetup, ResponseData } from "../../../Aj
 import DomUtil from "../../../Dom/Util";
 import { DialogCallbackObject, DialogCallbackSetup } from "../../Dialog/Data";
 import UiDialog from "../../Dialog";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 interface EventData {
   data: ClipboardActionData;
@@ -78,7 +78,9 @@ class UiModerationClipboardAssignUser implements AjaxCallbackObject, DialogCallb
   public _ajaxSuccess(): void {
     UiDialog.close(this);
 
-    UiNotification.show(undefined, () => window.location.reload());
+    showDefaultSuccessSnackbar().addEventListener("snackbar:close", () => {
+      window.location.reload();
+    });
   }
 
   public _dialogSetup(): ReturnType<DialogCallbackSetup> {

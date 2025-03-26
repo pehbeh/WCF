@@ -3,9 +3,9 @@
  */
 
 import * as Language from "../../../../../Language";
-import * as UiNotification from "../../../../Notification";
 import UiUserProfileMenuItemAbstract from "./Abstract";
 import FormBuilderDialog from "../../../../../Form/Builder/Dialog";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 interface AjaxResponse {
   isIgnoredUser: 1 | 0;
@@ -41,7 +41,7 @@ class UiUserProfileMenuItemIgnore extends UiUserProfileMenuItemAbstract {
     this._isActive = !!data.isIgnoredUser;
     this._updateButton();
 
-    UiNotification.show();
+    showDefaultSuccessSnackbar();
   }
 
   protected _toggle(event: MouseEvent): void {

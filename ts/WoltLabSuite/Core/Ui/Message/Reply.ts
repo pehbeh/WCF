@@ -15,7 +15,6 @@ import * as Language from "../../Language";
 import DomChangeListener from "../../Dom/Change/Listener";
 import DomUtil from "../../Dom/Util";
 import UiDialog from "../Dialog";
-import * as UiNotification from "../Notification";
 import User from "../../User";
 import ControllerCaptcha from "../../Controller/Captcha";
 import * as UiScroll from "../Scroll";
@@ -24,6 +23,7 @@ import { CKEditor, getCkeditor } from "../../Component/Ckeditor";
 import { dispatchToCkeditor } from "WoltLabSuite/Core/Component/Ckeditor/Event";
 import { clearQuotesForEditor } from "WoltLabSuite/Core/Component/Quote/Storage";
 import { setActiveEditor } from "WoltLabSuite/Core/Component/Quote/Message";
+import { showSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 interface MessageReplyOptions {
   ajax: {
@@ -348,7 +348,7 @@ class UiMessageReply {
         UiScroll.element(document.getElementById(elementId)!);
       }
 
-      UiNotification.show(Language.get(this._options.successMessage));
+      showSuccessSnackbar(Language.get(this._options.successMessage));
 
       if (this._options.quoteManager) {
         this._options.quoteManager.countQuotes();

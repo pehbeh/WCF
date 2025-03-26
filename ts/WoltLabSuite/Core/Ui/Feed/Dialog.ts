@@ -10,7 +10,7 @@ import UiDialog from "../Dialog";
 import * as StringUtil from "../../StringUtil";
 import * as Language from "../../Language";
 import * as Clipboard from "../../Clipboard";
-import * as UiNotification from "../Notification";
+import { showSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 /**
  * Copies one of links to the clipboard.
@@ -23,7 +23,7 @@ async function copy(event: Event): Promise<void> {
 
   await Clipboard.copyTextToClipboard(input.value);
 
-  UiNotification.show(Language.get("wcf.global.rss.copy.success"));
+  showSuccessSnackbar(Language.get("wcf.global.rss.copy.success"));
 }
 
 /**

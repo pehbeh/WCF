@@ -6,13 +6,12 @@
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.0
  */
-define(["require", "exports", "tslib", "../../Ajax", "../../Component/Dialog", "../../Dom/Util", "../../Helper/Selector", "../../Language", "../Notification"], function (require, exports, tslib_1, Ajax_1, Dialog_1, Util_1, Selector_1, Language, UiNotification) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Snackbar", "../../Ajax", "../../Component/Dialog", "../../Dom/Util", "../../Helper/Selector", "../../Language"], function (require, exports, tslib_1, Snackbar_1, Ajax_1, Dialog_1, Util_1, Selector_1, Language) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.registerLegacyButton = registerLegacyButton;
     exports.setup = setup;
     Language = tslib_1.__importStar(Language);
-    UiNotification = tslib_1.__importStar(UiNotification);
     async function openReportDialog(element) {
         const objectId = parseInt(element.dataset.objectId || "");
         const objectType = element.dataset.reportContent;
@@ -61,7 +60,7 @@ define(["require", "exports", "tslib", "../../Ajax", "../../Component/Dialog", "
             objectType,
         })
             .dispatch();
-        UiNotification.show();
+        (0, Snackbar_1.showDefaultSuccessSnackbar)();
     }
     function validateButton(element) {
         if (element.dataset.reportContent === "") {

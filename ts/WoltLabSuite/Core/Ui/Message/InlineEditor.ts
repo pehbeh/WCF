@@ -28,6 +28,7 @@ import {
   MessageInlineEditorOptions,
 } from "./InlineEditor/Data";
 import { clearQuotesForEditor } from "WoltLabSuite/Core/Component/Quote/Storage";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 interface ElementData {
   button: HTMLAnchorElement;
@@ -585,7 +586,7 @@ class UiMessageInlineEditor implements AjaxCallbackObject {
 
     this._updateHistory(this._getHash(this._getObjectId(activeElement)));
 
-    UiNotification.show();
+    showDefaultSuccessSnackbar();
   }
 
   /**

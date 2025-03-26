@@ -6,13 +6,12 @@
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @woltlabExcludeBundle all
  */
-define(["require", "exports", "tslib", "../../../Form/Builder/Dialog", "../../../Language", "../../Notification"], function (require, exports, tslib_1, Dialog_1, Language, UiNotification) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Snackbar", "../../../Form/Builder/Dialog", "../../../Language"], function (require, exports, tslib_1, Snackbar_1, Dialog_1, Language) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.UiUserIgnoreList = void 0;
     Dialog_1 = tslib_1.__importDefault(Dialog_1);
     Language = tslib_1.__importStar(Language);
-    UiNotification = tslib_1.__importStar(UiNotification);
     class UiUserIgnoreList {
         dialogs = new Map();
         constructor() {
@@ -33,7 +32,7 @@ define(["require", "exports", "tslib", "../../../Form/Builder/Dialog", "../../..
                     },
                     submitActionName: "submitDialog",
                     successCallback(data) {
-                        UiNotification.show(undefined, () => {
+                        (0, Snackbar_1.showDefaultSuccessSnackbar)().addEventListener("snackbar:close", () => {
                             if (!data.isIgnoredUser) {
                                 window.location.reload();
                             }

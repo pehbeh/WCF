@@ -5,13 +5,12 @@
  * @copyright  2001-2021 WoltLab GmbH
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
-define(["require", "exports", "tslib", "../../../Dom/Traverse", "../../../Clipboard", "../../Notification", "../../../StringUtil", "../../../Dom/Change/Listener", "./Providers", "../../../Component/Dialog", "WoltLabSuite/Core/Language", "../../../Event/Handler"], function (require, exports, tslib_1, DomTraverse, Clipboard, UiNotification, StringUtil, Listener_1, Providers_1, Dialog_1, Language_1, EventHandler) {
+define(["require", "exports", "tslib", "../../../Dom/Traverse", "../../../Clipboard", "../../../StringUtil", "../../../Dom/Change/Listener", "./Providers", "../../../Component/Dialog", "WoltLabSuite/Core/Language", "../../../Event/Handler", "WoltLabSuite/Core/Component/Snackbar"], function (require, exports, tslib_1, DomTraverse, Clipboard, StringUtil, Listener_1, Providers_1, Dialog_1, Language_1, EventHandler, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
     DomTraverse = tslib_1.__importStar(DomTraverse);
     Clipboard = tslib_1.__importStar(Clipboard);
-    UiNotification = tslib_1.__importStar(UiNotification);
     StringUtil = tslib_1.__importStar(StringUtil);
     Listener_1 = tslib_1.__importDefault(Listener_1);
     EventHandler = tslib_1.__importStar(EventHandler);
@@ -25,7 +24,7 @@ define(["require", "exports", "tslib", "../../../Dom/Traverse", "../../../Clipbo
         const target = event.currentTarget;
         const input = DomTraverse.prevBySel(target, 'input[type="text"]');
         await Clipboard.copyTextToClipboard(input.value);
-        UiNotification.show((0, Language_1.getPhrase)("wcf.message.share.copy.success"));
+        (0, Snackbar_1.showSuccessSnackbar)((0, Language_1.getPhrase)("wcf.message.share.copy.success"));
     }
     /**
      * Returns all of the dialog elements shown in the dialog.

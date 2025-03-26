@@ -16,7 +16,6 @@ import DomUtil from "../../../Dom/Util";
 import * as EventHandler from "../../../Event/Handler";
 import * as Language from "../../../Language";
 import UiDialog from "../../../Ui/Dialog";
-import * as UiNotification from "../../../Ui/Notification";
 
 interface InlineEditorOptions {
   i18n: {
@@ -410,7 +409,12 @@ class AcpUiArticleInlineEditor {
         break;
     }
 
-    UiNotification.show(undefined, notificationCallback);
+    showDefaultSuccessSnackbar().addEventListener("snackbar:close", () => {
+      if (notificationCallback) {
+        notificationCallback();
+      }
+    });
+
     ControllerClipboard.reload();
   }
 

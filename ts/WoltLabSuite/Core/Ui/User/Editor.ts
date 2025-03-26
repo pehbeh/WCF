@@ -15,7 +15,7 @@ import DomUtil from "../../Dom/Util";
 import * as Language from "../../Language";
 import * as StringUtil from "../../StringUtil";
 import UiDialog from "../Dialog";
-import * as UiNotification from "../Notification";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 class UserEditor implements AjaxCallbackObject, DialogCallbackObject {
   private actionName = "";
@@ -187,7 +187,7 @@ class UserEditor implements AjaxCallbackObject, DialogCallbackObject {
       UiDialog.close(this);
     }
 
-    UiNotification.show();
+    showDefaultSuccessSnackbar();
   }
 
   _ajaxSetup(): ReturnType<AjaxCallbackSetup> {

@@ -5,7 +5,7 @@
  * @copyright  2001-2019 WoltLab GmbH
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Snackbar", "../../../Ajax", "../../../Component/Confirmation", "../../../Controller/Clipboard", "../../../Core", "../../../Dom/Util", "../../../Event/Handler", "../../../Language", "../../../Ui/Dialog", "../../../Ui/Notification"], function (require, exports, tslib_1, Snackbar_1, Ajax, Confirmation_1, ControllerClipboard, Core, Util_1, EventHandler, Language, Dialog_1, UiNotification) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Snackbar", "../../../Ajax", "../../../Component/Confirmation", "../../../Controller/Clipboard", "../../../Core", "../../../Dom/Util", "../../../Event/Handler", "../../../Language", "../../../Ui/Dialog"], function (require, exports, tslib_1, Snackbar_1, Ajax, Confirmation_1, ControllerClipboard, Core, Util_1, EventHandler, Language, Dialog_1) {
     "use strict";
     Ajax = tslib_1.__importStar(Ajax);
     ControllerClipboard = tslib_1.__importStar(ControllerClipboard);
@@ -14,7 +14,6 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Snackbar", "
     EventHandler = tslib_1.__importStar(EventHandler);
     Language = tslib_1.__importStar(Language);
     Dialog_1 = tslib_1.__importDefault(Dialog_1);
-    UiNotification = tslib_1.__importStar(UiNotification);
     const articles = new Map();
     class AcpUiArticleInlineEditor {
         options;
@@ -325,7 +324,11 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Snackbar", "
                     this.triggerTrash(data.objectIDs[0]);
                     break;
             }
-            UiNotification.show(undefined, notificationCallback);
+            (0, Snackbar_1.showDefaultSuccessSnackbar)().addEventListener("snackbar:close", () => {
+                if (notificationCallback) {
+                    notificationCallback();
+                }
+            });
             ControllerClipboard.reload();
         }
         _ajaxSetup() {

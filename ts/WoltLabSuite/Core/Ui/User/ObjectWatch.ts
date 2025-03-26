@@ -8,9 +8,9 @@
  */
 
 import * as Ajax from "../../Ajax";
-import * as UiNotification from "../Notification";
 import * as Language from "../../Language";
 import * as EventHandler from "../../Event/Handler";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 const dropdowns = new Map<number, Set<HTMLElement>>();
 
@@ -61,7 +61,7 @@ async function click(element: HTMLElement): Promise<void> {
     });
 
   EventHandler.fire("com.woltlab.wcf.objectWatch", "updatedSubscription");
-  UiNotification.show();
+  showDefaultSuccessSnackbar();
 }
 
 export function setup(): void {

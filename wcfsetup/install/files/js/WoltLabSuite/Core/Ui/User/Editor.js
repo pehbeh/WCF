@@ -6,7 +6,7 @@
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @woltlabExcludeBundle all
  */
-define(["require", "exports", "tslib", "../../Ajax", "../../Core", "../../Dom/Util", "../../Language", "../../StringUtil", "../Dialog", "../Notification"], function (require, exports, tslib_1, Ajax, Core, Util_1, Language, StringUtil, Dialog_1, UiNotification) {
+define(["require", "exports", "tslib", "../../Ajax", "../../Core", "../../Dom/Util", "../../Language", "../../StringUtil", "../Dialog", "WoltLabSuite/Core/Component/Snackbar"], function (require, exports, tslib_1, Ajax, Core, Util_1, Language, StringUtil, Dialog_1, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.init = init;
@@ -16,7 +16,6 @@ define(["require", "exports", "tslib", "../../Ajax", "../../Core", "../../Dom/Ut
     Language = tslib_1.__importStar(Language);
     StringUtil = tslib_1.__importStar(StringUtil);
     Dialog_1 = tslib_1.__importDefault(Dialog_1);
-    UiNotification = tslib_1.__importStar(UiNotification);
     class UserEditor {
         actionName = "";
         header;
@@ -150,7 +149,7 @@ define(["require", "exports", "tslib", "../../Ajax", "../../Core", "../../Dom/Ut
             if (["ban", "disableAvatar", "disableCoverPhoto", "disableSignature"].indexOf(data.actionName) !== -1) {
                 Dialog_1.default.close(this);
             }
-            UiNotification.show();
+            (0, Snackbar_1.showDefaultSuccessSnackbar)();
         }
         _ajaxSetup() {
             return {

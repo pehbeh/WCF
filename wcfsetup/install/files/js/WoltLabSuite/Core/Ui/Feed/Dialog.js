@@ -5,7 +5,7 @@
  * @copyright  2001-2021 WoltLab GmbH
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
-define(["require", "exports", "tslib", "../Dialog", "../../StringUtil", "../../Language", "../../Clipboard", "../Notification"], function (require, exports, tslib_1, Dialog_1, StringUtil, Language, Clipboard, UiNotification) {
+define(["require", "exports", "tslib", "../Dialog", "../../StringUtil", "../../Language", "../../Clipboard", "WoltLabSuite/Core/Component/Snackbar"], function (require, exports, tslib_1, Dialog_1, StringUtil, Language, Clipboard, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
@@ -13,7 +13,6 @@ define(["require", "exports", "tslib", "../Dialog", "../../StringUtil", "../../L
     StringUtil = tslib_1.__importStar(StringUtil);
     Language = tslib_1.__importStar(Language);
     Clipboard = tslib_1.__importStar(Clipboard);
-    UiNotification = tslib_1.__importStar(UiNotification);
     /**
      * Copies one of links to the clipboard.
      */
@@ -22,7 +21,7 @@ define(["require", "exports", "tslib", "../Dialog", "../../StringUtil", "../../L
         const target = event.currentTarget;
         const input = target.parentNode.querySelector('input[type="text"]');
         await Clipboard.copyTextToClipboard(input.value);
-        UiNotification.show(Language.get("wcf.global.rss.copy.success"));
+        (0, Snackbar_1.showSuccessSnackbar)(Language.get("wcf.global.rss.copy.success"));
     }
     /**
      * Opens the dialog with an anonymous and personalized link after clicking on the RSS feed link.

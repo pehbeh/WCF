@@ -8,13 +8,13 @@
 
 import * as DomTraverse from "../../../Dom/Traverse";
 import * as Clipboard from "../../../Clipboard";
-import * as UiNotification from "../../Notification";
 import * as StringUtil from "../../../StringUtil";
 import DomChangeListener from "../../../Dom/Change/Listener";
 import { getShareProviders } from "./Providers";
 import { dialogFactory } from "../../../Component/Dialog";
 import { getPhrase } from "WoltLabSuite/Core/Language";
 import * as EventHandler from "../../../Event/Handler";
+import { showSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 type Label = string;
 type Value = string;
@@ -44,7 +44,7 @@ async function copy(event: Event): Promise<void> {
 
   await Clipboard.copyTextToClipboard(input.value);
 
-  UiNotification.show(getPhrase("wcf.message.share.copy.success"));
+  showSuccessSnackbar(getPhrase("wcf.message.share.copy.success"));
 }
 
 /**

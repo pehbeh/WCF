@@ -4,8 +4,8 @@
 
 import * as Language from "../../../../../Language";
 import { AjaxCallbackSetup, ResponseData } from "../../../../../Ajax/Data";
-import * as UiNotification from "../../../../Notification";
 import UiUserProfileMenuItemAbstract from "./Abstract";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 interface AjaxResponse extends ResponseData {
   returnValues: {
@@ -33,7 +33,7 @@ class UiUserProfileMenuItemFollow extends UiUserProfileMenuItemAbstract {
     this._isActive = !!data.returnValues.following;
     this._updateButton();
 
-    UiNotification.show();
+    showDefaultSuccessSnackbar();
   }
 
   _ajaxSetup(): ReturnType<AjaxCallbackSetup> {

@@ -6,12 +6,11 @@
  * @license	GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.0
  */
-define(["require", "exports", "tslib", "../../Ajax", "../Notification", "../../Language", "../../Event/Handler"], function (require, exports, tslib_1, Ajax, UiNotification, Language, EventHandler) {
+define(["require", "exports", "tslib", "../../Ajax", "../../Language", "../../Event/Handler", "WoltLabSuite/Core/Component/Snackbar"], function (require, exports, tslib_1, Ajax, Language, EventHandler, Snackbar_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
     Ajax = tslib_1.__importStar(Ajax);
-    UiNotification = tslib_1.__importStar(UiNotification);
     Language = tslib_1.__importStar(Language);
     EventHandler = tslib_1.__importStar(EventHandler);
     const dropdowns = new Map();
@@ -58,7 +57,7 @@ define(["require", "exports", "tslib", "../../Ajax", "../Notification", "../../L
             element.dataset.isSubscribed = subscribe.toString();
         });
         EventHandler.fire("com.woltlab.wcf.objectWatch", "updatedSubscription");
-        UiNotification.show();
+        (0, Snackbar_1.showDefaultSuccessSnackbar)();
     }
     function setup() {
         document.querySelectorAll(".userObjectWatchDropdown").forEach((element) => {

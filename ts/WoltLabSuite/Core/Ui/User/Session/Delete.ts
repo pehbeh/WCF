@@ -7,10 +7,10 @@
  * @woltlabExcludeBundle all
  */
 
-import * as UiNotification from "../../Notification";
 import * as UiConfirmation from "../../Confirmation";
 import * as Language from "../../../Language";
 import { deleteSession } from "WoltLabSuite/Core/Api/Sessions/DeleteSession";
+import { showDefaultSuccessSnackbar } from "WoltLabSuite/Core/Component/Snackbar";
 
 function onClick(button: HTMLElement): void {
   UiConfirmation.show({
@@ -20,7 +20,7 @@ function onClick(button: HTMLElement): void {
 
       button.closest("li")?.remove();
 
-      UiNotification.show();
+      showDefaultSuccessSnackbar();
     },
   });
 }
