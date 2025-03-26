@@ -233,6 +233,11 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\reactions\types\DeleteType());
             $event->register(new \wcf\system\endpoint\controller\core\reactions\types\GetShowOrder());
             $event->register(new \wcf\system\endpoint\controller\core\reactions\types\ChangeShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\smilies\DeleteSmiley());
+            $event->register(new \wcf\system\endpoint\controller\core\smilies\GetShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\smilies\ChangeShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\smilies\categories\GetSmileyShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\smilies\categories\ChangeSmileyShowOrder());
         }
     );
 
