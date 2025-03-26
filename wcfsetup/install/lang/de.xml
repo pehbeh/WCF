@@ -2859,6 +2859,7 @@ Abschnitte dürfen nicht leer sein und nur folgende Zeichen enthalten: <kbd>[a-z
 		<item name="wcf.acp.sessionLog.time"><![CDATA[Datum]]></item>
 	</category>
 	<category name="wcf.acp.smiley">
+		<item name="wcf.acp.smiley.smiley"><![CDATA[Smiley]]></item>
 		<item name="wcf.acp.smiley.list"><![CDATA[Smileys]]></item>
 		<item name="wcf.acp.smiley.add"><![CDATA[Smiley hinzufügen]]></item>
 		<item name="wcf.acp.smiley.edit"><![CDATA[Smiley bearbeiten]]></item>

@@ -35,4 +35,9 @@ class SmileyCategoryAddForm extends CategoryAddFormBuilderForm
      * @inheritDoc
      */
     public $objectEditLinkController = SmileyCategoryEditForm::class;
+
+    /**
+     * @inheritDoc
+     */
+    public $templateName = 'smileyCategoryAdd';
 }
