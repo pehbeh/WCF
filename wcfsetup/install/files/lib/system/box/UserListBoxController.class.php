@@ -37,7 +37,7 @@ class UserListBoxController extends AbstractDatabaseObjectListBoxController
     /**
      * maps special sort fields to tolerant caches
      *
-     * @var array<string, callable(int $limt, string $sortOrder, Condition[] $conditions): AbstractTolerantCache<list<int>>>
+     * @var array<string, callable(int $limit, string $sortOrder, Condition[] $conditions): AbstractTolerantCache<list<int>>>
      */
     public array $cacheHandlers;
 
