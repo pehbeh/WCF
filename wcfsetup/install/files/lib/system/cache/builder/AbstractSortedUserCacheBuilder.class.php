@@ -2,11 +2,7 @@
 
 namespace wcf\system\cache\builder;
 
-use wcf\data\condition\Condition;
-use wcf\data\DatabaseObject;
-use wcf\data\DatabaseObjectList;
-use wcf\data\user\UserList;
-use wcf\system\condition\IObjectListCondition;
+use wcf\system\cache\tolerant\SortedUserCache;
 
 /**
  * Caches a list of the newest members.
@@ -15,8 +11,9 @@ use wcf\system\condition\IObjectListCondition;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.0
+ * @deprecated  6.2 use `SortedUserCache` instead
  */
-abstract class AbstractSortedUserCacheBuilder extends AbstractCacheBuilder
+abstract class AbstractSortedUserCacheBuilder extends AbstractLegacyCacheBuilder
 {
     /**
      * default limit value if no limit parameter is provided
@@ -31,11 +28,6 @@ abstract class AbstractSortedUserCacheBuilder extends AbstractCacheBuilder
     protected $defaultSortOrder = 'DESC';
 
     /**
-     * @inheritDoc
-     */
-    protected $maxLifetime = 300;
-
-    /**
      * if `true`, only positive values of the database column will be considered
      * @var bool
      */
@@ -47,32 +39,27 @@ abstract class AbstractSortedUserCacheBuilder extends AbstractCacheBuilder
      */
     protected $sortField;
 
-    /**
-     * @inheritDoc
-     */
-    protected function rebuild(array $parameters)
+    #[\Override]
+    public function reset(array $parameters = [])
     {
-        $sortOrder = $this->defaultSortOrder;
-        if (!empty($parameters['sortOrder'])) {
-            $sortOrder = $parameters['sortOrder'];
-        }
+        (new SortedUserCache(
+            $this->sortField,
+            $parameters['sortOrder'] ?? $this->defaultSortOrder,
+            $parameters['limit'] ?? $this->defaultLimit,
+            $this->positiveValuesOnly,
+            $parameters['conditions'] ?? []
+        ))->rebuild();
+    }
 
-        $userProfileList = new UserList();
-        if ($this->positiveValuesOnly) {
-            $userProfileList->getConditionBuilder()->add('user_table.' . $this->sortField . ' > ?', [0]);
-        }
-        if (isset($parameters['conditions'])) {
-            /** @var Condition $condition */
-            foreach ($parameters['conditions'] as $condition) {
-                /** @var IObjectListCondition<DatabaseObjectList<DatabaseObject>> $processor */
-                $processor = $condition->getObjectType()->getProcessor();
-                $processor->addObjectListCondition($userProfileList, $condition->conditionData);
-            }
-        }
-        $userProfileList->sqlOrderBy = 'user_table.' . $this->sortField . ' ' . $sortOrder;
-        $userProfileList->sqlLimit = !empty($parameters['limit']) ? $parameters['limit'] : $this->defaultLimit;
-        $userProfileList->readObjectIDs();
-
-        return $userProfileList->getObjectIDs();
+    #[\Override]
+    protected function rebuild(array $parameters): array
+    {
+        return (new SortedUserCache(
+            $this->sortField,
+            $parameters['sortOrder'] ?? $this->defaultSortOrder,
+            $parameters['limit'] ?? $this->defaultLimit,
+            $this->positiveValuesOnly,
+            $parameters['conditions'] ?? []
+        ))->getCache();
     }
 }

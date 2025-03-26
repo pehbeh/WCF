@@ -5,10 +5,9 @@ namespace wcf\system\box;
 use wcf\data\condition\Condition;
 use wcf\data\DatabaseObject;
 use wcf\data\user\UserProfileList;
-use wcf\system\cache\builder\MostActiveMembersCacheBuilder;
-use wcf\system\cache\builder\MostLikedMembersCacheBuilder;
-use wcf\system\cache\builder\NewestMembersCacheBuilder;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
+use wcf\system\cache\tolerant\AbstractTolerantCache;
+use wcf\system\cache\tolerant\SortedUserCache;
 use wcf\system\condition\IObjectListCondition;
 use wcf\system\event\EventHandler;
 use wcf\system\request\LinkHandler;
@@ -28,13 +27,19 @@ class UserListBoxController extends AbstractDatabaseObjectListBoxController
 {
     /**
      * maps special sort fields to cache builders
+     *
      * @var string[]
+     *
+     * @deprecated 6.2 use `$cacheHandlers` instead
      */
-    public $cacheBuilders = [
-        'activityPoints' => MostActiveMembersCacheBuilder::class,
-        'likesReceived' => MostLikedMembersCacheBuilder::class,
-        'registrationDate' => NewestMembersCacheBuilder::class,
-    ];
+    public $cacheBuilders = [];
+
+    /**
+     * maps special sort fields to tolerant caches
+     *
+     * @var array<string, callable(int $limit, string $sortOrder, Condition[] $conditions): AbstractTolerantCache<list<int>>>
+     */
+    public array $cacheHandlers;
 
     /**
      * @inheritDoc
@@ -76,8 +81,30 @@ class UserListBoxController extends AbstractDatabaseObjectListBoxController
      */
     public function __construct()
     {
+        $this->cacheHandlers = [
+            'registrationDate' => static fn(int $limit, string $sortOrder, array $conditions) => new SortedUserCache(
+                'registrationDate',
+                $sortOrder,
+                $limit,
+                conditions: $conditions
+            ),
+            'activityPoints' => static fn(int $limit, string $sortOrder, array $conditions) => new SortedUserCache(
+                'activityPoints',
+                $sortOrder,
+                $limit,
+                true,
+                $conditions
+            )
+        ];
+
         if (!empty($this->validSortFields) && MODULE_LIKE) {
             $this->validSortFields[] = 'likesReceived';
+
+            $this->cacheHandlers['likesReceived'] = static fn(
+                int $limit,
+                string $sortOrder,
+                array $conditions
+            ) => new SortedUserCache('likesReceived', $sortOrder, $limit, true, $conditions);
         }
 
         parent::__construct();
@@ -106,16 +133,22 @@ class UserListBoxController extends AbstractDatabaseObjectListBoxController
     protected function getObjectList()
     {
         // use specialized cache builders
-        if ($this->sortOrder && $this->sortField && isset($this->cacheBuilders[$this->sortField])) {
+        if ($this->sortOrder && $this->sortField) {
             $conditions = \array_filter($this->box->getConditions(), static function (Condition $condition) {
                 return $condition->getObjectType()->getProcessor() instanceof IObjectListCondition;
             });
 
-            $this->userIDs = \call_user_func([$this->cacheBuilders[$this->sortField], 'getInstance'])->getData([
-                'conditions' => $conditions,
-                'limit' => $this->limit,
-                'sortOrder' => $this->sortOrder,
-            ]);
+            if (isset($this->cacheHandlers[$this->sortField])) {
+                $tolerantCache = $this->cacheHandlers[$this->sortField]($this->limit, $this->sortOrder, $conditions);
+                $this->userIDs = $tolerantCache->getCache();
+            } elseif (isset($this->cacheBuilders[$this->sortField])) {
+                // backwards compatibility
+                $this->userIDs = \call_user_func([$this->cacheBuilders[$this->sortField], 'getInstance'])->getData([
+                    'conditions' => $conditions,
+                    'limit' => $this->limit,
+                    'sortOrder' => $this->sortOrder,
+                ]);
+            }
         }
 
         if ($this->userIDs !== null) {
