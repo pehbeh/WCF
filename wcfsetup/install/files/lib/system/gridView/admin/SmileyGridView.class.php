@@ -25,6 +25,7 @@ use wcf\system\interaction\bulk\admin\SmileyBulkInteractions;
 use wcf\system\interaction\Divider;
 use wcf\system\interaction\EditInteraction;
 use wcf\system\WCF;
+use wcf\util\StringUtil;
 
 /**
  * @author Olaf Braun
@@ -81,7 +82,10 @@ final class SmileyGridView extends AbstractGridView
 
                             $aliases = '';
                             foreach ($row->getAliases() as $alias) {
-                                $aliases .= '<span class="badge" style="margin-left: 5px">' . StringUtil::encodeHTML($alias) . '</span>';
+                                $aliases .= \sprintf(
+                                    '<span class="badge" style="margin-left: 5px">%s</span>',
+                                    StringUtil::encodeHTML($alias)
+                                );
                             }
 
                             return $aliases;
@@ -126,7 +130,7 @@ final class SmileyGridView extends AbstractGridView
         $provider = new SmileyInteractions();
         $provider->addInteractions([
             new Divider(),
-            new EditInteraction(SmileyEditForm::class)
+            new EditInteraction(SmileyEditForm::class),
         ]);
         $this->setInteractionProvider($provider);
         $this->setBulkInteractionProvider(new SmileyBulkInteractions());
@@ -147,6 +151,7 @@ final class SmileyGridView extends AbstractGridView
         foreach ($smileyCategories as $category) {
             $categories[$category->categoryID] = $category->getTitle();
         }
+
         return $categories;
     }
 
