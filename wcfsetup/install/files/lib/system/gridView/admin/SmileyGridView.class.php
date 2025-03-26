@@ -81,7 +81,7 @@ final class SmileyGridView extends AbstractGridView
 
                             $aliases = '';
                             foreach ($row->getAliases() as $alias) {
-                                $aliases .= '<span class="badge" style="margin-left: 5px">' . $alias . '</span>';
+                                $aliases .= '<span class="badge" style="margin-left: 5px">' . StringUtil::encodeHTML($alias) . '</span>';
                             }
 
                             return $aliases;
