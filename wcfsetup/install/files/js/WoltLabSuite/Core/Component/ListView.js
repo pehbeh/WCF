@@ -1,3 +1,11 @@
+/**
+ * Provides the program logic for list views.
+ *
+ * @author Marcel Werk
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
+ */
 define(["require", "exports", "tslib", "./ListView/State", "../Dom/Change/Listener", "../Dom/Util", "../Api/ListViews/GetItems", "WoltLabSuite/Core/Ui/Scroll", "../Helper/Selector", "../Ui/Dropdown/Simple", "../Api/ListViews/GetItem"], function (require, exports, tslib_1, State_1, Listener_1, Util_1, GetItems_1, Scroll_1, Selector_1, Simple_1, GetItem_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -24,7 +32,7 @@ define(["require", "exports", "tslib", "./ListView/State", "../Dom/Change/Listen
             state.addEventListener("list-view:change", (event) => {
                 void this.#loadItems(event.detail.source);
             });
-            /*state.addEventListener("grid-view:get-bulk-interactions", (event) => {
+            /*state.addEventListener("list-view:get-bulk-interactions", (event) => {
               void this.#loadBulkInteractions(event.detail.objectIds);
             });*/
             return state;

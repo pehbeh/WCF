@@ -19,10 +19,10 @@ use wcf\system\visitTracker\VisitTracker;
 use wcf\system\WCF;
 
 /**
- * Grid view for the list of user ranks.
+ * List view for the list of articles.
  *
  * @author      Marcel Werk
- * @copyright   2001-2024 WoltLab GmbH
+ * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  *

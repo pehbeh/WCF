@@ -1,3 +1,12 @@
+/**
+ * Provides the program logic for list views.
+ *
+ * @author Marcel Werk
+ * @copyright 2001-2025 WoltLab GmbH
+ * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since 6.2
+ */
+
 import State, { StateChangeCause } from "./ListView/State";
 import { trigger as triggerDomChange } from "../Dom/Change/Listener";
 import { setInnerHtml, createFragmentFromHtml } from "../Dom/Util";
@@ -38,7 +47,7 @@ export class ListView {
     state.addEventListener("list-view:change", (event) => {
       void this.#loadItems(event.detail.source);
     });
-    /*state.addEventListener("grid-view:get-bulk-interactions", (event) => {
+    /*state.addEventListener("list-view:get-bulk-interactions", (event) => {
       void this.#loadBulkInteractions(event.detail.objectIds);
     });*/
 

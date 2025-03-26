@@ -38,9 +38,11 @@ define(["require", "exports", "tslib", "./Filter", "./Selection", "./Sorting"], 
                 this.#switchPage(1, 0 /* StateChangeCause.Change */);
             });
             this.#selection = new Selection_1.default(viewId, table);
-            this.#selection.addEventListener("list-view:get-bulk-interactions", (event) => {
-                this.dispatchEvent(new CustomEvent("list-view:get-bulk-interactions", { detail: { objectIds: event.detail.objectIds } }));
-            });
+            /*this.#selection.addEventListener("list-view:get-bulk-interactions", (event) => {
+              this.dispatchEvent(
+                new CustomEvent("list-view:get-bulk-interactions", { detail: { objectIds: event.detail.objectIds } }),
+              );
+            });*/
             window.addEventListener("popstate", () => {
                 this.#handlePopState();
             });

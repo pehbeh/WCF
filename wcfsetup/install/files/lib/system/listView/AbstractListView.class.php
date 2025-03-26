@@ -13,10 +13,10 @@ use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 
 /**
- * Abstract implementation of a grid view.
+ * Abstract implementation of a list view.
  *
  * @author      Marcel Werk
- * @copyright   2001-2024 WoltLab GmbH
+ * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  *
@@ -258,7 +258,7 @@ abstract class AbstractListView
     }
 
     /**
-     * Counts the pages of the grid view.
+     * Counts the pages of the list view.
      */
     public function countPages(): int
     {
@@ -446,17 +446,17 @@ abstract class AbstractListView
     }
 
     /**
-     * Renders the interactions for the given row.
+     * Renders the interactions for the given item.
      *
-     * @param TDatabaseObject $row
+     * @param TDatabaseObject $item
      */
-    public function renderInteractionContextMenuButton(DatabaseObject $row): string
+    public function renderInteractionContextMenuButton(DatabaseObject $item): string
     {
         if ($this->interactionProvider === null) {
             return '';
         }
 
-        return $this->getInteractionContextMenuView()->renderButton($row);
+        return $this->getInteractionContextMenuView()->renderButton($item);
     }
 
     /**

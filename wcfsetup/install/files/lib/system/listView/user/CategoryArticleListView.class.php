@@ -6,6 +6,16 @@ use wcf\data\article\category\ArticleCategory;
 use wcf\data\article\CategoryArticleList;
 use wcf\system\WCF;
 
+/**
+ * List view for the list of articles filtered by a category.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ *
+ * @extends AbstractListView<ViewableArticle, CategoryArticleList>
+ */
 class CategoryArticleListView extends ArticleListView
 {
     public function __construct(public readonly int $categoryID)

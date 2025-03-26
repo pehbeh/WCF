@@ -55,11 +55,11 @@ export class State extends EventTarget {
     });
 
     this.#selection = new Selection(viewId, table);
-    this.#selection.addEventListener("list-view:get-bulk-interactions", (event) => {
+    /*this.#selection.addEventListener("list-view:get-bulk-interactions", (event) => {
       this.dispatchEvent(
         new CustomEvent("list-view:get-bulk-interactions", { detail: { objectIds: event.detail.objectIds } }),
       );
-    });
+    });*/
 
     window.addEventListener("popstate", () => {
       this.#handlePopState();

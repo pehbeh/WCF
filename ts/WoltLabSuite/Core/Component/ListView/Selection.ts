@@ -1,5 +1,5 @@
 /**
- * Handles the selection of grid view rows.
+ * Handles the selection of list view items.
  *
  * @author Marcel Werk
  * @copyright 2001-2025 WoltLab GmbH
