@@ -3,7 +3,7 @@
 namespace wcf\system\tagging;
 
 use wcf\data\object\type\ObjectTypeCache;
-use wcf\system\cache\builder\TypedTagCloudCacheBuilder;
+use wcf\system\cache\tolerant\TagCloudCache;
 
 /**
  * This class provides the function to filter the tag cloud by object types.
@@ -42,9 +42,6 @@ class TypedTagCloud extends TagCloud
      */
     protected function loadCache()
     {
-        $this->tags = TypedTagCloudCacheBuilder::getInstance()->getData([
-            'languageIDs' => $this->languageIDs,
-            'objectTypeIDs' => $this->objectTypeIDs,
-        ]);
+        $this->tags = (new TagCloudCache($this->objectTypeIDs, $this->languageIDs))->getCache();
     }
 }

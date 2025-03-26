@@ -2,26 +2,28 @@
 
 namespace wcf\system\cache\builder;
 
+use wcf\system\cache\tolerant\TagCloudCache;
+
 /**
  * Caches the typed tag cloud.
  *
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @deprecated 6.2 use `TagCloudCache` instead
  */
-class TypedTagCloudCacheBuilder extends TagCloudCacheBuilder
+class TypedTagCloudCacheBuilder extends AbstractLegacyCacheBuilder
 {
-    /**
-     * @inheritDoc
-     */
-    protected function rebuild(array $parameters)
+    #[\Override]
+    public function reset(array $parameters = [])
     {
-        $this->objectTypeIDs = $parameters['objectTypeIDs'];
-        $this->languageIDs = $parameters['languageIDs'];
+        (new TagCloudCache($parameters["objectTypeIDs"], $parameters["languageIDs"]))->rebuild();
+    }
 
-        // get tags
-        $this->getTags();
-
-        return $this->tags;
+    #[\Override]
+    protected function rebuild(array $parameters): array
+    {
+        return (new TagCloudCache($parameters["objectTypeIDs"], $parameters["languageIDs"]))->getCache();
     }
 }

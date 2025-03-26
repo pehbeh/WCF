@@ -2,8 +2,10 @@
 
 namespace wcf\system\tagging;
 
+use wcf\data\object\type\ObjectType;
+use wcf\data\object\type\ObjectTypeCache;
 use wcf\data\tag\TagCloudTag;
-use wcf\system\cache\builder\TagCloudCacheBuilder;
+use wcf\system\cache\tolerant\TagCloudCache;
 use wcf\system\language\LanguageFactory;
 
 /**
@@ -62,7 +64,12 @@ class TagCloud
      */
     protected function loadCache()
     {
-        $this->tags = TagCloudCacheBuilder::getInstance()->getData($this->languageIDs);
+        $objectTypeIDs = \array_map(
+            static fn(ObjectType $objectType) => $objectType->objectTypeID,
+            ObjectTypeCache::getInstance()->getObjectTypes('com.woltlab.wcf.tagging.taggableObject')
+        );
+
+        $this->tags = (new TagCloudCache($objectTypeIDs, $this->languageIDs))->getCache();
     }
 
     /**
