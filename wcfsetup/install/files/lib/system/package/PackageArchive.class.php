@@ -527,6 +527,14 @@ class PackageArchive
             }
 
             $fromVersion = $element->getAttribute('fromversion');
+            if ($fromVersion === '*') {
+                if (\ENABLE_DEBUG_MODE) {
+                    throw new PackageValidationException(PackageValidationException::FROMVERSION_CONTAINS_ONLY_WILDCARD);
+                }
+
+                continue;
+            }
+
             $type = $element->getAttribute('type');
 
             $void = $xpath->query('./ns:void', $element);

@@ -230,6 +230,13 @@ class PackageValidationException extends SystemException
     const INVALID_PACKAGE_XML = 31;
 
     /**
+     * The `fromversion` attribute of an update block only contains a `*`.
+     * @var int
+     * @since 6.2
+     */
+    const FROMVERSION_CONTAINS_ONLY_WILDCARD = 32;
+
+    /**
      * Creates a new PackageArchiveValidationException.
      *
      * @param int $code

@@ -618,6 +618,11 @@ final class PackageInstallationScheduler
             if (!isset($fromversions[$row['packageVersion']])) {
                 $fromversions[$row['packageVersion']] = [];
             }
+
+            if ($row['fromversion'] === '*') {
+                continue;
+            }
+
             $fromversions[$row['packageVersion']][$row['fromversion']] = $row['fromversion'];
         }
 
