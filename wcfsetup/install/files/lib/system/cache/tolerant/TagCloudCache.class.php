@@ -27,7 +27,7 @@ class TagCloudCache extends AbstractTolerantCache
     ) {
     }
 
-    private static function compareTags(TagCloudTag $tagA, TagCloudTag $tagB): int
+    private static function sortTagsByCounter(TagCloudTag $tagA, TagCloudTag $tagB): int
     {
         return $tagB->counter <=> $tagA->counter;
     }
@@ -72,8 +72,7 @@ class TagCloudCache extends AbstractTolerantCache
             $tags[$row['name']] = new TagCloudTag(new Tag(null, $row));
         }
 
-        // sort by counter
-        \uasort($tags, self::compareTags(...));
+        \uasort($tags, self::sortTagsByCounter(...));
 
         return $tags;
     }
