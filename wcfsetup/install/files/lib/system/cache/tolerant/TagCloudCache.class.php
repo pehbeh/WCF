@@ -29,14 +29,7 @@ class TagCloudCache extends AbstractTolerantCache
 
     private static function compareTags(TagCloudTag $tagA, TagCloudTag $tagB): int
     {
-        if ($tagA->counter > $tagB->counter) {
-            return -1;
-        }
-        if ($tagA->counter < $tagB->counter) {
-            return 1;
-        }
-
-        return 0;
+        return $tagB->counter <=> $tagA->counter;
     }
 
     #[\Override]
