@@ -6,7 +6,7 @@
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @woltlabExcludeBundle tiny
  */
-define(["require", "exports", "tslib", "../../Ajax", "../../Core", "../../Event/Handler", "../../Language", "../../Dom/Change/Listener", "../../Dom/Util", "../Dialog", "../Notification", "../../User", "../../Controller/Captcha", "../Scroll", "../../Component/Ckeditor", "WoltLabSuite/Core/Component/Ckeditor/Event", "WoltLabSuite/Core/Component/Quote/Storage", "WoltLabSuite/Core/Component/Quote/Message"], function (require, exports, tslib_1, Ajax, Core, EventHandler, Language, Listener_1, Util_1, Dialog_1, UiNotification, User_1, Captcha_1, UiScroll, Ckeditor_1, Event_1, Storage_1, Message_1) {
+define(["require", "exports", "tslib", "../../Ajax", "../../Core", "../../Event/Handler", "../../Language", "../../Dom/Change/Listener", "../../Dom/Util", "../Dialog", "../../User", "../../Controller/Captcha", "../Scroll", "../../Component/Ckeditor", "WoltLabSuite/Core/Component/Ckeditor/Event", "WoltLabSuite/Core/Component/Quote/Storage", "WoltLabSuite/Core/Component/Quote/Message", "WoltLabSuite/Core/Component/Snackbar"], function (require, exports, tslib_1, Ajax, Core, EventHandler, Language, Listener_1, Util_1, Dialog_1, User_1, Captcha_1, UiScroll, Ckeditor_1, Event_1, Storage_1, Message_1, Snackbar_1) {
     "use strict";
     Ajax = tslib_1.__importStar(Ajax);
     Core = tslib_1.__importStar(Core);
@@ -15,7 +15,6 @@ define(["require", "exports", "tslib", "../../Ajax", "../../Core", "../../Event/
     Listener_1 = tslib_1.__importDefault(Listener_1);
     Util_1 = tslib_1.__importDefault(Util_1);
     Dialog_1 = tslib_1.__importDefault(Dialog_1);
-    UiNotification = tslib_1.__importStar(UiNotification);
     User_1 = tslib_1.__importDefault(User_1);
     Captcha_1 = tslib_1.__importDefault(Captcha_1);
     UiScroll = tslib_1.__importStar(UiScroll);
@@ -272,7 +271,7 @@ define(["require", "exports", "tslib", "../../Ajax", "../../Core", "../../Event/
                     window.history.replaceState(undefined, "", `#${elementId}`);
                     UiScroll.element(document.getElementById(elementId));
                 }
-                UiNotification.show(Language.get(this._options.successMessage));
+                (0, Snackbar_1.showSuccessSnackbar)(Language.get(this._options.successMessage));
                 if (this._options.quoteManager) {
                     this._options.quoteManager.countQuotes();
                 }

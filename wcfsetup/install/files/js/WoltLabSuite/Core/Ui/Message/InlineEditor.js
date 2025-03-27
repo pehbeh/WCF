@@ -5,7 +5,7 @@
  * @copyright  2001-2021 WoltLab GmbH
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Event", "../../Ajax", "../../Component/Ckeditor", "../../Core", "../../Dom/Change/Listener", "../../Dom/Util", "../../Event/Handler", "../../Language", "../Dropdown/Reusable", "../Notification", "../Screen", "../Scroll", "WoltLabSuite/Core/Component/Quote/Storage"], function (require, exports, tslib_1, Event_1, Ajax, Ckeditor_1, Core, Listener_1, Util_1, EventHandler, Language, UiDropdownReusable, UiNotification, UiScreen, UiScroll, Storage_1) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Event", "../../Ajax", "../../Component/Ckeditor", "../../Core", "../../Dom/Change/Listener", "../../Dom/Util", "../../Event/Handler", "../../Language", "../Dropdown/Reusable", "../Notification", "../Screen", "../Scroll", "WoltLabSuite/Core/Component/Quote/Storage", "WoltLabSuite/Core/Component/Snackbar"], function (require, exports, tslib_1, Event_1, Ajax, Ckeditor_1, Core, Listener_1, Util_1, EventHandler, Language, UiDropdownReusable, UiNotification, UiScreen, UiScroll, Storage_1, Snackbar_1) {
     "use strict";
     Ajax = tslib_1.__importStar(Ajax);
     Core = tslib_1.__importStar(Core);
@@ -456,7 +456,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
             }
             this._restoreMessage();
             this._updateHistory(this._getHash(this._getObjectId(activeElement)));
-            UiNotification.show();
+            (0, Snackbar_1.showDefaultSuccessSnackbar)();
         }
         /**
          * Hides the editor from view.
