@@ -49,8 +49,7 @@ class TagCloudCache extends AbstractTolerantCache
     }
 
     /**
-     * @param list<int> $tagIDs
-     *
+     * @param array<int, int> $tagIDs
      * @return array<string, TagCloudTag>
      */
     protected function fetchTags(array $tagIDs): array
