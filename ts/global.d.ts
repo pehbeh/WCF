@@ -128,6 +128,8 @@ declare global {
     set page(page: number);
     get url(): string;
     set url(url: string);
+    get behavior(): "auto" | "button" | "link";
+    set behavior(url: "auto" | "button" | "link");
   }
 
   interface WoltlabCoreToggleButtonElement extends HTMLElement {

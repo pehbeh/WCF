@@ -135,6 +135,16 @@
       if (url) {
         button = document.createElement("a");
         button.href = url;
+
+        if (this.behavior === "button") {
+          button.addEventListener("click", (event) => {
+            event.preventDefault();
+
+            if (this.page !== page) {
+              this.#switchPage(page);
+            }
+          });
+        }
       } else {
         button = document.createElement("button");
         button.type = "button";
@@ -241,6 +251,10 @@
 
     getLinkUrl(page: number): string {
       if (!this.url) {
+        if (this.behavior === "link") {
+          throw new Error("The 'url' attribute is missing.");
+        }
+
         return "";
       }
 
@@ -253,7 +267,7 @@
 
     jumpToPage(page: number): void {
       const url = this.getLinkUrl(page);
-      if (url) {
+      if (url && this.behavior !== "button") {
         window.location.href = url;
       } else {
         this.#switchPage(page);
@@ -296,6 +310,21 @@
 
     set url(url: string) {
       this.setAttribute("url", url);
+      this.#render();
+    }
+
+    get behavior(): "auto" | "button" | "link" {
+      const behavior = this.getAttribute("behavior");
+
+      if (behavior === "button" || behavior === "link") {
+        return behavior;
+      }
+
+      return "auto";
+    }
+
+    set behavior(behavior: "auto" | "button" | "link") {
+      this.setAttribute("behavior", behavior);
       this.#render();
     }
   }
