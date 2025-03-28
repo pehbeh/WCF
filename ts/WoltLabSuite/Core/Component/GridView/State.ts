@@ -64,6 +64,8 @@ export class State extends EventTarget {
     window.addEventListener("popstate", () => {
       this.#handlePopState();
     });
+
+    this.#updatePaginationUrl();
   }
 
   getPageNo(): number {
@@ -89,6 +91,7 @@ export class State extends EventTarget {
   updateFromResponse(cause: StateChangeCause, count: number, filterLabels: ArrayLike<string>): void {
     this.#filter.setFilterLabels(filterLabels);
     this.#pagination.count = count;
+    this.#updatePaginationUrl();
     this.#selection.refresh();
 
     if (cause === StateChangeCause.Change || cause === StateChangeCause.Pagination) {
@@ -129,6 +132,30 @@ export class State extends EventTarget {
     }
 
     window.history.pushState({}, document.title, url.toString());
+  }
+
+  #updatePaginationUrl(): void {
+    if (!this.#baseUrl) {
+      return;
+    }
+
+    const url = new URL(this.#baseUrl);
+
+    const parameters: [string, string][] = [];
+    for (const parameter of this.#sorting.getQueryParameters()) {
+      parameters.push(parameter);
+    }
+
+    for (const parameter of this.#filter.getQueryParameters()) {
+      parameters.push(parameter);
+    }
+
+    if (parameters.length > 0) {
+      url.search += url.search !== "" ? "&" : "?";
+      url.search += new URLSearchParams(parameters).toString();
+    }
+
+    this.#pagination.url = url.toString();
   }
 
   #handlePopState(): void {
