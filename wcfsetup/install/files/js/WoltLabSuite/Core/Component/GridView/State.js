@@ -44,6 +44,7 @@ define(["require", "exports", "tslib", "./Filter", "./Selection", "./Sorting"], 
             window.addEventListener("popstate", () => {
                 this.#handlePopState();
             });
+            this.#updatePaginationUrl();
         }
         getPageNo() {
             return this.#pageNo;
@@ -63,6 +64,7 @@ define(["require", "exports", "tslib", "./Filter", "./Selection", "./Sorting"], 
         updateFromResponse(cause, count, filterLabels) {
             this.#filter.setFilterLabels(filterLabels);
             this.#pagination.count = count;
+            this.#updatePaginationUrl();
             this.#selection.refresh();
             if (cause === 0 /* StateChangeCause.Change */ || cause === 2 /* StateChangeCause.Pagination */) {
                 this.#updateQueryString();
@@ -93,6 +95,24 @@ define(["require", "exports", "tslib", "./Filter", "./Selection", "./Sorting"], 
                 url.search += new URLSearchParams(parameters).toString();
             }
             window.history.pushState({}, document.title, url.toString());
+        }
+        #updatePaginationUrl() {
+            if (!this.#baseUrl) {
+                return;
+            }
+            const url = new URL(this.#baseUrl);
+            const parameters = [];
+            for (const parameter of this.#sorting.getQueryParameters()) {
+                parameters.push(parameter);
+            }
+            for (const parameter of this.#filter.getQueryParameters()) {
+                parameters.push(parameter);
+            }
+            if (parameters.length > 0) {
+                url.search += url.search !== "" ? "&" : "?";
+                url.search += new URLSearchParams(parameters).toString();
+            }
+            this.#pagination.url = url.toString();
         }
         #handlePopState() {
             let pageNo = 1;
