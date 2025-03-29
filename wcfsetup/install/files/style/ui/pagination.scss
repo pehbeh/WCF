@@ -8,6 +8,7 @@
 	column-gap: var(--column-gap);
 	display: inline-grid;
 	grid-auto-flow: column;
+	user-select: none;
 }
 
 .pagination__list {
