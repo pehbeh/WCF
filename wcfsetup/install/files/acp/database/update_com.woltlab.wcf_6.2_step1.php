@@ -37,6 +37,11 @@ return [
                 ->referencedColumns(['fileID'])
                 ->onDelete('SET NULL'),
         ]),
+    PartialDatabaseTable::create('wcf1_label_group')
+        ->columns([
+            TinyintDatabaseTableColumn::create('multipleSelection')
+                ->defaultValue(0),
+        ]),
     PartialDatabaseTable::create('wcf1_unfurl_url_image')
         ->columns([
             IntDatabaseTableColumn::create('fileID')

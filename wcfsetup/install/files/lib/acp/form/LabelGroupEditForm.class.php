@@ -82,6 +82,7 @@ class LabelGroupEditForm extends LabelGroupAddForm
                     'groupName' => $this->groupName,
                     'groupDescription' => $this->groupDescription,
                     'showOrder' => $this->showOrder,
+                    'multipleSelection' => $this->multipleSelection ? 1 : 0,
                 ]),
             ]
         );
@@ -114,10 +115,11 @@ class LabelGroupEditForm extends LabelGroupAddForm
         if (empty($_POST)) {
             I18nHandler::getInstance()->setOptions('groupName', 1, $this->group->groupName, 'wcf.acp.label.group\d+');
 
-            $this->forceSelection = ($this->group->forceSelection ? true : false);
+            $this->forceSelection = !!$this->group->forceSelection;
             $this->groupName = $this->group->groupName;
             $this->groupDescription = $this->group->groupDescription;
             $this->showOrder = $this->group->showOrder;
+            $this->multipleSelection = !!$this->group->multipleSelection;
         }
     }
 
