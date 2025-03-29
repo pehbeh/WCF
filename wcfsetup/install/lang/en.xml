@@ -982,6 +982,8 @@ You can access the error log at: {link controller='ExceptionLogView' isEmail=tru
 		<item name="wcf.acp.label.group.error.invalid"><![CDATA[The selected label group is invalid.]]></item>
 		<item name="wcf.acp.label.group.forceSelection"><![CDATA[Force selection of a label]]></item>
 		<item name="wcf.acp.label.group.multipleSelection"><![CDATA[Users can pick more than one label from this group]]></item>
+		<item name="wcf.acp.label.group.multipleSelection.description"><![CDATA[The multiple selection may not always be supported. The tab “Availability” will display a notice when this feature is unavailable in some parts.]]></item>
+		<item name="wcf.acp.label.group.multipleSelection.unsupported"><![CDATA[Multiple selection is not supported]]></item>
 		<item name="wcf.acp.label.group.list"><![CDATA[Label Groups]]></item>
 		<item name="wcf.acp.label.group.permanentSelection"><![CDATA[The selected label group cannot be modified and is permanent for this label.]]></item>
 		<item name="wcf.acp.label.label"><![CDATA[Label]]></item>

@@ -35,7 +35,7 @@ class ArticleCategoryLabelObjectTypeHandler extends AbstractLabelObjectTypeHandl
     /**
      * @inheritDoc
      */
-    public function setObjectTypeID($objectTypeID)
+    public function setObjectTypeID(int $objectTypeID)
     {
         parent::setObjectTypeID($objectTypeID);
 
@@ -56,5 +56,11 @@ class ArticleCategoryLabelObjectTypeHandler extends AbstractLabelObjectTypeHandl
     public function save()
     {
         ArticleCategoryLabelCacheBuilder::getInstance()->reset();
+    }
+
+    #[\Override]
+    public function supportsMultipleSelection(): bool
+    {
+        return true;
     }
 }

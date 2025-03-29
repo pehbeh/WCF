@@ -256,6 +256,7 @@ class LabelGroupAddForm extends AbstractForm
             'forceSelection' => $this->forceSelection,
             'groupName' => $this->groupName,
             'groupDescription' => $this->groupDescription,
+            'labelObjectTypes' => $this->labelObjectTypes,
             'labelObjectTypeContainers' => $this->labelObjectTypeContainers,
             'objectTypeID' => $this->objectTypeID,
             'showOrder' => $this->showOrder,

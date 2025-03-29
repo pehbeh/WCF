@@ -28,7 +28,7 @@ abstract class AbstractLabelObjectTypeHandler extends SingletonFactory implement
     /**
      * @inheritDoc
      */
-    public function setObjectTypeID($objectTypeID)
+    public function setObjectTypeID(int $objectTypeID)
     {
         $this->objectTypeID = $objectTypeID;
     }
@@ -47,5 +47,11 @@ abstract class AbstractLabelObjectTypeHandler extends SingletonFactory implement
     public function getContainer()
     {
         return $this->container;
+    }
+
+    #[\Override]
+    public function supportsMultipleSelection(): bool
+    {
+        return false;
     }
 }

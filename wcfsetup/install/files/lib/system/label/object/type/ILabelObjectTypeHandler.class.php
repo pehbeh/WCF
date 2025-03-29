@@ -14,10 +14,9 @@ interface ILabelObjectTypeHandler
     /**
      * Sets object type id.
      *
-     * @param int $objectTypeID
      * @return void
      */
-    public function setObjectTypeID($objectTypeID);
+    public function setObjectTypeID(int $objectTypeID);
 
     /**
      * Returns object type id.
@@ -39,4 +38,10 @@ interface ILabelObjectTypeHandler
      * @return void
      */
     public function save();
+
+    /**
+     * Returns true if this object type can handle multiple selected labels per
+     * label group.
+     */
+    public function supportsMultipleSelection(): bool;
 }
