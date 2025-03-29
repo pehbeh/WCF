@@ -435,7 +435,7 @@ final class PackageUpdateDispatcher extends SingletonFactory
                     case 'fromversions':
                         $fromversions = $xpath->query('child::*', $child);
                         foreach ($fromversions as $fromversion) {
-                            if ($fromversion === '*') {
+                            if ($fromversion->textContent === '*') {
                                 continue;
                             }
 

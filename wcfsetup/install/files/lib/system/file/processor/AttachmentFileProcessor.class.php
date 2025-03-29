@@ -302,6 +302,9 @@ final class AttachmentFileProcessor extends AbstractFileProcessor
         );
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     private function getShowOrderFromContext(array $context): int
     {
         try {
