@@ -37,8 +37,20 @@ interface ILabelObjectHandler
      * @param string $optionName
      * @param bool $legacyReturnValue
      * @return mixed
+     * @deprecated 6.2 Use `validateSelectedLabels()` instead
      */
     public function validateLabelIDs(array $labelIDs, $optionName = '', $legacyReturnValue = true);
+
+    /**
+     * Validates the list of label ids and returns a list of errors per label
+     * group if any.
+     *
+     * @param list<int> $labelIDs
+     * @param string $optionName
+     * @return array<int, string>
+     * @since 6.2
+     */
+    public function validateSelectedLabels(array $labelIDs, string $optionName = ''): array;
 
     /**
      * Assigns labels to an object.

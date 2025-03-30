@@ -147,6 +147,56 @@ abstract class AbstractLabelObjectHandler extends SingletonFactory implements IL
         }
     }
 
+    #[\Override]
+    public function validateSelectedLabels(array $labelIDs, string $optionName = ''): array
+    {
+        $errors = [];
+
+        $optionID = 0;
+        if ($optionName !== '') {
+            $optionID = LabelHandler::getInstance()->getOptionID($optionName);
+            if ($optionID === null) {
+                // TODO: proper exception
+                throw new SystemException("Cannot validate label permissions, option '" . $optionName . "' is unknown");
+            }
+        }
+
+        foreach ($this->labelGroups as $labelGroup) {
+            $availableLabelIDs = $labelGroup->getLabelIDs();
+            $selectedLabelIDs = \array_intersect($labelIDs, $availableLabelIDs);
+            $labelIDs = \array_diff($labelIDs, $availableLabelIDs);
+
+            $count = \count($selectedLabelIDs);
+            if ($count === 0) {
+                if ($labelGroup->forceSelection) {
+                    $errors[$labelGroup->groupID] = 'missing';
+                }
+
+                continue;
+            }
+
+            if ($count > 1 && !$labelGroup->multipleSelection) {
+                $errors[$labelGroup->groupID] = 'singleSelection';
+                continue;
+            }
+
+            if (\count(\array_unique($selectedLabelIDs)) !== $count) {
+                $errors[$labelGroup->groupID] = 'duplicate';
+                continue;
+            }
+
+            if ($optionID !== null && $labelGroup->hasPermissions() && !$labelGroup->getPermission($optionID)) {
+                $errors[$labelGroup->groupID] = 'invalid';
+            }
+        }
+
+        if ($labelIDs !== []) {
+            $errors[0] = 'invalid';
+        }
+
+        return $errors;
+    }
+
     /**
      * @inheritDoc
      */

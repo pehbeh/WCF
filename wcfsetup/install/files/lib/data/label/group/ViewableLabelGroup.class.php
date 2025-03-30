@@ -8,6 +8,8 @@ use wcf\data\label\Label;
 use wcf\data\user\User;
 use wcf\system\exception\SystemException;
 use wcf\system\WCF;
+use wcf\util\JSON;
+use wcf\util\StringUtil;
 
 /**
  * Represents a viewable label group.
@@ -29,7 +31,7 @@ class ViewableLabelGroup extends DatabaseObjectDecorator implements \Countable, 
 
     /**
      * list of labels
-     * @var Label[]
+     * @var array<int, Label>
      */
     protected $labels = [];
 
@@ -90,10 +92,9 @@ class ViewableLabelGroup extends DatabaseObjectDecorator implements \Countable, 
     /**
      * Returns true, if label is known.
      *
-     * @param int $labelID
-     * @return  bool
+     * @return bool
      */
-    public function isValid($labelID)
+    public function isValid(int $labelID)
     {
         return isset($this->labels[$labelID]);
     }
@@ -102,11 +103,9 @@ class ViewableLabelGroup extends DatabaseObjectDecorator implements \Countable, 
      * Returns true, if the given user fulfils option id permissions.
      * If the user parameter is null, the method checks the current user.
      *
-     * @param int $optionID
-     * @param User $user
-     * @return  bool
+     * @return bool
      */
-    public function getPermission($optionID, ?User $user = null)
+    public function getPermission(int $optionID, ?User $user = null)
     {
         if ($user === null) {
             $user = WCF::getUser();
@@ -162,10 +161,9 @@ class ViewableLabelGroup extends DatabaseObjectDecorator implements \Countable, 
     /**
      * Returns a label by id.
      *
-     * @param int $labelID
      * @return ?Label
      */
-    public function getLabel($labelID)
+    public function getLabel(int $labelID)
     {
         return $this->labels[$labelID] ?? null;
     }
@@ -266,10 +264,32 @@ class ViewableLabelGroup extends DatabaseObjectDecorator implements \Countable, 
     /**
      * Returns true if any permissions have been set for this label group.
      *
-     * @return  bool
+     * @return bool
      */
     public function hasPermissions()
     {
         return !empty($this->permissions['group']) || !empty($this->permissions['user']);
+    }
+
+    /**
+     * @param int[] $selectedLabelIDs
+     */
+    public function toHtml(array $selectedLabelIDs = []): string
+    {
+        $labels = [];
+        foreach ($this->labels as $label) {
+            $labels[] = [$label->labelID, $label->render()];
+        }
+
+        $selected = \array_find(
+            $this->labels,
+            static fn(Label $label, int $labelID) => \in_array($labelID, $selectedLabelIDs, true)
+        );
+
+        return \sprintf(
+            '<woltlab-core-label-picker labels="%s" selected="%d"></woltlab-core-label-picker>',
+            StringUtil::encodeHTML(JSON::encode($labels)),
+            $selected ? $selected->labelID : 0,
+        );
     }
 }

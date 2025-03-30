@@ -489,10 +489,9 @@ class ArticleAddForm extends AbstractForm
         // set category ids to selected category ids for validation
         ArticleLabelObjectHandler::getInstance()->setCategoryIDs([$this->categoryID]);
 
-        $validationResult = ArticleLabelObjectHandler::getInstance()->validateLabelIDs(
+        $validationResult = ArticleLabelObjectHandler::getInstance()->validateSelectedLabels(
             $this->labelIDs,
             'canSetLabel',
-            false
         );
 
         // reset category ids to accessible category ids
