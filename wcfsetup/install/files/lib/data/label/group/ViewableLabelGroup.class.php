@@ -287,9 +287,10 @@ class ViewableLabelGroup extends DatabaseObjectDecorator implements \Countable, 
         );
 
         return \sprintf(
-            '<woltlab-core-label-picker labels="%s" selected="%d"></woltlab-core-label-picker>',
+            '<woltlab-core-label-picker labels="%s" value="%d" %s></woltlab-core-label-picker>',
             StringUtil::encodeHTML(JSON::encode($labels)),
             $selected ? $selected->labelID : 0,
+            $this->forceSelection ? "required" : "",
         );
     }
 }
