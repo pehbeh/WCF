@@ -585,10 +585,18 @@ final class SessionHandler extends SingletonFactory
                 $condition->add('userID = ?', [$row['userID']]);
             } else {
                 $condition->add('userID IS NULL');
-                $condition->add('(sessionID = ? OR spiderIdentifier = ?)', [
-                    $row['sessionID'],
-                    SpiderHandler::getInstance()->getIdentifier(UserUtil::getUserAgent()),
-                ]);
+
+                $spiderIdentifier = SpiderHandler::getInstance()->getIdentifier(UserUtil::getUserAgent());
+                if ($spiderIdentifier === null) {
+                    $condition->add('(sessionID = ? AND spiderIdentifier IS NULL)', [
+                        $row['sessionID'],
+                    ]);
+                } else {
+                    $condition->add('(sessionID = ? OR spiderIdentifier = ?)', [
+                        $row['sessionID'],
+                        $spiderIdentifier,
+                    ]);
+                }
             }
 
             $sql = "SELECT  *
@@ -1204,9 +1212,7 @@ final class SessionHandler extends SingletonFactory
     /**
      * @deprecated 5.4 - This method is a noop. The lastActivityTime is always updated immediately after loading.
      */
-    public function keepAlive()
-    {
-    }
+    public function keepAlive() {}
 
     /**
      * Deletes this session and its related data.
