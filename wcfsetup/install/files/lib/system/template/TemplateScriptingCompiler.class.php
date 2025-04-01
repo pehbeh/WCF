@@ -1383,7 +1383,7 @@ class TemplateScriptingCompiler
         // the # operator at the beginning of an output instructs
         // the complier to call the StringUtil::formatNumeric() method
         elseif ($formatNumeric) {
-            $parsedTag = 'wcf\util\StringUtil::formatNumeric(' . $parsedTag . ')';
+            $parsedTag = 'wcf\util\StringUtil::formatNumeric((float)' . $parsedTag . ')';
         }
 
         return '<?=' . $parsedTag . ';?>';
