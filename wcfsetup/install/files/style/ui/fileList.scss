@@ -43,6 +43,10 @@
 	grid-area: error;
 }
 
+.fileList__item__errorMessage {
+	grid-area: error;
+}
+
 .fileList__item__file {
 	display: flex;
 	grid-area: file;
