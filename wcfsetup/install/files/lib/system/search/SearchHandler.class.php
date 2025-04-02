@@ -150,11 +150,16 @@ final class SearchHandler
     {
         $startDate = 0;
         if (!empty($this->parameters['startDate'])) {
-            $startDateTime = \DateTime::createFromFormat(
-                "Y-m-d",
-                $this->parameters['startDate'],
-                WCF::getUser()->getTimezone()
-            );
+            $startDateTime = false;
+            try {
+                $startDateTime = \DateTime::createFromFormat(
+                    "Y-m-d",
+                    $this->parameters['startDate'],
+                    WCF::getUser()->getTimezone()
+                );
+            } catch (\ValueError) {
+            }
+
             if ($startDateTime !== false) {
                 $startDateTime->setTime(0, 0, 0);
                 $startDate = $startDateTime->getTimestamp();
@@ -163,11 +168,16 @@ final class SearchHandler
 
         $endDate = 0;
         if (!empty($this->parameters['endDate'])) {
-            $endDateTime = \DateTime::createFromFormat(
-                "Y-m-d",
-                $this->parameters['endDate'],
-                WCF::getUser()->getTimezone()
-            );
+            $endDateTime = false;
+            try {
+                $endDateTime = \DateTime::createFromFormat(
+                    "Y-m-d",
+                    $this->parameters['endDate'],
+                    WCF::getUser()->getTimezone()
+                );
+            } catch (\ValueError) {
+            }
+
             if ($endDateTime !== false) {
                 $endDateTime->setTime(23, 59, 59);
                 $endDate = $endDateTime->getTimestamp();
