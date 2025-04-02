@@ -108,6 +108,11 @@ class AJAXException extends LoggedException
             unset($returnValues['line']);
         }
 
+        // Strip the extra information unless the stacktrace should be included.
+        if (!$includeStacktrace) {
+            $extraInformation = [];
+        }
+
         $responseData = [
             'code' => $errorType,
             'file' => $file,
