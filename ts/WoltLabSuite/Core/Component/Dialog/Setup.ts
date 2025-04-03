@@ -11,6 +11,7 @@
 import DialogControls from "./Controls";
 import * as DomUtil from "../../Dom/Util";
 import FormBuilderSetup from "../FormBuilder/Setup";
+import { GridViewSetup } from "WoltLabSuite/Core/Component/GridView/Setup";
 
 export class DialogSetup {
   fromElement(element: HTMLElement | DocumentFragment): DialogControls {
@@ -49,6 +50,10 @@ export class DialogSetup {
 
   usingFormBuilder(): FormBuilderSetup {
     return new FormBuilderSetup();
+  }
+
+  usingGridView(): GridViewSetup {
+    return new GridViewSetup();
   }
 
   withoutContent(): DialogControls {
