@@ -10,18 +10,14 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
   class WoltlabCoreListBoxElement extends HTMLParsedElement {
-    #input: HTMLInputElement | undefined = undefined;
     #selected = "";
-    #shadow: ShadowRoot | undefined = undefined;
+    readonly #formInput: HTMLInputElement;
     readonly #items: Set<WoltlabCoreListItemElement> = new Set();
+    readonly #shadow: ShadowRoot;
+    readonly #slot: HTMLSlotElement;
 
-    connectedCallback() {
-      this.role = "listbox";
-      this.setAttribute("aria-multiselectable", "false");
-      this.setAttribute("aria-orientation", "vertical");
-
-      const shadow = this.#getShadow();
-      shadow.innerHTML = "";
+    constructor() {
+      super();
 
       const style = document.createElement("style");
       style.textContent = `
@@ -41,57 +37,56 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
 }
     `;
 
-      const elements = document.createElement("slot");
-      elements.addEventListener("slotchange", () => {
-        for (const element of elements.assignedElements()) {
-          if (element instanceof WoltlabCoreListItemElement) {
-            if (element.selected) {
-              if (this.#selected === "") {
-                this.#selected = element.value;
-                this.setAttribute("selected", this.#selected);
+      this.#slot = document.createElement("slot");
 
-                if (this.#input !== undefined) {
-                  this.#input.value = element.value;
-                }
-              } else {
-                element.selected = false;
-              }
-            }
+      this.#shadow = this.attachShadow({ mode: "open" });
+      this.#shadow.append(style, this.#slot);
 
-            if (!this.#items.has(element)) {
-              this.#items.add(element);
-
-              element.addEventListener("change", (event) => {
-                if (event.detail.selected) {
-                  this.#changeSelection(element.value);
-                } else {
-                  throw new Error("TODO: not implemented");
-                }
-              });
-            }
-          }
-        }
-      });
-
-      shadow.append(style, elements);
-
-      const name = this.getAttribute("name") || "";
-      if (name !== "") {
-        this.#input = document.createElement("input");
-        this.#input.type = "hidden";
-        this.#input.name = name;
-        this.#input.value = this.#selected;
-
-        this.removeAttribute("name");
-      }
-
-      if (this.#input !== undefined) {
-        this.append(this.#input);
-      }
+      this.#formInput = document.createElement("input");
+      this.#formInput.type = "hidden";
     }
 
-    parsedCallback(): void {
-      console.log("parsedCallback()");
+    parsedCallback() {
+      this.role = "listbox";
+      this.setAttribute("aria-multiselectable", "false");
+      this.setAttribute("aria-orientation", "vertical");
+
+      const selected = this.getAttribute("selected") || this.#selected;
+      this.removeAttribute("selected");
+
+      let foundValue = false;
+      for (const element of this.#slot.assignedElements()) {
+        if (!(element instanceof WoltlabCoreListItemElement)) {
+          continue;
+        }
+
+        if (element.value === selected) {
+          element.selected = true;
+
+          if (this.#formInput !== undefined) {
+            this.#formInput.value = this.#selected;
+          }
+
+          foundValue = true;
+        } else {
+          element.selected = false;
+        }
+
+        if (!this.#items.has(element)) {
+          this.#items.add(element);
+
+          element.addEventListener("change", (event) => {
+            if (event.detail.selected) {
+              this.#changeSelection(element.value);
+            } else {
+              throw new Error("TODO: not implemented");
+            }
+          });
+        }
+      }
+
+      this.#selected = foundValue ? selected : "";
+      this.#updateFormInput(this.name);
     }
 
     #changeSelection(value: string): void {
@@ -108,8 +103,8 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
         }
       }
 
-      if (this.#input !== undefined) {
-        this.#input.value = value;
+      if (this.#formInput !== undefined) {
+        this.#formInput.value = value;
       }
 
       const event = new CustomEvent<ChangePayload>("change", {
@@ -120,16 +115,28 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
       this.dispatchEvent(event);
     }
 
-    #getShadow(): ShadowRoot {
-      if (this.#shadow === undefined) {
-        this.#shadow = this.attachShadow({ mode: "open" });
-      }
+    #updateFormInput(name: string): void {
+      if (name === "") {
+        this.removeAttribute("name");
+        this.#formInput.remove();
+      } else {
+        this.#formInput.name = name;
+        this.#formInput.value = this.#selected;
 
-      return this.#shadow;
+        this.#shadow.append(this.#formInput);
+      }
     }
 
     get selected(): string {
       return this.#selected;
+    }
+
+    get name(): string {
+      return this.getAttribute("name") || "";
+    }
+
+    set name(name: string) {
+      this.#updateFormInput(name);
     }
   }
 
