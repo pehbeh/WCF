@@ -180,7 +180,7 @@ class WCF
      */
     protected static $zendOpcacheEnabled;
 
-    public const BOOTSTRAP_LOADER = \WCF_DIR . '/lib/bootstrap.php';
+    public const BOOTSTRAP_LOADER = \WCF_DIR . 'lib/bootstrap.php';
 
     /**
      * Calls all init functions of the WCF class.
