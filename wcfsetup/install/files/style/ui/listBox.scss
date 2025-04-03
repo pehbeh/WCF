@@ -1,0 +1,12 @@
+.listBox:focus-visible {
+    /* Do not visually render the focus on the list box, instead we the focus
+       is visually moved to an item in the list.
+       See https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_focus_activedescendant */
+    outline: none !important;
+}
+
+.listBox__item[focused] {
+    /* See https://css-tricks.com/copy-the-browsers-native-focus-styles/ */
+    outline: 5px auto Highlight;
+    outline: 5px auto -webkit-focus-ring-color;
+}

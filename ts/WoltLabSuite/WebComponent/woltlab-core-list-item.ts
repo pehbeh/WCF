@@ -1,11 +1,19 @@
+let idCounter = 0;
+
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class WoltlabCoreListItemElement extends HTMLElement {
   #shadow: ShadowRoot | undefined = undefined;
 
   connectedCallback() {
     this.role = "option";
-    this.setAttribute("aria-selected", String(this.selected));
-    this.tabIndex = this.selected ? 0 : -1;
+    this.classList.add("listBox__item");
+    if (this.ariaSelected === null) {
+      this.ariaSelected = "false";
+    }
+
+    if (!this.id) {
+      this.id = "woltlabCoreListItem" + idCounter++;
+    }
 
     this.addEventListener("click", () => {
       this.selected = true;
@@ -67,6 +75,7 @@ html[data-color-scheme="dark"] :host {
 
     const iconWrapper = document.createElement("div");
     iconWrapper.classList.add("icon");
+    iconWrapper.ariaHidden = "true";
 
     const iconSlot = document.createElement("slot");
     iconSlot.name = "icon";
@@ -87,15 +96,6 @@ html[data-color-scheme="dark"] :host {
     this.querySelector('slot[name="icon"]')?.remove();
 
     this.append(icon);
-
-    this.addEventListener("focus", () => {
-      this.tabIndex = 0;
-    });
-    this.addEventListener("blur", () => {
-      if (!this.selected) {
-        this.tabIndex = -1;
-      }
-    });
   }
 
   #getShadow(): ShadowRoot {
@@ -107,18 +107,26 @@ html[data-color-scheme="dark"] :host {
   }
 
   get selected(): boolean {
-    return this.hasAttribute("selected");
+    return this.ariaSelected === "true";
   }
 
   set selected(selected: boolean) {
     if (selected) {
-      this.setAttribute("aria-selected", "true");
-      this.setAttribute("selected", "");
-      this.tabIndex = 0;
+      this.ariaSelected = "true";
     } else {
-      this.setAttribute("aria-selected", "false");
-      this.removeAttribute("selected");
-      this.tabIndex = -1;
+      this.ariaSelected = "false";
+    }
+  }
+
+  get focused(): boolean {
+    return this.hasAttribute("focused");
+  }
+
+  set focused(focused: boolean) {
+    if (focused) {
+      this.setAttribute("focused", "");
+    } else {
+      this.removeAttribute("focused");
     }
   }
 

@@ -10,9 +10,10 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
   class WoltlabCoreListBoxElement extends HTMLParsedElement {
+    #position = -1;
     #selected = "";
     readonly #formInput: HTMLInputElement;
-    readonly #items: Set<WoltlabCoreListItemElement> = new Set();
+    readonly #knownItems: WeakSet<WoltlabCoreListItemElement> = new WeakSet();
     readonly #shadow: ShadowRoot;
     readonly #slot: HTMLSlotElement;
 
@@ -44,12 +45,47 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
 
       this.#formInput = document.createElement("input");
       this.#formInput.type = "hidden";
+
+      this.addEventListener("focus", () => {
+        const items = this.#getItems();
+        if (items.length === 0) {
+          return;
+        }
+
+        let position = items.findIndex((item) => item.selected);
+        if (position === -1) {
+          position = 0;
+        }
+
+        this.#setFocus(items, position);
+      });
+
+      this.addEventListener("keydown", (event) => {
+        switch (event.key) {
+          case "ArrowDown":
+            event.preventDefault();
+            this.#focusNextItem();
+            break;
+
+          case "ArrowUp":
+            event.preventDefault();
+            this.#focusPreviousItem();
+            break;
+
+          case "Enter":
+            event.preventDefault();
+            this.#selectItem();
+            break;
+        }
+      });
     }
 
     parsedCallback() {
+      this.classList.add("listBox");
       this.role = "listbox";
-      this.setAttribute("aria-multiselectable", "false");
-      this.setAttribute("aria-orientation", "vertical");
+      this.ariaMultiSelectable = "false";
+      this.ariaOrientation = "vertical";
+      this.tabIndex = 0;
 
       const selected = this.getAttribute("selected") || this.#selected;
       this.removeAttribute("selected");
@@ -72,8 +108,8 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
           element.selected = false;
         }
 
-        if (!this.#items.has(element)) {
-          this.#items.add(element);
+        if (!this.#knownItems.has(element)) {
+          this.#knownItems.add(element);
 
           element.addEventListener("change", (event) => {
             if (event.detail.selected) {
@@ -93,7 +129,7 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
       this.#selected = value;
       this.setAttribute("selected", value);
 
-      for (const item of this.#items) {
+      for (const item of this.#getItems()) {
         if (item.selected) {
           if (item.value !== value) {
             item.selected = false;
@@ -115,6 +151,67 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
       this.dispatchEvent(event);
     }
 
+    #focusNextItem(): void {
+      const items = this.#getItems();
+      const size = items.length;
+      if (size === 0) {
+        return;
+      }
+
+      let position = this.#position + 1;
+      if (position >= size) {
+        position = size - 1;
+      }
+
+      if (position === this.#position) {
+        return;
+      }
+
+      this.#setFocus(items, position);
+    }
+
+    #focusPreviousItem(): void {
+      const items = this.#getItems();
+      if (items.length === 0) {
+        return;
+      }
+
+      let position = this.#position - 1;
+      if (position < 0) {
+        position = 0;
+      }
+
+      if (position === this.#position) {
+        return;
+      }
+
+      this.#setFocus(items, position);
+    }
+
+    #setFocus(items: WoltlabCoreListItemElement[], position: number): void {
+      for (let i = 0, length = items.length; i < length; i++) {
+        const item = items[i];
+
+        if (i === position) {
+          this.setAttribute("aria-activedescendant", item.id);
+          item.focused = true;
+        } else {
+          item.focused = false;
+        }
+      }
+
+      this.#position = position;
+    }
+
+    #selectItem(): void {
+      const item = this.#getItems()[this.#position];
+      if (item === undefined) {
+        return;
+      }
+
+      this.#changeSelection(item.value);
+    }
+
     #updateFormInput(name: string): void {
       if (name === "") {
         this.removeAttribute("name");
@@ -125,6 +222,12 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
 
         this.#shadow.append(this.#formInput);
       }
+    }
+
+    #getItems(): WoltlabCoreListItemElement[] {
+      return Array.from(this.#slot.assignedElements()).filter(
+        (element) => element instanceof WoltlabCoreListItemElement,
+      );
     }
 
     get selected(): string {
