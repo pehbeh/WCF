@@ -5,7 +5,7 @@
     outline: none !important;
 }
 
-.listBox__item[focused] {
+.listBox:focus-visible .listBox__item[focused] {
     /* See https://css-tricks.com/copy-the-browsers-native-focus-styles/ */
     outline: 5px auto Highlight;
     outline: 5px auto -webkit-focus-ring-color;

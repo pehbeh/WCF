@@ -36,12 +36,20 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
 	text-align: left;
 	z-index: 450;
 }
-    `;
+
+.content {
+  overflow: auto;
+}
+      `;
+
+      const container = document.createElement("div");
+      container.classList.add("content");
 
       this.#slot = document.createElement("slot");
+      container.append(this.#slot);
 
       this.#shadow = this.attachShadow({ mode: "open" });
-      this.#shadow.append(style, this.#slot);
+      this.#shadow.append(style, container);
 
       this.#formInput = document.createElement("input");
       this.#formInput.type = "hidden";
@@ -61,6 +69,12 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
       });
 
       this.addEventListener("keydown", (event) => {
+        if (event.key.length === 1) {
+          event.preventDefault();
+          this.#focusFirstMatchingItem(event.key);
+          return;
+        }
+
         switch (event.key) {
           case "ArrowDown":
             event.preventDefault();
@@ -72,9 +86,19 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
             this.#focusPreviousItem();
             break;
 
+          case "End":
+            event.preventDefault();
+            this.#focusLastItem();
+            break;
+
           case "Enter":
             event.preventDefault();
             this.#selectItem();
+            break;
+
+          case "Home":
+            event.preventDefault();
+            this.#focusFirstItem();
             break;
         }
       });
@@ -188,6 +212,40 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
       this.#setFocus(items, position);
     }
 
+    #focusFirstItem(): void {
+      const items = this.#getItems();
+      if (items.length === 0) {
+        return;
+      }
+
+      this.#setFocus(items, 0);
+    }
+
+    #focusLastItem(): void {
+      const items = this.#getItems();
+      if (items.length === 0) {
+        return;
+      }
+
+      this.#setFocus(items, items.length - 1);
+    }
+
+    #focusFirstMatchingItem(character: string): void {
+      const items = this.#getItems();
+      const size = items.length;
+      if (size === 0) {
+        return;
+      }
+
+      character = character.toLowerCase();
+      for (let position = 0; position < size; position++) {
+        if (items[position].textContent!.trim().toLowerCase().startsWith(character)) {
+          this.#setFocus(items, position);
+          return;
+        }
+      }
+    }
+
     #setFocus(items: WoltlabCoreListItemElement[], position: number): void {
       for (let i = 0, length = items.length; i < length; i++) {
         const item = items[i];
@@ -195,12 +253,35 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
         if (i === position) {
           this.setAttribute("aria-activedescendant", item.id);
           item.focused = true;
+
+          this.#scrollItemIntoView(item);
         } else {
           item.focused = false;
         }
       }
 
       this.#position = position;
+    }
+
+    #scrollItemIntoView(item: WoltlabCoreListItemElement): void {
+      if ("scrollIntoViewIfNeeded" in item) {
+        (item as any).scrollIntoViewIfNeeded(false);
+
+        return;
+      }
+
+      // See https://github.com/nuxodin/lazyfill/blob/c53e43fe2d88269cf84b924461218c23422cc49a/polyfills/Element/prototype/scrollIntoViewIfNeeded.js
+      const observer = new IntersectionObserver(([entry]) => {
+        const ratio = entry.intersectionRatio;
+        if (ratio < 1) {
+          item.scrollIntoView({
+            block: "nearest",
+            inline: "nearest",
+          });
+        }
+        observer.disconnect();
+      });
+      observer.observe(item);
     }
 
     #selectItem(): void {
