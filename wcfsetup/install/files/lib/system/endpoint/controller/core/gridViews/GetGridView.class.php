@@ -13,7 +13,7 @@ use wcf\system\exception\UserInputException;
 use wcf\system\gridView\AbstractGridView;
 
 /**
- * API endpoint to render the grid view
+ * API endpoint for the rendering of a grid view in a dialog.
  *
  * @author Olaf Braun
  * @copyright 2001-2025 WoltLab GmbH

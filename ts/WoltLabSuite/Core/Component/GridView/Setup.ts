@@ -5,7 +5,6 @@
  * @since 6.2
  */
 
-import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
 import { prepareRequest } from "WoltLabSuite/Core/Ajax/Backend";
 import WoltlabCoreDialog from "WoltLabSuite/Core/Element/woltlab-core-dialog";
 
