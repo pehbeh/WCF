@@ -3,6 +3,9 @@ import { CkeditorDropEvent } from "../File/Upload";
 import { createAttachmentFromFile } from "./Entry";
 import { listenToCkeditor } from "../Ckeditor/Event";
 import { getTabMenu } from "../Message/MessageTabMenu";
+import Sortable from "sortablejs";
+import { promiseMutex } from "WoltLabSuite/Core/Helper/PromiseMutex";
+import { postObject } from "WoltLabSuite/Core/Api/PostObject";
 
 function fileToAttachment(fileList: HTMLElement, file: WoltlabCoreFileElement, editor: HTMLElement): void {
   fileList.append(createAttachmentFromFile(file, editor));
@@ -43,6 +46,36 @@ export function setup(editorId: string): void {
     fileList.classList.add("fileList");
     uploadButton.insertAdjacentElement("afterend", fileList);
   }
+
+  new Sortable(fileList, {
+    direction: "vertical",
+    dragClass: ".fileList__item",
+    ghostClass: "fileList__item--ghost",
+    handle: ".fileList__item__file",
+    animation: 150,
+    fallbackOnBody: true,
+    onChange(event) {
+      const file = event.item.querySelector("woltlab-core-file")!;
+      const thumbnail = file.thumbnails.find((thumbnail) => thumbnail.identifier === "tiny");
+      if (thumbnail !== undefined) {
+        file.thumbnail = thumbnail;
+      } else if (file.link) {
+        file.previewUrl = file.link;
+      }
+    },
+    onEnd: promiseMutex(async (event) => {
+      if (event.oldIndex === event.newIndex) {
+        return;
+      }
+
+      const attachmentIDs = Array.from(fileList.querySelectorAll("woltlab-core-file"))
+        .map((file) => file.data?.attachmentID)
+        .filter((attachmentID) => attachmentID !== undefined);
+      const context = JSON.parse(uploadButton.dataset.context!);
+
+      await postObject(`${window.WSC_RPC_API_URL}core/attachments/show-order`, { ...context, attachmentIDs });
+    }),
+  });
 
   let showOrder = -1;
   uploadButton.addEventListener("uploadStart", (event: CustomEvent<WoltlabCoreFileElement>) => {

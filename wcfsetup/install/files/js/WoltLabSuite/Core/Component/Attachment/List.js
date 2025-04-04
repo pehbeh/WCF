@@ -1,7 +1,8 @@
-define(["require", "exports", "./Entry", "../Ckeditor/Event", "../Message/MessageTabMenu"], function (require, exports, Entry_1, Event_1, MessageTabMenu_1) {
+define(["require", "exports", "tslib", "./Entry", "../Ckeditor/Event", "../Message/MessageTabMenu", "sortablejs", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabSuite/Core/Api/PostObject"], function (require, exports, tslib_1, Entry_1, Event_1, MessageTabMenu_1, sortablejs_1, PromiseMutex_1, PostObject_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
+    sortablejs_1 = tslib_1.__importDefault(sortablejs_1);
     function fileToAttachment(fileList, file, editor) {
         fileList.append((0, Entry_1.createAttachmentFromFile)(file, editor));
     }
@@ -32,6 +33,34 @@ define(["require", "exports", "./Entry", "../Ckeditor/Event", "../Message/Messag
             fileList.classList.add("fileList");
             uploadButton.insertAdjacentElement("afterend", fileList);
         }
+        new sortablejs_1.default(fileList, {
+            direction: "vertical",
+            dragClass: ".fileList__item",
+            ghostClass: "fileList__item--ghost",
+            handle: ".fileList__item__file",
+            animation: 150,
+            fallbackOnBody: true,
+            onChange(event) {
+                const file = event.item.querySelector("woltlab-core-file");
+                const thumbnail = file.thumbnails.find((thumbnail) => thumbnail.identifier === "tiny");
+                if (thumbnail !== undefined) {
+                    file.thumbnail = thumbnail;
+                }
+                else if (file.link) {
+                    file.previewUrl = file.link;
+                }
+            },
+            onEnd: (0, PromiseMutex_1.promiseMutex)(async (event) => {
+                if (event.oldIndex === event.newIndex) {
+                    return;
+                }
+                const attachmentIDs = Array.from(fileList.querySelectorAll("woltlab-core-file"))
+                    .map((file) => file.data?.attachmentID)
+                    .filter((attachmentID) => attachmentID !== undefined);
+                const context = JSON.parse(uploadButton.dataset.context);
+                await (0, PostObject_1.postObject)(`${window.WSC_RPC_API_URL}core/attachments/show-order`, { ...context, attachmentIDs });
+            }),
+        });
         let showOrder = -1;
         uploadButton.addEventListener("uploadStart", (event) => {
             fileToAttachment(fileList, event.detail, editor);

@@ -39,6 +39,10 @@
 	color: var(--wcfStatusErrorText);
 }
 
+.fileList__item--ghost {
+	opacity: 0.54;
+}
+
 .fileList__item .innerError {
 	grid-area: error;
 }
@@ -105,4 +109,10 @@ woltlab-core-file img {
 
 .woltlabCoreFileUpload__input::-webkit-file-upload-button {
 	cursor: pointer;
+}
+
+@media (hover: hover) {
+	.fileList__item__file:hover {
+		cursor: move;
+	}
 }
