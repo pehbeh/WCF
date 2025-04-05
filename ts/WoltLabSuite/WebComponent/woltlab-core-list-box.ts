@@ -2,16 +2,16 @@ import HTMLParsedElement from "./html-parsed-element";
 import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
 
 {
-  type ChangePayload = { selected: string };
-
   interface WoltlabCoreListBoxEventMap {
-    change: CustomEvent<ChangePayload>;
+    change: CustomEvent<void>;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
   class WoltlabCoreListBoxElement extends HTMLParsedElement {
+    #multiple = false;
     #position = -1;
     #selected = "";
+    #selectedValues: string[] = [];
     readonly #formInput: HTMLInputElement;
     readonly #knownItems: WeakSet<WoltlabCoreListItemElement> = new WeakSet();
     readonly #shadow: ShadowRoot;
@@ -24,20 +24,21 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
       style.textContent = `
 :host {
   background-color: var(--wcfDropdownBackground);
-	border-radius: 4px;
-	box-shadow: var(--wcfBoxShadow);
-	color: var(--wcfDropdownText);
+  border-radius: 4px;
+  box-shadow: var(--wcfBoxShadow);
+  color: var(--wcfDropdownText);
   display: flex;
-  flex-direction: column;
-	min-width: 160px !important;
-	padding: 4px 0;
-	pointer-events: all;
-	position: fixed;
-	text-align: left;
-	z-index: 450;
+  min-width: 160px !important;
+  padding: 4px 0;
+  pointer-events: all;
+  position: fixed;
+  text-align: left;
+  z-index: 450;
 }
 
 .content {
+  display: flex;
+  flex-direction: column;
   overflow: auto;
 }
       `;
@@ -69,12 +70,6 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
       });
 
       this.addEventListener("keydown", (event) => {
-        if (event.key.length === 1) {
-          event.preventDefault();
-          this.#focusFirstMatchingItem(event.key);
-          return;
-        }
-
         switch (event.key) {
           case "ArrowDown":
             event.preventDefault();
@@ -92,13 +87,32 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
             break;
 
           case "Enter":
-            event.preventDefault();
-            this.#selectItem();
+            if (!this.#multiple) {
+              event.preventDefault();
+              this.#selectItem();
+            }
             break;
 
           case "Home":
             event.preventDefault();
             this.#focusFirstItem();
+            break;
+
+          case " ":
+            // The space is always intercepted because in a single selection
+            // list it would trigger a scroll event.
+            event.preventDefault();
+
+            if (this.#multiple) {
+              this.#selectItem();
+            }
+            break;
+
+          default:
+            if (event.key.length === 1 && !event.ctrlKey && !event.altKey && !event.metaKey) {
+              event.preventDefault();
+              this.#focusFirstMatchingItem(event.key);
+            }
             break;
         }
       });
@@ -107,7 +121,8 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
     parsedCallback() {
       this.classList.add("listBox");
       this.role = "listbox";
-      this.ariaMultiSelectable = "false";
+      this.#multiple = this.hasAttribute("multiple");
+      this.ariaMultiSelectable = String(this.#multiple);
       this.ariaOrientation = "vertical";
       this.tabIndex = 0;
 
@@ -135,12 +150,8 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
         if (!this.#knownItems.has(element)) {
           this.#knownItems.add(element);
 
-          element.addEventListener("change", (event) => {
-            if (event.detail.selected) {
-              this.#changeSelection(element.value);
-            } else {
-              throw new Error("TODO: not implemented");
-            }
+          element.addEventListener("change", () => {
+            this.#updateSelection(element);
           });
         }
       }
@@ -149,29 +160,37 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
       this.#updateFormInput(this.name);
     }
 
-    #changeSelection(value: string): void {
-      this.#selected = value;
-      this.setAttribute("selected", value);
+    #updateSelection(changedItem: WoltlabCoreListItemElement): void {
+      const items = this.#getItems();
 
-      for (const item of this.#getItems()) {
-        if (item.selected) {
-          if (item.value !== value) {
+      if (this.#multiple) {
+        this.#selectedValues = items.filter((item) => item.selected).map((item) => item.value);
+
+        const position = items.indexOf(changedItem);
+        this.#setFocus(items, position);
+      } else {
+        const { value } = changedItem;
+
+        for (const item of items) {
+          if (!item.selected) {
+            continue;
+          }
+
+          if (changedItem === undefined) {
+            item.selected = false;
+          } else if (item.value === value) {
+            this.#selected = value;
+          } else {
             item.selected = false;
           }
-        } else if (item.value === value) {
-          item.selected = true;
         }
       }
 
-      if (this.#formInput !== undefined) {
+      /*if (this.#formInput !== undefined) {
         this.#formInput.value = value;
-      }
+      }*/
 
-      const event = new CustomEvent<ChangePayload>("change", {
-        detail: {
-          selected: value,
-        },
-      });
+      const event = new CustomEvent<void>("change");
       this.dispatchEvent(event);
     }
 
@@ -290,7 +309,7 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
         return;
       }
 
-      this.#changeSelection(item.value);
+      item.toggle();
     }
 
     #updateFormInput(name: string): void {
@@ -311,8 +330,20 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
       );
     }
 
-    get selected(): string {
+    get selected(): string | undefined {
+      if (this.#multiple) {
+        return undefined;
+      }
+
       return this.#selected;
+    }
+
+    get selectedValues(): string[] | undefined {
+      if (this.#multiple) {
+        return this.#selectedValues;
+      }
+
+      return undefined;
     }
 
     get name(): string {
@@ -321,6 +352,10 @@ import { WoltlabCoreListItemElement } from "./woltlab-core-list-item";
 
     set name(name: string) {
       this.#updateFormInput(name);
+    }
+
+    get multiple(): boolean {
+      return this.#multiple;
     }
   }
 

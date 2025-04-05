@@ -3,12 +3,34 @@ let idCounter = 0;
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class WoltlabCoreListItemElement extends HTMLElement {
   #shadow: ShadowRoot | undefined = undefined;
+  #multiple = false;
+  readonly #checkbox: HTMLInputElement;
+
+  constructor() {
+    super();
+
+    this.#checkbox = document.createElement("input");
+    this.#checkbox.type = "checkbox";
+    this.#checkbox.inert = true;
+  }
 
   connectedCallback() {
     this.role = "option";
     this.classList.add("listBox__item");
-    if (this.ariaSelected === null) {
-      this.ariaSelected = "false";
+
+    this.#multiple = false;
+    // We cannot use a proper `instanceof` check here as it would create a
+    // circular dependency.
+    if (this.parentElement?.tagName === "WOLTLAB-CORE-LIST-BOX") {
+      this.#multiple = this.parentElement.hasAttribute("multiple");
+    }
+
+    if (this.#multiple) {
+      this.ariaChecked = String(this.selected);
+      this.removeAttribute("aria-selected");
+    } else {
+      this.ariaSelected = String(this.selected);
+      this.removeAttribute("aria-checked");
     }
 
     if (!this.id) {
@@ -16,14 +38,7 @@ export class WoltlabCoreListItemElement extends HTMLElement {
     }
 
     this.addEventListener("click", () => {
-      this.selected = true;
-
-      const event = new CustomEvent<WoltlabCoreListItemChangePayload>("change", {
-        detail: {
-          selected: this.selected,
-        },
-      });
-      this.dispatchEvent(event);
+      this.toggle();
     });
 
     const shadow = this.#getShadow();
@@ -57,7 +72,7 @@ html[data-color-scheme="dark"] :host {
   grid-area: icon;
 }
 
-:host(:not([selected])) .icon {
+:host(:not([aria-selected="true"])) .icon ::slotted(fa-icon) {
   visibility: hidden;
 }
 
@@ -70,6 +85,10 @@ html[data-color-scheme="dark"] :host {
   user-select: none;
   white-space: nowrap;
   word-wrap: normal;
+}
+
+input {
+  pointer-events: none;
 }
     `;
 
@@ -89,13 +108,17 @@ html[data-color-scheme="dark"] :host {
 
     shadow.append(style, iconWrapper, contentWrapper);
 
-    const icon = document.createElement("fa-icon");
-    icon.setIcon("check");
-    icon.slot = "icon";
-
     this.querySelector('slot[name="icon"]')?.remove();
 
-    this.append(icon);
+    if (this.#multiple) {
+      iconWrapper.append(this.#checkbox);
+    } else {
+      const icon = document.createElement("fa-icon");
+      icon.setIcon("check");
+      icon.slot = "icon";
+
+      this.append(icon);
+    }
   }
 
   #getShadow(): ShadowRoot {
@@ -106,15 +129,47 @@ html[data-color-scheme="dark"] :host {
     return this.#shadow;
   }
 
+  toggle(): void {
+    let hasChanged = false;
+    if (this.#multiple) {
+      this.selected = !this.selected;
+
+      hasChanged = true;
+    } else if (!this.selected) {
+      this.selected = true;
+
+      hasChanged = true;
+    }
+
+    if (hasChanged) {
+      const event = new CustomEvent<void>("change");
+      this.dispatchEvent(event);
+    }
+  }
+
   get selected(): boolean {
-    return this.ariaSelected === "true";
+    return this.ariaSelected === "true" || this.ariaChecked === "true";
   }
 
   set selected(selected: boolean) {
-    if (selected) {
-      this.ariaSelected = "true";
+    if (selected === this.selected) {
+      return;
+    }
+
+    if (this.#multiple) {
+      this.#checkbox.checked = selected;
+
+      if (selected) {
+        this.ariaChecked = "true";
+      } else {
+        this.ariaChecked = "false";
+      }
     } else {
-      this.ariaSelected = "false";
+      if (selected) {
+        this.ariaSelected = "true";
+      } else {
+        this.ariaSelected = "false";
+      }
     }
   }
 
@@ -133,14 +188,16 @@ html[data-color-scheme="dark"] :host {
   get value(): string {
     return this.getAttribute("value") || "";
   }
+
+  get multiple(): boolean {
+    return this.#multiple;
+  }
 }
 
 window.customElements.define("woltlab-core-list-item", WoltlabCoreListItemElement);
 
-type WoltlabCoreListItemChangePayload = { selected: boolean };
-
 interface WoltlabCoreListItemEventMap {
-  change: CustomEvent<WoltlabCoreListItemChangePayload>;
+  change: CustomEvent<void>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
