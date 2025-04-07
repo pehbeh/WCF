@@ -1,9 +1,10 @@
 .listView__header {
+	border-bottom: 2px solid var(--wcfTabularBoxHeadline);
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
-	padding-bottom: 10px;
 	gap: 5px;
+	margin-bottom: 20px;
+	padding-bottom: 5px;
 }
 
 .listView__filters {
@@ -15,6 +16,7 @@
 .listView__header__buttons {
 	display: flex;
 	gap: 5px;
+	margin-inline-start: auto;
 }
 
 .listView__sorting__button.ASC::after,
