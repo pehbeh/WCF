@@ -15,27 +15,27 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
     // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
     class Selection extends EventTarget {
         #markAll = null;
-        #table;
+        #viewElement;
         #selectionBar = null;
         #bulkInteractionButton = null;
         #bulkInteractionsPlaceholder = null;
         #bulkInteractionsLoadingDelay = undefined;
-        constructor(gridId, table) {
+        constructor(viewId, viewElement) {
             super();
-            this.#table = table;
-            this.#markAll = this.#table.querySelector(".gridView__selectAllRows");
+            this.#viewElement = viewElement;
+            this.#markAll = document.getElementById(`${viewId}_selectAllItems`);
             this.#markAll?.addEventListener("change", () => {
                 this.#change(this.#markAll.checked);
             });
-            this.#selectionBar = document.getElementById(`${gridId}_selectionBar`);
-            this.#bulkInteractionButton = document.getElementById(`${gridId}_bulkInteractionButton`);
+            this.#selectionBar = document.getElementById(`${viewId}_selectionBar`);
+            this.#bulkInteractionButton = document.getElementById(`${viewId}_bulkInteractionButton`);
             this.#bulkInteractionButton?.addEventListener("click", () => {
                 this.#showBulkInteractionMenu();
             });
-            document.getElementById(`${gridId}_resetSelectionButton`)?.addEventListener("click", () => {
+            document.getElementById(`${viewId}_resetSelectionButton`)?.addEventListener("click", () => {
                 this.resetSelection();
             });
-            (0, Selector_1.wheneverFirstSeen)(`#${this.#table.id} .gridView__selectRow`, (checkbox) => {
+            (0, Selector_1.wheneverFirstSeen)(`#${this.#viewElement.id} .listView__selectItem`, (checkbox) => {
                 checkbox.addEventListener("change", () => {
                     this.#change();
                 });
@@ -66,7 +66,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
             return selectedIds;
         }
         #change(forceValue, skipStorage = false) {
-            const checkboxes = Array.from(this.#table.querySelectorAll(".gridView__selectRow"));
+            const checkboxes = Array.from(this.#viewElement.querySelectorAll(".listView__selectItem"));
             if (forceValue === undefined) {
                 if (this.#markAll !== null) {
                     const markedCheckboxes = checkboxes.filter((checkbox) => checkbox.checked).length;
@@ -98,8 +98,8 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         #saveSelection(checkboxes) {
             const selection = new Map();
             checkboxes.forEach((checkbox) => {
-                const row = checkbox.closest(".gridView__row");
-                const id = parseInt(row.dataset.objectId);
+                const item = checkbox.closest(".listView__item");
+                const id = parseInt(item.dataset.objectId);
                 selection.set(id, checkbox.checked);
             });
             // We support selection across pages thus we need to preserve the selection
@@ -122,12 +122,12 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         }
         #restoreSelection() {
             const selectedIds = this.getSelectedIds();
-            this.#table.querySelectorAll(".gridView__row").forEach((row) => {
-                const id = parseInt(row.dataset.objectId);
+            this.#viewElement.querySelectorAll(".listView__item").forEach((item) => {
+                const id = parseInt(item.dataset.objectId);
                 if (!selectedIds.includes(id)) {
                     return;
                 }
-                const checkbox = row.querySelector(".gridView__selectRow");
+                const checkbox = item.querySelector(".listView__selectItem");
                 if (checkbox) {
                     checkbox.checked = true;
                 }
@@ -135,7 +135,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
             this.#change(undefined, true);
         }
         #getStorageKey() {
-            return (0, Core_1.getStoragePrefix)() + `gridView-${this.#table.id}-selection`;
+            return (0, Core_1.getStoragePrefix)() + `listView-${this.#viewElement.id}-selection`;
         }
         #updateSelectionBar() {
             const selectedIds = this.getSelectedIds();
@@ -155,7 +155,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
             if (this.#bulkInteractionsPlaceholder !== null) {
                 return;
             }
-            this.dispatchEvent(new CustomEvent("grid-view:get-bulk-interactions", { detail: { objectIds: this.getSelectedIds() } }));
+            this.dispatchEvent(new CustomEvent("list-view:get-bulk-interactions", { detail: { objectIds: this.getSelectedIds() } }));
             if (this.#bulkInteractionsLoadingDelay !== undefined) {
                 window.clearTimeout(this.#bulkInteractionsLoadingDelay);
             }
@@ -210,8 +210,8 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
                 this.#markAll.checked = false;
                 this.#markAll.indeterminate = false;
             }
-            this.#table
-                .querySelectorAll(".gridView__selectRow")
+            this.#viewElement
+                .querySelectorAll(".listView__selectItem")
                 .forEach((checkbox) => (checkbox.checked = false));
             window.localStorage.removeItem(this.#getStorageKey());
             this.#updateSelectionBar();
@@ -223,7 +223,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
             const dropdown = Simple_1.default.getDropdownMenu(this.#bulkInteractionButton.dataset.target);
             dropdown?.querySelectorAll("[data-bulk-interaction]").forEach((element) => {
                 element.addEventListener("click", () => {
-                    this.#table.dispatchEvent(new CustomEvent("bulk-interaction", {
+                    this.#viewElement.dispatchEvent(new CustomEvent("bulk-interaction", {
                         detail: element.dataset,
                     }));
                 });

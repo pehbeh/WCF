@@ -28,7 +28,7 @@ export class State extends EventTarget {
 
   constructor(
     viewId: string,
-    table: HTMLElement,
+    viewElement: HTMLElement,
     pageNo: number,
     baseUrl: string,
     sortField: string,
@@ -54,12 +54,12 @@ export class State extends EventTarget {
       this.#switchPage(1, StateChangeCause.Change);
     });
 
-    this.#selection = new Selection(viewId, table);
-    /*this.#selection.addEventListener("list-view:get-bulk-interactions", (event) => {
+    this.#selection = new Selection(viewId, viewElement);
+    this.#selection.addEventListener("list-view:get-bulk-interactions", (event) => {
       this.dispatchEvent(
         new CustomEvent("list-view:get-bulk-interactions", { detail: { objectIds: event.detail.objectIds } }),
       );
-    });*/
+    });
 
     window.addEventListener("popstate", () => {
       this.#handlePopState();

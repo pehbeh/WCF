@@ -16,33 +16,33 @@ import UiDropdownSimple, { getDropdownMenu, setAlignmentById } from "WoltLabSuit
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class Selection extends EventTarget {
   readonly #markAll: HTMLInputElement | null = null;
-  readonly #table: HTMLElement;
+  readonly #viewElement: HTMLElement;
   readonly #selectionBar: HTMLElement | null = null;
   readonly #bulkInteractionButton: HTMLButtonElement | null = null;
   #bulkInteractionsPlaceholder: HTMLLIElement | null = null;
   #bulkInteractionsLoadingDelay: number | undefined = undefined;
 
-  constructor(gridId: string, table: HTMLElement) {
+  constructor(viewId: string, viewElement: HTMLElement) {
     super();
 
-    this.#table = table;
+    this.#viewElement = viewElement;
 
-    this.#markAll = this.#table.querySelector<HTMLInputElement>(".gridView__selectAllRows");
+    this.#markAll = document.getElementById(`${viewId}_selectAllItems`) as HTMLInputElement;
     this.#markAll?.addEventListener("change", () => {
       this.#change(this.#markAll!.checked);
     });
 
-    this.#selectionBar = document.getElementById(`${gridId}_selectionBar`) as HTMLElement;
-    this.#bulkInteractionButton = document.getElementById(`${gridId}_bulkInteractionButton`) as HTMLButtonElement;
+    this.#selectionBar = document.getElementById(`${viewId}_selectionBar`) as HTMLElement;
+    this.#bulkInteractionButton = document.getElementById(`${viewId}_bulkInteractionButton`) as HTMLButtonElement;
     this.#bulkInteractionButton?.addEventListener("click", () => {
       this.#showBulkInteractionMenu();
     });
 
-    document.getElementById(`${gridId}_resetSelectionButton`)?.addEventListener("click", () => {
+    document.getElementById(`${viewId}_resetSelectionButton`)?.addEventListener("click", () => {
       this.resetSelection();
     });
 
-    wheneverFirstSeen(`#${this.#table.id} .gridView__selectRow`, (checkbox: HTMLInputElement) => {
+    wheneverFirstSeen(`#${this.#viewElement.id} .listView__selectItem`, (checkbox: HTMLInputElement) => {
       checkbox.addEventListener("change", () => {
         this.#change();
       });
@@ -79,7 +79,7 @@ export class Selection extends EventTarget {
   }
 
   #change(forceValue?: boolean, skipStorage = false): void {
-    const checkboxes = Array.from(this.#table.querySelectorAll<HTMLInputElement>(".gridView__selectRow"));
+    const checkboxes = Array.from(this.#viewElement.querySelectorAll<HTMLInputElement>(".listView__selectItem"));
     if (forceValue === undefined) {
       if (this.#markAll !== null) {
         const markedCheckboxes = checkboxes.filter((checkbox) => checkbox.checked).length;
@@ -111,8 +111,8 @@ export class Selection extends EventTarget {
   #saveSelection(checkboxes: HTMLInputElement[]): void {
     const selection = new Map<number, boolean>();
     checkboxes.forEach((checkbox) => {
-      const row = checkbox.closest(".gridView__row") as HTMLElement;
-      const id = parseInt(row.dataset.objectId!);
+      const item = checkbox.closest(".listView__item") as HTMLElement;
+      const id = parseInt(item.dataset.objectId!);
 
       selection.set(id, checkbox.checked);
     });
@@ -142,13 +142,13 @@ export class Selection extends EventTarget {
   #restoreSelection(): void {
     const selectedIds = this.getSelectedIds();
 
-    this.#table.querySelectorAll(".gridView__row").forEach((row: HTMLElement) => {
-      const id = parseInt(row.dataset.objectId!);
+    this.#viewElement.querySelectorAll(".listView__item").forEach((item: HTMLElement) => {
+      const id = parseInt(item.dataset.objectId!);
       if (!selectedIds.includes(id)) {
         return;
       }
 
-      const checkbox = row.querySelector<HTMLInputElement>(".gridView__selectRow");
+      const checkbox = item.querySelector<HTMLInputElement>(".listView__selectItem");
       if (checkbox) {
         checkbox.checked = true;
       }
@@ -158,7 +158,7 @@ export class Selection extends EventTarget {
   }
 
   #getStorageKey(): string {
-    return getStoragePrefix() + `gridView-${this.#table.id}-selection`;
+    return getStoragePrefix() + `listView-${this.#viewElement.id}-selection`;
   }
 
   #updateSelectionBar(): void {
@@ -185,7 +185,7 @@ export class Selection extends EventTarget {
     }
 
     this.dispatchEvent(
-      new CustomEvent("grid-view:get-bulk-interactions", { detail: { objectIds: this.getSelectedIds() } }),
+      new CustomEvent("list-view:get-bulk-interactions", { detail: { objectIds: this.getSelectedIds() } }),
     );
 
     if (this.#bulkInteractionsLoadingDelay !== undefined) {
@@ -255,8 +255,8 @@ export class Selection extends EventTarget {
       this.#markAll.indeterminate = false;
     }
 
-    this.#table
-      .querySelectorAll<HTMLInputElement>(".gridView__selectRow")
+    this.#viewElement
+      .querySelectorAll<HTMLInputElement>(".listView__selectItem")
       .forEach((checkbox) => (checkbox.checked = false));
 
     window.localStorage.removeItem(this.#getStorageKey());
@@ -272,7 +272,7 @@ export class Selection extends EventTarget {
     const dropdown = UiDropdownSimple.getDropdownMenu(this.#bulkInteractionButton.dataset.target!);
     dropdown?.querySelectorAll<HTMLButtonElement>("[data-bulk-interaction]").forEach((element) => {
       element.addEventListener("click", () => {
-        this.#table.dispatchEvent(
+        this.#viewElement.dispatchEvent(
           new CustomEvent("bulk-interaction", {
             detail: element.dataset,
           }),
@@ -283,7 +283,7 @@ export class Selection extends EventTarget {
 }
 
 interface SelectionEventMap {
-  "grid-view:get-bulk-interactions": CustomEvent<{ objectIds: number[] }>;
+  "list-view:get-bulk-interactions": CustomEvent<{ objectIds: number[] }>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging

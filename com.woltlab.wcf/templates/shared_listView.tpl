@@ -12,6 +12,13 @@
 				</div>
 			{/if}
 			<div class="listView__header__buttons">
+				{if $view->hasBulkInteractions()}
+					<div class="listView__header__button">
+						<label class="button small jsTooltip" title="{lang}wcf.clipboard.item.markAll{/lang}">
+							<input type="checkbox" id="{$view->getID()}_selectAllItems" class="listView__selectAllItems" aria-label="{lang}wcf.clipboard.item.markAll{/lang}">
+						</label>
+					</div>
+				{/if}
 				{if $view->isSortable()}
 					<div class="listView__header__button dropdown">
 						<button type="button" class="button small dropdownToggle">
@@ -48,27 +55,23 @@
 	</div>
 
 	<div class="listView__footer">
-		{*if $view->hasBulkInteractions()}
-			
-		{/if*}
+		{if $view->hasBulkInteractions()}
+			<div id="{$view->getID()}_selectionBar" class="listView__selectionBar dropdown" hidden>
+				<button type="button" id="{$view->getID()}_bulkInteractionButton" class="button listView__bulkInteractionButton dropdownToggle"></button>
+				<ul class="dropdownMenu">
+					<li class="disabled"><span>{lang}wcf.global.loading{/lang}</span></li>
+					<li class="dropdownDivider"></li>
+					<li>
+						<button type="button" id="{$view->getID()}_resetSelectionButton">{lang}wcf.clipboard.item.unmarkAll{/lang}</button>
+					</li>
+				</ul>
+			</div>
+		{/if}
 
 		<div class="listView__pagination">
-		<woltlab-core-pagination id="{$view->getID()}_pagination" page="{$view->getPageNo()}" count="{$view->countPages()}"></woltlab-core-pagination>
-	</div>
-	</div>
-
-	{*if $view->hasBulkInteractions()}
-		<div id="{$view->getID()}_selectionBar" class="listView__selectionBar dropdown" hidden>
-			<button type="button" id="{$view->getID()}_bulkInteractionButton" class="button listView__bulkInteractionButton dropdownToggle"></button>
-			<ul class="dropdownMenu">
-				<li class="disabled"><span>{lang}wcf.global.loading{/lang}</span></li>
-				<li class="dropdownDivider"></li>
-				<li>
-					<button type="button" id="{$view->getID()}_resetSelectionButton">{lang}wcf.clipboard.item.unmarkAll{/lang}</button>
-				</li>
-			</ul>
+			<woltlab-core-pagination id="{$view->getID()}_pagination" page="{$view->getPageNo()}" count="{$view->countPages()}"></woltlab-core-pagination>
 		</div>
-	{/if*}
+	</div>
 
 	<woltlab-core-notice type="info" id="{$view->getID()}_noItemsNotice"{if $view->countItems()} hidden{/if}>{lang}wcf.global.noItems{/lang}</woltlab-core-notice>
 </div>
@@ -84,6 +87,7 @@
 			'{unsafe:$view->getBaseUrl()|encodeJS}',
 			'{unsafe:$view->getSortField()|encodeJS}',
 			'{unsafe:$view->getSortOrder()|encodeJS}',
+			'{unsafe:$view->getBulkInteractionProviderClassName()|encodeJS}',
 			new Map([
 				{foreach from=$view->getParameters() key='name' item='value'}
 					['{unsafe:$name|encodeJS}', '{unsafe:$value|encodeJS}'],
@@ -95,6 +99,6 @@
 {if $view->hasInteractions()}
 	{unsafe:$view->renderInteractionInitialization()}
 {/if}
-{*if $view->hasBulkInteractions()}
+{if $view->hasBulkInteractions()}
 	{unsafe:$view->renderBulkInteractionInitialization()}
-{/if*}
+{/if}

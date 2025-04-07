@@ -1,6 +1,6 @@
 <?php
 
-namespace wcf\event\listView\admin;
+namespace wcf\event\listView\user;
 
 use wcf\event\IPsr14Event;
 use wcf\system\listView\user\ArticleListView;

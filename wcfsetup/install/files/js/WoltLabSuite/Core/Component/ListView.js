@@ -6,7 +6,7 @@
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.2
  */
-define(["require", "exports", "tslib", "./ListView/State", "../Dom/Change/Listener", "../Dom/Util", "../Api/ListViews/GetItems", "WoltLabSuite/Core/Ui/Scroll", "../Helper/Selector", "../Ui/Dropdown/Simple", "../Api/ListViews/GetItem"], function (require, exports, tslib_1, State_1, Listener_1, Util_1, GetItems_1, Scroll_1, Selector_1, Simple_1, GetItem_1) {
+define(["require", "exports", "tslib", "./ListView/State", "../Dom/Change/Listener", "../Dom/Util", "../Api/ListViews/GetItems", "WoltLabSuite/Core/Ui/Scroll", "../Helper/Selector", "../Ui/Dropdown/Simple", "../Api/ListViews/GetItem", "../Api/Interactions/GetBulkContextMenuOptions"], function (require, exports, tslib_1, State_1, Listener_1, Util_1, GetItems_1, Scroll_1, Selector_1, Simple_1, GetItem_1, GetBulkContextMenuOptions_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ListView = void 0;
@@ -17,25 +17,17 @@ define(["require", "exports", "tslib", "./ListView/State", "../Dom/Change/Listen
         #viewElement;
         #state;
         #noItemsNotice;
+        #bulkInteractionProviderClassName;
         #listViewParameters;
-        constructor(viewId, viewClassName, pageNo, baseUrl = "", sortField = "", sortOrder = "ASC", listViewParameters) {
+        constructor(viewId, viewClassName, pageNo, baseUrl = "", sortField = "", sortOrder = "ASC", bulkInteractionProviderClassName, listViewParameters) {
             this.#viewClassName = viewClassName;
             this.#viewElement = document.getElementById(`${viewId}_items`);
             this.#noItemsNotice = document.getElementById(`${viewId}_noItemsNotice`);
+            this.#bulkInteractionProviderClassName = bulkInteractionProviderClassName;
             this.#listViewParameters = listViewParameters;
             this.#initInteractions();
             this.#state = this.#setupState(viewId, pageNo, baseUrl, sortField, sortOrder);
             this.#initEventListeners();
-        }
-        #setupState(viewId, pageNo, baseUrl, sortField, sortOrder) {
-            const state = new State_1.default(viewId, this.#viewElement, pageNo, baseUrl, sortField, sortOrder);
-            state.addEventListener("list-view:change", (event) => {
-                void this.#loadItems(event.detail.source);
-            });
-            /*state.addEventListener("list-view:get-bulk-interactions", (event) => {
-              void this.#loadBulkInteractions(event.detail.objectIds);
-            });*/
-            return state;
         }
         async #loadItems(cause) {
             const response = (await (0, GetItems_1.getItems)(this.#viewClassName, this.#state.getPageNo(), this.#state.getSortField(), this.#state.getSortOrder(), this.#state.getActiveFilters(), this.#listViewParameters)).unwrap();
@@ -86,6 +78,20 @@ define(["require", "exports", "tslib", "./ListView/State", "../Dom/Change/Listen
             this.#viewElement.addEventListener("interaction:reset-selection", () => {
                 this.#state.resetSelection();
             });
+        }
+        #setupState(viewId, pageNo, baseUrl, sortField, sortOrder) {
+            const state = new State_1.default(viewId, this.#viewElement, pageNo, baseUrl, sortField, sortOrder);
+            state.addEventListener("list-view:change", (event) => {
+                void this.#loadItems(event.detail.source);
+            });
+            state.addEventListener("list-view:get-bulk-interactions", (event) => {
+                void this.#loadBulkInteractions(event.detail.objectIds);
+            });
+            return state;
+        }
+        async #loadBulkInteractions(objectIds) {
+            const response = await (0, GetBulkContextMenuOptions_1.getBulkContextMenuOptions)(this.#bulkInteractionProviderClassName, objectIds);
+            this.#state.setBulkInteractionContextMenuOptions(response.unwrap().template);
         }
         #checkEmptyList() {
             if (this.#viewElement.querySelectorAll(".listView__item").length > 0) {

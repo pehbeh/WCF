@@ -8,7 +8,8 @@ use wcf\data\article\ViewableArticle;
 use wcf\data\DatabaseObjectList;
 use wcf\data\label\group\ViewableLabelGroup;
 use wcf\data\object\type\ObjectTypeCache;
-use wcf\event\listView\admin\ArticleListViewInitialized;
+use wcf\event\listView\user\ArticleListViewInitialized;
+use wcf\system\interaction\bulk\user\ArticleBulkInteractions;
 use wcf\system\interaction\user\ArticleInteractions;
 use wcf\system\label\LabelHandler;
 use wcf\system\listView\AbstractListView;
@@ -50,6 +51,7 @@ class ArticleListView extends AbstractListView
         }
 
         $this->setInteractionProvider(new ArticleInteractions());
+        $this->setBulkInteractionProvider(new ArticleBulkInteractions());
         $this->setItemsPerPage(\ARTICLES_PER_PAGE);
         $this->setSortField('time');
         $this->setSortOrder(\ARTICLE_SORT_ORDER);

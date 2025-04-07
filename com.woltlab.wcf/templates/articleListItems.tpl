@@ -4,6 +4,12 @@
 	{if $article->getArticleContent()}
 	<article class="contentItem contentItemMultiColumn listView__item" data-object-id="{$article->getObjectID()}">
 		<div class="contentItemOptions">
+			{if $view->hasBulkInteractions()}
+				<label class="button small jsTooltip" title="{lang}wcf.clipboard.item.mark{/lang}">
+					<input type="checkbox" class="listView__selectItem" aria-label="{lang}wcf.clipboard.item.mark{/lang}">
+				</label>
+			{/if}
+
 			{unsafe:$view->renderInteractionContextMenuButton($article)}
 		</div>
 		

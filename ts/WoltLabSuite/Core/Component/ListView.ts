@@ -15,12 +15,14 @@ import { element as scrollToElement } from "WoltLabSuite/Core/Ui/Scroll";
 import { wheneverFirstSeen } from "../Helper/Selector";
 import UiDropdownSimple from "../Ui/Dropdown/Simple";
 import { getItem } from "../Api/ListViews/GetItem";
+import { getBulkContextMenuOptions } from "../Api/Interactions/GetBulkContextMenuOptions";
 
 export class ListView {
   readonly #viewClassName: string;
   readonly #viewElement: HTMLElement;
   readonly #state: State;
   readonly #noItemsNotice: HTMLElement;
+  readonly #bulkInteractionProviderClassName: string;
   #listViewParameters?: Map<string, string>;
 
   constructor(
@@ -30,28 +32,18 @@ export class ListView {
     baseUrl: string = "",
     sortField = "",
     sortOrder = "ASC",
+    bulkInteractionProviderClassName: string,
     listViewParameters?: Map<string, string>,
   ) {
     this.#viewClassName = viewClassName;
     this.#viewElement = document.getElementById(`${viewId}_items`) as HTMLTableElement;
     this.#noItemsNotice = document.getElementById(`${viewId}_noItemsNotice`) as HTMLElement;
+    this.#bulkInteractionProviderClassName = bulkInteractionProviderClassName;
     this.#listViewParameters = listViewParameters;
 
     this.#initInteractions();
     this.#state = this.#setupState(viewId, pageNo, baseUrl, sortField, sortOrder);
     this.#initEventListeners();
-  }
-
-  #setupState(viewId: string, pageNo: number, baseUrl: string, sortField: string, sortOrder: string): State {
-    const state = new State(viewId, this.#viewElement, pageNo, baseUrl, sortField, sortOrder);
-    state.addEventListener("list-view:change", (event) => {
-      void this.#loadItems(event.detail.source);
-    });
-    /*state.addEventListener("list-view:get-bulk-interactions", (event) => {
-      void this.#loadBulkInteractions(event.detail.objectIds);
-    });*/
-
-    return state;
   }
 
   async #loadItems(cause: StateChangeCause): Promise<void> {
@@ -123,6 +115,23 @@ export class ListView {
     this.#viewElement.addEventListener("interaction:reset-selection", () => {
       this.#state.resetSelection();
     });
+  }
+
+  #setupState(viewId: string, pageNo: number, baseUrl: string, sortField: string, sortOrder: string): State {
+    const state = new State(viewId, this.#viewElement, pageNo, baseUrl, sortField, sortOrder);
+    state.addEventListener("list-view:change", (event) => {
+      void this.#loadItems(event.detail.source);
+    });
+    state.addEventListener("list-view:get-bulk-interactions", (event) => {
+      void this.#loadBulkInteractions(event.detail.objectIds);
+    });
+
+    return state;
+  }
+
+  async #loadBulkInteractions(objectIds: number[]): Promise<void> {
+    const response = await getBulkContextMenuOptions(this.#bulkInteractionProviderClassName, objectIds);
+    this.#state.setBulkInteractionContextMenuOptions(response.unwrap().template);
   }
 
   #checkEmptyList(): void {

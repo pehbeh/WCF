@@ -8,6 +8,7 @@ use wcf\data\DatabaseObjectDecorator;
 use wcf\data\DatabaseObjectList;
 use wcf\event\IPsr14Event;
 use wcf\system\event\EventHandler;
+use wcf\system\interaction\bulk\IBulkInteractionProvider;
 use wcf\system\interaction\IInteractionProvider;
 use wcf\system\interaction\InteractionContextMenuView;
 use wcf\system\listView\filter\IListViewFilter;
@@ -36,6 +37,7 @@ abstract class AbstractListView
     private int $pageNo = 1;
     private string|int|null $objectIDFilter = null;
     private ?IInteractionProvider $interactionProvider = null;
+    private ?IBulkInteractionProvider $bulkInteractionProvider = null;
     private InteractionContextMenuView $interactionContextMenuView;
 
     /**
@@ -409,6 +411,40 @@ abstract class AbstractListView
     }
 
     /**
+     * Sets the bulk interaction provider for this list view.
+     */
+    public function setBulkInteractionProvider(IBulkInteractionProvider $provider): void
+    {
+        $this->bulkInteractionProvider = $provider;
+    }
+
+    /**
+     * Returns the bulk interaction provider of the list view.
+     */
+    public function getBulkInteractionProvider(): ?IBulkInteractionProvider
+    {
+        return $this->bulkInteractionProvider;
+    }
+
+    /**
+     * Returns true if this list view has bulk interactions.
+     */
+    public function hasBulkInteractions(): bool
+    {
+        return $this->getBulkInteractionProvider() !== null
+            && $this->getBulkInteractionProvider()->getInteractions() !== [];
+    }
+
+    public function getBulkInteractionProviderClassName(): string
+    {
+        if (!$this->hasBulkInteractions()) {
+            return '';
+        }
+
+        return \get_class($this->getBulkInteractionProvider());
+    }
+
+    /**
      * Returns true, if this list view has interactions.
      */
     public function hasInteractions(): bool
@@ -427,6 +463,21 @@ abstract class AbstractListView
         }
 
         return $code;
+    }
+
+    /**
+     * Renders the initialization code for the bulk interactions of the list view.
+     */
+    public function renderBulkInteractionInitialization(): string
+    {
+        if (!$this->hasBulkInteractions()) {
+            return '';
+        }
+
+        return \implode("\n", \array_map(
+            fn($interaction) => $interaction->renderInitialization($this->getID() . '_items'),
+            $this->getBulkInteractionProvider()->getInteractions()
+        ));
     }
 
     /**
