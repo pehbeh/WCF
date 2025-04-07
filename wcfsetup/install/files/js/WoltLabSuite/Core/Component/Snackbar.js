@@ -167,6 +167,7 @@ define(["require", "exports", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/H
         }
         setIteration(iteration) {
             this.#iteration = iteration;
+            this.#snackbar.message = this.#getMessage();
         }
         markAsDone() {
             this.#snackbar.markAsDone();
