@@ -4,14 +4,13 @@ namespace wcf\system\interaction\user;
 
 use wcf\data\article\Article;
 use wcf\data\article\ViewableArticle;
-use wcf\event\interaction\admin\ArticleInteractionCollecting;
+use wcf\event\interaction\user\ArticleInteractionCollecting;
 use wcf\form\ArticleEditForm;
 use wcf\system\event\EventHandler;
 use wcf\system\interaction\AbstractInteractionProvider;
 use wcf\system\interaction\DeleteInteraction;
 use wcf\system\interaction\Divider;
 use wcf\system\interaction\EditInteraction;
-use wcf\system\interaction\LinkableObjectInteraction;
 use wcf\system\interaction\RestoreInteraction;
 use wcf\system\interaction\RpcInteraction;
 use wcf\system\interaction\TrashInteraction;
@@ -80,9 +79,9 @@ final class ArticleInteractions extends AbstractInteractionProvider
             })
         ]);
 
-        /*EventHandler::getInstance()->fire(
+        EventHandler::getInstance()->fire(
             new ArticleInteractionCollecting($this)
-        );*/
+        );
     }
 
     #[\Override]
