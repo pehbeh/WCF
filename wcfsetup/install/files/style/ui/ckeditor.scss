@@ -67,6 +67,10 @@
 	cursor: pointer;
 }
 
+.ck.ck-button-bold, a.ck.ck-button-bold {
+	font-weight: 400;
+}
+
 .ck.ck-toolbar__items,
 .ck.ck-toolbar__grouped-dropdown {
 	--ck-spacing-small: 4px;
@@ -211,6 +215,10 @@
 
 		background-color: var(--wcfButtonPrimaryBackground);
 	}
+}
+
+.ck.ck-form__row.ck-form__row_with-submit {
+	align-items: end;
 }
 
 .ck.ck-body .ck-button[type="button"].ck-on:not(.ck-disabled) {

@@ -357,6 +357,6 @@ class BBCodeHandler extends SingletonFactory
             return '';
         }
 
-        return $licenseData->license['ckeditorLicenseKey'] ?? '';
+        return $licenseData->license['ckeditorLicenseKeyV44'] ?? 'GPL';
     }
 }
