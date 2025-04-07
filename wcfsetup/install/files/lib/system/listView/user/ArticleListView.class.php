@@ -8,6 +8,7 @@ use wcf\data\article\ViewableArticle;
 use wcf\data\DatabaseObjectList;
 use wcf\data\label\group\ViewableLabelGroup;
 use wcf\data\object\type\ObjectTypeCache;
+use wcf\event\listView\admin\ArticleListViewInitialized;
 use wcf\system\interaction\user\ArticleInteractions;
 use wcf\system\label\LabelHandler;
 use wcf\system\listView\AbstractListView;
@@ -173,5 +174,11 @@ class ArticleListView extends AbstractListView
                 );
             }
         };
+    }
+
+    #[\Override]
+    protected function getInitializedEvent(): ArticleListViewInitialized
+    {
+        return new ArticleListViewInitialized($this);
     }
 }

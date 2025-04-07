@@ -6,6 +6,8 @@ use wcf\action\ListViewFilterAction;
 use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectDecorator;
 use wcf\data\DatabaseObjectList;
+use wcf\event\IPsr14Event;
+use wcf\system\event\EventHandler;
 use wcf\system\interaction\IInteractionProvider;
 use wcf\system\interaction\InteractionContextMenuView;
 use wcf\system\listView\filter\IListViewFilter;
@@ -197,9 +199,7 @@ abstract class AbstractListView
             );
         }
         $this->applyFilters();
-        /*$this->validate();
         $this->fireInitializedEvent();
-        */
     }
 
     /**
@@ -473,6 +473,27 @@ abstract class AbstractListView
     public function getObjectIDFilter(): string|int|null
     {
         return $this->objectIDFilter;
+    }
+
+    /**
+     * Fires the initialized event.
+     */
+    protected function fireInitializedEvent(): void
+    {
+        $event = $this->getInitializedEvent();
+        if ($event === null) {
+            return;
+        }
+
+        EventHandler::getInstance()->fire($event);
+    }
+
+    /**
+     * Returns the initialized event or null if there is no such event for this list view.
+     */
+    protected function getInitializedEvent(): ?IPsr14Event
+    {
+        return null;
     }
 
     public function setCssClassName(string $cssClassName): void
