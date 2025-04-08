@@ -21,8 +21,8 @@ use wcf\system\exception\PermissionDeniedException;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-#[PostRequest('/core/articles/{id:\d+}/trash')]
-final class TrashArticle implements IController
+#[PostRequest('/core/articles/{id:\d+}/soft-delete')]
+final class SoftDeleteArticle implements IController
 {
     #[\Override]
     public function __invoke(ServerRequestInterface $request, array $variables): ResponseInterface

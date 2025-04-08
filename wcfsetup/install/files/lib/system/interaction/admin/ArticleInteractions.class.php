@@ -11,7 +11,7 @@ use wcf\system\interaction\DeleteInteraction;
 use wcf\system\interaction\LinkableObjectInteraction;
 use wcf\system\interaction\RestoreInteraction;
 use wcf\system\interaction\RpcInteraction;
-use wcf\system\interaction\TrashInteraction;
+use wcf\system\interaction\SoftDeleteInteraction;
 
 /**
  * Interaction provider for articles.
@@ -27,7 +27,7 @@ final class ArticleInteractions extends AbstractInteractionProvider
     {
         $this->addInteractions([
             new LinkableObjectInteraction('view', 'wcf.acp.article.button.viewArticle'),
-            new TrashInteraction('core/articles/%s/trash', function (ViewableArticle $article): bool {
+            new SoftDeleteInteraction('core/articles/%s/soft-delete', function (ViewableArticle $article): bool {
                 return $article->isDeleted !== 1;
             }),
             new RestoreInteraction('core/articles/%s/restore', function (ViewableArticle $article): bool {

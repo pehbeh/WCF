@@ -165,7 +165,7 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\interactions\GetBulkContextMenuOptions());
             $event->register(new \wcf\system\endpoint\controller\core\interactions\GetContextMenuOptions());
             $event->register(new \wcf\system\endpoint\controller\core\articles\DeleteArticle());
-            $event->register(new \wcf\system\endpoint\controller\core\articles\TrashArticle());
+            $event->register(new \wcf\system\endpoint\controller\core\articles\SoftDeleteArticle());
             $event->register(new \wcf\system\endpoint\controller\core\articles\RestoreArticle());
             $event->register(new \wcf\system\endpoint\controller\core\articles\PublishArticle());
             $event->register(new \wcf\system\endpoint\controller\core\articles\UnpublishArticle());
