@@ -35,7 +35,7 @@ class ConfigurationBuilder {
   }
 
   #setupBasicFormat(): void {
-    this.#toolbar.push("bold", "italic", "WoltlabEmoji");
+    this.#toolbar.push("bold", "italic", "emoji");
   }
 
   #setupTextFormat(): void {
