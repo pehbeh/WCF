@@ -7,7 +7,7 @@
  * @since 6.0
  * @woltlabExcludeBundle tiny
  */
-define(["require", "exports", "../../Language"], function (require, exports, Language_1) {
+define(["require", "exports", "../../Language", "WoltLabSuite/Core/Component/EmojiPicker/Localization"], function (require, exports, Language_1, Localization_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createConfigurationFor = createConfigurationFor;
@@ -309,6 +309,9 @@ define(["require", "exports", "../../Language"], function (require, exports, Lan
                 },
                 fontSize: {
                     options: [12, "default", 18, 23, 28],
+                },
+                emoji: {
+                    definitionsUrl: (0, Localization_1.getDataSource)(key),
                 },
                 toolbar: this.#getToolbar(),
                 ui: {

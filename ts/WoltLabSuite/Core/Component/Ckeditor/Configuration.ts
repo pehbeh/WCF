@@ -10,6 +10,7 @@
 
 import type { CKEditor5 } from "@woltlab/editor";
 import { getPhrase } from "../../Language";
+import { getDataSource } from "WoltLabSuite/Core/Component/EmojiPicker/Localization";
 
 // The typings for CKEditor’s toolbar are outdated.
 type ToolbarItem = string | { label: string; icon?: string; items: string[] };
@@ -347,6 +348,9 @@ class ConfigurationBuilder {
       },
       fontSize: {
         options: [12, "default", 18, 23, 28],
+      },
+      emoji: {
+        definitionsUrl: getDataSource(key),
       },
       toolbar: this.#getToolbar(),
       ui: {
