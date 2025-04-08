@@ -17,6 +17,7 @@ enum InteractionConfirmationType
     case SoftDeleteWithReason;
     case Restore;
     case Delete;
+    case Disable;
     case Custom;
 
     public function toString(): string
@@ -27,6 +28,7 @@ enum InteractionConfirmationType
             self::SoftDeleteWithReason => 'SoftDeleteWithReason',
             self::Restore => 'Restore',
             self::Delete => 'Delete',
+            self::Disable => 'Disable',
             self::Custom => 'Custom',
         };
     }

@@ -15,6 +15,7 @@ export enum ConfirmationType {
   SoftDeleteWithReason = "SoftDeleteWithReason",
   Restore = "Restore",
   Delete = "Delete",
+  Disable = "Disable",
   Custom = "Custom",
 }
 
@@ -45,6 +46,12 @@ export async function handleConfirmation(
   if (confirmationType == ConfirmationType.Delete) {
     return {
       result: await confirmationFactory().delete(objectName ? objectName : undefined),
+    };
+  }
+
+  if (confirmationType == ConfirmationType.Disable) {
+    return {
+      result: await confirmationFactory().disable(objectName ? objectName : undefined),
     };
   }
 

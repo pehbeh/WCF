@@ -50,6 +50,21 @@ define(["require", "exports", "tslib", "./Dialog", "../Language", "../Dom/Util",
                 dialog.addEventListener("cancel", () => resolve(false));
             });
         }
+        async disable(title) {
+            const dialog = (0, Dialog_1.dialogFactory)().withoutContent().asConfirmation();
+            let question;
+            if (title === undefined) {
+                question = (0, Language_1.getPhrase)("wcf.dialog.confirmation.disable.indeterminate");
+            }
+            else {
+                question = (0, Language_1.getPhrase)("wcf.dialog.confirmation.disable", { title });
+            }
+            dialog.show(question);
+            return new Promise((resolve) => {
+                dialog.addEventListener("primary", () => resolve(true));
+                dialog.addEventListener("cancel", () => resolve(false));
+            });
+        }
         async restore(title) {
             const dialog = (0, Dialog_1.dialogFactory)().withoutContent().asConfirmation();
             let question;

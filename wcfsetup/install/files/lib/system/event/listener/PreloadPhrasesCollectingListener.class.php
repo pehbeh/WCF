@@ -48,6 +48,8 @@ final class PreloadPhrasesCollectingListener
         $event->preload('wcf.dialog.confirmation.cannotBeUndone');
         $event->preload('wcf.dialog.confirmation.delete');
         $event->preload('wcf.dialog.confirmation.delete.indeterminate');
+        $event->preload('wcf.dialog.confirmation.disable');
+        $event->preload('wcf.dialog.confirmation.disable.indeterminate');
         $event->preload('wcf.dialog.confirmation.softDelete');
         $event->preload('wcf.dialog.confirmation.softDelete.indeterminate');
         $event->preload('wcf.dialog.confirmation.restore');
