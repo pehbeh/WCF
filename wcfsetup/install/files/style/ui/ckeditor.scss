@@ -691,3 +691,42 @@ html.iOS {
 		--ck-color-labeled-field-label-background: transparent;
 	}
 }
+
+/* emoji picker */
+.ck.ck-emoji-picker-form {
+	.ck-button {
+		padding: 0 !important;
+	}
+
+	.ck-search {
+		.ck-labeled-field-view__input-wrapper {
+			svg, .ck-off {
+				transform: none !important;
+			}
+		}
+
+		.ck-emoji__skin-tone {
+			align-self: end;
+
+			.ck-button {
+				padding: 3px 12px !important;
+			}
+		}
+	}
+}
+
+.ck-button__label {
+	&.ck-emoji, &.ck-smiley {
+		font-size: var(--wcfFontSizeDefault) !important;
+	}
+}
+
+@media (hover: hover) {
+	.ck.ck-emoji-picker-form {
+		.ck-button {
+			&:not(:hover), &.ck-emoji__tile:hover {
+				background-color: transparent !important;
+			}
+		}
+	}
+}
