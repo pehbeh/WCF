@@ -62,6 +62,24 @@ class ConfirmationPrefab {
     });
   }
 
+  async disable(title?: string): Promise<boolean> {
+    const dialog = dialogFactory().withoutContent().asConfirmation();
+
+    let question: string;
+    if (title === undefined) {
+      question = getPhrase("wcf.dialog.confirmation.disable.indeterminate");
+    } else {
+      question = getPhrase("wcf.dialog.confirmation.disable", { title });
+    }
+
+    dialog.show(question);
+
+    return new Promise<boolean>((resolve) => {
+      dialog.addEventListener("primary", () => resolve(true));
+      dialog.addEventListener("cancel", () => resolve(false));
+    });
+  }
+
   async restore(title?: string): Promise<boolean> {
     const dialog = dialogFactory().withoutContent().asConfirmation();
 

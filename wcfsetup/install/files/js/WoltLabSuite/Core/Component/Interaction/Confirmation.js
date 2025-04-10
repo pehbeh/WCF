@@ -18,6 +18,7 @@ define(["require", "exports", "WoltLabSuite/Core/Component/Confirmation"], funct
         ConfirmationType["SoftDeleteWithReason"] = "SoftDeleteWithReason";
         ConfirmationType["Restore"] = "Restore";
         ConfirmationType["Delete"] = "Delete";
+        ConfirmationType["Disable"] = "Disable";
         ConfirmationType["Custom"] = "Custom";
     })(ConfirmationType || (exports.ConfirmationType = ConfirmationType = {}));
     async function handleConfirmation(objectName, confirmationType, customMessage = "") {
@@ -35,6 +36,11 @@ define(["require", "exports", "WoltLabSuite/Core/Component/Confirmation"], funct
         if (confirmationType == ConfirmationType.Delete) {
             return {
                 result: await (0, Confirmation_1.confirmationFactory)().delete(objectName ? objectName : undefined),
+            };
+        }
+        if (confirmationType == ConfirmationType.Disable) {
+            return {
+                result: await (0, Confirmation_1.confirmationFactory)().disable(objectName ? objectName : undefined),
             };
         }
         if (confirmationType == ConfirmationType.Custom) {
