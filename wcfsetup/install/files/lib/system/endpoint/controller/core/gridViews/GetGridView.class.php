@@ -64,12 +64,13 @@ final class GetGridViewParameters
     public function __construct(
         /** @var non-empty-string */
         public readonly string $gridView,
+        /** @var positive-int */
         public readonly int $pageNo,
         public readonly string $sortField,
         public readonly string $sortOrder,
-        /** @var string[] */
+        /** @var array<string, string|int> */
         public readonly array $filters,
-        /** @var string[] */
+        /** @var array<string, mixed> */
         public readonly array $gridViewParameters,
     ) {
     }
