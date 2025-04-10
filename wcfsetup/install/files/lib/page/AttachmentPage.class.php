@@ -8,6 +8,7 @@ use wcf\data\attachment\Attachment;
 use wcf\data\attachment\AttachmentEditor;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\exception\PermissionDeniedException;
+use wcf\system\exception\SystemException;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\FileReader;
@@ -176,16 +177,24 @@ class AttachmentPage extends AbstractPage
         $cacheDuration = ($this->attachment->tmpHash) ? 300 : 31536000;
 
         // init file reader
-        $this->fileReader = new FileReader($location, [
-            'filename' => $this->attachment->filename,
-            'mimeType' => $mimeType,
-            'filesize' => $filesize,
-            'showInline' => \in_array($mimeType, self::$inlineMimeTypes),
-            'enableRangeSupport' => !$this->tiny && !$this->thumbnail,
-            'lastModificationTime' => $this->attachment->uploadTime,
-            'expirationDate' => TIME_NOW + $cacheDuration,
-            'maxAge' => $cacheDuration,
-        ]);
+        try {
+            $this->fileReader = new FileReader($location, [
+                'filename' => $this->attachment->filename,
+                'mimeType' => $mimeType,
+                'filesize' => $filesize,
+                'showInline' => \in_array($mimeType, self::$inlineMimeTypes),
+                'enableRangeSupport' => !$this->tiny && !$this->thumbnail,
+                'lastModificationTime' => $this->attachment->uploadTime,
+                'expirationDate' => TIME_NOW + $cacheDuration,
+                'maxAge' => $cacheDuration,
+            ]);
+        } catch (SystemException $e) {
+            if ($e->getMessage() !== 'Location of file is not set or invalid') {
+                throw $e;
+            }
+
+            throw new IllegalLinkException();
+        }
 
         // Prevent <script> execution in the context of the community's domain if
         // an attacker somehow bypasses 'content-disposition: attachment' for non-inline
