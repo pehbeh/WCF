@@ -13,7 +13,7 @@ interface ResponseGridView {
 }
 
 export class GridViewSetup {
-  async fromGridView(
+  async fromPreset(
     title: string,
     gridViewClass: string,
     pageNo: number = 1,

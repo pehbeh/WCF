@@ -42,7 +42,7 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend"], function (requi
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GridViewSetup = void 0;
     class GridViewSetup {
-        async fromGridView(title, gridViewClass, pageNo = 1, sortField = "", sortOrder = "ASC", filters, gridViewParameters) {
+        async fromPreset(title, gridViewClass, pageNo = 1, sortField = "", sortOrder = "ASC", filters, gridViewParameters) {
             const url = new URL(`${window.WSC_RPC_API_URL}core/grid-views/render`);
             url.searchParams.set("gridView", gridViewClass);
             url.searchParams.set("pageNo", pageNo.toString());
