@@ -67,4 +67,5 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend"], function (requi
         }
     }
     exports.GridViewSetup = GridViewSetup;
+    exports.default = GridViewSetup;
 });

@@ -14,6 +14,7 @@ define(["require", "exports", "tslib", "./Controls", "../../Dom/Util", "../FormB
     Controls_1 = tslib_1.__importDefault(Controls_1);
     DomUtil = tslib_1.__importStar(DomUtil);
     Setup_1 = tslib_1.__importDefault(Setup_1);
+    Setup_2 = tslib_1.__importDefault(Setup_2);
     class DialogSetup {
         fromElement(element) {
             if (element instanceof HTMLTemplateElement) {
@@ -45,7 +46,7 @@ define(["require", "exports", "tslib", "./Controls", "../../Dom/Util", "../FormB
             return new Setup_1.default();
         }
         usingGridView() {
-            return new Setup_2.GridViewSetup();
+            return new Setup_2.default();
         }
         withoutContent() {
             const dialog = document.createElement("woltlab-core-dialog");

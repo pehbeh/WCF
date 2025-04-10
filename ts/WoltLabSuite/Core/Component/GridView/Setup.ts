@@ -48,3 +48,5 @@ export class GridViewSetup {
     return dialog;
   }
 }
+
+export default GridViewSetup;
