@@ -69,7 +69,13 @@
 		{/if}
 
 		<div class="listView__pagination">
-			<woltlab-core-pagination id="{$view->getID()}_pagination" page="{$view->getPageNo()}" count="{$view->countPages()}"></woltlab-core-pagination>
+			<woltlab-core-pagination
+				id="{$view->getID()}_pagination"
+				page="{$view->getPageNo()}"
+				count="{$view->countPages()}"
+				behavior="button"
+				url="{$view->getBaseUrl()}"
+			></woltlab-core-pagination>
 		</div>
 	</div>
 
