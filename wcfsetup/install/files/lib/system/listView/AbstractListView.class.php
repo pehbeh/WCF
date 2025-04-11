@@ -457,12 +457,11 @@ abstract class AbstractListView
      */
     public function renderInteractionInitialization(): string
     {
-        $code = '';
-        if ($this->interactionProvider !== null) {
-            $code = $this->getInteractionContextMenuView()->renderInitialization($this->getID() . '_items');
+        if ($this->interactionProvider === null) {
+            return '';
         }
 
-        return $code;
+        return $this->getInteractionContextMenuView()->renderInitialization($this->getID() . '_items');
     }
 
     /**
