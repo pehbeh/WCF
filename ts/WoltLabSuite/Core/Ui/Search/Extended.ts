@@ -11,7 +11,6 @@ import { dboAction } from "../../Ajax";
 import DatePicker from "../../Date/Picker";
 import * as DomUtil from "../../Dom/Util";
 import { ucfirst } from "../../StringUtil";
-import UiPagination from "../Pagination";
 import UiSearchInput from "./Input";
 import * as UiScroll from "../Scroll";
 import { setValues as setItemListValues } from "../ItemList";
@@ -242,21 +241,43 @@ export class UiSearchExtended {
     const wrapperDiv = document.createElement("div");
     wrapperDiv.classList.add("pagination" + ucfirst(position));
     this.form.parentElement!.insertBefore(wrapperDiv, this.delimiter);
-    const div = document.createElement("div");
-    wrapperDiv.appendChild(div);
 
-    new UiPagination(div, {
-      activePage: this.activePage,
-      maxPage: this.pages,
-
-      callbackSwitch: (pageNo) => {
-        void this.changePage(pageNo).then(() => {
-          if (position === "bottom") {
-            UiScroll.element(this.form.nextElementSibling as HTMLElement, undefined, "auto");
-          }
-        });
-      },
+    const pagination = document.createElement("woltlab-core-pagination");
+    pagination.page = this.activePage;
+    pagination.count = this.pages;
+    pagination.behavior = "button";
+    pagination.url = this.getPaginationUrl();
+    pagination.addEventListener("switchPage", (event: CustomEvent) => {
+      void this.changePage(event.detail).then(() => {
+        if (position === "bottom") {
+          UiScroll.element(this.form.nextElementSibling as HTMLElement, undefined, "auto");
+        }
+      });
     });
+
+    wrapperDiv.append(pagination);
+  }
+
+  private getPaginationUrl(): string {
+    const url = new URL(this.form.action);
+    url.search += url.search !== "" ? "&" : "?";
+
+    const searchParameters: SearchParameters = [];
+    new FormData(this.form).forEach((value, key) => {
+      // eslint-disable-next-line @typescript-eslint/no-base-to-string
+      const trimmed = value.toString().trim();
+      if (trimmed) {
+        searchParameters.push([key, trimmed]);
+      }
+    });
+    const parameters = searchParameters.slice();
+
+    if (this.activePage > 1) {
+      parameters.push(["pageNo", this.activePage.toString()]);
+    }
+    url.search += new URLSearchParams(parameters).toString();
+
+    return url.toString();
   }
 
   private async changePage(pageNo: number): Promise<void> {

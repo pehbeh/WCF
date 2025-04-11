@@ -6,13 +6,12 @@
  * @license  GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @woltlabExcludeBundle all
  */
-define(["require", "exports", "tslib", "../../Ajax", "../../Date/Picker", "../../Dom/Util", "../../StringUtil", "../Pagination", "./Input", "../Scroll", "../ItemList"], function (require, exports, tslib_1, Ajax_1, Picker_1, DomUtil, StringUtil_1, Pagination_1, Input_1, UiScroll, ItemList_1) {
+define(["require", "exports", "tslib", "../../Ajax", "../../Date/Picker", "../../Dom/Util", "../../StringUtil", "./Input", "../Scroll", "../ItemList"], function (require, exports, tslib_1, Ajax_1, Picker_1, DomUtil, StringUtil_1, Input_1, UiScroll, ItemList_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.UiSearchExtended = void 0;
     Picker_1 = tslib_1.__importDefault(Picker_1);
     DomUtil = tslib_1.__importStar(DomUtil);
-    Pagination_1 = tslib_1.__importDefault(Pagination_1);
     Input_1 = tslib_1.__importDefault(Input_1);
     UiScroll = tslib_1.__importStar(UiScroll);
     class UiSearchExtended {
@@ -196,19 +195,37 @@ define(["require", "exports", "tslib", "../../Ajax", "../../Date/Picker", "../..
             const wrapperDiv = document.createElement("div");
             wrapperDiv.classList.add("pagination" + (0, StringUtil_1.ucfirst)(position));
             this.form.parentElement.insertBefore(wrapperDiv, this.delimiter);
-            const div = document.createElement("div");
-            wrapperDiv.appendChild(div);
-            new Pagination_1.default(div, {
-                activePage: this.activePage,
-                maxPage: this.pages,
-                callbackSwitch: (pageNo) => {
-                    void this.changePage(pageNo).then(() => {
-                        if (position === "bottom") {
-                            UiScroll.element(this.form.nextElementSibling, undefined, "auto");
-                        }
-                    });
-                },
+            const pagination = document.createElement("woltlab-core-pagination");
+            pagination.page = this.activePage;
+            pagination.count = this.pages;
+            pagination.behavior = "button";
+            pagination.url = this.getPaginationUrl();
+            pagination.addEventListener("switchPage", (event) => {
+                void this.changePage(event.detail).then(() => {
+                    if (position === "bottom") {
+                        UiScroll.element(this.form.nextElementSibling, undefined, "auto");
+                    }
+                });
             });
+            wrapperDiv.append(pagination);
+        }
+        getPaginationUrl() {
+            const url = new URL(this.form.action);
+            url.search += url.search !== "" ? "&" : "?";
+            const searchParameters = [];
+            new FormData(this.form).forEach((value, key) => {
+                // eslint-disable-next-line @typescript-eslint/no-base-to-string
+                const trimmed = value.toString().trim();
+                if (trimmed) {
+                    searchParameters.push([key, trimmed]);
+                }
+            });
+            const parameters = searchParameters.slice();
+            if (this.activePage > 1) {
+                parameters.push(["pageNo", this.activePage.toString()]);
+            }
+            url.search += new URLSearchParams(parameters).toString();
+            return url.toString();
         }
         async changePage(pageNo) {
             this.lastSearchResultRequest?.abort();
