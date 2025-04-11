@@ -121,11 +121,16 @@
 	width: calc(100% + 20px);
 }
 
-.contentItemBadges,
-.contentItemOptions {
+.contentItemBadges {
 	align-items: flex-start;
 	display: flex;
 	flex-direction: column;
+}
+
+.contentItemOptions {
+	align-items: flex-start;
+	display: flex;
+	gap: 5px;
 }
 
 .contentItemImageElement + .contentItemBadges {

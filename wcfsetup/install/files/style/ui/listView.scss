@@ -1,0 +1,59 @@
+.listView__header {
+	border-bottom: 2px solid var(--wcfTabularBoxHeadline);
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+	margin-bottom: 20px;
+	padding-bottom: 5px;
+}
+
+.listView__filters {
+	display: flex;
+	gap: 5px;
+	flex-wrap: wrap;
+}
+
+.listView__header__buttons {
+	display: flex;
+	gap: 5px;
+	margin-inline-start: auto;
+}
+
+.listView__sorting__button.ASC::after,
+.listView__sorting__button.DESC::after {
+	display: inline-block;
+	margin-left: 5px;
+}
+
+.listView__sorting__button.ASC::after {
+	// 2191 = UPWARDS ARROW
+	content: "\2191";
+}
+
+.listView__sorting__button.DESC::after {
+	// 2193 = DOWNWARDS ARROW
+	content: "\2193";
+}
+
+.listView__footer {
+	background-color: var(--wcfContentContainerBackground);
+	bottom: 0;
+	display: flex;
+	gap: 10px;
+	position: sticky;
+	z-index: 2;
+}
+
+.listView__pagination {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-inline-start: auto;
+}
+
+.listView {
+	position: relative;
+}
+
+.listView .info {
+	margin-top: 0;
+}

@@ -3324,7 +3324,6 @@ freigeschaltet. {if LANGUAGE_USE_INFORMAL_VARIANT}Du kannst{else}Sie können{/if
 		<item name="wcf.article.sortField.random"><![CDATA[Zufällig]]></item>
 		<item name="wcf.article.sortField.time"><![CDATA[Datum]]></item>
 		<item name="wcf.article.sortField.views"><![CDATA[Zugriffe]]></item>
-		<item name="wcf.article.showArticlesWritten"><![CDATA[Artikel von {$user->username}]]></item>
 		<item name="wcf.article.recentActivity"><![CDATA[<strong>{$author}</strong> hat den Artikel {if $article->hasLabels()}<ul class="labelList">{foreach from=$article->getLabels() item=label}<li>{unsafe:$label->render()}</li>{/foreach}</ul> {/if}<strong>{$article->getTitle()}</strong> verfasst.]]></item>
 		<item name="wcf.article.button.sort"><![CDATA[Sortieren]]></item>
 		<item name="wcf.article.search"><![CDATA[Artikel durchsuchen]]></item>
@@ -3347,6 +3346,8 @@ freigeschaltet. {if LANGUAGE_USE_INFORMAL_VARIANT}Du kannst{else}Sie können{/if
 		<item name="wcf.article.button.publish"><![CDATA[Veröffentlichen]]></item>
 		<item name="wcf.article.button.unpublish"><![CDATA[Veröffentlichung zurückziehen]]></item>
 		<item name="wcf.article.button.setCategory"><![CDATA[Kategorie ändern]]></item>
+		<item name="wcf.article.unreadArticles"><![CDATA[Ungelesene Artikel]]></item>
+		<item name="wcf.article.watchedArticles"><![CDATA[Abonnierte Artikel]]></item>
 	</category>
 	<category name="wcf.attachment">
 		<item name="wcf.attachment.file.info"><![CDATA[{@$attachment->filesize|filesize} – {plural value=$attachment->downloads 1="1 Download" other="# Downloads"}]]></item>

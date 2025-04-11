@@ -30,6 +30,11 @@ class InteractionContextMenuView
 
     public function renderButton(DatabaseObject $object): string
     {
+        $options = $this->renderContextMenuOptions($object);
+        if (!$options) {
+            return '';
+        }
+
         return WCF::getTPL()->render(
             'wcf',
             'shared_interactionButton',

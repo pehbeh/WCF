@@ -141,6 +141,8 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\gridViews\GetGridView());
             $event->register(new \wcf\system\endpoint\controller\core\gridViews\GetRow());
             $event->register(new \wcf\system\endpoint\controller\core\cronjobs\logs\ClearLogs());
+            $event->register(new \wcf\system\endpoint\controller\core\listViews\GetItems());
+            $event->register(new \wcf\system\endpoint\controller\core\listViews\GetItem());
             $event->register(new \wcf\system\endpoint\controller\core\messages\GetMentionSuggestions());
             $event->register(new \wcf\system\endpoint\controller\core\messages\RenderQuote());
             $event->register(new \wcf\system\endpoint\controller\core\messages\GetMessageAuthor());

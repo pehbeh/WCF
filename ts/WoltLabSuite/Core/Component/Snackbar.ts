@@ -223,6 +223,7 @@ class SnackbarProgress {
 
   setIteration(iteration: number): void {
     this.#iteration = iteration;
+    this.#snackbar.message = this.#getMessage();
   }
 
   markAsDone(): void {
