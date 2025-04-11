@@ -55,7 +55,7 @@ final class GetItemParameters
         /** @var non-empty-string */
         public readonly string $listView,
         public readonly string|int $objectID,
-        /** @var string[] */
+        /** @var array<string, string> */
         public readonly array $listViewParameters,
     ) {}
 }
