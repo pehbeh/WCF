@@ -7,13 +7,14 @@
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.0
  */
-define(["require", "exports", "tslib", "./Controls", "../../Dom/Util", "../FormBuilder/Setup"], function (require, exports, tslib_1, Controls_1, DomUtil, Setup_1) {
+define(["require", "exports", "tslib", "./Controls", "../../Dom/Util", "../FormBuilder/Setup", "WoltLabSuite/Core/Component/GridView/Setup"], function (require, exports, tslib_1, Controls_1, DomUtil, Setup_1, Setup_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DialogSetup = void 0;
     Controls_1 = tslib_1.__importDefault(Controls_1);
     DomUtil = tslib_1.__importStar(DomUtil);
     Setup_1 = tslib_1.__importDefault(Setup_1);
+    Setup_2 = tslib_1.__importDefault(Setup_2);
     class DialogSetup {
         fromElement(element) {
             if (element instanceof HTMLTemplateElement) {
@@ -43,6 +44,9 @@ define(["require", "exports", "tslib", "./Controls", "../../Dom/Util", "../FormB
         }
         usingFormBuilder() {
             return new Setup_1.default();
+        }
+        usingGridView() {
+            return new Setup_2.default();
         }
         withoutContent() {
             const dialog = document.createElement("woltlab-core-dialog");
