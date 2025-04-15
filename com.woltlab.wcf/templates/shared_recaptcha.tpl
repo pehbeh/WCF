@@ -1,4 +1,5 @@
 {if $recaptchaLegacyMode|empty}
+	{* see https://github.com/WoltLab/WCF/issues/6267 *}
 	{include file='shared_captcha'}
 {else}
 	{if RECAPTCHA_PUBLICKEY_V3 && RECAPTCHA_PRIVATEKEY_V3}
