@@ -191,7 +191,7 @@
 	
 	{event name='sections'}
 
-	{include file='shared_captcha' supportsAsyncCaptcha=true}
+	{include file='shared_captcha'}
 	
 	<div class="formSubmit">
 		<input type="submit" value="{lang}wcf.user.button.register{/lang}" accesskey="s">
