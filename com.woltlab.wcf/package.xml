@@ -5,7 +5,7 @@
 		<packagedescription>Free CMS and web-framework, designed for awesome websites and communities.</packagedescription>
 		<packagedescription language="de">Freies CMS und Web-Framework, das eindrucksvolle Websites und Communities ermöglicht.</packagedescription>
 		<isapplication>1</isapplication>
-		<version>6.1.7 dev 2</version>
+		<version>6.1.7</version>
 		<date>2025-04-15</date>
 	</packageinformation>
 
@@ -55,6 +55,9 @@
 		<instruction type="file">files_update.tar</instruction>
 	</instructions>
 	<instructions type="update" fromversion="6.1.7 dev 1">
+		<instruction type="file">files_update.tar</instruction>
+	</instructions>
+	<instructions type="update" fromversion="6.1.7 dev 2">
 		<instruction type="file">files_update.tar</instruction>
 	</instructions>
 </package>
