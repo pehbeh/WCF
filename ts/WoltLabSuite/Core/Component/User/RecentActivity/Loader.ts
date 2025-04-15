@@ -75,6 +75,10 @@ function initShowMoreButton(container: HTMLElement): void {
 
 function initSwitchContextButtons(container: HTMLElement): void {
   container.querySelectorAll(".recentActivityList__switchContextButton").forEach((button) => {
+    if (button.classList.contains("active")) {
+      return;
+    }
+
     button.addEventListener(
       "click",
       promiseMutex(() => switchContext(container)),

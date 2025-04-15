@@ -56,6 +56,9 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Ajax", "WoltLabSuite/C
     }
     function initSwitchContextButtons(container) {
         container.querySelectorAll(".recentActivityList__switchContextButton").forEach((button) => {
+            if (button.classList.contains("active")) {
+                return;
+            }
             button.addEventListener("click", (0, PromiseMutex_1.promiseMutex)(() => switchContext(container)));
         });
     }

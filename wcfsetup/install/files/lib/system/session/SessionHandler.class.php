@@ -587,10 +587,26 @@ final class SessionHandler extends SingletonFactory
                 $condition->add('userID = ?', [$row['userID']]);
             } else {
                 $condition->add('userID IS NULL');
-                $condition->add('(sessionID = ? OR spiderIdentifier = ?)', [
-                    $row['sessionID'],
-                    SpiderHandler::getInstance()->getIdentifier(UserUtil::getUserAgent()),
-                ]);
+
+                $spiderIdentifier = SpiderHandler::getInstance()->getIdentifier(UserUtil::getUserAgent());
+                if ($spiderIdentifier === null) {
+                    // MySQL 8.4 does not like `OR spiderIdentifier = ?` with the
+                    // placeholder being supplied with `NULL`. Instead of raising
+                    // a warning or something, it will cause the query planer to
+                    // pick some odd indices to work with instead of focusing on
+                    // the session id.
+                    //
+                    // Technically we don’t care for the spider identifier at
+                    // this point which means that we can optimize the query
+                    // right away. This query also lives in the hot path of a
+                    // request which makes it even more reasonable.
+                    $condition->add('sessionID = ?', [$row['sessionID']]);
+                } else {
+                    $condition->add('(sessionID = ? OR spiderIdentifier = ?)', [
+                        $row['sessionID'],
+                        $spiderIdentifier,
+                    ]);
+                }
             }
 
             $sql = "SELECT  *

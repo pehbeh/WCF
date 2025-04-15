@@ -392,7 +392,7 @@ class UserProfileAction extends UserAction
             $this->readObjects();
         }
 
-        $fixUserGroupIDs = $userToGroup = [];
+        $fixUserGroupIDs = $userToGroup = $removeFromGroupIDs = [];
         $newGroupIDs = [];
         foreach ($this->getObjects() as $user) {
             $groupIDs = $user->getGroupIDs();
@@ -408,6 +408,14 @@ class UserProfileAction extends UserAction
                     $fixUserGroupIDs[$user->userID][] = UserGroup::GUESTS;
                     $groupIDs[] = UserGroup::GUESTS;
                 }
+
+                if (\in_array(UserGroup::USERS, $groupIDs)) {
+                    if (!isset($removeFromGroupIDs[$user->userID])) {
+                        $removeFromGroupIDs[$user->userID] = [];
+                    }
+
+                    $removeFromGroupIDs[$user->userID][] = UserGroup::USERS;
+                }
             } else {
                 if (!\in_array(UserGroup::USERS, $groupIDs)) {
                     if (!isset($fixUserGroupIDs[$user->userID])) {
@@ -415,6 +423,14 @@ class UserProfileAction extends UserAction
                     }
                     $fixUserGroupIDs[$user->userID][] = UserGroup::USERS;
                     $groupIDs[] = UserGroup::USERS;
+                }
+
+                if (\in_array(UserGroup::GUESTS, $groupIDs)) {
+                    if (!isset($removeFromGroupIDs[$user->userID])) {
+                        $removeFromGroupIDs[$user->userID] = [];
+                    }
+
+                    $removeFromGroupIDs[$user->userID][] = UserGroup::GUESTS;
                 }
             }
             $newGroupIDs[$user->userID] = $groupIDs;
@@ -448,6 +464,21 @@ class UserProfileAction extends UserAction
                 }
 
                 UserStorageHandler::getInstance()->update($userID, 'groupIDs', \serialize($newGroupIDs[$userID]));
+            }
+            WCF::getDB()->commitTransaction();
+        }
+
+        if ($removeFromGroupIDs !== []) {
+            $sql = "DELETE FROM wcf1_user_to_group
+                    WHERE       userID = ?
+                            AND groupID = ?";
+            $statement = WCF::getDB()->prepare($sql);
+
+            WCF::getDB()->beginTransaction();
+            foreach ($removeFromGroupIDs as $userID => $groupIDs) {
+                foreach ($groupIDs as $groupID) {
+                    $statement->execute([$userID, $groupID]);
+                }
             }
             WCF::getDB()->commitTransaction();
         }
