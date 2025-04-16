@@ -23,13 +23,13 @@ define(["require", "exports", "WoltLabSuite/Core/Dom/Util", "WoltLabSuite/Core/L
         }
         createRow(ul);
     }
-    function createRow(ul, option) {
+    function createRow(ul, option, autoFocus = false) {
         const li = document.createElement("li");
         li.classList.add("selectOptionsListItem");
         ul.append(li);
         const addButton = getAddButton();
         addButton.addEventListener("click", () => {
-            createRow(ul);
+            createRow(ul, undefined, true);
         });
         const deleteButton = getDeleteButton();
         deleteButton.addEventListener("click", () => {
@@ -39,15 +39,31 @@ define(["require", "exports", "WoltLabSuite/Core/Dom/Util", "WoltLabSuite/Core/L
             }
         });
         const keyInput = getKeyInput();
+        keyInput.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                createRow(ul, undefined, true);
+            }
+        });
         keyInput.value = option ? option.key : "";
         const equalsIcon = document.createElement("fa-icon");
         equalsIcon.setIcon("equals");
         const valueInput = getValueInput();
+        valueInput.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                createRow(ul);
+                createRow(ul, undefined, true);
+            }
+        });
         li.append(addButton, deleteButton, keyInput, equalsIcon, valueInput);
         const hasI18nValues = option && !Object.hasOwn(option.value, 0);
         (0, Input_1.init)((0, Util_1.identify)(valueInput), hasI18nValues ? option.value : {}, _languages, false);
         if (!hasI18nValues) {
             valueInput.value = option?.value[0] ?? "";
+        }
+        if (autoFocus) {
+            keyInput.focus();
         }
     }
     function getAddButton() {
