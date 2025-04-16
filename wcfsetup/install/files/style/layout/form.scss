@@ -358,3 +358,14 @@ html[data-color-scheme="dark"] .passwordStrengthScore {
     --score-3: #689f38;
     --score-4: #1b5e20;
 }
+
+.selectOptionsList {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.selectOptionsListItem {
+    display: flex;
+    align-items: center;
+}
