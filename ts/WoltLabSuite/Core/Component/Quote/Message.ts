@@ -11,7 +11,6 @@
 import DomUtil from "WoltLabSuite/Core/Dom/Util";
 import { getPhrase } from "WoltLabSuite/Core/Language";
 import { wheneverFirstSeen } from "WoltLabSuite/Core/Helper/Selector";
-import { set as setAlignment } from "WoltLabSuite/Core/Ui/Alignment";
 import { CKEditor } from "WoltLabSuite/Core/Component/Ckeditor";
 import {
   saveQuote,
@@ -37,6 +36,13 @@ let selectedMessage:
       message: string;
       container: Container;
     };
+
+interface ElementBoundaries {
+  bottom: number;
+  left: number;
+  right: number;
+  top: number;
+}
 
 const containers = new Map<string, Container>();
 const quoteMessageButtons = new Map<string, HTMLElement>();
@@ -456,7 +462,7 @@ function onMouseUp(event?: MouseEvent): void {
     copyQuote.classList.remove("touchForceInaccessible");
   }
 
-  setAlignment(copyQuote, endContainer);
+  alignQuoteButtons(content);
 
   copyQuote.classList.remove("active");
   if (wasInaccessible) {
@@ -491,4 +497,43 @@ function removeSelection(): void {
   if (selection.rangeCount) {
     selection.removeAllRanges();
   }
+}
+
+function alignQuoteButtons(content: HTMLElement): void {
+  const coordinates = getElementBoundaries(window.getSelection())!;
+  const dimensions = { height: copyQuote.offsetHeight, width: copyQuote.offsetWidth };
+  let left = (coordinates.right - coordinates.left) / 2 - dimensions.width / 2 + coordinates.left;
+
+  // Prevent the overlay from overflowing the left or right boundary of the container.
+  const containerBoundaries = content.getBoundingClientRect();
+  if (left < containerBoundaries.left) {
+    left = containerBoundaries.left;
+  } else if (left + dimensions.width > containerBoundaries.right) {
+    left = containerBoundaries.right - dimensions.width;
+  }
+
+  copyQuote.style.setProperty("top", `${coordinates.bottom + 7}px`);
+  copyQuote.style.setProperty("left", `${left}px`);
+}
+
+function getElementBoundaries(selection: Selection | null): ElementBoundaries | null {
+  if (!selection) {
+    return null;
+  }
+
+  if (selection.rangeCount <= 0) {
+    return null;
+  }
+
+  // The coordinates returned by getBoundingClientRect() are relative to the
+  // viewport, not the document.
+  const rect = selection.getRangeAt(0).getBoundingClientRect();
+
+  const scrollTop = window.scrollY;
+  return {
+    bottom: rect.bottom + scrollTop,
+    left: rect.left,
+    right: rect.right,
+    top: rect.top + scrollTop,
+  };
 }
