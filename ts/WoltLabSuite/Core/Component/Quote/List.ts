@@ -11,7 +11,7 @@
 import { listenToCkeditor, dispatchToCkeditor } from "WoltLabSuite/Core/Component/Ckeditor/Event";
 import { getTabMenu } from "WoltLabSuite/Core/Component/Message/MessageTabMenu";
 import { getPhrase } from "WoltLabSuite/Core/Language";
-import { setActiveEditor, removeQuoteStatus } from "WoltLabSuite/Core/Component/Quote/Message";
+import { setActiveEditor, removeQuoteStatus, removeActiveEditor } from "WoltLabSuite/Core/Component/Quote/Message";
 import {
   getQuotes,
   getMessage,
@@ -156,5 +156,7 @@ export function setup(editorId: string, containerId?: string): void {
         setActiveEditor(ckeditor, ckeditor.features.quoteBlock);
       }
     });
+  }).destroy(() => {
+    removeActiveEditor(editor);
   });
 }

@@ -12,6 +12,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.registerContainer = registerContainer;
     exports.setActiveEditor = setActiveEditor;
+    exports.removeActiveEditor = removeActiveEditor;
     exports.removeQuoteStatus = removeQuoteStatus;
     Util_1 = tslib_1.__importDefault(Util_1);
     let selectedMessage;
@@ -65,6 +66,14 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
     function setActiveEditor(editor, supportDirectInsert = false) {
         copyQuote.querySelector(".jsQuoteManagerQuoteAndInsert").hidden = !supportDirectInsert;
         activeEditor = editor;
+    }
+    function removeActiveEditor(editorSource) {
+        if (!activeEditor) {
+            return;
+        }
+        if (activeEditor.sourceElement === editorSource) {
+            setActiveEditor();
+        }
     }
     function removeQuoteStatus(key) {
         quoteMessageButtons.get(key)?.classList.remove("active");

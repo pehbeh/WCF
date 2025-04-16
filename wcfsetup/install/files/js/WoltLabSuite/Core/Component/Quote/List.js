@@ -122,6 +122,8 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Component/Ckeditor/Eve
                     (0, Message_1.setActiveEditor)(ckeditor, ckeditor.features.quoteBlock);
                 }
             });
+        }).destroy(() => {
+            (0, Message_1.removeActiveEditor)(editor);
         });
     }
 });
