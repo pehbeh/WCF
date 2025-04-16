@@ -1,13 +1,21 @@
-define(["require", "exports", "WoltLabSuite/Core/Dom/Util", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Language/Input"], function (require, exports, Util_1, Language_1, Input_1) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Language/Input", "sortablejs"], function (require, exports, tslib_1, Util_1, Language_1, Input_1, sortablejs_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
+    sortablejs_1 = tslib_1.__importDefault(sortablejs_1);
     let _languages;
     function setup(formField, languages) {
         _languages = languages;
-        createUi(formField);
+        const ul = createUi(formField);
         formField.form?.addEventListener("submit", () => {
             setHiddenValue(formField);
+        });
+        new sortablejs_1.default(ul, {
+            direction: "vertical",
+            animation: 150,
+            fallbackOnBody: true,
+            draggable: "li",
+            handle: ".selectOptionsListItem__handle",
         });
     }
     function createUi(formField) {
@@ -19,9 +27,11 @@ define(["require", "exports", "WoltLabSuite/Core/Dom/Util", "WoltLabSuite/Core/L
             data.forEach((option) => {
                 createRow(ul, option);
             });
-            return;
         }
-        createRow(ul);
+        else {
+            createRow(ul);
+        }
+        return ul;
     }
     function createRow(ul, option, autoFocus = false) {
         const li = document.createElement("li");
@@ -56,7 +66,7 @@ define(["require", "exports", "WoltLabSuite/Core/Dom/Util", "WoltLabSuite/Core/L
                 createRow(ul, undefined, true);
             }
         });
-        li.append(addButton, deleteButton, keyInput, equalsIcon, valueInput);
+        li.append(getSortableHandle(), addButton, deleteButton, keyInput, equalsIcon, valueInput);
         const hasI18nValues = option && !Object.hasOwn(option.value, 0);
         (0, Input_1.init)((0, Util_1.identify)(valueInput), hasI18nValues ? option.value : {}, _languages, false);
         if (!hasI18nValues) {
@@ -101,6 +111,14 @@ define(["require", "exports", "WoltLabSuite/Core/Dom/Util", "WoltLabSuite/Core/L
         valueInput.type = "text";
         valueInput.required = true;
         return valueInput;
+    }
+    function getSortableHandle() {
+        const icon = document.createElement("fa-icon");
+        icon.setIcon("up-down");
+        const handle = document.createElement("span");
+        handle.append(icon);
+        handle.classList.add("selectOptionsListItem__handle");
+        return handle;
     }
     function setHiddenValue(formField) {
         const data = [];

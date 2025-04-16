@@ -1,6 +1,7 @@
 import { identify } from "WoltLabSuite/Core/Dom/Util";
 import { getPhrase } from "WoltLabSuite/Core/Language";
 import { getValues, init as initI18n } from "WoltLabSuite/Core/Language/Input";
+import Sortable from "sortablejs";
 
 type Data = {
   key: string;
@@ -14,14 +15,22 @@ let _languages: Languages;
 export function setup(formField: HTMLInputElement, languages: Languages): void {
   _languages = languages;
 
-  createUi(formField);
+  const ul = createUi(formField);
 
   formField.form?.addEventListener("submit", () => {
     setHiddenValue(formField);
   });
+
+  new Sortable(ul, {
+    direction: "vertical",
+    animation: 150,
+    fallbackOnBody: true,
+    draggable: "li",
+    handle: ".selectOptionsListItem__handle",
+  });
 }
 
-function createUi(formField: HTMLInputElement): void {
+function createUi(formField: HTMLInputElement): HTMLUListElement {
   const ul = document.createElement("ul");
   ul.classList.add("selectOptionsList");
   formField.parentElement?.append(ul);
@@ -31,10 +40,11 @@ function createUi(formField: HTMLInputElement): void {
     data.forEach((option) => {
       createRow(ul, option);
     });
-    return;
+  } else {
+    createRow(ul);
   }
 
-  createRow(ul);
+  return ul;
 }
 
 function createRow(ul: HTMLUListElement, option?: Data, autoFocus: boolean = false): void {
@@ -77,7 +87,7 @@ function createRow(ul: HTMLUListElement, option?: Data, autoFocus: boolean = fal
     }
   });
 
-  li.append(addButton, deleteButton, keyInput, equalsIcon, valueInput);
+  li.append(getSortableHandle(), addButton, deleteButton, keyInput, equalsIcon, valueInput);
 
   const hasI18nValues = option && !Object.hasOwn(option.value, 0);
 
@@ -136,6 +146,16 @@ function getValueInput(): HTMLInputElement {
   valueInput.required = true;
 
   return valueInput;
+}
+
+function getSortableHandle(): HTMLElement {
+  const icon = document.createElement("fa-icon");
+  icon.setIcon("up-down");
+  const handle = document.createElement("span");
+  handle.append(icon);
+  handle.classList.add("selectOptionsListItem__handle");
+
+  return handle;
 }
 
 function setHiddenValue(formField: HTMLInputElement): void {
