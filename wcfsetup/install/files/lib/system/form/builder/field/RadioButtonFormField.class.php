@@ -62,7 +62,7 @@ class RadioButtonFormField extends AbstractFormField implements
      */
     public function validate()
     {
-        if (!isset($this->getOptions()[$this->getValue()])) {
+        if ($this->isRequired() && !isset($this->getOptions()[$this->getValue()])) {
             $this->addValidationError(new FormFieldValidationError(
                 'invalidValue',
                 'wcf.global.form.error.noValidSelection'
