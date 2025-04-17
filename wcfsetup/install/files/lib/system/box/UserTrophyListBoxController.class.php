@@ -150,9 +150,13 @@ class UserTrophyListBoxController extends AbstractDatabaseObjectListBoxControlle
 
         UserProfileRuntimeCache::getInstance()->cacheObjectIDs(\array_unique($userIDs));
 
-        return WCF::getTPL()->render('wcf', 'boxUserTrophyList', [
+        $templateName = 'boxUserTrophyList';
+        if ($this->getBox()->position == 'sidebarLeft' || $this->getBox()->position == 'sidebarRight') {
+            $templateName = 'boxUserTrophyListSidebar';
+        }
+
+        return WCF::getTPL()->render('wcf', $templateName, [
             'boxUserTrophyList' => $this->objectList,
-            'boxPosition' => $this->box->position,
         ]);
     }
 }
