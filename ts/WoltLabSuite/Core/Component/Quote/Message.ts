@@ -110,6 +110,16 @@ export function setActiveEditor(editor?: CKEditor, supportDirectInsert: boolean 
   activeEditor = editor;
 }
 
+export function removeActiveEditor(editorSource: HTMLElement): void {
+  if (!activeEditor) {
+    return;
+  }
+
+  if (activeEditor.sourceElement === editorSource) {
+    setActiveEditor();
+  }
+}
+
 export function removeQuoteStatus(key: string): void {
   quoteMessageButtons.get(key)?.classList.remove("active");
 }
