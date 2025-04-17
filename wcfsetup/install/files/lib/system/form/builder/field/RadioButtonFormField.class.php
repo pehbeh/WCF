@@ -62,11 +62,15 @@ class RadioButtonFormField extends AbstractFormField implements
      */
     public function validate()
     {
-        if ($this->isRequired() && !isset($this->getOptions()[$this->getValue()])) {
-            $this->addValidationError(new FormFieldValidationError(
-                'invalidValue',
-                'wcf.global.form.error.noValidSelection'
-            ));
+        if ($this->isRequired() || $this->getValue() !== '') {
+            if (!isset($this->getOptions()[$this->getValue()])) {
+                $this->addValidationError(
+                    new FormFieldValidationError(
+                        'invalidValue',
+                        'wcf.global.form.error.noValidSelection'
+                    )
+                );
+            }
         }
 
         parent::validate();

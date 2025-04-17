@@ -280,7 +280,8 @@ final class TotpMultifactorMethod implements IMultifactorMethod
                     ->description('wcf.user.security.multifactor.totp.deviceName.description.auth')
                     ->objectProperty('deviceID')
                     ->options($deviceOptions)
-                    ->value($mostRecentlyUsed['deviceID']),
+                    ->value($mostRecentlyUsed['deviceID'])
+                    ->required(),
             ]);
         }
 

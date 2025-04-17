@@ -359,7 +359,8 @@ class LanguagePackageInstallationPlugin extends AbstractXMLPackageInstallationPl
                     'selection' => 'wcf.acp.language.item.languageCategoryID.mode.selection',
                     'new' => 'wcf.acp.language.item.languageCategoryID.mode.new',
                 ])
-                ->value('automatic'),
+                ->value('automatic')
+                ->required(),
 
             SingleSelectionFormField::create('languageCategoryID')
                 ->label('wcf.acp.language.item.languageCategoryID')
