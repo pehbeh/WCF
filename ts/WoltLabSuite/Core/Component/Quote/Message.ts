@@ -500,7 +500,7 @@ function removeSelection(): void {
 }
 
 function alignQuoteButtons(content: HTMLElement): void {
-  const coordinates = getElementBoundaries(window.getSelection())!;
+  const coordinates = getElementBoundaries(window.getSelection());
   const dimensions = { height: copyQuote.offsetHeight, width: copyQuote.offsetWidth };
   let left = (coordinates.right - coordinates.left) / 2 - dimensions.width / 2 + coordinates.left;
 
@@ -516,13 +516,13 @@ function alignQuoteButtons(content: HTMLElement): void {
   copyQuote.style.setProperty("left", `${left}px`);
 }
 
-function getElementBoundaries(selection: Selection | null): ElementBoundaries | null {
+function getElementBoundaries(selection: Selection | null): ElementBoundaries {
   if (!selection) {
-    return null;
+    throw new Error("Nothing is selected");
   }
 
   if (selection.rangeCount <= 0) {
-    return null;
+    throw new Error("Selection has no range");
   }
 
   // The coordinates returned by getBoundingClientRect() are relative to the

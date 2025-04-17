@@ -372,10 +372,10 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
     }
     function getElementBoundaries(selection) {
         if (!selection) {
-            return null;
+            throw new Error("Nothing is selected");
         }
         if (selection.rangeCount <= 0) {
-            return null;
+            throw new Error("Selection has no range");
         }
         // The coordinates returned by getBoundingClientRect() are relative to the
         // viewport, not the document.
