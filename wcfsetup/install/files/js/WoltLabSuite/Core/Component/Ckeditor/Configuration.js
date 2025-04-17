@@ -197,7 +197,7 @@ define(["require", "exports", "../../Language", "WoltLabSuite/Core/Component/Emo
         }
         #setupMention() {
             if (!this.#features.mention) {
-                this.#removePlugins.push("Mention", "WoltlabMention");
+                this.#removePlugins.push("WoltlabMention");
             }
         }
         #getToolbar() {
