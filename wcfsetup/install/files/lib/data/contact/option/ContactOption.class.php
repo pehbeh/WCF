@@ -4,7 +4,11 @@ namespace wcf\data\contact\option;
 
 use wcf\data\DatabaseObject;
 use wcf\data\ITitledObject;
+use wcf\data\language\Language;
+use wcf\system\form\option\FormOptionHandler;
+use wcf\system\form\option\IFormOption;
 use wcf\system\WCF;
+use wcf\util\JSON;
 
 /**
  * Represents a contact option.
@@ -51,5 +55,27 @@ class ContactOption extends DatabaseObject implements ITitledObject
     public function canDelete(): bool
     {
         return !$this->originIsSystem;
+    }
+
+    /**
+     * @since 6.2
+     */
+    public function getFormOption(): IFormOption
+    {
+        $formOption = FormOptionHandler::getInstance()->getOption($this->optionType);
+        if ($formOption === null) {
+            throw new \BadMethodCallException("unknown form option type '{$this->optionType}'");
+        }
+
+        return $formOption;
+    }
+
+    /**
+     * @return array<string, mixed>
+     * @since 6.2
+     */
+    public function getConfigurationData(): array
+    {
+        return $this->configurationData ? JSON::decode($this->configurationData) : [];
     }
 }

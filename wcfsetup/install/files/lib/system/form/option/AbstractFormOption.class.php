@@ -2,6 +2,10 @@
 
 namespace wcf\system\form\option;
 
+use wcf\system\form\option\formatter\DefaultFormatter;
+use wcf\system\form\option\formatter\DefaultPlainTextFormatter;
+use wcf\system\form\option\formatter\IFormOptionFormatter;
+
 /**
  * Provides abstract implementations for form option types.
  *
@@ -16,5 +20,17 @@ abstract class AbstractFormOption implements IFormOption
     public function getConfigurationFormFields(): array
     {
         return [];
+    }
+
+    #[\Override]
+    public function getFormatter(): IFormOptionFormatter
+    {
+        return new DefaultFormatter();
+    }
+
+    #[\Override]
+    public function getPlainTextFormatter(): IFormOptionFormatter
+    {
+        return new DefaultPlainTextFormatter();
     }
 }

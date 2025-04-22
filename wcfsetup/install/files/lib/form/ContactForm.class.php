@@ -6,6 +6,7 @@ use wcf\data\contact\option\ContactOption;
 use wcf\data\contact\option\ContactOptionList;
 use wcf\data\contact\recipient\ContactRecipient;
 use wcf\data\contact\recipient\ContactRecipientList;
+use wcf\system\contact\form\SubmitContactForm;
 use wcf\system\form\builder\container\FormContainer;
 use wcf\system\form\builder\field\CaptchaFormField;
 use wcf\system\form\builder\field\EmailFormField;
@@ -13,9 +14,18 @@ use wcf\system\form\builder\field\IFormField;
 use wcf\system\form\builder\field\SelectFormField;
 use wcf\system\form\builder\field\TextFormField;
 use wcf\system\form\option\FormOptionHandler;
+use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
+use wcf\util\HeaderUtil;
 use wcf\util\JSON;
 
+/**
+ * Customizable contact form with selectable recipients.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ */
 class ContactForm extends AbstractFormBuilderForm
 {
     /**
@@ -49,6 +59,45 @@ class ContactForm extends AbstractFormBuilderForm
                 ]);
             $this->form->appendChild($captchaContainer);
         }
+    }
+
+    #[\Override]
+    public function save()
+    {
+        AbstractForm::save();
+
+        $formData = $this->form->getData()['data'];
+
+        $availableRecipients = $this->getAvailableRecipients();
+        if (\count($availableRecipients) > 1) {
+            $recipient = $availableRecipients[$formData['recipientID']];
+        } else {
+            $recipient = \reset($availableRecipients);
+        }
+
+        $optionValues = [];
+        foreach ($formData as $key => $value) {
+            if (\str_starts_with($key, 'option')) {
+                $optionValues[\substr($key, 6)] = $value;
+            }
+        }
+
+        $command = new SubmitContactForm(
+            $recipient,
+            $formData['name'],
+            $formData['email'],
+            $optionValues
+        );
+        $command();
+
+        $this->saved();
+
+        HeaderUtil::delayedRedirect(
+            LinkHandler::getInstance()->getLink(),
+            WCF::getLanguage()->getDynamicVariable('wcf.contact.success')
+        );
+
+        exit;
     }
 
     protected function getRecipientFormField(): SelectFormField
@@ -94,14 +143,9 @@ class ContactForm extends AbstractFormBuilderForm
         $formFields = [];
 
         foreach ($this->getAvailableOptions() as $option) {
-            $formOption = FormOptionHandler::getInstance()->getOption($option->optionType);
-            if ($formOption === null) {
-                throw new \BadMethodCallException("unknown form option type '{$option->optionType}'");
-            }
-
-            $formField = $formOption->getFormField(
+            $formField = $option->getFormOption()->getFormField(
                 'option' . $option->optionID,
-                $option->configurationData ? JSON::decode($option->configurationData) : []
+                $option->getConfigurationData()
             );
             $formField->label($option->optionTitle);
             $formField->description($option->optionDescription);
