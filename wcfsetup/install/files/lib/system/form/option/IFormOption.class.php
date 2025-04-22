@@ -1,0 +1,22 @@
+<?php
+
+namespace wcf\system\form\option;
+
+use wcf\system\form\builder\field\AbstractFormField;
+
+/**
+ * Represents a form option type.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
+interface IFormOption
+{
+    public function getId(): string;
+
+    public function getFormField(string $id, array $configurationData = []): AbstractFormField;
+
+    public function getConfigurationFormFields(): array;
+}
