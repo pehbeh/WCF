@@ -3,6 +3,7 @@
 namespace wcf\system\form\option;
 
 use wcf\system\form\builder\field\AbstractFormField;
+use wcf\system\form\option\formatter\IFormOptionFormatter;
 
 /**
  * Represents a form option type.
@@ -19,4 +20,8 @@ interface IFormOption
     public function getFormField(string $id, array $configurationData = []): AbstractFormField;
 
     public function getConfigurationFormFields(): array;
+
+    public function getFormatter(): IFormOptionFormatter;
+
+    public function getPlainTextFormatter(): IFormOptionFormatter;
 }

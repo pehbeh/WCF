@@ -4,6 +4,7 @@ namespace wcf\system\form\option;
 
 use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\MultilineTextFormField;
+use wcf\system\form\option\formatter\MultilineTextFormatter;
 
 /**
  * Implementation of a form field for multi-line text values.
@@ -36,5 +37,11 @@ class TextareaFormOption extends AbstractFormOption
     public function getConfigurationFormFields(): array
     {
         return ['maxLength'];
+    }
+
+    #[\Override]
+    public function getFormatter(): MultilineTextFormatter
+    {
+        return new MultilineTextFormatter();
     }
 }
