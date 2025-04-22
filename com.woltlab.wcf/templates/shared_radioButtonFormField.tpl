@@ -5,7 +5,7 @@
 			*}name="{$field->getPrefixedId()}" {*
 			*}value="" {*
 			*}{if !$field->getFieldClasses()|empty} class="{implode from=$field->getFieldClasses() item='class' glue=' '}{$class}{/implode}"{/if}{*
-			*}{if $field->getValue() !== null && $field->getValue() == ''} checked{/if}{*
+			*}{if $field->getValue() === null || $field->getValue() === ''} checked{/if}{*
 			*}{if $field->isImmutable()} disabled{/if}{*
 			*}{foreach from=$field->getFieldAttributes() key='attributeName' item='attributeValue'} {$attributeName}="{$attributeValue}"{/foreach}{*
 		*}> {lang}wcf.global.noSelection{/lang}
