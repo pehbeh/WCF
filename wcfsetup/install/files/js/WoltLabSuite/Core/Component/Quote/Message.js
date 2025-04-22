@@ -7,7 +7,7 @@
  * @since 6.2
  * @woltlabExcludeBundle tiny
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Ui/Alignment", "WoltLabSuite/Core/Component/Quote/Storage", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabSuite/Core/Component/Ckeditor/Event"], function (require, exports, tslib_1, Util_1, Language_1, Selector_1, Alignment_1, Storage_1, PromiseMutex_1, Event_1) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Helper/Selector", "WoltLabSuite/Core/Component/Quote/Storage", "WoltLabSuite/Core/Helper/PromiseMutex", "WoltLabSuite/Core/Component/Ckeditor/Event"], function (require, exports, tslib_1, Util_1, Language_1, Selector_1, Storage_1, PromiseMutex_1, Event_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.registerContainer = registerContainer;
@@ -332,7 +332,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
         if (wasInaccessible) {
             copyQuote.classList.remove("touchForceInaccessible");
         }
-        (0, Alignment_1.set)(copyQuote, endContainer);
+        alignQuoteButtons(content);
         copyQuote.classList.remove("active");
         if (wasInaccessible) {
             copyQuote.classList.add("touchForceInaccessible");
@@ -363,5 +363,38 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
         if (selection.rangeCount) {
             selection.removeAllRanges();
         }
+    }
+    function alignQuoteButtons(content) {
+        const coordinates = getElementBoundaries(window.getSelection());
+        const dimensions = { height: copyQuote.offsetHeight, width: copyQuote.offsetWidth };
+        let left = (coordinates.right - coordinates.left) / 2 - dimensions.width / 2 + coordinates.left;
+        // Prevent the overlay from overflowing the left or right boundary of the container.
+        const containerBoundaries = content.getBoundingClientRect();
+        if (left < containerBoundaries.left) {
+            left = containerBoundaries.left;
+        }
+        else if (left + dimensions.width > containerBoundaries.right) {
+            left = containerBoundaries.right - dimensions.width;
+        }
+        copyQuote.style.setProperty("top", `${coordinates.bottom + 7}px`);
+        copyQuote.style.setProperty("left", `${left}px`);
+    }
+    function getElementBoundaries(selection) {
+        if (!selection) {
+            throw new Error("Nothing is selected");
+        }
+        if (selection.rangeCount <= 0) {
+            throw new Error("Selection has no range");
+        }
+        // The coordinates returned by getBoundingClientRect() are relative to the
+        // viewport, not the document.
+        const rect = selection.getRangeAt(0).getBoundingClientRect();
+        const scrollTop = window.scrollY;
+        return {
+            bottom: rect.bottom + scrollTop,
+            left: rect.left,
+            right: rect.right,
+            top: rect.top + scrollTop,
+        };
     }
 });
