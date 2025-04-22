@@ -560,7 +560,8 @@ class BoxPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin 
                 ->label('wcf.acp.pip.box.boxType')
                 ->description('wcf.acp.pip.box.boxType.description')
                 ->options(\array_combine(Box::$availableBoxTypes, Box::$availableBoxTypes))
-                ->value('text'),
+                ->value('text')
+                ->required(),
 
             SingleSelectionFormField::create('objectType')
                 ->label('wcf.acp.pip.box.objectType')

@@ -255,6 +255,7 @@ class UserIgnoreAction extends AbstractDatabaseObjectAction
                             ->get('wcf.user.ignore.type.hideMessages'),
                     ])
                     ->value($ignore->type ?: 0)
+                    ->required()
                     ->addValidator(new FormFieldValidator('type', function (RadioButtonFormField $formField) {
                         $userProfile = UserProfileRuntimeCache::getInstance()->getObject($this->parameters['userID']);
                         if ($userProfile->getPermission('user.profile.cannotBeIgnored')) {

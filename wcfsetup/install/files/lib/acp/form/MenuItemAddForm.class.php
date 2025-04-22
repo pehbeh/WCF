@@ -146,7 +146,8 @@ class MenuItemAddForm extends AbstractFormBuilderForm
                             0 => 'wcf.acp.menu.item.link.external',
                             1 => 'wcf.acp.menu.item.link.internal',
                         ])
-                        ->value(1),
+                        ->value(1)
+                        ->required(),
                     SingleSelectionFormField::create('pageID')
                         ->label('wcf.acp.page.page')
                         ->options($pageNodeList, true)

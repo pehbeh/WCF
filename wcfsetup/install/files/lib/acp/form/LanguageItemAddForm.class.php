@@ -68,6 +68,7 @@ class LanguageItemAddForm extends AbstractFormBuilderForm
             ->label('wcf.global.form.data')
             ->appendChildren([
                 RadioButtonFormField::create('languageCategoryIDMode')
+                    ->required()
                     ->label('wcf.acp.language.item.languageCategoryID.mode')
                     ->options([
                         'automatic' => 'wcf.acp.language.item.languageCategoryID.mode.automatic',

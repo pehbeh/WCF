@@ -101,6 +101,7 @@ class DevtoolsProjectAddForm extends AbstractFormBuilderForm
 
         $mode = RadioButtonFormField::create('mode')
             ->label('wcf.acp.devtools.project.add.mode')
+            ->required()
             ->options(function () {
                 $options = [
                     'import' => 'wcf.acp.devtools.project.add.mode.import',
