@@ -2,7 +2,7 @@
 
 namespace wcf\data\contact\option;
 
-use wcf\data\custom\option\CustomOptionEditor;
+use wcf\data\DatabaseObjectEditor;
 use wcf\data\IEditableCachedObject;
 use wcf\system\cache\builder\ContactOptionCacheBuilder;
 
@@ -14,11 +14,11 @@ use wcf\system\cache\builder\ContactOptionCacheBuilder;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @mixin       ContactOption
- * @extends CustomOptionEditor<ContactOption>
+ * @mixin   ContactOption
+ * @extends DatabaseObjectEditor<ContactOption>
  * @implements IEditableCachedObject<ContactOption>
  */
-class ContactOptionEditor extends CustomOptionEditor implements IEditableCachedObject
+class ContactOptionEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {
     /**
      * @inheritDoc

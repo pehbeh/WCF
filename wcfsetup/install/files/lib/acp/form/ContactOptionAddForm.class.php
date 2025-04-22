@@ -4,25 +4,34 @@ namespace wcf\acp\form;
 
 use wcf\data\contact\option\ContactOption;
 use wcf\data\contact\option\ContactOptionAction;
-use wcf\data\contact\option\ContactOptionEditor;
-use wcf\system\request\LinkHandler;
-use wcf\system\WCF;
+use wcf\data\contact\option\ContactOptionList;
+use wcf\data\IStorableObject;
+use wcf\form\AbstractFormBuilderForm;
+use wcf\system\form\builder\data\processor\CustomFormDataProcessor;
+use wcf\system\form\builder\field\BooleanFormField;
+use wcf\system\form\builder\field\dependency\ValueFormFieldDependency;
+use wcf\system\form\builder\field\IFormField;
+use wcf\system\form\builder\field\MultilineTextFormField;
+use wcf\system\form\builder\field\SelectFormField;
+use wcf\system\form\builder\field\ShowOrderFormField;
+use wcf\system\form\builder\field\TextFormField;
+use wcf\system\form\builder\IFormDocument;
+use wcf\system\form\option\FormOptionHandler;
+use wcf\system\form\option\SharedConfigurationFormFields;
+use wcf\util\JSON;
 
 /**
  * Shows the contact option add form.
  *
- * @author  Alexander Ebert
- * @copyright   2001-2019 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @author      Alexander Ebert
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       3.1
+ *
+ * @extends AbstractFormBuilderForm<ContactOption>
  */
-class ContactOptionAddForm extends AbstractCustomOptionForm
+class ContactOptionAddForm extends AbstractFormBuilderForm
 {
-    /**
-     * @inheritDoc
-     */
-    public $action = 'add';
-
     /**
      * @inheritDoc
      */
@@ -39,50 +48,145 @@ class ContactOptionAddForm extends AbstractCustomOptionForm
     public $neededPermissions = ['admin.contact.canManageContactForm'];
 
     /**
-     * action class name
-     * @var string
-     */
-    public $actionClass = ContactOptionAction::class;
-
-    /**
-     * base class name
-     * @var string
-     */
-    public $baseClass = ContactOption::class;
-
-    /**
-     * editor class name
-     * @var string
-     */
-    public $editorClass = ContactOptionEditor::class;
-
-    /**
      * @inheritDoc
      */
-    public function readParameters()
-    {
-        parent::readParameters();
+    public $objectActionClass = ContactOptionAction::class;
 
-        $this->getI18nValue('optionTitle')->setLanguageItem('wcf.contact.option', 'wcf.contact', 'com.woltlab.wcf');
-        $this->getI18nValue('optionDescription')->setLanguageItem(
-            'wcf.contact.optionDescription',
-            'wcf.contact',
-            'com.woltlab.wcf'
+    #[\Override]
+    protected function createForm()
+    {
+        parent::createForm();
+
+        $this->form->appendChildren([
+            TextFormField::create('optionTitle')
+                ->label('wcf.global.name')
+                ->maximumLength(255)
+                ->i18n()
+                ->languageItemPattern('wcf.contact.option\d+')
+                ->required(),
+            MultilineTextFormField::create('optionDescription')
+                ->label('wcf.global.description')
+                ->maximumLength(5000)
+                ->rows(5)
+                ->i18n()
+                ->languageItemPattern('wcf.contact.optionDescription\d+'),
+            ShowOrderFormField::create('showOrder')
+                ->options($this->getContactOptions()),
+            SelectFormField::create('optionType')
+                ->label('wcf.acp.customOption.optionType')
+                ->immutable($this->formAction != 'create')
+                ->options($this->getAvailableOptionTypes())
+                ->required(),
+            ...$this->getSharedConfigurationFormFields(),
+            BooleanFormField::create('required')
+                ->label('wcf.acp.customOption.required'),
+            BooleanFormField::create('isDisabled')
+                ->label('wcf.acp.customOption.isDisabled'),
+        ]);
+    }
+
+    #[\Override]
+    public function finalizeForm()
+    {
+        parent::finalizeForm();
+
+        $this->form->getDataHandler()->addProcessor(
+            new CustomFormDataProcessor(
+                'saveOptionProcessor',
+                function (IFormDocument $document, array $parameters) {
+                    $configurationData = [];
+
+                    foreach ($this->getConfigurationFormFieldIds() as $parameter) {
+                        if (isset($parameters['data'][$parameter])) {
+                            $configurationData[$parameter] = $parameters['data'][$parameter];
+                            unset($parameters['data'][$parameter]);
+                        }
+                    }
+
+                    if ($configurationData !== []) {
+                        $parameters['data']['configurationData'] = JSON::encode($configurationData);
+                    }
+
+                    return $parameters;
+                },
+                function (IFormDocument $document, array $data, IStorableObject $object) {
+                    \assert($object instanceof ContactOption);
+
+                    if ($object->configurationData) {
+                        $data = \array_merge($data, JSON::decode($object->configurationData));
+                    }
+
+                    return $data;
+                }
+            )
         );
     }
 
     /**
-     * @inheritDoc
+     * @return array<int, string>
      */
-    public function save()
+    private function getContactOptions(): array
     {
-        parent::save();
+        $optionList = new ContactOptionList();
+        $optionList->sqlOrderBy = 'showOrder ASC';
+        $optionList->readObjects();
 
-        WCF::getTPL()->assign([
-            'objectEditLink' => LinkHandler::getInstance()->getControllerLink(
-                ContactOptionEditForm::class,
-                ['id' => $this->objectAction->getReturnValues()['returnValues']->getObjectID()]
-            ),
-        ]);
+        return \array_map(static fn($option) => $option->getTitle(), $optionList->getObjects());
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function getAvailableOptionTypes(): array
+    {
+        return \array_map(fn($option) => $option->getId(), FormOptionHandler::getInstance()->getOptions());
+    }
+
+    /**
+     * @return IFormField[]
+     */
+    private function getSharedConfigurationFormFields(): array
+    {
+        $matrix = [];
+
+        foreach (FormOptionHandler::getInstance()->getOptions() as $option) {
+            foreach ($option->getConfigurationFormFields() as $formFieldId) {
+                if (!isset($matrix[$formFieldId])) {
+                    $matrix[$formFieldId] = [];
+                }
+
+                $matrix[$formFieldId][] = $option->getId();
+            }
+        }
+
+        $formFields = [];
+
+        foreach ($matrix as $formFieldId => $dependencies) {
+            $formField = SharedConfigurationFormFields::getInstance()->getFormField($formFieldId);
+            $formField->addDependency(
+                ValueFormFieldDependency::create($formFieldId . 'OptionTypeDependency')
+                    ->fieldId('optionType')
+                    ->values($dependencies)
+            );
+            $formFields[] = $formField;
+        }
+
+        return $formFields;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getConfigurationFormFieldIds(): array
+    {
+        $ids = [];
+
+        foreach (FormOptionHandler::getInstance()->getOptions() as $option) {
+            foreach ($option->getConfigurationFormFields() as $formFieldId) {
+                $ids[] = $formFieldId;
+            }
+        }
+
+        return \array_unique($ids);
     }
 }

@@ -1,8 +1,10 @@
-{include file='header' pageTitle='wcf.acp.contact.option.'|concat:$action}
+{assign var='pageTitle' value='wcf.acp.contact.option.'|concat:$action}
+
+{include file='header'}
 
 <header class="contentHeader">
 	<div class="contentHeaderTitle">
-		<h1 class="contentTitle">{lang}wcf.acp.contact.option.{@$action}{/lang}</h1>
+		<h1 class="contentTitle">{lang}{$pageTitle}{/lang}</h1>
 	</div>
 	
 	<nav class="contentHeaderNavigation">
@@ -14,17 +16,6 @@
 	</nav>
 </header>
 
-{include file='shared_formNotice'}
-
-<form method="post" action="{if $action === 'add'}{link controller='ContactOptionAdd'}{/link}{else}{link controller='ContactOptionEdit' id=$optionID}{/link}{/if}">
-	{include file='customOptionAdd'}
-	
-	{event name='sections'}
-	
-	<div class="formSubmit">
-		<input type="submit" value="{lang}wcf.global.button.submit{/lang}" accesskey="s">
-		{csrfToken}
-	</div>
-</form>
+{unsafe:$form->getHtml()}
 
 {include file='footer'}

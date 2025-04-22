@@ -2,11 +2,11 @@
 
 namespace wcf\data\contact\option;
 
+use wcf\data\AbstractDatabaseObjectAction;
 use wcf\data\attachment\AttachmentEditor;
 use wcf\data\contact\attachment\ContactAttachment;
 use wcf\data\contact\attachment\ContactAttachmentEditor;
 use wcf\data\contact\recipient\ContactRecipient;
-use wcf\data\custom\option\CustomOptionAction;
 use wcf\data\ISortableAction;
 use wcf\system\attachment\AttachmentHandler;
 use wcf\system\email\Email;
@@ -25,8 +25,10 @@ use wcf\system\WCF;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
+ *
+ * @extends AbstractDatabaseObjectAction<ContactOption, ContactOptionEditor>
  */
-class ContactOptionAction extends CustomOptionAction implements ISortableAction
+class ContactOptionAction extends AbstractDatabaseObjectAction implements ISortableAction
 {
     /**
      * @inheritDoc

@@ -9,6 +9,8 @@
  */
 
 use wcf\system\database\table\column\IntDatabaseTableColumn;
+use wcf\system\database\table\column\MediumtextDatabaseTableColumn;
+use wcf\system\database\table\column\TextDatabaseTableColumn;
 use wcf\system\database\table\index\DatabaseTableForeignKey;
 use wcf\system\database\table\PartialDatabaseTable;
 
@@ -46,5 +48,15 @@ return [
                 ->referencedTable('wcf1_file')
                 ->referencedColumns(['fileID'])
                 ->onDelete('SET NULL'),
+        ]),
+    PartialDatabaseTable::create('wcf1_contact_option')
+        ->columns([
+            MediumtextDatabaseTableColumn::create('defaultValue')
+                ->drop(),
+            TextDatabaseTableColumn::create('validationPattern')
+                ->drop(),
+            MediumtextDatabaseTableColumn::create('selectOptions')
+                ->drop(),
+            MediumtextDatabaseTableColumn::create('configurationData'),
         ])
 ];

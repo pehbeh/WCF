@@ -2,26 +2,27 @@
 
 namespace wcf\data\contact\option;
 
-use wcf\data\custom\option\CustomOptionList;
+use wcf\data\DatabaseObjectList;
 
 /**
- * Represents a list of contact recipients.
+ * Represents a list of contact options.
  *
  * @author  Alexander Ebert
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
- * @method  ContactOption       current()
- * @method  ContactOption[]     getObjects()
- * @method  ContactOption|null  getSingleObject()
- * @method  ContactOption|null  search($objectID)
- * @property    ContactOption[] $objects
+ * @extends DatabaseObjectList<ContactOption>
  */
-class ContactOptionList extends CustomOptionList
+class ContactOptionList extends DatabaseObjectList
 {
     /**
      * @inheritDoc
      */
     public $className = ContactOption::class;
+
+    /**
+     * @inheritDoc
+     */
+    public $sqlOrderBy = 'showOrder';
 }
