@@ -31,6 +31,7 @@ use wcf\util\StringUtil;
  * @property-read int|null $width
  * @property-read int|null $height
  * @property-read string|null $fileHashWebp
+ * @property-read int $uploadTime
  */
 class File extends DatabaseObject implements ITitledLinkObject, IImageDataProvider
 {

@@ -96,6 +96,7 @@ class FileEditor extends DatabaseObjectEditor
             'mimeType' => $mimeType,
             'width' => $width,
             'height' => $height,
+            'uploadTime' => \TIME_NOW,
         ]]);
         $file = $fileAction->executeAction()['returnValues'];
         \assert($file instanceof File);
@@ -117,7 +118,8 @@ class FileEditor extends DatabaseObjectEditor
         string $pathname,
         string $originalFilename,
         string $objectTypeName,
-        bool $copy = false
+        bool $copy = false,
+        ?int $uploadTime = null
     ): ?File {
         if (!\is_readable($pathname)) {
             return null;
@@ -165,6 +167,7 @@ class FileEditor extends DatabaseObjectEditor
             'mimeType' => $mimeType,
             'width' => $width,
             'height' => $height,
+            'uploadTime' => $uploadTime,
         ]]);
         $file = $fileAction->executeAction()['returnValues'];
         \assert($file instanceof File);
@@ -217,7 +220,7 @@ class FileEditor extends DatabaseObjectEditor
             ExifUtil::ORIENTATION_180_ROTATE => 180,
             ExifUtil::ORIENTATION_90_ROTATE => 90,
             ExifUtil::ORIENTATION_270_ROTATE => 270,
-                // Any other rotation is unsupported.
+            // Any other rotation is unsupported.
             default => null,
         };
 

@@ -58,5 +58,10 @@ return [
             MediumtextDatabaseTableColumn::create('selectOptions')
                 ->drop(),
             MediumtextDatabaseTableColumn::create('configurationData'),
-        ])
+        ]),
+    PartialDatabaseTable::create('wcf1_file')
+        ->columns([
+            IntDatabaseTableColumn::create('uploadTime')
+                ->length(10),
+        ]),
 ];
