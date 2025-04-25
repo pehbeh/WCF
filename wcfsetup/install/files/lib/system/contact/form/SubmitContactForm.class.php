@@ -5,6 +5,8 @@ namespace wcf\system\contact\form;
 use wcf\data\contact\option\ContactOption;
 use wcf\data\contact\option\ContactOptionList;
 use wcf\data\contact\recipient\ContactRecipient;
+use wcf\data\file\File;
+use wcf\data\file\FileList;
 use wcf\system\email\Email;
 use wcf\system\email\Mailbox;
 use wcf\system\email\mime\MimePartFacade;
@@ -23,12 +25,14 @@ final class SubmitContactForm
 {
     /**
      * @param array<int, mixed> $optionValues
+     * @param int[] $fileIDs
      */
     public function __construct(
         private readonly ContactRecipient $recipient,
         private readonly string $senderName,
         private readonly string $senderEmail,
-        private readonly array $optionValues = []
+        private readonly array $optionValues = [],
+        private readonly array $fileIDs = []
     ) {}
 
     public function __invoke()
@@ -38,7 +42,7 @@ final class SubmitContactForm
             'recipient' => $this->recipient,
             'name' => $this->senderName,
             'emailAddress' => $this->senderEmail,
-            'attachments' => [],
+            'attachments' => $this->getFiles($this->fileIDs),
         ];
 
         $email = new Email();
@@ -96,5 +100,22 @@ final class SubmitContactForm
         $optionList->readObjects();
 
         return $optionList->getObjects();
+    }
+
+    /**
+     * @param int[] $fileIDs
+     * @return array<int, File>
+     */
+    private function getFiles(array $fileIDs): array
+    {
+        if ($fileIDs === []) {
+            return [];
+        }
+
+        $list = new FileList();
+        $list->setObjectIDs($fileIDs);
+        $list->readObjects();
+
+        return $list->getObjects();
     }
 }

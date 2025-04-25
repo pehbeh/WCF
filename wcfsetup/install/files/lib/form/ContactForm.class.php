@@ -10,14 +10,13 @@ use wcf\system\contact\form\SubmitContactForm;
 use wcf\system\form\builder\container\FormContainer;
 use wcf\system\form\builder\field\CaptchaFormField;
 use wcf\system\form\builder\field\EmailFormField;
+use wcf\system\form\builder\field\FileProcessorFormField;
 use wcf\system\form\builder\field\IFormField;
 use wcf\system\form\builder\field\SelectFormField;
 use wcf\system\form\builder\field\TextFormField;
-use wcf\system\form\option\FormOptionHandler;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\HeaderUtil;
-use wcf\util\JSON;
 
 /**
  * Customizable contact form with selectable recipients.
@@ -51,6 +50,10 @@ class ContactForm extends AbstractFormBuilderForm
             ...$this->getOptionFormFields()
         ]);
 
+        if (\CONTACT_FORM_ENABLE_ATTACHMENTS) {
+            $this->form->appendChild($this->getFileUploadFormField());
+        }
+
         if (!WCF::getUser()->userID) {
             $captchaContainer = FormContainer::create('captchaContainer')
                 ->appendChildren([
@@ -66,17 +69,18 @@ class ContactForm extends AbstractFormBuilderForm
     {
         AbstractForm::save();
 
-        $formData = $this->form->getData()['data'];
+        $formData = $this->form->getData();
+        $data = $formData['data'];
 
         $availableRecipients = $this->getAvailableRecipients();
         if (\count($availableRecipients) > 1) {
-            $recipient = $availableRecipients[$formData['recipientID']];
+            $recipient = $availableRecipients[$data['recipientID']];
         } else {
             $recipient = \reset($availableRecipients);
         }
 
         $optionValues = [];
-        foreach ($formData as $key => $value) {
+        foreach ($data as $key => $value) {
             if (\str_starts_with($key, 'option')) {
                 $optionValues[\substr($key, 6)] = $value;
             }
@@ -84,9 +88,10 @@ class ContactForm extends AbstractFormBuilderForm
 
         $command = new SubmitContactForm(
             $recipient,
-            $formData['name'],
-            $formData['email'],
-            $optionValues
+            $data['name'],
+            $data['email'],
+            $optionValues,
+            $formData['attachments'] ?? []
         );
         $command();
 
@@ -158,5 +163,20 @@ class ContactForm extends AbstractFormBuilderForm
         }
 
         return $formFields;
+    }
+
+    protected function getFileUploadFormField(): FileProcessorFormField
+    {
+        return FileProcessorFormField::create('attachments')
+            ->objectType('com.woltlab.wcf.contact.form')
+            ->label('wcf.contact.attachments')
+            ->description('wcf.upload.multiple.limits', [
+                'maximumCount' => WCF::getSession()->getPermission('user.contactForm.attachment.maxCount'),
+                'maximumSize' => WCF::getSession()->getPermission('user.contactForm.attachment.maxSize'),
+                'allowedFileExtensions' => \explode(
+                    "\n",
+                    WCF::getSession()->getPermission('user.contactForm.attachment.allowedExtensions')
+                ),
+            ]);
     }
 }

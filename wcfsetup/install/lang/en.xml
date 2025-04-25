@@ -3454,7 +3454,6 @@ Allowed extensions: {', '|implode:$attachmentHandler->getFormattedAllowedExtensi
 		<item name="wcf.condition.timestamp.error.invalidStart"><![CDATA[The start date is invalid.]]></item>
 	</category>
 	<category name="wcf.contact">
-		<item name="wcf.contact.data"><![CDATA[Your Inquiry]]></item>
 		<item name="wcf.contact.mail.subject"><![CDATA[New message via the contact form]]></item>
 		<item name="wcf.contact.mail.plaintext"><![CDATA[Hello,
 
@@ -3499,9 +3498,8 @@ Attachments:
 		<item name="wcf.contact.recipient.name1"><![CDATA[Administrator]]></item>
 		<item name="wcf.contact.recipientID"><![CDATA[Recipient]]></item>
 		<item name="wcf.contact.sender"><![CDATA[Sender]]></item>
-		<item name="wcf.contact.sender.information"><![CDATA[Your Data]]></item>
+		<item name="wcf.contact.attachments"><![CDATA[Attachments]]></item>
 		<item name="wcf.contact.success"><![CDATA[Message has been sent.]]></item>
-		<item name="wcf.contact.confirmPrivacyPolicy"><![CDATA[I agree to the processing of the data entered. <span class="customOptionRequired">*</span>]]></item>
 	</category>
 	<category name="wcf.acp.contact">
 		<item name="wcf.acp.contact.options"><![CDATA[Input Fields]]></item>
@@ -5587,6 +5585,11 @@ your notifications on <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phras
 		<item name="wcf.upload.error.delete.permissionDenied"><![CDATA[The file cannot be deleted, use <strong>Replace</strong> instead to swap out the file.]]></item>
 		<item name="wcf.upload.validation.error.noImage"><![CDATA[The file is not an image.]]></item>
 		<item name="wcf.upload.validation.error.tooSmall"><![CDATA[The file is too small.]]></item>
+		<item name="wcf.upload.single.limits"><![CDATA[Maximum file size: {$maximumSize|filesize}<br>
+Allowed extensions: {', '|implode:$allowedFileExtensions}]]></item>
+		<item name="wcf.upload.multiple.limits"><![CDATA[The maximum number of files: {#$maximumCount}<br>
+Maximum file size: {$maximumSize|filesize}<br>
+Allowed extensions: {', '|implode:$allowedFileExtensions}]]></item>
 	</category>
 </import>
 <delete>

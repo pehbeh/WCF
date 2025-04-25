@@ -3529,7 +3529,6 @@ Erlaubte Dateiendungen: {', '|implode:$attachmentHandler->getFormattedAllowedExt
 		<item name="wcf.condition.timestamp.error.invalidStart"><![CDATA[Das Startdatum ist ungültig.]]></item>
 	</category>
 	<category name="wcf.contact">
-		<item name="wcf.contact.data"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Deine{else}Ihre{/if} Anfrage]]></item>
 		<item name="wcf.contact.mail.subject"><![CDATA[Neue Nachricht über das Kontaktformular]]></item>
 		<item name="wcf.contact.mail.plaintext"><![CDATA[Hallo,
 
@@ -3574,9 +3573,8 @@ Dateianhänge:
 		<item name="wcf.contact.recipient.name1"><![CDATA[Administrator]]></item>
 		<item name="wcf.contact.recipientID"><![CDATA[Empfänger]]></item>
 		<item name="wcf.contact.sender"><![CDATA[Absender]]></item>
-		<item name="wcf.contact.sender.information"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Deine{else}Ihre{/if} Angaben]]></item>
+		<item name="wcf.contact.attachments"><![CDATA[Dateianhänge]]></item>
 		<item name="wcf.contact.success"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Deine{else}Ihre{/if} Nachricht wurde erfolgreich versandt.]]></item>
-		<item name="wcf.contact.confirmPrivacyPolicy"><![CDATA[Ich erkläre mich mit der Verarbeitung der eingegebenen Daten einverstanden. <span class="customOptionRequired">*</span>]]></item>
 	</category>
 	<category name="wcf.date">
 		<item name="wcf.date.dateFormat"><![CDATA[j. F Y]]></item>
@@ -5585,6 +5583,11 @@ Benachrichtigungen auf <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phra
 		<item name="wcf.upload.error.delete.permissionDenied"><![CDATA[Die Datei kann nicht gelöscht werden, {if LANGUAGE_USE_INFORMAL_VARIANT}verwende{else}verwenden Sie{/if} stattdessen <strong>Ersetzen</strong>, um die Datei zu ersetzen.]]></item>
 		<item name="wcf.upload.validation.error.noImage"><![CDATA[Die Datei ist kein Bild.]]></item>
 		<item name="wcf.upload.validation.error.tooSmall"><![CDATA[Die Datei ist zu klein.]]></item>
+		<item name="wcf.upload.single.limits"><![CDATA[Maximale Dateigröße: {$maximumSize|filesize}<br>
+Erlaubte Dateiendungen: {', '|implode:$allowedFileExtensions}]]></item>
+		<item name="wcf.upload.multiple.limits"><![CDATA[Maximale Anzahl an Dateien: {#$maximumCount}<br>
+Maximale Dateigröße: {$maximumSize|filesize}<br>
+Erlaubte Dateiendungen: {', '|implode:$allowedFileExtensions}]]></item>
 	</category>
 </import>
 <delete>
