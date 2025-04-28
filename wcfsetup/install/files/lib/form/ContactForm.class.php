@@ -45,11 +45,11 @@ class ContactForm extends AbstractFormBuilderForm
             TextFormField::create('name')
                 ->label('wcf.contact.sender')
                 ->required()
-                ->value(WCF::getUser()->username),
+                ->value(WCF::getUser()->username ?: ''),
             EmailFormField::create('email')
                 ->label('wcf.user.email')
                 ->required()
-                ->value(WCF::getUser()->email),
+                ->value(WCF::getUser()->email ?: ''),
             $this->getRecipientFormField(),
             ...$this->getOptionFormFields()
         ]);
@@ -59,12 +59,10 @@ class ContactForm extends AbstractFormBuilderForm
         }
 
         if (!WCF::getUser()->userID) {
-            $captchaContainer = FormContainer::create('captchaContainer')
-                ->appendChildren([
-                    CaptchaFormField::create()
-                        ->objectType(\CAPTCHA_TYPE),
-                ]);
-            $this->form->appendChild($captchaContainer);
+            $this->form->appendChild(
+                CaptchaFormField::create()
+                    ->objectType(\CAPTCHA_TYPE)
+            );
         }
     }
 
