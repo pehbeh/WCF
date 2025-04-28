@@ -9,8 +9,9 @@ use wcf\data\contact\recipient\ContactRecipientList;
 use wcf\event\page\ContactFormSpamChecking;
 use wcf\system\contact\form\SubmitContactForm;
 use wcf\system\event\EventHandler;
+use wcf\system\exception\NamedUserException;
 use wcf\system\exception\PermissionDeniedException;
-use wcf\system\form\builder\container\FormContainer;
+use wcf\system\flood\FloodControl;
 use wcf\system\form\builder\field\CaptchaFormField;
 use wcf\system\form\builder\field\EmailFormField;
 use wcf\system\form\builder\field\FileProcessorFormField;
@@ -31,6 +32,8 @@ use wcf\util\UserUtil;
  */
 class ContactForm extends AbstractFormBuilderForm
 {
+    private const ALLOWED_MAILS_PER_10M = 2;
+
     /**
      * @inheritDoc
      */
@@ -64,6 +67,20 @@ class ContactForm extends AbstractFormBuilderForm
                     ->objectType(\CAPTCHA_TYPE)
             );
         }
+    }
+
+    #[\Override]
+    public function validate()
+    {
+        $requests = FloodControl::getInstance()->countContent(
+            'com.woltlab.wcf.contactForm',
+            new \DateInterval('PT10M')
+        );
+        if ($requests['count'] >= self::ALLOWED_MAILS_PER_10M) {
+            throw new NamedUserException(WCF::getLanguage()->getDynamicVariable('wcf.page.error.flood'));
+        }
+
+        parent::validate();
     }
 
     #[\Override]
@@ -103,6 +120,8 @@ class ContactForm extends AbstractFormBuilderForm
         $command();
 
         $this->saved();
+
+        FloodControl::getInstance()->registerContent('com.woltlab.wcf.contactForm');
 
         HeaderUtil::delayedRedirect(
             LinkHandler::getInstance()->getLink(),
