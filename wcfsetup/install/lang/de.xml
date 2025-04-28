@@ -3532,18 +3532,17 @@ Erlaubte Dateiendungen: {', '|implode:$attachmentHandler->getFormattedAllowedExt
 		<item name="wcf.contact.mail.subject"><![CDATA[Neue Nachricht über das Kontaktformular]]></item>
 		<item name="wcf.contact.mail.plaintext"><![CDATA[Hallo,
 
-„{@$name}“ hat {if LANGUAGE_USE_INFORMAL_VARIANT}dir{else}Ihnen{/if} über das Kontaktformular auf der Website {@PAGE_TITLE|phrase} [URL:{link isEmail=true}{/link}] folgende Nachricht gesandt:
+„{unsafe:$name}“ hat {if LANGUAGE_USE_INFORMAL_VARIANT}dir{else}Ihnen{/if} über das Kontaktformular auf der Website {unsafe:PAGE_TITLE|phrase} [URL:{link isEmail=true}{/link}] folgende Nachricht gesandt:
 
-E-Mail-Adresse: {@$emailAddress} {* this line ends with a space *}
+E-Mail-Adresse: {unsafe:$emailAddress} {* this line ends with a space *}
 {foreach from=$options item=option}
-{@$option['title']}: {if !$option['isMessage']}{@$option['value']}{else} {* this line ends with a space *}
-{@$option['value']}{/if} {* this line ends with a space *}
+{unsafe:$option['title']}: {unsafe:$option['value']} {* this line ends with a space *}
 {/foreach}
 {if !$attachments|empty}
 
 Dateianhänge:
 {foreach from=$attachments item=attachment}
-- {$attachment->getTitle()} [URL: {@$attachment->getLink()} ]
+- {unsafe:$attachment->getTitle()} [URL: {unsafe:$attachment->getLink()} ]
 {/foreach}
 {if CONTACT_FORM_PRUNE_ATTACHMENTS}(Dateianhänge werden nach {if CONTACT_FORM_PRUNE_ATTACHMENTS == 1}einem Tag{else}{CONTACT_FORM_PRUNE_ATTACHMENTS} Tagen{/if} gelöscht.){/if} {* this line ends with a space *}
 {/if}]]></item>
@@ -3553,7 +3552,7 @@ Dateianhänge:
 <p><br></p>
 <p>E-Mail-Adresse: <a href="mailto:{$emailAddress}">{$emailAddress}</a></p>
 {foreach from=$options item=option}
-<p><strong>{@$option['title']}:</strong> {@$option['htmlValue']}</p>
+<p><strong>{unsafe:$option['title']}:</strong> {unsafe:$option['htmlValue']}</p>
 {/foreach}
 {if !$attachments|empty}
 <p><br></p>

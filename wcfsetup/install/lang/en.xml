@@ -3457,18 +3457,17 @@ Allowed extensions: {', '|implode:$attachmentHandler->getFormattedAllowedExtensi
 		<item name="wcf.contact.mail.subject"><![CDATA[New message via the contact form]]></item>
 		<item name="wcf.contact.mail.plaintext"><![CDATA[Hello,
 
-“{@$name}” sent you a message on {@PAGE_TITLE|phrase} via the contact form:
+“{unsafe:$name}” sent you a message on {unsafe:PAGE_TITLE|phrase} via the contact form:
 
-Email: {@$emailAddress} {* this line ends with a space *}
+Email: {unsafe:$emailAddress} {* this line ends with a space *}
 {foreach from=$options item=option}
-{@$option['title']}: {if !$option['isMessage']}{@$option['value']}{else} {* this line ends with a space *}
-{@$option['value']}{/if} {* this line ends with a space *}
+{unsafe:$option['title']}: {unsafe:$option['value']} {* this line ends with a space *}
 {/foreach}
 {if !$attachments|empty}
 
 Attachments:
 {foreach from=$attachments item=attachment}
-- {@$attachment->getTitle()} [URL: {@$attachment->getLink()} ]
+- {unsafe:$attachment->getTitle()} [URL: {unsafe:$attachment->getLink()} ]
 {/foreach}
 {if CONTACT_FORM_PRUNE_ATTACHMENTS}(Attachments are removed after {if CONTACT_FORM_PRUNE_ATTACHMENTS == 1}one day{else}{CONTACT_FORM_PRUNE_ATTACHMENTS} days{/if}.){/if} {* this line ends with a space *}
 {/if}]]></item>
@@ -3478,7 +3477,7 @@ Attachments:
 <p><br></p>
 <p>Email: <a href="mailto:{$emailAddress}">{$emailAddress}</a></p>
 {foreach from=$options item=option}
-<p><strong>{@$option['title']}:</strong> {@$option['htmlValue']}</p>
+<p><strong>{unsafe:$option['title']}:</strong> {unsafe:$option['htmlValue']}</p>
 {/foreach}
 {if !$attachments|empty}
 <p><br></p>
