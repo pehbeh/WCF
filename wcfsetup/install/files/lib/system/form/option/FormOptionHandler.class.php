@@ -36,9 +36,21 @@ final class FormOptionHandler extends SingletonFactory
 
         foreach (
             [
+                new BooleanFormOption(),
+                new CheckboxesFormOption(),
+                new CurrencyFormOption(),
+                new DateFormOption(),
+                new EmailFormOption(),
+                new FloatFormOption(),
+                new IconFormOption(),
+                new IntegerFormOption(),
+                new RadioButtonFormOption(),
+                new RatingFormOption(),
+                new SelectFormOption(),
+                new SourceCodeFormOption(),
                 new TextFormOption(),
                 new TextareaFormOption(),
-                new SelectFormOption()
+                new UrlFormOption(),
             ] as $defaultOption
         ) {
             $options[$defaultOption->getId()] = $defaultOption;

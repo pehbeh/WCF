@@ -147,6 +147,7 @@ class ContactOptionAddForm extends AbstractFormBuilderForm
      */
     private function getSharedConfigurationFormFields(): array
     {
+        $sharedConfigurationFormFields = new SharedConfigurationFormFields();
         $matrix = [];
 
         foreach (FormOptionHandler::getInstance()->getOptions() as $option) {
@@ -162,7 +163,7 @@ class ContactOptionAddForm extends AbstractFormBuilderForm
         $formFields = [];
 
         foreach ($matrix as $formFieldId => $dependencies) {
-            $formField = SharedConfigurationFormFields::getInstance()->getFormField($formFieldId);
+            $formField = $sharedConfigurationFormFields->getFormField($formFieldId);
             $formField->addDependency(
                 ValueFormFieldDependency::create($formFieldId . 'OptionTypeDependency')
                     ->fieldId('optionType')

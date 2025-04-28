@@ -1,0 +1,42 @@
+<?php
+
+namespace wcf\system\form\option;
+
+use wcf\system\form\builder\field\AbstractFormField;
+use wcf\system\form\builder\field\BooleanFormField;
+use wcf\system\form\option\formatter\BooleanFormatter;
+
+/**
+ * Implementation of a form field for boolean-type values.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
+class BooleanFormOption extends AbstractFormOption
+{
+    #[\Override]
+    public function getId(): string
+    {
+        return 'boolean';
+    }
+
+    #[\Override]
+    public function getFormField(string $id, array $configurationData = []): AbstractFormField
+    {
+        return BooleanFormField::create($id);
+    }
+
+    #[\Override]
+    public function getFormatter(): BooleanFormatter
+    {
+        return new BooleanFormatter();
+    }
+
+    #[\Override]
+    public function getPlainTextFormatter(): BooleanFormatter
+    {
+        return $this->getFormatter();
+    }
+}

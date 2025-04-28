@@ -25,8 +25,11 @@ class TextFormOption extends AbstractFormOption
     public function getFormField(string $id, array $configurationData = []): AbstractFormField
     {
         $formField = TextFormField::create($id);
-        if (isset($configurationData['maxLength'])) {
+        if (!empty($configurationData['maxLength'])) {
             $formField->maximumLength($configurationData['maxLength']);
+        }
+        if (isset($configurationData['defaultTextValue'])) {
+            $formField->value($configurationData['defaultTextValue']);
         }
 
         return $formField;
@@ -35,6 +38,6 @@ class TextFormOption extends AbstractFormOption
     #[\Override]
     public function getConfigurationFormFields(): array
     {
-        return ['maxLength'];
+        return ['maxLength', 'defaultTextValue'];
     }
 }

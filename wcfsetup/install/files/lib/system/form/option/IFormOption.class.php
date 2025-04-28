@@ -17,8 +17,14 @@ interface IFormOption
 {
     public function getId(): string;
 
+    /**
+     * @param array<string, mixed> $configurationData
+     */
     public function getFormField(string $id, array $configurationData = []): AbstractFormField;
 
+    /**
+     * @return string[]
+     */
     public function getConfigurationFormFields(): array;
 
     public function getFormatter(): IFormOptionFormatter;
