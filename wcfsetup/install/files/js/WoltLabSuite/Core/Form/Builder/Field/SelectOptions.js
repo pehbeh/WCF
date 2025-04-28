@@ -62,7 +62,6 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
         valueInput.addEventListener("keydown", (event) => {
             if (event.key === "Enter") {
                 event.preventDefault();
-                createRow(ul);
                 createRow(ul, undefined, true);
             }
         });

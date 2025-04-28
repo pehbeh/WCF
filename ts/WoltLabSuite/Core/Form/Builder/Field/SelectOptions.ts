@@ -82,7 +82,6 @@ function createRow(ul: HTMLUListElement, option?: Data, autoFocus: boolean = fal
   valueInput.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      createRow(ul);
       createRow(ul, undefined, true);
     }
   });
