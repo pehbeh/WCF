@@ -8,13 +8,15 @@ use wcf\data\user\rank\UserRank;
 use wcf\data\user\rank\UserRankAction;
 use wcf\form\AbstractFormBuilderForm;
 use wcf\system\form\builder\container\FormContainer;
+use wcf\system\form\builder\container\MultilingualContainer;
 use wcf\system\form\builder\data\processor\CustomFormDataProcessor;
+use wcf\system\form\builder\data\processor\MultilingualFormDataProcessor;
 use wcf\system\form\builder\field\BadgeColorFormField;
 use wcf\system\form\builder\field\BooleanFormField;
 use wcf\system\form\builder\field\IntegerFormField;
 use wcf\system\form\builder\field\SelectFormField;
 use wcf\system\form\builder\field\SingleSelectionFormField;
-use wcf\system\form\builder\field\TextFormField;
+use wcf\system\form\builder\field\TitleFormField;
 use wcf\system\form\builder\field\UploadFormField;
 use wcf\system\form\builder\IFormDocument;
 use wcf\system\WCF;
@@ -61,19 +63,24 @@ class UserRankAddForm extends AbstractFormBuilderForm
         parent::createForm();
 
         $this->form->appendChildren([
+            MultilingualContainer::create('general')
+                ->appendMultilingualFormField(
+                    TitleFormField::class,
+                    'title',
+                    static function (TitleFormField $field) {
+                        $field->required()
+                            ->label('wcf.acp.user.rank.title');
+                    }
+                ),
             FormContainer::create('section')
                 ->appendChildren([
-                    TextFormField::create('rankTitle')
-                        ->label('wcf.acp.user.rank.title')
-                        ->i18n()
-                        ->languageItemPattern('wcf.user.rank.\w+')
-                        ->required(),
                     BadgeColorFormField::create('cssClassName')
                         ->label('wcf.acp.user.rank.cssClassName')
                         ->description('wcf.acp.user.rank.cssClassName.description')
-                        ->textReferenceNodeId('rankTitle')
+                        // TODO this must be changed to work with the new `MultilingualContainer`
+                        ->textReferenceNodeId('title')
                         ->defaultLabelText(WCF::getLanguage()->get('wcf.acp.user.rank.title'))
-                        ->required()
+                        ->required(),
                 ]),
             FormContainer::create('imageContainer')
                 ->label('wcf.acp.user.rank.image')
@@ -92,7 +99,7 @@ class UserRankAddForm extends AbstractFormBuilderForm
                     BooleanFormField::create('hideTitle')
                         ->label('wcf.acp.user.rank.hideTitle')
                         ->description('wcf.acp.user.rank.hideTitle.description')
-                        ->value(false)
+                        ->value(false),
                 ]),
             FormContainer::create('requirementsContainer')
                 ->label('wcf.acp.user.rank.requirement')
@@ -108,7 +115,7 @@ class UserRankAddForm extends AbstractFormBuilderForm
                         ->options([
                             1 => 'wcf.user.gender.male',
                             2 => 'wcf.user.gender.female',
-                            3 => 'wcf.user.gender.other'
+                            3 => 'wcf.user.gender.other',
                         ]),
                     IntegerFormField::create('requiredPoints')
                         ->label('wcf.acp.user.rank.requiredPoints')
@@ -116,7 +123,7 @@ class UserRankAddForm extends AbstractFormBuilderForm
                         ->addFieldClass('tiny')
                         ->minimum(0)
                         ->value(0),
-                ])
+                ]),
         ]);
     }
 
@@ -125,16 +132,18 @@ class UserRankAddForm extends AbstractFormBuilderForm
     {
         parent::finalizeForm();
 
+        // TODO load values in edit form
         $this->form->getDataHandler()
+            ->addProcessor(new MultilingualFormDataProcessor('content', ['title']))
             ->addProcessor(
                 new CustomFormDataProcessor(
                     'requiredGenderProcessor',
-                    function (IFormDocument $document, array $parameters) {
+                    static function (IFormDocument $document, array $parameters) {
                         $parameters['data']['requiredGender'] = $parameters['data']['requiredGender'] ?: 0;
 
                         return $parameters;
                     },
-                    function (IFormDocument $document, array $data, IStorableObject $object) {
+                    static function (IFormDocument $document, array $data, IStorableObject $object) {
                         \assert($object instanceof UserRank);
 
                         $data['requiredGender'] = $data['requiredGender'] ?: null;
