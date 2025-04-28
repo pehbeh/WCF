@@ -6,7 +6,10 @@ use wcf\data\contact\option\ContactOption;
 use wcf\data\contact\option\ContactOptionList;
 use wcf\data\contact\recipient\ContactRecipient;
 use wcf\data\contact\recipient\ContactRecipientList;
+use wcf\event\page\ContactFormSpamChecking;
 use wcf\system\contact\form\SubmitContactForm;
+use wcf\system\event\EventHandler;
+use wcf\system\exception\PermissionDeniedException;
 use wcf\system\form\builder\container\FormContainer;
 use wcf\system\form\builder\field\CaptchaFormField;
 use wcf\system\form\builder\field\EmailFormField;
@@ -17,6 +20,7 @@ use wcf\system\form\builder\field\TextFormField;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\HeaderUtil;
+use wcf\util\UserUtil;
 
 /**
  * Customizable contact form with selectable recipients.
@@ -86,6 +90,11 @@ class ContactForm extends AbstractFormBuilderForm
             }
         }
 
+        $this->handleSpamCheck(
+            $data['email'],
+            $optionValues
+        );
+
         $command = new SubmitContactForm(
             $recipient,
             $data['name'],
@@ -103,6 +112,38 @@ class ContactForm extends AbstractFormBuilderForm
         );
 
         exit;
+    }
+
+    /**
+     * @param array<int, mixed> $optionValues
+     */
+    private function handleSpamCheck(string $email, array $optionValues): void
+    {
+        $messages = [];
+        foreach ($this->getAvailableOptions() as $option) {
+            if (empty($optionValues[$option->optionID])) {
+                continue;
+            }
+
+            if (!\in_array($option->optionType, [
+                'text',
+                'textarea'
+            ])) {
+                continue;
+            }
+
+            $messages[] = $optionValues[$option->optionID];
+        }
+
+        $spamCheckEvent = new ContactFormSpamChecking(
+            $email,
+            UserUtil::getIpAddress(),
+            $messages,
+        );
+        EventHandler::getInstance()->fire($spamCheckEvent);
+        if ($spamCheckEvent->defaultPrevented()) {
+            throw new PermissionDeniedException();
+        }
     }
 
     protected function getRecipientFormField(): SelectFormField
