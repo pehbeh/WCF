@@ -4051,6 +4051,7 @@ Dateianhänge:
 		<item name="wcf.global.incompatiblePhpVersion"><![CDATA[Fehlerhafte Server-Konfiguration: Die eingesetzte Version von „PHP” ist nicht kompatibel, ein Betrieb ist nicht möglich. Es wird mindestens PHP in Version 8.1 benötigt, unterstützt werden die Versionen bis PHP 8.3. Für den Einsatz höherer PHP-Versionen muss die Software auf eine aktuelle Version umgestellt werden.]]></item>
 		<item name="wcf.global.snackbar.progress"><![CDATA[{$label}: {#$iteration} von {#$length}]]></item>
 		<item name="wcf.global.changeShowOrder"><![CDATA[Reihenfolge bearbeiten]]></item>
+		<item name="wcf.global.isMultilingual"><![CDATA[Mehrsprachigkeit aktivieren]]></item>
 	</category>
 	<category name="wcf.global.form">
 		<item name="wcf.global.form.boolean.no"><![CDATA[Nein]]></item>
