@@ -24,6 +24,7 @@ use wcf\util\StringUtil;
  * @property-read   int $repeatImage        number of times the rank image is displayed
  * @property-read   int $requiredGender     numeric representation of the user's gender required for the user rank (see `UserProfile::GENDER_*` constants) or 0 if no specific gender is required
  * @property-read   int $hideTitle      hides the generic title of the rank, but not custom titles, `0` to show the title at all times
+ * @property-read   bool $isMultilingual
  */
 class UserRank extends DatabaseObject implements ITitledObject
 {

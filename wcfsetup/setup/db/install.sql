@@ -1957,7 +1957,8 @@ CREATE TABLE wcf1_user_rank (
 	rankImage VARCHAR(255) NOT NULL DEFAULT '',
 	repeatImage TINYINT(3) NOT NULL DEFAULT 1,
 	requiredGender TINYINT(1) NOT NULL DEFAULT 0,
-	hideTitle TINYINT(1) NOT NULL DEFAULT 0
+	hideTitle TINYINT(1) NOT NULL DEFAULT 0,
+	isMultilingual TINYINT(1) NOT NULL DEFAULT 0
 );
 
 DROP TABLE IF EXISTS wcf1_user_rank_content;

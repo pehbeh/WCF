@@ -8,6 +8,7 @@
  * @license   GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 
+use wcf\system\database\table\column\DefaultFalseBooleanDatabaseTableColumn;
 use wcf\system\database\table\column\IntDatabaseTableColumn;
 use wcf\system\database\table\column\NotNullInt10DatabaseTableColumn;
 use wcf\system\database\table\column\NotNullVarchar255DatabaseTableColumn;
@@ -50,6 +51,10 @@ return [
                 ->referencedTable('wcf1_file')
                 ->referencedColumns(['fileID'])
                 ->onDelete('SET NULL'),
+        ]),
+    PartialDatabaseTable::create('wcf1_user_rank')
+        ->columns([
+            DefaultFalseBooleanDatabaseTableColumn::create('isMultilingual'),
         ]),
     DatabaseTable::create('wcf1_user_rank_content')
         ->columns([
