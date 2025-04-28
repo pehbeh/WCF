@@ -1960,6 +1960,14 @@ CREATE TABLE wcf1_user_rank (
 	hideTitle TINYINT(1) NOT NULL DEFAULT 0
 );
 
+DROP TABLE IF EXISTS wcf1_user_rank_content;
+CREATE TABLE wcf1_user_rank_content (
+	rankID INT(10) NOT NULL,
+	languageID INT(10) DEFAULT NULL,
+	title VARCHAR(255) NOT NULL DEFAULT '',
+	UNIQUE KEY id (rankID, languageID)
+);
+
 DROP TABLE IF EXISTS wcf1_user_session;
 CREATE TABLE wcf1_user_session (
 	sessionID CHAR(40) NOT NULL PRIMARY KEY,
@@ -2295,6 +2303,8 @@ ALTER TABLE wcf1_user_profile_menu_item ADD FOREIGN KEY (packageID) REFERENCES w
 /* SQL_PARSER_OFFSET */
 
 ALTER TABLE wcf1_user_rank ADD FOREIGN KEY (groupID) REFERENCES wcf1_user_group (groupID) ON DELETE CASCADE;
+ALTER TABLE wcf1_user_rank_content ADD FOREIGN KEY (rankID) REFERENCES wcf1_user_rank (rankID) ON DELETE CASCADE;
+ALTER TABLE wcf1_user_rank_content ADD FOREIGN KEY (languageID) REFERENCES wcf1_language (languageID) ON DELETE CASCADE;
 
 ALTER TABLE wcf1_user_activity_event ADD FOREIGN KEY (objectTypeID) REFERENCES wcf1_object_type (objectTypeID) ON DELETE CASCADE;
 ALTER TABLE wcf1_user_activity_event ADD FOREIGN KEY (userID) REFERENCES wcf1_user (userID) ON DELETE CASCADE;

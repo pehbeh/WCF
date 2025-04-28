@@ -9,7 +9,11 @@
  */
 
 use wcf\system\database\table\column\IntDatabaseTableColumn;
+use wcf\system\database\table\column\NotNullInt10DatabaseTableColumn;
+use wcf\system\database\table\column\NotNullVarchar255DatabaseTableColumn;
+use wcf\system\database\table\DatabaseTable;
 use wcf\system\database\table\index\DatabaseTableForeignKey;
+use wcf\system\database\table\index\DatabaseTableIndex;
 use wcf\system\database\table\PartialDatabaseTable;
 
 return [
@@ -46,5 +50,31 @@ return [
                 ->referencedTable('wcf1_file')
                 ->referencedColumns(['fileID'])
                 ->onDelete('SET NULL'),
+        ]),
+    DatabaseTable::create('wcf1_user_rank_content')
+        ->columns([
+            NotNullInt10DatabaseTableColumn::create('rankID'),
+            IntDatabaseTableColumn::create('languageID')
+                ->length(10)
+                ->defaultValue(null),
+            NotNullVarchar255DatabaseTableColumn::create('title')
+                ->defaultValue(''),
         ])
+        ->indices([
+            DatabaseTableIndex::create('id')
+                ->columns(['rankID', 'languageID'])
+                ->type(DatabaseTableIndex::UNIQUE_TYPE),
+        ])
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['rankID'])
+                ->referencedTable('wcf1_user_rank')
+                ->referencedColumns(['rankID'])
+                ->onDelete('CASCADE'),
+            DatabaseTableForeignKey::create()
+                ->columns(['languageID'])
+                ->referencedTable('wcf1_language')
+                ->referencedColumns(['languageID'])
+                ->onDelete('CASCADE'),
+        ]),
 ];
