@@ -74,7 +74,7 @@ final class MultilingualFormContainer extends FormContainer
 
         if ($parentNodeId !== null) {
             $container = $this->getNodeById($parentNodeId);
-            \assert($container instanceof FormContainer);
+            \assert($container instanceof IFormContainer);
         } else {
             $container = $this;
         }
@@ -96,7 +96,7 @@ final class MultilingualFormContainer extends FormContainer
             } else {
                 $containerId = ($parentNodeId === null ? $this->getId() : $parentNodeId) . "_{$language->languageCode}";
                 $container = $tab->getNodeById($containerId);
-                \assert($container instanceof FormContainer);
+                \assert($container instanceof IFormContainer);
 
                 $container->appendChild($field);
             }
