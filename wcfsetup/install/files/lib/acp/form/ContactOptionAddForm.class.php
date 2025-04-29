@@ -18,6 +18,7 @@ use wcf\system\form\builder\field\TextFormField;
 use wcf\system\form\builder\IFormDocument;
 use wcf\system\form\option\FormOptionHandler;
 use wcf\system\form\option\SharedConfigurationFormFields;
+use wcf\system\WCF;
 use wcf\util\JSON;
 
 /**
@@ -139,7 +140,15 @@ class ContactOptionAddForm extends AbstractFormBuilderForm
      */
     private function getAvailableOptionTypes(): array
     {
-        return \array_map(fn($option) => $option->getId(), FormOptionHandler::getInstance()->getOptions());
+        $optionTypes = \array_map(fn($option) => $option->getTitle(), FormOptionHandler::getInstance()->getOptions());
+
+        $collator = new \Collator(WCF::getLanguage()->getLocale());
+        \uasort(
+            $optionTypes,
+            static fn(string $a, string $b) => $collator->compare($a, $b)
+        );
+
+        return $optionTypes;
     }
 
     /**

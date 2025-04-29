@@ -17,6 +17,8 @@ interface IFormOption
 {
     public function getId(): string;
 
+    public function getTitle(): string;
+
     /**
      * @param array<string, mixed> $configurationData
      */

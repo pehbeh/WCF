@@ -37,23 +37,25 @@ final class SharedConfigurationFormFields
     {
         return [
             'currency' => TextFormField::create('currency')
-                ->label('wcf.acp.customOption.currency')
+                ->label('wcf.form.option.shared.currency')
                 ->value('EUR')
+                ->addFieldClass('short')
                 ->required(),
             'defaultTextValue' => TextFormField::create('defaultTextValue')
-                ->label('wcf.acp.customOption.defaultValue'),
+                ->label('wcf.form.option.shared.defaultValue')
+                ->addFieldClass('medium'),
             'maxLength' => IntegerFormField::create('maxLength')
-                ->label('wcf.acp.customOption.maxLength'),
+                ->label('wcf.form.option.shared.maxLength'),
             'minIntegerValue' => IntegerFormField::create('minIntegerValue')
-                ->label('wcf.acp.customOption.minValue'),
+                ->label('wcf.form.option.shared.minValue'),
             'maxIntegerValue' => IntegerFormField::create('maxIntegerValue')
-                ->label('wcf.acp.customOption.maxValue'),
+                ->label('wcf.form.option.shared.maxValue'),
             'minFloatValue' => FloatFormField::create('minFloatValue')
-                ->label('wcf.acp.customOption.minValue'),
+                ->label('wcf.form.option.shared.minValue'),
             'maxFloatValue' => FloatFormField::create('maxFloatValue')
-                ->label('wcf.acp.customOption.maxValue'),
+                ->label('wcf.form.option.shared.maxValue'),
             'selectOptions' => SelectOptionsFormField::create('selectOptions')
-                ->label('wcf.acp.customOption.selectOptions')
+                ->label('wcf.form.option.shared.selectOptions')
                 ->required(),
         ];
     }

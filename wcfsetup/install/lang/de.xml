@@ -4114,6 +4114,27 @@ Dateianhänge:
 		<item name="wcf.form.field.upload.error.fileExtension"><![CDATA[Die Datei „{$filename}“ hat eine ungültige Dateiendung. Erlaubt sind: {implode from=$allowedFileExtensions item=extension}{$extension}{/implode}.]]></item>
 		<item name="wcf.form.selectOptions.key"><![CDATA[Bezeichner]]></item>
 		<item name="wcf.form.selectOptions.value"><![CDATA[Wert]]></item>
+		<item name="wcf.form.option.boolean"><![CDATA[Ja/Nein]]></item>
+		<item name="wcf.form.option.checkboxes"><![CDATA[Checkboxen]]></item>
+		<item name="wcf.form.option.currency"><![CDATA[Währung]]></item>
+		<item name="wcf.form.option.date"><![CDATA[Datum]]></item>
+		<item name="wcf.form.option.email"><![CDATA[E-Mail-Adresse]]></item>
+		<item name="wcf.form.option.integer"><![CDATA[Ganze Zahl]]></item>
+		<item name="wcf.form.option.float"><![CDATA[Dezimalzahl]]></item>
+		<item name="wcf.form.option.icon"><![CDATA[Icon]]></item>
+		<item name="wcf.form.option.radioButton"><![CDATA[Radio-Buttons]]></item>
+		<item name="wcf.form.option.rating"><![CDATA[Sterne-Bewertung]]></item>
+		<item name="wcf.form.option.select"><![CDATA[Auswahlmöglichkeit]]></item>
+		<item name="wcf.form.option.text"><![CDATA[Text]]></item>
+		<item name="wcf.form.option.textarea"><![CDATA[Mehrzeiliger Text]]></item>
+		<item name="wcf.form.option.sourceCode"><![CDATA[Quellcode]]></item>
+		<item name="wcf.form.option.url"><![CDATA[Link]]></item>
+		<item name="wcf.form.option.shared.currency"><![CDATA[Währung]]></item>
+		<item name="wcf.form.option.shared.defaultValue"><![CDATA[Standardwert]]></item>
+		<item name="wcf.form.option.shared.maxLength"><![CDATA[Maximale Textlänge]]></item>
+		<item name="wcf.form.option.shared.minValue"><![CDATA[Minimum]]></item>
+		<item name="wcf.form.option.shared.maxValue"><![CDATA[Maximum]]></item>
+		<item name="wcf.form.option.shared.selectOptions"><![CDATA[Auswahloptionen]]></item>
 	</category>
 	<category name="wcf.image">
 		<item name="wcf.image.coverPhoto"><![CDATA[Titelbild]]></item>
