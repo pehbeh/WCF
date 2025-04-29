@@ -4,6 +4,7 @@ namespace wcf\data\user\rank;
 
 use wcf\data\DatabaseObjectDecorator;
 use wcf\data\ITitledObject;
+use wcf\system\WCF;
 
 /**
  * @author Olaf Braun
@@ -25,6 +26,6 @@ class ViewableUserRank extends DatabaseObjectDecorator implements ITitledObject
     public function getTitle(): string
     {
         // For backward compatibility, titles may not yet have been migrated to `wcf1_user_rank_content` and may therefore be `null`.
-        return $this->title ?? "";
+        return $this->title ?? WCF::getLanguage()->get($this->rankTitle);
     }
 }

@@ -5,6 +5,8 @@ namespace wcf\data\user\rank;
 use wcf\data\DatabaseObjectEditor;
 use wcf\data\IEditableCachedObject;
 use wcf\system\cache\builder\UserRankCacheBuilder;
+use wcf\system\cache\eager\UserRankCache;
+use wcf\system\language\LanguageFactory;
 
 /**
  * Provides functions to edit user ranks.
@@ -30,5 +32,9 @@ class UserRankEditor extends DatabaseObjectEditor implements IEditableCachedObje
     public static function resetCache()
     {
         UserRankCacheBuilder::getInstance()->reset();
+
+        foreach (LanguageFactory::getInstance()->getLanguages() as $language) {
+            (new UserRankCache($language->languageID))->rebuild();
+        }
     }
 }

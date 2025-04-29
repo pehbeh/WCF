@@ -18,8 +18,9 @@ use wcf\data\user\ignore\UserIgnore;
 use wcf\data\user\online\UserOnline;
 use wcf\data\user\option\ViewableUserOption;
 use wcf\data\user\rank\UserRank;
+use wcf\data\user\rank\ViewableUserRank;
 use wcf\system\cache\builder\UserGroupPermissionCacheBuilder;
-use wcf\system\cache\builder\UserRankCacheBuilder;
+use wcf\system\cache\eager\UserRankCache;
 use wcf\system\cache\runtime\FileRuntimeCache;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
@@ -923,13 +924,13 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
             return $this->userTitle;
         }
         if ($this->getRank() && $this->getRank()->showTitle()) {
-            return WCF::getLanguage()->get($this->getRank()->rankTitle);
+            return $this->getRank()->getTitle();
         }
 
         return '';
     }
 
-    public function getRank(): ?UserRank
+    public function getRank(): ?ViewableUserRank
     {
         if (!\MODULE_USER_RANK) {
             return null;
@@ -939,7 +940,9 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
             return null;
         }
 
-        return UserRankCacheBuilder::getInstance()->getRank($this->rankID);
+        $userRanks = (new UserRankCache(WCF::getLanguage()->languageID))->getCache();
+
+        return $userRanks[$this->rankID] ?? null;
     }
 
     /**

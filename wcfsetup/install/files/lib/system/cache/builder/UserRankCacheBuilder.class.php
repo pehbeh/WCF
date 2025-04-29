@@ -12,6 +12,8 @@ use wcf\data\user\rank\UserRankList;
  * @copyright   2001-2024 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.1
+ *
+ * @deprecated 6.2 use `UserRankCache` instead
  */
 final class UserRankCacheBuilder extends AbstractCacheBuilder
 {
