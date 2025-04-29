@@ -59,21 +59,27 @@ final class MultilingualFormContainer extends FormContainer
      * @template T of IFormChildNode
      *
      * @param class-string<T> $fieldClass
-     * @param string $id
      * @param null|callable(T): void $callback
      *
      * @return self
      */
-    public function appendMultilingualFormField(string $fieldClass, string $id, ?callable $callback = null): self
+    public function appendMultilingualFormField(string $fieldClass, string $id, ?callable $callback = null, ?string $parentNodeId = null): self
     {
-        // TODO A form field should also be able to be inserted into a container
         $field = \call_user_func([$fieldClass, "create"], $id);
         /** @var T $field */
         $field->addDependency(
             EmptyFormFieldDependency::create('isMultilingual')
                 ->fieldId('isMultilingual')
         );
-        $this->appendChild($field);
+
+        if ($parentNodeId !== null) {
+            $container = $this->getNodeById($parentNodeId);
+            \assert($container instanceof FormContainer);
+        } else {
+            $container = $this;
+        }
+
+        $container->appendChild($field);
 
         if ($callback !== null) {
             $callback($field);
@@ -88,7 +94,8 @@ final class MultilingualFormContainer extends FormContainer
             if ($field instanceof IFormContainer) {
                 $tab->appendChild($field);
             } else {
-                $container = $this->tabContainer->getNodeById("{$this->getId()}_{$language->languageCode}");
+                $containerId = ($parentNodeId === null ? $this->getId() : $parentNodeId) . "_{$language->languageCode}";
+                $container = $tab->getNodeById($containerId);
                 \assert($container instanceof FormContainer);
 
                 $container->appendChild($field);
