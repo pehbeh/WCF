@@ -5,7 +5,7 @@ namespace wcf\system\form\builder\container;
 use wcf\system\form\builder\field\BooleanFormField;
 use wcf\system\form\builder\field\dependency\EmptyFormFieldDependency;
 use wcf\system\form\builder\field\dependency\NonEmptyFormFieldDependency;
-use wcf\system\form\builder\field\IFormField;
+use wcf\system\form\builder\IFormChildNode;
 use wcf\system\language\LanguageFactory;
 
 /**
@@ -56,7 +56,7 @@ final class MultilingualFormContainer extends FormContainer
     }
 
     /**
-     * @template T of IFormField
+     * @template T of IFormChildNode
      *
      * @param class-string<T> $fieldClass
      * @param string $id
