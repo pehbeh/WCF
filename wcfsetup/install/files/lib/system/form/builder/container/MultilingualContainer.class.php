@@ -66,6 +66,7 @@ final class MultilingualContainer extends FormContainer
      */
     public function appendMultilingualFormField(string $fieldClass, string $id, ?callable $callback = null): self
     {
+        // TODO A form field should also be able to be inserted into a container
         $field = \call_user_func([$fieldClass, "create"], $id);
         /** @var T $field */
         $field->addDependency(
