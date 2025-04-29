@@ -5,6 +5,7 @@ namespace wcf\data\user\rank;
 use wcf\data\DatabaseObject;
 use wcf\data\ITitledObject;
 use wcf\system\form\builder\field\UploadFormField;
+use wcf\system\language\LanguageFactory;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 
@@ -24,11 +25,16 @@ use wcf\util\StringUtil;
  * @property-read   int $repeatImage        number of times the rank image is displayed
  * @property-read   int $requiredGender     numeric representation of the user's gender required for the user rank (see `UserProfile::GENDER_*` constants) or 0 if no specific gender is required
  * @property-read   int $hideTitle      hides the generic title of the rank, but not custom titles, `0` to show the title at all times
- * @property-read   bool $isMultilingual
+ * @property-read   int $isMultilingual
  */
 class UserRank extends DatabaseObject implements ITitledObject
 {
     public const RANK_IMAGE_DIR = 'images/rank/';
+
+    /**
+     * @var array<int, string>
+     */
+    protected array $content;
 
     /**
      * Returns the image of this user rank.
@@ -55,7 +61,39 @@ class UserRank extends DatabaseObject implements ITitledObject
      */
     public function getTitle(): string
     {
-        return WCF::getLanguage()->get($this->rankTitle);
+        $this->loadContent();
+
+        if ($this->content === []) {
+            // Backwards compatibility
+            return WCF::getLanguage()->get($this->rankTitle);
+        }
+
+        if ($this->isMultilingual === 0) {
+            return \reset($this->content);
+        } else {
+            return $this->content[WCF::getLanguage()->languageID]
+                ?? $this->content[LanguageFactory::getInstance()->getDefaultLanguageID()]
+                ?? \reset($this->content);
+        }
+    }
+
+    protected function loadContent(): void
+    {
+        if (isset($this->content)) {
+            return;
+        }
+
+        $sql = "SELECT languageID, title 
+                FROM   wcf1_user_rank_content
+                WHERE  rankID = ?";
+
+        $statement = WCF::getDB()->prepare($sql, 1);
+        $statement->execute([$this->rankID]);
+
+        $this->content = [];
+        while ($row = $statement->fetchArray()) {
+            $this->content[$row['languageID'] ?? 0] = $row['title'];
+        }
     }
 
     /**
