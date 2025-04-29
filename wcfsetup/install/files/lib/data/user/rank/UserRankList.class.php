@@ -2,6 +2,7 @@
 
 namespace wcf\data\user\rank;
 
+use wcf\data\DatabaseObjectDecorator;
 use wcf\data\DatabaseObjectList;
 
 /**
@@ -11,6 +12,13 @@ use wcf\data\DatabaseObjectList;
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @extends DatabaseObjectList<UserRank>
+ * @template-covariant TDatabaseObject of UserRank|DatabaseObjectDecorator<UserRank> = UserRank
+ * @extends DatabaseObjectList<TDatabaseObject>
  */
-class UserRankList extends DatabaseObjectList {}
+class UserRankList extends DatabaseObjectList
+{
+    /**
+     * @inheritDoc
+     */
+    public $className = UserRank::class;
+}

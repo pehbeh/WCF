@@ -5,12 +5,12 @@ namespace wcf\system\gridView\admin;
 use wcf\acp\form\UserRankEditForm;
 use wcf\data\DatabaseObject;
 use wcf\data\user\group\UserGroup;
-use wcf\data\user\rank\I18nUserRankList;
-use wcf\data\user\rank\UserRank;
+use wcf\data\user\rank\ViewableUserRank;
+use wcf\data\user\rank\ViewableUserRankList;
 use wcf\event\gridView\admin\UserRankGridViewInitialized;
 use wcf\system\gridView\AbstractGridView;
-use wcf\system\gridView\filter\I18nTextFilter;
 use wcf\system\gridView\filter\SelectFilter;
+use wcf\system\gridView\filter\TextFilter;
 use wcf\system\gridView\GridViewColumn;
 use wcf\system\gridView\GridViewRowLink;
 use wcf\system\gridView\renderer\DefaultColumnRenderer;
@@ -31,7 +31,7 @@ use wcf\util\StringUtil;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  *
- * @extends AbstractGridView<UserRank, I18nUserRankList>
+ * @extends AbstractGridView<ViewableUserRank, ViewableUserRankList>
  */
 final class UserRankGridView extends AbstractGridView
 {
@@ -42,16 +42,16 @@ final class UserRankGridView extends AbstractGridView
                 ->label('wcf.global.objectID')
                 ->renderer(new ObjectIdColumnRenderer())
                 ->sortable(),
-            GridViewColumn::for('rankTitle')
+            GridViewColumn::for('title')
                 ->label('wcf.acp.user.rank.title')
-                ->sortable(true, 'rankTitleI18n')
+                ->sortable(sortByDatabaseColumn: "userRankContent.title")
                 ->titleColumn()
-                ->filter(new I18nTextFilter())
+                ->filter(new TextFilter("userRankContent.title"))
                 ->renderer([
                     new class extends DefaultColumnRenderer {
                         public function render(mixed $value, DatabaseObject $row): string
                         {
-                            \assert($row instanceof UserRank);
+                            \assert($row instanceof ViewableUserRank);
 
                             return '<span class="badge label' . ($row->cssClassName ? ' ' . $row->cssClassName : '') . '">'
                                 . StringUtil::encodeHTML($row->getTitle())
@@ -66,7 +66,7 @@ final class UserRankGridView extends AbstractGridView
                     new class extends DefaultColumnRenderer {
                         public function render(mixed $value, DatabaseObject $row): string
                         {
-                            \assert($row instanceof UserRank);
+                            \assert($row instanceof ViewableUserRank);
 
                             return $row->rankImage ? $row->getImage() : '';
                         }
@@ -117,7 +117,7 @@ final class UserRankGridView extends AbstractGridView
         $this->setInteractionProvider($provider);
         $this->setBulkInteractionProvider(new UserRankBulkInteractions());
         $this->addRowLink(new GridViewRowLink(UserRankEditForm::class));
-        $this->setSortField('rankTitle');
+        $this->setSortField('title');
     }
 
     #[\Override]
@@ -127,9 +127,9 @@ final class UserRankGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): I18nUserRankList
+    protected function createObjectList(): ViewableUserRankList
     {
-        return new I18nUserRankList();
+        return new ViewableUserRankList();
     }
 
     #[\Override]
