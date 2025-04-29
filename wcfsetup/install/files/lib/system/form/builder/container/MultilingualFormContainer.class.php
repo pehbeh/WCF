@@ -3,9 +3,7 @@
 namespace wcf\system\form\builder\container;
 
 use wcf\system\form\builder\field\BooleanFormField;
-use wcf\system\form\builder\field\dependency\EmptyFormFieldDependency;
 use wcf\system\form\builder\field\dependency\NonEmptyFormFieldDependency;
-use wcf\system\form\builder\IFormChildNode;
 use wcf\system\language\LanguageFactory;
 
 /**
@@ -56,56 +54,38 @@ final class MultilingualFormContainer extends FormContainer
     }
 
     /**
-     * @template T of IFormChildNode
+     * Returns a map of language codes to their respective tab containers.
      *
-     * @param class-string<T> $fieldClass
-     * @param null|callable(T): void $callback
-     *
-     * @return self
+     * @return array<string, TabFormContainer>
      */
-    public function appendMultilingualFormField(string $fieldClass, string $id, ?callable $callback = null, ?string $parentNodeId = null): self
+    public function getLangaugeTabs(): array
     {
-        $field = \call_user_func([$fieldClass, "create"], $id);
-        /** @var T $field */
-        $field->addDependency(
-            EmptyFormFieldDependency::create('isMultilingual')
-                ->fieldId('isMultilingual')
-        );
-
-        if ($parentNodeId !== null) {
-            $container = $this->getNodeById($parentNodeId);
-            \assert($container instanceof IFormContainer);
-        } else {
-            $container = $this;
-        }
-
-        $container->appendChild($field);
-
-        if ($callback !== null) {
-            $callback($field);
-        }
-
+        $result = [];
         foreach (LanguageFactory::getInstance()->getLanguages() as $language) {
             $tab = $this->tabContainer->getNodeById("{$this->getId()}_language_{$language->languageCode}");
             \assert($tab instanceof TabFormContainer);
 
-            $field = \call_user_func([$fieldClass, "create"], "{$id}_{$language->languageCode}");
-            /** @var T $field */
-            if ($field instanceof IFormContainer) {
-                $tab->appendChild($field);
-            } else {
-                $containerId = ($parentNodeId === null ? $this->getId() : $parentNodeId) . "_{$language->languageCode}";
-                $container = $tab->getNodeById($containerId);
-                \assert($container instanceof IFormContainer);
-
-                $container->appendChild($field);
-            }
-
-            if ($callback !== null) {
-                $callback($field);
-            }
+            $result[$language->languageCode] = $tab;
         }
 
-        return $this;
+        return $result;
+    }
+
+    /**
+     * Returns a map of language codes to their respective form containers in the tab.
+     *
+     * @return array<string, FormContainer>
+     */
+    public function getLangaugeContainers(): array
+    {
+        $result = [];
+        foreach (LanguageFactory::getInstance()->getLanguages() as $language) {
+            $container = $this->tabContainer->getNodeById("{$this->getId()}_{$language->languageCode}");
+            \assert($container instanceof FormContainer);
+
+            $result[$language->languageCode] = $container;
+        }
+
+        return $result;
     }
 }

@@ -13,6 +13,7 @@ use wcf\system\form\builder\data\processor\CustomFormDataProcessor;
 use wcf\system\form\builder\data\processor\MultilingualFormDataProcessor;
 use wcf\system\form\builder\field\BadgeColorFormField;
 use wcf\system\form\builder\field\BooleanFormField;
+use wcf\system\form\builder\field\dependency\EmptyFormFieldDependency;
 use wcf\system\form\builder\field\IntegerFormField;
 use wcf\system\form\builder\field\SelectFormField;
 use wcf\system\form\builder\field\SingleSelectionFormField;
@@ -62,16 +63,25 @@ class UserRankAddForm extends AbstractFormBuilderForm
     {
         parent::createForm();
 
+        $multilingualContainer = MultilingualFormContainer::create('general');
+        $multilingualContainer->appendChildren([
+            TitleFormField::create()
+                ->addDependency(
+                    EmptyFormFieldDependency::create('isMultilingual')
+                        ->fieldId('isMultilingual')
+                )
+                ->label('wcf.acp.user.rank.title'),
+        ]);
+
+        foreach ($multilingualContainer->getLangaugeContainers() as $langaugeCode => $container) {
+            $container->appendChildren([
+                TitleFormField::create("title_{$langaugeCode}")
+                    ->label('wcf.acp.user.rank.title'),
+            ]);
+        }
+
         $this->form->appendChildren([
-            MultilingualFormContainer::create('general')
-                ->appendMultilingualFormField(
-                    TitleFormField::class,
-                    'title',
-                    static function (TitleFormField $field) {
-                        $field->required()
-                            ->label('wcf.acp.user.rank.title');
-                    }
-                ),
+            $multilingualContainer,
             FormContainer::create('section')
                 ->appendChildren([
                     BadgeColorFormField::create('cssClassName')
