@@ -14,7 +14,7 @@ use wcf\system\language\LanguageFactory;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.2
  */
-final class MultilingualContainer extends FormContainer
+final class MultilingualFormContainer extends FormContainer
 {
     public readonly TabMenuFormContainer $tabContainer;
 

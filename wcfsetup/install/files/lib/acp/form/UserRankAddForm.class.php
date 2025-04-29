@@ -8,7 +8,7 @@ use wcf\data\user\rank\UserRank;
 use wcf\data\user\rank\UserRankAction;
 use wcf\form\AbstractFormBuilderForm;
 use wcf\system\form\builder\container\FormContainer;
-use wcf\system\form\builder\container\MultilingualContainer;
+use wcf\system\form\builder\container\MultilingualFormContainer;
 use wcf\system\form\builder\data\processor\CustomFormDataProcessor;
 use wcf\system\form\builder\data\processor\MultilingualFormDataProcessor;
 use wcf\system\form\builder\field\BadgeColorFormField;
@@ -63,7 +63,7 @@ class UserRankAddForm extends AbstractFormBuilderForm
         parent::createForm();
 
         $this->form->appendChildren([
-            MultilingualContainer::create('general')
+            MultilingualFormContainer::create('general')
                 ->appendMultilingualFormField(
                     TitleFormField::class,
                     'title',
