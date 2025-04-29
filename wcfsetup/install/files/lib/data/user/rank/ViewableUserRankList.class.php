@@ -2,7 +2,7 @@
 
 namespace wcf\data\user\rank;
 
-use wcf\system\language\LanguageFactory;
+use wcf\data\TMultilingualContentList;
 use wcf\system\WCF;
 
 /**
@@ -16,11 +16,14 @@ use wcf\system\WCF;
 class ViewableUserRankList extends UserRankList
 {
     /**
+     * @use TMultilingualContentList<ViewableUserRank>
+     */
+    use TMultilingualContentList;
+
+    /**
      * @inheritDoc
      */
     public $decoratorClassName = ViewableUserRank::class;
-
-    public readonly int $langaugeID;
 
     public function __construct(?int $langaugeID = null)
     {
@@ -39,12 +42,11 @@ class ViewableUserRankList extends UserRankList
         $this->sqlSelects = "userRankContent.title";
     }
 
-    private function createSelectQuery(): string
+    #[\Override]
+    protected function createSubSelectQuery(int $preferredLanguageID, int $defaultLanguageID): string
     {
         $alias = $this->getDatabaseTableAlias();
         $tableName = $this->getDatabaseTableName();
-        $preferredLanguageID = $this->langaugeID;
-        $defaultLanguageID = LanguageFactory::getInstance()->getDefaultLanguageID();
 
         return <<<SQL
             (
@@ -62,86 +64,5 @@ class ViewableUserRankList extends UserRankList
                 FROM   {$tableName} {$alias}
             )
         SQL;
-    }
-
-    // TODO Do the following functions have to be copied for each implementation?
-    #[\Override]
-    public function countObjects()
-    {
-        $sql = "SELECT  COUNT(*)
-                FROM    " . $this->createSelectQuery() . " " . $this->getDatabaseTableAlias() . "
-                " . $this->sqlConditionJoins . "
-                " . $this->getConditionBuilder();
-        $statement = WCF::getDB()->prepare($sql);
-        $statement->execute($this->getConditionBuilder()->getParameters());
-
-        return $statement->fetchSingleColumn();
-    }
-
-    #[\Override]
-    public function readObjectIDs()
-    {
-        $this->objectIDs = [];
-        $sql = "SELECT  " . $this->getDatabaseTableAlias() . "." . $this->getDatabaseTableIndexName() . " AS objectID
-                FROM    " . $this->createSelectQuery() . " " . $this->getDatabaseTableAlias() . "
-                " . $this->sqlConditionJoins . "
-                " . $this->getConditionBuilder() . "
-                " . (!empty($this->sqlOrderBy) ? "ORDER BY " . $this->sqlOrderBy : '');
-        $statement = WCF::getDB()->prepare($sql, $this->sqlLimit, $this->sqlOffset);
-        $statement->execute($this->getConditionBuilder()->getParameters());
-        $this->objectIDs = $statement->fetchAll(\PDO::FETCH_COLUMN);
-    }
-
-    #[\Override]
-    public function readObjects()
-    {
-        if ($this->objectIDs !== null) {
-            if (empty($this->objectIDs)) {
-                return;
-            }
-
-            $objectIdPlaceholder = "?" . \str_repeat(',?', \count($this->objectIDs) - 1);
-
-            $sql = "SELECT  " . (!empty($this->sqlSelects) ? $this->sqlSelects . ($this->useQualifiedShorthand ? ',' : '') : '') . "
-                            " . ($this->useQualifiedShorthand ? $this->getDatabaseTableAlias() . '.*' : '') . "
-                    FROM    " . $this->createSelectQuery() . " " . $this->getDatabaseTableAlias() . "
-                            " . $this->sqlJoins . "
-                    WHERE   " . $this->getDatabaseTableAlias() . "." . $this->getDatabaseTableIndexName() . " IN ({$objectIdPlaceholder})
-                            " . (!empty($this->sqlOrderBy) ? "ORDER BY " . $this->sqlOrderBy : '');
-            $statement = WCF::getDB()->prepare($sql);
-            $statement->execute($this->objectIDs);
-            // @phpstan-ignore argument.templateType
-            $this->objects = $statement->fetchObjects(($this->objectClassName ?: $this->className));
-        } else {
-            $sql = "SELECT  " . (!empty($this->sqlSelects) ? $this->sqlSelects . ($this->useQualifiedShorthand ? ',' : '') : '') . "
-                            " . ($this->useQualifiedShorthand ? $this->getDatabaseTableAlias() . '.*' : '') . "
-                    FROM    " . $this->createSelectQuery() . " " . $this->getDatabaseTableAlias() . "
-                    " . $this->sqlJoins . "
-                    " . $this->getConditionBuilder() . "
-                    " . (!empty($this->sqlOrderBy) ? "ORDER BY " . $this->sqlOrderBy : '');
-            $statement = WCF::getDB()->prepare($sql, $this->sqlLimit, $this->sqlOffset);
-            $statement->execute($this->getConditionBuilder()->getParameters());
-            // @phpstan-ignore argument.templateType
-            $this->objects = $statement->fetchObjects(($this->objectClassName ?: $this->className));
-        }
-
-        // decorate objects
-        if (!empty($this->decoratorClassName)) {
-            foreach ($this->objects as &$object) {
-                $object = new $this->decoratorClassName($object);
-            }
-            unset($object);
-        }
-
-        // use table index as array index
-        $objects = $this->indexToObject = [];
-        foreach ($this->objects as $object) {
-            $objectID = $object->getObjectID();
-            $objects[$objectID] = $object;
-
-            $this->indexToObject[] = $objectID;
-        }
-        $this->objectIDs = $this->indexToObject;
-        $this->objects = $objects;
     }
 }
