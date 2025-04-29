@@ -12,6 +12,7 @@ use wcf\system\WCF;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
  * @property-read ?string $title
+ * @property-read ?int $languageID
  * @mixin   UserRank
  * @extends DatabaseObjectDecorator<UserRank>
  */
