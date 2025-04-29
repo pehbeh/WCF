@@ -2,7 +2,6 @@
 
 namespace wcf\system\form\builder\data\processor;
 
-use wcf\data\IStorableObject;
 use wcf\data\language\Language;
 use wcf\system\form\builder\IFormDocument;
 use wcf\system\language\LanguageFactory;
@@ -13,7 +12,7 @@ use wcf\system\language\LanguageFactory;
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since 6.2
  */
-final class MultilingualFormDataProcessor extends AbstractFormDataProcessor
+abstract class MultilingualFormDataProcessor extends AbstractFormDataProcessor
 {
     public function __construct(
         public readonly string $arrayIndex,
@@ -152,13 +151,5 @@ final class MultilingualFormDataProcessor extends AbstractFormDataProcessor
         }
 
         return $parameters;
-    }
-
-    #[\Override]
-    public function processObjectData(IFormDocument $document, array $data, IStorableObject $object)
-    {
-        // TODO
-
-        return $data;
     }
 }

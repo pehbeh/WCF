@@ -132,9 +132,31 @@ class UserRankAddForm extends AbstractFormBuilderForm
     {
         parent::finalizeForm();
 
-        // TODO load values in edit form
         $this->form->getDataHandler()
-            ->addProcessor(new MultilingualFormDataProcessor('content', ['title']))
+            ->addProcessor(
+                new class('content', ['title']) extends MultilingualFormDataProcessor {
+                    #[\Override]
+                    public function processObjectData(IFormDocument $document, array $data, IStorableObject $object)
+                    {
+                        \assert($object instanceof UserRank);
+
+                        $sql = "SELECT    content.title, language.languageCode
+                                FROM      wcf1_user_rank_content content
+                                LEFT JOIN wcf1_language language
+                                ON        language.languageID = content.languageID
+                                WHERE     content.rankID = ?";
+                        $statement = WCF::getDB()->prepare($sql);
+                        $statement->execute([$object->rankID]);
+
+                        while ($row = $statement->fetchArray()) {
+                            $key = "title" . ($row['languageCode'] ? "_{$row['languageCode']}" : "");
+                            $data[$key] = $row['title'];
+                        }
+
+                        return $data;
+                    }
+                }
+            )
             ->addProcessor(
                 new CustomFormDataProcessor(
                     'requiredGenderProcessor',
