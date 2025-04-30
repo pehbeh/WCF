@@ -18,7 +18,6 @@ use wcf\data\user\ignore\UserIgnore;
 use wcf\data\user\online\UserOnline;
 use wcf\data\user\option\ViewableUserOption;
 use wcf\data\user\rank\UserRank;
-use wcf\data\user\rank\ViewableUserRank;
 use wcf\system\cache\builder\UserGroupPermissionCacheBuilder;
 use wcf\system\cache\eager\UserRankCache;
 use wcf\system\cache\runtime\FileRuntimeCache;
@@ -930,7 +929,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
         return '';
     }
 
-    public function getRank(): ?ViewableUserRank
+    public function getRank(): ?UserRank
     {
         if (!\MODULE_USER_RANK) {
             return null;
@@ -940,7 +939,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
             return null;
         }
 
-        $userRanks = (new UserRankCache(WCF::getLanguage()->languageID))->getCache();
+        $userRanks = (new UserRankCache())->getCache();
 
         return $userRanks[$this->rankID] ?? null;
     }
