@@ -2,7 +2,7 @@
 
 namespace wcf\system\interaction\bulk\admin;
 
-use wcf\data\user\rank\ViewableUserRankList;
+use wcf\data\user\rank\UserRankList;
 use wcf\event\interaction\bulk\admin\UserRankBulkInteractionCollecting;
 use wcf\system\event\EventHandler;
 use wcf\system\interaction\bulk\AbstractBulkInteractionProvider;
@@ -32,6 +32,6 @@ final class UserRankBulkInteractions extends AbstractBulkInteractionProvider
     #[\Override]
     public function getObjectListClassName(): string
     {
-        return ViewableUserRankList::class;
+        return UserRankList::class;
     }
 }

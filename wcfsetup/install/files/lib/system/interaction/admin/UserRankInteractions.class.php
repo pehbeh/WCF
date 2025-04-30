@@ -2,7 +2,7 @@
 
 namespace wcf\system\interaction\admin;
 
-use wcf\data\user\rank\ViewableUserRank;
+use wcf\data\user\rank\UserRank;
 use wcf\event\interaction\admin\UserRankInteractionCollecting;
 use wcf\system\event\EventHandler;
 use wcf\system\interaction\AbstractInteractionProvider;
@@ -32,6 +32,6 @@ final class UserRankInteractions extends AbstractInteractionProvider
     #[\Override]
     public function getObjectClassName(): string
     {
-        return ViewableUserRank::class;
+        return UserRank::class;
     }
 }
