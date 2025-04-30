@@ -60,7 +60,6 @@ return [
         ->columns([
             NotNullInt10DatabaseTableColumn::create('rankID'),
             IntDatabaseTableColumn::create('languageID')
-                ->length(10)
                 ->defaultValue(null),
             NotNullVarchar255DatabaseTableColumn::create('title')
                 ->defaultValue(''),
