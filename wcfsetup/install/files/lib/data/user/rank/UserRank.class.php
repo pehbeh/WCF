@@ -32,8 +32,10 @@ class UserRank extends DatabaseObject implements ITitledObject
 
     /**
      * @var array<int, string>
+     *
+     * @since 6.2
      */
-    protected array $content;
+    protected array $titles;
 
     /**
      * Returns the image of this user rank.
@@ -60,25 +62,24 @@ class UserRank extends DatabaseObject implements ITitledObject
      */
     public function getTitle(): string
     {
-        $this->loadContent();
+        $this->loadTitles();
 
-        if ($this->content === []) {
+        if ($this->titles === []) {
             // Backwards compatibility
             return WCF::getLanguage()->get($this->rankTitle);
         }
 
-        if ($this->isMultilingual === 0) {
-            return \reset($this->content);
-        } else {
-            return $this->content[WCF::getLanguage()->languageID]
-                ?? $this->content[LanguageFactory::getInstance()->getDefaultLanguageID()]
-                ?? \reset($this->content);
-        }
+        return $this->titles[WCF::getLanguage()->languageID]
+            ?? $this->titles[LanguageFactory::getInstance()->getDefaultLanguageID()]
+            ?? \reset($this->titles);
     }
 
-    protected function loadContent(): void
+    /**
+     * @since 6.2
+     */
+    protected function loadTitles(): void
     {
-        if (isset($this->content)) {
+        if (isset($this->titles)) {
             return;
         }
 
@@ -86,13 +87,22 @@ class UserRank extends DatabaseObject implements ITitledObject
                 FROM   wcf1_user_rank_content
                 WHERE  rankID = ?";
 
-        $statement = WCF::getDB()->prepare($sql, 1);
+        $statement = WCF::getDB()->prepare($sql);
         $statement->execute([$this->rankID]);
 
-        $this->content = [];
-        while ($row = $statement->fetchArray()) {
-            $this->content[$row['languageID'] ?? 0] = $row['title'];
+        $this->titles = $statement->fetchMap('languageID', 'title');
+    }
+
+    /**
+     * @since 6.2
+     */
+    public function setRankTitle(int $languageID, string $title): void
+    {
+        if (!isset($this->titles)) {
+            $this->titles = [];
         }
+
+        $this->titles[$languageID] = $title;
     }
 
     /**

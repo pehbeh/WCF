@@ -12,11 +12,21 @@ use wcf\system\WCF;
  * @since 6.2
  *
  * @template-covariant TDatabaseObject of DatabaseObject|DatabaseObjectDecorator<DatabaseObject>
- * @mixin DatabaseObjectList<TDatabaseObject>
+ * @extends DatabaseObjectList<TDatabaseObject>
  */
-trait TMultilingualContentList
+abstract class MultilingualContentList extends DatabaseObjectList
 {
-    public readonly int $langaugeID;
+    public readonly int $preferredLanguageID;
+
+    public function __construct(?int $preferredLanguageID = null)
+    {
+        parent::__construct();
+
+        if ($preferredLanguageID === null) {
+            $preferredLanguageID = WCF::getLanguage()->languageID;
+        }
+        $this->preferredLanguageID = $preferredLanguageID;
+    }
 
     #[\Override]
     public function countObjects()
@@ -101,7 +111,7 @@ trait TMultilingualContentList
     protected function getSubSelectQuery(): string
     {
         return $this->createSubSelectQuery(
-            $this->langaugeID,
+            $this->preferredLanguageID,
             LanguageFactory::getInstance()->getDefaultLanguageID()
         );
     }

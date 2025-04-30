@@ -5,8 +5,8 @@ namespace wcf\system\gridView\admin;
 use wcf\acp\form\UserRankEditForm;
 use wcf\data\DatabaseObject;
 use wcf\data\user\group\UserGroup;
-use wcf\data\user\rank\ViewableUserRank;
-use wcf\data\user\rank\ViewableUserRankList;
+use wcf\data\user\rank\UserRank;
+use wcf\data\user\rank\UserRankList;
 use wcf\event\gridView\admin\UserRankGridViewInitialized;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\SelectFilter;
@@ -31,7 +31,7 @@ use wcf\util\StringUtil;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  *
- * @extends AbstractGridView<ViewableUserRank, ViewableUserRankList>
+ * @extends AbstractGridView<UserRank, UserRankList>
  */
 final class UserRankGridView extends AbstractGridView
 {
@@ -51,7 +51,7 @@ final class UserRankGridView extends AbstractGridView
                     new class extends DefaultColumnRenderer {
                         public function render(mixed $value, DatabaseObject $row): string
                         {
-                            \assert($row instanceof ViewableUserRank);
+                            \assert($row instanceof UserRank);
 
                             return '<span class="badge label' . ($row->cssClassName ? ' ' . $row->cssClassName : '') . '">'
                                 . StringUtil::encodeHTML($row->getTitle())
@@ -66,7 +66,7 @@ final class UserRankGridView extends AbstractGridView
                     new class extends DefaultColumnRenderer {
                         public function render(mixed $value, DatabaseObject $row): string
                         {
-                            \assert($row instanceof ViewableUserRank);
+                            \assert($row instanceof UserRank);
 
                             return $row->rankImage ? $row->getImage() : '';
                         }
@@ -127,9 +127,9 @@ final class UserRankGridView extends AbstractGridView
     }
 
     #[\Override]
-    protected function createObjectList(): ViewableUserRankList
+    protected function createObjectList(): UserRankList
     {
-        return new ViewableUserRankList();
+        return new UserRankList();
     }
 
     #[\Override]
