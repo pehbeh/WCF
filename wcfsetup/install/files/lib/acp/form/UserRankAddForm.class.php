@@ -11,6 +11,7 @@ use wcf\system\form\builder\container\FormContainer;
 use wcf\system\form\builder\container\MultilingualFormContainer;
 use wcf\system\form\builder\data\processor\CustomFormDataProcessor;
 use wcf\system\form\builder\data\processor\MultilingualFormDataProcessor;
+use wcf\system\form\builder\data\processor\VoidFormDataProcessor;
 use wcf\system\form\builder\field\BadgeColorFormField;
 use wcf\system\form\builder\field\BooleanFormField;
 use wcf\system\form\builder\field\dependency\EmptyFormFieldDependency;
@@ -20,6 +21,7 @@ use wcf\system\form\builder\field\SingleSelectionFormField;
 use wcf\system\form\builder\field\TitleFormField;
 use wcf\system\form\builder\field\UploadFormField;
 use wcf\system\form\builder\IFormDocument;
+use wcf\system\language\LanguageFactory;
 use wcf\system\WCF;
 
 /**
@@ -150,23 +152,34 @@ class UserRankAddForm extends AbstractFormBuilderForm
                     {
                         \assert($object instanceof UserRank);
 
-                        $sql = "SELECT    content.title, language.languageCode
-                                FROM      wcf1_user_rank_content content
-                                LEFT JOIN wcf1_language language
-                                ON        language.languageID = content.languageID
-                                WHERE     content.rankID = ?";
+                        $sql = "SELECT    title, languageID
+                                FROM      wcf1_user_rank_content
+                                WHERE     rankID = ?";
                         $statement = WCF::getDB()->prepare($sql);
                         $statement->execute([$object->rankID]);
 
-                        while ($row = $statement->fetchArray()) {
-                            $key = "title" . ($row['languageCode'] ? "_{$row['languageCode']}" : "");
-                            $data[$key] = $row['title'];
+                        $titles = $statement->fetchMap('languageID', 'title');
+
+                        foreach ($titles as $languageID => $title) {
+                            $languageCode = LanguageFactory::getInstance()->getLanguage($languageID)->languageCode;
+
+                            $data["title_{$languageCode}"] = $title;
+                        }
+
+                        if (\count($titles) > 1) {
+                            $data['isMultilingual'] = true;
+                        } else {
+                            $data['isMultilingual'] = false;
+                            if ($titles !== []) {
+                                $data["title"] = \reset($titles);
+                            }
                         }
 
                         return $data;
                     }
                 }
             )
+            ->addProcessor(new VoidFormDataProcessor('isMultilingual'))
             ->addProcessor(
                 new CustomFormDataProcessor(
                     'requiredGenderProcessor',
