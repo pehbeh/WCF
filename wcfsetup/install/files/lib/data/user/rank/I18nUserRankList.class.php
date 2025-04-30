@@ -12,7 +12,7 @@ use wcf\data\I18nDatabaseObjectList;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.0
  *
- * @deprecated 6.2 use `ViewableUserRankList` instead
+ * @deprecated 6.2 use `UserRankList` instead
  *
  * @extends I18nDatabaseObjectList<UserRank>
  */
