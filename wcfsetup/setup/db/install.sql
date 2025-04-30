@@ -607,7 +607,7 @@ CREATE TABLE wcf1_file (
 	width INT,
 	height INT,
 	fileHashWebp CHAR(64),
-	uploadTime INT(10),
+	uploadTime INT(10)
 );
 
 DROP TABLE IF EXISTS wcf1_file_temporary;
