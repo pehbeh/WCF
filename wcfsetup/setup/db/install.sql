@@ -1957,16 +1957,15 @@ CREATE TABLE wcf1_user_rank (
 	rankImage VARCHAR(255) NOT NULL DEFAULT '',
 	repeatImage TINYINT(3) NOT NULL DEFAULT 1,
 	requiredGender TINYINT(1) NOT NULL DEFAULT 0,
-	hideTitle TINYINT(1) NOT NULL DEFAULT 0,
-	isMultilingual TINYINT(1) NOT NULL DEFAULT 0
+	hideTitle TINYINT(1) NOT NULL DEFAULT 0
 );
 
 DROP TABLE IF EXISTS wcf1_user_rank_content;
 CREATE TABLE wcf1_user_rank_content (
-	rankID INT(10) NOT NULL,
-	languageID INT(10) DEFAULT NULL,
-	title VARCHAR(255) NOT NULL DEFAULT '',
-	UNIQUE KEY id (rankID, languageID)
+	rankID INT NOT NULL,
+	languageID INT NOT NULL,
+	title VARCHAR(255) NOT NULL,
+	PRIMARY KEY (rankID, languageID)
 );
 
 DROP TABLE IF EXISTS wcf1_user_session;

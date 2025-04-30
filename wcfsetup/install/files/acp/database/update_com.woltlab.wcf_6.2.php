@@ -8,13 +8,11 @@
  * @license   GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 
-use wcf\system\database\table\column\DefaultFalseBooleanDatabaseTableColumn;
 use wcf\system\database\table\column\IntDatabaseTableColumn;
-use wcf\system\database\table\column\NotNullInt10DatabaseTableColumn;
 use wcf\system\database\table\column\NotNullVarchar255DatabaseTableColumn;
 use wcf\system\database\table\DatabaseTable;
 use wcf\system\database\table\index\DatabaseTableForeignKey;
-use wcf\system\database\table\index\DatabaseTableIndex;
+use wcf\system\database\table\index\DatabaseTablePrimaryIndex;
 use wcf\system\database\table\PartialDatabaseTable;
 
 return [
@@ -52,22 +50,17 @@ return [
                 ->referencedColumns(['fileID'])
                 ->onDelete('SET NULL'),
         ]),
-    PartialDatabaseTable::create('wcf1_user_rank')
-        ->columns([
-            DefaultFalseBooleanDatabaseTableColumn::create('isMultilingual'),
-        ]),
     DatabaseTable::create('wcf1_user_rank_content')
         ->columns([
-            NotNullInt10DatabaseTableColumn::create('rankID'),
+            IntDatabaseTableColumn::create('rankID')
+                ->notNull(),
             IntDatabaseTableColumn::create('languageID')
-                ->defaultValue(null),
-            NotNullVarchar255DatabaseTableColumn::create('title')
-                ->defaultValue(''),
+                ->notNull(),
+            NotNullVarchar255DatabaseTableColumn::create('title'),
         ])
         ->indices([
-            DatabaseTableIndex::create('id')
-                ->columns(['rankID', 'languageID'])
-                ->type(DatabaseTableIndex::UNIQUE_TYPE),
+            DatabaseTablePrimaryIndex::create()
+                ->columns(['rankID', 'languageID']),
         ])
         ->foreignKeys([
             DatabaseTableForeignKey::create()
