@@ -39,7 +39,7 @@ class IntegerFormOption extends AbstractFormOption
     #[\Override]
     public function getConfigurationFormFields(): array
     {
-        return ['minIntegerValue', 'maxIntegerValue'];
+        return ['minIntegerValue', 'maxIntegerValue', 'required'];
     }
 
     #[\Override]

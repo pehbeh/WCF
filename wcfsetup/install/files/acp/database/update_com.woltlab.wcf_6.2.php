@@ -11,6 +11,7 @@
 use wcf\system\database\table\column\IntDatabaseTableColumn;
 use wcf\system\database\table\column\MediumtextDatabaseTableColumn;
 use wcf\system\database\table\column\TextDatabaseTableColumn;
+use wcf\system\database\table\column\TinyintDatabaseTableColumn;
 use wcf\system\database\table\index\DatabaseTableForeignKey;
 use wcf\system\database\table\PartialDatabaseTable;
 
@@ -56,6 +57,8 @@ return [
             TextDatabaseTableColumn::create('validationPattern')
                 ->drop(),
             MediumtextDatabaseTableColumn::create('selectOptions')
+                ->drop(),
+            TinyintDatabaseTableColumn::create('required')
                 ->drop(),
             MediumtextDatabaseTableColumn::create('configurationData'),
         ]),

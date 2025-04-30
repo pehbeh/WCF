@@ -42,7 +42,7 @@ class CurrencyFormOption extends AbstractFormOption
     #[\Override]
     public function getConfigurationFormFields(): array
     {
-        return ['currency', 'minFloatValue', 'maxFloatValue'];
+        return ['currency', 'minFloatValue', 'maxFloatValue', 'required'];
     }
 
     #[\Override]

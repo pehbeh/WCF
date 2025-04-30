@@ -39,7 +39,7 @@ class FloatFormOption extends AbstractFormOption
     #[\Override]
     public function getConfigurationFormFields(): array
     {
-        return ['minFloatValue', 'maxFloatValue'];
+        return ['minFloatValue', 'maxFloatValue', 'required'];
     }
 
     #[\Override]

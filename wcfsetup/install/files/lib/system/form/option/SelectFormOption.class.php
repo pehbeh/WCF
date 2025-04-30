@@ -52,9 +52,7 @@ class SelectFormOption extends AbstractFormOption
     #[\Override]
     public function getConfigurationFormFields(): array
     {
-        return [
-            'selectOptions'
-        ];
+        return ['selectOptions', 'required'];
     }
 
     #[\Override]

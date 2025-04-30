@@ -213,7 +213,7 @@ class ContactForm extends AbstractFormBuilderForm
             $formField->label($option->optionTitle);
             $formField->description($option->optionDescription);
 
-            if ($option->required) {
+            if (!empty($option->getConfigurationData()['required'])) {
                 $formField->required();
             }
 

@@ -20,7 +20,7 @@ abstract class AbstractFormOption implements IFormOption
     #[\Override]
     public function getConfigurationFormFields(): array
     {
-        return [];
+        return ['required'];
     }
 
     #[\Override]

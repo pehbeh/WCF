@@ -4135,6 +4135,8 @@ Dateianhänge:
 		<item name="wcf.form.option.shared.minValue"><![CDATA[Minimum]]></item>
 		<item name="wcf.form.option.shared.maxValue"><![CDATA[Maximum]]></item>
 		<item name="wcf.form.option.shared.selectOptions"><![CDATA[Auswahloptionen]]></item>
+		<item name="wcf.form.option.shared.required"><![CDATA[Das Feld muss zwingend ausgefüllt werden.]]></item>
+		<item name="wcf.form.option.optionType"><![CDATA[Feldtyp]]></item>
 	</category>
 	<category name="wcf.image">
 		<item name="wcf.image.coverPhoto"><![CDATA[Titelbild]]></item>

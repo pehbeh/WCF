@@ -38,6 +38,6 @@ class TextFormOption extends AbstractFormOption
     #[\Override]
     public function getConfigurationFormFields(): array
     {
-        return ['maxLength', 'defaultTextValue'];
+        return ['maxLength', 'defaultTextValue', 'required'];
     }
 }

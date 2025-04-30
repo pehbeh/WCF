@@ -4,6 +4,7 @@ namespace wcf\system\form\option;
 
 use wcf\event\form\option\SharedConfigurationFormFieldCollecting;
 use wcf\system\event\EventHandler;
+use wcf\system\form\builder\field\BooleanFormField;
 use wcf\system\form\builder\field\FloatFormField;
 use wcf\system\form\builder\field\IFormField;
 use wcf\system\form\builder\field\IntegerFormField;
@@ -57,6 +58,9 @@ final class SharedConfigurationFormFields
             'selectOptions' => SelectOptionsFormField::create('selectOptions')
                 ->label('wcf.form.option.shared.selectOptions')
                 ->required(),
+            'required' => BooleanFormField::create('required')
+                ->label('wcf.form.option.shared.required')
+                ->value(false),
         ];
     }
 

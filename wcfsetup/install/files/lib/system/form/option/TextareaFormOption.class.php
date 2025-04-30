@@ -36,7 +36,7 @@ class TextareaFormOption extends AbstractFormOption
     #[\Override]
     public function getConfigurationFormFields(): array
     {
-        return ['maxLength'];
+        return ['maxLength', 'required'];
     }
 
     #[\Override]

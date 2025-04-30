@@ -467,7 +467,6 @@ CREATE TABLE wcf1_contact_option (
 	optionDescription TEXT,
 	optionType VARCHAR(255) NOT NULL DEFAULT '',
 	configurationData MEDIUMTEXT,
-	required TINYINT(1) NOT NULL DEFAULT 0,
 	showOrder INT(10) NOT NULL DEFAULT 0,
 	isDisabled TINYINT(1) NOT NULL DEFAULT 0,
 	originIsSystem TINYINT(1) NOT NULL DEFAULT 0

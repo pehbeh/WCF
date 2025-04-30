@@ -23,7 +23,6 @@ use wcf\util\JSON;
  * @property-read   string $optionDescription   description of the option or name of language item which contains the description
  * @property-read   string $optionType          type of the option which determines its input and output
  * @property-read   string $configurationData   JSON-encoded configuration information depending on the option type
- * @property-read   int $required               is `1` if the option has to be filled out, otherwise `0`
  * @property-read   int $showOrder              position of the option in relation to the other options
  * @property-read   int $isDisabled             is `1` if the option is disabled, otherwise `0`
  * @property-read   int $originIsSystem         is `1` if the option has been delivered by a package, otherwise `0` (i.e. the option has been created in the ACP)
