@@ -3,7 +3,7 @@
 namespace wcf\system\cache\builder;
 
 use wcf\data\user\rank\UserRank;
-use wcf\data\user\rank\UserRankList;
+use wcf\system\cache\eager\UserRankCache;
 
 /**
  * Caches the list of user ranks.
@@ -15,21 +15,22 @@ use wcf\data\user\rank\UserRankList;
  *
  * @deprecated 6.2 use `UserRankCache` instead
  */
-final class UserRankCacheBuilder extends AbstractCacheBuilder
+final class UserRankCacheBuilder extends AbstractLegacyCacheBuilder
 {
-    /**
-     * @inheritDoc
-     */
-    public function rebuild(array $parameters)
+    #[\Override]
+    protected function rebuild(array $parameters): array
     {
-        $list = new UserRankList();
-        $list->readObjects();
-
-        return $list->getObjects();
+        return (new UserRankCache())->getCache();
     }
 
     public function getRank(int $rankID): ?UserRank
     {
         return $this->getData()[$rankID] ?? null;
+    }
+
+    #[\Override]
+    public function reset(array $parameters = [])
+    {
+        (new UserRankCache())->rebuild();
     }
 }
