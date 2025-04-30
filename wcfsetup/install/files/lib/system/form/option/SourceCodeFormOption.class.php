@@ -2,8 +2,12 @@
 
 namespace wcf\system\form\option;
 
+use wcf\data\DatabaseObjectList;
+use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\SourceCodeFormField;
+use wcf\system\form\builder\field\TextFormField;
 use wcf\system\form\option\formatter\SourceCodeFormatter;
+use wcf\system\WCF;
 
 /**
  * Implementation of a form field for source code values.
@@ -31,5 +35,17 @@ class SourceCodeFormOption extends AbstractFormOption
     public function getFormatter(): SourceCodeFormatter
     {
         return new SourceCodeFormatter();
+    }
+
+    #[\Override]
+    public function getFilterFormField(string $id, array $configurationData = []): AbstractFormField
+    {
+        return TextFormField::create($id);
+    }
+
+    #[\Override]
+    public function applyFilter(DatabaseObjectList $list, string $columnName, mixed $value): void
+    {
+        $list->getConditionBuilder()->add("{$columnName} LIKE ?", ['%' . WCF::getDB()->escapeLikeValue($value) . '%']);
     }
 }

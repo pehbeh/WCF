@@ -110,28 +110,12 @@ abstract class AbstractFormOptionAddForm extends AbstractFormBuilderForm
         return $formFields;
     }
 
-    /**
-     * @return array<string, string>
-     */
-    protected function getAvailableOptionTypes(): array
-    {
-        $optionTypes = \array_map(fn($option) => $option->getTitle(), FormOptionHandler::getInstance()->getOptions());
-
-        $collator = new \Collator(WCF::getLanguage()->getLocale());
-        \uasort(
-            $optionTypes,
-            static fn(string $a, string $b) => $collator->compare($a, $b)
-        );
-
-        return $optionTypes;
-    }
-
     protected function getOptionTypeFormField(): SelectFormField
     {
         return SelectFormField::create('optionType')
             ->label('wcf.form.option.optionType')
             ->immutable($this->formAction != 'create')
-            ->options($this->getAvailableOptionTypes())
+            ->options(FormOptionHandler::getInstance()->getSortedOptionTypes())
             ->required();
     }
 }

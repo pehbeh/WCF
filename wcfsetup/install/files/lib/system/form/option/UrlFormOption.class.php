@@ -2,8 +2,12 @@
 
 namespace wcf\system\form\option;
 
+use wcf\data\DatabaseObjectList;
+use wcf\system\form\builder\field\AbstractFormField;
+use wcf\system\form\builder\field\TextFormField;
 use wcf\system\form\builder\field\UrlFormField;
 use wcf\system\form\option\formatter\UrlFormatter;
+use wcf\system\WCF;
 
 /**
  * Implementation of a form field for URLs.
@@ -31,5 +35,17 @@ class UrlFormOption extends AbstractFormOption
     public function getFormatter(): UrlFormatter
     {
         return new UrlFormatter();
+    }
+
+    #[\Override]
+    public function getFilterFormField(string $id, array $configurationData = []): AbstractFormField
+    {
+        return TextFormField::create($id);
+    }
+
+    #[\Override]
+    public function applyFilter(DatabaseObjectList $list, string $columnName, mixed $value): void
+    {
+        $list->getConditionBuilder()->add("{$columnName} LIKE ?", ['%' . WCF::getDB()->escapeLikeValue($value) . '%']);
     }
 }

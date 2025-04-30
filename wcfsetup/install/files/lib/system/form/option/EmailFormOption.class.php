@@ -2,9 +2,12 @@
 
 namespace wcf\system\form\option;
 
+use wcf\data\DatabaseObjectList;
 use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\EmailFormField;
+use wcf\system\form\builder\field\TextFormField;
 use wcf\system\form\option\formatter\EmailFormatter;
+use wcf\system\WCF;
 
 /**
  * Implementation of a form field for email addresses.
@@ -38,5 +41,17 @@ class EmailFormOption extends AbstractFormOption
     public function getPlainTextFormatter(): EmailFormatter
     {
         return $this->getFormatter();
+    }
+
+    #[\Override]
+    public function getFilterFormField(string $id, array $configurationData = []): AbstractFormField
+    {
+        return TextFormField::create($id);
+    }
+
+    #[\Override]
+    public function applyFilter(DatabaseObjectList $list, string $columnName, mixed $value): void
+    {
+        $list->getConditionBuilder()->add("{$columnName} LIKE ?", ['%' . WCF::getDB()->escapeLikeValue($value) . '%']);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace wcf\system\form\option;
 
+use wcf\data\DatabaseObjectList;
+use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\option\formatter\DefaultFormatter;
 use wcf\system\form\option\formatter\DefaultPlainTextFormatter;
 use wcf\system\form\option\formatter\IFormOptionFormatter;
@@ -39,5 +41,17 @@ abstract class AbstractFormOption implements IFormOption
     public function getPlainTextFormatter(): IFormOptionFormatter
     {
         return new DefaultPlainTextFormatter();
+    }
+
+    #[\Override]
+    public function getFilterFormField(string $id, array $configurationData = []): AbstractFormField
+    {
+        return $this->getFormField($id, $configurationData);
+    }
+
+    #[\Override]
+    public function applyFilter(DatabaseObjectList $list, string $columnName, mixed $value): void
+    {
+        $list->getConditionBuilder()->add("{$columnName} = ?", [$value]);
     }
 }

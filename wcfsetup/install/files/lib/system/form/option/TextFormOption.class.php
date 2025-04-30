@@ -2,8 +2,10 @@
 
 namespace wcf\system\form\option;
 
+use wcf\data\DatabaseObjectList;
 use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\TextFormField;
+use wcf\system\WCF;
 
 /**
  * Implementation of a form field for single-line text values.
@@ -19,6 +21,12 @@ class TextFormOption extends AbstractFormOption
     public function getId(): string
     {
         return 'text';
+    }
+
+    #[\Override]
+    public function getFilterFormField(string $id, array $configurationData = []): AbstractFormField
+    {
+        return TextFormField::create($id);
     }
 
     #[\Override]
@@ -39,5 +47,11 @@ class TextFormOption extends AbstractFormOption
     public function getConfigurationFormFields(): array
     {
         return ['maxLength', 'defaultTextValue', 'required'];
+    }
+
+    #[\Override]
+    public function applyFilter(DatabaseObjectList $list, string $columnName, mixed $value): void
+    {
+        $list->getConditionBuilder()->add("{$columnName} LIKE ?", ['%' . WCF::getDB()->escapeLikeValue($value) . '%']);
     }
 }

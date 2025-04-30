@@ -2,6 +2,7 @@
 
 namespace wcf\system\form\option;
 
+use wcf\data\DatabaseObjectList;
 use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\option\formatter\IFormOptionFormatter;
 
@@ -25,6 +26,11 @@ interface IFormOption
     public function getFormField(string $id, array $configurationData = []): AbstractFormField;
 
     /**
+     * @param array<string, mixed> $configurationData
+     */
+    public function getFilterFormField(string $id, array $configurationData = []): AbstractFormField;
+
+    /**
      * @return string[]
      */
     public function getConfigurationFormFields(): array;
@@ -32,4 +38,6 @@ interface IFormOption
     public function getFormatter(): IFormOptionFormatter;
 
     public function getPlainTextFormatter(): IFormOptionFormatter;
+
+    public function applyFilter(DatabaseObjectList $list, string $columnName, mixed $value): void;
 }

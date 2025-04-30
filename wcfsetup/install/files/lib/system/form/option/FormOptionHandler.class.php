@@ -5,6 +5,7 @@ namespace wcf\system\form\option;
 use wcf\event\form\option\FormOptionCollecting;
 use wcf\system\event\EventHandler;
 use wcf\system\SingletonFactory;
+use wcf\system\WCF;
 
 /**
  * Provides the available form options.
@@ -81,5 +82,21 @@ final class FormOptionHandler extends SingletonFactory
     public function getOption(string $identifier): ?IFormOption
     {
         return $this->options[$identifier] ?? null;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function getSortedOptionTypes(): array
+    {
+        $optionTypes = \array_map(fn($option) => $option->getTitle(), $this->getOptions());
+
+        $collator = new \Collator(WCF::getLanguage()->getLocale());
+        \uasort(
+            $optionTypes,
+            static fn(string $a, string $b) => $collator->compare($a, $b)
+        );
+
+        return $optionTypes;
     }
 }
