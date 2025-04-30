@@ -133,10 +133,12 @@ abstract class MultilingualFormDataProcessor extends AbstractFormDataProcessor
      */
     private function processMonolingualValues(array $parameters): array
     {
-        $parameters[$this->arrayIndex][0] = [];
+        $defaultLanguageID = LanguageFactory::getInstance()->getDefaultLanguageID();
+
+        $parameters[$this->arrayIndex][$defaultLanguageID] = [];
         foreach ($this->fieldIds as $fieldId) {
             if (isset($parameters["data"][$fieldId])) {
-                $parameters[$this->arrayIndex][0][$fieldId] = $parameters["data"][$fieldId];
+                $parameters[$this->arrayIndex][$defaultLanguageID][$fieldId] = $parameters["data"][$fieldId];
                 unset($parameters["data"][$fieldId]);
             }
 
@@ -144,7 +146,7 @@ abstract class MultilingualFormDataProcessor extends AbstractFormDataProcessor
                 if (\str_starts_with($key, "{$fieldId}_")) {
                     $index = \substr($key, \strlen($fieldId) + 1);
 
-                    $parameters[$this->arrayIndex][0][$index] = $value;
+                    $parameters[$this->arrayIndex][$defaultLanguageID][$index] = $value;
                     unset($parameters[$key]);
                 }
             }
