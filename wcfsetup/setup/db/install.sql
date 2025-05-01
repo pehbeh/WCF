@@ -2572,8 +2572,8 @@ INSERT INTO wcf1_template_group (parentTemplateGroupID, templateGroupName, templ
 INSERT INTO wcf1_template_group (parentTemplateGroupID, templateGroupName, templateGroupFolderName) VALUES (NULL, 'wcf.acp.template.group.shared', '_wcf_shared/');
 
 -- default options: subject and message
-INSERT INTO wcf1_contact_option (optionID, optionTitle, optionDescription, optionType, required, showOrder, originIsSystem) VALUES (1, 'wcf.contact.option1', 'wcf.contact.optionDescription1', 'text', 1, 1, 1);
-INSERT INTO wcf1_contact_option (optionID, optionTitle, optionDescription, optionType, required, showOrder, originIsSystem) VALUES (2, 'wcf.contact.option2', '', 'textarea', 1, 1, 1);
+INSERT INTO wcf1_contact_option (optionID, optionTitle, optionDescription, optionType, configurationData, showOrder, originIsSystem) VALUES (1, 'wcf.contact.option1', 'wcf.contact.optionDescription1', 'text', '{\"required\":1}', 1, 1);
+INSERT INTO wcf1_contact_option (optionID, optionTitle, optionDescription, optionType, configurationData, showOrder, originIsSystem) VALUES (2, 'wcf.contact.option2', '', 'textarea', '{\"required\":1}', 1, 1);
 
 -- default recipient: site administrator
 INSERT INTO wcf1_contact_recipient (recipientID, name, email, isAdministrator, originIsSystem) VALUES (1, 'wcf.contact.recipient.name1', '', 1, 1);
