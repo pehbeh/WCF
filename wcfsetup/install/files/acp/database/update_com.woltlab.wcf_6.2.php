@@ -74,4 +74,28 @@ return [
                 ->referencedColumns(['languageID'])
                 ->onDelete('CASCADE'),
         ]),
+    DatabaseTable::create('wcf1_bbcode_content')
+        ->columns([
+            IntDatabaseTableColumn::create('bbcodeID')
+                ->notNull(),
+            IntDatabaseTableColumn::create('languageID')
+                ->notNull(),
+            NotNullVarchar255DatabaseTableColumn::create('buttonLabel'),
+        ])
+        ->indices([
+            DatabaseTablePrimaryIndex::create()
+                ->columns(['bbcodeID', 'languageID']),
+        ])
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['bbcodeID'])
+                ->referencedTable('wcf1_bbcode')
+                ->referencedColumns(['bbcodeID'])
+                ->onDelete('CASCADE'),
+            DatabaseTableForeignKey::create()
+                ->columns(['languageID'])
+                ->referencedTable('wcf1_language')
+                ->referencedColumns(['languageID'])
+                ->onDelete('CASCADE'),
+        ]),
 ];

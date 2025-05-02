@@ -274,6 +274,14 @@ CREATE TABLE wcf1_bbcode_attribute (
 	UNIQUE KEY attributeNo (bbcodeID, attributeNo)
 );
 
+DROP TABLE IF EXISTS wcf1_bbcode_content;
+CREATE TABLE wcf1_bbcode_content (
+	bbcodeID INT NOT NULL,
+	languageID INT NOT NULL,
+	buttonLabel VARCHAR(255) NOT NULL,
+	PRIMARY KEY (bbcodeID, languageID)
+);
+
 DROP TABLE IF EXISTS wcf1_bbcode_media_provider;
 CREATE TABLE wcf1_bbcode_media_provider (
 	providerID INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -2062,6 +2070,9 @@ ALTER TABLE wcf1_attachment ADD FOREIGN KEY (tinyThumbnailID) REFERENCES wcf1_fi
 ALTER TABLE wcf1_bbcode ADD FOREIGN KEY (packageID) REFERENCES wcf1_package (packageID) ON DELETE CASCADE;
 
 ALTER TABLE wcf1_bbcode_attribute ADD FOREIGN KEY (bbcodeID) REFERENCES wcf1_bbcode (bbcodeID) ON DELETE CASCADE;
+
+ALTER TABLE wcf1_bbcode_content ADD FOREIGN KEY (bbcodeID) REFERENCES wcf1_bbcode (bbcodeID) ON DELETE CASCADE;
+ALTER TABLE wcf1_bbcode_content ADD FOREIGN KEY (languageID) REFERENCES wcf1_language (languageID) ON DELETE CASCADE;
 
 ALTER TABLE wcf1_bbcode_media_provider ADD FOREIGN KEY (packageID) REFERENCES wcf1_package (packageID) ON DELETE CASCADE;
 
