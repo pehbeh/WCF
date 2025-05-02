@@ -29,11 +29,11 @@
 </ul>
 
 <script data-relocate="true">
-	{if $field->getTextReferenceNodeId()}
+	{if $field->getTextReferenceNodeIds() !== []}
 		require(["WoltLabSuite/Core/Form/Builder/Field/Controller/BadgeColor"], ({ BadgeColorPreview }) => {
 			new BadgeColorPreview(
 				'{unsafe:$field->getPrefixedId()|encodeJS}Container',
-				'{unsafe:$field->getTextReferenceNodeId()|encodeJS}',
+				[{implode from=$field->getTextReferenceNodeIds() item=nodeId glue=','}'{$nodeId|encodeJS}'{/implode}],
 				'{unsafe:$field->getDefaultLabelText()|encodeJS}',
 			);
 		});

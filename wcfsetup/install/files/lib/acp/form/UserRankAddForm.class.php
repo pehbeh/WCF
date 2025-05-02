@@ -75,11 +75,14 @@ class UserRankAddForm extends AbstractFormBuilderForm
                 ->label('wcf.acp.user.rank.title'),
         ]);
 
+        $textReferenceNodeIds = ['title'];
         foreach ($multilingualContainer->getLangaugeContainers() as $langaugeCode => $container) {
             $container->appendChildren([
                 TitleFormField::create("title_{$langaugeCode}")
                     ->label('wcf.acp.user.rank.title'),
             ]);
+
+            $textReferenceNodeIds[] = "title_{$langaugeCode}";
         }
 
         $this->form->appendChildren([
@@ -89,8 +92,7 @@ class UserRankAddForm extends AbstractFormBuilderForm
                     BadgeColorFormField::create('cssClassName')
                         ->label('wcf.acp.user.rank.cssClassName')
                         ->description('wcf.acp.user.rank.cssClassName.description')
-                        // TODO this must be changed to work with the new `MultilingualContainer`
-                        ->textReferenceNodeId('title')
+                        ->textReferenceNodeIds($textReferenceNodeIds)
                         ->defaultLabelText(WCF::getLanguage()->get('wcf.acp.user.rank.title'))
                         ->required(),
                 ]),

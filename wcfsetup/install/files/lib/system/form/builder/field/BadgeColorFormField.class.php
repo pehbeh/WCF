@@ -41,7 +41,11 @@ final class BadgeColorFormField extends RadioButtonFormField implements IPattern
      */
     protected $templateName = 'shared_badgeColorFormField';
 
-    protected ?string $textReferenceNodeId;
+    /**
+     * @var string[]
+     */
+    protected array $textReferenceNodeIds = [];
+
     protected string $defaultLabelText;
     protected string $customClassName = '';
 
@@ -118,16 +122,42 @@ final class BadgeColorFormField extends RadioButtonFormField implements IPattern
         return $this;
     }
 
+    /**
+     * Appends the node id of a text reference node.
+     */
     public function textReferenceNode(IFormField $field): self
     {
-        $this->textReferenceNodeId = $field->getId();
+        $this->textReferenceNodeIds[] = $field->getId();
 
         return $this;
     }
 
+    /**
+     * @param IFormField[] $fields
+     */
+    public function textReferenceNodes(array $fields): self
+    {
+        $this->textReferenceNodeIds = \array_map(static fn (IFormField $field) => $field->getId(), $fields);
+
+        return $this;
+    }
+
+    /**
+     * Appends a text reference node id.
+     */
     public function textReferenceNodeId(string $id): self
     {
-        $this->textReferenceNodeId = $id;
+        $this->textReferenceNodeIds[] = $id;
+
+        return $this;
+    }
+
+    /**
+     * @param string[] $ids
+     */
+    public function textReferenceNodeIds(array $ids): self
+    {
+        $this->textReferenceNodeIds = $ids;
 
         return $this;
     }
@@ -137,9 +167,12 @@ final class BadgeColorFormField extends RadioButtonFormField implements IPattern
         return $this->defaultLabelText;
     }
 
-    public function getTextReferenceNodeId(): ?string
+    /**
+     * @return string[]
+     */
+    public function getTextReferenceNodeIds(): array
     {
-        return $this->textReferenceNodeId;
+        return $this->textReferenceNodeIds;
     }
 
     public function hasCustomClassName(): bool
