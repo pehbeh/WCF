@@ -5556,16 +5556,6 @@ Benachrichtigungen auf <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phra
 
 <p>{@$message|newlineToBreak}</p>]]></item>
 	</category>
-	<category name="wcf.user.rank">
-		<item name="wcf.user.rank.administrator"><![CDATA[Administrator]]></item>
-		<item name="wcf.user.rank.moderator"><![CDATA[Moderator]]></item>
-		<item name="wcf.user.rank.user0"><![CDATA[Anfänger]]></item>
-		<item name="wcf.user.rank.user1"><![CDATA[Schüler]]></item>
-		<item name="wcf.user.rank.user2"><![CDATA[Fortgeschrittener]]></item>
-		<item name="wcf.user.rank.user3"><![CDATA[Profi]]></item>
-		<item name="wcf.user.rank.user4"><![CDATA[Meister]]></item>
-		<item name="wcf.user.rank.user5"><![CDATA[Erleuchteter]]></item>
-	</category>
 	<category name="wcf.smiley"/>
 	<category name="wcf.upload">
 		<item name="wcf.upload.crop.image"><![CDATA[Bild zuschneiden]]></item>
@@ -7618,5 +7608,13 @@ Benachrichtigungen auf <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phra
 	<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.removeReportContent"/>
 	<item name="wcf.clipboard.label.com.woltlab.wcf.moderation.queue.marked"/>
 	<item name="wcf.acp.label.sortAfterGroupFiltering"/>
+	<item name="wcf.user.rank.administrator"/>
+	<item name="wcf.user.rank.moderator"/>
+	<item name="wcf.user.rank.user0"/>
+	<item name="wcf.user.rank.user1"/>
+	<item name="wcf.user.rank.user2"/>
+	<item name="wcf.user.rank.user3"/>
+	<item name="wcf.user.rank.user4"/>
+	<item name="wcf.user.rank.user5"/>
 </delete>
 </language>
