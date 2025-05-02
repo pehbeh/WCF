@@ -52,14 +52,6 @@ return [
         ]),
     PartialDatabaseTable::create('wcf1_contact_option')
         ->columns([
-            MediumtextDatabaseTableColumn::create('defaultValue')
-                ->drop(),
-            TextDatabaseTableColumn::create('validationPattern')
-                ->drop(),
-            MediumtextDatabaseTableColumn::create('selectOptions')
-                ->drop(),
-            TinyintDatabaseTableColumn::create('required')
-                ->drop(),
             MediumtextDatabaseTableColumn::create('configurationData'),
         ]),
     PartialDatabaseTable::create('wcf1_file')
