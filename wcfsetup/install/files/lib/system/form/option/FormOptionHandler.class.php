@@ -52,6 +52,7 @@ final class FormOptionHandler extends SingletonFactory
                 new TextFormOption(),
                 new TextareaFormOption(),
                 new UrlFormOption(),
+                new WysiwygFormOption(),
             ] as $defaultOption
         ) {
             $options[$defaultOption->getId()] = $defaultOption;
