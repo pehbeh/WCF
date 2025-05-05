@@ -198,6 +198,25 @@ class UserRankAddForm extends AbstractFormBuilderForm
                         return $data;
                     }
                 )
+            )
+            ->addProcessor(
+                new CustomFormDataProcessor(
+                    'cssClassNameDataProcessor',
+                    static function (IFormDocument $document, array $parameters) {
+                        if (isset($parameters['data']['cssClassName']) && $parameters['data']['cssClassName'] === 'none') {
+                            $parameters['data']['cssClassName'] = '';
+                        }
+
+                        return $parameters;
+                    },
+                    static function (IFormDocument $document, array $data, IStorableObject $object) {
+                        \assert($object instanceof UserRank);
+
+                        $data['cssClassName'] = $data['cssClassName'] ?: 'none';
+
+                        return $data;
+                    }
+                )
             );
     }
 }
