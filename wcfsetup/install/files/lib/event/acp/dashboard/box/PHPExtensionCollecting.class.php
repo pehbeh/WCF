@@ -21,6 +21,7 @@ final class PHPExtensionCollecting implements IPsr14Event
         'ctype',
         'dom',
         'exif',
+        'fileinfo',
         ['gmp', 'bcmath'],
         'intl',
         'libxml',

@@ -16,6 +16,7 @@ $requiredExtensions = [
     'ctype',
     'dom',
     'exif',
+    'fileinfo',
     ['gmp', 'bcmath'],
     'intl',
     'libxml',

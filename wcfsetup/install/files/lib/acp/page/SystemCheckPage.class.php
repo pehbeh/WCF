@@ -75,6 +75,7 @@ class SystemCheckPage extends AbstractPage
         'ctype',
         'dom',
         'exif',
+        'fileinfo',
         'gd',
         ['gmp', 'bcmath'],
         'intl',

@@ -426,10 +426,6 @@ final class FileUtil
     public static function getMimeType(string $filename): string
     {
         if (!isset(self::$finfo)) {
-            if (!\class_exists(\finfo::class, false)) {
-                return 'application/octet-stream';
-            }
-
             self::$finfo = new \finfo(\FILEINFO_MIME_TYPE);
         }
 

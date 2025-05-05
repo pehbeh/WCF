@@ -171,6 +171,7 @@ final class PackageEnableUpgradeOverrideForm extends AbstractFormBuilderForm
             'ctype',
             'dom',
             'exif',
+            'fileinfo',
             'gd',
             ['gmp', 'bcmath'],
             'intl',
