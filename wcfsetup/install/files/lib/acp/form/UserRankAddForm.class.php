@@ -147,6 +147,8 @@ class UserRankAddForm extends AbstractFormBuilderForm
                             $data['isMultilingual'] = false;
                             if ($data["title"] !== []) {
                                 $data["title"] = \reset($data["title"]);
+                            } else {
+                                $data["title"] = '';
                             }
                         }
 
