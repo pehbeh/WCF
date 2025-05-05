@@ -217,7 +217,16 @@ trait TI18nFormField
      */
     public function hasSaveValue()
     {
-        return !$this->isI18n() || $this->hasPlainValue();
+        if ($this->isI18n()) {
+            if ($this->languageItemPattern !== null) {
+                // backwards compatibility pre 6.2
+                return $this->hasPlainValue();
+            }
+
+            return false;
+        }
+
+        return true;
     }
 
     /**
