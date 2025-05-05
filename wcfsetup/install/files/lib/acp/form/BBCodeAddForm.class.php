@@ -5,13 +5,14 @@ namespace wcf\acp\form;
 use wcf\data\bbcode\attribute\BBCodeAttributeAction;
 use wcf\data\bbcode\BBCode;
 use wcf\data\bbcode\BBCodeAction;
-use wcf\data\bbcode\BBCodeEditor;
 use wcf\form\AbstractForm;
+use wcf\system\bbcode\command\SaveContent;
 use wcf\system\exception\UserInputException;
-use wcf\system\language\I18nHandler;
+use wcf\system\language\LanguageFactory;
 use wcf\system\Regex;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
+use wcf\util\ArrayUtil;
 use wcf\util\StringUtil;
 
 /**
@@ -42,7 +43,8 @@ class BBCodeAddForm extends AbstractForm
 
     /**
      * editor button label
-     * @var string
+     *
+     * @var string|string[]
      */
     public $buttonLabel = '';
 
@@ -101,16 +103,6 @@ class BBCodeAddForm extends AbstractForm
     /**
      * @inheritDoc
      */
-    public function readParameters()
-    {
-        parent::readParameters();
-
-        I18nHandler::getInstance()->register('buttonLabel');
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function readFormParameters()
     {
         parent::readFormParameters();
@@ -151,7 +143,6 @@ class BBCodeAddForm extends AbstractForm
             $this->attributes[$key] = (object)$val;
         }
 
-        I18nHandler::getInstance()->readValues();
         $this->readButtonLabelFormParameter();
     }
 
@@ -162,8 +153,10 @@ class BBCodeAddForm extends AbstractForm
      */
     protected function readButtonLabelFormParameter()
     {
-        if (I18nHandler::getInstance()->isPlainValue('buttonLabel')) {
-            $this->buttonLabel = I18nHandler::getInstance()->getValue('buttonLabel');
+        if (isset($_POST['buttonLabel_i18n']) && \is_array($_POST['buttonLabel_i18n'])) {
+            $this->buttonLabel = ArrayUtil::trim($_POST['buttonLabel_i18n']);
+        } elseif (isset($_POST['buttonLabel'])) {
+            $this->buttonLabel = StringUtil::trim($_POST['buttonLabel']);
         }
     }
 
@@ -208,12 +201,14 @@ class BBCodeAddForm extends AbstractForm
         // button
         if ($this->showButton) {
             // validate label
-            if (!I18nHandler::getInstance()->validateValue('buttonLabel')) {
-                if (I18nHandler::getInstance()->isPlainValue('buttonLabel')) {
-                    throw new UserInputException('buttonLabel');
-                } else {
-                    throw new UserInputException('buttonLabel', 'multilingual');
+            if (\is_array($this->buttonLabel)) {
+                foreach (LanguageFactory::getInstance()->getLanguages() as $language) {
+                    if (empty($this->buttonLabel[$language->languageID])) {
+                        throw new UserInputException('buttonLabel', 'multilingual');
+                    }
                 }
+            } elseif ($this->buttonLabel === '') {
+                throw new UserInputException('buttonLabel');
             }
 
             // validate image path
@@ -250,7 +245,6 @@ class BBCodeAddForm extends AbstractForm
         $this->objectAction = new BBCodeAction([], 'create', [
             'data' => \array_merge($this->additionalFields, [
                 'bbcodeTag' => $this->bbcodeTag,
-                'buttonLabel' => $this->buttonLabel,
                 'className' => $this->className,
                 'htmlOpen' => $this->htmlOpen,
                 'htmlClose' => $this->htmlClose,
@@ -262,10 +256,14 @@ class BBCodeAddForm extends AbstractForm
             ]),
         ]);
         $returnValues = $this->objectAction->executeAction();
+        $bbcodeID = $returnValues['returnValues']->bbcodeID;
+
+        $this->saveButtonLabel($bbcodeID);
+
         foreach ($this->attributes as $attribute) {
             $attributeAction = new BBCodeAttributeAction([], 'create', [
                 'data' => [
-                    'bbcodeID' => $returnValues['returnValues']->bbcodeID,
+                    'bbcodeID' => $bbcodeID,
                     'attributeNo' => $attribute->attributeNo,
                     'attributeHtml' => $attribute->attributeHtml,
                     'validationPattern' => $attribute->validationPattern,
@@ -276,25 +274,12 @@ class BBCodeAddForm extends AbstractForm
             $attributeAction->executeAction();
         }
 
-        if ($this->showButton && !I18nHandler::getInstance()->isPlainValue('buttonLabel')) {
-            $bbcodeID = $returnValues['returnValues']->bbcodeID;
-            I18nHandler::getInstance()->save('buttonLabel', 'wcf.editor.button.button' . $bbcodeID, 'wcf.editor', 1);
-
-            // update button label
-            $bbcodeEditor = new BBCodeEditor($returnValues['returnValues']);
-            $bbcodeEditor->update([
-                'buttonLabel' => 'wcf.editor.button.button' . $bbcodeID,
-            ]);
-        }
-
         $this->saved();
 
         // reset values
         $this->bbcodeTag = $this->htmlOpen = $this->htmlClose = $this->className = $this->buttonLabel = $this->wysiwygIcon = '';
         $this->attributes = [];
         $this->isBlockElement = $this->isSourceCode = $this->showButton = false;
-
-        I18nHandler::getInstance()->reset();
 
         // show success message
         WCF::getTPL()->assign([
@@ -313,13 +298,13 @@ class BBCodeAddForm extends AbstractForm
     {
         parent::assignVariables();
 
-        I18nHandler::getInstance()->assignVariables();
-
         WCF::getTPL()->assign([
             'action' => 'add',
             'attributes' => $this->attributes,
             'bbcodeTag' => $this->bbcodeTag,
             'buttonLabel' => $this->buttonLabel,
+            'availableLanguages' => LanguageFactory::getInstance()->getLanguages(),
+            'i18nValues' => ['buttonLabel' => \is_array($this->buttonLabel) ? $this->buttonLabel : []],
             'className' => $this->className,
             'htmlOpen' => $this->htmlOpen,
             'htmlClose' => $this->htmlClose,
@@ -328,5 +313,17 @@ class BBCodeAddForm extends AbstractForm
             'showButton' => $this->showButton,
             'wysiwygIcon' => $this->wysiwygIcon,
         ]);
+    }
+
+    protected function saveButtonLabel(int $bbcodeID): void
+    {
+        if ($this->showButton) {
+            if (\is_array($this->buttonLabel)) {
+                $buttonLabels = $this->buttonLabel;
+            } else {
+                $buttonLabels = [LanguageFactory::getInstance()->getDefaultLanguageID() => $this->buttonLabel];
+            }
+            (new SaveContent($bbcodeID, $buttonLabels))();
+        }
     }
 }

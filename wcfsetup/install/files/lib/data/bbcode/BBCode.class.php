@@ -5,14 +5,15 @@ namespace wcf\data\bbcode;
 use wcf\data\bbcode\attribute\BBCodeAttribute;
 use wcf\data\ProcessibleDatabaseObject;
 use wcf\system\bbcode\IBBCode;
+use wcf\system\language\LanguageFactory;
 use wcf\system\request\IRouteController;
 use wcf\system\WCF;
 
 /**
  * Represents a bbcode.
  *
- * @author  Alexander Ebert
- * @copyright   2001-2019 WoltLab GmbH
+ * @author Olaf Braun, Alexander Ebert
+ * @copyright   2001-2025 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
  * @property-read   int $bbcodeID       unique id of the bbcode
@@ -23,7 +24,6 @@ use wcf\system\WCF;
  * @property-read   string $className      name of the PHP class implementing `wcf\system\bbcode\IBBCode` or empty if no such class exists
  * @property-read   int $isBlockElement     is `1` if the bbcode represents a block element and thus can contain multiple lines, otherwise `0`
  * @property-read   string $wysiwygIcon        css class name used as icon for the bbcode in the editor toolbar
- * @property-read   string $buttonLabel        name of the language item used as button label for the bbcode in the editor toolbar
  * @property-read   int $isSourceCode       is `1` if the bbcode's content is treated as source code, otherwise `0`
  * @property-read   int $showButton     is `1` if a button for the bbcode will be shown in the editor toolbar, otherwise `0`
  * @property-read   int $originIsSystem     is `1` if the bbcode has been delivered by a package, otherwise `0` (if the bbcode has been created by an admin in the acp)
@@ -50,6 +50,11 @@ class BBCode extends ProcessibleDatabaseObject implements IRouteController
      * @inheritDoc
      */
     protected static $processorInterface = IBBCode::class;
+
+    /**
+     * @var array<int, string>
+     */
+    protected array $buttonLabels;
 
     /**
      * Returns the attributes of this bbcode.
@@ -92,7 +97,17 @@ class BBCode extends ProcessibleDatabaseObject implements IRouteController
      */
     public function getButtonLabel()
     {
-        return WCF::getLanguage()->get($this->buttonLabel);
+        $this->loadButtonLabels();
+
+        if ($this->buttonLabels === []) {
+            // Backwards compatibility
+            // @phpstan-ignore property.notFound
+            return WCF::getLanguage()->get($this->buttonLabel);
+        }
+
+        return $this->buttonLabels[WCF::getLanguage()->languageID]
+            ?? $this->buttonLabels[LanguageFactory::getInstance()->getDefaultLanguageID()]
+            ?? \reset($this->buttonLabels);
     }
 
     /**
@@ -179,5 +194,36 @@ class BBCode extends ProcessibleDatabaseObject implements IRouteController
             WCF::getPath(),
             $this->wysiwygIcon
         );
+    }
+
+    /**
+     * @since 6.2
+     */
+    protected function loadButtonLabels(): void
+    {
+        if (isset($this->buttonLabels)) {
+            return;
+        }
+
+        $sql = "SELECT languageID, buttonLabel 
+                FROM   wcf1_bbcode_content
+                WHERE  bbcodeID = ?";
+
+        $statement = WCF::getDB()->prepare($sql);
+        $statement->execute([$this->bbcodeID]);
+
+        $this->buttonLabels = $statement->fetchMap('languageID', 'buttonLabel');
+    }
+
+    /**
+     * @since 6.2
+     */
+    public function setButtonLabel(int $languageID, string $buttonLabel): void
+    {
+        if (!isset($this->buttonLabels)) {
+            $this->buttonLabels = [];
+        }
+
+        $this->buttonLabels[$languageID] = $buttonLabel;
     }
 }

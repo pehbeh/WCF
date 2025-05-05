@@ -8,7 +8,6 @@ use wcf\data\bbcode\BBCode;
 use wcf\data\bbcode\BBCodeAction;
 use wcf\form\AbstractForm;
 use wcf\system\exception\IllegalLinkException;
-use wcf\system\language\I18nHandler;
 use wcf\system\WCF;
 
 /**
@@ -78,10 +77,6 @@ class BBCodeEditForm extends BBCodeAddForm
         if (!$this->bbcode->bbcodeID) {
             throw new IllegalLinkException();
         }
-
-        if (!\in_array($this->bbcode->bbcodeTag, self::$nativeBBCodes)) {
-            I18nHandler::getInstance()->register('buttonLabel');
-        }
     }
 
     /**
@@ -111,21 +106,12 @@ class BBCodeEditForm extends BBCodeAddForm
     {
         AbstractForm::save();
 
-        if ($this->showButton) {
-            $this->buttonLabel = 'wcf.editor.button.button' . $this->bbcode->bbcodeID;
-            if (I18nHandler::getInstance()->isPlainValue('buttonLabel')) {
-                I18nHandler::getInstance()->remove($this->buttonLabel);
-                $this->buttonLabel = I18nHandler::getInstance()->getValue('buttonLabel');
-            } else {
-                I18nHandler::getInstance()->save('buttonLabel', $this->buttonLabel, 'wcf.editor', 1);
-            }
-        }
+        $this->saveButtonLabel($this->bbcodeID);
 
         // update bbcode
         $this->objectAction = new BBCodeAction([$this->bbcodeID], 'update', [
             'data' => \array_merge($this->additionalFields, [
                 'bbcodeTag' => $this->bbcodeTag,
-                'buttonLabel' => $this->buttonLabel,
                 'className' => $this->className,
                 'htmlClose' => $this->htmlClose,
                 'htmlOpen' => $this->htmlOpen,
@@ -171,13 +157,18 @@ class BBCodeEditForm extends BBCodeAddForm
         parent::readData();
 
         if (empty($_POST)) {
-            I18nHandler::getInstance()->setOptions(
-                'buttonLabel',
-                1,
-                $this->bbcode->buttonLabel,
-                'wcf.editor.button.button\d+'
-            );
-            $this->buttonLabel = $this->bbcode->buttonLabel;
+            $sql = "SELECT    buttonLabel, languageID
+                    FROM      wcf1_bbcode_content
+                    WHERE     bbcodeID = ?";
+            $statement = WCF::getDB()->prepare($sql);
+            $statement->execute([$this->bbcodeID]);
+
+            $this->buttonLabel = $statement->fetchMap('languageID', 'buttonLabel');
+            if (\count($this->buttonLabel) === 1) {
+                $this->buttonLabel = \reset($this->buttonLabel);
+            } elseif ($this->buttonLabel === []) {
+                $this->buttonLabel = '';
+            }
 
             $this->attributes = BBCodeAttribute::getAttributesByBBCode($this->bbcode);
             $this->bbcodeTag = $this->bbcode->bbcodeTag;
@@ -197,8 +188,6 @@ class BBCodeEditForm extends BBCodeAddForm
     public function assignVariables()
     {
         parent::assignVariables();
-
-        I18nHandler::getInstance()->assignVariables(!empty($_POST));
 
         WCF::getTPL()->assign([
             'bbcode' => $this->bbcode,
