@@ -141,15 +141,10 @@ class UserRankAddForm extends AbstractFormBuilderForm
 
                         $data["title"] = $statement->fetchMap('languageID', 'title');
 
-                        if (\count($data["title"]) > 1) {
-                            $data['isMultilingual'] = true;
-                        } else {
-                            $data['isMultilingual'] = false;
-                            if ($data["title"] !== []) {
-                                $data["title"] = \reset($data["title"]);
-                            } else {
-                                $data["title"] = '';
-                            }
+                        if (\count($data["title"]) === 1) {
+                            $data["title"] = \reset($data["title"]);
+                        } elseif ($data["title"] === []) {
+                            $data["title"] = '';
                         }
 
                         return $data;
