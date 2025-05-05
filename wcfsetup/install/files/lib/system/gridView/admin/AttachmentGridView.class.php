@@ -45,7 +45,7 @@ final class AttachmentGridView extends AbstractGridView
     public function __construct()
     {
         $this->addColumns([
-            GridViewColumn::for('attachmentID')
+            GridViewColumn::for('fileID')
                 ->label('wcf.global.objectID')
                 ->renderer(new ObjectIdColumnRenderer())
                 ->filter(new ObjectIdFilter())
