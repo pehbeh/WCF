@@ -9,7 +9,6 @@ use wcf\data\user\rank\UserRankAction;
 use wcf\form\AbstractFormBuilderForm;
 use wcf\system\form\builder\container\FormContainer;
 use wcf\system\form\builder\data\processor\CustomFormDataProcessor;
-use wcf\system\form\builder\data\processor\VoidFormDataProcessor;
 use wcf\system\form\builder\field\BadgeColorFormField;
 use wcf\system\form\builder\field\BooleanFormField;
 use wcf\system\form\builder\field\IntegerFormField;
@@ -151,7 +150,6 @@ class UserRankAddForm extends AbstractFormBuilderForm
                     }
                 )
             )
-            ->addProcessor(new VoidFormDataProcessor('isMultilingual'))
             ->addProcessor(
                 new CustomFormDataProcessor(
                     'requiredGenderProcessor',
