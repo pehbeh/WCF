@@ -18,6 +18,8 @@ interface II18nFormField extends IFormField
      * @return  string              language item pattern
      *
      * @throws  \BadMethodCallException     if i18n is disabled for this field or no language item has been set
+     *
+     * @deprecated 6.2
      */
     public function getLanguageItemPattern();
 
@@ -81,6 +83,8 @@ interface II18nFormField extends IFormField
      *
      * @throws  \BadMethodCallException     if i18n is disabled for this field
      * @throws  \InvalidArgumentException   if the given pattern is invalid
+     *
+     * @deprecated 6.2
      */
     public function languageItemPattern($pattern);
 }

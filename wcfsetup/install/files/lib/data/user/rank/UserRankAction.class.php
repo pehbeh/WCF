@@ -36,8 +36,8 @@ class UserRankAction extends AbstractDatabaseObjectAction
         /** @var UserRank $rank */
         $rank = parent::create();
 
-        if (isset($this->parameters['content'])) {
-            (new SaveContent($rank->rankID, $this->parameters['content']))();
+        if (isset($this->parameters['title'])) {
+            (new SaveContent($rank->rankID, $this->parameters['title']))();
         }
 
         if (isset($this->parameters['rankImageFile']) && !empty($this->parameters['rankImageFile'])) {
@@ -125,9 +125,9 @@ class UserRankAction extends AbstractDatabaseObjectAction
 
         parent::update();
 
-        if (isset($this->parameters['content'])) {
+        if (isset($this->parameters['title'])) {
             foreach ($this->objects as $editor) {
-                (new SaveContent($editor->rankID, $this->parameters['content']))();
+                (new SaveContent($editor->rankID, $this->parameters['title']))();
             }
         }
     }

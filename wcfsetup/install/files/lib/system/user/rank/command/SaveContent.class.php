@@ -14,21 +14,21 @@ final class SaveContent
 {
     public function __construct(
         public readonly int $rankID,
-        /** @var array<int, array{title: string}> */
-        public readonly array $content
+        /** @var array<int, string> */
+        public readonly array $titles
     ) {
     }
 
     public function __invoke(): void
     {
-        if ($this->content === []) {
+        if ($this->titles === []) {
             return;
         }
 
         WCF::getDB()->beginTransaction();
 
         $this->deleteOldContent($this->rankID);
-        $this->saveContent($this->rankID, $this->content);
+        $this->saveContent($this->rankID, $this->titles);
 
         WCF::getDB()->commitTransaction();
     }
@@ -42,17 +42,17 @@ final class SaveContent
     }
 
     /**
-     * @param array<int, array{title: string}> $content
+     * @param array<int, string> $titles
      */
-    private function saveContent(int $rankID, array $content): void
+    private function saveContent(int $rankID, array $titles): void
     {
         $sql = "INSERT INTO wcf1_user_rank_content
                             (rankID, languageID, title)
                 VALUES      (?, ?, ?)";
         $statement = WCF::getDB()->prepare($sql);
 
-        foreach ($content as $languageID => $_content) {
-            $statement->execute([$rankID, $languageID, $_content['title']]);
+        foreach ($titles as $languageID => $title) {
+            $statement->execute([$rankID, $languageID, $title]);
         }
     }
 }

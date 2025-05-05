@@ -8,20 +8,16 @@ use wcf\data\user\rank\UserRank;
 use wcf\data\user\rank\UserRankAction;
 use wcf\form\AbstractFormBuilderForm;
 use wcf\system\form\builder\container\FormContainer;
-use wcf\system\form\builder\container\MultilingualFormContainer;
 use wcf\system\form\builder\data\processor\CustomFormDataProcessor;
-use wcf\system\form\builder\data\processor\MultilingualFormDataProcessor;
 use wcf\system\form\builder\data\processor\VoidFormDataProcessor;
 use wcf\system\form\builder\field\BadgeColorFormField;
 use wcf\system\form\builder\field\BooleanFormField;
-use wcf\system\form\builder\field\dependency\EmptyFormFieldDependency;
 use wcf\system\form\builder\field\IntegerFormField;
 use wcf\system\form\builder\field\SelectFormField;
 use wcf\system\form\builder\field\SingleSelectionFormField;
 use wcf\system\form\builder\field\TitleFormField;
 use wcf\system\form\builder\field\UploadFormField;
 use wcf\system\form\builder\IFormDocument;
-use wcf\system\language\LanguageFactory;
 use wcf\system\WCF;
 
 /**
@@ -65,34 +61,17 @@ class UserRankAddForm extends AbstractFormBuilderForm
     {
         parent::createForm();
 
-        $multilingualContainer = MultilingualFormContainer::create('general');
-        $multilingualContainer->appendChildren([
-            TitleFormField::create()
-                ->addDependency(
-                    EmptyFormFieldDependency::create('isMultilingual')
-                        ->fieldId('isMultilingual')
-                )
-                ->label('wcf.acp.user.rank.title'),
-        ]);
-
-        $textReferenceNodeIds = ['title'];
-        foreach ($multilingualContainer->getLangaugeContainers() as $langaugeCode => $container) {
-            $container->appendChildren([
-                TitleFormField::create("title_{$langaugeCode}")
-                    ->label('wcf.acp.user.rank.title'),
-            ]);
-
-            $textReferenceNodeIds[] = "title_{$langaugeCode}";
-        }
-
         $this->form->appendChildren([
-            $multilingualContainer,
             FormContainer::create('section')
                 ->appendChildren([
+                    TitleFormField::create()
+                        ->i18n()
+                        ->required()
+                        ->label('wcf.acp.user.rank.title'),
                     BadgeColorFormField::create('cssClassName')
                         ->label('wcf.acp.user.rank.cssClassName')
                         ->description('wcf.acp.user.rank.cssClassName.description')
-                        ->textReferenceNodeIds($textReferenceNodeIds)
+                        ->textReferenceNodeId('title')
                         ->defaultLabelText(WCF::getLanguage()->get('wcf.acp.user.rank.title'))
                         ->required(),
                 ]),
@@ -148,10 +127,10 @@ class UserRankAddForm extends AbstractFormBuilderForm
 
         $this->form->getDataHandler()
             ->addProcessor(
-                new class('content', ['title']) extends MultilingualFormDataProcessor {
-                    #[\Override]
-                    public function processObjectData(IFormDocument $document, array $data, IStorableObject $object)
-                    {
+                new CustomFormDataProcessor(
+                    'titleDataProcessor',
+                    null,
+                    static function (IFormDocument $document, array $data, IStorableObject $object) {
                         \assert($object instanceof UserRank);
 
                         $sql = "SELECT    title, languageID
@@ -160,26 +139,20 @@ class UserRankAddForm extends AbstractFormBuilderForm
                         $statement = WCF::getDB()->prepare($sql);
                         $statement->execute([$object->rankID]);
 
-                        $titles = $statement->fetchMap('languageID', 'title');
+                        $data["title"] = $statement->fetchMap('languageID', 'title');
 
-                        foreach ($titles as $languageID => $title) {
-                            $languageCode = LanguageFactory::getInstance()->getLanguage($languageID)->languageCode;
-
-                            $data["title_{$languageCode}"] = $title;
-                        }
-
-                        if (\count($titles) > 1) {
+                        if (\count($data["title"]) > 1) {
                             $data['isMultilingual'] = true;
                         } else {
                             $data['isMultilingual'] = false;
-                            if ($titles !== []) {
-                                $data["title"] = \reset($titles);
+                            if ($data["title"] !== []) {
+                                $data["title"] = \reset($data["title"]);
                             }
                         }
 
                         return $data;
                     }
-                }
+                )
             )
             ->addProcessor(new VoidFormDataProcessor('isMultilingual'))
             ->addProcessor(
