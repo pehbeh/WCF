@@ -13,7 +13,7 @@ use wcf\util\StringUtil;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-class CurrencyFormatter implements IFormOptionFormatter
+final class CurrencyFormatter implements IFormOptionFormatter
 {
     #[\Override]
     public function format(string $value, int $languageID, array $configuration): string
