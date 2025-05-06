@@ -56,7 +56,6 @@ return [
         ]),
     PartialDatabaseTable::create('wcf1_file')
         ->columns([
-            IntDatabaseTableColumn::create('uploadTime')
-                ->length(10),
+            IntDatabaseTableColumn::create('uploadTime'),
         ]),
 ];

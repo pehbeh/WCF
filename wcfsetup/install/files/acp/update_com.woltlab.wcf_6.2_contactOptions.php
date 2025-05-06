@@ -11,6 +11,7 @@ use wcf\util\OptionUtil;
 
 $contactOptionList = new ContactOptionList();
 $contactOptionList->readObjects();
+$contactOptionList->getConditionBuilder()->add('configurationData IS NULL');
 
 foreach ($contactOptionList as $contactOption) {
     $configurationData = [];
