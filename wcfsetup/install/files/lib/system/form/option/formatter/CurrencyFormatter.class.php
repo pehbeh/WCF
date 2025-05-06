@@ -18,7 +18,7 @@ class CurrencyFormatter implements IFormOptionFormatter
     #[\Override]
     public function format(string $value, int $languageID, array $configurationData): string
     {
-        $showDecimals = $value % 100 != 0;
+        $showDecimals = $value % 100 !== 0;
         $value /= 100;
         $language = LanguageFactory::getInstance()->getLanguage($languageID);
         $suffix = '';

@@ -114,7 +114,7 @@ abstract class AbstractFormOptionAddForm extends AbstractFormBuilderForm
     {
         return SelectFormField::create('optionType')
             ->label('wcf.form.option.optionType')
-            ->immutable($this->formAction != 'create')
+            ->immutable($this->formAction !== 'create')
             ->options(FormOptionHandler::getInstance()->getSortedOptionTypes())
             ->required();
     }
