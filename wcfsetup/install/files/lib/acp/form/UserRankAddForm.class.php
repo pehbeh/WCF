@@ -9,6 +9,7 @@ use wcf\data\user\rank\UserRankAction;
 use wcf\form\AbstractFormBuilderForm;
 use wcf\system\form\builder\container\FormContainer;
 use wcf\system\form\builder\data\processor\CustomFormDataProcessor;
+use wcf\system\form\builder\data\processor\I18nFormDataProcessor;
 use wcf\system\form\builder\field\BadgeColorFormField;
 use wcf\system\form\builder\field\BooleanFormField;
 use wcf\system\form\builder\field\IntegerFormField;
@@ -126,28 +127,9 @@ class UserRankAddForm extends AbstractFormBuilderForm
 
         $this->form->getDataHandler()
             ->addProcessor(
-                new CustomFormDataProcessor(
-                    'rankTitleDataProcessor',
-                    null,
-                    static function (IFormDocument $document, array $data, IStorableObject $object) {
-                        \assert($object instanceof UserRank);
-
-                        $sql = "SELECT    title, languageID
-                                FROM      wcf1_user_rank_content
-                                WHERE     rankID = ?";
-                        $statement = WCF::getDB()->prepare($sql);
-                        $statement->execute([$object->rankID]);
-
-                        $data["rankTitle"] = $statement->fetchMap('languageID', 'title');
-
-                        if (\count($data["rankTitle"]) === 1) {
-                            $data["rankTitle"] = \reset($data["rankTitle"]);
-                        } elseif ($data["rankTitle"] === []) {
-                            $data["rankTitle"] = '';
-                        }
-
-                        return $data;
-                    }
+                new I18nFormDataProcessor(
+                    'wcf1_user_rank_content',
+                    ['rankTitle' => 'title']
                 )
             )
             ->addProcessor(
