@@ -66,7 +66,6 @@ class UserRankAddForm extends AbstractFormBuilderForm
                     TextFormField::create('rankTitle')
                         ->label('wcf.acp.user.rank.title')
                         ->i18n()
-                        ->languageItemPattern('wcf.user.rank.\w+')
                         ->required(),
                     BadgeColorFormField::create('cssClassName')
                         ->label('wcf.acp.user.rank.cssClassName')
@@ -126,6 +125,31 @@ class UserRankAddForm extends AbstractFormBuilderForm
         parent::finalizeForm();
 
         $this->form->getDataHandler()
+            ->addProcessor(
+                new CustomFormDataProcessor(
+                    'rankTitleDataProcessor',
+                    null,
+                    static function (IFormDocument $document, array $data, IStorableObject $object) {
+                        \assert($object instanceof UserRank);
+
+                        $sql = "SELECT    title, languageID
+                                FROM      wcf1_user_rank_content
+                                WHERE     rankID = ?";
+                        $statement = WCF::getDB()->prepare($sql);
+                        $statement->execute([$object->rankID]);
+
+                        $data["rankTitle"] = $statement->fetchMap('languageID', 'title');
+
+                        if (\count($data["rankTitle"]) === 1) {
+                            $data["rankTitle"] = \reset($data["rankTitle"]);
+                        } elseif ($data["rankTitle"] === []) {
+                            $data["rankTitle"] = '';
+                        }
+
+                        return $data;
+                    }
+                )
+            )
             ->addProcessor(
                 new CustomFormDataProcessor(
                     'requiredGenderProcessor',

@@ -4,6 +4,7 @@ namespace wcf\system\form\builder\field;
 
 use wcf\data\IStorableObject;
 use wcf\data\language\item\LanguageItemList;
+use wcf\data\language\Language;
 use wcf\system\form\builder\data\processor\CustomFormDataProcessor;
 use wcf\system\form\builder\exception\InvalidFormFieldValue;
 use wcf\system\form\builder\field\validation\FormFieldValidationError;
@@ -52,17 +53,31 @@ trait TI18nFormField
      * Returns additional template variables used to generate the html representation
      * of this node.
      *
-     * @return array{}|array{elementIdentifier: string, forceSelection: bool}
+     * @return array{}|array{elementIdentifier: string, forceSelection: bool}|array{availableLanguages: Language[], i18nValues: array<string, array<int, string>>, elementIdentifier: string, forceSelection: bool}
      */
     public function getHtmlVariables()
     {
         if ($this->isI18n()) {
-            I18nHandler::getInstance()->assignVariables();
+            if ($this->languageItemPattern !== null) {
+                // backwards compatibility pre 6.2
+                I18nHandler::getInstance()->assignVariables();
 
-            return [
-                'elementIdentifier' => $this->getPrefixedId(),
-                'forceSelection' => $this->isI18nRequired(),
-            ];
+                return [
+                    'elementIdentifier' => $this->getPrefixedId(),
+                    'forceSelection' => $this->isI18nRequired(),
+                ];
+            } else {
+                $i18nValues = \is_array($this->value) ? $this->value : [];
+
+                return [
+                    'availableLanguages' => LanguageFactory::getInstance()->getLanguages(),
+                    'i18nValues' => [
+                        $this->getPrefixedId() => $i18nValues,
+                    ],
+                    'elementIdentifier' => $this->getPrefixedId(),
+                    'forceSelection' => $this->isI18nRequired(),
+                ];
+            }
         }
 
         return [];
@@ -74,6 +89,8 @@ trait TI18nFormField
      * @return string language item pattern
      *
      * @throws \BadMethodCallException if i18n is disabled for this field or no language item has been set
+     *
+     * @deprecated 6.2
      */
     public function getLanguageItemPattern()
     {
@@ -121,9 +138,19 @@ trait TI18nFormField
     {
         if ($this->isI18n()) {
             if ($this->hasPlainValue()) {
-                return I18nHandler::getInstance()->getValue($this->getPrefixedId());
+                if ($this->languageItemPattern !== null) {
+                    // backwards compatibility pre 6.2
+                    return I18nHandler::getInstance()->getValue($this->getPrefixedId());
+                } else {
+                    return $this->value;
+                }
             } elseif ($this->hasI18nValues()) {
-                $values = I18nHandler::getInstance()->getValues($this->getPrefixedId());
+                if ($this->languageItemPattern !== null) {
+                    // backwards compatibility pre 6.2
+                    $values = I18nHandler::getInstance()->getValues($this->getPrefixedId());
+                } else {
+                    $values = $this->value;
+                }
 
                 // handle legacy values from the past when multilingual values
                 // were available
@@ -152,7 +179,12 @@ trait TI18nFormField
      */
     public function hasI18nValues()
     {
-        return I18nHandler::getInstance()->hasI18nValues($this->getPrefixedId());
+        if ($this->languageItemPattern !== null) {
+            // backwards compatibility pre 6.2
+            return I18nHandler::getInstance()->hasI18nValues($this->getPrefixedId());
+        } else {
+            return \is_array($this->value);
+        }
     }
 
     /**
@@ -163,7 +195,12 @@ trait TI18nFormField
      */
     public function hasPlainValue()
     {
-        return I18nHandler::getInstance()->isPlainValue($this->getPrefixedId());
+        if ($this->languageItemPattern !== null) {
+            // backwards compatibility pre 6.2
+            return I18nHandler::getInstance()->isPlainValue($this->getPrefixedId());
+        } else {
+            return \is_string($this->value) || \is_numeric($this->value);
+        }
     }
 
     /**
@@ -179,7 +216,16 @@ trait TI18nFormField
      */
     public function hasSaveValue()
     {
-        return !$this->isI18n() || $this->hasPlainValue();
+        if ($this->isI18n()) {
+            if ($this->languageItemPattern !== null) {
+                // backwards compatibility pre 6.2
+                return $this->hasPlainValue();
+            }
+
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -218,7 +264,7 @@ trait TI18nFormField
      */
     public function i18nRequired($i18nRequired = true)
     {
-        $this->i18nRequired = $i18nRequired;
+        $this->i18nRequired = $i18nRequired && \count(LanguageFactory::getInstance()->getLanguages()) > 1;
         $this->i18n();
 
         return $this;
@@ -255,6 +301,8 @@ trait TI18nFormField
      *
      * @throws \BadMethodCallException if i18n is disabled for this field
      * @throws \InvalidArgumentException if the given pattern is invalid
+     *
+     * @deprecated 6.2
      */
     public function languageItemPattern($pattern)
     {
@@ -286,10 +334,15 @@ trait TI18nFormField
             $value = $data[$this->getObjectProperty()];
 
             if ($this->isI18n()) {
-                // do not use `I18nHandler::setOptions()` because then `I18nHandler` only
-                // reads the values when assigning the template variables and the values
-                // are not available in this class via `getValue()`
-                $this->setStringValue($value);
+                if ($this->languageItemPattern !== null) {
+                    // backwards compatibility pre 6.2
+                    // do not use `I18nHandler::setOptions()` because then `I18nHandler` only
+                    // reads the values when assigning the template variables and the values
+                    // are not available in this class via `getValue()`
+                    $this->setStringValue($value);
+                } else {
+                    $this->value = $value;
+                }
             } else {
                 $this->value = $value;
             }
@@ -313,16 +366,35 @@ trait TI18nFormField
         parent::populate();
 
         if ($this->isI18n()) {
-            I18nHandler::getInstance()->unregister($this->getPrefixedId());
-            I18nHandler::getInstance()->register($this->getPrefixedId());
+            if ($this->languageItemPattern !== null) {
+                // backwards compatibility pre 6.2
+                I18nHandler::getInstance()->unregister($this->getPrefixedId());
+                I18nHandler::getInstance()->register($this->getPrefixedId());
+            }
 
             /** @var IFormDocument $document */
             $document = $this->getDocument();
             $document->getDataHandler()->addProcessor(new CustomFormDataProcessor(
                 'i18n',
                 function (IFormDocument $document, array $parameters) {
-                    if ($this->checkDependencies() && $this->hasI18nValues()) {
-                        $parameters[$this->getObjectProperty() . '_i18n'] = $this->getValue();
+                    if (!$this->checkDependencies()) {
+                        return $parameters;
+                    }
+
+                    if ($this->languageItemPattern !== null) {
+                        // backwards compatibility pre 6.2
+                        if ($this->hasI18nValues()) {
+                            $parameters[$this->getObjectProperty() . '_i18n'] = $this->getValue();
+                        }
+                    } else {
+                        $values = [];
+                        if ($this->hasI18nValues()) {
+                            $values = $this->getValue();
+                        } else {
+                            $values[LanguageFactory::getInstance()->getDefaultLanguageID()] = $this->getValue();
+                        }
+
+                        $parameters[$this->getObjectProperty()] = $values;
                     }
 
                     return $parameters;
@@ -341,7 +413,24 @@ trait TI18nFormField
     public function readValue()
     {
         if ($this->isI18n()) {
-            I18nHandler::getInstance()->readValues($this->getDocument()->getRequestData());
+            if ($this->languageItemPattern !== null) {
+                // backwards compatibility pre 6.2
+                I18nHandler::getInstance()->readValues($this->getDocument()->getRequestData());
+            } else {
+                if ($this->getDocument()->hasRequestData("{$this->getPrefixedId()}_i18n")) {
+                    $value = $this->getDocument()->getRequestData("{$this->getPrefixedId()}_i18n");
+
+                    if (\is_array($value)) {
+                        $this->value = $value;
+                    }
+                } else {
+                    $value = $this->getDocument()->getRequestData($this->getPrefixedId());
+
+                    if (\is_string($value)) {
+                        $this->value = StringUtil::trim($value);
+                    }
+                }
+            }
         } elseif ($this->getDocument()->hasRequestData($this->getPrefixedId())) {
             $value = $this->getDocument()->getRequestData($this->getPrefixedId());
 
@@ -361,6 +450,8 @@ trait TI18nFormField
      *
      * @param string $value set value
      * @return void
+     *
+     * @deprecated 6.2
      */
     protected function setStringValue($value)
     {
@@ -399,10 +490,20 @@ trait TI18nFormField
     {
         if ($this->isI18n()) {
             if (\is_string($value) || \is_numeric($value)) {
-                $this->setStringValue($value);
+                if ($this->languageItemPattern !== null) {
+                    // backwards compatibility pre 6.2
+                    $this->setStringValue($value);
+                } else {
+                    return parent::value($value);
+                }
             } elseif (\is_array($value)) {
-                if (!empty($value)) {
-                    I18nHandler::getInstance()->setValues($this->getPrefixedId(), $value);
+                if ($value !== []) {
+                    if ($this->languageItemPattern !== null) {
+                        // backwards compatibility pre 6.2
+                        I18nHandler::getInstance()->setValues($this->getPrefixedId(), $value);
+                    } else {
+                        return parent::value($value);
+                    }
                 }
             } else {
                 throw new InvalidFormFieldValue($this, 'string/number/array', \gettype($value));
@@ -433,18 +534,64 @@ trait TI18nFormField
         // as invalid even though it is a valid state for this form field,
         // thus the additional condition.
         if ($this->isI18n() && (!empty(ArrayUtil::trim($this->getValue())) || $this->isRequired())) {
-            if (
-                !I18nHandler::getInstance()->validateValue(
-                    $this->getPrefixedId(),
-                    $this->isI18nRequired(),
-                    !$this->isRequired()
-                )
-            ) {
-                if ($this->hasPlainValue()) {
-                    $this->addValidationError(new FormFieldValidationError('empty'));
-                } else {
-                    $this->addValidationError(new FormFieldValidationError('multilingual'));
+            if ($this->languageItemPattern !== null) {
+                // backwards compatibility pre 6.2
+                if (
+                    !I18nHandler::getInstance()->validateValue(
+                        $this->getPrefixedId(),
+                        $this->isI18nRequired(),
+                        !$this->isRequired()
+                    )
+                ) {
+                    if ($this->hasPlainValue()) {
+                        $this->addValidationError(new FormFieldValidationError('empty'));
+                    } else {
+                        $this->addValidationError(new FormFieldValidationError('multilingual'));
+                    }
                 }
+            } else {
+                $this->validate18nValues();
+            }
+        }
+    }
+
+    private function validate18nValues(): void
+    {
+        if ($this->hasPlainValue()) {
+            if (!$this->isRequired()) {
+                return;
+            }
+
+            if ($this->isI18nRequired()) {
+                $this->addValidationError(new FormFieldValidationError('empty'));
+
+                return;
+            }
+
+            if ($this->value === '') {
+                $this->addValidationError(new FormFieldValidationError('empty'));
+
+                return;
+            }
+        }
+
+        if ($this->isI18nRequired() && \count(ArrayUtil::trim($this->getValue())) === 0) {
+            $this->addValidationError(new FormFieldValidationError('multilingual'));
+
+            return;
+        }
+
+        foreach (LanguageFactory::getInstance()->getLanguages() as $language) {
+            if (!isset($this->value[$language->languageID])) {
+                $this->addValidationError(new FormFieldValidationError('multilingual'));
+
+                return;
+            }
+
+            if ($this->isRequired() && $this->value[$language->languageID] === '') {
+                $this->addValidationError(new FormFieldValidationError('multilingual'));
+
+                return;
             }
         }
     }
