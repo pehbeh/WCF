@@ -6,8 +6,6 @@ use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\SelectFormField;
 use wcf\system\form\option\formatter\IFormOptionFormatter;
 use wcf\system\form\option\formatter\SelectFormatter;
-use wcf\system\WCF;
-use wcf\util\JSON;
 
 /**
  * Implementation of a form option for selecting a single value.
@@ -19,6 +17,8 @@ use wcf\util\JSON;
  */
 class SelectFormOption extends AbstractFormOption
 {
+    use TSelectOptionsFormOption;
+
     #[\Override]
     public function getId(): string
     {
@@ -29,23 +29,7 @@ class SelectFormOption extends AbstractFormOption
     public function getFormField(string $id, array $configuration = []): AbstractFormField
     {
         $formField = SelectFormField::create($id);
-
-        if (isset($configuration['selectOptions'])) {
-            $selectOptions = [];
-            foreach (JSON::decode($configuration['selectOptions']) as $selectOption) {
-                if (isset($selectOption['value'][0])) {
-                    $value = $selectOption['value'][0];
-                } else if (isset($selectOption['value'][WCF::getLanguage()->languageID])) {
-                    $value = $selectOption['value'][WCF::getLanguage()->languageID];
-                } else {
-                    $value = reset($selectOption['value']);
-                }
-
-                $selectOptions[$selectOption['key']] = $value;
-            }
-
-            $formField->options($selectOptions);
-        }
+        $this->setSelectOptions($formField, $configuration);
 
         return $formField;
     }
