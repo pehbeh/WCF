@@ -19,11 +19,11 @@ use wcf\system\WCF;
 final class FormOptionFilter extends AbstractFilter
 {
     /**
-     * @param array<string, mixed $configurationData
+     * @param array<string, mixed $configuration
      */
     public function __construct(
         private readonly IFormOption $option,
-        private readonly array $configurationData,
+        private readonly array $configuration,
         string $id,
         string $languageItem,
         string $databaseColumn = ''
@@ -34,7 +34,7 @@ final class FormOptionFilter extends AbstractFilter
     #[\Override]
     public function getFormField(): AbstractFormField
     {
-        return $this->option->getFilterFormField($this->id, $this->configurationData)->label($this->languageItem);
+        return $this->option->getFilterFormField($this->id, $this->configuration)->label($this->languageItem);
     }
 
     #[\Override]
@@ -49,7 +49,7 @@ final class FormOptionFilter extends AbstractFilter
         return $this->option->getPlainTextFormatter()->format(
             $value,
             WCF::getLanguage()->languageID,
-            $this->configurationData
+            $this->configuration
         );
     }
 }

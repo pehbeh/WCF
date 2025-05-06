@@ -26,7 +26,7 @@ class UrlFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormField(string $id, array $configurationData = []): UrlFormField
+    public function getFormField(string $id, array $configuration = []): UrlFormField
     {
         return UrlFormField::create($id);
     }
@@ -38,7 +38,7 @@ class UrlFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFilterFormField(string $id, array $configurationData = []): AbstractFormField
+    public function getFilterFormField(string $id, array $configuration = []): AbstractFormField
     {
         return TextFormField::create($id);
     }

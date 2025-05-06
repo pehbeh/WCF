@@ -18,9 +18,9 @@ final class SelectFormatter implements IFormOptionFormatter
     public function __construct(private readonly bool $encode = true) {}
 
     #[\Override]
-    public function format(string $value, int $languageID, array $configurationData): string
+    public function format(string $value, int $languageID, array $configuration): string
     {
-        foreach (JSON::decode($configurationData['selectOptions']) as $selectOption) {
+        foreach (JSON::decode($configuration['selectOptions']) as $selectOption) {
             if ($selectOption['key'] == $value) {
                 if (isset($selectOption['value'][0])) {
                     $value = $selectOption['value'][0];

@@ -22,7 +22,7 @@ class RatingFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormField(string $id, array $configurationData = []): RatingFormField
+    public function getFormField(string $id, array $configuration = []): RatingFormField
     {
         return RatingFormField::create($id);
     }

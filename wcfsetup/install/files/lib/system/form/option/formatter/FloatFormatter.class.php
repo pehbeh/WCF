@@ -15,7 +15,7 @@ use wcf\util\StringUtil;
 final class FloatFormatter implements IFormOptionFormatter
 {
     #[\Override]
-    public function format(string $value, int $languageID, array $configurationData): string
+    public function format(string $value, int $languageID, array $configuration): string
     {
         return StringUtil::formatNumeric(\floatval($value));
     }

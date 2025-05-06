@@ -11,10 +11,10 @@ use wcf\util\OptionUtil;
 
 $contactOptionList = new ContactOptionList();
 $contactOptionList->readObjects();
-$contactOptionList->getConditionBuilder()->add('configurationData IS NULL');
+$contactOptionList->getConditionBuilder()->add('configuration IS NULL');
 
 foreach ($contactOptionList as $contactOption) {
-    $configurationData = [];
+    $configuration = [];
     $optionType = '';
     $optionType = match ($contactOption->optionType) {
         'multiSelect' => 'checkboxes',
@@ -24,19 +24,19 @@ foreach ($contactOptionList as $contactOption) {
     };
 
     if ($contactOption->required) {
-        $configurationData['required'] = 1;
+        $configuration['required'] = 1;
     }
     if ($contactOption->defaultValue && $contactOption->optionType == 'text') {
-        $configurationData['defaultValue'] = $contactOption->defaultValue;
+        $configuration['defaultValue'] = $contactOption->defaultValue;
     }
     if ($contactOption->selectOptions) {
-        $configurationData['required'] = convertSelectOptions($contactOption->selectOptions);
+        $configuration['required'] = convertSelectOptions($contactOption->selectOptions);
     }
 
     $editor = new ContactOptionEditor($contactOption);
     $editor->update([
         'optionType' => $optionType,
-        'configurationData' => JSON::encode($configurationData),
+        'configuration' => JSON::encode($configuration),
     ]);
 }
 

@@ -33,17 +33,17 @@ abstract class AbstractFormOptionAddForm extends AbstractFormBuilderForm
             new CustomFormDataProcessor(
                 'saveOptionProcessor',
                 function (IFormDocument $document, array $parameters) {
-                    $configurationData = [];
+                    $configuration = [];
 
                     foreach ($this->getConfigurationFormFieldIds() as $parameter) {
                         if (isset($parameters['data'][$parameter])) {
-                            $configurationData[$parameter] = $parameters['data'][$parameter];
+                            $configuration[$parameter] = $parameters['data'][$parameter];
                             unset($parameters['data'][$parameter]);
                         }
                     }
 
-                    if ($configurationData !== []) {
-                        $parameters['data']['configurationData'] = JSON::encode($configurationData);
+                    if ($configuration !== []) {
+                        $parameters['data']['configuration'] = JSON::encode($configuration);
                     }
 
                     return $parameters;
@@ -51,8 +51,8 @@ abstract class AbstractFormOptionAddForm extends AbstractFormBuilderForm
                 function (IFormDocument $document, array $data, IStorableObject $object) {
                     \assert($object instanceof DatabaseObject);
 
-                    if ($object->configurationData) {
-                        $data = \array_merge($data, JSON::decode($object->configurationData));
+                    if ($object->configuration) {
+                        $data = \array_merge($data, JSON::decode($object->configuration));
                     }
 
                     return $data;

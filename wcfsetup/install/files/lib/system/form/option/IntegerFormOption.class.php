@@ -23,14 +23,14 @@ class IntegerFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormField(string $id, array $configurationData = []): AbstractFormField
+    public function getFormField(string $id, array $configuration = []): AbstractFormField
     {
         $formField = IntegerFormField::create($id);
-        if (isset($configurationData['minIntegerValue'])) {
-            $formField->minimum($configurationData['minIntegerValue']);
+        if (isset($configuration['minIntegerValue'])) {
+            $formField->minimum($configuration['minIntegerValue']);
         }
-        if (isset($configurationData['maxIntegerValue'])) {
-            $formField->maximum($configurationData['maxIntegerValue']);
+        if (isset($configuration['maxIntegerValue'])) {
+            $formField->maximum($configuration['maxIntegerValue']);
         }
 
         return $formField;

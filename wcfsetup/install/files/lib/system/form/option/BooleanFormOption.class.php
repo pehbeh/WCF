@@ -23,7 +23,7 @@ class BooleanFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormField(string $id, array $configurationData = []): AbstractFormField
+    public function getFormField(string $id, array $configuration = []): AbstractFormField
     {
         return BooleanFormField::create($id);
     }

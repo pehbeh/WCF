@@ -25,13 +25,13 @@ class SelectFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormField(string $id, array $configurationData = []): AbstractFormField
+    public function getFormField(string $id, array $configuration = []): AbstractFormField
     {
         $formField = SelectFormField::create($id);
 
-        if (isset($configurationData['selectOptions'])) {
+        if (isset($configuration['selectOptions'])) {
             $selectOptions = [];
-            foreach (JSON::decode($configurationData['selectOptions']) as $selectOption) {
+            foreach (JSON::decode($configuration['selectOptions']) as $selectOption) {
                 if (isset($selectOption['value'][0])) {
                     $value = $selectOption['value'][0];
                 } else if (isset($selectOption['value'][WCF::getLanguage()->languageID])) {

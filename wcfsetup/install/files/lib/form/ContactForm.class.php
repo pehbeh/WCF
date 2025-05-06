@@ -208,12 +208,12 @@ class ContactForm extends AbstractFormBuilderForm
         foreach ($this->getAvailableOptions() as $option) {
             $formField = $option->getFormOption()->getFormField(
                 'option' . $option->optionID,
-                $option->getConfigurationData()
+                $option->getConfiguration()
             );
             $formField->label($option->optionTitle);
             $formField->description($option->optionDescription);
 
-            if (!empty($option->getConfigurationData()['required'])) {
+            if (!empty($option->getConfiguration()['required'])) {
                 $formField->required();
             }
 

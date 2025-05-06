@@ -15,7 +15,7 @@ use wcf\system\html\output\HtmlOutputProcessor;
 final class WysiwygPlainTextFormatter implements IFormOptionFormatter
 {
     #[\Override]
-    public function format(string $value, int $languageID, array $configurationData): string
+    public function format(string $value, int $languageID, array $configuration): string
     {
         $processor = new HtmlOutputProcessor();
         $processor->setOutputType('text/plain');

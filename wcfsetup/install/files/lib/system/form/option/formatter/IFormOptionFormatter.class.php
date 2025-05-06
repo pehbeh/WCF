@@ -12,5 +12,5 @@ namespace wcf\system\form\option\formatter;
  */
 interface IFormOptionFormatter
 {
-    public function format(string $value, int $languageID, array $configurationData): string;
+    public function format(string $value, int $languageID, array $configuration): string;
 }

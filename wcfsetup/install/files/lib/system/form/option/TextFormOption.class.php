@@ -24,20 +24,20 @@ class TextFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFilterFormField(string $id, array $configurationData = []): AbstractFormField
+    public function getFilterFormField(string $id, array $configuration = []): AbstractFormField
     {
         return TextFormField::create($id);
     }
 
     #[\Override]
-    public function getFormField(string $id, array $configurationData = []): AbstractFormField
+    public function getFormField(string $id, array $configuration = []): AbstractFormField
     {
         $formField = TextFormField::create($id);
-        if (!empty($configurationData['maxLength'])) {
-            $formField->maximumLength($configurationData['maxLength']);
+        if (!empty($configuration['maxLength'])) {
+            $formField->maximumLength($configuration['maxLength']);
         }
-        if (isset($configurationData['defaultTextValue'])) {
-            $formField->value($configurationData['defaultTextValue']);
+        if (isset($configuration['defaultTextValue'])) {
+            $formField->value($configuration['defaultTextValue']);
         }
 
         return $formField;

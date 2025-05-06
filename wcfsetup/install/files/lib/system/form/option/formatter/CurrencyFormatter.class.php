@@ -16,14 +16,14 @@ use wcf\util\StringUtil;
 class CurrencyFormatter implements IFormOptionFormatter
 {
     #[\Override]
-    public function format(string $value, int $languageID, array $configurationData): string
+    public function format(string $value, int $languageID, array $configuration): string
     {
         $showDecimals = $value % 100 != 0;
         $value /= 100;
         $language = LanguageFactory::getInstance()->getLanguage($languageID);
         $suffix = '';
-        if (!empty($configurationData['currency'])) {
-            $suffix = ' ' . StringUtil::encodeHTML($configurationData['currency']);
+        if (!empty($configuration['currency'])) {
+            $suffix = ' ' . StringUtil::encodeHTML($configuration['currency']);
         }
 
         return \number_format(

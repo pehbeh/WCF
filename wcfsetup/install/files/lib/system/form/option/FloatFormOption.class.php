@@ -23,14 +23,14 @@ class FloatFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormField(string $id, array $configurationData = []): AbstractFormField
+    public function getFormField(string $id, array $configuration = []): AbstractFormField
     {
         $formField = FloatFormField::create($id);
-        if (isset($configurationData['minValue'])) {
-            $formField->minimum($configurationData['minValue']);
+        if (isset($configuration['minValue'])) {
+            $formField->minimum($configuration['minValue']);
         }
-        if (isset($configurationData['maxValue'])) {
-            $formField->maximum($configurationData['maxValue']);
+        if (isset($configuration['maxValue'])) {
+            $formField->maximum($configuration['maxValue']);
         }
 
         return $formField;

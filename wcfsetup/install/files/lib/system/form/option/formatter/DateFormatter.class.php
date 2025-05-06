@@ -15,7 +15,7 @@ use wcf\system\language\LanguageFactory;
 final class DateFormatter implements IFormOptionFormatter
 {
     #[\Override]
-    public function format(string $value, int $languageID, array $configurationData): string
+    public function format(string $value, int $languageID, array $configuration): string
     {
         $dateTime = new \DateTimeImmutable($value);
         $locale = LanguageFactory::getInstance()->getLanguage($languageID)->getLocale();

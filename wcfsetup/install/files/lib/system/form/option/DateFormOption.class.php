@@ -22,7 +22,7 @@ class DateFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormField(string $id, array $configurationData = []): DateFormField
+    public function getFormField(string $id, array $configuration = []): DateFormField
     {
         $formField = DateFormField::create($id)
             ->saveValueFormat('Y-m-d');

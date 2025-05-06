@@ -15,7 +15,7 @@ use wcf\system\html\output\HtmlOutputProcessor;
 final class WysiwygFormatter implements IFormOptionFormatter
 {
     #[\Override]
-    public function format(string $value, int $languageID, array $configurationData): string
+    public function format(string $value, int $languageID, array $configuration): string
     {
         $processor = new HtmlOutputProcessor();
         $processor->process($value, 'com.woltlab.wcf.genericFormOption', 0, true, $languageID);

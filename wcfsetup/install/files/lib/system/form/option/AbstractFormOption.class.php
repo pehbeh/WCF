@@ -44,9 +44,9 @@ abstract class AbstractFormOption implements IFormOption
     }
 
     #[\Override]
-    public function getFilterFormField(string $id, array $configurationData = []): AbstractFormField
+    public function getFilterFormField(string $id, array $configuration = []): AbstractFormField
     {
-        return $this->getFormField($id, $configurationData);
+        return $this->getFormField($id, $configuration);
     }
 
     #[\Override]

@@ -23,17 +23,17 @@ class CurrencyFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormField(string $id, array $configurationData = []): AbstractFormField
+    public function getFormField(string $id, array $configuration = []): AbstractFormField
     {
         $formField = CurrencyFormField::create($id);
-        if (isset($configurationData['currency'])) {
-            $formField->currency($configurationData['currency']);
+        if (isset($configuration['currency'])) {
+            $formField->currency($configuration['currency']);
         }
-        if (isset($configurationData['minFloatValue'])) {
-            $formField->minimum($configurationData['minFloatValue']);
+        if (isset($configuration['minFloatValue'])) {
+            $formField->minimum($configuration['minFloatValue']);
         }
-        if (isset($configurationData['maxFloatValue'])) {
-            $formField->maximum($configurationData['maxFloatValue']);
+        if (isset($configuration['maxFloatValue'])) {
+            $formField->maximum($configuration['maxFloatValue']);
         }
 
         return $formField;

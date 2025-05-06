@@ -13,7 +13,7 @@ namespace wcf\system\form\option\formatter;
 final class BooleanFormatter implements IFormOptionFormatter
 {
     #[\Override]
-    public function format(string $value, int $languageID, array $configurationData): string
+    public function format(string $value, int $languageID, array $configuration): string
     {
         if (!$value) {
             return '';

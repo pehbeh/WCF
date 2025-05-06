@@ -26,13 +26,13 @@ class WysiwygFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFilterFormField(string $id, array $configurationData = []): TextFormField
+    public function getFilterFormField(string $id, array $configuration = []): TextFormField
     {
         return TextFormField::create($id);
     }
 
     #[\Override]
-    public function getFormField(string $id, array $configurationData = []): WysiwygFormField
+    public function getFormField(string $id, array $configuration = []): WysiwygFormField
     {
         return WysiwygFormField::create($id)
             ->objectType('com.woltlab.wcf.genericFormOption');

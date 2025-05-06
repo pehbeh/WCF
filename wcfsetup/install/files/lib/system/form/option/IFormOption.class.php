@@ -21,14 +21,14 @@ interface IFormOption
     public function getTitle(): string;
 
     /**
-     * @param array<string, mixed> $configurationData
+     * @param array<string, mixed> $configuration
      */
-    public function getFormField(string $id, array $configurationData = []): AbstractFormField;
+    public function getFormField(string $id, array $configuration = []): AbstractFormField;
 
     /**
-     * @param array<string, mixed> $configurationData
+     * @param array<string, mixed> $configuration
      */
-    public function getFilterFormField(string $id, array $configurationData = []): AbstractFormField;
+    public function getFilterFormField(string $id, array $configuration = []): AbstractFormField;
 
     /**
      * @return string[]

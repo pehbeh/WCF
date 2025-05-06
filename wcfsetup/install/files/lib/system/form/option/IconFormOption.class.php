@@ -22,7 +22,7 @@ class IconFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormField(string $id, array $configurationData = []): IconFormField
+    public function getFormField(string $id, array $configuration = []): IconFormField
     {
         return IconFormField::create($id);
     }

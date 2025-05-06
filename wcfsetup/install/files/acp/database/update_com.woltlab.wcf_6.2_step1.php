@@ -52,7 +52,7 @@ return [
         ]),
     PartialDatabaseTable::create('wcf1_contact_option')
         ->columns([
-            MediumtextDatabaseTableColumn::create('configurationData'),
+            MediumtextDatabaseTableColumn::create('configuration'),
         ]),
     PartialDatabaseTable::create('wcf1_file')
         ->columns([

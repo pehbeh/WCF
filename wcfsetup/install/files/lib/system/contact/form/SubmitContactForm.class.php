@@ -68,7 +68,7 @@ final class SubmitContactForm
             }
 
             $value = $optionValues[$availableOption->optionID];
-            $configurationData = $availableOption->getConfigurationData();
+            $configuration = $availableOption->getConfiguration();
             $formOption = $availableOption->getFormOption();
 
             $options[] = [
@@ -77,12 +77,12 @@ final class SubmitContactForm
                 'value' => $formOption->getPlainTextFormatter()->format(
                     $value,
                     LanguageFactory::getInstance()->getDefaultLanguage()->languageID,
-                    $configurationData
+                    $configuration
                 ),
                 'htmlValue' => $formOption->getFormatter()->format(
                     $value,
                     LanguageFactory::getInstance()->getDefaultLanguage()->languageID,
-                    $configurationData
+                    $configuration
                 ),
             ];
         }

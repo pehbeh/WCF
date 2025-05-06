@@ -26,7 +26,7 @@ class SourceCodeFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormField(string $id, array $configurationData = []): SourceCodeFormField
+    public function getFormField(string $id, array $configuration = []): SourceCodeFormField
     {
         return SourceCodeFormField::create($id);
     }
@@ -38,7 +38,7 @@ class SourceCodeFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFilterFormField(string $id, array $configurationData = []): AbstractFormField
+    public function getFilterFormField(string $id, array $configuration = []): AbstractFormField
     {
         return TextFormField::create($id);
     }

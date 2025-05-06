@@ -15,7 +15,7 @@ use wcf\system\style\FontAwesomeIcon;
 final class RatingFormatter implements IFormOptionFormatter
 {
     #[\Override]
-    public function format(string $value, int $languageID, array $configurationData): string
+    public function format(string $value, int $languageID, array $configuration): string
     {
         $rating = \floatval($value);
         $html = '';

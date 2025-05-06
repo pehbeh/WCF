@@ -15,7 +15,7 @@ use wcf\util\StringUtil;
 final class MultilineTextFormatter implements IFormOptionFormatter
 {
     #[\Override]
-    public function format(string $value, int $languageID, array $configurationData): string
+    public function format(string $value, int $languageID, array $configuration): string
     {
         return \nl2br(StringUtil::encodeHTML($value), false);
     }

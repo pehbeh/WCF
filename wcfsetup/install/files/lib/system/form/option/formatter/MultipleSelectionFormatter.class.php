@@ -16,14 +16,14 @@ use wcf\util\StringUtil;
 final class MultipleSelectionFormatter implements IFormOptionFormatter
 {
     #[\Override]
-    public function format(string $value, int $languageID, array $configurationData): string
+    public function format(string $value, int $languageID, array $configuration): string
     {
         if (!$value) {
             return '';
         };
 
         $keys = \explode("\n", $value);
-        $selectOptions = JSON::decode($configurationData['selectOptions']);
+        $selectOptions = JSON::decode($configuration['selectOptions']);
         $html = '';
 
         foreach ($keys as $key) {
