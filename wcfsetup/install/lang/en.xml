@@ -5580,16 +5580,6 @@ your notifications on <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phras
 
 <p>{@$message|newlineToBreak}</p>]]></item>
 	</category>
-	<category name="wcf.user.rank">
-		<item name="wcf.user.rank.administrator"><![CDATA[Administrator]]></item>
-		<item name="wcf.user.rank.moderator"><![CDATA[Moderator]]></item>
-		<item name="wcf.user.rank.user0"><![CDATA[Beginner]]></item>
-		<item name="wcf.user.rank.user1"><![CDATA[Student]]></item>
-		<item name="wcf.user.rank.user2"><![CDATA[Intermediate]]></item>
-		<item name="wcf.user.rank.user3"><![CDATA[Professional]]></item>
-		<item name="wcf.user.rank.user4"><![CDATA[Master]]></item>
-		<item name="wcf.user.rank.user5"><![CDATA[Enlightened]]></item>
-	</category>
 	<category name="wcf.smiley"/>
 	<category name="wcf.upload">
 		<item name="wcf.upload.crop.image"><![CDATA[Crop image]]></item>
@@ -7536,5 +7526,13 @@ Allowed extensions: {', '|implode:$allowedFileExtensions}]]></item>
 	<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.removeReportContent"/>
 	<item name="wcf.clipboard.label.com.woltlab.wcf.moderation.queue.marked"/>
 	<item name="wcf.acp.label.sortAfterGroupFiltering"/>
+	<item name="wcf.user.rank.administrator"/>
+	<item name="wcf.user.rank.moderator"/>
+	<item name="wcf.user.rank.user0"/>
+	<item name="wcf.user.rank.user1"/>
+	<item name="wcf.user.rank.user2"/>
+	<item name="wcf.user.rank.user3"/>
+	<item name="wcf.user.rank.user4"/>
+	<item name="wcf.user.rank.user5"/>
 </delete>
 </language>
