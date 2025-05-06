@@ -19,7 +19,7 @@ use wcf\data\user\online\UserOnline;
 use wcf\data\user\option\ViewableUserOption;
 use wcf\data\user\rank\UserRank;
 use wcf\system\cache\builder\UserGroupPermissionCacheBuilder;
-use wcf\system\cache\builder\UserRankCacheBuilder;
+use wcf\system\cache\eager\UserRankCache;
 use wcf\system\cache\runtime\FileRuntimeCache;
 use wcf\system\cache\runtime\UserProfileRuntimeCache;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
@@ -923,7 +923,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
             return $this->userTitle;
         }
         if ($this->getRank() && $this->getRank()->showTitle()) {
-            return WCF::getLanguage()->get($this->getRank()->rankTitle);
+            return $this->getRank()->getTitle();
         }
 
         return '';
@@ -939,7 +939,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
             return null;
         }
 
-        return UserRankCacheBuilder::getInstance()->getRank($this->rankID);
+        return (new UserRankCache())->getCache()[$this->rankID] ?? null;
     }
 
     /**
