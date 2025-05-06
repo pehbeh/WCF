@@ -10,9 +10,10 @@
 
 use wcf\system\database\table\column\IntDatabaseTableColumn;
 use wcf\system\database\table\column\MediumtextDatabaseTableColumn;
-use wcf\system\database\table\column\TextDatabaseTableColumn;
-use wcf\system\database\table\column\TinyintDatabaseTableColumn;
+use wcf\system\database\table\column\NotNullVarchar255DatabaseTableColumn;
+use wcf\system\database\table\DatabaseTable;
 use wcf\system\database\table\index\DatabaseTableForeignKey;
+use wcf\system\database\table\index\DatabaseTablePrimaryIndex;
 use wcf\system\database\table\PartialDatabaseTable;
 
 return [
@@ -57,5 +58,29 @@ return [
     PartialDatabaseTable::create('wcf1_file')
         ->columns([
             IntDatabaseTableColumn::create('uploadTime'),
+        ]),
+    DatabaseTable::create('wcf1_user_rank_content')
+        ->columns([
+            IntDatabaseTableColumn::create('rankID')
+                ->notNull(),
+            IntDatabaseTableColumn::create('languageID')
+                ->notNull(),
+            NotNullVarchar255DatabaseTableColumn::create('title'),
+        ])
+        ->indices([
+            DatabaseTablePrimaryIndex::create()
+                ->columns(['rankID', 'languageID']),
+        ])
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['rankID'])
+                ->referencedTable('wcf1_user_rank')
+                ->referencedColumns(['rankID'])
+                ->onDelete('CASCADE'),
+            DatabaseTableForeignKey::create()
+                ->columns(['languageID'])
+                ->referencedTable('wcf1_language')
+                ->referencedColumns(['languageID'])
+                ->onDelete('CASCADE'),
         ]),
 ];
