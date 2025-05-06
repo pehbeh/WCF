@@ -31,6 +31,7 @@ use wcf\util\StringUtil;
  * @property-read   int $showOrder      position of the option in relation to the other options
  * @property-read   int $isDisabled     is `1` if the option is disabled, otherwise `0`
  * @property-read   int $originIsSystem     is `1` if the option has been delivered by a package, otherwise `0` (i.e. the option has been created in the ACP)
+ * @deprecated 6.2 Use `IFormOption` instead
  */
 abstract class CustomOption extends Option implements ITitledObject
 {

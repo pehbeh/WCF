@@ -15,6 +15,7 @@ use wcf\data\DatabaseObjectEditor;
  * @mixin       CustomOption
  * @template TCustomOption of CustomOption = CustomOption
  * @extends DatabaseObjectEditor<TCustomOption>
+ * @deprecated 6.2 Use `IFormOption` instead
  */
 abstract class CustomOptionEditor extends DatabaseObjectEditor
 {

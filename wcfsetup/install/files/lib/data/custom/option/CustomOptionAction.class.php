@@ -19,6 +19,7 @@ use wcf\data\TDatabaseObjectToggle;
  * @template TCustomOptionEditor of CustomOptionEditor|DatabaseObjectDecorator<TCustomOption> = CustomOptionEditor
  * @extends AbstractDatabaseObjectAction<TCustomOption, TCustomOptionEditor>
  * @phpstan-ignore generics.notSubtype
+ * @deprecated 6.2 Use `IFormOption` instead
  */
 abstract class CustomOptionAction extends AbstractDatabaseObjectAction implements IToggleAction
 {

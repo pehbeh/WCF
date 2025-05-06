@@ -158,6 +158,10 @@
 			<disallowedBBCodesPermission>user.signature.disallowedBBCodes</disallowedBBCodesPermission>
 		</type>
 		<type>
+			<name>com.woltlab.wcf.genericFormOption</name>
+			<definitionname>com.woltlab.wcf.message</definitionname>
+		</type>
+		<type>
 			<name>com.woltlab.wcf.user.signature</name>
 			<definitionname>com.woltlab.wcf.attachment.objectType</definitionname>
 			<classname>wcf\system\attachment\SignatureAttachmentObjectType</classname>
@@ -222,6 +226,11 @@
 			<name>com.woltlab.wcf.contact</name>
 			<definitionname>com.woltlab.wcf.attachment.objectType</definitionname>
 			<classname>wcf\system\attachment\ContactAttachmentObjectType</classname>
+		</type>
+		<type>
+			<name>com.woltlab.wcf.contact.form</name>
+			<definitionname>com.woltlab.wcf.file</definitionname>
+			<classname>wcf\system\file\processor\ContactFormFileProcessor</classname>
 		</type>
 		<!-- page -->
 		<type>
@@ -1720,6 +1729,10 @@
 		<!-- /multi factor -->
 		<type>
 			<name>com.woltlab.wcf.lostPasswordForm</name>
+			<definitionname>com.woltlab.wcf.floodControl</definitionname>
+		</type>
+		<type>
+			<name>com.woltlab.wcf.contactForm</name>
 			<definitionname>com.woltlab.wcf.floodControl</definitionname>
 		</type>
 		<type>

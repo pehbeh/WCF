@@ -3454,22 +3454,20 @@ Allowed extensions: {', '|implode:$attachmentHandler->getFormattedAllowedExtensi
 		<item name="wcf.condition.timestamp.error.invalidStart"><![CDATA[The start date is invalid.]]></item>
 	</category>
 	<category name="wcf.contact">
-		<item name="wcf.contact.data"><![CDATA[Your Inquiry]]></item>
 		<item name="wcf.contact.mail.subject"><![CDATA[New message via the contact form]]></item>
 		<item name="wcf.contact.mail.plaintext"><![CDATA[Hello,
 
-“{@$name}” sent you a message on {@PAGE_TITLE|phrase} via the contact form:
+“{unsafe:$name}” sent you a message on {unsafe:PAGE_TITLE|phrase} via the contact form:
 
-Email: {@$emailAddress} {* this line ends with a space *}
+Email: {unsafe:$emailAddress} {* this line ends with a space *}
 {foreach from=$options item=option}
-{@$option['title']}: {if !$option['isMessage']}{@$option['value']}{else} {* this line ends with a space *}
-{@$option['value']}{/if} {* this line ends with a space *}
+{unsafe:$option['title']}: {unsafe:$option['value']} {* this line ends with a space *}
 {/foreach}
 {if !$attachments|empty}
 
 Attachments:
 {foreach from=$attachments item=attachment}
-- {@$attachment->getTitle()} [URL: {@$attachment->getLink()} ]
+- {unsafe:$attachment->getTitle()} [URL: {unsafe:$attachment->getLink()} ]
 {/foreach}
 {if CONTACT_FORM_PRUNE_ATTACHMENTS}(Attachments are removed after {if CONTACT_FORM_PRUNE_ATTACHMENTS == 1}one day{else}{CONTACT_FORM_PRUNE_ATTACHMENTS} days{/if}.){/if} {* this line ends with a space *}
 {/if}]]></item>
@@ -3479,7 +3477,7 @@ Attachments:
 <p><br></p>
 <p>Email: <a href="mailto:{$emailAddress}">{$emailAddress}</a></p>
 {foreach from=$options item=option}
-<p><strong>{@$option['title']}:</strong> {@$option['htmlValue']}</p>
+<p><strong>{unsafe:$option['title']}:</strong> {unsafe:$option['htmlValue']}</p>
 {/foreach}
 {if !$attachments|empty}
 <p><br></p>
@@ -3499,9 +3497,8 @@ Attachments:
 		<item name="wcf.contact.recipient.name1"><![CDATA[Administrator]]></item>
 		<item name="wcf.contact.recipientID"><![CDATA[Recipient]]></item>
 		<item name="wcf.contact.sender"><![CDATA[Sender]]></item>
-		<item name="wcf.contact.sender.information"><![CDATA[Your Data]]></item>
+		<item name="wcf.contact.attachments"><![CDATA[Attachments]]></item>
 		<item name="wcf.contact.success"><![CDATA[Message has been sent.]]></item>
-		<item name="wcf.contact.confirmPrivacyPolicy"><![CDATA[I agree to the processing of the data entered. <span class="customOptionRequired">*</span>]]></item>
 	</category>
 	<category name="wcf.acp.contact">
 		<item name="wcf.acp.contact.options"><![CDATA[Input Fields]]></item>
@@ -4061,6 +4058,32 @@ Attachments:
 		<item name="wcf.form.field.upload.error.minimum"><![CDATA[You must upload at least {if $minimum > 1}{#$minimum} files{else}one file{/if}.]]></item>
 		<item name="wcf.form.field.upload.error.maximum"><![CDATA[You can upload a maximum of {if $maximum > 1}{#$maximum} files{else}one file{/if}.]]></item>
 		<item name="wcf.form.field.upload.error.fileExtension"><![CDATA[The file “{$filename}” has an invalid file extension. Allowed are: {implode from=$allowedFileExtensions item=extension}{$extension}{/implode}.]]></item>
+		<item name="wcf.form.selectOptions.key"><![CDATA[Key]]></item>
+		<item name="wcf.form.selectOptions.value"><![CDATA[Value]]></item>
+		<item name="wcf.form.option.boolean"><![CDATA[Yes/No]]></item>
+		<item name="wcf.form.option.checkboxes"><![CDATA[Multiple selection]]></item>
+		<item name="wcf.form.option.currency"><![CDATA[Currency]]></item>
+		<item name="wcf.form.option.date"><![CDATA[Date]]></item>
+		<item name="wcf.form.option.email"><![CDATA[Email address]]></item>
+		<item name="wcf.form.option.integer"><![CDATA[Integer]]></item>
+		<item name="wcf.form.option.float"><![CDATA[Decimal]]></item>
+		<item name="wcf.form.option.icon"><![CDATA[Icon]]></item>
+		<item name="wcf.form.option.radioButton"><![CDATA[Radio selection]]></item>
+		<item name="wcf.form.option.rating"><![CDATA[Rating]]></item>
+		<item name="wcf.form.option.select"><![CDATA[Single selection]]></item>
+		<item name="wcf.form.option.text"><![CDATA[Short text]]></item>
+		<item name="wcf.form.option.textarea"><![CDATA[Multiline text]]></item>
+		<item name="wcf.form.option.sourceCode"><![CDATA[Source code]]></item>
+		<item name="wcf.form.option.url"><![CDATA[Link]]></item>
+		<item name="wcf.form.option.wysiwyg"><![CDATA[Wysiwyg]]></item>
+		<item name="wcf.form.option.shared.currency"><![CDATA[Currency]]></item>
+		<item name="wcf.form.option.shared.defaultValue"><![CDATA[Default Value]]></item>
+		<item name="wcf.form.option.shared.maxLength"><![CDATA[Maximum Text Length]]></item>
+		<item name="wcf.form.option.shared.minValue"><![CDATA[Minimum]]></item>
+		<item name="wcf.form.option.shared.maxValue"><![CDATA[Maximum]]></item>
+		<item name="wcf.form.option.shared.selectOptions"><![CDATA[Options]]></item>
+		<item name="wcf.form.option.shared.required"><![CDATA[This is a required field]]></item>
+		<item name="wcf.form.option.optionType"><![CDATA[Option Type]]></item>
 	</category>
 	<category name="wcf.image">
 		<item name="wcf.image.coverPhoto"><![CDATA[Cover Photo]]></item>
@@ -5585,6 +5608,11 @@ your notifications on <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phras
 		<item name="wcf.upload.error.delete.permissionDenied"><![CDATA[The file cannot be deleted, use <strong>Replace</strong> instead to swap out the file.]]></item>
 		<item name="wcf.upload.validation.error.noImage"><![CDATA[The file is not an image.]]></item>
 		<item name="wcf.upload.validation.error.tooSmall"><![CDATA[The file is too small.]]></item>
+		<item name="wcf.upload.single.limits"><![CDATA[Maximum file size: {$maximumSize|filesize}<br>
+Allowed extensions: {', '|implode:$allowedFileExtensions}]]></item>
+		<item name="wcf.upload.multiple.limits"><![CDATA[The maximum number of files: {#$maximumCount}<br>
+Maximum file size: {$maximumSize|filesize}<br>
+Allowed extensions: {', '|implode:$allowedFileExtensions}]]></item>
 	</category>
 </import>
 <delete>

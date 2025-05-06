@@ -64,7 +64,7 @@
 						</td>
 						<td class="columnID">{@$option->optionID}</td>
 						<td class="columnTitle columnOptionTitle"><a href="{link controller='ContactOptionEdit' id=$option->optionID}{/link}">{$option->getTitle()}</a></td>
-						<td class="columnText columnOptionType">{lang}wcf.acp.customOption.optionType.{$option->optionType}{/lang}</td>
+						<td class="columnText columnOptionType">{lang}wcf.form.option.{$option->optionType}{/lang}</td>
 						<td class="columnDigits columnShowOrder">{#$option->showOrder}</td>
 						
 						{event name='columns'}

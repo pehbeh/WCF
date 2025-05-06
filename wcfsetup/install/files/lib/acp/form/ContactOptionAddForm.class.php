@@ -4,25 +4,25 @@ namespace wcf\acp\form;
 
 use wcf\data\contact\option\ContactOption;
 use wcf\data\contact\option\ContactOptionAction;
-use wcf\data\contact\option\ContactOptionEditor;
-use wcf\system\request\LinkHandler;
-use wcf\system\WCF;
+use wcf\data\contact\option\ContactOptionList;
+use wcf\form\AbstractFormBuilderForm;
+use wcf\system\form\builder\field\BooleanFormField;
+use wcf\system\form\builder\field\MultilineTextFormField;
+use wcf\system\form\builder\field\ShowOrderFormField;
+use wcf\system\form\builder\field\TextFormField;
 
 /**
  * Shows the contact option add form.
  *
- * @author  Alexander Ebert
- * @copyright   2001-2019 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @author      Alexander Ebert
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       3.1
+ *
+ * @extends AbstractFormBuilderForm<ContactOption>
  */
-class ContactOptionAddForm extends AbstractCustomOptionForm
+class ContactOptionAddForm extends AbstractFormOptionAddForm
 {
-    /**
-     * @inheritDoc
-     */
-    public $action = 'add';
-
     /**
      * @inheritDoc
      */
@@ -39,50 +39,46 @@ class ContactOptionAddForm extends AbstractCustomOptionForm
     public $neededPermissions = ['admin.contact.canManageContactForm'];
 
     /**
-     * action class name
-     * @var string
-     */
-    public $actionClass = ContactOptionAction::class;
-
-    /**
-     * base class name
-     * @var string
-     */
-    public $baseClass = ContactOption::class;
-
-    /**
-     * editor class name
-     * @var string
-     */
-    public $editorClass = ContactOptionEditor::class;
-
-    /**
      * @inheritDoc
      */
-    public function readParameters()
-    {
-        parent::readParameters();
+    public $objectActionClass = ContactOptionAction::class;
 
-        $this->getI18nValue('optionTitle')->setLanguageItem('wcf.contact.option', 'wcf.contact', 'com.woltlab.wcf');
-        $this->getI18nValue('optionDescription')->setLanguageItem(
-            'wcf.contact.optionDescription',
-            'wcf.contact',
-            'com.woltlab.wcf'
-        );
+    #[\Override]
+    protected function createForm()
+    {
+        parent::createForm();
+
+        $this->form->appendChildren([
+            TextFormField::create('optionTitle')
+                ->label('wcf.global.name')
+                ->maximumLength(255)
+                ->i18n()
+                ->languageItemPattern('wcf.contact.option\d+')
+                ->required(),
+            MultilineTextFormField::create('optionDescription')
+                ->label('wcf.global.description')
+                ->maximumLength(5000)
+                ->rows(5)
+                ->i18n()
+                ->languageItemPattern('wcf.contact.optionDescription\d+'),
+            ShowOrderFormField::create('showOrder')
+                ->options($this->getContactOptions()),
+            $this->getOptionTypeFormField(),
+            ...$this->getSharedConfigurationFormFields(),
+            BooleanFormField::create('isDisabled')
+                ->label('wcf.acp.customOption.isDisabled'),
+        ]);
     }
 
     /**
-     * @inheritDoc
+     * @return array<int, string>
      */
-    public function save()
+    private function getContactOptions(): array
     {
-        parent::save();
+        $optionList = new ContactOptionList();
+        $optionList->sqlOrderBy = 'showOrder ASC';
+        $optionList->readObjects();
 
-        WCF::getTPL()->assign([
-            'objectEditLink' => LinkHandler::getInstance()->getControllerLink(
-                ContactOptionEditForm::class,
-                ['id' => $this->objectAction->getReturnValues()['returnValues']->getObjectID()]
-            ),
-        ]);
+        return \array_map(static fn($option) => $option->getTitle(), $optionList->getObjects());
     }
 }

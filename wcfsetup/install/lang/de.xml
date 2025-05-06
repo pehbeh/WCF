@@ -3529,22 +3529,20 @@ Erlaubte Dateiendungen: {', '|implode:$attachmentHandler->getFormattedAllowedExt
 		<item name="wcf.condition.timestamp.error.invalidStart"><![CDATA[Das Startdatum ist ungültig.]]></item>
 	</category>
 	<category name="wcf.contact">
-		<item name="wcf.contact.data"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Deine{else}Ihre{/if} Anfrage]]></item>
 		<item name="wcf.contact.mail.subject"><![CDATA[Neue Nachricht über das Kontaktformular]]></item>
 		<item name="wcf.contact.mail.plaintext"><![CDATA[Hallo,
 
-„{@$name}“ hat {if LANGUAGE_USE_INFORMAL_VARIANT}dir{else}Ihnen{/if} über das Kontaktformular auf der Website {@PAGE_TITLE|phrase} [URL:{link isEmail=true}{/link}] folgende Nachricht gesandt:
+„{unsafe:$name}“ hat {if LANGUAGE_USE_INFORMAL_VARIANT}dir{else}Ihnen{/if} über das Kontaktformular auf der Website {unsafe:PAGE_TITLE|phrase} [URL:{link isEmail=true}{/link}] folgende Nachricht gesandt:
 
-E-Mail-Adresse: {@$emailAddress} {* this line ends with a space *}
+E-Mail-Adresse: {unsafe:$emailAddress} {* this line ends with a space *}
 {foreach from=$options item=option}
-{@$option['title']}: {if !$option['isMessage']}{@$option['value']}{else} {* this line ends with a space *}
-{@$option['value']}{/if} {* this line ends with a space *}
+{unsafe:$option['title']}: {unsafe:$option['value']} {* this line ends with a space *}
 {/foreach}
 {if !$attachments|empty}
 
 Dateianhänge:
 {foreach from=$attachments item=attachment}
-- {$attachment->getTitle()} [URL: {@$attachment->getLink()} ]
+- {unsafe:$attachment->getTitle()} [URL: {unsafe:$attachment->getLink()} ]
 {/foreach}
 {if CONTACT_FORM_PRUNE_ATTACHMENTS}(Dateianhänge werden nach {if CONTACT_FORM_PRUNE_ATTACHMENTS == 1}einem Tag{else}{CONTACT_FORM_PRUNE_ATTACHMENTS} Tagen{/if} gelöscht.){/if} {* this line ends with a space *}
 {/if}]]></item>
@@ -3554,7 +3552,7 @@ Dateianhänge:
 <p><br></p>
 <p>E-Mail-Adresse: <a href="mailto:{$emailAddress}">{$emailAddress}</a></p>
 {foreach from=$options item=option}
-<p><strong>{@$option['title']}:</strong> {@$option['htmlValue']}</p>
+<p><strong>{unsafe:$option['title']}:</strong> {unsafe:$option['htmlValue']}</p>
 {/foreach}
 {if !$attachments|empty}
 <p><br></p>
@@ -3574,9 +3572,8 @@ Dateianhänge:
 		<item name="wcf.contact.recipient.name1"><![CDATA[Administrator]]></item>
 		<item name="wcf.contact.recipientID"><![CDATA[Empfänger]]></item>
 		<item name="wcf.contact.sender"><![CDATA[Absender]]></item>
-		<item name="wcf.contact.sender.information"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Deine{else}Ihre{/if} Angaben]]></item>
+		<item name="wcf.contact.attachments"><![CDATA[Dateianhänge]]></item>
 		<item name="wcf.contact.success"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Deine{else}Ihre{/if} Nachricht wurde erfolgreich versandt.]]></item>
-		<item name="wcf.contact.confirmPrivacyPolicy"><![CDATA[Ich erkläre mich mit der Verarbeitung der eingegebenen Daten einverstanden. <span class="customOptionRequired">*</span>]]></item>
 	</category>
 	<category name="wcf.date">
 		<item name="wcf.date.dateFormat"><![CDATA[j. F Y]]></item>
@@ -4115,6 +4112,32 @@ Dateianhänge:
 		<item name="wcf.form.field.upload.error.minimum"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Du musst{else}Sie müssen{/if} mindestens {if $minimum > 1}{#$minimum} Dateien{else}eine Datei{/if} hochladen.]]></item>
 		<item name="wcf.form.field.upload.error.maximum"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Du darfst{else}Sie dürfen{/if} maximal {if $maximum > 1}{#$maximum} Dateien{else}eine Datei{/if} hochladen.]]></item>
 		<item name="wcf.form.field.upload.error.fileExtension"><![CDATA[Die Datei „{$filename}“ hat eine ungültige Dateiendung. Erlaubt sind: {implode from=$allowedFileExtensions item=extension}{$extension}{/implode}.]]></item>
+		<item name="wcf.form.selectOptions.key"><![CDATA[Bezeichner]]></item>
+		<item name="wcf.form.selectOptions.value"><![CDATA[Wert]]></item>
+		<item name="wcf.form.option.boolean"><![CDATA[Ja/Nein]]></item>
+		<item name="wcf.form.option.checkboxes"><![CDATA[Checkboxen]]></item>
+		<item name="wcf.form.option.currency"><![CDATA[Währung]]></item>
+		<item name="wcf.form.option.date"><![CDATA[Datum]]></item>
+		<item name="wcf.form.option.email"><![CDATA[E-Mail-Adresse]]></item>
+		<item name="wcf.form.option.integer"><![CDATA[Ganze Zahl]]></item>
+		<item name="wcf.form.option.float"><![CDATA[Dezimalzahl]]></item>
+		<item name="wcf.form.option.icon"><![CDATA[Icon]]></item>
+		<item name="wcf.form.option.radioButton"><![CDATA[Radio-Buttons]]></item>
+		<item name="wcf.form.option.rating"><![CDATA[Sterne-Bewertung]]></item>
+		<item name="wcf.form.option.select"><![CDATA[Auswahlmöglichkeit]]></item>
+		<item name="wcf.form.option.text"><![CDATA[Text]]></item>
+		<item name="wcf.form.option.textarea"><![CDATA[Mehrzeiliger Text]]></item>
+		<item name="wcf.form.option.sourceCode"><![CDATA[Quellcode]]></item>
+		<item name="wcf.form.option.url"><![CDATA[Link]]></item>
+		<item name="wcf.form.option.wysiwyg"><![CDATA[Wysiwyg]]></item>
+		<item name="wcf.form.option.shared.currency"><![CDATA[Währung]]></item>
+		<item name="wcf.form.option.shared.defaultValue"><![CDATA[Standardwert]]></item>
+		<item name="wcf.form.option.shared.maxLength"><![CDATA[Maximale Textlänge]]></item>
+		<item name="wcf.form.option.shared.minValue"><![CDATA[Minimum]]></item>
+		<item name="wcf.form.option.shared.maxValue"><![CDATA[Maximum]]></item>
+		<item name="wcf.form.option.shared.selectOptions"><![CDATA[Auswahloptionen]]></item>
+		<item name="wcf.form.option.shared.required"><![CDATA[Das Feld muss zwingend ausgefüllt werden.]]></item>
+		<item name="wcf.form.option.optionType"><![CDATA[Feldtyp]]></item>
 	</category>
 	<category name="wcf.image">
 		<item name="wcf.image.coverPhoto"><![CDATA[Titelbild]]></item>
@@ -5583,6 +5606,11 @@ Benachrichtigungen auf <a href="{link isHtmlEmail=true}{/link}">{PAGE_TITLE|phra
 		<item name="wcf.upload.error.delete.permissionDenied"><![CDATA[Die Datei kann nicht gelöscht werden, {if LANGUAGE_USE_INFORMAL_VARIANT}verwende{else}verwenden Sie{/if} stattdessen <strong>Ersetzen</strong>, um die Datei zu ersetzen.]]></item>
 		<item name="wcf.upload.validation.error.noImage"><![CDATA[Die Datei ist kein Bild.]]></item>
 		<item name="wcf.upload.validation.error.tooSmall"><![CDATA[Die Datei ist zu klein.]]></item>
+		<item name="wcf.upload.single.limits"><![CDATA[Maximale Dateigröße: {$maximumSize|filesize}<br>
+Erlaubte Dateiendungen: {', '|implode:$allowedFileExtensions}]]></item>
+		<item name="wcf.upload.multiple.limits"><![CDATA[Maximale Anzahl an Dateien: {#$maximumCount}<br>
+Maximale Dateigröße: {$maximumSize|filesize}<br>
+Erlaubte Dateiendungen: {', '|implode:$allowedFileExtensions}]]></item>
 	</category>
 </import>
 <delete>

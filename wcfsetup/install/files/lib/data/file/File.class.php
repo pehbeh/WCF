@@ -5,7 +5,7 @@ namespace wcf\data\file;
 use wcf\action\FileDownloadAction;
 use wcf\data\DatabaseObject;
 use wcf\data\file\thumbnail\FileThumbnail;
-use wcf\data\ILinkableObject;
+use wcf\data\ITitledLinkObject;
 use wcf\system\application\ApplicationHandler;
 use wcf\system\file\processor\FileProcessor;
 use wcf\system\file\processor\IFileProcessor;
@@ -31,8 +31,9 @@ use wcf\util\StringUtil;
  * @property-read int|null $width
  * @property-read int|null $height
  * @property-read string|null $fileHashWebp
+ * @property-read int $uploadTime
  */
-class File extends DatabaseObject implements ILinkableObject, IImageDataProvider
+class File extends DatabaseObject implements ITitledLinkObject, IImageDataProvider
 {
     /**
      * List of common file extensions that are always safe to be served directly
@@ -277,5 +278,11 @@ class File extends DatabaseObject implements ILinkableObject, IImageDataProvider
         }
 
         return new ImageData($this->getLink(), $this->width, $this->height);
+    }
+
+    #[\Override]
+    public function getTitle(): string
+    {
+        return $this->filename;
     }
 }

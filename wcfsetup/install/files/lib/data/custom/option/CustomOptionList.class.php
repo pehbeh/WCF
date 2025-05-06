@@ -13,6 +13,7 @@ use wcf\data\DatabaseObjectList;
  * @since   3.1
  *
  * @extends DatabaseObjectList<CustomOption>
+ * @deprecated 6.2 Use `IFormOption` instead
  */
 abstract class CustomOptionList extends DatabaseObjectList
 {

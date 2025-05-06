@@ -18,6 +18,7 @@ use wcf\system\exception\UserInputException;
  * @template TOption of CustomOption = CustomOption
  * @extends OptionHandler<TOption, OptionCategory>
  * @phpstan-import-type ParsedOption from OptionHandler
+ * @deprecated 6.2 Use `IFormOption` instead
  */
 abstract class CustomOptionHandler extends OptionHandler
 {
