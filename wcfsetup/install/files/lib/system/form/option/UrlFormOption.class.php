@@ -6,6 +6,7 @@ use wcf\data\DatabaseObjectList;
 use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\TextFormField;
 use wcf\system\form\builder\field\UrlFormField;
+use wcf\system\form\option\formatter\IFormOptionFormatter;
 use wcf\system\form\option\formatter\UrlFormatter;
 use wcf\system\WCF;
 
@@ -26,13 +27,13 @@ class UrlFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormField(string $id, array $configuration = []): UrlFormField
+    public function getFormField(string $id, array $configuration = []): AbstractFormField
     {
         return UrlFormField::create($id);
     }
 
     #[\Override]
-    public function getFormatter(): UrlFormatter
+    public function getFormatter(): IFormOptionFormatter
     {
         return new UrlFormatter();
     }

@@ -4,6 +4,7 @@ namespace wcf\system\form\option;
 
 use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\IntegerFormField;
+use wcf\system\form\option\formatter\IFormOptionFormatter;
 use wcf\system\form\option\formatter\IntegerFormatter;
 
 /**
@@ -43,13 +44,13 @@ class IntegerFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormatter(): IntegerFormatter
+    public function getFormatter(): IFormOptionFormatter
     {
         return new IntegerFormatter();
     }
 
     #[\Override]
-    public function getPlainTextFormatter(): IntegerFormatter
+    public function getPlainTextFormatter(): IFormOptionFormatter
     {
         return $this->getFormatter();
     }

@@ -5,6 +5,7 @@ namespace wcf\system\form\option;
 use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\BooleanFormField;
 use wcf\system\form\option\formatter\BooleanFormatter;
+use wcf\system\form\option\formatter\IFormOptionFormatter;
 
 /**
  * Implementation of a form field for boolean-type values.
@@ -29,13 +30,13 @@ class BooleanFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormatter(): BooleanFormatter
+    public function getFormatter(): IFormOptionFormatter
     {
         return new BooleanFormatter();
     }
 
     #[\Override]
-    public function getPlainTextFormatter(): BooleanFormatter
+    public function getPlainTextFormatter(): IFormOptionFormatter
     {
         return $this->getFormatter();
     }

@@ -2,9 +2,9 @@
 
 namespace wcf\system\form\option;
 
-use wcf\system\form\builder\field\DateFormField;
+use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\MultipleSelectionFormField;
-use wcf\system\form\option\formatter\DateFormatter;
+use wcf\system\form\option\formatter\IFormOptionFormatter;
 use wcf\system\form\option\formatter\MultipleSelectionFormatter;
 use wcf\system\WCF;
 use wcf\util\JSON;
@@ -26,7 +26,7 @@ class CheckboxesFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormField(string $id, array $configuration = []): MultipleSelectionFormField
+    public function getFormField(string $id, array $configuration = []): AbstractFormField
     {
         $formField = MultipleSelectionFormField::create($id);
 
@@ -57,13 +57,13 @@ class CheckboxesFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormatter(): MultipleSelectionFormatter
+    public function getFormatter(): IFormOptionFormatter
     {
         return new MultipleSelectionFormatter();
     }
 
     #[\Override]
-    public function getPlainTextFormatter(): MultipleSelectionFormatter
+    public function getPlainTextFormatter(): IFormOptionFormatter
     {
         return $this->getFormatter();
     }

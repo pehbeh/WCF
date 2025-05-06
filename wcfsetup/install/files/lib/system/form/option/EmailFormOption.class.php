@@ -7,6 +7,7 @@ use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\EmailFormField;
 use wcf\system\form\builder\field\TextFormField;
 use wcf\system\form\option\formatter\EmailFormatter;
+use wcf\system\form\option\formatter\IFormOptionFormatter;
 use wcf\system\WCF;
 
 /**
@@ -32,13 +33,13 @@ class EmailFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormatter(): EmailFormatter
+    public function getFormatter(): IFormOptionFormatter
     {
         return new EmailFormatter();
     }
 
     #[\Override]
-    public function getPlainTextFormatter(): EmailFormatter
+    public function getPlainTextFormatter(): IFormOptionFormatter
     {
         return $this->getFormatter();
     }

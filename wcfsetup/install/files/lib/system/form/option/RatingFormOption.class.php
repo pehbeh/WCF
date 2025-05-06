@@ -2,7 +2,9 @@
 
 namespace wcf\system\form\option;
 
+use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\RatingFormField;
+use wcf\system\form\option\formatter\IFormOptionFormatter;
 use wcf\system\form\option\formatter\RatingFormatter;
 
 /**
@@ -22,13 +24,13 @@ class RatingFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormField(string $id, array $configuration = []): RatingFormField
+    public function getFormField(string $id, array $configuration = []): AbstractFormField
     {
         return RatingFormField::create($id);
     }
 
     #[\Override]
-    public function getFormatter(): RatingFormatter
+    public function getFormatter(): IFormOptionFormatter
     {
         return new RatingFormatter();
     }

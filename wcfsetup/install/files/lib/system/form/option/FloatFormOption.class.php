@@ -5,6 +5,7 @@ namespace wcf\system\form\option;
 use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\FloatFormField;
 use wcf\system\form\option\formatter\FloatFormatter;
+use wcf\system\form\option\formatter\IFormOptionFormatter;
 
 /**
  * Implementation of a form field for float values.
@@ -43,13 +44,13 @@ class FloatFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormatter(): FloatFormatter
+    public function getFormatter(): IFormOptionFormatter
     {
         return new FloatFormatter();
     }
 
     #[\Override]
-    public function getPlainTextFormatter(): FloatFormatter
+    public function getPlainTextFormatter(): IFormOptionFormatter
     {
         return $this->getFormatter();
     }

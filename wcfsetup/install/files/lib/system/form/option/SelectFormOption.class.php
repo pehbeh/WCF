@@ -4,6 +4,7 @@ namespace wcf\system\form\option;
 
 use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\SelectFormField;
+use wcf\system\form\option\formatter\IFormOptionFormatter;
 use wcf\system\form\option\formatter\SelectFormatter;
 use wcf\system\WCF;
 use wcf\util\JSON;
@@ -56,13 +57,13 @@ class SelectFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormatter(): SelectFormatter
+    public function getFormatter(): IFormOptionFormatter
     {
         return new SelectFormatter();
     }
 
     #[\Override]
-    public function getPlainTextFormatter(): SelectFormatter
+    public function getPlainTextFormatter(): IFormOptionFormatter
     {
         return new SelectFormatter(false);
     }

@@ -2,8 +2,10 @@
 
 namespace wcf\system\form\option;
 
+use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\IconFormField;
 use wcf\system\form\option\formatter\IconFormatter;
+use wcf\system\form\option\formatter\IFormOptionFormatter;
 
 /**
  * Implementation of a form field for icon values.
@@ -22,13 +24,13 @@ class IconFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormField(string $id, array $configuration = []): IconFormField
+    public function getFormField(string $id, array $configuration = []): AbstractFormField
     {
         return IconFormField::create($id);
     }
 
     #[\Override]
-    public function getFormatter(): IconFormatter
+    public function getFormatter(): IFormOptionFormatter
     {
         return new IconFormatter();
     }

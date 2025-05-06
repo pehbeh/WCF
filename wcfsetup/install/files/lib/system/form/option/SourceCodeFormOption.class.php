@@ -6,6 +6,7 @@ use wcf\data\DatabaseObjectList;
 use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\SourceCodeFormField;
 use wcf\system\form\builder\field\TextFormField;
+use wcf\system\form\option\formatter\IFormOptionFormatter;
 use wcf\system\form\option\formatter\SourceCodeFormatter;
 use wcf\system\WCF;
 
@@ -26,13 +27,13 @@ class SourceCodeFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormField(string $id, array $configuration = []): SourceCodeFormField
+    public function getFormField(string $id, array $configuration = []): AbstractFormField
     {
         return SourceCodeFormField::create($id);
     }
 
     #[\Override]
-    public function getFormatter(): SourceCodeFormatter
+    public function getFormatter(): IFormOptionFormatter
     {
         return new SourceCodeFormatter();
     }

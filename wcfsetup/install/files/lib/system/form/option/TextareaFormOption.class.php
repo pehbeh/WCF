@@ -6,6 +6,7 @@ use wcf\data\DatabaseObjectList;
 use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\MultilineTextFormField;
 use wcf\system\form\builder\field\TextFormField;
+use wcf\system\form\option\formatter\IFormOptionFormatter;
 use wcf\system\form\option\formatter\MultilineTextFormatter;
 use wcf\system\WCF;
 
@@ -43,7 +44,7 @@ class TextareaFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormatter(): MultilineTextFormatter
+    public function getFormatter(): IFormOptionFormatter
     {
         return new MultilineTextFormatter();
     }

@@ -5,6 +5,7 @@ namespace wcf\system\form\option;
 use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\CurrencyFormField;
 use wcf\system\form\option\formatter\CurrencyFormatter;
+use wcf\system\form\option\formatter\IFormOptionFormatter;
 
 /**
  * Implementation of a form field for currency values.
@@ -46,13 +47,13 @@ class CurrencyFormOption extends AbstractFormOption
     }
 
     #[\Override]
-    public function getFormatter(): CurrencyFormatter
+    public function getFormatter(): IFormOptionFormatter
     {
         return new CurrencyFormatter();
     }
 
     #[\Override]
-    public function getPlainTextFormatter(): CurrencyFormatter
+    public function getPlainTextFormatter(): IFormOptionFormatter
     {
         return $this->getFormatter();
     }
