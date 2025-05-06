@@ -13,6 +13,8 @@ use wcf\data\I18nDatabaseObjectList;
  * @since       6.0
  *
  * @extends I18nDatabaseObjectList<UserRank>
+ *
+ * @deprecated 6.2 use `UserRankList` instead
  */
 class I18nUserRankList extends I18nDatabaseObjectList
 {

@@ -5,6 +5,7 @@ namespace wcf\data\user\rank;
 use wcf\data\DatabaseObject;
 use wcf\data\ITitledObject;
 use wcf\system\form\builder\field\UploadFormField;
+use wcf\system\language\LanguageFactory;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 
@@ -28,6 +29,13 @@ use wcf\util\StringUtil;
 class UserRank extends DatabaseObject implements ITitledObject
 {
     public const RANK_IMAGE_DIR = 'images/rank/';
+
+    /**
+     * @var array<int, string>
+     *
+     * @since 6.2
+     */
+    protected array $titles;
 
     /**
      * Returns the image of this user rank.
@@ -54,7 +62,47 @@ class UserRank extends DatabaseObject implements ITitledObject
      */
     public function getTitle(): string
     {
-        return WCF::getLanguage()->get($this->rankTitle);
+        $this->loadTitles();
+
+        if ($this->titles === []) {
+            // Backwards compatibility
+            return WCF::getLanguage()->get($this->rankTitle);
+        }
+
+        return $this->titles[WCF::getLanguage()->languageID]
+            ?? $this->titles[LanguageFactory::getInstance()->getDefaultLanguageID()]
+            ?? \reset($this->titles);
+    }
+
+    /**
+     * @since 6.2
+     */
+    protected function loadTitles(): void
+    {
+        if (isset($this->titles)) {
+            return;
+        }
+
+        $sql = "SELECT languageID, title 
+                FROM   wcf1_user_rank_content
+                WHERE  rankID = ?";
+
+        $statement = WCF::getDB()->prepare($sql);
+        $statement->execute([$this->rankID]);
+
+        $this->titles = $statement->fetchMap('languageID', 'title');
+    }
+
+    /**
+     * @since 6.2
+     */
+    public function setRankTitle(int $languageID, string $title): void
+    {
+        if (!isset($this->titles)) {
+            $this->titles = [];
+        }
+
+        $this->titles[$languageID] = $title;
     }
 
     /**
