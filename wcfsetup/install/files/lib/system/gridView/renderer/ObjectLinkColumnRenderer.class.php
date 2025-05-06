@@ -4,7 +4,6 @@ namespace wcf\system\gridView\renderer;
 
 use BadMethodCallException;
 use wcf\data\DatabaseObject;
-use wcf\data\DatabaseObjectDecorator;
 use wcf\data\ILinkableObject;
 use wcf\data\ITitledObject;
 use wcf\system\cache\runtime\AbstractRuntimeCache;
@@ -21,9 +20,7 @@ use wcf\util\StringUtil;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  *
- * @template TDatabaseObject of DatabaseObject|DatabaseObjectDecorator
  * @template TRuntimeCache of AbstractRuntimeCache
- * @extends DefaultColumnRenderer<TDatabaseObject>
  */
 abstract class ObjectLinkColumnRenderer extends DefaultColumnRenderer implements ILinkColumnRenderer
 {

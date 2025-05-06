@@ -3,7 +3,6 @@
 namespace wcf\system\gridView\renderer;
 
 use wcf\data\DatabaseObject;
-use wcf\data\user\User;
 use wcf\system\cache\runtime\UserRuntimeCache;
 use wcf\util\StringUtil;
 
@@ -15,8 +14,7 @@ use wcf\util\StringUtil;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  *
- * @template TDatabaseObject of DatabaseObject = User
- * @extends ObjectLinkColumnRenderer<TDatabaseObject, UserRuntimeCache>
+ * @extends ObjectLinkColumnRenderer<UserRuntimeCache>
  */
 class UserLinkColumnRenderer extends ObjectLinkColumnRenderer
 {

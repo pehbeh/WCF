@@ -12,8 +12,6 @@ use wcf\util\FileUtil;
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
- *
- * @extends AbstractColumnRenderer<DatabaseObject>
  */
 class FilesizeColumnRenderer extends AbstractColumnRenderer
 {
