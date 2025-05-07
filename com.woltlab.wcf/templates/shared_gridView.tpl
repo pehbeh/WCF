@@ -11,7 +11,7 @@
 			</div>
 			<div class="gridView__filterButton">
 				<button type="button" class="button small" id="{$view->getID()}_filterButton" data-endpoint="{$view->getFilterActionEndpoint()}">
-					{icon name='filter'}
+					{icon name='sliders'}
 					{lang}wcf.global.filter{/lang}
 				</button>
 			</div>

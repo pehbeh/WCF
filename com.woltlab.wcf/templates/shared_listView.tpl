@@ -39,7 +39,7 @@
 				{if $view->isFilterable()}
 					<div class="listView__header__button">
 						<button type="button" class="button small" id="{$view->getID()}_filterButton" data-endpoint="{$view->getFilterActionEndpoint()}">
-							{icon name='filter'}
+							{icon name='sliders'}
 							{lang}wcf.global.filter{/lang}
 						</button>
 					</div>
