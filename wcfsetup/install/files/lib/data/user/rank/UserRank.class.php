@@ -64,11 +64,6 @@ class UserRank extends DatabaseObject implements ITitledObject
     {
         $this->loadTitles();
 
-        if ($this->titles === []) {
-            // Backwards compatibility
-            return WCF::getLanguage()->get($this->rankTitle);
-        }
-
         return $this->titles[WCF::getLanguage()->languageID]
             ?? $this->titles[LanguageFactory::getInstance()->getDefaultLanguageID()]
             ?? \reset($this->titles);
