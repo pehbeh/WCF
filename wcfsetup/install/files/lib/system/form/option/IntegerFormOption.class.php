@@ -2,8 +2,11 @@
 
 namespace wcf\system\form\option;
 
+use wcf\system\database\table\column\AbstractDatabaseTableColumn;
+use wcf\system\database\table\column\IntDatabaseTableColumn;
 use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\IntegerFormField;
+use wcf\system\form\builder\field\NumericRangeFormField;
 use wcf\system\form\option\formatter\IFormOptionFormatter;
 use wcf\system\form\option\formatter\IntegerFormatter;
 
@@ -15,7 +18,7 @@ use wcf\system\form\option\formatter\IntegerFormatter;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-class IntegerFormOption extends AbstractFormOption
+class IntegerFormOption extends AbstractNumericFormOption
 {
     #[\Override]
     public function getId(): string
@@ -38,6 +41,14 @@ class IntegerFormOption extends AbstractFormOption
     }
 
     #[\Override]
+    public function getFilterFormField(string $id, array $configuration = []): AbstractFormField
+    {
+        return NumericRangeFormField::create($id)
+            ->nullable()
+            ->integerValues();
+    }
+
+    #[\Override]
     public function getConfigurationFormFields(): array
     {
         return ['minIntegerValue', 'maxIntegerValue', 'required'];
@@ -53,5 +64,11 @@ class IntegerFormOption extends AbstractFormOption
     public function getPlainTextFormatter(): IFormOptionFormatter
     {
         return $this->getFormatter();
+    }
+
+    #[\Override]
+    public function getDatabaseTableColumn(string $name): AbstractDatabaseTableColumn
+    {
+        return IntDatabaseTableColumn::create($name);
     }
 }

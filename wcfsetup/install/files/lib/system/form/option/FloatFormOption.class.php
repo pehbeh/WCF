@@ -2,6 +2,8 @@
 
 namespace wcf\system\form\option;
 
+use wcf\system\database\table\column\AbstractDatabaseTableColumn;
+use wcf\system\database\table\column\FloatDatabaseTableColumn;
 use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\FloatFormField;
 use wcf\system\form\option\formatter\FloatFormatter;
@@ -15,7 +17,7 @@ use wcf\system\form\option\formatter\IFormOptionFormatter;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-class FloatFormOption extends AbstractFormOption
+class FloatFormOption extends AbstractNumericFormOption
 {
     #[\Override]
     public function getId(): string
@@ -53,5 +55,11 @@ class FloatFormOption extends AbstractFormOption
     public function getPlainTextFormatter(): IFormOptionFormatter
     {
         return $this->getFormatter();
+    }
+
+    #[\Override]
+    public function getDatabaseTableColumn(string $name): AbstractDatabaseTableColumn
+    {
+        return FloatDatabaseTableColumn::create($name);
     }
 }

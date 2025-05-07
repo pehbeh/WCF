@@ -8,13 +8,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
-use wcf\data\IStorableObject;
 use wcf\http\Helper;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\exception\PermissionDeniedException;
 use wcf\system\exception\UserInputException;
-use wcf\system\form\builder\data\processor\CustomFormDataProcessor;
-use wcf\system\form\builder\IFormDocument;
 use wcf\system\form\builder\Psr15DialogForm;
 use wcf\system\listView\AbstractListView;
 use wcf\system\WCF;
@@ -77,7 +74,7 @@ final class ListViewFilterAction implements RequestHandlerInterface
             }
 
             foreach ($data as $key => $value) {
-                if ($value === '' || $value === null) {
+                if ($value === '' || $value === null || $value === 0) {
                     unset($data[$key]);
                 }
             }

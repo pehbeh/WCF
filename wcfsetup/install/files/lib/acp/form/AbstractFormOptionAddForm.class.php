@@ -36,15 +36,15 @@ abstract class AbstractFormOptionAddForm extends AbstractFormBuilderForm
                     $configuration = [];
 
                     foreach ($this->getConfigurationFormFieldIds() as $parameter) {
-                        if (isset($parameters['data'][$parameter])) {
+                        if (!empty($parameters['data'][$parameter])) {
                             $configuration[$parameter] = $parameters['data'][$parameter];
+                        }
+                        if (\array_key_exists($parameter, $parameters['data'])) {
                             unset($parameters['data'][$parameter]);
                         }
                     }
 
-                    if ($configuration !== []) {
-                        $parameters['data']['configuration'] = JSON::encode($configuration);
-                    }
+                    $parameters['data']['configuration'] = JSON::encode($configuration);
 
                     return $parameters;
                 },

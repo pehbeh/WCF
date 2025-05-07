@@ -3,57 +3,24 @@
 namespace wcf\system\form\option;
 
 use wcf\data\DatabaseObjectList;
-use wcf\system\database\table\column\AbstractDatabaseTableColumn;
-use wcf\system\database\table\column\DateDatabaseTableColumn;
 use wcf\system\form\builder\field\AbstractFormField;
-use wcf\system\form\builder\field\DateFormField;
-use wcf\system\form\builder\field\DateRangeFormField;
-use wcf\system\form\option\formatter\DateFormatter;
-use wcf\system\form\option\formatter\IFormOptionFormatter;
+use wcf\system\form\builder\field\NumericRangeFormField;
 
 /**
- * Implementation of a form field for date values.
+ * Implementation of a form field for currency values.
  *
  * @author      Marcel Werk
  * @copyright   2001-2025 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-class DateFormOption extends AbstractFormOption
+abstract class AbstractNumericFormOption extends AbstractFormOption
 {
-    #[\Override]
-    public function getId(): string
-    {
-        return 'date';
-    }
-
-    #[\Override]
-    public function getFormField(string $id, array $configuration = []): AbstractFormField
-    {
-        $formField = DateFormField::create($id)
-            ->saveValueFormat('Y-m-d')
-            ->nullable();
-
-        return $formField;
-    }
-
     #[\Override]
     public function getFilterFormField(string $id, array $configuration = []): AbstractFormField
     {
-        return DateRangeFormField::create($id)
+        return NumericRangeFormField::create($id)
             ->nullable();
-    }
-
-    #[\Override]
-    public function getFormatter(): IFormOptionFormatter
-    {
-        return new DateFormatter();
-    }
-
-    #[\Override]
-    public function getPlainTextFormatter(): IFormOptionFormatter
-    {
-        return $this->getFormatter();
     }
 
     #[\Override]
@@ -106,11 +73,5 @@ class DateFormOption extends AbstractFormOption
             'from' => $from,
             'to' => $to,
         ];
-    }
-
-    #[\Override]
-    public function getDatabaseTableColumn(string $name): AbstractDatabaseTableColumn
-    {
-        return DateDatabaseTableColumn::create($name);
     }
 }

@@ -2,6 +2,9 @@
 
 namespace wcf\system\form\option;
 
+use wcf\data\DatabaseObjectList;
+use wcf\system\database\table\column\AbstractDatabaseTableColumn;
+use wcf\system\database\table\column\IntDatabaseTableColumn;
 use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\builder\field\CurrencyFormField;
 use wcf\system\form\option\formatter\CurrencyFormatter;
@@ -15,7 +18,7 @@ use wcf\system\form\option\formatter\IFormOptionFormatter;
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       6.2
  */
-class CurrencyFormOption extends AbstractFormOption
+class CurrencyFormOption extends AbstractNumericFormOption
 {
     #[\Override]
     public function getId(): string
@@ -56,5 +59,27 @@ class CurrencyFormOption extends AbstractFormOption
     public function getPlainTextFormatter(): IFormOptionFormatter
     {
         return $this->getFormatter();
+    }
+
+    #[\Override]
+    public function applyFilter(DatabaseObjectList $list, string $columnName, mixed $value): void
+    {
+        $values = $this->parseFilterValue($value);
+
+        if (!$values['from'] && !$values['to']) {
+            return;
+        }
+
+        if (!$values['to']) {
+            $list->getConditionBuilder()->add("{$columnName} >= ?", [$values['from'] * 100]);
+        } else {
+            $list->getConditionBuilder()->add("{$columnName} BETWEEN ? AND ?", [$values['from'] * 100, $values['to'] * 100]);
+        }
+    }
+
+    #[\Override]
+    public function getDatabaseTableColumn(string $name): AbstractDatabaseTableColumn
+    {
+        return IntDatabaseTableColumn::create($name);
     }
 }

@@ -46,10 +46,6 @@ final class FormOptionFilter extends AbstractFilter
     #[\Override]
     public function renderValue(string $value): string
     {
-        return $this->option->getPlainTextFormatter()->format(
-            $value,
-            WCF::getLanguage()->languageID,
-            $this->configuration
-        );
+        return $this->option->renderFilterValue($value, $this->configuration);
     }
 }

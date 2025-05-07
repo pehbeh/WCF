@@ -3,6 +3,8 @@
 namespace wcf\system\form\option;
 
 use wcf\data\DatabaseObjectList;
+use wcf\system\database\table\column\AbstractDatabaseTableColumn;
+use wcf\system\database\table\column\MediumtextDatabaseTableColumn;
 use wcf\system\form\builder\field\AbstractFormField;
 use wcf\system\form\option\formatter\DefaultFormatter;
 use wcf\system\form\option\formatter\DefaultPlainTextFormatter;
@@ -53,5 +55,21 @@ abstract class AbstractFormOption implements IFormOption
     public function applyFilter(DatabaseObjectList $list, string $columnName, mixed $value): void
     {
         $list->getConditionBuilder()->add("{$columnName} = ?", [$value]);
+    }
+
+    #[\Override]
+    public function renderFilterValue(string $value, array $configuration = []): string
+    {
+        return $this->getPlainTextFormatter()->format(
+            $value,
+            WCF::getLanguage()->languageID,
+            $configuration
+        );
+    }
+
+    #[\Override]
+    public function getDatabaseTableColumn(string $name): AbstractDatabaseTableColumn
+    {
+        return MediumtextDatabaseTableColumn::create($name);
     }
 }
