@@ -1,11 +1,14 @@
 <?php
 
+use wcf\event\acp\menu\item\ItemCollecting;
 use wcf\system\cronjob\CronjobScheduler;
 use wcf\system\event\EventHandler;
 use wcf\system\language\LanguageFactory;
 use wcf\system\language\preload\command\ResetPreloadCache;
 use wcf\system\language\preload\PhrasePreloader;
+use wcf\system\menu\acp\AcpMenuItem;
 use wcf\system\package\license\LicenseApi;
+use wcf\system\request\LinkHandler;
 use wcf\system\user\authentication\LoginRedirect;
 use wcf\system\WCF;
 
@@ -244,6 +247,38 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\attachments\ChangeShowOrder());
         }
     );
+
+    if (MODULE_CONTACT_FORM) {
+        $eventHandler->register(ItemCollecting::class, static function (ItemCollecting $event) {
+            if (!WCF::getSession()->getPermission("admin.contact.canManageContactForm")) {
+                return;
+            }
+
+            $event->register(
+                new AcpMenuItem(
+                    "wcf.acp.menu.link.contact",
+                    parentMenuItem: 'wcf.acp.menu.link.configuration'
+                )
+            );
+
+            $event->register(
+                new AcpMenuItem(
+                    "wcf.acp.menu.link.contact.options",
+                    parentMenuItem: "wcf.acp.menu.link.contact",
+                    link: LinkHandler::getInstance()->getControllerLink(\wcf\acp\page\ContactOptionListPage::class),
+                )
+            );
+            // TODO add link to add form
+            $event->register(
+                new AcpMenuItem(
+                    "wcf.acp.menu.link.contact.recipients",
+                    parentMenuItem: "wcf.acp.menu.link.contact",
+                    link: LinkHandler::getInstance()->getControllerLink(\wcf\acp\page\ContactRecipientListPage::class),
+                )
+            );
+            // TODO add link to add form
+        });
+    }
 
     try {
         $licenseApi = new LicenseApi();

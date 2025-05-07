@@ -156,5 +156,6 @@
 		<template>__multilineItemListFormField</template>
 		<template>imageViewer</template>
 		<template>tagSetAsSynonyms</template>
+		<template>contactSettings</template>
 	</delete>
 </data>
