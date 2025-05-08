@@ -20,6 +20,7 @@ use wcf\system\gridView\renderer\TimeColumnRenderer;
 use wcf\system\interaction\admin\PackageInteractions;
 use wcf\system\interaction\Divider;
 use wcf\system\interaction\EditInteraction;
+use wcf\system\style\FontAwesomeIcon;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 
@@ -57,9 +58,10 @@ final class PackageGridView extends AbstractGridView
 
                             if ($row->isTainted()) {
                                 $title = WCF::getLanguage()->getDynamicVariable("wcf.acp.package.application.isTainted");
+                                $icon = FontAwesomeIcon::fromString('triangle-exclamation;false')->toHtml();
                                 $renderedValue .= <<<HTML
                                     <span class="jsTooltip" title="{$title}">
-                                        <fa-icon name="triangle-exclamation"></fa-icon>
+                                        {$icon}
                                     </span>
                                 HTML;
                             }

@@ -474,9 +474,7 @@ WCF.ACP.Package.Uninstallation = WCF.ACP.Package.Installation.extend({
 		this._elements = elements;
 		this._packageID = 0;
 		
-		//if (this._elements !== undefined && this._elements.length) {
-			this._super(0, 'UninstallPackage');
-		//}
+		this._super(0, 'UninstallPackage');
 	},
 	
 	/**
