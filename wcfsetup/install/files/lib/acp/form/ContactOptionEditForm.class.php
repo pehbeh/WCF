@@ -20,6 +20,11 @@ class ContactOptionEditForm extends ContactOptionAddForm
     /**
      * @inheritDoc
      */
+    public $activeMenuItem = 'wcf.acp.menu.link.contact.options';
+
+    /**
+     * @inheritDoc
+     */
     public $formAction = 'edit';
 
     #[\Override]

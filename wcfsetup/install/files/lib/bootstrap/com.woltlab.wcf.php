@@ -9,6 +9,7 @@ use wcf\system\language\preload\PhrasePreloader;
 use wcf\system\menu\acp\AcpMenuItem;
 use wcf\system\package\license\LicenseApi;
 use wcf\system\request\LinkHandler;
+use wcf\system\style\FontAwesomeIcon;
 use wcf\system\user\authentication\LoginRedirect;
 use wcf\system\WCF;
 
@@ -274,7 +275,15 @@ return static function (): void {
                     link: LinkHandler::getInstance()->getControllerLink(\wcf\acp\page\ContactOptionListPage::class),
                 )
             );
-            // TODO add link to add form
+            $event->register(
+                new AcpMenuItem(
+                    "wcf.acp.menu.link.contact.options.add",
+                    WCF::getLanguage()->get("wcf.acp.contact.option.add"),
+                    "wcf.acp.menu.link.contact.options",
+                    LinkHandler::getInstance()->getControllerLink(\wcf\acp\form\ContactOptionAddForm::class),
+                    FontAwesomeIcon::fromValues("plus"),
+                )
+            );
             $event->register(
                 new AcpMenuItem(
                     "wcf.acp.menu.link.contact.recipients",
@@ -282,7 +291,15 @@ return static function (): void {
                     link: LinkHandler::getInstance()->getControllerLink(\wcf\acp\page\ContactRecipientListPage::class),
                 )
             );
-            // TODO add link to add form
+            $event->register(
+                new AcpMenuItem(
+                    "wcf.acp.menu.link.contact.recipients.add",
+                    WCF::getLanguage()->get("wcf.acp.contact.recipient.add"),
+                    "wcf.acp.menu.link.contact.recipients",
+                    LinkHandler::getInstance()->getControllerLink(\wcf\acp\form\ContactRecipientAddForm::class),
+                    FontAwesomeIcon::fromValues("plus"),
+                )
+            );
         });
     }
 

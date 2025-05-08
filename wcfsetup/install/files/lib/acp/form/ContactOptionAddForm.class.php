@@ -26,7 +26,7 @@ class ContactOptionAddForm extends AbstractFormOptionAddForm
     /**
      * @inheritDoc
      */
-    public $activeMenuItem = 'wcf.acp.menu.link.contact.settings';
+    public $activeMenuItem = 'wcf.acp.menu.link.contact.options.add';
 
     /**
      * @inheritDoc
