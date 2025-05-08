@@ -25,12 +25,8 @@ final class SaveContent
             return;
         }
 
-        WCF::getDB()->beginTransaction();
-
         $this->deleteOldContent($this->rankID);
         $this->saveContent($this->rankID, $this->titles);
-
-        WCF::getDB()->commitTransaction();
     }
 
     private function deleteOldContent(int $rankID): void
