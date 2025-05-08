@@ -2,11 +2,14 @@
 
 namespace wcf\acp\form;
 
-use wcf\acp\page\UserRankListPage;
 use CuyZ\Valinor\Mapper\MappingError;
+use wcf\acp\page\UserRankListPage;
+use wcf\data\IStorableObject;
 use wcf\data\user\rank\UserRank;
 use wcf\http\Helper;
 use wcf\system\exception\IllegalLinkException;
+use wcf\system\form\builder\data\processor\CustomFormDataProcessor;
+use wcf\system\form\builder\IFormDocument;
 use wcf\system\interaction\admin\UserRankInteractions;
 use wcf\system\interaction\StandaloneInteractionContextMenuView;
 use wcf\system\request\LinkHandler;
@@ -56,6 +59,34 @@ class UserRankEditForm extends UserRankAddForm
         if (!$this->formObject->getObjectID()) {
             throw new IllegalLinkException();
         }
+    }
+
+    #[\Override]
+    protected function finalizeForm()
+    {
+        parent::finalizeForm();
+
+        // The `DeleteInteraction` in `UserRankInteractions` outputs the title and would otherwise execute an additional SQL query.
+        $this->form->getDataHandler()
+            ->addProcessor(
+                new CustomFormDataProcessor(
+                    'setRankTitlesFormDataProcessor',
+                    null,
+                    static function (IFormDocument $document, array $data, IStorableObject $object) {
+                        \assert($object instanceof UserRank);
+
+                        if (\is_array($data['rankTitle'])) {
+                            foreach ($data['rankTitle'] as $languageID => $rankTitle) {
+                                $object->setRankTitle($languageID, $rankTitle);
+                            }
+                        } else {
+                            $object->setRankTitle(null, $data['rankTitle']);
+                        }
+
+                        return $data;
+                    }
+                )
+            );
     }
 
     /**
