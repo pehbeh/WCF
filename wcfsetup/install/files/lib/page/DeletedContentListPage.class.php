@@ -2,10 +2,14 @@
 
 namespace wcf\page;
 
+use Laminas\Diactoros\Response\RedirectResponse;
 use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\data\object\type\ObjectTypeCache;
+use wcf\event\moderation\DeletedItemsCollecting;
+use wcf\system\event\EventHandler;
 use wcf\system\exception\IllegalLinkException;
+use wcf\system\moderation\DeletedItemsBoxComponent;
 use wcf\system\WCF;
 
 /**
@@ -42,23 +46,36 @@ class DeletedContentListPage extends MultipleLinkPage
     {
         parent::readParameters();
 
-        // get object type
         if (isset($_REQUEST['objectType'])) {
             $this->objectType = ObjectTypeCache::getInstance()->getObjectTypeByName(
                 'com.woltlab.wcf.deletedContent',
                 $_REQUEST['objectType']
             );
-        } else {
-            // use first object type
-            $objectTypes = ObjectTypeCache::getInstance()->getObjectTypes('com.woltlab.wcf.deletedContent');
-            if (!empty($objectTypes)) {
-                $this->objectType = \reset($objectTypes);
+
+            if ($this->objectType === null) {
+                throw new IllegalLinkException();
             }
+        } else {
+            $link = $this->getFirstTypeLink();
+            if ($link === null) {
+                throw new IllegalLinkException();
+            }
+
+            return new RedirectResponse($link);
+        }
+    }
+
+    private function getFirstTypeLink(): ?string
+    {
+        $event = new DeletedItemsCollecting();
+        EventHandler::getInstance()->fire($event);
+        $types = $event->getTypes();
+
+        if ($types === []) {
+            return null;
         }
 
-        if ($this->objectType === null) {
-            throw new IllegalLinkException();
-        }
+        return reset($types)->link;
     }
 
     /**
@@ -77,7 +94,7 @@ class DeletedContentListPage extends MultipleLinkPage
         parent::assignVariables();
 
         WCF::getTPL()->assign([
-            'availableObjectTypes' => ObjectTypeCache::getInstance()->getObjectTypes('com.woltlab.wcf.deletedContent'),
+            'deletedItemsBox' => new DeletedItemsBoxComponent($this->objectType->objectType),
             'objectType' => $this->objectType->objectType,
             'resultListTemplateName' => $this->objectType->getProcessor()->getTemplateName(),
             'resultListApplication' => $this->objectType->getProcessor()->getApplication(),
