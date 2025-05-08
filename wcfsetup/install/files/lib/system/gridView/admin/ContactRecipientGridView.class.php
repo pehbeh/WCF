@@ -5,6 +5,7 @@ namespace wcf\system\gridView\admin;
 use wcf\acp\form\ContactRecipientEditForm;
 use wcf\data\contact\recipient\ContactRecipient;
 use wcf\data\contact\recipient\ContactRecipientList;
+use wcf\event\gridView\admin\ContactRecipientGridViewInitialized;
 use wcf\system\gridView\AbstractGridView;
 use wcf\system\gridView\filter\I18nTextFilter;
 use wcf\system\gridView\filter\NumericFilter;
@@ -15,6 +16,10 @@ use wcf\system\gridView\renderer\EmailColumnRenderer;
 use wcf\system\gridView\renderer\NumberColumnRenderer;
 use wcf\system\gridView\renderer\ObjectIdColumnRenderer;
 use wcf\system\gridView\renderer\PhraseColumnRenderer;
+use wcf\system\interaction\admin\ContactRecipientInteractions;
+use wcf\system\interaction\Divider;
+use wcf\system\interaction\EditInteraction;
+use wcf\system\WCF;
 
 /**
  * Grid view for the list of contact recipients.
@@ -53,6 +58,13 @@ final class ContactRecipientGridView extends AbstractGridView
                 ->sortable(),
         ]);
 
+        $provider = new ContactRecipientInteractions();
+        $provider->addInteractions([
+            new Divider(),
+            new EditInteraction(ContactRecipientEditForm::class),
+        ]);
+        $this->setInteractionProvider($provider);
+
         $this->addRowLink(new GridViewRowLink(ContactRecipientEditForm::class));
 
         $this->setSortField("showOrder");
@@ -60,9 +72,22 @@ final class ContactRecipientGridView extends AbstractGridView
     }
 
     #[\Override]
+    public function isAccessible(): bool
+    {
+        return \MODULE_CONTACT_FORM
+            && WCF::getSession()->getPermission("admin.contact.canManageContactForm");
+    }
+
+    #[\Override]
     protected function createObjectList(): ContactRecipientList
     {
         // TODO 18n list
         return new ContactRecipientList();
+    }
+
+    #[\Override]
+    protected function getInitializedEvent(): ContactRecipientGridViewInitialized
+    {
+        return new ContactRecipientGridViewInitialized($this);
     }
 }
