@@ -73,7 +73,6 @@ return [
             DatabaseTablePrimaryIndex::create()
                 ->columns(['contentID']),
             DatabaseTableIndex::create('id')
-                ->type(DatabaseTableIndex::UNIQUE_TYPE)
                 ->columns(['rankID', 'languageID']),
         ])
         ->foreignKeys([
