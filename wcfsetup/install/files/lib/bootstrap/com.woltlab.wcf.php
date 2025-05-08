@@ -246,7 +246,11 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\smilies\categories\ChangeSmileyShowOrder());
             $event->register(new \wcf\system\endpoint\controller\core\attachments\ChangeShowOrder());
             $event->register(new \wcf\system\endpoint\controller\core\contact\options\DeleteOption());
+            $event->register(new \wcf\system\endpoint\controller\core\contact\options\ChangeShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\contact\options\GetShowOrder());
             $event->register(new \wcf\system\endpoint\controller\core\contact\recipients\DeleteRecipient());
+            $event->register(new \wcf\system\endpoint\controller\core\contact\recipients\ChangeShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\contact\recipients\GetShowOrder());
         }
     );
 
