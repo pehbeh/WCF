@@ -47,10 +47,6 @@ foreach ([
     ]);
 
     foreach (LanguageFactory::getInstance()->getLanguages() as $language) {
-        if (!isset($rankTitles[$language->languageCode])) {
-            continue;
-        }
-
         $statement->execute([
             $userRank->rankID,
             $language->languageID,
