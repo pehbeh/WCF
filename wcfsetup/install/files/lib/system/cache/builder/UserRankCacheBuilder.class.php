@@ -24,7 +24,7 @@ final class UserRankCacheBuilder extends AbstractLegacyCacheBuilder
 
     public function getRank(int $rankID): ?UserRank
     {
-        return $this->getData()[$rankID] ?? null;
+        return (new UserRankCache())->getRank($rankID);
     }
 
     #[\Override]

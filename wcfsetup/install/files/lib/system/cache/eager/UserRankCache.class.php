@@ -25,4 +25,9 @@ final class UserRankCache extends AbstractEagerCache
 
         return $userRankList->getObjects();
     }
+
+    public function getRank(int $rankID): ?UserRank
+    {
+        return $this->getCache()[$rankID] ?? null;
+    }
 }

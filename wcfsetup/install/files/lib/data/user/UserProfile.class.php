@@ -939,7 +939,7 @@ class UserProfile extends DatabaseObjectDecorator implements ITitledLinkObject
             return null;
         }
 
-        return (new UserRankCache())->getCache()[$this->rankID] ?? null;
+        return (new UserRankCache())->getRank($this->rankID);
     }
 
     /**
