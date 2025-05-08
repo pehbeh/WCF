@@ -52,7 +52,7 @@ final class SaveContent
         $statement = WCF::getDB()->prepare($sql);
 
         foreach ($titles as $languageID => $title) {
-            $statement->execute([$rankID, $languageID, $title]);
+            $statement->execute([$rankID, $languageID ?: null, $title]);
         }
     }
 }

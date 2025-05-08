@@ -90,13 +90,13 @@ class UserRank extends DatabaseObject implements ITitledObject
     /**
      * @since 6.2
      */
-    public function setRankTitle(int $languageID, string $title): void
+    public function setRankTitle(?int $languageID, string $title): void
     {
         if (!isset($this->titles)) {
             $this->titles = [];
         }
 
-        $this->titles[$languageID] = $title;
+        $this->titles[$languageID ?: 0] = $title;
     }
 
     /**

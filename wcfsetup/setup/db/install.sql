@@ -1960,10 +1960,13 @@ CREATE TABLE wcf1_user_rank (
 
 DROP TABLE IF EXISTS wcf1_user_rank_content;
 CREATE TABLE wcf1_user_rank_content (
+    contentID INT(10) NOT NULL AUTO_INCREMENT,
 	rankID INT NOT NULL,
-	languageID INT NOT NULL,
+	languageID INT,
 	title VARCHAR(255) NOT NULL,
-	PRIMARY KEY (rankID, languageID)
+
+	PRIMARY KEY(contentID),
+	UNIQUE KEY id (rankID, languageID)
 );
 
 DROP TABLE IF EXISTS wcf1_user_session;

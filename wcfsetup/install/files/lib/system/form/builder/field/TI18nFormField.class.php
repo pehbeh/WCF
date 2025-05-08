@@ -391,7 +391,7 @@ trait TI18nFormField
                         if ($this->hasI18nValues()) {
                             $values = $this->getValue();
                         } else {
-                            $values[LanguageFactory::getInstance()->getDefaultLanguageID()] = $this->getValue();
+                            $values[0] = $this->getValue();
                         }
 
                         $parameters[$this->getObjectProperty()] = $values;

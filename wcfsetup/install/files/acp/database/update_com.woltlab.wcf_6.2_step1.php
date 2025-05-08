@@ -11,8 +11,10 @@
 use wcf\system\database\table\column\IntDatabaseTableColumn;
 use wcf\system\database\table\column\MediumtextDatabaseTableColumn;
 use wcf\system\database\table\column\NotNullVarchar255DatabaseTableColumn;
+use wcf\system\database\table\column\ObjectIdDatabaseTableColumn;
 use wcf\system\database\table\DatabaseTable;
 use wcf\system\database\table\index\DatabaseTableForeignKey;
+use wcf\system\database\table\index\DatabaseTableIndex;
 use wcf\system\database\table\index\DatabaseTablePrimaryIndex;
 use wcf\system\database\table\PartialDatabaseTable;
 
@@ -61,14 +63,17 @@ return [
         ]),
     DatabaseTable::create('wcf1_user_rank_content')
         ->columns([
+            ObjectIdDatabaseTableColumn::create('contentID'),
             IntDatabaseTableColumn::create('rankID')
                 ->notNull(),
-            IntDatabaseTableColumn::create('languageID')
-                ->notNull(),
+            IntDatabaseTableColumn::create('languageID'),
             NotNullVarchar255DatabaseTableColumn::create('title'),
         ])
         ->indices([
             DatabaseTablePrimaryIndex::create()
+                ->columns(['contentID']),
+            DatabaseTableIndex::create('id')
+                ->type(DatabaseTableIndex::UNIQUE_TYPE)
                 ->columns(['rankID', 'languageID']),
         ])
         ->foreignKeys([
