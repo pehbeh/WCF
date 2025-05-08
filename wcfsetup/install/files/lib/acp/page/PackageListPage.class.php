@@ -2,23 +2,23 @@
 
 namespace wcf\acp\page;
 
-use wcf\data\package\I18nPackageList;
 use wcf\data\package\update\server\PackageUpdateServer;
-use wcf\page\SortablePage;
+use wcf\page\AbstractGridViewPage;
 use wcf\system\application\ApplicationHandler;
+use wcf\system\gridView\admin\PackageGridView;
 use wcf\system\language\LanguageFactory;
 use wcf\system\WCF;
 
 /**
  * Shows a list of all installed packages.
  *
- * @author  Marcel Werk
- * @copyright   2001-2019 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @author      Marcel Werk
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  *
- * @extends SortablePage<I18nPackageList>
+ * @extends AbstractGridViewPage<PackageGridView>
  */
-class PackageListPage extends SortablePage
+final class PackageListPage extends AbstractGridViewPage
 {
     /**
      * @inheritDoc
@@ -33,47 +33,13 @@ class PackageListPage extends SortablePage
         'admin.configuration.package.canUninstallPackage',
     ];
 
-    /**
-     * @inheritDoc
-     */
-    public $itemsPerPage = 50;
+    #[\Override]
+    protected function createGridView(): PackageGridView
+    {
+        return new PackageGridView();
+    }
 
-    /**
-     * @inheritDoc
-     */
-    public $defaultSortField = 'packageType';
-
-    /**
-     * @inheritDoc
-     */
-    public $defaultSortOrder = 'DESC';
-
-    /**
-     * @inheritDoc
-     */
-    public $validSortFields = [
-        'packageID',
-        'package',
-        'packageDir',
-        'packageNameI18n',
-        'packageDescription',
-        'packageDate',
-        'packageURL',
-        'isApplication',
-        'author',
-        'authorURL',
-        'installDate',
-        'updateDate',
-    ];
-
-    /**
-     * @inheritDoc
-     */
-    public $objectListClassName = I18nPackageList::class;
-
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function assignVariables()
     {
         parent::assignVariables();
@@ -93,15 +59,5 @@ class PackageListPage extends SortablePage
             'availableUpgradeVersion' => WCF::AVAILABLE_UPGRADE_VERSION,
             'upgradeOverrideEnabled' => PackageUpdateServer::isUpgradeOverrideEnabled(),
         ]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function readObjects()
-    {
-        $this->sqlOrderBy = ($this->sortField == 'packageNameI18n' ? '' : 'package.') . ($this->sortField == 'packageType' ? 'isApplication ' . $this->sortOrder : $this->sortField . ' ' . $this->sortOrder) . ($this->sortField != 'packageNameI18n' ? ', packageNameI18n ASC' : '');
-
-        parent::readObjects();
     }
 }

@@ -5,6 +5,7 @@ namespace wcf\data\package;
 use wcf\acp\page\PackagePage;
 use wcf\data\DatabaseObject;
 use wcf\data\ILinkableObject;
+use wcf\system\application\ApplicationHandler;
 use wcf\system\package\PackageInstallationDispatcher;
 use wcf\system\request\IRouteController;
 use wcf\system\request\LinkHandler;
@@ -459,5 +460,22 @@ class Package extends DatabaseObject implements ILinkableObject, IRouteControlle
         }
 
         \file_put_contents($packageDir . PackageInstallationDispatcher::CONFIG_FILE, $content);
+    }
+
+    /**
+     * @since 6.2
+     */
+    public function isTainted(): bool
+    {
+        if (!$this->isApplication) {
+            return false;
+        }
+
+        $package = ApplicationHandler::getInstance()->getApplicationByID($this->packageID);
+        if ($package === null) {
+            return false;
+        }
+
+        return $package->isTainted;
     }
 }

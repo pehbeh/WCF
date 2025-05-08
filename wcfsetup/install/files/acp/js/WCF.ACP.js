@@ -474,9 +474,7 @@ WCF.ACP.Package.Uninstallation = WCF.ACP.Package.Installation.extend({
 		this._elements = elements;
 		this._packageID = 0;
 		
-		if (this._elements !== undefined && this._elements.length) {
-			this._super(0, 'UninstallPackage');
-		}
+		this._super(0, 'UninstallPackage');
 	},
 	
 	/**
@@ -498,7 +496,15 @@ WCF.ACP.Package.Uninstallation = WCF.ACP.Package.Installation.extend({
 	 * @see	WCF.ACP.Package.Installation.init()
 	 */
 	_init: function() {
-		this._elements.click($.proxy(this._showConfirmationDialog, this));
+		//this._elements.click($.proxy(this._showConfirmationDialog, this));
+
+		require(['WoltLabSuite/Core/Helper/Selector'], ({ wheneverFirstSeen }) => {
+			wheneverFirstSeen(".jsUninstallButton", (button) => {
+				button.addEventListener('click', (event) => {
+					this._showConfirmationDialog(event);
+				});
+			});
+		});
 	},
 	
 	/**
