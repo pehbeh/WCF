@@ -21,7 +21,7 @@ class ContactRecipientEditForm extends ContactRecipientAddForm
     /**
      * @inheritDoc
      */
-    public $activeMenuItem = 'wcf.acp.menu.link.contact.settings';
+    public $activeMenuItem = 'wcf.acp.menu.link.contact.recipients';
 
     /**
      * @inheritDoc

@@ -7,7 +7,7 @@
 	
 	<nav class="contentHeaderNavigation">
 		<ul>
-			<li><a href="{link controller='ContactSettings'}{/link}" class="button">{icon name='list'} <span>{lang}wcf.acp.menu.link.contact.settings{/lang}</span></a></li>
+			<li><a href="{link controller='ContactRecipientList'}{/link}" class="button">{icon name='list'} <span>{lang}wcf.acp.contact.recipient.list{/lang}</span></a></li>
 			
 			{event name='contentHeaderNavigation'}
 		</ul>

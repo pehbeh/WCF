@@ -1204,7 +1204,9 @@ You can access the error log at: {link controller='ExceptionLogView' isEmail=tru
 		<item name="wcf.acp.menu.item.parentItem"><![CDATA[Parent Menu Item]]></item>
 		<item name="wcf.acp.menu.link.other"><![CDATA[Other]]></item>
 		<item name="wcf.acp.menu.item.pageObjectID.error.invalid"><![CDATA[ID is invalid.]]></item>
-		<item name="wcf.acp.menu.link.contact.settings"><![CDATA[Contact Form]]></item>
+		<item name="wcf.acp.menu.link.contact"><![CDATA[Contact Form]]></item>
+		<item name="wcf.acp.menu.link.contact.options"><![CDATA[Option Fields]]></item>
+		<item name="wcf.acp.menu.link.contact.recipients"><![CDATA[Recipient]]></item>
 		<item name="wcf.acp.menu.link.trophy"><![CDATA[Trophies]]></item>
 		<item name="wcf.acp.menu.link.trophy.category.list"><![CDATA[Categories]]></item>
 		<item name="wcf.acp.menu.link.trophy.category.add"><![CDATA[Add Category]]></item>
@@ -3504,9 +3506,11 @@ Attachments:
 		<item name="wcf.acp.contact.options"><![CDATA[Input Fields]]></item>
 		<item name="wcf.acp.contact.option.add"><![CDATA[Add Input Field]]></item>
 		<item name="wcf.acp.contact.option.edit"><![CDATA[Edit Input Field]]></item>
+		<item name="wcf.acp.contact.option.list"><![CDATA[Input Fields]]></item>
 		<item name="wcf.acp.contact.recipients"><![CDATA[Recipients]]></item>
 		<item name="wcf.acp.contact.recipient.add"><![CDATA[Add Recipient]]></item>
 		<item name="wcf.acp.contact.recipient.edit"><![CDATA[Edit Recipient]]></item>
+		<item name="wcf.acp.contact.recipient.list"><![CDATA[Recipients]]></item>
 		<item name="wcf.acp.contact.recipient.isDisabled"><![CDATA[Disable recipient]]></item>
 		<item name="wcf.acp.contact.recipient.name"><![CDATA[Display Name]]></item>
 		<item name="wcf.acp.contact.settings"><![CDATA[Edit Contact Form]]></item>
@@ -7536,5 +7540,6 @@ Allowed extensions: {', '|implode:$allowedFileExtensions}]]></item>
 	<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.removeReportContent"/>
 	<item name="wcf.clipboard.label.com.woltlab.wcf.moderation.queue.marked"/>
 	<item name="wcf.acp.label.sortAfterGroupFiltering"/>
+	<item name="wcf.acp.menu.link.contact.settings"/>
 </delete>
 </language>

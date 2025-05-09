@@ -24,7 +24,7 @@ class ContactRecipientAddForm extends AbstractForm
     /**
      * @inheritDoc
      */
-    public $activeMenuItem = 'wcf.acp.menu.link.contact.settings';
+    public $activeMenuItem = 'wcf.acp.menu.link.contact.recipients.add';
 
     /**
      * @inheritDoc

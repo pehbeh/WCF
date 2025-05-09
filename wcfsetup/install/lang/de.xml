@@ -282,9 +282,11 @@
 		<item name="wcf.acp.contact.options"><![CDATA[Eingabefelder]]></item>
 		<item name="wcf.acp.contact.option.add"><![CDATA[Eingabefeld hinzufügen]]></item>
 		<item name="wcf.acp.contact.option.edit"><![CDATA[Eingabefeld bearbeiten]]></item>
+		<item name="wcf.acp.contact.option.list"><![CDATA[Eingabefelder auflisten]]></item>
 		<item name="wcf.acp.contact.recipients"><![CDATA[Empfänger]]></item>
 		<item name="wcf.acp.contact.recipient.add"><![CDATA[Empfänger hinzufügen]]></item>
 		<item name="wcf.acp.contact.recipient.edit"><![CDATA[Empfänger bearbeiten]]></item>
+		<item name="wcf.acp.contact.recipient.list"><![CDATA[Empfänger auflisten]]></item>
 		<item name="wcf.acp.contact.recipient.isDisabled"><![CDATA[Empfänger deaktivieren]]></item>
 		<item name="wcf.acp.contact.recipient.name"><![CDATA[Angezeigter Name]]></item>
 		<item name="wcf.acp.contact.settings"><![CDATA[Kontaktformular bearbeiten]]></item>
@@ -1226,7 +1228,9 @@ Sie erreichen das Fehlerprotokoll unter: {link controller='ExceptionLogView' isE
 		<item name="wcf.acp.menu.item.parentItem"><![CDATA[Übergeordneter Menüpunkt]]></item>
 		<item name="wcf.acp.menu.link.other"><![CDATA[Sonstiges]]></item>
 		<item name="wcf.acp.menu.item.pageObjectID.error.invalid"><![CDATA[Die eingetragene ID ist ungültig.]]></item>
-		<item name="wcf.acp.menu.link.contact.settings"><![CDATA[Kontaktformular]]></item>
+		<item name="wcf.acp.menu.link.contact"><![CDATA[Kontaktformular]]></item>
+		<item name="wcf.acp.menu.link.contact.options"><![CDATA[Eingabefelder]]></item>
+		<item name="wcf.acp.menu.link.contact.recipients"><![CDATA[Empfänger]]></item>
 		<item name="wcf.acp.menu.link.trophy"><![CDATA[Trophäen]]></item>
 		<item name="wcf.acp.menu.link.trophy.category.list"><![CDATA[Kategorien]]></item>
 		<item name="wcf.acp.menu.link.trophy.category.add"><![CDATA[Kategorie hinzufügen]]></item>
@@ -7645,5 +7649,6 @@ Erlaubte Dateiendungen: {', '|implode:$allowedFileExtensions}]]></item>
 	<item name="wcf.clipboard.item.com.woltlab.wcf.moderation.queue.removeReportContent"/>
 	<item name="wcf.clipboard.label.com.woltlab.wcf.moderation.queue.marked"/>
 	<item name="wcf.acp.label.sortAfterGroupFiltering"/>
+	<item name="wcf.acp.menu.link.contact.settings"/>
 </delete>
 </language>

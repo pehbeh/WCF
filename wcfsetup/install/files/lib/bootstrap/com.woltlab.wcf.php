@@ -1,11 +1,15 @@
 <?php
 
+use wcf\event\acp\menu\item\ItemCollecting;
 use wcf\system\cronjob\CronjobScheduler;
 use wcf\system\event\EventHandler;
 use wcf\system\language\LanguageFactory;
 use wcf\system\language\preload\command\ResetPreloadCache;
 use wcf\system\language\preload\PhrasePreloader;
+use wcf\system\menu\acp\AcpMenuItem;
 use wcf\system\package\license\LicenseApi;
+use wcf\system\request\LinkHandler;
+use wcf\system\style\FontAwesomeIcon;
 use wcf\system\user\authentication\LoginRedirect;
 use wcf\system\WCF;
 
@@ -242,8 +246,66 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\smilies\categories\GetSmileyShowOrder());
             $event->register(new \wcf\system\endpoint\controller\core\smilies\categories\ChangeSmileyShowOrder());
             $event->register(new \wcf\system\endpoint\controller\core\attachments\ChangeShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\contact\options\DeleteOption());
+            $event->register(new \wcf\system\endpoint\controller\core\contact\options\ChangeShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\contact\options\GetShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\contact\options\DisableOption());
+            $event->register(new \wcf\system\endpoint\controller\core\contact\options\EnableOption());
+            $event->register(new \wcf\system\endpoint\controller\core\contact\recipients\DeleteRecipient());
+            $event->register(new \wcf\system\endpoint\controller\core\contact\recipients\ChangeShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\contact\recipients\GetShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\contact\recipients\DisableRecipient());
+            $event->register(new \wcf\system\endpoint\controller\core\contact\recipients\EnableRecipient());
         }
     );
+
+    if (MODULE_CONTACT_FORM) {
+        $eventHandler->register(ItemCollecting::class, static function (ItemCollecting $event) {
+            if (!WCF::getSession()->getPermission("admin.contact.canManageContactForm")) {
+                return;
+            }
+
+            $event->register(
+                new AcpMenuItem(
+                    "wcf.acp.menu.link.contact",
+                    parentMenuItem: 'wcf.acp.menu.link.configuration'
+                )
+            );
+
+            $event->register(
+                new AcpMenuItem(
+                    "wcf.acp.menu.link.contact.options",
+                    parentMenuItem: "wcf.acp.menu.link.contact",
+                    link: LinkHandler::getInstance()->getControllerLink(\wcf\acp\page\ContactOptionListPage::class),
+                )
+            );
+            $event->register(
+                new AcpMenuItem(
+                    "wcf.acp.menu.link.contact.options.add",
+                    WCF::getLanguage()->get("wcf.acp.contact.option.add"),
+                    "wcf.acp.menu.link.contact.options",
+                    LinkHandler::getInstance()->getControllerLink(\wcf\acp\form\ContactOptionAddForm::class),
+                    FontAwesomeIcon::fromValues("plus"),
+                )
+            );
+            $event->register(
+                new AcpMenuItem(
+                    "wcf.acp.menu.link.contact.recipients",
+                    parentMenuItem: "wcf.acp.menu.link.contact",
+                    link: LinkHandler::getInstance()->getControllerLink(\wcf\acp\page\ContactRecipientListPage::class),
+                )
+            );
+            $event->register(
+                new AcpMenuItem(
+                    "wcf.acp.menu.link.contact.recipients.add",
+                    WCF::getLanguage()->get("wcf.acp.contact.recipient.add"),
+                    "wcf.acp.menu.link.contact.recipients",
+                    LinkHandler::getInstance()->getControllerLink(\wcf\acp\form\ContactRecipientAddForm::class),
+                    FontAwesomeIcon::fromValues("plus"),
+                )
+            );
+        });
+    }
 
     try {
         $licenseApi = new LicenseApi();

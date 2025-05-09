@@ -71,12 +71,6 @@
 			<parent>wcf.acp.menu.link.other</parent>
 			<permissions>admin.user.canManageNotificationSettings</permissions>
 		</acpmenuitem>
-		<acpmenuitem name="wcf.acp.menu.link.contact.settings">
-			<controller>wcf\acp\page\ContactSettingsPage</controller>
-			<parent>wcf.acp.menu.link.other</parent>
-			<options>module_contact_form</options>
-			<permissions>admin.contact.canManageContactForm</permissions>
-		</acpmenuitem>
 		<acpmenuitem name="wcf.acp.menu.link.captcha.question.list">
 			<controller>wcf\acp\page\CaptchaQuestionListPage</controller>
 			<parent>wcf.acp.menu.link.other</parent>
@@ -786,4 +780,7 @@
 			<permissions>admin.management.canViewLog</permissions>
 		</acpmenuitem>
 	</import>
+	<delete>
+		<acpmenuitem name="wcf.acp.menu.link.contact.settings"/>
+	</delete>
 </data>
