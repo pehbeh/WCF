@@ -19,7 +19,7 @@ use wcf\system\request\LinkHandler;
 final class DeletedItemsCollecting implements IPsr14Event
 {
     /**
-     * @var DeletedItems[]
+     * @var list<DeletedItems>
      */
     private array $types = [];
 
@@ -34,7 +34,7 @@ final class DeletedItemsCollecting implements IPsr14Event
     }
 
     /**
-     * @return DeletedItems[]
+     * @return list<DeletedItems>
      */
     public function getTypes(): array
     {

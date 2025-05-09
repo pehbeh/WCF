@@ -5,7 +5,7 @@
 		<nav>
 			<ul class="boxMenu">
 				{foreach from=$types item=type}
-					<li{if $type->id == $activeId} class="active"{/if}>
+					<li{if $type->id === $activeId} class="active"{/if}>
 						<a class="boxMenuLink" href="{$type->link}">{lang}{$type->languageItem}{/lang}</a>
 					</li>
 				{/foreach}

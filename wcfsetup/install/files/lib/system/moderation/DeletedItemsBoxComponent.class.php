@@ -33,7 +33,7 @@ class DeletedItemsBoxComponent
     }
 
     /**
-     * @return DeletedItems[]
+     * @return list<DeletedItems>
      */
     private function getTypes(): array
     {
