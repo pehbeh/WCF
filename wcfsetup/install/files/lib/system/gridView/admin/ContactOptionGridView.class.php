@@ -20,6 +20,7 @@ use wcf\system\gridView\renderer\PhraseColumnRenderer;
 use wcf\system\interaction\admin\ContactOptionInteractions;
 use wcf\system\interaction\Divider;
 use wcf\system\interaction\EditInteraction;
+use wcf\system\interaction\ToggleInteraction;
 use wcf\system\WCF;
 
 /**
@@ -65,6 +66,14 @@ final class ContactOptionGridView extends AbstractGridView
             new EditInteraction(ContactOptionEditForm::class),
         ]);
         $this->setInteractionProvider($provider);
+
+        $this->addQuickInteraction(
+            new ToggleInteraction(
+                "isDisabled",
+                "core/contact/options/%s/enable",
+                "core/contact/options/%s/disable"
+            )
+        );
 
         $this->addRowLink(new GridViewRowLink(ContactOptionEditForm::class));
 

@@ -4,6 +4,7 @@ namespace wcf\data\contact\option;
 
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\data\ISortableAction;
+use wcf\data\TDatabaseObjectToggle;
 use wcf\data\TI18nDatabaseObjectAction;
 use wcf\system\exception\UserInputException;
 use wcf\system\WCF;
@@ -21,6 +22,7 @@ use wcf\system\WCF;
 class ContactOptionAction extends AbstractDatabaseObjectAction implements ISortableAction
 {
     use TI18nDatabaseObjectAction;
+    use TDatabaseObjectToggle;
 
     /**
      * @inheritDoc
@@ -45,7 +47,7 @@ class ContactOptionAction extends AbstractDatabaseObjectAction implements ISorta
     /**
      * @inheritDoc
      */
-    protected $requireACP = ['create', 'delete', 'update', 'updatePosition'];
+    protected $requireACP = ['create', 'delete', 'update', 'updatePosition', 'toggle'];
 
     /**
      * @inheritDoc

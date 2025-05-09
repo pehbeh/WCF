@@ -249,9 +249,13 @@ return static function (): void {
             $event->register(new \wcf\system\endpoint\controller\core\contact\options\DeleteOption());
             $event->register(new \wcf\system\endpoint\controller\core\contact\options\ChangeShowOrder());
             $event->register(new \wcf\system\endpoint\controller\core\contact\options\GetShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\contact\options\DisableOption());
+            $event->register(new \wcf\system\endpoint\controller\core\contact\options\EnableOption());
             $event->register(new \wcf\system\endpoint\controller\core\contact\recipients\DeleteRecipient());
             $event->register(new \wcf\system\endpoint\controller\core\contact\recipients\ChangeShowOrder());
             $event->register(new \wcf\system\endpoint\controller\core\contact\recipients\GetShowOrder());
+            $event->register(new \wcf\system\endpoint\controller\core\contact\recipients\DisableRecipient());
+            $event->register(new \wcf\system\endpoint\controller\core\contact\recipients\EnableRecipient());
         }
     );
 
