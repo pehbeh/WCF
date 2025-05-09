@@ -20,7 +20,7 @@ use wcf\system\interaction\admin\UserRankInteractions;
 use wcf\system\interaction\bulk\admin\UserRankBulkInteractions;
 use wcf\system\interaction\Divider;
 use wcf\system\interaction\EditInteraction;
-use wcf\system\language\LanguageFactory;
+use wcf\system\language\MultilingualHelper;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 
@@ -154,21 +154,11 @@ final class UserRankGridView extends AbstractGridView
 
     private function subqueryRankTitle(): string
     {
-        $preferredLanguageID = WCF::getLanguage()->languageID;
-        $defaultLanguageID = LanguageFactory::getInstance()->getDefaultLanguageID();
-
-        return <<<SQL
-        (
-            SELECT   title
-            FROM     wcf1_user_rank_content
-            WHERE    rankID = user_rank.rankID
-            ORDER BY CASE
-                WHEN languageID = {$preferredLanguageID} THEN -2
-                WHEN languageID = {$defaultLanguageID} THEN -1
-                ELSE languageID
-            END ASC
-            LIMIT    1
-        )
-        SQL;
+        return MultilingualHelper::subqueryForContentTable(
+            "title",
+            "wcf1_user_rank_content",
+            "rankID",
+            "user_rank",
+        );
     }
 }
