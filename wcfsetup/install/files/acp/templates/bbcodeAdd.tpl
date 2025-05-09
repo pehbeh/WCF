@@ -172,7 +172,7 @@
 			<dl class="jsButtonSetting{if $errorField == 'buttonLabel'} formError{/if}">
 				<dt><label for="buttonLabel">{lang}wcf.acp.bbcode.buttonLabel{/lang}</label></dt>
 				<dd>
-					<input type="text" id="buttonLabel" name="buttonLabel" value="{$i18nPlainValues['buttonLabel']}" class="long">
+					<input type="text" id="buttonLabel" name="buttonLabel" value="{if !$buttonLabel|is_array}{$buttonLabel}{/if}" class="long">
 					{if $errorField == 'buttonLabel'}
 						<small class="innerError">
 							{if $errorType == 'empty'}

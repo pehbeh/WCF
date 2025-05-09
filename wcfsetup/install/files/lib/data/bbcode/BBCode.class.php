@@ -5,6 +5,7 @@ namespace wcf\data\bbcode;
 use wcf\data\bbcode\attribute\BBCodeAttribute;
 use wcf\data\ProcessibleDatabaseObject;
 use wcf\system\bbcode\IBBCode;
+use wcf\system\language\LanguageFactory;
 use wcf\system\request\IRouteController;
 use wcf\system\WCF;
 
@@ -35,6 +36,11 @@ class BBCode extends ProcessibleDatabaseObject implements IRouteController
      * @var list<BBCodeAttribute>
      */
     protected $attributes;
+
+    /**
+     * @var array<int, string>
+     */
+    protected array $buttonLabels;
 
     /**
      * @inheritDoc
@@ -90,9 +96,17 @@ class BBCode extends ProcessibleDatabaseObject implements IRouteController
      * @return string
      * @since 5.2
      */
-    public function getButtonLabel()
+    public function getButtonLabel(): string
     {
-        return WCF::getLanguage()->get($this->buttonLabel);
+        $this->loadButtonLabels();
+
+        if ($this->buttonLabels === []) {
+            return '';
+        }
+
+        return $this->buttonLabels[WCF::getLanguage()->languageID]
+            ?? $this->buttonLabels[LanguageFactory::getInstance()->getDefaultLanguageID()]
+            ?? \reset($this->buttonLabels);
     }
 
     /**
@@ -179,5 +193,36 @@ class BBCode extends ProcessibleDatabaseObject implements IRouteController
             WCF::getPath(),
             $this->wysiwygIcon
         );
+    }
+
+    /**
+     * @since 6.2
+     */
+    protected function loadButtonLabels(): void
+    {
+        if (isset($this->buttonLabels)) {
+            return;
+        }
+
+        $sql = "SELECT languageID, buttonLabel 
+                FROM   wcf1_bbcode_content
+                WHERE  bbcodeID = ?";
+
+        $statement = WCF::getDB()->prepare($sql);
+        $statement->execute([$this->bbcodeID]);
+
+        $this->buttonLabels = $statement->fetchMap('languageID', 'buttonLabel');
+    }
+
+    /**
+     * @since 6.2
+     */
+    public function setButtonLabel(int $languageID, string $buttonLabel): void
+    {
+        if (!isset($this->buttonLabels)) {
+            $this->buttonLabels = [];
+        }
+
+        $this->buttonLabels[$languageID] = $buttonLabel;
     }
 }
