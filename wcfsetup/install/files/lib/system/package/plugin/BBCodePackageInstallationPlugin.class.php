@@ -7,6 +7,7 @@ use wcf\data\bbcode\BBCode;
 use wcf\data\bbcode\BBCodeEditor;
 use wcf\data\bbcode\BBCodeList;
 use wcf\data\package\PackageCache;
+use wcf\system\bbcode\command\SaveContent;
 use wcf\system\bbcode\IBBCode;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\devtools\pip\IDevtoolsPipEntryList;
@@ -27,6 +28,7 @@ use wcf\system\form\builder\field\validation\FormFieldValidationError;
 use wcf\system\form\builder\field\validation\FormFieldValidator;
 use wcf\system\form\builder\field\validation\FormFieldValidatorUtil;
 use wcf\system\form\builder\IFormDocument;
+use wcf\system\language\LanguageFactory;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 
@@ -63,6 +65,11 @@ class BBCodePackageInstallationPlugin extends AbstractXMLPackageInstallationPlug
      * @var mixed[][]
      */
     protected $attributes = [];
+
+    /**
+     * @var array<int, array<string, string>>
+     */
+    protected array $buttonLabels = [];
 
     /**
      * @inheritDoc
@@ -104,13 +111,22 @@ class BBCodePackageInstallationPlugin extends AbstractXMLPackageInstallationPlug
                     $nodeValue[$attributeNo][$attributeValue->tagName] = $attributeValue->nodeValue;
                 }
             }
-        } elseif ($element->tagName === 'wysiwygicon' && !\str_contains($element->nodeValue, '.')) {
+        } elseif ($element->tagName === 'wysiwygicon' && !\str_contains($element->nodeValue, '.') && !\str_contains($element->nodeValue, ';')) {
+            // backwards compatibility
             $solid = $element->getAttribute('solid');
             $nodeValue = \sprintf(
                 "%s;%s",
                 $element->nodeValue,
                 $solid === 'true' ? 'true' : 'false'
             );
+        } elseif ($element->tagName === 'buttonlabel') {
+            if (!isset($elements[$element->tagName])) {
+                $elements[$element->tagName] = [];
+            }
+
+            $elements[$element->tagName][$element->getAttribute('language') ?: ''] = $element->nodeValue;
+
+            return;
         }
 
         $elements[$element->tagName] = $nodeValue;
@@ -130,7 +146,7 @@ class BBCodePackageInstallationPlugin extends AbstractXMLPackageInstallationPlug
             'className' => !empty($data['elements']['classname']) ? $data['elements']['classname'] : '',
             'isBlockElement' => !empty($data['elements']['isBlockElement']) ? 1 : 0,
             'isSourceCode' => !empty($data['elements']['sourcecode']) ? 1 : 0,
-            'buttonLabel' => $data['elements']['buttonlabel'] ?? '',
+            'buttonLabel' => $data['elements']['buttonlabel'] ?? [],
             'originIsSystem' => 1,
         ];
 
@@ -188,13 +204,15 @@ class BBCodePackageInstallationPlugin extends AbstractXMLPackageInstallationPlug
     {
         // extract attributes
         $attributes = $data['attributes'];
+        $buttonLabel = $data['buttonLabel'] ?? [];
         unset($data['attributes']);
+        unset($data['buttonLabel']);
 
         if (!empty($row)) {
             // allow updating of all values except for those controlling the editor button
             unset($data['wysiwygIcon']);
-            unset($data['buttonLabel']);
             unset($data['showButton']);
+            unset($buttonLabel);
         }
 
         /** @var BBCode $bbcode */
@@ -202,6 +220,10 @@ class BBCodePackageInstallationPlugin extends AbstractXMLPackageInstallationPlug
 
         // store attributes for later import
         $this->attributes[$bbcode->bbcodeID] = $attributes;
+
+        if (isset($buttonLabel) && $buttonLabel !== []) {
+            $this->buttonLabels[$bbcode->bbcodeID] = $buttonLabel;
+        }
 
         return $bbcode;
     }
@@ -238,6 +260,16 @@ class BBCodePackageInstallationPlugin extends AbstractXMLPackageInstallationPlug
                 }
             }
         }
+
+        foreach ($this->buttonLabels as $bbcodeID => $buttonLabels) {
+            $labels = [];
+            foreach ($buttonLabels as $languageCode => $buttonLabel) {
+                $languageID = $languageCode !== '' ? LanguageFactory::getInstance()->getLanguageByCode($languageCode)->languageID : 0;
+                $labels[$languageID] = $buttonLabel;
+            }
+
+            (new SaveContent($bbcodeID, $labels))();
+        }
     }
 
     /**
@@ -271,10 +303,18 @@ class BBCodePackageInstallationPlugin extends AbstractXMLPackageInstallationPlug
             'bbcodeTag' => $element->getAttribute('name'),
             'packageID' => $this->installation->getPackage()->packageID,
             'originIsSystem' => 1,
+            'buttonLabel' => [],
         ];
 
+        /** @var \DOMElement $name */
+        foreach ($element->getElementsByTagName('buttonlabel') as $name) {
+            $langaugeCode = $name->getAttribute('language');
+            $languageID = $langaugeCode !== '' ? LanguageFactory::getInstance()->getLanguageByCode($langaugeCode)->languageID : 0;
+
+            $data['buttonLabel'][$languageID] = $name->nodeValue;
+        }
+
         $optionalElements = [
-            'buttonLabel' => 'buttonlabel',
             'className' => 'classname',
             'htmlClose' => 'htmlclose',
             'htmlOpen' => 'htmlopen',
@@ -467,6 +507,7 @@ class BBCodePackageInstallationPlugin extends AbstractXMLPackageInstallationPlug
                 ->description('wcf.acp.pip.bbcode.buttonLabel.description')
                 ->required()
                 ->maximumLength(255)
+                ->i18n()
                 ->addDependency(
                     NonEmptyFormFieldDependency::create('showButton')
                         ->fieldId('showButton')
@@ -555,10 +596,25 @@ class BBCodePackageInstallationPlugin extends AbstractXMLPackageInstallationPlug
      */
     protected function prepareXmlElement(\DOMDocument $document, IFormDocument $form)
     {
+        $formData = $form->getData();
         $data = $form->getData()['data'];
 
         $bbcode = $document->createElement($this->tagName);
         $bbcode->setAttribute('name', $data['name']);
+
+        if (isset($formData['buttonlabel'])) {
+            foreach ($formData['buttonlabel'] as $languageID => $buttonLabel) {
+                $buttonLabelElement = $document->createElement('buttonlabel', $this->getAutoCdataValue($buttonLabel));
+                if ($languageID !== 0) {
+                    $buttonLabelElement->setAttribute(
+                        'language',
+                        LanguageFactory::getInstance()->getLanguage($languageID)->languageCode
+                    );
+                }
+
+                $bbcode->appendChild($buttonLabelElement);
+            }
+        }
 
         $this->appendElementChildren(
             $bbcode,
@@ -574,7 +630,6 @@ class BBCodePackageInstallationPlugin extends AbstractXMLPackageInstallationPlug
                 ],
                 'isBlockElement' => 0,
                 'sourcecode' => 0,
-                'buttonlabel' => '',
                 'wysiwygicon' => '',
             ],
             $form
