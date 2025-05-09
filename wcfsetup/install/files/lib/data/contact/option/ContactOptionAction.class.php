@@ -4,6 +4,7 @@ namespace wcf\data\contact\option;
 
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\data\ISortableAction;
+use wcf\data\TI18nDatabaseObjectAction;
 use wcf\system\exception\UserInputException;
 use wcf\system\WCF;
 
@@ -19,6 +20,8 @@ use wcf\system\WCF;
  */
 class ContactOptionAction extends AbstractDatabaseObjectAction implements ISortableAction
 {
+    use TI18nDatabaseObjectAction;
+
     /**
      * @inheritDoc
      */
@@ -81,5 +84,56 @@ class ContactOptionAction extends AbstractDatabaseObjectAction implements ISorta
             ]);
         }
         WCF::getDB()->commitTransaction();
+    }
+
+    #[\Override]
+    public function create()
+    {
+        $option = parent::create();
+
+        $this->saveI18nValue($option);
+
+        return $option;
+    }
+
+    #[\Override]
+    public function delete()
+    {
+        $result = parent::delete();
+
+        $this->deleteI18nValues();
+
+        return $result;
+    }
+
+    #[\Override]
+    public function update()
+    {
+        parent::update();
+
+        foreach ($this->objects as $editor) {
+            $this->saveI18nValue($editor->getDecoratedObject());
+        }
+    }
+
+    #[\Override]
+    public function getI18nSaveTypes(): array
+    {
+        return [
+            'optionTitle' => 'wcf.contact.option\d+',
+            'optionDescription' => 'wcf.contact.optionDescription\d+',
+        ];
+    }
+
+    #[\Override]
+    public function getLanguageCategory(): string
+    {
+        return 'wcf.contact';
+    }
+
+    #[\Override]
+    public function getPackageID(): int
+    {
+        return 1;
     }
 }
