@@ -22,7 +22,7 @@ final class MultilingualHelper
     public static function subqueryForContentTable(
         string $selectColumn,
         string $contentTableName,
-        string $objectIDColum,
+        string $objectIDColumn,
         string $baseTable,
         ?int $preferredLanguageID = null
     ): string {
@@ -35,7 +35,7 @@ final class MultilingualHelper
         (
             SELECT   {$selectColumn}
             FROM     {$contentTableName}
-            WHERE    {$objectIDColum} = {$baseTable}.{$objectIDColum}
+            WHERE    {$objectIDColumn} = {$baseTable}.{$objectIDColumn}
             ORDER BY CASE
                 WHEN languageID = {$preferredLanguageID} THEN -2
                 WHEN languageID = {$defaultLanguageID} THEN -1
