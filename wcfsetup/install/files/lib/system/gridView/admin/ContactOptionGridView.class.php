@@ -47,7 +47,7 @@ final class ContactOptionGridView extends AbstractGridView
                 ->renderer(new PhraseColumnRenderer())
                 ->filter(new I18nTextFilter())
                 ->titleColumn()
-                ->sortable(),
+                ->sortable(sortByDatabaseColumn: $this->subqueryOptionTitle()),
             GridViewColumn::for("optionType")
                 ->label("wcf.acp.customOption.optionType")
                 ->filter(new SelectFilter(FormOptionHandler::getInstance()->getSortedOptionTypes()))
@@ -82,8 +82,21 @@ final class ContactOptionGridView extends AbstractGridView
     #[\Override]
     protected function createObjectList(): ContactOptionList
     {
-        // TODO 18n list
         return new ContactOptionList();
+    }
+
+    private function subqueryOptionTitle(): string
+    {
+        $languageID = WCF::getLanguage()->languageID;
+
+        return "
+            COALESCE((
+                SELECT languageItemValue
+                FROM   wcf1_language_item
+                WHERE  languageItem = contact_option.optionTitle
+                AND    languageID = {$languageID}
+            ), contact_option.optionTitle)
+        ";
     }
 
     #[\Override]

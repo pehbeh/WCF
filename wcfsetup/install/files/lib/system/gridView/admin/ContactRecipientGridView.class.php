@@ -46,7 +46,7 @@ final class ContactRecipientGridView extends AbstractGridView
                 ->filter(new I18nTextFilter())
                 ->titleColumn()
                 ->renderer(new PhraseColumnRenderer())
-                ->sortable(),
+                ->sortable(sortByDatabaseColumn: $this->subqueryName()),
             GridViewColumn::for("email")
                 ->label("wcf.user.email")
                 ->renderer(new EmailColumnRenderer())
@@ -81,8 +81,21 @@ final class ContactRecipientGridView extends AbstractGridView
     #[\Override]
     protected function createObjectList(): ContactRecipientList
     {
-        // TODO 18n list
         return new ContactRecipientList();
+    }
+
+    private function subqueryName(): string
+    {
+        $languageID = WCF::getLanguage()->languageID;
+
+        return "
+            COALESCE((
+                SELECT languageItemValue
+                FROM   wcf1_language_item
+                WHERE  languageItem = contact_recipient.name
+                AND    languageID = {$languageID}
+            ), contact_recipient.name)
+        ";
     }
 
     #[\Override]
