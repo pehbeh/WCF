@@ -100,6 +100,27 @@ declare global {
     get maximumSize(): number;
   }
 
+  interface WoltlabCoreListBoxElement extends HTMLParsedElement {
+    get selected(): string | undefined;
+    set selected(selected: string);
+    get selectedValues(): string[] | undefined;
+    set selectedValues(selectedValues: string[]);
+    get name(): string;
+    set name(name: string);
+    get multiple(): boolean;
+    set multiple(multiple: boolean);
+  }
+
+  interface WoltlabCoreListItemElement extends HTMLElement {
+    toggle(): void;
+    get selected(): boolean;
+    set selected(selected: boolean);
+    get focused(): boolean;
+    set focused(focused: boolean);
+    get value(): string;
+    set value(value: string);
+  }
+
   interface WoltlabCoreLoadingIndicatorElement extends HTMLElement {
     get size(): LoadingIndicatorIconSize;
     set size(size: LoadingIndicatorIconSize);
@@ -147,6 +168,8 @@ declare global {
     "woltlab-core-file": WoltlabCoreFileElement;
     "woltlab-core-file-upload": WoltlabCoreFileUploadElement;
     "woltlab-core-google-maps": WoltlabCoreGoogleMapsElement;
+    "woltlab-core-list-box": WoltlabCoreListBoxElement;
+    "woltlab-core-list-item": WoltlabCoreListItemElement;
     "woltlab-core-loading-indicator": WoltlabCoreLoadingIndicatorElement;
     "woltlab-core-notice": WoltlabCoreNoticeElement;
     "woltlab-core-pagination": WoltlabCorePaginationElement;

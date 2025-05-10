@@ -10,3 +10,11 @@
     outline: 5px auto Highlight;
     outline: 5px auto -webkit-focus-ring-color;
 }
+
+.listBox__dropdown {
+    border-radius: 4px;
+    box-shadow: var(--wcfBoxShadow);
+    pointer-events: all;
+    position: absolute;
+    z-index: 450;
+}

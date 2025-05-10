@@ -3,7 +3,6 @@ let idCounter = 0;
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class WoltlabCoreListItemElement extends HTMLElement {
   #shadow: ShadowRoot | undefined = undefined;
-  #multiple = false;
   readonly #checkbox: HTMLInputElement;
 
   constructor() {
@@ -18,14 +17,7 @@ export class WoltlabCoreListItemElement extends HTMLElement {
     this.role = "option";
     this.classList.add("listBox__item");
 
-    this.#multiple = false;
-    // We cannot use a proper `instanceof` check here as it would create a
-    // circular dependency.
-    if (this.parentElement?.tagName === "WOLTLAB-CORE-LIST-BOX") {
-      this.#multiple = this.parentElement.hasAttribute("multiple");
-    }
-
-    if (this.#multiple) {
+    if (this.#isMultiple()) {
       this.ariaChecked = String(this.selected);
       this.removeAttribute("aria-selected");
     } else {
@@ -108,9 +100,9 @@ input {
 
     shadow.append(style, iconWrapper, contentWrapper);
 
-    this.querySelector('slot[name="icon"]')?.remove();
+    this.querySelector('fa-icon[slot="icon"]')?.remove();
 
-    if (this.#multiple) {
+    if (this.#isMultiple()) {
       iconWrapper.append(this.#checkbox);
     } else {
       const icon = document.createElement("fa-icon");
@@ -129,9 +121,19 @@ input {
     return this.#shadow;
   }
 
+  #isMultiple(): boolean {
+    // We cannot use a proper `instanceof` check here as it would create a
+    // circular dependency.
+    if (this.parentElement?.tagName === "WOLTLAB-CORE-LIST-BOX") {
+      return this.parentElement.hasAttribute("multiple");
+    }
+
+    return false;
+  }
+
   toggle(): void {
     let hasChanged = false;
-    if (this.#multiple) {
+    if (this.#isMultiple()) {
       this.selected = !this.selected;
 
       hasChanged = true;
@@ -156,7 +158,7 @@ input {
       return;
     }
 
-    if (this.#multiple) {
+    if (this.#isMultiple()) {
       this.#checkbox.checked = selected;
 
       if (selected) {
@@ -189,8 +191,8 @@ input {
     return this.getAttribute("value") || "";
   }
 
-  get multiple(): boolean {
-    return this.#multiple;
+  set value(value: string) {
+    this.setAttribute("value", value);
   }
 }
 
