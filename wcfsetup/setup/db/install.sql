@@ -361,8 +361,6 @@ CREATE TABLE wcf1_box_to_page (
 DROP TABLE IF EXISTS wcf1_captcha_question;
 CREATE TABLE wcf1_captcha_question (
 	questionID INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	question VARCHAR(255) NOT NULL,
-	answers MEDIUMTEXT,
 	isDisabled TINYINT(1) NOT NULL DEFAULT 0,
 	views INT(10) NOT NULL DEFAULT 0,
 	correctSubmissions INT(10) NOT NULL DEFAULT 0,
