@@ -9,6 +9,7 @@
  */
 
 use wcf\system\database\table\column\MediumtextDatabaseTableColumn;
+use wcf\system\database\table\column\NotNullVarchar255DatabaseTableColumn;
 use wcf\system\database\table\column\TextDatabaseTableColumn;
 use wcf\system\database\table\column\TinyintDatabaseTableColumn;
 use wcf\system\database\table\PartialDatabaseTable;
@@ -23,6 +24,13 @@ return [
             MediumtextDatabaseTableColumn::create('selectOptions')
                 ->drop(),
             TinyintDatabaseTableColumn::create('required')
+                ->drop(),
+        ]),
+    PartialDatabaseTable::create('wcf1_captcha_question')
+        ->columns([
+            NotNullVarchar255DatabaseTableColumn::create('question')
+                ->drop(),
+            MediumtextDatabaseTableColumn::create('answers')
                 ->drop(),
         ]),
 ];
