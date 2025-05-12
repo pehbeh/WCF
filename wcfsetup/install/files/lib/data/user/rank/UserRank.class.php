@@ -84,7 +84,10 @@ class UserRank extends DatabaseObject implements ITitledObject
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute([$this->rankID]);
 
-        $this->titles = $statement->fetchMap('languageID', 'title');
+        $this->titles = [];
+        while ($row = $statement->fetchArray()) {
+            $this->titles[$row['languageID'] ?: 0] = $row['title'];
+        }
     }
 
     /**

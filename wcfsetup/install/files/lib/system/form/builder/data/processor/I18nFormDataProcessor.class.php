@@ -46,7 +46,7 @@ final class I18nFormDataProcessor extends AbstractFormDataProcessor
 
         while ($row = $statement->fetchArray()) {
             foreach ($this->fieldIds as $fieldId => $columnName) {
-                $data[$fieldId][$row['languageID']] = $row[$columnName];
+                $data[$fieldId][$row['languageID'] ?: 0] = $row[$columnName];
             }
         }
 
