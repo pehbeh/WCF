@@ -369,6 +369,18 @@ CREATE TABLE wcf1_captcha_question (
 	incorrectSubmissions INT(10) NOT NULL DEFAULT 0
 );
 
+DROP TABLE IF EXISTS wcf1_captcha_question_content;
+CREATE TABLE wcf1_captcha_question_content (
+    contentID INT(10) NOT NULL AUTO_INCREMENT,
+	questionID INT NOT NULL,
+	languageID INT,
+	question VARCHAR(255) NOT NULL,
+	answers MEDIUMTEXT,
+
+	PRIMARY KEY(contentID),
+	KEY id (questionID, languageID)
+);
+
 DROP TABLE IF EXISTS wcf1_category;
 CREATE TABLE wcf1_category (
 	categoryID INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -2079,6 +2091,9 @@ ALTER TABLE wcf1_box_content ADD FOREIGN KEY (imageID) REFERENCES wcf1_media (me
 
 ALTER TABLE wcf1_box_to_page ADD FOREIGN KEY (boxID) REFERENCES wcf1_box (boxID) ON DELETE CASCADE;
 ALTER TABLE wcf1_box_to_page ADD FOREIGN KEY (pageID) REFERENCES wcf1_page (pageID) ON DELETE CASCADE;
+
+ALTER TABLE wcf1_captcha_question_content ADD FOREIGN KEY (questionID) REFERENCES wcf1_captcha_question (questionID) ON DELETE CASCADE;
+ALTER TABLE wcf1_captcha_question_content ADD FOREIGN KEY (languageID) REFERENCES wcf1_language (languageID) ON DELETE CASCADE;
 
 ALTER TABLE wcf1_category ADD FOREIGN KEY (objectTypeID) REFERENCES wcf1_object_type (objectTypeID) ON DELETE CASCADE;
 

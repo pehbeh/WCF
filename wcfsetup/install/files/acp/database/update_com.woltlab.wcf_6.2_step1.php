@@ -87,4 +87,31 @@ return [
                 ->referencedColumns(['languageID'])
                 ->onDelete('CASCADE'),
         ]),
+    DatabaseTable::create('wcf1_captcha_question_content')
+        ->columns([
+            ObjectIdDatabaseTableColumn::create('contentID'),
+            IntDatabaseTableColumn::create('questionID')
+                ->notNull(),
+            IntDatabaseTableColumn::create('languageID'),
+            NotNullVarchar255DatabaseTableColumn::create('question'),
+            MediumtextDatabaseTableColumn::create('answers'),
+        ])
+        ->indices([
+            DatabaseTablePrimaryIndex::create()
+                ->columns(['contentID']),
+            DatabaseTableIndex::create('id')
+                ->columns(['questionID', 'languageID']),
+        ])
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['questionID'])
+                ->referencedTable('wcf1_captcha_question')
+                ->referencedColumns(['questionID'])
+                ->onDelete('CASCADE'),
+            DatabaseTableForeignKey::create()
+                ->columns(['languageID'])
+                ->referencedTable('wcf1_language')
+                ->referencedColumns(['languageID'])
+                ->onDelete('CASCADE'),
+        ]),
 ];
