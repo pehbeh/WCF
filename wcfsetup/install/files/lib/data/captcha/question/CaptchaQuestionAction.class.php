@@ -5,7 +5,8 @@ namespace wcf\data\captcha\question;
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\data\IToggleAction;
 use wcf\data\TDatabaseObjectToggle;
-use wcf\data\TI18nDatabaseObjectAction;
+use wcf\system\captcha\question\command\SaveContent;
+use wcf\system\form\builder\data\processor\MultilingualFormDataProcessor;
 
 /**
  * Executes captcha question-related actions.
@@ -19,7 +20,6 @@ use wcf\data\TI18nDatabaseObjectAction;
 class CaptchaQuestionAction extends AbstractDatabaseObjectAction implements IToggleAction
 {
     use TDatabaseObjectToggle;
-    use TI18nDatabaseObjectAction;
 
     /**
      * @inheritDoc
@@ -31,60 +31,27 @@ class CaptchaQuestionAction extends AbstractDatabaseObjectAction implements ITog
      */
     protected $permissionsUpdate = ['admin.captcha.canManageCaptchaQuestion'];
 
-    /**
-     * @return array<string, string>
-     */
-    #[\Override]
-    public function getI18nSaveTypes(): array
-    {
-        return [
-            'question' => 'wcf.captcha.question.question.question\d+',
-            'answers' => 'wcf.captcha.question.answers.question\d+',
-        ];
-    }
-
-    #[\Override]
-    public function getLanguageCategory(): string
-    {
-        return 'wcf.captcha.question';
-    }
-
-    #[\Override]
-    public function getPackageID(): int
-    {
-        return PACKAGE_ID;
-    }
-
     #[\Override]
     public function update()
     {
         parent::update();
 
-        foreach ($this->objects as $object) {
-            $this->saveI18nValue($object->getDecoratedObject());
+        if (isset($this->parameters[MultilingualFormDataProcessor::ARRAY_INDEX])) {
+            foreach ($this->objects as $object) {
+                (new SaveContent($object->questionID, $this->parameters[MultilingualFormDataProcessor::ARRAY_INDEX]))();
+            }
         }
     }
 
     #[\Override]
     public function create()
     {
-        // Question column doesn't have a default value
-        $this->parameters['data']['question'] = $this->parameters['data']['question'] ?? '';
-
         $captchaQuestion = parent::create();
 
-        $this->saveI18nValue($captchaQuestion);
+        if (isset($this->parameters[MultilingualFormDataProcessor::ARRAY_INDEX])) {
+            (new SaveContent($captchaQuestion->questionID, $this->parameters[MultilingualFormDataProcessor::ARRAY_INDEX]))();
+        }
 
         return $captchaQuestion;
-    }
-
-    #[\Override]
-    public function delete()
-    {
-        $returnValue = parent::delete();
-
-        $this->deleteI18nValues();
-
-        return $returnValue;
     }
 }

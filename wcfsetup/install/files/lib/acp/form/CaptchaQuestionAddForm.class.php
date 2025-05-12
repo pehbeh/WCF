@@ -7,7 +7,12 @@ use wcf\data\captcha\question\CaptchaQuestionAction;
 use wcf\data\language\Language;
 use wcf\form\AbstractFormBuilderForm;
 use wcf\system\form\builder\container\FormContainer;
+use wcf\system\form\builder\container\MultilingualFormContainer;
+use wcf\system\form\builder\data\processor\MultilingualFormDataProcessor;
+use wcf\system\form\builder\data\processor\VoidFormDataProcessor;
 use wcf\system\form\builder\field\BooleanFormField;
+use wcf\system\form\builder\field\dependency\EmptyFormFieldDependency;
+use wcf\system\form\builder\field\IFormField;
 use wcf\system\form\builder\field\MultilineTextFormField;
 use wcf\system\form\builder\field\TextFormField;
 use wcf\system\form\builder\field\validation\FormFieldValidationError;
@@ -51,41 +56,74 @@ class CaptchaQuestionAddForm extends AbstractFormBuilderForm
     {
         parent::createForm();
 
+        $multilingualContainer = MultilingualFormContainer::create('content')
+            ->label('wcf.acp.captcha.question.content')
+            ->appendChildren($this->getContentFields());
+
+        foreach ($multilingualContainer->getLangaugeContainers() as $langaugeCode => $container) {
+            $container->appendChildren(
+                $this->getContentFields(LanguageFactory::getInstance()->getLanguageByCode($langaugeCode))
+            );
+        }
+
         $this->form->appendChildren([
             FormContainer::create('general')
                 ->appendChildren([
-                    TextFormField::create('question')
-                        ->label('wcf.acp.captcha.question.question')
-                        ->i18n()
-                        ->languageItemPattern('wcf.captcha.question.question.question\d+')
-                        ->required(),
-                    MultilineTextFormField::create('answers')
-                        ->label('wcf.acp.captcha.question.answers')
-                        ->i18n()
-                        ->languageItemPattern('wcf.captcha.question.answers.question\d+')
-                        ->required()
-                        ->addValidator(
-                            new FormFieldValidator('regexValidator', function (MultilineTextFormField $formField) {
-                                $value = $formField->getValue();
-
-                                if ($formField->hasPlainValue()) {
-                                    $this->validateAnswer($value, $formField);
-                                } else {
-                                    foreach ($value as $languageID => $languageValue) {
-                                        $this->validateAnswer(
-                                            $languageValue,
-                                            $formField,
-                                            LanguageFactory::getInstance()->getLanguage($languageID)
-                                        );
-                                    }
-                                }
-                            })
-                        ),
                     BooleanFormField::create('isDisabled')
                         ->label('wcf.acp.captcha.question.isDisabled')
-                        ->value(false)
-                ])
+                        ->value(false),
+                ]),
+            $multilingualContainer,
         ]);
+    }
+
+    #[\Override]
+    protected function finalizeForm()
+    {
+        parent::finalizeForm();
+
+        $this->form->getDataHandler()
+            ->addProcessor(
+                new MultilingualFormDataProcessor(
+                    'wcf1_captcha_question_content',
+                    ['question' => 'question', 'answers' => 'answers']
+                )
+            )
+            ->addProcessor(new VoidFormDataProcessor('isMultilingual'));
+    }
+
+    /**
+     * @return IFormField[]
+     */
+    protected function getContentFields(?Language $language = null): array
+    {
+        $questionFormField = TextFormField::create('question' . ($language ? '_' . $language->languageCode : ''))
+            ->label('wcf.acp.captcha.question.question')
+            ->required();
+
+        $answerFormField = MultilineTextFormField::create('answers' . ($language ? '_' . $language->languageCode : ''))
+            ->label('wcf.acp.captcha.question.answers')
+            ->required()
+            ->addValidator(
+                new FormFieldValidator('regexValidator', function (MultilineTextFormField $formField) use ($language) {
+                    $value = $formField->getValue();
+
+                    $this->validateAnswer($value, $formField, $language);
+                })
+            );
+
+        if ($language === null) {
+            $questionFormField->addDependency(
+                EmptyFormFieldDependency::create('isMultilingual')
+                    ->fieldId('isMultilingual')
+            );
+            $answerFormField->addDependency(
+                EmptyFormFieldDependency::create('isMultilingual')
+                    ->fieldId('isMultilingual')
+            );
+        }
+
+        return [$questionFormField, $answerFormField];
     }
 
     protected function validateAnswer(
@@ -105,7 +143,7 @@ class CaptchaQuestionAddForm extends AbstractFormBuilderForm
                     'wcf.acp.captcha.question.answers.error.invalidRegex',
                     [
                         'invalidRegex' => $answer,
-                        'language' => $language
+                        'language' => $language,
                     ]
                 )
             );
