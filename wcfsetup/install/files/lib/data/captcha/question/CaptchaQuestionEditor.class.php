@@ -4,7 +4,7 @@ namespace wcf\data\captcha\question;
 
 use wcf\data\DatabaseObjectEditor;
 use wcf\data\IEditableCachedObject;
-use wcf\system\cache\builder\CaptchaQuestionCacheBuilder;
+use wcf\system\cache\eager\CaptchaQuestionCache;
 
 /**
  * Provides functions to edit captcha questions.
@@ -29,6 +29,6 @@ class CaptchaQuestionEditor extends DatabaseObjectEditor implements IEditableCac
      */
     public static function resetCache()
     {
-        CaptchaQuestionCacheBuilder::getInstance()->reset();
+        (new CaptchaQuestionCache())->rebuild();
     }
 }

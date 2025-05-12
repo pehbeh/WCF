@@ -5,7 +5,7 @@ namespace wcf\system\captcha;
 use ParagonIE\ConstantTime\Hex;
 use wcf\data\captcha\question\CaptchaQuestion;
 use wcf\data\captcha\question\CaptchaQuestionEditor;
-use wcf\system\cache\builder\CaptchaQuestionCacheBuilder;
+use wcf\system\cache\eager\CaptchaQuestionCache;
 use wcf\system\exception\UserInputException;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
@@ -42,7 +42,7 @@ final class CaptchaQuestionHandler implements ICaptchaHandler
 
     public function __construct()
     {
-        $this->questions = CaptchaQuestionCacheBuilder::getInstance()->getData();
+        $this->questions = (new CaptchaQuestionCache())->getCache();
     }
 
     /**

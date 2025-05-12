@@ -2,7 +2,7 @@
 
 namespace wcf\system\cache\builder;
 
-use wcf\data\captcha\question\CaptchaQuestionList;
+use wcf\system\cache\eager\CaptchaQuestionCache;
 
 /**
  * Caches the enabled captcha questions.
@@ -10,18 +10,20 @@ use wcf\data\captcha\question\CaptchaQuestionList;
  * @author  Matthias Schmidt
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @deprecated 6.2 use `CaptchaQuestionCache` instead
  */
-class CaptchaQuestionCacheBuilder extends AbstractCacheBuilder
+class CaptchaQuestionCacheBuilder extends AbstractLegacyCacheBuilder
 {
-    /**
-     * @inheritDoc
-     */
-    public function rebuild(array $parameters)
+    #[\Override]
+    protected function rebuild(array $parameters): array
     {
-        $questionList = new CaptchaQuestionList();
-        $questionList->getConditionBuilder()->add('isDisabled = ?', [0]);
-        $questionList->readObjects();
+        return (new CaptchaQuestionCache())->getCache();
+    }
 
-        return $questionList->getObjects();
+    #[\Override]
+    public function reset(array $parameters = [])
+    {
+        (new CaptchaQuestionCache())->rebuild();
     }
 }
