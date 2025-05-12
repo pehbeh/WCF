@@ -211,7 +211,10 @@ class BBCode extends ProcessibleDatabaseObject implements IRouteController
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute([$this->bbcodeID]);
 
-        $this->buttonLabels = $statement->fetchMap('languageID', 'buttonLabel');
+        $this->buttonLabels = [];
+        while ($row = $statement->fetchArray()) {
+            $this->buttonLabels[$row['languageID'] ?: 0] = $row['buttonLabel'];
+        }
     }
 
     /**

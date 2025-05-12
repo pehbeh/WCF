@@ -163,7 +163,11 @@ class BBCodeEditForm extends BBCodeAddForm
             $statement = WCF::getDB()->prepare($sql);
             $statement->execute([$this->bbcodeID]);
 
-            $this->buttonLabel = $statement->fetchMap('languageID', 'buttonLabel');
+            $this->buttonLabel = [];
+            while ($row = $statement->fetchArray()) {
+                $this->buttonLabel[$row['languageID'] ?: 0] = $row['buttonLabel'];
+            }
+
             if (\count($this->buttonLabel) === 1) {
                 $this->buttonLabel = \reset($this->buttonLabel);
             } elseif ($this->buttonLabel === []) {
