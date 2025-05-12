@@ -30,7 +30,7 @@ foreach ($titles as $rankID => $title) {
     } else {
         $statement->execute([
             $rankID,
-            LanguageFactory::getInstance()->getDefaultLanguageID(),
+            null,
             $title,
         ]);
     }
