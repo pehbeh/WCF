@@ -37,7 +37,13 @@ export async function getRows(
   }
   if (gridViewParameters) {
     gridViewParameters.forEach((value, key) => {
-      url.searchParams.set(`gridViewParameters[${key}]`, value);
+      if (Array.isArray(value)) {
+        value.forEach((innerValue, innerkey) => {
+          url.searchParams.set(`gridViewParameters[${key}][${innerkey}]`, innerValue);
+        });
+      } else {
+        url.searchParams.set(`gridViewParameters[${key}]`, value);
+      }
     });
   }
 

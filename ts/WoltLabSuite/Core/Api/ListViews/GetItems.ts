@@ -37,7 +37,13 @@ export async function getItems(
   }
   if (listViewParameters) {
     listViewParameters.forEach((value, key) => {
-      url.searchParams.set(`listViewParameters[${key}]`, value);
+      if (Array.isArray(value)) {
+        value.forEach((innerValue, innerkey) => {
+          url.searchParams.set(`listViewParameters[${key}][${innerkey}]`, innerValue);
+        });
+      } else {
+        url.searchParams.set(`listViewParameters[${key}]`, value);
+      }
     });
   }
 

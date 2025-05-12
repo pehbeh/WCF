@@ -55,7 +55,7 @@ final class GetRowParameters
         /** @var non-empty-string */
         public readonly string $gridView,
         public readonly string|int $objectID,
-        /** @var string[] */
+        /** @var array<string, string|string[]> */
         public readonly array $gridViewParameters,
     ) {}
 }

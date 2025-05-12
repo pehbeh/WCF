@@ -70,8 +70,7 @@ final class GetGridViewParameters
         public readonly string $sortOrder,
         /** @var array<string, string|int> */
         public readonly array $filters,
-        /** @var array<string, string> */
+        /** @var array<string, string|string[]> */
         public readonly array $gridViewParameters,
-    ) {
-    }
+    ) {}
 }

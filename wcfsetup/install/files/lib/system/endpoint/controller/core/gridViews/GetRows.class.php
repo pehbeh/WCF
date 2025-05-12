@@ -77,7 +77,7 @@ final class GetRowsParameters
         public readonly string $sortOrder,
         /** @var string[] */
         public readonly array $filters,
-        /** @var string[] */
+        /** @var array<string, string|string[]> */
         public readonly array $gridViewParameters,
     ) {}
 }

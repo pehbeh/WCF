@@ -16,7 +16,14 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "../Result"], fu
         url.searchParams.set("objectID", objectId.toString());
         if (listViewParameters) {
             listViewParameters.forEach((value, key) => {
-                url.searchParams.set(`listViewParameters[${key}]`, value);
+                if (Array.isArray(value)) {
+                    value.forEach((innerValue, innerkey) => {
+                        url.searchParams.set(`listViewParameters[${key}][${innerkey}]`, innerValue);
+                    });
+                }
+                else {
+                    url.searchParams.set(`listViewParameters[${key}]`, value);
+                }
             });
         }
         let response;

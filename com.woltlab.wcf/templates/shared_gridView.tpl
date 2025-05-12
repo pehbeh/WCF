@@ -95,7 +95,7 @@
 			'{unsafe:$view->getBulkInteractionProviderClassName()|encodeJS}',
 			new Map([
 				{foreach from=$view->getParameters() key='name' item='value'}
-					['{unsafe:$name|encodeJS}', '{unsafe:$value|encodeJS}'],
+					['{unsafe:$name|encodeJS}', {unsafe:$value|json}],
 				{/foreach}
 			]),
 		);
