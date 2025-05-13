@@ -2,33 +2,24 @@
 
 namespace wcf\system\tagging;
 
-use wcf\data\article\TaggedArticleList;
+use wcf\system\listView\user\ArticleListView;
+use wcf\system\listView\user\TaggedArticleListView;
 
 /**
- * Implementation of ITaggable for tagging of cms articles.
+ * Implementation of ITaggedListViewProvider for tagging of cms articles.
  *
- * @author  Marcel Werk
- * @copyright   2001-2019 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
- * @since   3.0
+ * @author      Marcel Werk
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       3.0
  *
- * @extends AbstractCombinedTaggable<TaggedArticleList>
+ * @extends AbstractTaggedListViewProvider<ArticleListView>
  */
-class TaggableArticle extends AbstractCombinedTaggable
+final class TaggableArticle extends AbstractTaggedListViewProvider
 {
-    /**
-     * @inheritDoc
-     */
-    public function getObjectListFor(array $tags)
+    #[\Override]
+    public function getListView(array $tagIDs): ArticleListView
     {
-        return new TaggedArticleList($tags);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getTemplateName()
-    {
-        return 'taggedArticleList';
+        return new TaggedArticleListView($tagIDs);
     }
 }

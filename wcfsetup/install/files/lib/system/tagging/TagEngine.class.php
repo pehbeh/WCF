@@ -327,6 +327,33 @@ class TagEngine extends SingletonFactory
     }
 
     /**
+     * Generates the inner SQL statement to fetch object ids that have all listed
+     * tags assigned to them.
+     *
+     * @param int[] $tagIDs
+     * @return array{sql: string, parameters: mixed[]}
+     * @since 6.2
+     */
+    public function getSubselectForObjectsByTagIDs(string $objectType, array $tagIDs): array
+    {
+        $parameters = \array_merge([$this->getObjectTypeID($objectType)], $tagIDs);
+        $parameters[] = \count($tagIDs);
+        $placeholders = \implode(',', \array_map(static fn(int $tagID) => '?', $tagIDs));
+
+        $sql = "SELECT      objectID
+                FROM        wcf1_tag_to_object
+                WHERE       objectTypeID = ?
+                        AND tagID IN (" . $placeholders . ")
+                GROUP BY    objectID
+                HAVING  COUNT(objectID) = ?";
+
+        return [
+            'sql' => $sql,
+            'parameters' => $parameters,
+        ];
+    }
+
+    /**
      * Returns the matching tags by name.
      *
      * @param string[] $names

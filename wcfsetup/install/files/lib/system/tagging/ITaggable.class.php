@@ -11,6 +11,7 @@ use wcf\data\tag\Tag;
  * @author  Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @deprecated  6.2 Use `ITaggedListViewProvider` instead.
  *
  * @template T of DatabaseObjectList
  */

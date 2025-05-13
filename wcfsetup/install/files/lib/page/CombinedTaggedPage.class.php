@@ -2,6 +2,7 @@
 
 namespace wcf\page;
 
+use Laminas\Diactoros\Response\RedirectResponse;
 use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\data\object\type\ObjectType;
@@ -10,7 +11,9 @@ use wcf\data\tag\Tag;
 use wcf\data\tag\TagList;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\exception\PermissionDeniedException;
+use wcf\system\request\LinkHandler;
 use wcf\system\tagging\ICombinedTaggable;
+use wcf\system\tagging\ITaggedListViewProvider;
 use wcf\system\tagging\TypedTagCloud;
 use wcf\system\WCF;
 use wcf\util\ArrayUtil;
@@ -23,6 +26,7 @@ use wcf\util\StringUtil;
  * @copyright   2001-2019 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       5.2
+ * @deprecated 6.2 Use `TaggedListViewPage` instead.
  *
  * @extends MultipleLinkPage<DatabaseObjectList<DatabaseObject>>
  */
@@ -104,10 +108,6 @@ class CombinedTaggedPage extends MultipleLinkPage
             if (!$objectType->validateOptions() || !$objectType->validatePermissions()) {
                 unset($this->availableObjectTypes[$key]);
             }
-
-            if (!($objectType->getProcessor() instanceof ICombinedTaggable)) {
-                unset($this->availableObjectTypes[$key]);
-            }
         }
 
         if (empty($this->availableObjectTypes)) {
@@ -135,7 +135,16 @@ class CombinedTaggedPage extends MultipleLinkPage
             }
         }
 
-        $this->processor = $this->objectType->getProcessor();
+        if ($this->objectType->getProcessor() instanceof ITaggedListViewProvider) {
+            return new RedirectResponse(
+                LinkHandler::getInstance()->getControllerLink(TaggedListViewPage::class, [
+                    'objectType' => $this->objectType->objectType,
+                    'tagIDs' => $this->tagIDs,
+                ]),
+            );
+        } else {
+            $this->processor = $this->objectType->getProcessor();
+        }
     }
 
     /**
@@ -171,6 +180,7 @@ class CombinedTaggedPage extends MultipleLinkPage
             'resultListTemplateName' => $this->processor->getTemplateName(),
             'resultListApplication' => $this->processor->getApplication(),
             'itemsPerType' => $this->itemsPerType,
+            'objectTypeLinks' => $this->getObjectTypeLinks(),
         ]);
 
         if (\count($this->objectList) === 0) {
@@ -178,12 +188,50 @@ class CombinedTaggedPage extends MultipleLinkPage
         }
     }
 
-    private function readItemsPerType(): void
+    protected function getObjectTypeLinks(): array
+    {
+        $links = [];
+        foreach ($this->availableObjectTypes as $objectType) {
+            if ($objectType->getProcessor() instanceof ITaggedListViewProvider) {
+                $processor = $objectType->getProcessor();
+                \assert($processor instanceof ITaggedListViewProvider);
+
+                $title = $processor->getObjectTypeTitle();
+                $controller = TaggedListViewPage::class;
+            } else {
+                $title = WCF::getLanguage()->get('wcf.tagging.objectType.' . $objectType->objectType);
+                $controller = CombinedTaggedPage::class;
+            }
+
+            $links[] = [
+                'objectType' => $objectType->objectType,
+                'title' => $title,
+                'link' => LinkHandler::getInstance()->getControllerLink(
+                    $controller,
+                    [
+                        'objectType' => $objectType->objectType,
+                        'tagIDs' => $this->tagIDs
+                    ]
+                ),
+                'items' => $this->itemsPerType[$objectType->objectType] ?? 0,
+            ];
+        }
+
+        return $links;
+    }
+
+    protected function readItemsPerType(): void
     {
         foreach ($this->availableObjectTypes as $key => $objectType) {
-            $objectList = $objectType->getProcessor()->getObjectListFor($this->tags);
-            \assert($objectList instanceof DatabaseObjectList);
-            $this->itemsPerType[$key] = $objectList->countObjects();
+            if ($objectType->getProcessor() instanceof ITaggedListViewProvider) {
+                $processor = $objectType->getProcessor();
+                \assert($processor instanceof ITaggedListViewProvider);
+                $this->itemsPerType[$key] = $processor->getListView($this->tagIDs)->countItems();
+            } else {
+                $objectList = $objectType->getProcessor()->getObjectListFor($this->tags);
+                \assert($objectList instanceof DatabaseObjectList);
+                $this->itemsPerType[$key] = $objectList->countObjects();
+            }
         }
     }
 }
