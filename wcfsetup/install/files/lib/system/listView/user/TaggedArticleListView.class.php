@@ -6,7 +6,7 @@ use wcf\data\article\AccessibleArticleList;
 use wcf\system\tagging\TagEngine;
 
 /**
- * List view for the list of articles filtered by a category.
+ * List view for the list of articles filtered by tags.
  *
  * @author      Marcel Werk
  * @copyright   2001-2025 WoltLab GmbH
