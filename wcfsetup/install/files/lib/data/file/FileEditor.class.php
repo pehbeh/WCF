@@ -132,7 +132,7 @@ class FileEditor extends DatabaseObjectEditor
 
         $objectType = FileProcessor::getInstance()->getObjectType($objectTypeName);
         if ($objectType === null) {
-            return new \RuntimeException("The object type '{$objectTypeName}' is not valid.");
+            throw new \RuntimeException("The object type '{$objectTypeName}' is not valid.");
         }
 
         $mimeType = FileUtil::getMimeType($pathname);
@@ -223,7 +223,7 @@ class FileEditor extends DatabaseObjectEditor
             ExifUtil::ORIENTATION_180_ROTATE => 180,
             ExifUtil::ORIENTATION_90_ROTATE => 90,
             ExifUtil::ORIENTATION_270_ROTATE => 270,
-                // Any other rotation is unsupported.
+            // Any other rotation is unsupported.
             default => null,
         };
 
