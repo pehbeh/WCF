@@ -457,8 +457,8 @@
 		<page identifier="com.woltlab.wcf.Tagged">
 			<pageType>system</pageType>
 			<controller>wcf\page\TaggedPage</controller>
-			<name language="de">Inhalte mit bestimmtem Tag</name>
-			<name language="en">Content with Particular Tag</name>
+			<name language="de">Inhalte mit bestimmtem Tag (veraltet)</name>
+			<name language="en">Content with Particular Tag (deprecated)</name>
 			<permissions>user.tag.canViewTag</permissions>
 			<requireObjectID>1</requireObjectID>
 			<content language="en">
@@ -471,6 +471,20 @@
 		<page identifier="com.woltlab.wcf.CombinedTagged">
 			<pageType>system</pageType>
 			<controller>wcf\page\CombinedTaggedPage</controller>
+			<name language="de">Inhalte mit bestimmten Tags (veraltet)</name>
+			<name language="en">Content with Particular Tags  (deprecated)</name>
+			<permissions>user.tag.canViewTag</permissions>
+			<requireObjectID>1</requireObjectID>
+			<content language="en">
+				<title>Content with Particular Tags</title>
+			</content>
+			<content language="de">
+				<title>Inhalte mit bestimmten Tags</title>
+			</content>
+		</page>
+		<page identifier="com.woltlab.wcf.TaggedListView">
+			<pageType>system</pageType>
+			<controller>wcf\page\TaggedListViewPage</controller>
 			<name language="de">Inhalte mit bestimmten Tags</name>
 			<name language="en">Content with Particular Tags</name>
 			<permissions>user.tag.canViewTag</permissions>

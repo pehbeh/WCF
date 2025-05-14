@@ -3,36 +3,31 @@
 namespace wcf\page;
 
 use Laminas\Diactoros\Response\RedirectResponse;
-use wcf\data\DatabaseObject;
 use wcf\data\DatabaseObjectList;
 use wcf\data\object\type\ObjectType;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\data\tag\Tag;
+use wcf\data\tag\TagList;
 use wcf\system\exception\IllegalLinkException;
+use wcf\system\exception\PermissionDeniedException;
+use wcf\system\listView\AbstractListView;
 use wcf\system\request\LinkHandler;
 use wcf\system\tagging\ITaggedListViewProvider;
 use wcf\system\tagging\TypedTagCloud;
 use wcf\system\WCF;
+use wcf\util\ArrayUtil;
 use wcf\util\StringUtil;
 
 /**
  * Shows the a list of tagged objects.
  *
- * @author  Marcel Werk
+ * @author      Marcel Werk
  * @copyright   2001-2019 WoltLab GmbH
- * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
- * @deprecated 6.2 Use `TaggedListViewPage` instead.
- *
- * @extends MultipleLinkPage<DatabaseObjectList<DatabaseObject>>
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
  */
-class TaggedPage extends MultipleLinkPage
+class TaggedListViewPage extends AbstractListViewPage
 {
-    /**
-     * list of available taggable object types
-     * @var ObjectType[]
-     */
-    public $availableObjectTypes = [];
-
     /**
      * @inheritDoc
      */
@@ -44,66 +39,59 @@ class TaggedPage extends MultipleLinkPage
     public $neededPermissions = ['user.tag.canViewTag'];
 
     /**
-     * tag id
-     * @var int
+     * @var ObjectType[]
      */
-    public $tagID = 0;
+    public array $availableObjectTypes = [];
 
     /**
-     * tag object
-     * @var Tag
+     * @var Tag[]
      */
-    public $tag;
-
-    /**
-     * object type object
-     * @var ?ObjectType
-     */
-    public $objectType;
-
-    /**
-     * tag cloud
-     * @var TypedTagCloud
-     */
-    public $tagCloud;
+    public array $tags = [];
 
     /**
      * @var int[]
-     * @since 6.0
      */
-    public $itemsPerType = [];
+    public array $tagIDs = [];
 
     /**
-     * @inheritDoc
+     * @var int[]
      */
+    public array $itemsPerType = [];
+
+    public ITaggedListViewProvider $provider;
+    public ObjectType $objectType;
+    public TypedTagCloud $tagCloud;
+
+    #[\Override]
     public function readParameters()
     {
         parent::readParameters();
 
-        // get tag id
-        if (isset($_REQUEST['id'])) {
-            $this->tagID = \intval($_REQUEST['id']);
+        if (isset($_GET['tagIDs']) && \is_array($_GET['tagIDs'])) {
+            $this->tagIDs = ArrayUtil::toIntegerArray($_GET['tagIDs']);
         }
-        $this->tag = new Tag($this->tagID);
-        if (!$this->tag->tagID) {
+        if ($this->tagIDs === []) {
+            throw new IllegalLinkException();
+        } elseif (\count($this->tagIDs) > SEARCH_MAX_COMBINED_TAGS) {
+            throw new PermissionDeniedException();
+        }
+
+        $tagList = new TagList();
+        $tagList->getConditionBuilder()->add('tagID IN (?)', [$this->tagIDs]);
+        $tagList->readObjects();
+
+        $this->tags = $tagList->getObjects();
+        if ($this->tags === []) {
             throw new IllegalLinkException();
         }
 
-        // filter taggable object types by options and permissions
-        $this->availableObjectTypes = ObjectTypeCache::getInstance()->getObjectTypes('com.woltlab.wcf.tagging.taggableObject');
-        foreach ($this->availableObjectTypes as $key => $objectType) {
-            if (!$objectType->validateOptions() || !$objectType->validatePermissions()) {
-                unset($this->availableObjectTypes[$key]);
-            }
-        }
-
-        if (empty($this->availableObjectTypes)) {
+        $this->loadObjectTypes();
+        if ($this->availableObjectTypes === []) {
             throw new IllegalLinkException();
         }
 
         $this->readItemsPerType();
 
-        // get object type
         if (isset($_REQUEST['objectType'])) {
             $objectType = StringUtil::trim($_REQUEST['objectType']);
             if (!isset($this->availableObjectTypes[$objectType])) {
@@ -124,26 +112,24 @@ class TaggedPage extends MultipleLinkPage
         }
 
         if ($this->objectType->getProcessor() instanceof ITaggedListViewProvider) {
+            $this->provider = $this->objectType->getProcessor();
+        } else {
             return new RedirectResponse(
-                LinkHandler::getInstance()->getControllerLink(TaggedListViewPage::class, [
+                LinkHandler::getInstance()->getControllerLink(CombinedTaggedPage::class, [
                     'objectType' => $this->objectType->objectType,
-                    'tagIDs' => [$this->tagID],
+                    'tagIDs' => $this->tagIDs,
                 ]),
             );
         }
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function initObjectList()
+    #[\Override]
+    protected function createListView(): AbstractListView
     {
-        $this->objectList = $this->objectType->getProcessor()->getObjectList($this->tag);
+        return $this->provider->getListView($this->tagIDs);
     }
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function readData()
     {
         parent::readData();
@@ -151,27 +137,20 @@ class TaggedPage extends MultipleLinkPage
         $this->tagCloud = new TypedTagCloud($this->objectType->objectType);
     }
 
-    /**
-     * @inheritDoc
-     */
+    #[\Override]
     public function assignVariables()
     {
         parent::assignVariables();
 
         WCF::getTPL()->assign([
-            'tag' => $this->tag,
+            'combinedTags' => $this->tags,
             'tags' => $this->tagCloud->getTags(100),
             'availableObjectTypes' => $this->availableObjectTypes,
             'objectType' => $this->objectType->objectType,
-            'resultListTemplateName' => $this->objectType->getProcessor()->getTemplateName(),
-            'resultListApplication' => $this->objectType->getProcessor()->getApplication(),
             'itemsPerType' => $this->itemsPerType,
-            'objectTypeLinks' => $this->getObjectTypeLinks(),
+            'contentTitle' => $this->provider->getContentTitle(),
+            'objectTypeLinks' => $this->getObjectTypeLinks()
         ]);
-
-        if (\count($this->objectList) === 0) {
-            @\header('HTTP/1.1 404 Not Found');
-        }
     }
 
     protected function getObjectTypeLinks(): array
@@ -196,7 +175,7 @@ class TaggedPage extends MultipleLinkPage
                     $controller,
                     [
                         'objectType' => $objectType->objectType,
-                        'tagIDs' => [$this->tagID]
+                        'tagIDs' => $this->tagIDs
                     ]
                 ),
                 'items' => $this->itemsPerType[$objectType->objectType] ?? 0,
@@ -212,11 +191,21 @@ class TaggedPage extends MultipleLinkPage
             if ($objectType->getProcessor() instanceof ITaggedListViewProvider) {
                 $processor = $objectType->getProcessor();
                 \assert($processor instanceof ITaggedListViewProvider);
-                $this->itemsPerType[$key] = $processor->getListView([$this->tagID])->countItems();
+                $this->itemsPerType[$key] = $processor->getListView($this->tagIDs)->countItems();
             } else {
-                $objectList = $objectType->getProcessor()->getObjectList($this->tag);
+                $objectList = $objectType->getProcessor()->getObjectListFor($this->tags);
                 \assert($objectList instanceof DatabaseObjectList);
                 $this->itemsPerType[$key] = $objectList->countObjects();
+            }
+        }
+    }
+
+    protected function loadObjectTypes(): void
+    {
+        $this->availableObjectTypes = ObjectTypeCache::getInstance()->getObjectTypes('com.woltlab.wcf.tagging.taggableObject');
+        foreach ($this->availableObjectTypes as $key => $objectType) {
+            if (!$objectType->validateOptions() || !$objectType->validatePermissions()) {
+                unset($this->availableObjectTypes[$key]);
             }
         }
     }

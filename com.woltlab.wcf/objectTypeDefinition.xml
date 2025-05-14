@@ -84,7 +84,6 @@
 		</definition>
 		<definition>
 			<name>com.woltlab.wcf.tagging.taggableObject</name>
-			<interfacename>wcf\system\tagging\ITaggable</interfacename>
 		</definition>
 		<definition>
 			<name>com.woltlab.wcf.deletedContent</name>

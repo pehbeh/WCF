@@ -11,6 +11,7 @@ use wcf\data\object\type\AbstractObjectTypeProcessor;
  * @author  Matthias Schmidt
  * @copyright   2001-2019 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @deprecated  6.2 Use `AbstractTaggedListViewProvider` instead.
  *
  * @template T of DatabaseObjectList
  * @implements ITaggable<T>

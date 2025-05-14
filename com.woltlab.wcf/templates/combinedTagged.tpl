@@ -26,11 +26,11 @@
 		
 		<nav class="boxContent">
 			<ul class="boxMenu">
-				{foreach from=$availableObjectTypes item=availableObjectType}
-					<li{if $objectType == $availableObjectType->objectType} class="active"{/if}>
-						<a class="boxMenuLink" href="{link controller='CombinedTagged'}{@$linkParameters}&objectType={@$availableObjectType->objectType}{/link}">
-							<span class="boxMenuLinkTitle">{lang}wcf.tagging.objectType.{@$availableObjectType->objectType}{/lang}</span>
-							<span class="badge">{#$itemsPerType[$availableObjectType->objectType]}</span>
+				{foreach from=$objectTypeLinks item=objectTypeLink}
+					<li{if $objectType == $objectTypeLink[objectType]} class="active"{/if}>
+						<a class="boxMenuLink" href="{$objectTypeLink[link]}">
+							<span class="boxMenuLinkTitle">{$objectTypeLink[title]}</span>
+							<span class="badge">{$objectTypeLink[items]}</span>
 						</a>
 					</li>
 				{/foreach}
