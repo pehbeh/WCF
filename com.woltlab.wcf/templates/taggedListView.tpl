@@ -41,7 +41,7 @@
 
 {include file='header'}
 
-<div class="section">
+<div class="section {$containerCssClassName}">
 	{unsafe:$listView->render()}
 </div>
 

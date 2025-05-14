@@ -149,7 +149,8 @@ class TaggedListViewPage extends AbstractListViewPage
             'objectType' => $this->objectType->objectType,
             'itemsPerType' => $this->itemsPerType,
             'contentTitle' => $this->provider->getContentTitle(),
-            'objectTypeLinks' => $this->getObjectTypeLinks()
+            'objectTypeLinks' => $this->getObjectTypeLinks(),
+            'containerCssClassName' => $this->provider->getContainerCssClassName(),
         ]);
     }
 

@@ -29,4 +29,10 @@ abstract class AbstractTaggedListViewProvider extends AbstractObjectTypeProcesso
     {
         return WCF::getLanguage()->get('wcf.tagging.combinedTaggedObjects.' . $this->getDecoratedObject()->objectType);
     }
+
+    #[\Override]
+    public function getContainerCssClassName(): string
+    {
+        return '';
+    }
 }
