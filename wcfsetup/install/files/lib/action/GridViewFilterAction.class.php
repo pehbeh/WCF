@@ -35,7 +35,7 @@ final class GridViewFilterAction implements RequestHandlerInterface
                 array {
                     gridView: string,
                     filters: string[],
-                    gridViewParameters: string[]
+                    gridViewParameters: array<string, string|string[]>
                 }
                 EOT
         );

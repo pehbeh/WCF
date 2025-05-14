@@ -35,7 +35,7 @@ final class ListViewFilterAction implements RequestHandlerInterface
                 array {
                     listView: string,
                     filters: string[],
-                    listViewParameters: string[]
+                    listViewParameters: array<string, string|string[]>
                 }
                 EOT
         );
