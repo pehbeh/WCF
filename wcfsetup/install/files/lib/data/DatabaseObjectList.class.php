@@ -230,6 +230,28 @@ abstract class DatabaseObjectList implements \Countable, ITraversableObject
         }
         $this->objectIDs = $this->indexToObject;
         $this->objects = $objects;
+
+        $this->createCollection();
+    }
+
+    /**
+     * @since 6.2
+     */
+    protected function createCollection(): void
+    {
+        if ($this->getObjects() === []) {
+            return;
+        }
+
+        $firstObject = reset($this->objects);
+        if (!($firstObject instanceof CollectionDatabaseObject)) {
+            return;
+        }
+
+        $collection = new ($firstObject->getCollectionClassName())($this->getObjects());
+        foreach ($this->getObjects() as $object) {
+            $object->setCollection($collection);
+        }
     }
 
     /**
