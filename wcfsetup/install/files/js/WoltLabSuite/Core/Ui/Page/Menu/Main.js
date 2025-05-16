@@ -241,6 +241,9 @@ define(["require", "exports", "tslib", "./Container", "../../../Language", "../.
                 label.href = "#";
                 if (menuItem.icon) {
                     label.append(menuItem.icon);
+                    if (!(menuItem.icon instanceof HTMLImageElement)) {
+                        menuItem.icon.size = 24;
+                    }
                     const span = document.createElement("span");
                     span.textContent = menuItem.title;
                     label.append(span);

@@ -67,6 +67,10 @@ define(["require", "exports"], function (require, exports) {
                 const menuItem = button.dataset.menuItem;
                 const title = button.querySelector(".acpPageMenuItemLabel").textContent;
                 const children = getSubMenuItems(subMenu, menuItem);
+                let icon = button.querySelector("fa-icon") ?? undefined;
+                if (icon) {
+                    icon = icon.cloneNode(true);
+                }
                 return {
                     active: false,
                     children,
@@ -74,6 +78,7 @@ define(["require", "exports"], function (require, exports) {
                     depth: 0,
                     identifier: null,
                     title,
+                    icon,
                 };
             });
             return menuItems;

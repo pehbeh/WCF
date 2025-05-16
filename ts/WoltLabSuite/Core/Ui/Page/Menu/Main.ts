@@ -300,6 +300,9 @@ export class PageMenuMain implements PageMenuProvider {
 
       if (menuItem.icon) {
         label.append(menuItem.icon);
+        if (!(menuItem.icon instanceof HTMLImageElement)) {
+          menuItem.icon.size = 24;
+        }
 
         const span = document.createElement("span");
         span.textContent = menuItem.title;
