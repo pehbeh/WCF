@@ -1484,8 +1484,8 @@ Restricting usernames to ASCII characters restricts usernames to latin letters, 
 		<item name="wcf.acp.option.register_min_user_age.description"><![CDATA[Specifying a value requires the user to provide a birthday during registration.]]></item>
 		<item name="wcf.acp.option.register_disabled"><![CDATA[Disable registration]]></item>
 		<item name="wcf.acp.option.register_disabled.description"><![CDATA[Disables registration for all users, new users can be created through an administrator.]]></item>
-		<item name="wcf.acp.option.register_enable_disclaimer"><![CDATA[Enable disclaimer]]></item>
-		<item name="wcf.acp.option.register_enable_disclaimer.description"><![CDATA[Disclaimer must be accepted during registration.]]></item>
+		<item name="wcf.acp.option.register_enable_disclaimer"><![CDATA[Enable terms and conditions]]></item>
+		<item name="wcf.acp.option.register_enable_disclaimer.description"><![CDATA[Terms and conditions must be accepted during registration.]]></item>
 		<item name="wcf.acp.option.register_activation_method"><![CDATA[Registration Approval Method]]></item>
 		<item name="wcf.acp.option.register_activation_method.byAdmin"><![CDATA[Only administrators can approve registrations]]></item>
 		<item name="wcf.acp.option.register_activation_method.byUser"><![CDATA[Registrations are approved through an email confirmation]]></item>
@@ -4971,7 +4971,7 @@ A notification will be sent once your account has been approved.]]></item>
 <p><small><em>Source: <a href="http://www.mustervorlage.net/disclaimer-muster" class="externalURL">Mustervorlage.net</a></em></small></p>]]></item>
 		<item name="wcf.user.register.error.blacklistMatches"><![CDATA[The registration could not be completed due to active restrictions, please contact the site administrator.]]></item>
 		<item name="wcf.user.register.existingUser"><![CDATA[Existing user? <a href="{link controller='Login'}{/link}">Login</a>]]></item>
-		<item name="wcf.user.register.confirmTerms"><![CDATA[I agree to the <a href="{link controller='Disclaimer'}{/link}">terms</a>.]]></item>
+		<item name="wcf.user.register.confirmTerms"><![CDATA[I agree to the <a href="{link controller='Disclaimer'}{/link}">terms and conditions</a>.]]></item>
 		<item name="wcf.user.register.honeyPot"><![CDATA[Please Ignore!]]></item>
 		<item name="wcf.user.register.honeyPot.description"><![CDATA[Caution! If you can view this, you are strongly encouraged <strong>NOT</strong> to fill in the next two input fields!]]></item>
 	</category>
