@@ -260,8 +260,6 @@ define(["require", "exports", "tslib", "./Container", "../../../Language", "../.
                         const button = label.nextElementSibling;
                         button.click();
                     });
-                    // The button to expand the link group is used instead.
-                    label.setAttribute("aria-hidden", "true");
                 }
                 listItem.append(label);
             }

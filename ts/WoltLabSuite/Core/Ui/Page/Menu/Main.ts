@@ -322,9 +322,6 @@ export class PageMenuMain implements PageMenuProvider {
           const button = label.nextElementSibling as HTMLAnchorElement;
           button.click();
         });
-
-        // The button to expand the link group is used instead.
-        label.setAttribute("aria-hidden", "true");
       }
 
       listItem.append(label);
