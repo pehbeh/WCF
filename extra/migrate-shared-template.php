@@ -114,6 +114,7 @@ $templates = [
     'sitemapEntry' => 'shared_sitemapEntry',
     'sitemapIndex' => 'shared_sitemapIndex',
     'sitemapStart' => 'shared_sitemapStart',
+    'trophyBadge' => 'shared_trophyBadge',
     'trophyImage' => 'shared_trophyImage',
     'unfurlUrl' => 'shared_unfurlUrl',
     'uploadFieldComponent' => 'shared_uploadFieldComponent',
