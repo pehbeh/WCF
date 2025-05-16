@@ -15,6 +15,7 @@ use wcf\system\payment\method\PaymentMethodHandler;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\ArrayUtil;
+use wcf\util\HtmlString;
 
 /**
  * Shows the paid subscription add form.
@@ -152,7 +153,9 @@ class PaidSubscriptionAddForm extends AbstractForm
         );
 
         if (!\count(PaymentMethodHandler::getInstance()->getPaymentMethods())) {
-            throw new NamedUserException(WCF::getLanguage()->get('wcf.acp.paidSubscription.error.noPaymentMethods'));
+            throw new NamedUserException(HtmlString::fromSafeHtml(
+                WCF::getLanguage()->get('wcf.acp.paidSubscription.error.noPaymentMethods')
+            ));
         }
 
         // get available currencies

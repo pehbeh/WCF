@@ -6,6 +6,7 @@ use wcf\page\AbstractPage;
 use wcf\system\exception\NamedUserException;
 use wcf\system\user\authentication\configuration\UserAuthenticationConfigurationFactory;
 use wcf\system\WCF;
+use wcf\util\HtmlString;
 
 /**
  * Shows the disclaimer.
@@ -34,7 +35,9 @@ final class DisclaimerPage extends AbstractPage
             !WCF::getUser()->userID
             && !UserAuthenticationConfigurationFactory::getInstance()->getConfigration()->canRegister
         ) {
-            throw new NamedUserException(WCF::getLanguage()->get('wcf.user.register.error.disabled'));
+            throw new NamedUserException(HtmlString::fromSafeHtml(
+                WCF::getLanguage()->get('wcf.user.register.error.disabled')
+            ));
         }
     }
 }

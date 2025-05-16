@@ -15,6 +15,7 @@ use wcf\system\request\LinkHandler;
 use wcf\system\user\command\CreateRegistrationNotification;
 use wcf\system\WCF;
 use wcf\util\HeaderUtil;
+use wcf\util\HtmlString;
 use wcf\util\StringUtil;
 
 /**
@@ -81,9 +82,9 @@ final class RegisterActivationForm extends AbstractFormBuilderForm
         }
 
         if ($this->user->isEmailConfirmed()) {
-            throw new NamedUserException(
+            throw new NamedUserException(HtmlString::fromSafeHtml(
                 WCF::getLanguage()->get('wcf.user.registerActivation.error.userAlreadyEnabled')
-            );
+            ));
         }
 
         if (!empty($this->user->getBlacklistMatches())) {

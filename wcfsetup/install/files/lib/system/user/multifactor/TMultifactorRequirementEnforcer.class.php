@@ -4,6 +4,7 @@ namespace wcf\system\user\multifactor;
 
 use wcf\system\exception\NamedUserException;
 use wcf\system\WCF;
+use wcf\util\HtmlString;
 
 /**
  * Provides a method enforce the multi-factor requirement.
@@ -28,8 +29,10 @@ trait TMultifactorRequirementEnforcer
             WCF::getUser()->requiresMultifactor()
             && !WCF::getUser()->multifactorActive
         ) {
-            throw new NamedUserException(WCF::getLanguage()->getDynamicVariable(
-                'wcf.user.security.requiresMultifactor'
+            throw new NamedUserException(HtmlString::fromSafeHtml(
+                WCF::getLanguage()->getDynamicVariable(
+                    'wcf.user.security.requiresMultifactor'
+                )
             ));
         }
     }

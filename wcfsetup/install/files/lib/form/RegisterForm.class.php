@@ -29,6 +29,7 @@ use wcf\system\user\command\CreateRegistrationNotification;
 use wcf\system\user\group\assignment\UserGroupAssignmentHandler;
 use wcf\system\WCF;
 use wcf\util\HeaderUtil;
+use wcf\util\HtmlString;
 use wcf\util\JSON;
 use wcf\util\StringUtil;
 use wcf\util\UserRegistrationUtil;
@@ -132,7 +133,9 @@ class RegisterForm extends UserAddForm
 
         // registration disabled
         if (!UserAuthenticationConfigurationFactory::getInstance()->getConfigration()->canRegister) {
-            throw new NamedUserException(WCF::getLanguage()->get('wcf.user.register.error.disabled'));
+            throw new NamedUserException(HtmlString::fromSafeHtml(
+                WCF::getLanguage()->get('wcf.user.register.error.disabled')
+            ));
         }
 
         if (WCF::getSession()->getVar('__3rdPartyProvider')) {
@@ -218,9 +221,9 @@ class RegisterForm extends UserAddForm
         $this->spamCheckEvent = new RegistrationSpamChecking($this->username, $this->email, UserUtil::getIpAddress());
         EventHandler::getInstance()->fire($this->spamCheckEvent);
         if ($this->spamCheckEvent->hasMatches() && \REGISTER_ANTISPAM_ACTION === 'block') {
-            throw new NamedUserException(
+            throw new NamedUserException(HtmlString::fromSafeHtml(
                 WCF::getLanguage()->getDynamicVariable('wcf.user.register.error.blacklistMatches')
-            );
+            ));
         }
 
         if (REGISTER_ENABLE_DISCLAIMER && !$this->termsConfirmed) {

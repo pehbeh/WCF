@@ -25,6 +25,7 @@ use wcf\system\user\authentication\LoginRedirect;
 use wcf\system\user\authentication\UserAuthenticationFactory;
 use wcf\system\WCF;
 use wcf\util\HeaderUtil;
+use wcf\util\HtmlString;
 use wcf\util\StringUtil;
 use wcf\util\UserUtil;
 
@@ -106,7 +107,9 @@ class LoginForm extends AbstractFormBuilderForm
         if (ENABLE_USER_AUTHENTICATION_FAILURE) {
             $failures = UserAuthenticationFailure::countIPFailures(UserUtil::getIpAddress());
             if (USER_AUTHENTICATION_FAILURE_IP_BLOCK && $failures >= USER_AUTHENTICATION_FAILURE_IP_BLOCK) {
-                throw new NamedUserException(WCF::getLanguage()->getDynamicVariable('wcf.user.login.blocked'));
+                throw new NamedUserException(HtmlString::fromSafeHtml(
+                    WCF::getLanguage()->getDynamicVariable('wcf.user.login.blocked')
+                ));
             }
             if (USER_AUTHENTICATION_FAILURE_IP_CAPTCHA && $failures >= USER_AUTHENTICATION_FAILURE_IP_CAPTCHA) {
                 $this->useCaptcha = true;

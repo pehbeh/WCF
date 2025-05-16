@@ -29,6 +29,7 @@ use wcf\system\user\authentication\oauth\Failure as OAuth2Failure;
 use wcf\system\user\authentication\oauth\Success as OAuth2Success;
 use wcf\system\user\authentication\oauth\User as OauthUser;
 use wcf\system\WCF;
+use wcf\util\HtmlString;
 use wcf\util\JSON;
 
 /**
@@ -73,11 +74,11 @@ abstract class AbstractOauth2AuthAction implements RequestHandlerInterface
         } catch (NamedUserException $e) {
             throw $e;
         } catch (StateValidationException $e) {
-            throw new NamedUserException(
+            throw new NamedUserException(HtmlString::fromSafeHtml(
                 WCF::getLanguage()->getDynamicVariable(
                     'wcf.user.3rdparty.login.error.stateValidation'
                 )
-            );
+            ));
         } catch (\Exception $e) {
             $exceptionID = \wcf\functions\exception\logThrowable($e);
 
@@ -86,14 +87,14 @@ abstract class AbstractOauth2AuthAction implements RequestHandlerInterface
                 $type = 'httpError';
             }
 
-            throw new NamedUserException(
+            throw new NamedUserException(HtmlString::fromSafeHtml(
                 WCF::getLanguage()->getDynamicVariable(
                     'wcf.user.3rdparty.login.error.' . $type,
                     [
                         'exceptionID' => $exceptionID,
                     ]
                 )
-            );
+            ));
         }
     }
 
@@ -266,7 +267,7 @@ abstract class AbstractOauth2AuthAction implements RequestHandlerInterface
                 // This account belongs to an existing user, but we are already logged in.
                 // This can't be handled.
 
-                throw new NamedUserException($this->getInUseErrorMessage());
+                throw new NamedUserException(HtmlString::fromSafeHtml($this->getInUseErrorMessage()));
             } else {
                 // This account belongs to an existing user, we are not logged in.
                 // Perform the login.
@@ -347,9 +348,9 @@ abstract class AbstractOauth2AuthAction implements RequestHandlerInterface
 
     protected function handleError(OAuth2Failure $oauth2Failure): ResponseInterface
     {
-        throw new NamedUserException(
+        throw new NamedUserException(HtmlString::fromSafeHtml(
             WCF::getLanguage()->getDynamicVariable('wcf.user.3rdparty.login.error.' . $oauth2Failure->error)
-        );
+        ));
     }
 
     /**

@@ -16,6 +16,7 @@ use wcf\system\form\builder\FormDocument;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\HeaderUtil;
+use wcf\util\HtmlString;
 use wcf\util\JSON;
 use wcf\util\StringUtil;
 use wcf\util\UserRegistrationUtil;
@@ -189,6 +190,8 @@ final class NewPasswordForm extends AbstractFormBuilderForm
 
     private function throwInvalidLinkException(): void
     {
-        throw new NamedUserException(WCF::getLanguage()->getDynamicVariable('wcf.user.newPassword.error.invalidLink'));
+        throw new NamedUserException(HtmlString::fromSafeHtml(
+            WCF::getLanguage()->getDynamicVariable('wcf.user.newPassword.error.invalidLink')
+        ));
     }
 }

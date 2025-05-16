@@ -8,6 +8,7 @@ use wcf\system\exception\UserInputException;
 use wcf\system\flood\FloodControl;
 use wcf\system\moderation\queue\ModerationQueueReportManager;
 use wcf\system\WCF;
+use wcf\util\HtmlString;
 use wcf\util\StringUtil;
 
 /**
@@ -198,7 +199,9 @@ class ModerationQueueReportAction extends ModerationQueueAction
             new \DateInterval('PT10M')
         );
         if ($requests['count'] >= self::ALLOWED_REPORTS_PER_10M) {
-            throw new NamedUserException(WCF::getLanguage()->getDynamicVariable('wcf.page.error.flood'));
+            throw new NamedUserException(HtmlString::fromSafeHtml(
+                WCF::getLanguage()->getDynamicVariable('wcf.page.error.flood')
+            ));
         }
 
         $this->validatePrepareReport();

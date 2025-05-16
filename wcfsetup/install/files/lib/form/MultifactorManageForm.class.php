@@ -21,6 +21,7 @@ use wcf\system\user\authentication\TReauthenticationCheck;
 use wcf\system\user\multifactor\IMultifactorMethod;
 use wcf\system\user\multifactor\Setup;
 use wcf\system\WCF;
+use wcf\util\HtmlString;
 
 /**
  * Represents the multi-factor setup form.
@@ -142,7 +143,9 @@ class MultifactorManageForm extends AbstractFormBuilderForm
             } catch (DatabaseException $e) {
                 WCF::getDB()->rollBackTransaction();
 
-                throw new NamedUserException('wcf.user.security.multifactor.error.setupAllocationFailed');
+                throw new NamedUserException(HtmlString::fromSafeHtml(
+                    WCF::getLanguage()->getDynamicVariable('wcf.user.security.multifactor.error.setupAllocationFailed')
+                ));
             }
         }
 

@@ -21,6 +21,7 @@ use wcf\system\request\LinkHandler;
 use wcf\system\user\authentication\configuration\UserAuthenticationConfigurationFactory;
 use wcf\system\WCF;
 use wcf\util\HeaderUtil;
+use wcf\util\HtmlString;
 use wcf\util\UserUtil;
 
 /**
@@ -119,7 +120,9 @@ final class LostPasswordForm extends AbstractFormBuilderForm
             new \DateInterval('PT24H')
         );
         if ($requests['count'] >= self::ALLOWED_RESETS_PER_24H) {
-            throw new NamedUserException(WCF::getLanguage()->getDynamicVariable('wcf.user.lostPassword.error.flood'));
+            throw new NamedUserException(HtmlString::fromSafeHtml(
+                WCF::getLanguage()->getDynamicVariable('wcf.user.lostPassword.error.flood')
+            ));
         }
 
         parent::validate();
@@ -152,10 +155,10 @@ final class LostPasswordForm extends AbstractFormBuilderForm
 
         // check whether a lost password request was sent in the last 24 hours
         if ($this->user->lastLostPasswordRequestTime && TIME_NOW - 86400 < $this->user->lastLostPasswordRequestTime) {
-            throw new NamedUserException(WCF::getLanguage()->getDynamicVariable(
+            throw new NamedUserException(HtmlString::fromSafeHtml(WCF::getLanguage()->getDynamicVariable(
                 'wcf.user.lostPassword.error.tooManyRequests',
                 ['hours' => \ceil(($this->user->lastLostPasswordRequestTime - (TIME_NOW - 86400)) / 3600)]
-            ));
+            )));
         }
 
         // generate a new lost password key

@@ -11,6 +11,7 @@ use wcf\http\error\ErrorDetail;
 use wcf\http\error\PermissionDeniedHandler;
 use wcf\http\Helper;
 use wcf\system\WCF;
+use wcf\util\HtmlString;
 
 /**
  * Checks whether the user is banned and deletes their sessions.
@@ -37,8 +38,9 @@ final class CheckUserBan implements MiddlewareInterface
             }
 
             return (new PermissionDeniedHandler())->handle(
-                ErrorDetail::fromMessage(WCF::getLanguage()->getDynamicVariable('wcf.user.error.isBanned'))
-                    ->attachToRequest($request)
+                ErrorDetail::fromMessage(
+                    HtmlString::fromSafeHtml(WCF::getLanguage()->getDynamicVariable('wcf.user.error.isBanned'))
+                )->attachToRequest($request)
             );
         }
 
