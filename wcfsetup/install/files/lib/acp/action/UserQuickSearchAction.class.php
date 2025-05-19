@@ -11,6 +11,7 @@ use wcf\system\exception\NamedUserException;
 use wcf\system\menu\acp\ACPMenu;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
+use wcf\util\HtmlString;
 
 /**
  * Provides special search options.
@@ -179,7 +180,9 @@ final class UserQuickSearchAction extends AbstractAction
         }
 
         if (empty($this->matches)) {
-            throw new NamedUserException(WCF::getLanguage()->get('wcf.acp.user.search.error.noMatches'));
+            throw new NamedUserException(
+                HtmlString::fromSafeHtml(WCF::getLanguage()->get('wcf.acp.user.search.error.noMatches'))
+            );
         }
 
         // store search result in database

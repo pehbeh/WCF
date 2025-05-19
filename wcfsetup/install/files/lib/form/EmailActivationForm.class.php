@@ -13,6 +13,7 @@ use wcf\system\form\builder\field\validation\FormFieldValidator;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\HeaderUtil;
+use wcf\util\HtmlString;
 use wcf\util\StringUtil;
 
 /**
@@ -76,16 +77,16 @@ final class EmailActivationForm extends AbstractFormBuilderForm
         }
 
         if ($this->user->reactivationCode == 0) {
-            throw new NamedUserException(
+            throw new NamedUserException(HtmlString::fromSafeHtml(
                 WCF::getLanguage()->get('wcf.user.registerActivation.error.userAlreadyEnabled')
-            );
+            ));
         }
 
         // Check whether the new email isn't unique anymore.
         if (User::getUserByEmail($this->user->newEmail)->userID) {
-            throw new NamedUserException(
+            throw new NamedUserException(HtmlString::fromSafeHtml(
                 WCF::getLanguage()->get('wcf.user.email.error.notUnique')
-            );
+            ));
         }
     }
 

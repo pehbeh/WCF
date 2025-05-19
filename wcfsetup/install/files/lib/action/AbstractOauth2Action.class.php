@@ -16,6 +16,7 @@ use wcf\system\io\HttpFactory;
 use wcf\system\user\authentication\oauth\exception\StateValidationException;
 use wcf\system\user\authentication\oauth\User as OauthUser;
 use wcf\system\WCF;
+use wcf\util\HtmlString;
 use wcf\util\JSON;
 
 /**
@@ -199,7 +200,9 @@ abstract class AbstractOauth2Action extends AbstractAction
 
     protected function handleError(string $error): ResponseInterface
     {
-        throw new NamedUserException(WCF::getLanguage()->getDynamicVariable('wcf.user.3rdparty.login.error.' . $error));
+        throw new NamedUserException(HtmlString::fromSafeHtml(
+            WCF::getLanguage()->getDynamicVariable('wcf.user.3rdparty.login.error.' . $error)
+        ));
     }
 
     /**
@@ -263,8 +266,10 @@ abstract class AbstractOauth2Action extends AbstractAction
         } catch (NamedUserException | PermissionDeniedException $e) {
             throw $e;
         } catch (StateValidationException $e) {
-            throw new NamedUserException(WCF::getLanguage()->getDynamicVariable(
-                'wcf.user.3rdparty.login.error.stateValidation'
+            throw new NamedUserException(HtmlString::fromSafeHtml(
+                WCF::getLanguage()->getDynamicVariable(
+                    'wcf.user.3rdparty.login.error.stateValidation'
+                )
             ));
         } catch (\Exception $e) {
             $exceptionID = \wcf\functions\exception\logThrowable($e);
@@ -274,11 +279,13 @@ abstract class AbstractOauth2Action extends AbstractAction
                 $type = 'httpError';
             }
 
-            throw new NamedUserException(WCF::getLanguage()->getDynamicVariable(
-                'wcf.user.3rdparty.login.error.' . $type,
-                [
-                    'exceptionID' => $exceptionID,
-                ]
+            throw new NamedUserException(HtmlString::fromSafeHtml(
+                WCF::getLanguage()->getDynamicVariable(
+                    'wcf.user.3rdparty.login.error.' . $type,
+                    [
+                        'exceptionID' => $exceptionID,
+                    ]
+                )
             ));
         }
     }

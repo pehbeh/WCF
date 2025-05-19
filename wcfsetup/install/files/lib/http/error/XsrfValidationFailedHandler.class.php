@@ -12,6 +12,7 @@ use wcf\system\box\BoxHandler;
 use wcf\system\request\RequestHandler;
 use wcf\system\session\SessionHandler;
 use wcf\system\WCF;
+use wcf\util\HtmlString;
 
 /**
  * Returns a "XSRF validation failed" response.
@@ -28,7 +29,9 @@ final class XsrfValidationFailedHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $errorDetail = ErrorDetail::fromRequest($request);
-        $message = WCF::getLanguage()->getDynamicVariable('wcf.ajax.error.sessionExpired');
+        $message = HtmlString::fromSafeHtml(
+            WCF::getLanguage()->getDynamicVariable('wcf.ajax.error.sessionExpired')
+        );
 
         if (!RequestHandler::getInstance()->isACPRequest()) {
             BoxHandler::disablePageLayout();

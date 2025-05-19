@@ -23,6 +23,7 @@ use wcf\system\WCF;
 use wcf\system\WCFACP;
 use wcf\util\FileUtil;
 use wcf\util\HeaderUtil;
+use wcf\util\HtmlString;
 use wcf\util\StringUtil;
 use wcf\util\UserUtil;
 
@@ -104,7 +105,9 @@ final class RescueModeForm extends AbstractForm
         if (ENABLE_USER_AUTHENTICATION_FAILURE) {
             $failures = UserAuthenticationFailure::countIPFailures(UserUtil::getIpAddress());
             if (USER_AUTHENTICATION_FAILURE_IP_BLOCK && $failures >= USER_AUTHENTICATION_FAILURE_IP_BLOCK) {
-                throw new NamedUserException(WCF::getLanguage()->getDynamicVariable('wcf.user.login.blocked'));
+                throw new NamedUserException(HtmlString::fromSafeHtml(
+                    WCF::getLanguage()->getDynamicVariable('wcf.user.login.blocked')
+                ));
             }
         }
 
@@ -132,7 +135,9 @@ final class RescueModeForm extends AbstractForm
         )['count'] >= self::ALLOWED_ATTEMPTS_PER_1D_GLOBAL;
 
         if ($floodExceeded) {
-            throw new NamedUserException(WCF::getLanguage()->getDynamicVariable('wcf.page.error.flood'));
+            throw new NamedUserException(HtmlString::fromSafeHtml(
+                WCF::getLanguage()->getDynamicVariable('wcf.page.error.flood')
+            ));
         }
 
         // read applications

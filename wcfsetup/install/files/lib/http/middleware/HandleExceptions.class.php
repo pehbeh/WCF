@@ -47,7 +47,13 @@ final class HandleExceptions implements MiddlewareInterface
                 throw new \LogicException('Unreachable');
             }
 
-            return $handler->handle(ErrorDetail::fromThrowable($e)->attachToRequest($request));
+            if ($e instanceof NamedUserException) {
+                $detail = ErrorDetail::fromMessageWithThrowable($e->getHtmlString() ?: $e->getMessage(), $e);
+            } else {
+                $detail = ErrorDetail::fromThrowable($e);
+            }
+
+            return $handler->handle($detail->attachToRequest($request));
         }
     }
 }

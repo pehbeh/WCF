@@ -18,6 +18,7 @@ use wcf\system\package\license\LicenseData;
 use wcf\system\package\PackageUpdateDispatcher;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
+use wcf\util\HtmlString;
 
 /**
  * Lists the licensed products and offers to install them.
@@ -98,11 +99,13 @@ final class LicensePage extends AbstractPage
                 throw $e;
             }
 
-            throw new NamedUserException(WCF::getLanguage()->getDynamicVariable(
-                'wcf.acp.license.error.parsingFailed',
-                [
-                    'licenseData' => $licenseApi->readFromFile(),
-                ]
+            throw new NamedUserException(HtmlString::fromSafeHtml(
+                WCF::getLanguage()->getDynamicVariable(
+                    'wcf.acp.license.error.parsingFailed',
+                    [
+                        'licenseData' => $licenseApi->readFromFile(),
+                    ]
+                )
             ));
         }
 
@@ -431,7 +434,7 @@ final class LicensePage extends AbstractPage
         $statement->execute($conditions->getParameters());
         $packageVersions = $statement->fetchMap('packageUpdateVersionID', 'packageVersion');
 
-        return \array_map(fn ($id) => $packageVersions[$id], $availablePackages);
+        return \array_map(fn($id) => $packageVersions[$id], $availablePackages);
     }
 
     /**

@@ -15,6 +15,7 @@ use wcf\system\user\multifactor\IMultifactorMethod;
 use wcf\system\user\multifactor\Setup;
 use wcf\system\WCF;
 use wcf\util\HeaderUtil;
+use wcf\util\HtmlString;
 
 /**
  * Represents the multi-factor authentication form.
@@ -73,20 +74,20 @@ class MultifactorAuthenticationForm extends AbstractFormBuilderForm
 
         $this->user = WCF::getSession()->getPendingUserChange();
         if (!$this->user) {
-            throw new NamedUserException(WCF::getLanguage()->getDynamicVariable(
+            throw new NamedUserException(HtmlString::fromSafeHtml(WCF::getLanguage()->getDynamicVariable(
                 'wcf.user.security.multifactor.authentication.noPendingUserChange'
-            ));
+            )));
         }
 
         $this->setups = Setup::getAllForUser($this->user);
 
         if (empty($this->setups)) {
-            throw new NamedUserException(WCF::getLanguage()->getDynamicVariable(
+            throw new NamedUserException(HtmlString::fromSafeHtml(WCF::getLanguage()->getDynamicVariable(
                 'wcf.user.security.multifactor.authentication.noSetup',
                 [
                     'user' => $this->user,
                 ]
-            ));
+            )));
         }
 
         \uasort($this->setups, static function (Setup $a, Setup $b) {

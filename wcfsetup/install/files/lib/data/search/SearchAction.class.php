@@ -11,6 +11,7 @@ use wcf\system\search\SearchHandler;
 use wcf\system\search\SearchResultHandler;
 use wcf\system\search\SearchResultTextParser;
 use wcf\system\WCF;
+use wcf\util\HtmlString;
 
 /**
  * Executes search-related actions.
@@ -84,7 +85,9 @@ class SearchAction extends AbstractDatabaseObjectAction
             $requestsPer24h['count'] >= self::ALLOWED_REQUESTS_PER_24H
             || $requestsPer60s['count'] >= self::ALLOWED_REQUESTS_PER_60S
         ) {
-            throw new NamedUserException(WCF::getLanguage()->getDynamicVariable('wcf.page.error.flood'));
+            throw new NamedUserException(HtmlString::fromSafeHtml(
+                WCF::getLanguage()->getDynamicVariable('wcf.page.error.flood')
+            ));
         }
     }
 

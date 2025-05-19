@@ -21,6 +21,7 @@ use wcf\system\form\builder\field\TextFormField;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\HeaderUtil;
+use wcf\util\HtmlString;
 use wcf\util\UserUtil;
 
 /**
@@ -77,7 +78,9 @@ class ContactForm extends AbstractFormBuilderForm
             new \DateInterval('PT10M')
         );
         if ($requests['count'] >= self::ALLOWED_MAILS_PER_10M) {
-            throw new NamedUserException(WCF::getLanguage()->getDynamicVariable('wcf.page.error.flood'));
+            throw new NamedUserException(HtmlString::fromSafeHtml(
+                WCF::getLanguage()->getDynamicVariable('wcf.page.error.flood')
+            ));
         }
 
         parent::validate();

@@ -3,6 +3,7 @@
 namespace wcf\http\error;
 
 use Psr\Http\Message\ServerRequestInterface;
+use wcf\util\HtmlString;
 
 /**
  * Stores additional metadata for response generation for erroneous requests.
@@ -17,12 +18,11 @@ final class ErrorDetail
     private const ATTRIBUTE = self::class;
 
     private function __construct(
-        private ?string $message = null,
+        private HtmlString|string|null $message = null,
         private ?\Throwable $throwable = null,
-    ) {
-    }
+    ) {}
 
-    public function getMessage(): ?string
+    public function getMessage(): HtmlString|string|null
     {
         return $this->message;
     }
@@ -44,7 +44,7 @@ final class ErrorDetail
     /**
      * Creates a new ErrorDetail object with the given message.
      */
-    public static function fromMessage(string $message): self
+    public static function fromMessage(HtmlString|string $message): self
     {
         return self::fromMessageWithThrowable(
             $message,
@@ -56,7 +56,7 @@ final class ErrorDetail
      * Creates a new ErrorDetail object with the given message and the
      * Throwable as context.
      */
-    public static function fromMessageWithThrowable(string $message, \Throwable $e): self
+    public static function fromMessageWithThrowable(HtmlString|string $message, \Throwable $e): self
     {
         return new self(
             $message,

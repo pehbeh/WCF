@@ -16,6 +16,7 @@ use wcf\system\request\LinkHandler;
 use wcf\system\search\SearchEngine;
 use wcf\system\WCF;
 use wcf\util\HeaderUtil;
+use wcf\util\HtmlString;
 use wcf\util\StringUtil;
 
 /**
@@ -344,11 +345,15 @@ class SearchForm extends AbstractCaptchaForm
         @\header('HTTP/1.1 404 Not Found');
 
         if (empty($this->query)) {
-            throw new NamedUserException(WCF::getLanguage()->get('wcf.search.error.user.noMatches'));
+            throw new NamedUserException(HtmlString::fromSafeHtml(
+                WCF::getLanguage()->get('wcf.search.error.user.noMatches')
+            ));
         } else {
-            throw new NamedUserException(WCF::getLanguage()->getDynamicVariable(
-                'wcf.search.error.noMatches',
-                ['query' => $this->query]
+            throw new NamedUserException(HtmlString::fromSafeHtml(
+                WCF::getLanguage()->getDynamicVariable(
+                    'wcf.search.error.noMatches',
+                    ['query' => $this->query]
+                )
             ));
         }
     }

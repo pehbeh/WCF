@@ -18,6 +18,7 @@ use wcf\system\package\PackageUpdateDispatcher;
 use wcf\system\package\PackageUpdateUnauthorizedException;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
+use wcf\util\HtmlString;
 
 /**
  * Executes package update-related actions.
@@ -598,7 +599,9 @@ class PackageUpdateAction extends AbstractDatabaseObjectAction
         $this->readBoolean('ignoreCache', true);
 
         if (ENABLE_BENCHMARK) {
-            throw new NamedUserException(WCF::getLanguage()->getDynamicVariable('wcf.acp.package.searchForUpdates.benchmark'));
+            throw new NamedUserException(HtmlString::fromSafeHtml(
+                WCF::getLanguage()->getDynamicVariable('wcf.acp.package.searchForUpdates.benchmark')
+            ));
         }
     }
 
@@ -728,7 +731,9 @@ class PackageUpdateAction extends AbstractDatabaseObjectAction
         $this->readBoolean('ignoreCache', true);
 
         if (ENABLE_BENCHMARK) {
-            throw new NamedUserException(WCF::getLanguage()->getDynamicVariable('wcf.acp.package.searchForUpdates.benchmark'));
+            throw new NamedUserException(HtmlString::fromSafeHtml(
+                WCF::getLanguage()->getDynamicVariable('wcf.acp.package.searchForUpdates.benchmark')
+            ));
         }
     }
 

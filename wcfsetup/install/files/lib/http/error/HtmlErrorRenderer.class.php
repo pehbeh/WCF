@@ -5,6 +5,7 @@ namespace wcf\http\error;
 use Psr\Http\Message\StreamInterface;
 use wcf\system\WCF;
 use wcf\util\HeaderUtil;
+use wcf\util\HtmlString;
 use wcf\util\StringUtil;
 
 /**
@@ -19,13 +20,13 @@ final class HtmlErrorRenderer
 {
     public function render(
         string $title,
-        string $message,
+        HtmlString|string $message,
         ?\Throwable $exception = null,
         bool $showLogin = false
     ): StreamInterface {
         return $this->renderHtmlMessage(
             $title,
-            StringUtil::encodeHTML($message),
+            $message instanceof HtmlString ? $message->__toString() : StringUtil::encodeHTML($message),
             $exception,
             $showLogin
         );

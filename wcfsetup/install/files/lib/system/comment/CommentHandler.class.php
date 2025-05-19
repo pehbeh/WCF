@@ -23,6 +23,7 @@ use wcf\system\SingletonFactory;
 use wcf\system\user\activity\event\UserActivityEventHandler;
 use wcf\system\user\notification\UserNotificationHandler;
 use wcf\system\WCF;
+use wcf\util\HtmlString;
 
 /**
  * Provides methods for comment object handling.
@@ -234,10 +235,10 @@ class CommentHandler extends SingletonFactory
 
         $lastTime = FloodControl::getInstance()->getLastTime('com.woltlab.wcf.comment');
         if ($lastTime !== null && $lastTime > TIME_NOW - $floodControlTime) {
-            throw new NamedUserException(WCF::getLanguage()->getDynamicVariable(
+            throw new NamedUserException(HtmlString::fromSafeHtml(WCF::getLanguage()->getDynamicVariable(
                 'wcf.comment.error.floodControl',
                 ['lastCommentTime' => $lastTime]
-            ));
+            )));
         }
     }
 
