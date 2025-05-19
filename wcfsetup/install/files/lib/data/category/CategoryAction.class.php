@@ -5,16 +5,13 @@ namespace wcf\data\category;
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\data\ISortableAction;
 use wcf\data\IToggleAction;
-use wcf\data\IToggleContainerAction;
 use wcf\data\language\item\LanguageItemAction;
 use wcf\data\TDatabaseObjectToggle;
 use wcf\system\acl\ACLHandler;
 use wcf\system\category\CategoryHandler;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\exception\PermissionDeniedException;
-use wcf\system\exception\SystemException;
 use wcf\system\exception\UserInputException;
-use wcf\system\user\collapsible\content\UserCollapsibleContentHandler;
 use wcf\system\WCF;
 
 /**
@@ -28,8 +25,7 @@ use wcf\system\WCF;
  */
 class CategoryAction extends AbstractDatabaseObjectAction implements
     ISortableAction,
-    IToggleAction,
-    IToggleContainerAction
+    IToggleAction
 {
     use TDatabaseObjectToggle;
 
@@ -103,27 +99,6 @@ class CategoryAction extends AbstractDatabaseObjectAction implements
         }
 
         return $returnValue;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function toggleContainer()
-    {
-        $collapsibleObjectTypeName = $this->getObjects()[0]->getProcessor()->getObjectTypeName('com.woltlab.wcf.collapsibleContent');
-        if ($collapsibleObjectTypeName === null) {
-            throw new SystemException("Categories of this type don't support collapsing");
-        }
-
-        $objectTypeID = UserCollapsibleContentHandler::getInstance()->getObjectTypeID($collapsibleObjectTypeName);
-        $collapsedCategories = UserCollapsibleContentHandler::getInstance()->getCollapsedContent($objectTypeID);
-
-        $categoryID = $this->objects[0]->categoryID;
-        if (\array_search($categoryID, $collapsedCategories) !== false) {
-            UserCollapsibleContentHandler::getInstance()->markAsOpened($objectTypeID, (string)$categoryID);
-        } else {
-            UserCollapsibleContentHandler::getInstance()->markAsCollapsed($objectTypeID, (string)$categoryID);
-        }
     }
 
     /**
@@ -239,14 +214,6 @@ class CategoryAction extends AbstractDatabaseObjectAction implements
                 throw new PermissionDeniedException();
             }
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function validateToggleContainer()
-    {
-        $this->validateUpdate();
     }
 
     /**
