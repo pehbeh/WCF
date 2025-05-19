@@ -1,21 +1,13 @@
 {include file='header'}
 
-{if $categoryNodeList->hasChildren()}
+{if $categoryNodeList->hasChildren() && $objectType->getProcessor()->canEditCategory()}
 	<script data-relocate="true">
-		$(function() {
-			{if $collapsibleObjectTypeID}
-				new WCF.ACP.Category.Collapsible('wcf\\data\\category\\CategoryAction', {@$collapsibleObjectTypeID});
-			{/if}
-			
-			{if $objectType->getProcessor()->canEditCategory()}
-				require(['WoltLabSuite/Core/Ui/Sortable/List'], function (UiSortableList) {
-					new UiSortableList({
-						containerId: 'categoryList',
-						className: 'wcf\\data\\category\\CategoryAction',
-						maxNestingLevel: {if $objectType->getProcessor()->getMaximumNestingLevel() == -1}undefined{else}{$objectType->getProcessor()->getMaximumNestingLevel()}{/if},
-					});
-				});
-			{/if}
+		require(['WoltLabSuite/Core/Ui/Sortable/List'], function (UiSortableList) {
+			new UiSortableList({
+				containerId: 'categoryList',
+				className: 'wcf\\data\\category\\CategoryAction',
+				maxNestingLevel: {if $objectType->getProcessor()->getMaximumNestingLevel() == -1}undefined{else}{$objectType->getProcessor()->getMaximumNestingLevel()}{/if},
+			});
 		});
 	</script>
 {/if}
@@ -48,7 +40,7 @@
 				{foreach from=$categoryNodeList item='category'}
 					{section name=i loop=$oldDepth-$categoryNodeList->getDepth()}</ol></li>{/section}
 					
-					<li class="{if $objectType->getProcessor()->canEditCategory()}sortableNode {if $categoryNodeList->getDepth() == $objectType->getProcessor()->getMaximumNestingLevel()}sortableNoNesting {/if}{/if}jsCategory jsObjectActionObject" data-object-id="{@$category->getObjectID()}"{if $collapsedCategoryIDs|is_array} data-is-open="{if $collapsedCategoryIDs[$category->categoryID]|isset}0{else}1{/if}"{/if}>
+					<li class="{if $objectType->getProcessor()->canEditCategory()}sortableNode {if $categoryNodeList->getDepth() == $objectType->getProcessor()->getMaximumNestingLevel()}sortableNoNesting {/if}{/if}jsCategory jsObjectActionObject" data-object-id="{@$category->getObjectID()}">
 						<span class="sortableNodeLabel">
 							<span class="title">
 								{event name='beforeTitle'}

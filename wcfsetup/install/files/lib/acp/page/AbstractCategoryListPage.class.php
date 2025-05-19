@@ -8,7 +8,6 @@ use wcf\page\AbstractPage;
 use wcf\system\category\CategoryHandler;
 use wcf\system\exception\InvalidObjectTypeException;
 use wcf\system\exception\PermissionDeniedException;
-use wcf\system\user\collapsible\content\UserCollapsibleContentHandler;
 use wcf\system\WCF;
 
 /**
@@ -32,18 +31,6 @@ abstract class AbstractCategoryListPage extends AbstractPage
      * @var CategoryNodeTree
      */
     public $categoryNodeTree;
-
-    /**
-     * ids of collapsed categories
-     * @var int[]
-     */
-    public $collapsedCategoryIDs;
-
-    /**
-     * id of the collapsible category object type
-     * @var int
-     */
-    public $collapsibleObjectTypeID = 0;
 
     /**
      * name of the controller used to edit categories
@@ -103,8 +90,6 @@ abstract class AbstractCategoryListPage extends AbstractPage
         WCF::getTPL()->assign([
             'addController' => $this->addController,
             'categoryNodeList' => $this->categoryNodeTree->getIterator(),
-            'collapsedCategoryIDs' => $this->collapsedCategoryIDs,
-            'collapsibleObjectTypeID' => $this->collapsibleObjectTypeID,
             'editController' => $this->editController,
             'objectType' => $this->objectType,
         ]);
@@ -150,23 +135,6 @@ abstract class AbstractCategoryListPage extends AbstractPage
         $this->checkCategoryPermissions();
 
         $this->readCategories();
-
-        // note that the implementation of wcf\system\category\ICategoryType
-        // needs to support a object type of the pseudo definition
-        // 'com.woltlab.wcf.collapsibleContent.acp' which has to be registered
-        // during package installation as a 'com.woltlab.wcf.collapsibleContent'
-        // object type if you want to support collapsible categories in the
-        // acp; the pseudo object type is used to distinguish between
-        // collapsible categories in the frontend and the acp
-        $collapsibleObjectTypeName = $this->objectType->getProcessor()->getObjectTypeName('com.woltlab.wcf.collapsibleContent.acp');
-        if ($collapsibleObjectTypeName) {
-            $this->collapsibleObjectTypeID = UserCollapsibleContentHandler::getInstance()->getObjectTypeID($collapsibleObjectTypeName);
-            // get ids of collapsed category
-            if ($this->collapsibleObjectTypeID !== null) {
-                $this->collapsedCategoryIDs = UserCollapsibleContentHandler::getInstance()->getCollapsedContent($this->collapsibleObjectTypeID);
-                $this->collapsedCategoryIDs = \array_flip($this->collapsedCategoryIDs);
-            }
-        }
 
         parent::readData();
     }
