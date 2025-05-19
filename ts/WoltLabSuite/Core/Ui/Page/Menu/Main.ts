@@ -300,6 +300,9 @@ export class PageMenuMain implements PageMenuProvider {
 
       if (menuItem.icon) {
         label.append(menuItem.icon);
+        if (!(menuItem.icon instanceof HTMLImageElement)) {
+          menuItem.icon.size = 24;
+        }
 
         const span = document.createElement("span");
         span.textContent = menuItem.title;
@@ -319,9 +322,6 @@ export class PageMenuMain implements PageMenuProvider {
           const button = label.nextElementSibling as HTMLAnchorElement;
           button.click();
         });
-
-        // The button to expand the link group is used instead.
-        label.setAttribute("aria-hidden", "true");
       }
 
       listItem.append(label);

@@ -71,10 +71,14 @@ export class AcpUiPageMenuMainBackend implements PageMenuMainProvider {
     const subMenu = document.getElementById("acpPageSubMenu")!;
 
     const menuItems: MenuItem[] = Array.from(menu.querySelectorAll(".acpPageMenuLink")).map(
-      (link: HTMLAnchorElement) => {
-        const menuItem = link.dataset.menuItem!;
-        const title = link.querySelector(".acpPageMenuItemLabel")!.textContent!;
+      (button: HTMLButtonElement) => {
+        const menuItem = button.dataset.menuItem!;
+        const title = button.querySelector(".acpPageMenuItemLabel")!.textContent!;
         const children = getSubMenuItems(subMenu, menuItem);
+        let icon = button.querySelector("fa-icon") ?? undefined;
+        if (icon) {
+          icon = icon.cloneNode(true) as FaIcon;
+        }
 
         return {
           active: false,
@@ -83,6 +87,7 @@ export class AcpUiPageMenuMainBackend implements PageMenuMainProvider {
           depth: 0,
           identifier: null,
           title,
+          icon,
         };
       },
     );

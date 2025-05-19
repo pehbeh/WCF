@@ -63,10 +63,14 @@ define(["require", "exports"], function (require, exports) {
         getMenuItems(_container) {
             const menu = document.getElementById("acpPageMenu");
             const subMenu = document.getElementById("acpPageSubMenu");
-            const menuItems = Array.from(menu.querySelectorAll(".acpPageMenuLink")).map((link) => {
-                const menuItem = link.dataset.menuItem;
-                const title = link.querySelector(".acpPageMenuItemLabel").textContent;
+            const menuItems = Array.from(menu.querySelectorAll(".acpPageMenuLink")).map((button) => {
+                const menuItem = button.dataset.menuItem;
+                const title = button.querySelector(".acpPageMenuItemLabel").textContent;
                 const children = getSubMenuItems(subMenu, menuItem);
+                let icon = button.querySelector("fa-icon") ?? undefined;
+                if (icon) {
+                    icon = icon.cloneNode(true);
+                }
                 return {
                     active: false,
                     children,
@@ -74,6 +78,7 @@ define(["require", "exports"], function (require, exports) {
                     depth: 0,
                     identifier: null,
                     title,
+                    icon,
                 };
             });
             return menuItems;
