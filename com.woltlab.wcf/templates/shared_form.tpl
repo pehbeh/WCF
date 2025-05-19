@@ -82,3 +82,11 @@
 		FormBuilderFieldDependencyManager.checkDependencies();
 	});
 </script>
+
+{if !$form->isAjax()}
+	<script data-relocate="true">
+		require(['WoltLabSuite/Core/Form/Builder/FormGuard'], ({ setup }) => {
+			setup(document.getElementById('{unsafe:$form->getId()|encodeJS}'));
+		});
+	</script>
+{/if}
