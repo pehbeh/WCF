@@ -3,26 +3,25 @@
 namespace wcf\data\contact\recipient;
 
 use wcf\data\AbstractDatabaseObjectAction;
-use wcf\data\ISortableAction;
 use wcf\data\IToggleAction;
 use wcf\data\TDatabaseObjectToggle;
+use wcf\data\TI18nDatabaseObjectAction;
 use wcf\system\exception\PermissionDeniedException;
-use wcf\system\exception\UserInputException;
-use wcf\system\WCF;
 
 /**
  * Executes contact recipient related actions.
  *
- * @author  Alexander Ebert
- * @copyright   2001-2019 WoltLab GmbH
+ * @author  Olaf Braun, Alexander Ebert
+ * @copyright   2001-2025 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   3.1
  *
  * @extends AbstractDatabaseObjectAction<ContactRecipient, ContactRecipientEditor>
  */
-class ContactRecipientAction extends AbstractDatabaseObjectAction implements ISortableAction, IToggleAction
+class ContactRecipientAction extends AbstractDatabaseObjectAction implements IToggleAction
 {
     use TDatabaseObjectToggle;
+    use TI18nDatabaseObjectAction;
 
     /**
      * @inheritDoc
@@ -71,44 +70,62 @@ class ContactRecipientAction extends AbstractDatabaseObjectAction implements ISo
         parent::validateUpdate();
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function validateUpdatePosition()
+    #[\Override]
+    public function create()
     {
-        WCF::getSession()->checkPermissions($this->permissionsUpdate);
-
-        if (!isset($this->parameters['data']['structure']) || !\is_array($this->parameters['data']['structure'])) {
-            throw new UserInputException('structure');
+        // Database columns do not have default values
+        if (!isset($this->parameters['data']['name'])) {
+            $this->parameters['data']['name'] = '';
+        }
+        if (!isset($this->parameters['data']['email'])) {
+            $this->parameters['data']['email'] = '';
         }
 
-        $recipientList = new ContactRecipientList();
-        $recipientList->setObjectIDs($this->parameters['data']['structure'][0]);
-        if ($recipientList->countObjects() != \count($this->parameters['data']['structure'][0])) {
-            throw new UserInputException('structure');
-        }
+        $contactRecipient = parent::create();
 
-        $this->readInteger('offset', true, 'data');
+        $this->saveI18nValue($contactRecipient);
+
+        return $contactRecipient;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function updatePosition()
+    #[\Override]
+    public function delete()
     {
-        $sql = "UPDATE  wcf1_contact_recipient
-                SET     showOrder = ?
-                WHERE   recipientID = ?";
-        $statement = WCF::getDB()->prepare($sql);
+        $count = parent::delete();
 
-        $showOrder = $this->parameters['data']['offset'];
-        WCF::getDB()->beginTransaction();
-        foreach ($this->parameters['data']['structure'][0] as $recipientID) {
-            $statement->execute([
-                $showOrder++,
-                $recipientID,
-            ]);
+        $this->deleteI18nValues();
+
+        return $count;
+    }
+
+    #[\Override]
+    public function update()
+    {
+        parent::update();
+
+        foreach ($this->getObjects() as $contactRecipient) {
+            $this->saveI18nValue($contactRecipient->getDecoratedObject());
         }
-        WCF::getDB()->commitTransaction();
+    }
+
+    #[\Override]
+    public function getI18nSaveTypes(): array
+    {
+        return [
+            'name' => 'wcf.contact.recipient.name\d+',
+            'email' => 'wcf.contact.recipient.email\d+',
+        ];
+    }
+
+    #[\Override]
+    public function getLanguageCategory(): string
+    {
+        return 'wcf.contact';
+    }
+
+    #[\Override]
+    public function getPackageID(): int
+    {
+        return 1;
     }
 }
