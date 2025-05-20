@@ -4,22 +4,23 @@ namespace wcf\acp\form;
 
 use wcf\data\contact\recipient\ContactRecipient;
 use wcf\data\contact\recipient\ContactRecipientAction;
-use wcf\data\contact\recipient\ContactRecipientEditor;
-use wcf\form\AbstractForm;
-use wcf\system\email\Mailbox;
-use wcf\system\exception\UserInputException;
-use wcf\system\language\I18nHandler;
-use wcf\system\request\LinkHandler;
-use wcf\system\WCF;
+use wcf\data\contact\recipient\ContactRecipientList;
+use wcf\form\AbstractFormBuilderForm;
+use wcf\system\form\builder\field\BooleanFormField;
+use wcf\system\form\builder\field\EmailFormField;
+use wcf\system\form\builder\field\ShowOrderFormField;
+use wcf\system\form\builder\field\TextFormField;
 
 /**
  * Shows the form to create a new contact form recipient.
  *
- * @author  Alexander Ebert
- * @copyright   2001-2019 WoltLab GmbH
+ * @author  Olaf Braun, Alexander Ebert
+ * @copyright   2001-2025 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ *
+ * @extends AbstractFormBuilderForm<ContactRecipient>
  */
-class ContactRecipientAddForm extends AbstractForm
+class ContactRecipientAddForm extends AbstractFormBuilderForm
 {
     /**
      * @inheritDoc
@@ -37,165 +38,55 @@ class ContactRecipientAddForm extends AbstractForm
     public $neededPermissions = ['admin.contact.canManageContactForm'];
 
     /**
-     * email address
-     * @var string
+     * @inheritDoc
      */
-    public $email = '';
-
-    /**
-     * display name
-     * @var string
-     */
-    public $name = '';
-
-    /**
-     * 1 if the recipient is disabled
-     * @var int
-     */
-    public $isDisabled = 0;
-
-    /**
-     * order used to the show the recipients
-     * @var int
-     */
-    public $showOrder = 0;
+    public $objectActionClass = ContactRecipientAction::class;
 
     /**
      * @inheritDoc
      */
-    public function readParameters()
+    public $objectEditLinkController = ContactRecipientEditForm::class;
+
+    #[\Override]
+    protected function createForm()
     {
-        parent::readParameters();
+        parent::createForm();
 
-        I18nHandler::getInstance()->register('email');
-        I18nHandler::getInstance()->register('name');
-    }
+        $isAdministratorRecipient = $this->formAction === 'edit' && $this->formObject->isAdministrator;
 
-    /**
-     * @inheritDoc
-     */
-    public function readFormParameters()
-    {
-        parent::readFormParameters();
+        $emailFormField = EmailFormField::create('email')
+            ->label('wcf.user.email')
+            ->immutable($isAdministratorRecipient)
+            ->required();
 
-        I18nHandler::getInstance()->readValues();
-
-        if (I18nHandler::getInstance()->isPlainValue('email')) {
-            $this->email = I18nHandler::getInstance()->getValue('email');
-        }
-        if (I18nHandler::getInstance()->isPlainValue('name')) {
-            $this->name = I18nHandler::getInstance()->getValue('name');
+        if (!$isAdministratorRecipient) {
+            $emailFormField->i18n()
+                ->languageItemPattern('wcf.contact.recipient.email\d+');
         }
 
-        if (isset($_POST['isDisabled'])) {
-            $this->isDisabled = \intval($_POST['isDisabled']);
-        }
-        if (isset($_POST['showOrder'])) {
-            $this->showOrder = \intval($_POST['showOrder']);
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function validate()
-    {
-        parent::validate();
-
-        if (!I18nHandler::getInstance()->validateValue('email')) {
-            if (I18nHandler::getInstance()->isPlainValue('email')) {
-                throw new UserInputException('email');
-            } else {
-                throw new UserInputException('email', 'multilingual');
-            }
-        } else {
-            foreach (I18nHandler::getInstance()->getValues('email') as $email) {
-                try {
-                    new Mailbox($email);
-                } catch (\DomainException $e) {
-                    throw new UserInputException('email', 'invalid');
-                }
-            }
-        }
-
-        if (!I18nHandler::getInstance()->validateValue('name')) {
-            if (I18nHandler::getInstance()->isPlainValue('name')) {
-                throw new UserInputException('name');
-            } else {
-                throw new UserInputException('name', 'multilingual');
-            }
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function save()
-    {
-        parent::save();
-
-        $this->objectAction = new ContactRecipientAction([], 'create', [
-            'data' => \array_merge($this->additionalFields, [
-                'name' => $this->name,
-                'email' => $this->email,
-                'isDisabled' => ($this->isDisabled ? 1 : 0),
-                'showOrder' => $this->showOrder,
-            ]),
+        $this->form->appendChildren([
+            TextFormField::create('name')
+                ->label('wcf.acp.contact.recipient.name')
+                ->i18n()
+                ->languageItemPattern('wcf.contact.recipient.name\d+')
+                ->required(),
+            $emailFormField,
+            ShowOrderFormField::create()
+                ->options($this->getContactRecipient()),
+            BooleanFormField::create('isDisabled')
+                ->label('wcf.acp.contact.recipient.isDisabled'),
         ]);
-        /** @var ContactRecipient $recipient */
-        $recipient = $this->objectAction->executeAction()['returnValues'];
-        $recipientID = $recipient->recipientID;
-        $data = [];
-
-        if (!I18nHandler::getInstance()->isPlainValue('email')) {
-            I18nHandler::getInstance()->save('email', 'wcf.contact.recipient.email' . $recipientID, 'wcf.contact', 1);
-
-            $data['email'] = 'wcf.contact.recipient.email' . $recipientID;
-        }
-        if (!I18nHandler::getInstance()->isPlainValue('name')) {
-            I18nHandler::getInstance()->save('name', 'wcf.contact.recipient.name' . $recipientID, 'wcf.contact', 1);
-
-            $data['name'] = 'wcf.contact.recipient.name' . $recipientID;
-        }
-
-        // update i18n values
-        if (!empty($data)) {
-            (new ContactRecipientEditor($recipient))->update($data);
-        }
-
-        $this->saved();
-
-        // show success message
-        WCF::getTPL()->assign([
-            'success' => true,
-            'objectEditLink' => LinkHandler::getInstance()->getControllerLink(
-                ContactRecipientEditForm::class,
-                ['id' => $recipientID]
-            ),
-        ]);
-
-        // reset values
-        $this->email = $this->name = '';
-        $this->isDisabled = $this->showOrder = 0;
-
-        I18nHandler::getInstance()->reset();
     }
 
     /**
-     * @inheritDoc
+     * @return array<int, string>
      */
-    public function assignVariables()
+    private function getContactRecipient(): array
     {
-        parent::assignVariables();
+        $recipientList = new ContactRecipientList();
+        $recipientList->sqlOrderBy = 'showOrder ASC';
+        $recipientList->readObjects();
 
-        I18nHandler::getInstance()->assignVariables();
-
-        WCF::getTPL()->assign([
-            'action' => 'add',
-            'email' => $this->email,
-            'name' => $this->name,
-            'isDisabled' => $this->isDisabled,
-            'showOrder' => $this->showOrder,
-        ]);
+        return \array_map(static fn ($recipient) => $recipient->getName(), $recipientList->getObjects());
     }
 }
