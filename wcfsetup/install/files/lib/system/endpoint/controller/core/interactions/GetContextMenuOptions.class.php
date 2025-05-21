@@ -11,7 +11,7 @@ use wcf\system\endpoint\GetRequest;
 use wcf\system\endpoint\IController;
 use wcf\system\exception\UserInputException;
 use wcf\system\interaction\IInteractionProvider;
-use wcf\system\interaction\InteractionContextMenuView;
+use wcf\system\interaction\InteractionContextMenuComponent;
 
 /**
  * Retrieves the options for an interaction context menu.
@@ -40,10 +40,10 @@ final class GetContextMenuOptions implements IController
         $object = new ($provider->getObjectClassName())($parameters->objectID);
         \assert($object instanceof DatabaseObject);
 
-        $view = new InteractionContextMenuView($provider);
+        $contextMenu = new InteractionContextMenuComponent($provider);
 
         return new JsonResponse([
-            'template' => $view->renderContextMenuOptions($object),
+            'template' => $contextMenu->renderContextMenuOptions($object),
         ]);
     }
 }

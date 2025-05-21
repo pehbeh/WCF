@@ -11,7 +11,7 @@ use wcf\system\event\EventHandler;
 use wcf\system\interaction\bulk\IBulkInteractionProvider;
 use wcf\system\interaction\IInteraction;
 use wcf\system\interaction\IInteractionProvider;
-use wcf\system\interaction\InteractionContextMenuView;
+use wcf\system\interaction\InteractionContextMenuComponent;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
@@ -64,7 +64,7 @@ abstract class AbstractGridView
     private string|int|null $objectIDFilter = null;
     private ?IInteractionProvider $interactionProvider = null;
     private ?IBulkInteractionProvider $bulkInteractionProvider = null;
-    private InteractionContextMenuView $interactionContextMenuView;
+    private InteractionContextMenuComponent $interactionContextMenuComponent;
 
     /**
      * Adds a new column to the grid view.
@@ -308,17 +308,17 @@ abstract class AbstractGridView
     /**
      * Returns the view of the interaction context menu.
      */
-    public function getInteractionContextMenuView(): InteractionContextMenuView
+    public function getInteractionContextMenuComponent(): InteractionContextMenuComponent
     {
         if ($this->interactionProvider === null) {
             throw new \BadMethodCallException("Missing interaction provider.");
         }
 
-        if (!isset($this->interactionContextMenuView)) {
-            $this->interactionContextMenuView = new InteractionContextMenuView($this->interactionProvider);
+        if (!isset($this->interactionContextMenuComponent)) {
+            $this->interactionContextMenuComponent = new InteractionContextMenuComponent($this->interactionProvider);
         }
 
-        return $this->interactionContextMenuView;
+        return $this->interactionContextMenuComponent;
     }
 
     /**
@@ -328,7 +328,7 @@ abstract class AbstractGridView
     {
         $code = '';
         if ($this->interactionProvider !== null) {
-            $code = $this->getInteractionContextMenuView()->renderInitialization($this->getID() . '_table');
+            $code = $this->getInteractionContextMenuComponent()->renderInitialization($this->getID() . '_table');
         }
 
         if ($this->quickInteractions !== []) {
@@ -368,7 +368,7 @@ abstract class AbstractGridView
             return '';
         }
 
-        return $this->getInteractionContextMenuView()->renderButton($row);
+        return $this->getInteractionContextMenuComponent()->renderButton($row);
     }
 
     /**

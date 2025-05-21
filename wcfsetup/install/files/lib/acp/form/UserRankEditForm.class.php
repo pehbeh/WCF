@@ -8,7 +8,7 @@ use wcf\data\user\rank\UserRank;
 use wcf\http\Helper;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\interaction\admin\UserRankInteractions;
-use wcf\system\interaction\StandaloneInteractionContextMenuView;
+use wcf\system\interaction\StandaloneInteractionContextMenuComponent;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 
@@ -66,7 +66,7 @@ class UserRankEditForm extends UserRankAddForm
         parent::assignVariables();
 
         WCF::getTPL()->assign([
-            'interactionContextMenu' => new StandaloneInteractionContextMenuView(
+            'interactionContextMenu' => new StandaloneInteractionContextMenuComponent(
                 new UserRankInteractions(),
                 $this->formObject,
                 LinkHandler::getInstance()->getControllerLink(UserRankListPage::class)

@@ -12,7 +12,7 @@ use wcf\system\exception\UserInputException;
 use wcf\system\file\upload\UploadFile;
 use wcf\system\file\upload\UploadHandler;
 use wcf\system\interaction\admin\StyleInteractions;
-use wcf\system\interaction\StandaloneInteractionContextMenuView;
+use wcf\system\interaction\StandaloneInteractionContextMenuComponent;
 use wcf\system\language\I18nHandler;
 use wcf\system\request\LinkHandler;
 use wcf\system\style\StyleCompiler;
@@ -453,7 +453,7 @@ class StyleEditForm extends StyleAddForm
             'style' => $this->style,
             'styleID' => $this->styleID,
             'isDarkMode' => $this->isDarkMode,
-            'interactionContextMenu' => new StandaloneInteractionContextMenuView(
+            'interactionContextMenu' => new StandaloneInteractionContextMenuComponent(
                 new StyleInteractions(),
                 $this->style,
                 LinkHandler::getInstance()->getControllerLink(StyleListPage::class)

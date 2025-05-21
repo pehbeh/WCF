@@ -1,6 +1,13 @@
-<div class="dropdown" id="{$containerID}">
-	<button type="button" class="button dropdownToggle" aria-label="{lang}wcf.global.button.more{/lang}">
-		{icon name='ellipsis-vertical'}
+<div class="dropdown {$cssClassName}" id="{$containerID}">
+	<button 
+		type="button"
+		class="button dropdownToggle {$buttonCssClassName}"
+		{if !$label}aria-label="{lang}wcf.global.button.more{/lang}"{/if}
+	>
+		{icon name=$icon}
+		{if $label}
+			<span>{$label}</span>
+		{/if}
 	</button>
 
 	<ul class="dropdownMenu">

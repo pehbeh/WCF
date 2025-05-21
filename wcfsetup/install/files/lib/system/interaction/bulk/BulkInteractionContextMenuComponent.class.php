@@ -6,7 +6,15 @@ use wcf\data\DatabaseObject;
 use wcf\system\interaction\Divider;
 use wcf\system\WCF;
 
-class BulkInteractionContextMenuView
+/**
+ * Represents the component of an bulk interaction content menu.
+ *
+ * @author      Olaf Braun
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
+class BulkInteractionContextMenuComponent
 {
     public function __construct(
         protected readonly IBulkInteractionProvider $provider
