@@ -10,7 +10,7 @@ use wcf\event\IPsr14Event;
 use wcf\system\event\EventHandler;
 use wcf\system\interaction\bulk\IBulkInteractionProvider;
 use wcf\system\interaction\IInteractionProvider;
-use wcf\system\interaction\InteractionContextMenuView;
+use wcf\system\interaction\InteractionContextMenuComponent;
 use wcf\system\listView\filter\IListViewFilter;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
@@ -38,7 +38,7 @@ abstract class AbstractListView
     private string|int|null $objectIDFilter = null;
     private ?IInteractionProvider $interactionProvider = null;
     private ?IBulkInteractionProvider $bulkInteractionProvider = null;
-    private InteractionContextMenuView $interactionContextMenuView;
+    private InteractionContextMenuComponent $interactionContextMenuComponent;
 
     /**
      * @var array<string, string>
@@ -461,7 +461,7 @@ abstract class AbstractListView
             return '';
         }
 
-        return $this->getInteractionContextMenuView()->renderInitialization($this->getID() . '_items');
+        return $this->getInteractionContextMenuComponent()->renderInitialization($this->getID() . '_items');
     }
 
     /**
@@ -482,17 +482,17 @@ abstract class AbstractListView
     /**
      * Returns the view of the interaction context menu.
      */
-    public function getInteractionContextMenuView(): InteractionContextMenuView
+    public function getInteractionContextMenuComponent(): InteractionContextMenuComponent
     {
         if ($this->interactionProvider === null) {
             throw new \BadMethodCallException("Missing interaction provider.");
         }
 
-        if (!isset($this->interactionContextMenuView)) {
-            $this->interactionContextMenuView = new InteractionContextMenuView($this->interactionProvider);
+        if (!isset($this->interactionContextMenuComponent)) {
+            $this->interactionContextMenuComponent = new InteractionContextMenuComponent($this->interactionProvider);
         }
 
-        return $this->interactionContextMenuView;
+        return $this->interactionContextMenuComponent;
     }
 
     /**
@@ -506,7 +506,7 @@ abstract class AbstractListView
             return '';
         }
 
-        return $this->getInteractionContextMenuView()->renderButton($item);
+        return $this->getInteractionContextMenuComponent()->renderButton($item);
     }
 
     /**

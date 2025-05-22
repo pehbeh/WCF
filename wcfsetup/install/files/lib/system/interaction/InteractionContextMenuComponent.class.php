@@ -5,7 +5,15 @@ namespace wcf\system\interaction;
 use wcf\data\DatabaseObject;
 use wcf\system\WCF;
 
-class InteractionContextMenuView
+/**
+ * Represents the component of an interaction content menu.
+ *
+ * @author      Marcel Werk
+ * @copyright   2001-2025 WoltLab GmbH
+ * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @since       6.2
+ */
+class InteractionContextMenuComponent
 {
     public function __construct(
         protected readonly IInteractionProvider $provider

@@ -10,7 +10,7 @@ use wcf\http\Helper;
 use wcf\system\endpoint\IController;
 use wcf\system\endpoint\PostRequest;
 use wcf\system\exception\UserInputException;
-use wcf\system\interaction\bulk\BulkInteractionContextMenuView;
+use wcf\system\interaction\bulk\BulkInteractionContextMenuComponent;
 use wcf\system\interaction\bulk\IBulkInteractionProvider;
 
 /**
@@ -42,10 +42,10 @@ final class GetBulkContextMenuOptions implements IController
         $list->setObjectIDs($parameters->objectIDs);
         $list->readObjects();
 
-        $view = new BulkInteractionContextMenuView($provider);
+        $component = new BulkInteractionContextMenuComponent($provider);
 
         return new JsonResponse([
-            'template' => $view->renderContextMenuOptions($list->getObjects()),
+            'template' => $component->renderContextMenuOptions($list->getObjects()),
         ]);
     }
 }
