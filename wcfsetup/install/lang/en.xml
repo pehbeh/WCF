@@ -3996,8 +3996,8 @@ Attachments:
 		<item name="wcf.global.form.error.securityToken"><![CDATA[The validity of your request could not be verified, because the XSRF token was invalid. Please submit the form again.]]></item>
 		<item name="wcf.global.form.input.maxItems"><![CDATA[Maximum items reached]]></item>
 		<item name="wcf.global.form.required"><![CDATA[Required fields]]></item>
-		<item name="wcf.global.form.password.button.hide"><![CDATA[Hide]]></item>
-		<item name="wcf.global.form.password.button.show"><![CDATA[Show]]></item>
+		<item name="wcf.global.form.password.button.hide"><![CDATA[Hide Password]]></item>
+		<item name="wcf.global.form.password.button.show"><![CDATA[Show Password]]></item>
 	</category>
 	<category name="wcf.form">
 		<item name="wcf.form.field.className"><![CDATA[Class]]></item>
