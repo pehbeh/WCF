@@ -80,9 +80,9 @@
 								<span class="messageAttachmentFilename">{$attachment->filename}</span>
 								<span class="messageAttachmentMeta">{lang}wcf.attachment.file.info{/lang}</span>
 							</a>
-							{/if}
-						{/foreach}
-					{/content}
+						{/if}
+					{/foreach}
+				{/content}
 			</div>
 		</section>
 	{/hascontent}
