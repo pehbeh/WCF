@@ -7,17 +7,6 @@
 		<div class="contentHeaderTitle">
 			<h1 class="contentTitle" itemprop="name headline">{$articleContent->title}</h1>
 			<ul class="inlineList contentHeaderMetaData articleMetaData">
-				{if $article->hasLabels()}
-					<li>
-						{icon name='tags'}
-						<ul class="labelList">
-							{foreach from=$article->getLabels() item=label}
-								<li>{@$label->render()}</li>
-							{/foreach}
-						</ul>
-					</li>
-				{/if}
-				
 				<li itemprop="author" itemscope itemtype="http://schema.org/Person">
 					{icon name='user'}
 					{if $article->userID}
@@ -35,6 +24,17 @@
 					<meta itemprop="datePublished" content="{@$article->time|date:'c'}">
 				</li>
 
+				{if $article->hasLabels()}
+					<li>
+						{icon name='tags'}
+						<ul class="labelList">
+							{foreach from=$article->getLabels() item=label}
+								<li>{@$label->render()}</li>
+							{/foreach}
+						</ul>
+					</li>
+				{/if}
+				
 				<li>
 					{icon name='eye'}
 					{lang}wcf.article.articleViews{/lang}
