@@ -51,8 +51,6 @@
 					</li>
 				{/if}
 				
-				{if $article->isNew()}<li><span class="badge label newMessageBadge">{lang}wcf.message.new{/lang}</span></li>{/if}
-				
 				{if $article->isDeleted}<li><span class="badge label red">{lang}wcf.message.status.deleted{/lang}</span></li>{/if}
 				
 				{event name='contentHeaderMetaData'}
