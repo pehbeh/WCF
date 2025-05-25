@@ -51,7 +51,20 @@
 					</li>
 				{/if}
 				
-				{if $article->isDeleted}<li><span class="badge label red">{lang}wcf.message.status.deleted{/lang}</span></li>{/if}
+				{hascontent}
+					<li>
+						{icon name='flag'}
+						{content}
+							{if $article->isDeleted}
+								<span class="badge red">{lang}wcf.message.status.deleted{/lang}</span>
+							{/if}
+							{if !$article->isPublished()}
+								<span class="badge green">{lang}wcf.message.status.disabled{/lang}</span>
+							{/if}
+							{event name='contentHeaderMetaDataFlag'}
+						{/content}
+					</li>
+				{/hascontent}
 				
 				{event name='contentHeaderMetaData'}
 			</ul>
