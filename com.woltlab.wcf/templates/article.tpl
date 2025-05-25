@@ -10,8 +10,8 @@
 				<li itemprop="author" itemscope itemtype="http://schema.org/Person">
 					{icon name='user'}
 					{if $article->userID}
-						<a href="{$article->getUserProfile()->getLink()}" class="userLink" data-object-id="{@$article->userID}" itemprop="url">
-							<span itemprop="name">{@$article->getUserProfile()->getFormattedUsername()}</span>
+						<a href="{$article->getUserProfile()->getLink()}" class="userLink" data-object-id="{$article->userID}" itemprop="url">
+							<span itemprop="name">{unsafe:$article->getUserProfile()->getFormattedUsername()}</span>
 						</a>
 					{else}
 						<span itemprop="name">{$article->username}</span>
@@ -20,8 +20,8 @@
 				
 				<li>
 					{icon name='clock'}
-					<a href="{$article->getLink()}">{@$article->time|time}</a>
-					<meta itemprop="datePublished" content="{@$article->time|date:'c'}">
+					<a href="{$article->getLink()}">{time time=$article->time}</a>
+					<meta itemprop="datePublished" content="{$article->time|date:'c'}">
 				</li>
 
 				{if $article->hasLabels()}
@@ -29,7 +29,7 @@
 						{icon name='tags'}
 						<ul class="labelList">
 							{foreach from=$article->getLabels() item=label}
-								<li>{@$label->render()}</li>
+								<li>{unsafe:$label->render()}</li>
 							{/foreach}
 						</ul>
 					</li>
@@ -47,7 +47,7 @@
 						{$article->getDiscussionProvider()->getDiscussionCountPhrase()}
 						{if $article->getDiscussionProvider()->getDiscussionLink()}</a>{else}</span>{/if}
 						<meta itemprop="interactionType" content="http://schema.org/CommentAction">
-						<meta itemprop="userInteractionCount" content="{@$article->getDiscussionProvider()->getDiscussionCount()}">
+						<meta itemprop="userInteractionCount" content="{$article->getDiscussionProvider()->getDiscussionCount()}">
 					</li>
 				{/if}
 				
@@ -135,7 +135,7 @@
 {include file='header'}
 
 {if !$article->isPublished()}
-	<woltlab-core-notice type="info">{lang publicationDate=$article->publicationDate}wcf.article.publicationStatus.{@$article->publicationStatus}{/lang}</woltlab-core-notice>
+	<woltlab-core-notice type="info">{lang publicationDate=$article->publicationDate}wcf.article.publicationStatus.{$article->publicationStatus}{/lang}</woltlab-core-notice>
 {/if}
 
 <div
@@ -163,8 +163,8 @@
 				{/if}
 			</figure>
 			<meta itemprop="url" content="{$articleContent->getImage()->getThumbnailLink('large')}">
-			<meta itemprop="width" content="{@$articleContent->getImage()->getThumbnailWidth('large')}">
-			<meta itemprop="height" content="{@$articleContent->getImage()->getThumbnailHeight('large')}">
+			<meta itemprop="width" content="{$articleContent->getImage()->getThumbnailWidth('large')}">
+			<meta itemprop="height" content="{$articleContent->getImage()->getThumbnailHeight('large')}">
 		</div>
 	{/if}
 	
@@ -246,12 +246,12 @@
 		<h2 class="sectionTitle">{lang}wcf.article.aboutAuthor{/lang}</h2>
 		
 		<div class="box128">
-			<span class="articleAboutAuthorAvatar">{@$article->getUserProfile()->getAvatar()->getImageTag(128)}</span>
+			<span class="articleAboutAuthorAvatar">{unsafe:$article->getUserProfile()->getAvatar()->getImageTag(128)}</span>
 			
 			<div>
 				{event name='beforeAboutAuthorText'}
 				
-				<div class="articleAboutAuthorText">{@$article->getUserProfile()->getFormattedUserOption('aboutMe')}</div>
+				<div class="articleAboutAuthorText">{unsafe:$article->getUserProfile()->getFormattedUserOption('aboutMe')}</div>
 				
 				{event name='afterAboutAuthorText'}
 				
@@ -260,10 +260,10 @@
 					
 					{if MODULE_USER_RANK}
 						{if $article->getUserProfile()->getUserTitle()}
-							<span class="badge userTitleBadge{if $article->getUserProfile()->getRank() && $article->getUserProfile()->getRank()->cssClassName} {@$article->getUserProfile()->getRank()->cssClassName}{/if}">{$article->getUserProfile()->getUserTitle()}</span>
+							<span class="badge userTitleBadge{if $article->getUserProfile()->getRank() && $article->getUserProfile()->getRank()->cssClassName} {$article->getUserProfile()->getRank()->cssClassName}{/if}">{$article->getUserProfile()->getUserTitle()}</span>
 						{/if}
 						{if $article->getUserProfile()->getRank() && $article->getUserProfile()->getRank()->rankImage}
-							<span class="userRank">{@$article->getUserProfile()->getRank()->getImage()}</span>
+							<span class="userRank">{unsafe:$article->getUserProfile()->getRank()->getImage()}</span>
 						{/if}
 					{/if}
 				</div>
@@ -294,7 +294,7 @@
 							{icon size=48 name='chevron-left'}
 						</span>
 						{if $previousArticle->getTeaserImage()}
-							<span class="articleNavigationArticleImage">{@$previousArticle->getTeaserImage()->getElementTag(96)}</span>
+							<span class="articleNavigationArticleImage">{unsafe:$previousArticle->getTeaserImage()->getElementTag(96)}</span>
 						{/if}
 						<span class="articleNavigationArticleContent">
 							<span class="articleNavigationEntityName">{lang}wcf.article.previousArticle{/lang}</span>
@@ -313,7 +313,7 @@
 							{icon size=48 name='chevron-right'}
 						</span>
 						{if $nextArticle->getTeaserImage()}
-							<span class="articleNavigationArticleImage">{@$nextArticle->getTeaserImage()->getElementTag(96)}</span>
+							<span class="articleNavigationArticleImage">{unsafe:$nextArticle->getTeaserImage()->getElementTag(96)}</span>
 						{/if}
 						<span class="articleNavigationArticleContent">
 							<span class="articleNavigationEntityName">{lang}wcf.article.nextArticle{/lang}</span>
@@ -340,7 +340,7 @@
 
 {event name='beforeComments'}
 
-{@$article->getDiscussionProvider()->renderDiscussions()}
+{unsafe:$article->getDiscussionProvider()->renderDiscussions()}
 
 {if MODULE_LIKE && ARTICLE_ENABLE_LIKE}
 	<script data-relocate="true">
