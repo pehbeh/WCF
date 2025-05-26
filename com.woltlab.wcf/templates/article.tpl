@@ -322,11 +322,11 @@
 	</div>
 {/if}
 
-{if $relatedArticles !== null && $relatedArticles|count}
+{if $relatedArticleListView && $relatedArticleListView->countItems()}
 	<section class="section relatedArticles">
 		<h2 class="sectionTitle">{lang}wcf.article.relatedArticles{/lang}</h2>
 		
-		{include file='articleListItems' objects=$relatedArticles}
+		{unsafe:$relatedArticleListView->render()}
 	</section>
 {/if}
 

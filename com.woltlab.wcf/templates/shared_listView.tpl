@@ -1,5 +1,5 @@
 <div class="listView">
-	{if $view->isSortable() || $view->isFilterable()}
+	{if $view->isSortable() || $view->isFilterable() || $view->hasBulkInteractions()}
 		<div class="listView__header">
 			{if $view->isFilterable()}
 				<div class="listView__filters" id="{$view->getID()}_filters">
