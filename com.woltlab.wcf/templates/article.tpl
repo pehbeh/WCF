@@ -139,18 +139,18 @@
 {/if}
 
 <div
-	class="section article coreArticle"
+	class="section entry article"
 	{unsafe:$__wcf->getReactionHandler()->getDataAttributes('com.woltlab.wcf.likeableArticle', $article->articleID)}
 >
 	{if $articleContent->teaser}
-		<div class="article__teaser htmlContent">
+		<div class="entry__teaser htmlContent">
 			{unsafe:$articleContent->getFormattedTeaser()}
 		</div>
 	{/if}
 	
 	{if $articleContent->getImage() && $articleContent->getImage()->hasThumbnail('large')}
-		<div class="article__coverPhoto__wrapper" itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
-			<figure class="article__coverPhoto">
+		<div class="entry__coverPhoto__wrapper" itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
+			<figure class="entry__coverPhoto">
 				{unsafe:$articleContent->getImage()->getThumbnailTag('large')}
 				{if $articleContent->getImage()->caption}
 					<figcaption itemprop="description">
@@ -170,7 +170,7 @@
 	
 	{event name='beforeArticleContent'}
 
-	<div class="article__content htmlContent" itemprop="description articleBody">
+	<div class="entry__content htmlContent" itemprop="description articleBody">
 		{if MODULE_WCF_AD}
 			{unsafe:$__wcf->getAdHandler()->getAds('com.woltlab.wcf.article.inArticle')}
 		{/if}
@@ -182,20 +182,11 @@
 
 	{event name='afterArticleContent'}
 
-	{if !$tags|empty}
-		<ul class="tagList">
-			{foreach from=$tags item=tag}
-				<li><a href="{link controller='Tagged' object=$tag}objectType=com.woltlab.wcf.article{/link}" class="tag">
-					{icon name='tag'}
-					{$tag->name}
-				</a></li>
-			{/foreach}
-		</ul>
-	{/if}
+	{include file='entryTags' objectType='com.woltlab.wcf.article'}
 
-	{include file='articleAttachments' objectID=$article->articleID}
+	{include file='entryAttachments' objectID=$article->articleID}
 
-	<footer class="article__footer">
+	<footer class="entry__footer">
 		{if MODULE_LIKE && ARTICLE_ENABLE_LIKE && $__wcf->session->getPermission('user.like.canViewLike')}
 			<div class="articleLikesSummery">
 				{include file="reactionSummaryList" reactionData=$articleLikeData objectType="com.woltlab.wcf.likeableArticle" objectID=$article->articleID}
@@ -203,12 +194,13 @@
 		{/if}
 		
 		{hascontent}
-			<ul class="article__footerButtons buttonGroup buttonList smallButtons">
+			<ul class="entry__footerButtons buttonGroup buttonList smallButtons" role="menu">
 				{content}
 					{if $__wcf->session->getPermission('user.profile.canReportContent')}
-						<li>
+						<li role="presentation">
 							<button
 								type="button"
+								role="menuitem"
 								title="{lang}wcf.moderation.report.reportContent{/lang}"
 								class="button jsTooltip"
 								data-report-content="com.woltlab.wcf.article"
@@ -220,9 +212,10 @@
 						</li>
 					{/if}
 					{if MODULE_LIKE && ARTICLE_ENABLE_LIKE && $__wcf->session->getPermission('user.like.canLike') && $article->userID != $__wcf->user->userID}
-						<li>
+						<li role="presentation">
 							<button
 								type="button"
+								role="menuitem"
 								class="button jsTooltip reactButton{if $articleLikeData[$article->articleID]|isset && $articleLikeData[$article->articleID]->reactionTypeID} active{/if}"
 								title="{lang}wcf.reactions.react{/lang}"
 								data-reaction-type-id="{if $articleLikeData[$article->articleID]|isset && $articleLikeData[$article->articleID]->reactionTypeID}{$articleLikeData[$article->articleID]->reactionTypeID}{else}0{/if}"
@@ -242,20 +235,24 @@
 </div>
 
 {if ARTICLE_SHOW_ABOUT_AUTHOR && $article->getUserProfile()->aboutMe}
-	<div class="section articleAboutAuthor">
+	<section class="section entry__aboutAuthor__container">
 		<h2 class="sectionTitle">{lang}wcf.article.aboutAuthor{/lang}</h2>
 		
-		<div class="box128">
-			<span class="articleAboutAuthorAvatar">{unsafe:$article->getUserProfile()->getAvatar()->getImageTag(128)}</span>
+		<div class="entry__aboutAuthor">
+			<div class="entry__aboutAuthor__avatar">
+				{unsafe:$article->getUserProfile()->getAvatar()->getImageTag(128)}
+			</div>
 			
-			<div>
+			<div class="entry__aboutAuthor__content">
 				{event name='beforeAboutAuthorText'}
 				
-				<div class="articleAboutAuthorText">{unsafe:$article->getUserProfile()->getFormattedUserOption('aboutMe')}</div>
+				<div class="entry__aboutAuthor__text">
+					{unsafe:$article->getUserProfile()->getFormattedUserOption('aboutMe')}
+				</div>
 				
 				{event name='afterAboutAuthorText'}
 				
-				<div class="articleAboutAuthorUsername">
+				<div class="entry__aboutAuthor__username">
 					{user object=$article->getUserProfile() class='username'}
 					
 					{if MODULE_USER_RANK}
@@ -269,7 +266,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</section>
 {/if}
 
 <footer class="contentFooter">
@@ -352,7 +349,7 @@
 				canViewReactions: {if LIKE_SHOW_SUMMARY}true{else}false{/if},
 				
 				// selectors
-				containerSelector: '.coreArticle',
+				containerSelector: '.article',
 				summarySelector: '.articleLikesSummery'
 			});
 		});

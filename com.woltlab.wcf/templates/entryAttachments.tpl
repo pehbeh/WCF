@@ -1,7 +1,7 @@
 {if $attachmentList && $attachmentList->getGroupedObjects($objectID)|count}
 	{hascontent}
-		<section class="article__attachments__thumbnails">
-			<h2 class="article__attachments__title">{lang}wcf.attachment.images{/lang}</h2>
+		<section class="entry__attachments__thumbnails">
+			<h2 class="entry__attachments__title">{lang}wcf.attachment.images{/lang}</h2>
 			
 			<ul class="inlineList">
 				{content}
@@ -61,8 +61,8 @@
 	{/hascontent}
 	
 	{hascontent}
-		<section class="article__attachments__files">
-			<h2 class="article__attachments__title">{lang}wcf.attachment.files{/lang}</h2>
+		<section class="entry__attachments__files">
+			<h2 class="entry__attachments__title">{lang}wcf.attachment.files{/lang}</h2>
 
 			<div class="messageAttachmentList">
 				{content}
