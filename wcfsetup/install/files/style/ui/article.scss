@@ -89,7 +89,6 @@
 		}
 	}
 }
-/* /deprecated */
 
 .articleNavigation {
 	column-gap: 20px;
@@ -190,6 +189,7 @@ body:not(.touch) .articleNavigationArticle:hover .articleNavigationArticleIcon {
 		top: 0;
 	}
 }
+/* /deprecated */
 
 .articleList {
 	.articleListMetaData {
@@ -306,11 +306,4 @@ body:not(.touch) .articleNavigationArticle:hover .articleNavigationArticleIcon {
 			}
 		}
 	}
-}
-
-.discussionProviderCtaContainer {
-	align-items: center;
-	display: flex;
-	flex-direction: column;
-	row-gap: 10px;
 }

@@ -282,48 +282,43 @@
 {event name='afterFooter'}
 
 {if $previousArticle || $nextArticle}
-	<div class="section">
-		<nav>
-			<ul class="articleNavigation">
-				{if $previousArticle}
-					<li class="previousArticleButton articleNavigationArticle{if $previousArticle->getTeaserImage()} articleNavigationArticleWithImage{/if}">
-						<span class="articleNavigationArticleIcon">
-							{icon size=48 name='chevron-left'}
-						</span>
-						{if $previousArticle->getTeaserImage()}
-							<span class="articleNavigationArticleImage">{unsafe:$previousArticle->getTeaserImage()->getElementTag(96)}</span>
-						{/if}
-						<span class="articleNavigationArticleContent">
-							<span class="articleNavigationEntityName">{lang}wcf.article.previousArticle{/lang}</span>
-							<span class="articleNavigationArticleTitle">
-								<a href="{$previousArticle->getLink()}" rel="prev" class="articleNavigationArticleLink articleLink" data-object-id="{$previousArticle->getObjectID()}">
-									{$previousArticle->getTitle()}
-								</a>
-							</span>
-						</span>
-					</li>
+	<div class="section entry__navigation">
+		{if $previousArticle}
+			<div class="entry__navigation__item entry__navigation__item--previous{if $previousArticle->getTeaserImage()} entry__navigation__item--withImage{/if}">
+				<div class="entry__navigation__item__icon">
+					{icon size=48 name='chevron-left'}
+				</div>
+				{if $previousArticle->getTeaserImage()}
+					<div class="entry__navigation__item__image">{unsafe:$previousArticle->getTeaserImage()->getElementTag(96)}</div>
 				{/if}
-				
-				{if $nextArticle}
-					<li class="nextArticleButton articleNavigationArticle{if $nextArticle->getTeaserImage()} articleNavigationArticleWithImage{/if}">
-						<span class="articleNavigationArticleIcon">
-							{icon size=48 name='chevron-right'}
-						</span>
-						{if $nextArticle->getTeaserImage()}
-							<span class="articleNavigationArticleImage">{unsafe:$nextArticle->getTeaserImage()->getElementTag(96)}</span>
-						{/if}
-						<span class="articleNavigationArticleContent">
-							<span class="articleNavigationEntityName">{lang}wcf.article.nextArticle{/lang}</span>
-							<span class="articleNavigationArticleTitle">
-								<a href="{$nextArticle->getLink()}" rel="next" class="articleNavigationArticleLink articleLink" data-object-id="{$nextArticle->getObjectID()}">
-									{$nextArticle->getTitle()}
-								</a>
-							</span>
-						</span>
-					</li>
+				<div class="entry__navigation__item__content">
+					<div class="entry__navigation__item__entityName">{lang}wcf.article.previousArticle{/lang}</div>
+					<div class="entry__navigation__item__title">
+						<a href="{$previousArticle->getLink()}" rel="prev" class="entry__navigation__item__link articleLink" data-object-id="{$previousArticle->getObjectID()}">
+							{$previousArticle->getTitle()}
+						</a>
+					</div>
+				</div>
+			</div>
+		{/if}
+		{if $nextArticle}
+			<div class="entry__navigation__item entry__navigation__item--next{if $nextArticle->getTeaserImage()} entry__navigation__item--withImage{/if}">
+				<div class="entry__navigation__item__icon">
+					{icon size=48 name='chevron-right'}
+				</div>
+				{if $nextArticle->getTeaserImage()}
+					<div class="entry__navigation__item__image">{unsafe:$nextArticle->getTeaserImage()->getElementTag(96)}</div>
 				{/if}
-			</ul>
-		</nav>
+				<div class="entry__navigation__item__content">
+					<div class="entry__navigation__item__entityName">{lang}wcf.article.nextArticle{/lang}</div>
+					<div class="entry__navigation__item__title">
+						<a href="{$nextArticle->getLink()}" rel="prev" class="entry__navigation__item__link articleLink" data-object-id="{$previousArticle->getObjectID()}">
+							{$nextArticle->getTitle()}
+						</a>
+					</div>
+				</div>
+			</div>
+		{/if}
 	</div>
 {/if}
 
