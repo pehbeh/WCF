@@ -42,6 +42,7 @@ abstract class AbstractListView
     private bool $allowFiltering = true;
     private bool $allowSorting = true;
     private bool $allowInteractions = true;
+    private int $maxItems = 0;
 
     /**
      * @var array<string, string>
@@ -82,6 +83,22 @@ abstract class AbstractListView
     public function setItemsPerPage(int $itemsPerPage): void
     {
         $this->itemsPerPage = $itemsPerPage;
+    }
+
+    /**
+     * Gets the maximum number of items shown.
+     */
+    public function getMaxItems(): int
+    {
+        return $this->maxItems;
+    }
+
+    /**
+     * Sets the maximum number of items shown.
+     */
+    public function setMaxItems(int $maxItems): void
+    {
+        $this->maxItems = $maxItems;
     }
 
     /**
@@ -182,8 +199,10 @@ abstract class AbstractListView
     protected function initObjectList(): void
     {
         $this->objectList = $this->createObjectList();
-        $this->objectList->sqlLimit = $this->getItemsPerPage();
-        $this->objectList->sqlOffset = ($this->getPageNo() - 1) * $this->getItemsPerPage();
+        $this->objectList->sqlLimit = $this->getMaxItems() ?: $this->getItemsPerPage();
+        if (!$this->getMaxItems()) {
+            $this->objectList->sqlOffset = ($this->getPageNo() - 1) * $this->getItemsPerPage();
+        }
         if ($this->getSortField()) {
             $sortFieldObject = $this->availableSortFields[$this->getSortField()];
 
@@ -243,6 +262,9 @@ abstract class AbstractListView
     {
         if (!isset($this->objectCount)) {
             $this->objectCount = $this->getObjectList()->countObjects();
+            if ($this->getMaxItems() && $this->getMaxItems() < $this->objectCount) {
+                $this->objectCount = $this->getMaxItems();
+            }
         }
 
         return $this->objectCount;
