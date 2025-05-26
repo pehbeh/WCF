@@ -52,7 +52,9 @@ define(["require", "exports", "tslib", "./Core", "./Date/Picker", "./Devtools", 
         document
             .querySelectorAll("article:not([aria-label]):not([aria-labelledby]):not([role])")
             .forEach((element) => {
-            element.setAttribute("role", "presentation");
+            if (!element.querySelector("h1, h2, h3")) {
+                element.setAttribute("role", "presentation");
+            }
         });
     }
     /**

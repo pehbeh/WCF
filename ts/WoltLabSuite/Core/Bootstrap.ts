@@ -65,7 +65,9 @@ function initA11y() {
   document
     .querySelectorAll("article:not([aria-label]):not([aria-labelledby]):not([role])")
     .forEach((element: HTMLElement) => {
-      element.setAttribute("role", "presentation");
+      if (!element.querySelector("h1, h2, h3")) {
+        element.setAttribute("role", "presentation");
+      }
     });
 }
 
