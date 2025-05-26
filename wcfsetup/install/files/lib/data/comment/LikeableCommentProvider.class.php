@@ -43,7 +43,7 @@ class LikeableCommentProvider extends AbstractObjectTypeProvider implements
      */
     public function checkPermissions(ILikeObject $object)
     {
-        \assert($object instanceof Comment);
+        \assert($object instanceof LikeableComment);
 
         if (!$object->commentID) {
             return false;
