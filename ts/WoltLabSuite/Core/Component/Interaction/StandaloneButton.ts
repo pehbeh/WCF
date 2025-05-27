@@ -7,20 +7,33 @@
  * @since 6.2
  */
 
+import { getObject } from "WoltLabSuite/Core/Api/GetObject";
 import { getContextMenuOptions } from "WoltLabSuite/Core/Api/Interactions/GetContextMenuOptions";
 import UiDropdownSimple from "WoltLabSuite/Core/Ui/Dropdown/Simple";
+
+interface HeaderContent {
+  template: string;
+}
 
 export class StandaloneButton {
   #container: HTMLElement;
   #providerClassName: string;
   #objectId: string | number;
   #redirectUrl: string;
+  #reloadHeaderEndpoint: string;
 
-  constructor(container: HTMLElement, providerClassName: string, objectId: string | number, redirectUrl: string) {
+  constructor(
+    container: HTMLElement,
+    providerClassName: string,
+    objectId: string | number,
+    redirectUrl: string,
+    reloadHeaderEndpoint: string,
+  ) {
     this.#container = container;
     this.#providerClassName = providerClassName;
     this.#objectId = objectId;
     this.#redirectUrl = redirectUrl;
+    this.#reloadHeaderEndpoint = reloadHeaderEndpoint;
 
     this.#initInteractions();
     this.#initEventListeners();
@@ -37,6 +50,24 @@ export class StandaloneButton {
     dropdown.innerHTML = response.template;
 
     this.#initInteractions();
+  }
+
+  async #refreshHeader(): Promise<void> {
+    if (!this.#reloadHeaderEndpoint) {
+      return;
+    }
+
+    const header = document.querySelector(".contentHeaderTitle");
+    if (!header) {
+      return;
+    }
+
+    const result = await getObject<HeaderContent>(`${window.WSC_RPC_API_URL}${this.#reloadHeaderEndpoint}`);
+    if (!result.ok) {
+      return;
+    }
+
+    header.outerHTML = result.value.template;
   }
 
   #getDropdownMenu(): HTMLElement | undefined {
@@ -71,10 +102,12 @@ export class StandaloneButton {
   #initEventListeners(): void {
     this.#container.addEventListener("interaction:invalidate", () => {
       void this.#refreshContextMenu();
+      void this.#refreshHeader();
     });
 
     this.#container.addEventListener("interaction:invalidate-all", () => {
       void this.#refreshContextMenu();
+      void this.#refreshHeader();
     });
 
     this.#container.addEventListener("interaction:remove", () => {

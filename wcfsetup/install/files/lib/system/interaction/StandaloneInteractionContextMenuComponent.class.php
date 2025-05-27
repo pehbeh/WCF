@@ -22,7 +22,8 @@ class StandaloneInteractionContextMenuComponent extends InteractionContextMenuCo
         protected readonly string $label = '',
         protected readonly string $icon = 'ellipsis-vertical',
         protected readonly string $cssClassName = '',
-        protected readonly string $buttonCssClassName = ''
+        protected readonly string $buttonCssClassName = '',
+        protected readonly string $reloadHeaderEndpoint = '',
     ) {
         parent::__construct($provider);
     }
@@ -48,6 +49,7 @@ class StandaloneInteractionContextMenuComponent extends InteractionContextMenuCo
                 'icon' => $this->icon,
                 'cssClassName' => $this->cssClassName,
                 'buttonCssClassName' => $this->buttonCssClassName,
+                'reloadHeaderEndpoint' => $this->reloadHeaderEndpoint,
             ],
         );
     }
@@ -72,7 +74,17 @@ class StandaloneInteractionContextMenuComponent extends InteractionContextMenuCo
         DatabaseObject $object,
         string $redirectUrl,
         string $label,
+        string $reloadHeaderEndpoint = ''
     ): self {
-        return new self($provider, $object, $redirectUrl, $label, 'pencil', 'contentInteractionButton', 'small');
+        return new self(
+            $provider,
+            $object,
+            $redirectUrl,
+            $label,
+            'pencil',
+            'contentInteractionButton',
+            'small',
+            $reloadHeaderEndpoint
+        );
     }
 }

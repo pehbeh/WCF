@@ -21,7 +21,8 @@
 			document.getElementById('{unsafe:$containerID|encodeJS}'),
 			'{unsafe:$providerClassName|encodeJS}',
 			'{unsafe:$objectID|encodeJS}',
-			'{unsafe:$redirectUrl|encodeJS}'
+			'{unsafe:$redirectUrl|encodeJS}',
+			'{unsafe:$reloadHeaderEndpoint|encodeJS}'
 		);
 	});
 </script>

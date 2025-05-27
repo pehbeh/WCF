@@ -8,8 +8,11 @@ use wcf\data\comment\StructuredCommentList;
 use wcf\data\like\object\LikeObject;
 use wcf\system\comment\CommentHandler;
 use wcf\system\comment\manager\ICommentManager;
+use wcf\system\interaction\StandaloneInteractionContextMenuComponent;
+use wcf\system\interaction\user\ArticleInteractions;
 use wcf\system\MetaTagHandler;
 use wcf\system\reaction\ReactionHandler;
+use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 
@@ -203,6 +206,13 @@ class ArticlePage extends AbstractArticlePage
             'previousArticle' => $this->previousArticle,
             'nextArticle' => $this->nextArticle,
             'articleLikeData' => $this->articleLikeData,
+            'interactionContextMenu' => StandaloneInteractionContextMenuComponent::forContentInteractionButton(
+                new ArticleInteractions(),
+                $this->article,
+                LinkHandler::getInstance()->getControllerLink(ArticleListPage::class),
+                WCF::getLanguage()->getDynamicVariable('wcf.acp.article.edit'),
+                "core/articles/contents/{$this->articleContentID}/content-header-title"
+            ),
 
             // nullified values for backwards-compatibility
             'commentCanAdd' => 0,
