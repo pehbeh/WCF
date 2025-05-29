@@ -107,7 +107,7 @@ final class CronjobScheduler extends SingletonFactory
     /**
      * Returns the next execution time.
      */
-    public function getNextExec(): int
+    public function getNextExec(): ?int
     {
         return $this->cache['nextExec'];
     }

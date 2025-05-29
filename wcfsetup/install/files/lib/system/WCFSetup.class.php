@@ -769,16 +769,22 @@ final class WCFSetup extends WCF
             LanguageEditor::importFromXML($xml, 1);
         }
 
-        // set default language
-        $language = LanguageFactory::getInstance()->getLanguageByCode(
-            \in_array(
-                self::$selectedLanguageCode,
-                $languageCodes
-            ) ? self::$selectedLanguageCode : $languageCodes[0]
-        );
-        LanguageFactory::getInstance()->makeDefault($language->languageID);
+        $defaultLanguageCode = \in_array(
+            self::$selectedLanguageCode,
+            $languageCodes
+        ) ? self::$selectedLanguageCode : $languageCodes[0];
 
-        // rebuild language cache
+        $sql = "UPDATE  wcf1_language
+                SET     isDefault = ?
+                WHERE   languageCode = ?";
+        $statement = WCF::getDB()->prepare($sql);
+        $statement->execute([
+            1,
+            $defaultLanguageCode,
+        ]);
+
+        \assert($statement->getAffectedRows() === 1);
+
         (new LanguageCache())->rebuild();
 
         return $this->gotoNextStep('createUser');

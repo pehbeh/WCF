@@ -16,10 +16,13 @@ use wcf\system\WCF;
 return static function (): void {
     $eventHandler = EventHandler::getInstance();
 
-    WCF::getTPL()->assign(
-        'executeCronjobs',
-        CronjobScheduler::getInstance()->getNextExec() < TIME_NOW && \defined('OFFLINE') && !OFFLINE
-    );
+    $cronjobNextExec = CronjobScheduler::getInstance()->getNextExec();
+    if ($cronjobNextExec !== null) {
+        WCF::getTPL()->assign(
+            'executeCronjobs',
+            $cronjobNextExec < TIME_NOW && \defined('OFFLINE') && !OFFLINE
+        );
+    }
 
     $eventHandler->register(
         \wcf\event\user\authentication\UserLoggedIn::class,
@@ -259,7 +262,8 @@ return static function (): void {
         }
     );
 
-    if (MODULE_CONTACT_FORM) {
+    // The options are not available while the WCFSetup process has not yet completed.
+    if (defined('MODULE_CONTACT_FORM') && MODULE_CONTACT_FORM) {
         $eventHandler->register(ItemCollecting::class, static function (ItemCollecting $event) {
             if (!WCF::getSession()->getPermission("admin.contact.canManageContactForm")) {
                 return;
