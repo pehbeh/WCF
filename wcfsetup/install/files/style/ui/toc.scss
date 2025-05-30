@@ -21,6 +21,10 @@
 		margin: 0 0 10px 10px;
 		max-width: 50%;
 	}
+
+	.htmlContent > .tableOfContentsWrapper + * {
+		margin-top: 0 !important;
+	}
 }
 
 @include screen-sm-down {

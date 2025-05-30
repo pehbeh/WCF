@@ -2,7 +2,6 @@
 
 namespace wcf\page;
 
-use wcf\data\article\AccessibleArticleList;
 use wcf\data\article\ArticleAction;
 use wcf\data\article\ArticleEditor;
 use wcf\data\article\category\ArticleCategory;
@@ -12,10 +11,10 @@ use wcf\data\attachment\GroupedAttachmentList;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\data\tag\Tag;
 use wcf\system\cache\runtime\ViewableArticleRuntimeCache;
-use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\exception\PermissionDeniedException;
 use wcf\system\language\LanguageFactory;
+use wcf\system\listView\user\RelatedArticleListView;
 use wcf\system\message\embedded\object\MessageEmbeddedObjectManager;
 use wcf\system\page\PageLocationManager;
 use wcf\system\tagging\TagEngine;
@@ -67,15 +66,11 @@ abstract class AbstractArticlePage extends AbstractPage
     public $category;
 
     /**
-     * list of related articles
-     * @var AccessibleArticleList
-     */
-    public $relatedArticles;
-
-    /**
      * @var GroupedAttachmentList
      */
     public $attachmentList;
+
+    public RelatedArticleListView $relatedArticleListView;
 
     /**
      * @inheritDoc
@@ -149,41 +144,8 @@ abstract class AbstractArticlePage extends AbstractPage
         }
 
         // get related articles
-        if (MODULE_TAGGING && ARTICLE_RELATED_ARTICLES) {
-            if (!empty($this->tags)) {
-                $conditionBuilder = new PreparedStatementConditionBuilder();
-                $conditionBuilder->add(
-                    'tag_to_object.objectTypeID = ?',
-                    [TagEngine::getInstance()->getObjectTypeID('com.woltlab.wcf.article')]
-                );
-                $conditionBuilder->add('tag_to_object.tagID IN (?)', [\array_keys($this->tags)]);
-                $conditionBuilder->add('tag_to_object.objectID <> ?', [$this->articleContentID]);
-                $sql = "SELECT      MAX(article.articleID), COUNT(*) AS count
-                        FROM        wcf1_tag_to_object tag_to_object
-                        INNER JOIN  wcf1_article_content article_content
-                        ON          tag_to_object.objectID = article_content.articleContentID
-                        INNER JOIN  wcf1_article article
-                        ON          article_content.articleID = article.articleID
-                        " . $conditionBuilder . "
-                        GROUP BY    tag_to_object.objectID
-                        HAVING      COUNT(*) >= " . \round(\count($this->tags) * ARTICLE_RELATED_ARTICLES_MATCH_THRESHOLD / 100) . "
-                        ORDER BY    count DESC, MAX(article.time) DESC";
-                $statement = WCF::getDB()->prepare($sql, ARTICLE_RELATED_ARTICLES * 4);
-                $statement->execute($conditionBuilder->getParameters());
-                $articleIDs = $statement->fetchAll(\PDO::FETCH_COLUMN);
-
-                if (!empty($articleIDs)) {
-                    if (\count($articleIDs) > ARTICLE_RELATED_ARTICLES) {
-                        \shuffle($articleIDs);
-                        $articleIDs = \array_slice($articleIDs, 0, ARTICLE_RELATED_ARTICLES);
-                    }
-
-                    $this->relatedArticles = new AccessibleArticleList();
-                    $this->relatedArticles->getConditionBuilder()->add('article.articleID IN (?)', [$articleIDs]);
-                    $this->relatedArticles->sqlOrderBy = 'article.time';
-                    $this->relatedArticles->readObjects();
-                }
-            }
+        if (MODULE_TAGGING && ARTICLE_RELATED_ARTICLES && $this->tags !== []) {
+            $this->relatedArticleListView = new RelatedArticleListView($this->articleContent->articleContentID);
         }
 
         // set location
@@ -252,7 +214,7 @@ abstract class AbstractArticlePage extends AbstractPage
             'articleContent' => $this->articleContent,
             'article' => $this->article,
             'category' => $this->category,
-            'relatedArticles' => $this->relatedArticles,
+            'relatedArticleListView' => $this->relatedArticleListView ?? null,
             'tags' => $this->tags,
             'attachmentList' => $this->attachmentList,
         ]);

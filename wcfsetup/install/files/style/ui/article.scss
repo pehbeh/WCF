@@ -1,3 +1,4 @@
+/* deprecated 6.2 no longer in use */
 .articleTeaser {
 	@include wcfFontBold;
 }
@@ -77,7 +78,7 @@
 	}
 
 	.articleAboutAuthorUsername {
-		margin-top: 5px;
+		margin-top: 10px;
 
 		.username {
 			@include wcfFontHeadline;
@@ -188,6 +189,7 @@ body:not(.touch) .articleNavigationArticle:hover .articleNavigationArticleIcon {
 		top: 0;
 	}
 }
+/* /deprecated */
 
 .articleList {
 	.articleListMetaData {
@@ -304,11 +306,4 @@ body:not(.touch) .articleNavigationArticle:hover .articleNavigationArticleIcon {
 			}
 		}
 	}
-}
-
-.discussionProviderCtaContainer {
-	align-items: center;
-	display: flex;
-	flex-direction: column;
-	row-gap: 10px;
 }

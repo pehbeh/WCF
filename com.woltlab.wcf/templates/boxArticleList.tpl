@@ -39,7 +39,7 @@
 			</li>
 		{/foreach}
 	</ul>
-{elseif $boxPosition == 'footerBoxes'}
+{else}
 	<ul class="articleList">
 		{foreach from=$boxArticleList item=boxArticle}
 			<li>
@@ -69,6 +69,4 @@
 			</li>
 		{/foreach}
 	</ul>
-{else}
-	{include file='articleListItems' objects=$boxArticleList disableAds=true}
-{/if}
+{if}

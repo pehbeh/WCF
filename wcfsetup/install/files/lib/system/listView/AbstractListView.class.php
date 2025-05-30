@@ -39,6 +39,10 @@ abstract class AbstractListView
     private ?IInteractionProvider $interactionProvider = null;
     private ?IBulkInteractionProvider $bulkInteractionProvider = null;
     private InteractionContextMenuComponent $interactionContextMenuComponent;
+    private bool $allowFiltering = true;
+    private bool $allowSorting = true;
+    private bool $allowInteractions = true;
+    private int $fixedNumberOfItems = 0;
 
     /**
      * @var array<string, string>
@@ -79,6 +83,22 @@ abstract class AbstractListView
     public function setItemsPerPage(int $itemsPerPage): void
     {
         $this->itemsPerPage = $itemsPerPage;
+    }
+
+    /**
+     * Gets the fixed number of items shown.
+     */
+    public function getFixedNumberOfItems(): int
+    {
+        return $this->fixedNumberOfItems;
+    }
+
+    /**
+     * Sets the maximum number of items shown.
+     */
+    public function setFixedNumberOfItems(int $fixedNumberOfItems): void
+    {
+        $this->fixedNumberOfItems = $fixedNumberOfItems;
     }
 
     /**
@@ -179,8 +199,10 @@ abstract class AbstractListView
     protected function initObjectList(): void
     {
         $this->objectList = $this->createObjectList();
-        $this->objectList->sqlLimit = $this->getItemsPerPage();
-        $this->objectList->sqlOffset = ($this->getPageNo() - 1) * $this->getItemsPerPage();
+        $this->objectList->sqlLimit = $this->getFixedNumberOfItems() ?: $this->getItemsPerPage();
+        if (!$this->getFixedNumberOfItems()) {
+            $this->objectList->sqlOffset = ($this->getPageNo() - 1) * $this->getItemsPerPage();
+        }
         if ($this->getSortField()) {
             $sortFieldObject = $this->availableSortFields[$this->getSortField()];
 
@@ -240,6 +262,9 @@ abstract class AbstractListView
     {
         if (!isset($this->objectCount)) {
             $this->objectCount = $this->getObjectList()->countObjects();
+            if ($this->getFixedNumberOfItems() && $this->getFixedNumberOfItems() < $this->objectCount) {
+                $this->objectCount = $this->getFixedNumberOfItems();
+            }
         }
 
         return $this->objectCount;
@@ -298,7 +323,8 @@ abstract class AbstractListView
      */
     public function isFilterable(): bool
     {
-        return $this->availableFilters !== [];
+        return $this->allowFiltering
+            && $this->availableFilters !== [];
     }
 
     /**
@@ -317,7 +343,8 @@ abstract class AbstractListView
      */
     public function isSortable(): bool
     {
-        return $this->availableSortFields !== [];
+        return $this->allowSorting
+            && $this->availableSortFields !== [];
     }
 
     public function addAvailableSortField(ListViewSortField $sortField): void
@@ -333,6 +360,11 @@ abstract class AbstractListView
         foreach ($sortFields as $sortField) {
             $this->addAvailableSortField($sortField);
         }
+    }
+
+    public function setAllowSorting(bool $allowSorting): void
+    {
+        $this->allowSorting = $allowSorting;
     }
 
     /**
@@ -356,6 +388,11 @@ abstract class AbstractListView
         foreach ($filters as $filter) {
             $this->addAvailableFilter($filter);
         }
+    }
+
+    public function setAllowFiltering(bool $allowFiltering): void
+    {
+        $this->allowFiltering = $allowFiltering;
     }
 
     /**
@@ -431,7 +468,8 @@ abstract class AbstractListView
      */
     public function hasBulkInteractions(): bool
     {
-        return $this->getBulkInteractionProvider() !== null
+        return $this->allowInteractions
+            && $this->getBulkInteractionProvider() !== null
             && $this->getBulkInteractionProvider()->getInteractions() !== [];
     }
 
@@ -444,12 +482,18 @@ abstract class AbstractListView
         return \get_class($this->getBulkInteractionProvider());
     }
 
+    public function setAllowInteractions(bool $allowInteractions): void
+    {
+        $this->allowInteractions = $allowInteractions;
+    }
+
     /**
      * Returns true, if this list view has interactions.
      */
     public function hasInteractions(): bool
     {
-        return $this->interactionProvider !== null;
+        return $this->allowInteractions
+            && $this->interactionProvider !== null;
     }
 
     /**
@@ -502,7 +546,7 @@ abstract class AbstractListView
      */
     public function renderInteractionContextMenuButton(DatabaseObject $item): string
     {
-        if ($this->interactionProvider === null) {
+        if (!$this->hasInteractions()) {
             return '';
         }
 

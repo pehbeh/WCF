@@ -13,7 +13,7 @@ use wcf\system\interaction\Divider;
 use wcf\system\interaction\EditInteraction;
 use wcf\system\interaction\RestoreInteraction;
 use wcf\system\interaction\RpcInteraction;
-use wcf\system\interaction\TrashInteraction;
+use wcf\system\interaction\SoftDeleteInteraction;
 
 /**
  * Interaction provider for articles.
@@ -28,21 +28,21 @@ final class ArticleInteractions extends AbstractInteractionProvider
     public function __construct()
     {
         $this->addInteractions([
-            new TrashInteraction('core/articles/%s/trash', function (ViewableArticle $article): bool {
+            new SoftDeleteInteraction('core/articles/%s/soft-delete', function (ViewableArticle|Article $article): bool {
                 if (!$article->canDelete()) {
                     return false;
                 }
 
                 return $article->isDeleted !== 1;
             }),
-            new RestoreInteraction('core/articles/%s/restore', function (ViewableArticle $article): bool {
+            new RestoreInteraction('core/articles/%s/restore', function (ViewableArticle|Article $article): bool {
                 if (!$article->canDelete()) {
                     return false;
                 }
 
                 return $article->isDeleted === 1;
             }),
-            new DeleteInteraction('core/articles/%s', function (ViewableArticle $article): bool {
+            new DeleteInteraction('core/articles/%s', function (ViewableArticle|Article $article): bool {
                 if (!$article->canDelete()) {
                     return false;
                 }
@@ -53,7 +53,7 @@ final class ArticleInteractions extends AbstractInteractionProvider
                 'publish',
                 'core/articles/%s/publish',
                 'wcf.article.button.publish',
-                isAvailableCallback: static function (ViewableArticle $article): bool {
+                isAvailableCallback: static function (ViewableArticle|Article $article): bool {
                     if (!$article->canPublish()) {
                         return false;
                     }
@@ -65,7 +65,7 @@ final class ArticleInteractions extends AbstractInteractionProvider
                 'unpublish',
                 'core/articles/%s/unpublish',
                 'wcf.article.button.unpublish',
-                isAvailableCallback: static function (ViewableArticle $article): bool {
+                isAvailableCallback: static function (ViewableArticle|Article $article): bool {
                     if (!$article->canPublish()) {
                         return false;
                     }
@@ -74,7 +74,7 @@ final class ArticleInteractions extends AbstractInteractionProvider
                 }
             ),
             new Divider(),
-            new EditInteraction(ArticleEditForm::class, function (ViewableArticle $article): bool {
+            new EditInteraction(ArticleEditForm::class, function (ViewableArticle|Article $article): bool {
                 return $article->canEdit();
             })
         ]);
