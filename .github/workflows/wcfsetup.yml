@@ -1,6 +1,9 @@
 name: WCFSetup
 
 on:
+  push:
+    branches:
+    - 6.2
   pull_request:
     types:
       - opened
