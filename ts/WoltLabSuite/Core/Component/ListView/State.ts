@@ -24,6 +24,7 @@ export class State extends EventTarget {
   readonly #pagination: WoltlabCorePaginationElement;
   readonly #selection: Selection;
   readonly #sorting: Sorting;
+  readonly #listViewFooter: HTMLElement;
   #pageNo: number;
 
   constructor(
@@ -38,6 +39,8 @@ export class State extends EventTarget {
 
     this.#baseUrl = baseUrl;
     this.#pageNo = pageNo;
+
+    this.#listViewFooter = document.getElementById(`${viewId}_footer`) as HTMLElement;
 
     this.#pagination = document.getElementById(`${viewId}_pagination`) as WoltlabCorePaginationElement;
     this.#pagination.addEventListener("switchPage", (event: CustomEvent) => {
@@ -60,12 +63,16 @@ export class State extends EventTarget {
         new CustomEvent("list-view:get-bulk-interactions", { detail: { objectIds: event.detail.objectIds } }),
       );
     });
+    this.#selection.addEventListener("list-view:update-selection", () => {
+      this.#updateListViewFooter();
+    });
 
     window.addEventListener("popstate", () => {
       this.#handlePopState();
     });
 
     this.#updatePaginationUrl();
+    this.#updateListViewFooter();
   }
 
   getPageNo(): number {
@@ -97,6 +104,8 @@ export class State extends EventTarget {
     if (cause === StateChangeCause.Change || cause === StateChangeCause.Pagination) {
       this.#updateQueryString();
     }
+
+    this.#updateListViewFooter();
   }
 
   #switchPage(pageNo: number, source: StateChangeCause): void {
@@ -174,6 +183,10 @@ export class State extends EventTarget {
     this.#sorting.updateFromSearchParams(searchParams);
 
     this.#switchPage(pageNo, StateChangeCause.History);
+  }
+
+  #updateListViewFooter(): void {
+    this.#listViewFooter.hidden = this.#pagination.count === 0 && this.#selection.getSelectedIds().length === 0;
   }
 
   setBulkInteractionContextMenuOptions(options: string): void {

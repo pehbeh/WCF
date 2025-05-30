@@ -142,6 +142,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
             if (!this.#selectionBar) {
                 return;
             }
+            this.dispatchEvent(new CustomEvent("list-view:update-selection"));
             if (selectedIds.length === 0) {
                 this.#selectionBar.hidden = true;
                 return;

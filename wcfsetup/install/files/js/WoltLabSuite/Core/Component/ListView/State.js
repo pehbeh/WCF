@@ -20,11 +20,13 @@ define(["require", "exports", "tslib", "./Filter", "./Selection", "./Sorting"], 
         #pagination;
         #selection;
         #sorting;
+        #listViewFooter;
         #pageNo;
         constructor(viewId, viewElement, pageNo, baseUrl, sortField, sortOrder) {
             super();
             this.#baseUrl = baseUrl;
             this.#pageNo = pageNo;
+            this.#listViewFooter = document.getElementById(`${viewId}_footer`);
             this.#pagination = document.getElementById(`${viewId}_pagination`);
             this.#pagination.addEventListener("switchPage", (event) => {
                 void this.#switchPage(event.detail, 2 /* StateChangeCause.Pagination */);
@@ -41,10 +43,14 @@ define(["require", "exports", "tslib", "./Filter", "./Selection", "./Sorting"], 
             this.#selection.addEventListener("list-view:get-bulk-interactions", (event) => {
                 this.dispatchEvent(new CustomEvent("list-view:get-bulk-interactions", { detail: { objectIds: event.detail.objectIds } }));
             });
+            this.#selection.addEventListener("list-view:update-selection", () => {
+                this.#updateListViewFooter();
+            });
             window.addEventListener("popstate", () => {
                 this.#handlePopState();
             });
             this.#updatePaginationUrl();
+            this.#updateListViewFooter();
         }
         getPageNo() {
             return this.#pageNo;
@@ -69,6 +75,7 @@ define(["require", "exports", "tslib", "./Filter", "./Selection", "./Sorting"], 
             if (cause === 0 /* StateChangeCause.Change */ || cause === 2 /* StateChangeCause.Pagination */) {
                 this.#updateQueryString();
             }
+            this.#updateListViewFooter();
         }
         #switchPage(pageNo, source) {
             this.#pagination.page = pageNo;
@@ -127,6 +134,9 @@ define(["require", "exports", "tslib", "./Filter", "./Selection", "./Sorting"], 
             this.#filter.updateFromSearchParams(searchParams);
             this.#sorting.updateFromSearchParams(searchParams);
             this.#switchPage(pageNo, 1 /* StateChangeCause.History */);
+        }
+        #updateListViewFooter() {
+            this.#listViewFooter.hidden = this.#pagination.count === 0 && this.#selection.getSelectedIds().length === 0;
         }
         setBulkInteractionContextMenuOptions(options) {
             this.#selection.setBulkInteractionContextMenuOptions(options);
