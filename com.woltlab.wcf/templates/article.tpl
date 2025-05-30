@@ -121,42 +121,35 @@
 		{/if}
 		
 		{hascontent}
-			<ul class="entry__footerButtons buttonGroup buttonList smallButtons" role="menu">
+			<div class="entry__footerButtons">
 				{content}
 					{if $__wcf->session->getPermission('user.profile.canReportContent')}
-						<li role="presentation">
-							<button
-								type="button"
-								role="menuitem"
-								title="{lang}wcf.moderation.report.reportContent{/lang}"
-								class="button jsTooltip"
-								data-report-content="com.woltlab.wcf.article"
-								data-object-id="{$articleContent->articleID}"
-							>
-								{icon name='triangle-exclamation'}
-								<span class="invisible">{lang}wcf.moderation.report.reportContent{/lang}</span>
-							</button>
-						</li>
+						<button
+							type="button"
+							class="button jsTooltip"
+							title="{lang}wcf.moderation.report.reportContent{/lang}"
+							data-report-content="com.woltlab.wcf.article"
+							data-object-id="{$articleContent->articleID}"
+						>
+							{icon name='triangle-exclamation'}
+						</button>
 					{/if}
 					{if MODULE_LIKE && ARTICLE_ENABLE_LIKE && $__wcf->session->getPermission('user.like.canLike') && $article->userID != $__wcf->user->userID}
-						<li role="presentation">
-							<button
-								type="button"
-								role="menuitem"
-								class="button jsTooltip reactButton{if $articleLikeData[$article->articleID]|isset && $articleLikeData[$article->articleID]->reactionTypeID} active{/if}"
-								title="{lang}wcf.reactions.react{/lang}"
-								data-reaction-type-id="{if $articleLikeData[$article->articleID]|isset && $articleLikeData[$article->articleID]->reactionTypeID}{$articleLikeData[$article->articleID]->reactionTypeID}{else}0{/if}"
-							>
-								{icon name='face-smile'} <span class="invisible">{lang}wcf.reactions.react{/lang}</span>
-							</button>
-						</li>
+						<button
+							type="button"
+							class="button jsTooltip reactButton{if $articleLikeData[$article->articleID]|isset && $articleLikeData[$article->articleID]->reactionTypeID} active{/if}"
+							title="{lang}wcf.reactions.react{/lang}"
+							data-reaction-type-id="{if $articleLikeData[$article->articleID]|isset && $articleLikeData[$article->articleID]->reactionTypeID}{$articleLikeData[$article->articleID]->reactionTypeID}{else}0{/if}"
+						>
+							{icon name='face-smile'}
+						</button>
 					{/if}
 					
 					{event name='articleLikeButtons'}{* deprecated: use footerButtons instead *}
 					{event name='articleButtons'}{* deprecated: use footerButtons instead *}
 					{event name='footerButtons'}
 				{/content}
-			</ul>
+			</div>
 		{/hascontent}
 	</footer>
 </div>

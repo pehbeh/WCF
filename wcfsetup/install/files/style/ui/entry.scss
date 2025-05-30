@@ -43,7 +43,26 @@
 }
 
 .entry__footerButtons {
+	display: flex;
+	gap: 1px;
+	flex-wrap: wrap;
 	margin-inline-start: auto;
+}
+
+.entry__footerButtons .button {
+	padding: 6px 8px;
+
+	@include wcfFontSmall;
+}
+
+.entry__footerButtons .button:not(:first-child) {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.entry__footerButtons .button:not(:last-child) {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
 }
 
 .entry__aboutAuthor {

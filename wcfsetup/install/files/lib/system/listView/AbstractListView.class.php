@@ -42,7 +42,7 @@ abstract class AbstractListView
     private bool $allowFiltering = true;
     private bool $allowSorting = true;
     private bool $allowInteractions = true;
-    private int $maxItems = 0;
+    private int $fixedNumberOfItems = 0;
 
     /**
      * @var array<string, string>
@@ -86,19 +86,19 @@ abstract class AbstractListView
     }
 
     /**
-     * Gets the maximum number of items shown.
+     * Gets the fixed number of items shown.
      */
-    public function getMaxItems(): int
+    public function getFixedNumberOfItems(): int
     {
-        return $this->maxItems;
+        return $this->fixedNumberOfItems;
     }
 
     /**
      * Sets the maximum number of items shown.
      */
-    public function setMaxItems(int $maxItems): void
+    public function setFixedNumberOfItems(int $fixedNumberOfItems): void
     {
-        $this->maxItems = $maxItems;
+        $this->fixedNumberOfItems = $fixedNumberOfItems;
     }
 
     /**
@@ -199,8 +199,8 @@ abstract class AbstractListView
     protected function initObjectList(): void
     {
         $this->objectList = $this->createObjectList();
-        $this->objectList->sqlLimit = $this->getMaxItems() ?: $this->getItemsPerPage();
-        if (!$this->getMaxItems()) {
+        $this->objectList->sqlLimit = $this->getFixedNumberOfItems() ?: $this->getItemsPerPage();
+        if (!$this->getFixedNumberOfItems()) {
             $this->objectList->sqlOffset = ($this->getPageNo() - 1) * $this->getItemsPerPage();
         }
         if ($this->getSortField()) {
@@ -262,8 +262,8 @@ abstract class AbstractListView
     {
         if (!isset($this->objectCount)) {
             $this->objectCount = $this->getObjectList()->countObjects();
-            if ($this->getMaxItems() && $this->getMaxItems() < $this->objectCount) {
-                $this->objectCount = $this->getMaxItems();
+            if ($this->getFixedNumberOfItems() && $this->getFixedNumberOfItems() < $this->objectCount) {
+                $this->objectCount = $this->getFixedNumberOfItems();
             }
         }
 

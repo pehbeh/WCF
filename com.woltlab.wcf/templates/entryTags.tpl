@@ -3,7 +3,7 @@
 		<ul class="tagList">
 			{foreach from=$tags item=tag}
 				<li>
-					<a href="{link controller='Tagged' object=$tag}objectType={$objectType}{/link}" class="tag">
+					<a href="{link controller='Tagged' object=$tag objectType=$objectType}{/link}" class="tag">
 						{icon name='tag'}
 						{$tag->name}
 					</a>
