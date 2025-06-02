@@ -95,6 +95,7 @@ class ViewableArticleList extends ArticleList
         if ($this->contentLoading && !empty($this->objectIDs)) {
             $contentList = new ViewableArticleContentList();
             $contentList->enableEmbeddedObjectLoading($this->embeddedObjectLoading);
+            $contentList->enableArticleLoading(false);
             $contentList->getConditionBuilder()->add('article_content.articleID IN (?)', [$this->objectIDs]);
             $contentList->getConditionBuilder()->add(
                 '(article_content.languageID IS NULL OR article_content.languageID = ?)',
@@ -104,6 +105,7 @@ class ViewableArticleList extends ArticleList
             foreach ($contentList as $articleContent) {
                 $article = $this->objects[$articleContent->articleID];
                 $article->setArticleContent($articleContent);
+                $articleContent->setArticle($article);
 
                 // Some providers do pre-populate internal caches in order to retrieve the data
                 // for many objects in a single step.
