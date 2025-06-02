@@ -1,0 +1,169 @@
+.entryCardList__container {
+	container-type: inline-size;
+}
+
+.entryCardList {
+	display: grid;
+	gap: 20px;
+	grid-auto-rows: minmax(200px, auto);
+}
+
+@container (min-width: 1000px) {
+	.entryCardList {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@container (width < 1000px) and (min-width: 620px) {
+	.entryCardList {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+.entryCardList__item {
+	background-color: var(--wcfContentBackground);
+	border-radius: var(--wcfBorderRadius);
+	box-shadow: var(--wcfBoxShadowCard);
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	row-gap: 10px;
+}
+
+html[data-color-scheme="dark"] {
+	.entryCardList__item {
+		border: 1px solid var(--wcfContentBorderInner);
+	}
+}
+
+.entryCardList__item__buttons {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	z-index: 1;
+	align-items: flex-start;
+	display: flex;
+	gap: 5px;
+}
+
+.entryCardList__item__image {
+	border-top-left-radius: var(--wcfBorderRadius);
+	border-top-right-radius: var(--wcfBorderRadius);
+	overflow: hidden;
+	position: relative;
+}
+
+.entryCardList__item__image__element {
+	height: 150px;
+	object-fit: cover;
+	object-position: center;
+	width: 100%;
+}
+
+html:not(.touch) .entryCardList__item__image__element {
+	transition: transform 0.24s linear;
+}
+
+html:not(.touch) .entryCardList__item:hover .entryCardList__item__image__element {
+	transform: scale(1.05);
+}
+
+.entryCardList__item__badges {
+	align-items: flex-start;
+	display: flex;
+	flex-direction: column;
+	left: 10px;
+	position: absolute;
+	top: 10px;
+	z-index: 1;
+}
+
+.entryCardList__item__content {
+	display: flex;
+	flex: 1 auto;
+	flex-direction: column;
+	padding: 10px;
+	row-gap: 10px;
+}
+
+.entryCardList__item__title {
+	color: var(--wcfContentHeadlineLink);
+
+	@include wcfFontHeadline;
+	@include wcfFontBold;
+}
+
+.entryCardList__item__link {
+	color: inherit;
+
+	&::before {
+		content: "";
+		inset: 0;
+		position: absolute;
+	}
+
+	&:hover,
+	&:focus {
+		color: inherit;
+	}
+}
+
+.entryCardList__item__teaser {
+	color: var(--wcfContentDimmedText);
+}
+
+.entryCardList__item__meta {
+	align-items: center;
+	border-top: 1px solid var(--wcfContentBorderInner);
+	color: var(--wcfContentDimmedText);
+	display: flex;
+	flex: 0 auto;
+	padding: 10px;
+	white-space: nowrap;
+	gap: 10px;
+
+	.icon {
+		color: inherit;
+	}
+}
+
+.entryCardList__item__meta__image {
+	flex: 0 auto;
+}
+
+.entryCardList__item__meta__content {
+	flex: 1 auto;
+
+	@include wcfFontSmall;
+}
+
+.entryCardList__item__meta__author {
+	color: var(--wcfContentText);
+
+	a,
+	a:hover {
+		color: inherit;
+	}
+}
+
+.entryCardList__item__meta__icons {
+	align-items: center;
+	display: flex;
+	flex: 0 auto;
+	gap: 10px;
+
+	@include wcfFontSmall;
+}
+
+.entryCardList__item__meta__icon {
+	flex: 0 auto;
+
+	.topReactionShort {
+		align-items: center;
+		display: flex;
+	}
+
+	.reactionType {
+		margin-right: 3px;
+	}
+}

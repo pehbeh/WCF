@@ -39,7 +39,7 @@
 
 {include file='header'}
 
-<div class="section">
+<div class="section entryCardList__container">
 	{unsafe:$listView->render()}
 </div>
 
