@@ -87,7 +87,7 @@
 		WoltLabLanguage.registerPhrase("wcf.clipboard.button.numberOfSelectedItems", '{jslang __literal=true}wcf.clipboard.button.numberOfSelectedItems{/jslang}');
 		
 		new ListView(
-			'{unsafe:$view->getID()|encodeJs}',
+			'{unsafe:$view->getID()|encodeJS}',
 			'{unsafe:$view->getClassName()|encodeJS}',
 			{$view->getPageNo()},
 			'{unsafe:$view->getBaseUrl()|encodeJS}',
