@@ -168,6 +168,8 @@ export class Selection extends EventTarget {
       return;
     }
 
+    this.dispatchEvent(new CustomEvent("list-view:update-selection"));
+
     if (selectedIds.length === 0) {
       this.#selectionBar.hidden = true;
       return;
@@ -284,6 +286,7 @@ export class Selection extends EventTarget {
 
 interface SelectionEventMap {
   "list-view:get-bulk-interactions": CustomEvent<{ objectIds: number[] }>;
+  "list-view:update-selection": CustomEvent<void>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging

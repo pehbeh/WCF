@@ -2,8 +2,6 @@
 
 namespace wcf\system\page\handler;
 
-use wcf\system\WCF;
-
 /**
  * Hides the contact form if no recipients are enabled.
  *
@@ -11,6 +9,7 @@ use wcf\system\WCF;
  * @copyright   2001-2021 WoltLab GmbH
  * @license GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since   5.4
+ * @deprecated 6.2 No longer in use.
  */
 class ContactFormPageHandler extends AbstractMenuPageHandler
 {
@@ -19,14 +18,6 @@ class ContactFormPageHandler extends AbstractMenuPageHandler
      */
     public function isVisible($objectID = null)
     {
-        $sql = "SELECT EXISTS(
-                    SELECT  *
-                    FROM    wcf1_contact_recipient
-                    WHERE   isDisabled = ?
-                )";
-        $statement = WCF::getDB()->prepare($sql);
-        $statement->execute([0]);
-
-        return $statement->fetchSingleColumn();
+        return true;
     }
 }

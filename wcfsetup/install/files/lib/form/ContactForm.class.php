@@ -169,6 +169,9 @@ class ContactForm extends AbstractFormBuilderForm
     protected function getRecipientFormField(): SelectFormField
     {
         $recipients = $this->getAvailableRecipients();
+        if ($recipients === []) {
+            throw new \BadMethodCallException('Contact form has no available recipients.');
+        }
 
         return SelectFormField::create('recipientID')
             ->label('wcf.contact.recipientID')

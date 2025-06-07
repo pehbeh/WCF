@@ -22,4 +22,10 @@ final class TaggableArticle extends AbstractTaggedListViewProvider
     {
         return new TaggedArticleListView($tagIDs);
     }
+
+    #[\Override]
+    public function getContainerCssClassName(): string
+    {
+        return 'entryCardList__container';
+    }
 }

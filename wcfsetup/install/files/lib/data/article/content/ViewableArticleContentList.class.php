@@ -31,6 +31,11 @@ class ViewableArticleContentList extends ArticleContentList
     protected $embeddedObjectLoading = true;
 
     /**
+     * @since 6.2
+     */
+    protected bool $articleLoading = true;
+
+    /**
      * @inheritDoc
      */
     public function readObjects()
@@ -74,7 +79,7 @@ class ViewableArticleContentList extends ArticleContentList
             );
         }
 
-        if (!empty($articleIDs)) {
+        if ($this->articleLoading && !empty($articleIDs)) {
             $articleList = new ViewableArticleList();
             // to prevent an infinity loop, because the list loads otherwise the article content
             $articleList->enableContentLoading(false);
@@ -93,10 +98,12 @@ class ViewableArticleContentList extends ArticleContentList
                 }
             }
 
-            if ($articleList->search($articleContent->articleID) !== null) {
-                $articleContent->setArticle($articleList->search($articleContent->articleID));
-            } else {
-                throw new \LogicException('Unable to find article with id "' . $articleContent->articleID . '".');
+            if ($this->articleLoading) {
+                if ($articleList->search($articleContent->articleID) !== null) {
+                    $articleContent->setArticle($articleList->search($articleContent->articleID));
+                } else {
+                    throw new \LogicException('Unable to find article with id "' . $articleContent->articleID . '".');
+                }
             }
         }
     }
@@ -110,5 +117,13 @@ class ViewableArticleContentList extends ArticleContentList
     public function enableEmbeddedObjectLoading(bool $enable = true): void
     {
         $this->embeddedObjectLoading = $enable;
+    }
+
+    /**
+     * @since 6.2
+     */
+    public function enableArticleLoading(bool $enable = true): void
+    {
+        $this->articleLoading = $enable;
     }
 }

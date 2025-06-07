@@ -38,7 +38,7 @@ class URLUserOptionOutput implements IUserOptionOutput
     private static function getURL($url)
     {
         if (!\preg_match('~^https?://~i', $url)) {
-            $url = 'http://' . $url;
+            $url = 'https://' . $url;
         }
 
         return $url;
