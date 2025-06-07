@@ -203,19 +203,7 @@ abstract class AbstractListView
         if (!$this->getFixedNumberOfItems()) {
             $this->objectList->sqlOffset = ($this->getPageNo() - 1) * $this->getItemsPerPage();
         }
-        if ($this->getSortField()) {
-            $sortFieldObject = $this->availableSortFields[$this->getSortField()];
-
-            if ($sortFieldObject->sortByDatabaseColumn) {
-                $this->objectList->sqlOrderBy = $sortFieldObject->sortByDatabaseColumn . ' ' . $this->getSortOrder();
-            } else {
-                $this->objectList->sqlOrderBy = $this->objectList->getDatabaseTableAlias() .
-                    '.' . $sortFieldObject->id . ' ' . $this->getSortOrder();
-            }
-
-            $this->objectList->sqlOrderBy .= ',' . $this->objectList->getDatabaseTableAlias() .
-                '.' . $this->objectList->getDatabaseTableIndexName() . ' ' . $this->getSortOrder();
-        }
+        $this->objectList->sqlOrderBy = $this->getSqlOrderBy();
         if ($this->getObjectIDFilter() !== null) {
             $this->objectList->getConditionBuilder()->add(
                 $this->objectList->getDatabaseTableAlias() . '.' . $this->objectList->getDatabaseTableIndexName() . ' = ?',
@@ -224,6 +212,29 @@ abstract class AbstractListView
         }
         $this->applyFilters();
         $this->fireInitializedEvent();
+    }
+
+    protected function getSqlOrderBy(): string
+    {
+        $sqlOrderBy = '';
+
+        if ($this->getSortField()) {
+            $sortFieldObject = $this->availableSortFields[$this->getSortField()];
+            if ($sortFieldObject->sortByDatabaseColumn) {
+                $sqlOrderBy = $sortFieldObject->sortByDatabaseColumn . ' ' . $this->getSortOrder();
+            } else {
+                $sqlOrderBy = $this->objectList->getDatabaseTableAlias() .
+                    '.' . $sortFieldObject->id . ' ' . $this->getSortOrder();
+            }
+
+            $sqlOrderBy .= ',';
+        }
+
+
+        $sqlOrderBy .= $this->objectList->getDatabaseTableAlias() .
+            '.' . $this->objectList->getDatabaseTableIndexName() . ' ' . $this->getSortOrder();
+
+        return $sqlOrderBy;
     }
 
     /**
