@@ -86,6 +86,12 @@ html:not(.touch) .entryCardList__item:hover .entryCardList__item__image__element
 	row-gap: 10px;
 }
 
+.entryCardList__item__title__prefix {
+	color: var(--wcfContentDimmedText);
+
+	@include wcfFontSmall;
+}
+
 .entryCardList__item__title {
 	color: var(--wcfContentHeadlineLink);
 
