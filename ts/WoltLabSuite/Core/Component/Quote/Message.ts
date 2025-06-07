@@ -77,8 +77,12 @@ export function registerContainer(
     container.addEventListener("mousedown", (event) => onMouseDown(event));
     container.classList.add("jsQuoteMessageContainer");
 
-    const quoteMessage = container.querySelector(".jsQuoteMessage");
-    const quoteMessageButton = quoteMessage?.querySelector<HTMLAnchorElement>(".button");
+    const quoteMessage = container.querySelector<HTMLElement>(".jsQuoteMessage");
+    let quoteMessageButton = quoteMessage?.querySelector<HTMLElement>(".button");
+    if (!quoteMessageButton && quoteMessage?.classList.contains("button")) {
+      quoteMessageButton = quoteMessage;
+    }
+
     if (quoteMessageButton) {
       quoteMessageButtons.set(getKey(objectType, objectId), quoteMessageButton);
 

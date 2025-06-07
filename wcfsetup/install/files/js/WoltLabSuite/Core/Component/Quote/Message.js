@@ -40,7 +40,10 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Dom/Util", "WoltLabSui
             container.addEventListener("mousedown", (event) => onMouseDown(event));
             container.classList.add("jsQuoteMessageContainer");
             const quoteMessage = container.querySelector(".jsQuoteMessage");
-            const quoteMessageButton = quoteMessage?.querySelector(".button");
+            let quoteMessageButton = quoteMessage?.querySelector(".button");
+            if (!quoteMessageButton && quoteMessage?.classList.contains("button")) {
+                quoteMessageButton = quoteMessage;
+            }
             if (quoteMessageButton) {
                 quoteMessageButtons.set((0, Storage_1.getKey)(objectType, objectId), quoteMessageButton);
                 if ((0, Storage_1.isFullQuoted)(objectType, objectId)) {
