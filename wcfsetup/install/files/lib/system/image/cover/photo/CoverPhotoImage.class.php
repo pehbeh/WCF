@@ -11,6 +11,7 @@ use wcf\system\style\StyleHandler;
  * @copyright   2001-2019 WoltLab GmbH
  * @license     GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @since       5.2
+ * @deprecated  6.2 Use `ICoverPhoto` instead.
  */
 class CoverPhotoImage
 {
