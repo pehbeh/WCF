@@ -213,6 +213,20 @@ class PollManager extends SingletonFactory
     }
 
     /**
+     * Sets the raw poll data that has already been validated.
+     * Intended for use in combination with the `WysiwygPollFormContainer`.
+     *
+     * @since 6.2
+     */
+    public function setPollData(array $pollData): void
+    {
+        $this->pollOptions = $pollData['options'];
+        unset($pollData['options']);
+
+        $this->pollData = $pollData;
+    }
+
+    /**
      * Validates poll parameters.
      *
      * @return void
