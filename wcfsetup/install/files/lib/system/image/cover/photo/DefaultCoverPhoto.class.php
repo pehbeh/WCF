@@ -17,7 +17,7 @@ final class DefaultCoverPhoto implements ICoverPhoto
     private static DefaultCoverPhoto $defaultCoverPhoto;
 
     /**
-     * @var array<string, int>
+     * @var array{height: int, width: int}
      */
     private array $dimensions;
 
@@ -42,7 +42,7 @@ final class DefaultCoverPhoto implements ICoverPhoto
     }
 
     /**
-     * @return array<string, int>
+     * @return array{height: int, width: int}
      */
     private function getDimensions(): array
     {
